@@ -1,14 +1,30 @@
-# ksrv_njord_app
+# K.S.R.V. Njord App
 
-A new Flutter project.
+De Flut-ter versie.
 
+## How do I?
+
+- Volg [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
+- Clone de repository
+- Ga aan de slag in je eigen branch (`git checkout -b`)
+- Download de dependencies: `flutter pub get`
+- Run de app: `flutter run`
+
+## Architectuur
+
+Op dit moment nog niet heel veel boeiends, maar de verschillende schermen
+werken via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html).
+
+State-management gaat niet via MobX worden voorlopig, tenzij iemand dit
+op een nette manier neer weet te kalken. Voorlopige keus is op RiverPod 
+en flutter_hooks gevallen.
+- 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
 For help getting started with Flutter, view our
