@@ -37,8 +37,14 @@ class AnnouncementsPage extends StatelessWidget {
         child: ListView.builder(
           itemCount: announcements.length,
           itemBuilder: (context, index) {
-            return ListTile(
-                title: Text(announcements[index]['name'] as String),
+            return Card(
+              color: Colors.white,
+              elevation: 5, // give more card-like feel
+              child: ListTile(
+                title: Text(
+                  announcements[index]['name'] as String,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -46,7 +52,9 @@ class AnnouncementsPage extends StatelessWidget {
                         builder: (context) => AnnouncementPage(
                             announcement: announcements[index])),
                   );
-                });
+                },
+              ),
+            );
           },
         ),
       ),
