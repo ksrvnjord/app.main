@@ -2,14 +2,6 @@
 
 De Flut-ter versie.
 
-## Collaboration!
-
-Keep the main-branch clear and functional. Er komen nog CI/CD tests, maar voor nu:
-- No breaking changes to the main
-- No testing data in the main
-
-In plaats daarvan, tot we overgaan op 
-
 ## How do I?
 
 - Volg [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
