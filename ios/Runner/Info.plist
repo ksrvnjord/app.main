@@ -40,21 +40,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>FlutterDeepLinkingEnabled</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLName</key>
-		<string>app.heimdall.ksrv.nl</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>ksrvnjordapp</string>
-		</array>
-		</dict>
-	</array>
 </dict>
 </plist>
