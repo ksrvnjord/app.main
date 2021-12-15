@@ -42,9 +42,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: TextFormField(
                     controller: _username,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp('[a-z.@]')),
+                    ],
                     obscureText: false,
                     autocorrect: false,
-                    autofillHints: const ['mail'],
+                    enableSuggestions: false,
+                    textCapitalization: TextCapitalization.none,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: '@leden.ksrv.nl-account',

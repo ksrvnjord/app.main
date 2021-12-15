@@ -24,10 +24,9 @@ class MyApp extends HookConsumerWidget {
         home: authenticator.loggedIn ? const HomePage() : const LoginPage(),
         routes: authenticator.loggedIn
             ? {
-                '/login': (context) => const LoginPage(),
                 '/announcements': (context) => const AnnouncementsPage(),
               }
-            : {'/login': (context) => const LoginPage()},
+            : {},
         debugShowCheckedModeBanner: false);
   }
 }
