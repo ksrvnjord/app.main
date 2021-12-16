@@ -5,7 +5,7 @@
 /// to log-in to Heimdall and to get the token to perform actions in
 /// a type-safe way.
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:graphql/client.dart' as graphql;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/authentication.dart';
@@ -25,29 +25,29 @@ class HeimdallService {
   final graphql.HttpLink _httpLink =
       graphql.HttpLink('https://heimdall.njord.nl/graphql');
 
-  Future<Response<Map<String, Object?>>> get(
+  Future<dio.Response<Map<String, Object?>>> get(
       String path, Map<String, dynamic>? params) {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).get<Map<String, Object?>>(
         'https://heimdall.njord.nl/$path',
         queryParameters: params,
-        options: Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
-  Future<Response<Map<String, Object?>>> post(String path, dynamic data) {
+  Future<dio.Response<Map<String, Object?>>> post(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).post<Map<String, Object?>>(
         'https://heimdall.njord.nl/$path',
         data: data,
-        options: Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
-  Future<Response<Map<String, Object?>>> put(String path, dynamic data) {
+  Future<dio.Response<Map<String, Object?>>> put(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).post<Map<String, Object?>>(
         'https://heimdall.njord.nl/$path',
         data: data,
-        options: Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
   graphql.GraphQLClient graphQLClient() {
