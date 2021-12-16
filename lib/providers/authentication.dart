@@ -11,8 +11,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-final dioProvider = Provider((ref) => Dio());
+import 'package:ksrv_njord_app/providers/dio.dart';
 
 final authenticationProvider =
     ChangeNotifierProvider((ref) => AuthenticationService(ref.read));
