@@ -1,63 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:graphql/client.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/pages/announcement.dart';
+import 'package:ksrv_njord_app/providers/heimdall.dart';
 
-var announcements = [
-  {
-    "name": "RP3s tijdelijk uit de vaart",
-    "content":
-        "Zegt het voort, het blijkt dat ergo's daadwerkelijk kunnen drijven, garandeer uzelf van een training en zet uit op een C2 - bij een vaarverbod kunt u alsnog trainen. \n\n Wegens het glijdende momentum van de RP3s zijn er ankers besteld voor de bankjes, zodra deze binnen zijn worden de RP3s weer ingezet.",
-    "timestamp": "2021-11-23 17:26:00",
-    "author": {"name": "J. Brummer", "role": "Empacher Commissie"}
-  },
-  {
-    "name": "Sinterklaas op Njord",
-    "content":
-        "Zegt het voort, het blijkt dat Sinterklaas en Roetveegregenboogpiet langskomen op de KSRV. \n\n Zet je schoen komende week bij de haard voor mogelijk een verassing",
-    "timestamp": "2021-29-11 17:26:00",
-    "author": {"name": "S.P.S (Bas) Flipse", "role": "Bestuur"}
-  },
-];
+const String announcements = r'''
+  query announcements {
+    announcements(first: 10) {
+      data {
+        id,
+        title
+      }
+    }
+  }
+''';
 
 double titleFontSize = 28;
 double contentFontSize = 22;
 double paddingBody = 10;
 
-class AnnouncementsPage extends StatelessWidget {
+class AnnouncementsPage extends HookConsumerWidget {
   const AnnouncementsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
+    final QueryOptions options = QueryOptions(document: gql(announcements));
+    final Future<QueryResult> result = client.query(options);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mededelingen'),
       ),
-      body: Padding(
-        // Add padding to whole body
-        padding: EdgeInsets.all(paddingBody),
-        child: ListView.builder(
-          itemCount: announcements.length,
-          itemBuilder: (context, index) {
-            return Card(
-              color: Colors.white,
-              elevation: 5, // give more card-like feel
-              child: ListTile(
-                title: Text(
-                  announcements[index]['name'] as String,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AnnouncementPage(
-                            announcement: announcements[index])),
-                  );
-                },
-              ),
-            );
-          },
-        ),
-      ),
+      body: FutureBuilder(
+          future: result,
+          builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Text('not started');
+              case ConnectionState.waiting:
+                return const Text('loading');
+              default:
+                var announcementsList =
+                    snapshot.data?.data?['announcements']['data'];
+                return Padding(
+                  // Add padding to whole body
+                  padding: EdgeInsets.all(paddingBody),
+                  child: ListView.builder(
+                    itemCount: announcementsList.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: Colors.white,
+                        elevation: 5, // give more card-like feel
+                        child: ListTile(
+                          title: Text(
+                            announcementsList[index]['title'] ?? '',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnnouncementPage(
+                                      announcementId: announcementsList[index]
+                                          ['id'])),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                );
+            }
+          }),
     );
   }
 }

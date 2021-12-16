@@ -1,78 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:graphql/client.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrv_njord_app/providers/heimdall.dart';
 
-// Map announcement = {
-//   // Mock announcement
-//   "name": "RP3s tijdelijk uit de vaart",
-//   "content":
-//       "## De RP3s zijn tijdelijk uit de vaart \n\n Zegt het voort, het blijkt dat ergo's daadwerkelijk kunnen drijven, garandeer uzelf van een training en zet uit op een C2 - bij een vaarverbod kunt u alsnog trainen. \n\n Wegens het glijdende momentum van de RP3s zijn er ankers besteld voor de bankjes, zodra deze binnen zijn worden de RP3s weer ingezet.",
-//   "timestamp": "2021-11-23 17:26:00",
-//   "author": {"name": "J. Brummer", "role": "Empacher Commissie"}
-// };
+const String announcement = r'''
+  query announcement($id: ID!) {
+    announcement(id: $id) {
+      id,
+      title,
+      contents,
+      author
+    }
+  }
+''';
 
 double titleFontSize = 28;
 double contentFontSize = 22;
 double paddingBody = 10;
 
-class AnnouncementPage extends StatelessWidget {
+class AnnouncementPage extends HookConsumerWidget {
   const AnnouncementPage({
     Key? key,
-    required this.announcement,
+    required this.announcementId,
   }) : super(key: key);
 
-  final Map announcement;
+  final String announcementId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
+    final QueryOptions options = QueryOptions(
+        document: gql(announcement), variables: {'id': announcementId});
+    final Future<QueryResult> result = client.query(options);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mededeling'),
-      ),
-      body: Padding(
-        // Add padding to whole body
-        padding: EdgeInsets.all(paddingBody),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              // Title Container
-              height: 40,
-              color: Colors.white,
-              child: Center(
-                child: Text(
-                  announcement['name'] as String,
-                  style: TextStyle(
-                      fontSize: titleFontSize, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Container(
-              // Author
-              height: 40,
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text((announcement["author"] as Map)["name"] as String),
-                      Text((announcement["author"] as Map)["role"] as String),
-                    ],
-                  ),
-                  Text(announcement['timestamp'] as String),
-                ],
-              ),
-            ),
-            Container(
-              // Content
-              color: Colors.white,
-              child: Center(
-                child: Text(announcement['content'] as String,
-                    style: TextStyle(fontSize: contentFontSize)),
-              ),
-            ),
-          ],
-          scrollDirection: Axis.vertical,
+        appBar: AppBar(
+          title: const Text('Mededeling'),
         ),
-      ),
-    );
+        body: FutureBuilder(
+          future: result,
+          builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return const Text('not started');
+              case ConnectionState.waiting:
+                return const Text('loading');
+              default:
+                var announcement = snapshot.data?.data?['announcement'];
+                return Padding(
+                  // Add padding to whole body
+                  padding: EdgeInsets.all(paddingBody),
+                  child: ListView(
+                    children: <Widget>[
+                      Container(
+                        // Title Container
+                        height: 40,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            announcement?['title'],
+                            style: TextStyle(
+                                fontSize: titleFontSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          // Author
+                          height: 40,
+                          color: Colors.white,
+                          child: Text(announcement?['author'])),
+                      Container(
+                        // Content
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(announcement?['contents'],
+                              style: TextStyle(fontSize: contentFontSize)),
+                        ),
+                      ),
+                    ],
+                    scrollDirection: Axis.vertical,
+                  ),
+                );
+            }
+          },
+        ));
   }
 }
