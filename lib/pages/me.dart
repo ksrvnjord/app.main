@@ -40,8 +40,10 @@ class MeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(user);
+    print(
+        user); // Printing the user data in the console so you can work with it
 
+    // Please make it null-safe!
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
       const SizedBox(height: 10),
       Center(
