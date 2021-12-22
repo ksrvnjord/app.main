@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/widgets/app_icon_widget.dart';
+import 'package:ksrv_njord_app/widgets/bar_logo.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const AppIconWidget(image: Images.appLogo),
+          title: const BarLogoWidget(image: Images.appLogo),
         ),
         body: Navigator(
           key: _navigatorKey,

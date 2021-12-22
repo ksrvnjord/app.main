@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:ksrv_njord_app/widgets/splash_logo.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
-import 'package:ksrv_njord_app/widgets/app_icon_widget.dart';
 import 'package:ksrv_njord_app/providers/authentication.dart';
 
 class LoginScreen extends StatefulHookConsumerWidget {
@@ -26,7 +25,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 128,
-        title: const Center(child: AppIconWidget(image: Images.appLogo)),
+        title: const Center(child: SplashLogoWidget(image: Images.appLogo)),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
