@@ -40,8 +40,8 @@ class Vaarverbod_full extends StatelessWidget {
       ),
       body: Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             info_vaarverbod['status']
