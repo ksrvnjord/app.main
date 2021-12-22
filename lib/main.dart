@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/pages/login.dart';
-import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/providers/authentication.dart';
+import 'package:ksrv_njord_app/screens/main.dart';
+import 'package:ksrv_njord_app/screens/login.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -20,13 +18,7 @@ class MyApp extends HookConsumerWidget {
 
     return MaterialApp(
         title: 'K.S.R.V. Njord',
-        initialRoute: '/',
-        home: authenticator.loggedIn ? const HomePage() : const LoginPage(),
-        routes: authenticator.loggedIn
-            ? {
-                '/announcements': (context) => const AnnouncementsPage(),
-              }
-            : {},
+        home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
         debugShowCheckedModeBanner: false);
   }
 }
