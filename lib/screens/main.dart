@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
@@ -16,50 +17,87 @@ class _MainScreenState extends State<MainScreen> {
   final _navigatorKey = GlobalKey<NavigatorState>(debugLabel: 'NavigatorState');
   int _currentIndex = 0;
 
+  int routeIndex(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return 0;
+      case '/announcements':
+        return 1;
+      default:
+        throw Exception('Invalid route: ${settings.name}');
+    }
+  }
+
+  Widget routeWidgets(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return const HomePage();
+      case '/announcements':
+        return const AnnouncementsPage();
+      default:
+        throw Exception('Invalid route: ${settings.name}');
+    }
+  }
+
+  Animation<Offset> slideDirection(Animation<double> animation, int delta) {
+    if (delta > 0) {
+      return animation.drive(Tween(
+        begin: const Offset(1, 0),
+        end: Offset.zero,
+      ));
+    } else if (delta < 0) {
+      return animation.drive(Tween(
+        begin: const Offset(-1, 0),
+        end: Offset.zero,
+      ));
+    } else {
+      return animation.drive(Tween(begin: Offset.zero, end: Offset.zero));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const BarLogoWidget(image: Images.appLogo),
-        ),
+            title: const BarLogoWidget(image: Images.appLogo),
+            backgroundColor: Colors.lightBlue,
+            shadowColor: Colors.transparent,
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
         body: Navigator(
           key: _navigatorKey,
           initialRoute: '/',
-          onGenerateRoute: (RouteSettings settings) {
-            WidgetBuilder builder;
+          onGenerateRoute: (RouteSettings s) {
+            int delta = routeIndex(s) - _currentIndex;
 
-            switch (settings.name) {
-              case '/':
-                builder = (BuildContext context) => const HomePage();
-                break;
-              case '/announcements':
-                builder = (BuildContext context) => const AnnouncementsPage();
-                break;
-              default:
-                throw Exception('Invalid route: ${settings.name}');
-            }
+            Future.delayed(
+                Duration.zero,
+                () => setState(() {
+                      _currentIndex = routeIndex(s);
+                    }));
 
-            return MaterialPageRoute(
-              builder: builder,
-              settings: settings,
+            return PageRouteBuilder(
+              pageBuilder: (context, _, __) => Container(
+                  child: routeWidgets(s),
+                  constraints: const BoxConstraints.expand(),
+                  color: Colors.white),
+              transitionsBuilder: (_, animation, __, c) => SlideTransition(
+                  position: slideDirection(animation, delta), child: c),
+              settings: s,
             );
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
-            showSelectedLabels: true,
+            showSelectedLabels: false,
             showUnselectedLabels: false,
             currentIndex: _currentIndex,
             onTap: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-
               switch (index) {
                 case 0:
-                  _navigatorKey.currentState?.popAndPushNamed('/');
+                  _navigatorKey.currentState?.pushNamed('/');
                   break;
                 case 1:
-                  _navigatorKey.currentState?.popAndPushNamed('/announcements');
+                  _navigatorKey.currentState?.pushNamed('/announcements');
                   break;
                 default:
                   throw Exception('Invalid index called');
