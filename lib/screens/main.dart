@@ -6,6 +6,14 @@ import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
+class RoutedWidget {
+  RoutedWidget(this.index, this.label, this.widget);
+
+  final int index;
+  final String label;
+  final Widget widget;
+}
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -17,25 +25,21 @@ class _MainScreenState extends State<MainScreen> {
   final _navigatorKey = GlobalKey<NavigatorState>(debugLabel: 'NavigatorState');
   int _currentIndex = 0;
 
-  int routeIndex(RouteSettings settings) {
-    switch (settings.name) {
-      case '/':
-        return 0;
-      case '/announcements':
-        return 1;
-      default:
-        throw Exception('Invalid route: ${settings.name}');
-    }
-  }
+  final Map<String, RoutedWidget> widgets = {
+    '/': RoutedWidget(0, 'Home', const HomePage()),
+    '/announcements':
+        RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
+  };
 
-  Widget routeWidgets(RouteSettings settings) {
-    switch (settings.name) {
-      case '/':
-        return const HomePage();
-      case '/announcements':
-        return const AnnouncementsPage();
-      default:
-        throw Exception('Invalid route: ${settings.name}');
+  RoutedWidget generateRoute(RouteSettings s) {
+    if (s.name != null) {
+      RoutedWidget? widget = widgets[s.name];
+      if (widget != null) {
+        return widget;
+      }
+      throw Exception('MainScreen Navigator: Unknown route!');
+    } else {
+      throw Exception('MainScreen Navigator: No route path given!');
     }
   }
 
@@ -52,18 +56,21 @@ class _MainScreenState extends State<MainScreen> {
           key: _navigatorKey,
           initialRoute: '/',
           onGenerateRoute: (RouteSettings s) {
+            RoutedWidget widget = generateRoute(s);
+
             Future.delayed(
                 Duration.zero,
                 () => setState(() {
-                      _currentIndex = routeIndex(s);
+                      _currentIndex = widget.index;
                     }));
 
-            return MaterialPageRoute(
-                builder: (BuildContext context) => Container(
-                      child: routeWidgets(s),
+            return PageRouteBuilder(
+                pageBuilder: (BuildContext context, _, __) => Container(
+                      child: widget.widget,
                       constraints: const BoxConstraints.expand(),
                       color: Colors.white,
                     ),
+                transitionDuration: Duration.zero,
                 settings: s);
           },
         ),
