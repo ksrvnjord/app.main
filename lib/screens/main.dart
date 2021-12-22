@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/widgets/bar_logo.dart';
+import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
