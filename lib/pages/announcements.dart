@@ -28,51 +28,47 @@ class AnnouncementsPage extends HookConsumerWidget {
     final QueryOptions options = QueryOptions(document: gql(announcements));
     final Future<QueryResult> result = client.query(options);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mededelingen'),
-      ),
-      body: FutureBuilder(
-          future: result,
-          builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return const Text('not started');
-              case ConnectionState.waiting:
-                return const Text('loading');
-              default:
-                var announcementsList =
-                    snapshot.data?.data?['announcements']['data'];
-                return Padding(
-                  // Add padding to whole body
-                  padding: EdgeInsets.all(paddingBody),
-                  child: ListView.builder(
-                    itemCount: announcementsList.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: Colors.white,
-                        elevation: 5, // give more card-like feel
-                        child: ListTile(
-                          title: Text(
-                            announcementsList[index]['title'] ?? '',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AnnouncementPage(
-                                      announcementId: announcementsList[index]
-                                          ['id'])),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
-            }
-          }),
+    return FutureBuilder(
+      future: result,
+      builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return const Text('not started');
+          case ConnectionState.waiting:
+            return const Text('loading');
+          default:
+            var announcementsList =
+                snapshot.data?.data?['announcements']['data'];
+            return Padding(
+              // Add padding to whole body
+              padding: EdgeInsets.all(paddingBody),
+              child: ListView.builder(
+                itemCount: announcementsList.length ?? 0,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.white,
+                    elevation: 5, // give more card-like feel
+                    child: ListTile(
+                      title: Text(
+                        announcementsList[index]['title'] ?? '',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnnouncementPage(
+                                  announcementId: announcementsList[index]
+                                      ['id'])),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
+        }
+      },
     );
   }
 }
