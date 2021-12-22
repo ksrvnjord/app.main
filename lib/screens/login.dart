@@ -7,15 +7,15 @@ import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/widgets/app_icon_widget.dart';
 import 'package:ksrv_njord_app/providers/authentication.dart';
 
-class LoginPage extends StatefulHookConsumerWidget {
+class LoginScreen extends StatefulHookConsumerWidget {
   static const routename = '/login';
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final _username = TextEditingController();
