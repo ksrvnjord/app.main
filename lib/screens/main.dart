@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/pages/user_page.dart';
+import 'package:ksrv_njord_app/pages/me.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 class RoutedWidget {
@@ -90,6 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                   break;
                 case 2:
                   _navigatorKey.currentState?.pushNamed('/me');
+                  break;
                 default:
                   throw Exception('Invalid index called');
               }
