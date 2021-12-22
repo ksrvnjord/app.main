@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
+import 'package:ksrv_njord_app/widgets/app_icon_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,10 +14,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final _navigatorKey = GlobalKey<NavigatorState>();
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: const AppIconWidget(image: Images.appLogo),
+        ),
         body: Navigator(
           key: _navigatorKey,
           initialRoute: '/',
@@ -23,10 +30,12 @@ class _MainScreenState extends State<MainScreen> {
 
             switch (settings.name) {
               case '/':
+                _currentIndex = 0;
                 builder = (BuildContext context) => const HomePage();
                 break;
               case '/announcements':
                 builder = (BuildContext context) => const AnnouncementsPage();
+                _currentIndex = 1;
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');
@@ -38,17 +47,35 @@ class _MainScreenState extends State<MainScreen> {
             );
           },
         ),
-        bottomNavigationBar:
-            BottomNavigationBar(items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-            backgroundColor: Colors.blue,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.all_inbox_rounded),
-            label: 'Announcements',
-          ),
-        ]));
+        bottomNavigationBar: BottomNavigationBar(
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
+            currentIndex: _currentIndex,
+            onTap: (int index) {
+              setState(() {
+                _currentIndex = index;
+              });
+              switch (index) {
+                case 0:
+                  _navigatorKey.currentState?.popAndPushNamed('/');
+                  break;
+                case 1:
+                  _navigatorKey.currentState?.popAndPushNamed('/announcements');
+                  break;
+                default:
+                  throw Exception('Invalid index called');
+              }
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Home',
+                backgroundColor: Colors.blue,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.all_inbox_rounded),
+                label: 'Aankondigingen',
+              ),
+            ]));
   }
 }
