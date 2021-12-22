@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/pages/auth.dart';
-import 'package:ksrv_njord_app/pages/user_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrv_njord_app/providers/authentication.dart';
+import 'package:ksrv_njord_app/screens/main.dart';
+import 'package:ksrv_njord_app/screens/login.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authenticator = ref.watch(authenticationProvider);
+
     return MaterialApp(
         title: 'K.S.R.V. Njord',
-        initialRoute: '/me',
-        routes: {
-          '/auth': (context) => const AuthPage(),
-          '/': (context) => const HomePage(),
-          '/me': (context) => const MePage(),
-        },
+        home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
         debugShowCheckedModeBanner: false);
   }
 }

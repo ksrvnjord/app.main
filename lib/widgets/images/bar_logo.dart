@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AppIconWidget extends StatelessWidget {
-  final image;
+class BarLogoWidget extends StatelessWidget {
+  final String image;
 
-  const AppIconWidget({
+  const BarLogoWidget({
     Key? key,
-    this.image,
+    required this.image,
   }) : super(key: key);
 
   @override

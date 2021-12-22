@@ -6,6 +6,7 @@ De Flut-ter versie.
 
 - Volg [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
 - Clone de repository
+- Pak de `develop` branch om met de laatste iteratie aan de slag te gaan: `git checkout develop`
 - Ga aan de slag in je eigen branch (`git checkout -b`)
 - Download de dependencies: `flutter pub get`
 - Run de app: `flutter run`
@@ -18,7 +19,7 @@ werken via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/
 State-management gaat niet via MobX worden voorlopig, tenzij iemand dit
 op een nette manier neer weet te kalken. Voorlopige keus is op RiverPod 
 en flutter_hooks gevallen.
-- 
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
