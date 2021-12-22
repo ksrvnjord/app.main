@@ -39,22 +39,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Animation<Offset> slideDirection(Animation<double> animation, int delta) {
-    if (delta > 0) {
-      return animation.drive(Tween(
-        begin: const Offset(1, 0),
-        end: Offset.zero,
-      ));
-    } else if (delta < 0) {
-      return animation.drive(Tween(
-        begin: const Offset(-1, 0),
-        end: Offset.zero,
-      ));
-    } else {
-      return animation.drive(Tween(begin: Offset.zero, end: Offset.zero));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,23 +52,19 @@ class _MainScreenState extends State<MainScreen> {
           key: _navigatorKey,
           initialRoute: '/',
           onGenerateRoute: (RouteSettings s) {
-            int delta = routeIndex(s) - _currentIndex;
-
             Future.delayed(
                 Duration.zero,
                 () => setState(() {
                       _currentIndex = routeIndex(s);
                     }));
 
-            return PageRouteBuilder(
-              pageBuilder: (context, _, __) => Container(
-                  child: routeWidgets(s),
-                  constraints: const BoxConstraints.expand(),
-                  color: Colors.white),
-              transitionsBuilder: (_, animation, __, c) => SlideTransition(
-                  position: slideDirection(animation, delta), child: c),
-              settings: s,
-            );
+            return MaterialPageRoute(
+                builder: (BuildContext context) => Container(
+                      child: routeWidgets(s),
+                      constraints: const BoxConstraints.expand(),
+                      color: Colors.white,
+                    ),
+                settings: s);
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
