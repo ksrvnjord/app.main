@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  final _navigatorKey = GlobalKey<NavigatorState>(debugLabel: 'NavigatorState');
   int _currentIndex = 0;
 
   @override
@@ -31,15 +31,9 @@ class _MainScreenState extends State<MainScreen> {
             switch (settings.name) {
               case '/':
                 builder = (BuildContext context) => const HomePage();
-                setState(() {
-                  _currentIndex = 0;
-                });
                 break;
               case '/announcements':
                 builder = (BuildContext context) => const AnnouncementsPage();
-                setState(() {
-                  _currentIndex = 1;
-                });
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');
