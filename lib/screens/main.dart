@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
+import 'package:ksrv_njord_app/pages/user_page.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 class RoutedWidget {
@@ -29,6 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
+    '/me': RoutedWidget(2, 'Current User', const MePage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -86,6 +88,8 @@ class _MainScreenState extends State<MainScreen> {
                 case 1:
                   _navigatorKey.currentState?.pushNamed('/announcements');
                   break;
+                case 2:
+                  _navigatorKey.currentState?.pushNamed('/me');
                 default:
                   throw Exception('Invalid index called');
               }
@@ -99,6 +103,10 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.all_inbox_rounded),
                 label: 'Aankondigingen',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Account',
               ),
             ]));
   }
