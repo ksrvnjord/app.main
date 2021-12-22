@@ -15,7 +15,7 @@ class LoginScreen extends StatefulHookConsumerWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: 'LoginForm');
 
   final _username = TextEditingController();
   final _password = TextEditingController();
