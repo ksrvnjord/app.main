@@ -67,6 +67,7 @@ class MeWidget extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class profile_picture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -89,6 +90,7 @@ class profile_picture extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class display_amendable_information extends StatelessWidget {
   final String info_kind;
   final String user_info;
@@ -131,6 +133,7 @@ class display_amendable_information extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class display_static_information extends StatelessWidget {
   final String info_kind;
   final String user_info;
@@ -158,6 +161,7 @@ class display_static_information extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class change_information extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -196,6 +200,7 @@ class change_information extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class header_change_information extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -221,6 +226,7 @@ class text_field_change_information extends StatelessWidget {
   }
 }
 
+// X: Please stick to Flutter naming schemes, classes are CamelCase
 class buttons_change_information extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
