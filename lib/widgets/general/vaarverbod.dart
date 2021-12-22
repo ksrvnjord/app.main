@@ -12,7 +12,7 @@ class VaarverbodCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = status ? Colors.amber.shade800 : Colors.green.shade800;
+    final Color color = status ? Colors.red.shade800 : Colors.green.shade800;
 
     return Card(
         elevation: 0,
@@ -20,10 +20,16 @@ class VaarverbodCardWidget extends StatelessWidget {
             side: BorderSide(color: color, width: 2),
             borderRadius: BorderRadius.circular(10)),
         child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
             leading: status
-                ? Icon(Icons.warning_amber_rounded, color: Colors.amber[900])
+                ? Icon(Icons.warning_amber_rounded, color: color)
                 : Icon(Icons.check, color: color),
-            title: Text(status ? 'Geen vaarverbod!' : 'Vaarverbod!'),
+            title: Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Text(
+                    status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod',
+                    style: TextStyle(color: color))),
             subtitle: Text(message)));
   }
 }
@@ -38,8 +44,7 @@ class VaarverbodWidget extends HookConsumerWidget {
 
     return Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+        padding: const EdgeInsets.all(20),
         child: FutureBuilder(
             future: vaarverbod,
             builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
