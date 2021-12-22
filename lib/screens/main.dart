@@ -30,12 +30,16 @@ class _MainScreenState extends State<MainScreen> {
 
             switch (settings.name) {
               case '/':
-                _currentIndex = 0;
                 builder = (BuildContext context) => const HomePage();
+                setState(() {
+                  _currentIndex = 0;
+                });
                 break;
               case '/announcements':
                 builder = (BuildContext context) => const AnnouncementsPage();
-                _currentIndex = 1;
+                setState(() {
+                  _currentIndex = 1;
+                });
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');
@@ -55,6 +59,7 @@ class _MainScreenState extends State<MainScreen> {
               setState(() {
                 _currentIndex = index;
               });
+
               switch (index) {
                 case 0:
                   _navigatorKey.currentState?.popAndPushNamed('/');
