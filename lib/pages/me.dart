@@ -1,23 +1,53 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
-import 'package:flutter/src/material/colors.dart';
+import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
 double paddingBody = 15;
 
-class MePage extends StatelessWidget {
+class MePage extends HookConsumerWidget {
   const MePage({Key? key}) : super(key: key);
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var api = ref.watch(heimdallProvider);
+    var user = api.get('api/v1/user', null);
+
+    return FutureBuilder(
+        future: user,
+        builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return const Text('not started');
+            case ConnectionState.waiting:
+              return const Text('loading');
+            default:
+              var user = snapshot.data?.data;
+              return MeWidget(user);
+          }
+        });
+  }
+}
+
+class MeWidget extends StatelessWidget {
+  const MeWidget(this.user, {Key? key}) : super(key: key);
+
+  final Map<String, String> user;
+
+  @override
   Widget build(BuildContext context) {
+    print(user);
+
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-      SizedBox(height: 10),
+      const SizedBox(height: 10),
       Center(
         child: profile_picture(),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       display_static_information('Naam', 'Pim Veefkind'),
       display_static_information('Lidnummer', '18257'),
       display_static_information('Geboortedatum', '25-03-2000'),
@@ -131,7 +161,7 @@ class change_information extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppIconWidget(image: Images.appLogo),
+        title: const BarLogoWidget(image: Images.appLogo),
       ),
       body: Column(
         children: [
