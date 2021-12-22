@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:flutter/src/material/colors.dart';
-import 'package:ksrv_njord_app/widgets/app_icon_widget.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -13,32 +12,26 @@ class MePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const AppIconWidget(image: Images.appLogo),
-        ),
-        body: ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-          SizedBox(height: 10),
-          Center(
-            child: profile_picture(),
-          ),
-          SizedBox(height: 20),
-          display_static_information('Naam', 'Pim Veefkind'),
-          display_static_information('Lidnummer', '18257'),
-          display_static_information('Geboortedatum', '25-03-2000'),
-          display_amendable_information('Telefoonnummer', '0629110215'),
-          display_amendable_information(
-              'E-mailadres', 'pim.veefkind@gmail.com'),
-          display_amendable_information(
-              'Adres', 'Schubertlaan 201, 2324CT Leiden'),
-          display_static_information('Jaar van aankomst', '2018'),
-          display_amendable_information('Ploeg', 'Clavis'),
-          display_amendable_information('Studie', 'Natuurkunde'),
-          display_amendable_information('IBAN', 'NL19 AWRD 8943 1193 10'),
-          display_amendable_information('Dubbellid', 'Nee'),
-          display_amendable_information('Aantal blikken', '0'),
-          display_amendable_information('Aantal taarten', '0'),
-        ]));
+    return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
+      SizedBox(height: 10),
+      Center(
+        child: profile_picture(),
+      ),
+      SizedBox(height: 20),
+      display_static_information('Naam', 'Pim Veefkind'),
+      display_static_information('Lidnummer', '18257'),
+      display_static_information('Geboortedatum', '25-03-2000'),
+      display_amendable_information('Telefoonnummer', '0629110215'),
+      display_amendable_information('E-mailadres', 'pim.veefkind@gmail.com'),
+      display_amendable_information('Adres', 'Schubertlaan 201, 2324CT Leiden'),
+      display_static_information('Jaar van aankomst', '2018'),
+      display_amendable_information('Ploeg', 'Clavis'),
+      display_amendable_information('Studie', 'Natuurkunde'),
+      display_amendable_information('IBAN', 'NL19 AWRD 8943 1193 10'),
+      display_amendable_information('Dubbellid', 'Nee'),
+      display_amendable_information('Aantal blikken', '0'),
+      display_amendable_information('Aantal taarten', '0'),
+    ]);
   }
 }
 
