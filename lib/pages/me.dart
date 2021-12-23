@@ -36,7 +36,7 @@ class MePage extends HookConsumerWidget {
 class MeWidget extends StatelessWidget {
   const MeWidget(this.user, {Key? key}) : super(key: key);
 
-  final Map<String, String> user;
+  final dynamic user;
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +50,19 @@ class MeWidget extends StatelessWidget {
         child: profile_picture(),
       ),
       const SizedBox(height: 20),
-      display_static_information('Naam', 'Pim Veefkind'),
-      display_static_information('Lidnummer', '18257'),
-      display_static_information('Geboortedatum', '25-03-2000'),
-      display_amendable_information('Telefoonnummer', '0629110215'),
-      display_amendable_information('E-mailadres', 'pim.veefkind@gmail.com'),
-      display_amendable_information('Adres', 'Schubertlaan 201, 2324CT Leiden'),
-      display_static_information('Jaar van aankomst', '2018'),
-      display_amendable_information('Ploeg', 'Clavis'),
-      display_amendable_information('Studie', 'Natuurkunde'),
-      display_amendable_information('IBAN', 'NL19 AWRD 8943 1193 10'),
-      display_amendable_information('Dubbellid', 'Nee'),
-      display_amendable_information('Aantal blikken', '0'),
-      display_amendable_information('Aantal taarten', '0'),
+      display_static_information('Naam', 'PII'),
+      display_static_information('Lidnummer', 'PII'),
+      display_static_information('Geboortedatum', 'PII'),
+      display_amendable_information('Telefoonnummer', 'PII'),
+      display_amendable_information('E-mailadres', 'PII'),
+      display_amendable_information('Adres', 'PII'),
+      display_static_information('Jaar van aankomst', 'PII'),
+      display_amendable_information('Ploeg', 'PII'),
+      display_amendable_information('Studie', 'PII'),
+      display_amendable_information('IBAN', 'PII'),
+      display_amendable_information('Dubbellid', 'PII'),
+      display_amendable_information('Aantal blikken', 'PII'),
+      display_amendable_information('Aantal taarten', 'PII'),
     ]);
   }
 }
