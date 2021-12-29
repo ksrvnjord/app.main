@@ -48,12 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const BarLogoWidget(image: Images.appLogo),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        appBar: null,
         body: Navigator(
           key: _navigatorKey,
           initialRoute: '/',
@@ -83,13 +78,14 @@ class _MainScreenState extends State<MainScreen> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  _navigatorKey.currentState?.pushNamed('/');
+                  _navigatorKey.currentState?.pushReplacementNamed('/');
                   break;
                 case 1:
-                  _navigatorKey.currentState?.pushNamed('/announcements');
+                  _navigatorKey.currentState
+                      ?.pushReplacementNamed('/announcements');
                   break;
                 case 2:
-                  _navigatorKey.currentState?.pushNamed('/me');
+                  _navigatorKey.currentState?.pushReplacementNamed('/me');
                   break;
                 default:
                   throw Exception('Invalid index called');

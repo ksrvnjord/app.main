@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
+import 'package:ksrv_njord_app/widgets/me/static_user_field.dart';
+import 'package:ksrv_njord_app/widgets/me/user_avatar.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -17,19 +20,27 @@ class MePage extends HookConsumerWidget {
     var api = ref.watch(heimdallProvider);
     var user = api.get('api/v1/user', null);
 
-    return FutureBuilder(
-        future: user,
-        builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return const Text('not started');
-            case ConnectionState.waiting:
-              return const Text('loading');
-            default:
-              var user = snapshot.data?.data;
-              return MeWidget(user);
-          }
-        });
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('Gebruiker'),
+            backgroundColor: Colors.lightBlue,
+            shadowColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        body: FutureBuilder(
+            future: user,
+            builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return const Text('not started');
+                case ConnectionState.waiting:
+                  return const Text('loading');
+                default:
+                  var user = snapshot.data?.data;
+                  return MeWidget(user);
+              }
+            }));
   }
 }
 
@@ -40,226 +51,15 @@ class MeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        user); // Printing the user data in the console so you can work with it
-
-    // Please make it null-safe!
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
+      const Center(child: UserAvatar()),
       const SizedBox(height: 10),
-      Center(
-        child: profile_picture(),
-      ),
       const SizedBox(height: 20),
-      display_static_information('Naam', 'PII'),
-      display_static_information('Lidnummer', 'PII'),
-      display_static_information('Geboortedatum', 'PII'),
-      display_amendable_information('Telefoonnummer', 'PII'),
-      display_amendable_information('E-mailadres', 'PII'),
-      display_amendable_information('Adres', 'PII'),
-      display_static_information('Jaar van aankomst', 'PII'),
-      display_amendable_information('Ploeg', 'PII'),
-      display_amendable_information('Studie', 'PII'),
-      display_amendable_information('IBAN', 'PII'),
-      display_amendable_information('Dubbellid', 'PII'),
-      display_amendable_information('Aantal blikken', 'PII'),
-      display_amendable_information('Aantal taarten', 'PII'),
+      StaticUserField('Naam', user['name'] ?? '-'),
+      StaticUserField('Lidnummer', user['identifier'] ?? '-'),
+      StaticUserField('E-mailadres', user['email'] ?? '-'),
+      StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+      StaticUserField('Njord-account', user['username'] ?? '-'),
     ]);
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class profile_picture extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      child: Expanded(
-        child: FittedBox(
-          fit: BoxFit.fill,
-          child: const Icon(
-            Icons.account_circle_rounded,
-            color: Colors.grey,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class display_amendable_information extends StatelessWidget {
-  final String info_kind;
-  final String user_info;
-
-  display_amendable_information(this.info_kind, this.user_info);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                info_kind,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-              ),
-              SizedBox(height: 3),
-              Text(user_info),
-            ],
-          ),
-        ),
-        IconButton(
-            iconSize: 20,
-            icon: Icon(Icons.edit, color: Colors.grey),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => change_information()));
-            }),
-      ]),
-      const Divider(
-        color: Colors.grey,
-        thickness: 1,
-      ),
-    ]);
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class display_static_information extends StatelessWidget {
-  final String info_kind;
-  final String user_info;
-
-  display_static_information(this.info_kind, this.user_info);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          info_kind,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-        ),
-        SizedBox(height: 3),
-        Text(user_info),
-        const Divider(
-          color: Colors.grey,
-          thickness: 1,
-        ),
-      ],
-    );
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class change_information extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const BarLogoWidget(image: Images.appLogo),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.all(30),
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  header_change_information(),
-                  const SizedBox(height: 40),
-                  text_field_change_information(),
-                  const SizedBox(height: 60),
-                  buttons_change_information(),
-                  const SizedBox(height: 20)
-                ],
-              ),
-            ),
-          ),
-          const Spacer(),
-          const Text(
-              'Aanpassingen worden ook doorgevoerd in de algemene administratie. Hierom moet eerst toestemming worden gegeven voor een verandering. Het kan even duren voordat de verandering zichtbaar is.'),
-        ],
-      ),
-    );
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class header_change_information extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: const Text('Aanpassen Gegeven',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    );
-  }
-}
-
-class text_field_change_information extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      child: TextField(
-        decoration: const InputDecoration(
-          border: UnderlineInputBorder(),
-          labelText: 'Nieuw gegeven',
-        ),
-      ),
-    );
-  }
-}
-
-// X: Please stick to Flutter naming schemes, classes are CamelCase
-class buttons_change_information extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          color: Colors.red,
-          child: TextButton(
-            child: const Text('Annuleren',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        Container(
-          color: Colors.green,
-          child: TextButton(
-            child: const Text('Bevestigen',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ],
-    );
   }
 }
