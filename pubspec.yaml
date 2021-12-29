@@ -39,6 +39,7 @@ dependencies:
   dio: ^4.0.4
   url_launcher: ^6.0.17
   graphql: ^5.0.0
+  flutter_markdown: ^0.6.9
 
 dev_dependencies:
   flutter_test:

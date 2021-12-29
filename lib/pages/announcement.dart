@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
@@ -72,10 +73,11 @@ class AnnouncementPage extends HookConsumerWidget {
                           child: Text(announcement?['author'])),
                       Container(
                         // Content
+                        // height: ,r
                         color: Colors.white,
                         child: Center(
-                          child: Text(announcement?['contents'],
-                              style: TextStyle(fontSize: contentFontSize)),
+                          child: MarkdownBody(
+                              data: announcement?['contents'] ?? ""),
                         ),
                       ),
                     ],
