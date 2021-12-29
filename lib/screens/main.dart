@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
+import 'package:ksrv_njord_app/pages/almanak.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
@@ -29,6 +30,8 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
+    '/almanak':
+        RoutedWidget(2, 'Almanak', const AlmanakPage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -85,6 +88,9 @@ class _MainScreenState extends State<MainScreen> {
                   break;
                 case 1:
                   _navigatorKey.currentState?.pushNamed('/announcements');
+                  break;
+                case 2:
+                  _navigatorKey.currentState?.pushNamed('/almanak');
                   break;
                 default:
                   throw Exception('Invalid index called');
