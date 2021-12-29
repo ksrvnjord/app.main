@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
 import 'package:ksrv_njord_app/pages/me.dart';
-import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);
