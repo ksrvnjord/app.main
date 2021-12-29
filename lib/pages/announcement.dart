@@ -73,7 +73,6 @@ class AnnouncementPage extends HookConsumerWidget {
                           child: Text(announcement?['author'])),
                       Container(
                         // Content
-                        // height: ,r
                         color: Colors.white,
                         child: Center(
                           child: MarkdownBody(
