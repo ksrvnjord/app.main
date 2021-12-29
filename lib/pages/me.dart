@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 import 'package:ksrv_njord_app/widgets/me/static_user_field.dart';
 import 'package:ksrv_njord_app/widgets/me/user_avatar.dart';
+import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -33,7 +34,7 @@ class MePage extends HookConsumerWidget {
                 case ConnectionState.none:
                   return const Text('not started');
                 case ConnectionState.waiting:
-                  return const Text('loading');
+                  return const Loading();
                 default:
                   var user = snapshot.data?.data;
                   return MeWidget(user);

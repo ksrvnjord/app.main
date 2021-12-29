@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/pages/announcement.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
 
 const String announcements = r'''
   query announcements {
@@ -44,7 +45,7 @@ class AnnouncementsPage extends HookConsumerWidget {
               case ConnectionState.none:
                 return const Text('not started');
               case ConnectionState.waiting:
-                return const Text('loading');
+                return const Loading();
               default:
                 var announcementsList =
                     snapshot.data?.data?['announcements']['data'];

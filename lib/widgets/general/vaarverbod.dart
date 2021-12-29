@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
 
 class VaarverbodCardWidget extends StatelessWidget {
   const VaarverbodCardWidget(this.status, this.message, {Key? key})
@@ -52,7 +53,7 @@ class VaarverbodWidget extends HookConsumerWidget {
                 case ConnectionState.none:
                   return const Text('not started');
                 case ConnectionState.waiting:
-                  return const Text('loading');
+                  return const Loading();
                 default:
                   var vaarverbod = snapshot.data?.data;
                   return VaarverbodCardWidget(
