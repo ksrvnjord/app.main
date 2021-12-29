@@ -2,9 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
-import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 import 'package:ksrv_njord_app/widgets/me/static_user_field.dart';
 import 'package:ksrv_njord_app/widgets/me/user_avatar.dart';
 
