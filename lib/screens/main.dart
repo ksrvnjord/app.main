@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/pages/announcements.dart';
 import 'package:ksrv_njord_app/pages/home.dart';
+import 'package:ksrv_njord_app/pages/me.dart';
 import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
 
 class RoutedWidget {
@@ -29,6 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
+    '/me': RoutedWidget(2, 'Current User', const MePage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -46,12 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const BarLogoWidget(image: Images.appLogo),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        appBar: null,
         body: Navigator(
           key: _navigatorKey,
           initialRoute: '/',
@@ -81,10 +78,14 @@ class _MainScreenState extends State<MainScreen> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  _navigatorKey.currentState?.pushNamed('/');
+                  _navigatorKey.currentState?.pushReplacementNamed('/');
                   break;
                 case 1:
-                  _navigatorKey.currentState?.pushNamed('/announcements');
+                  _navigatorKey.currentState
+                      ?.pushReplacementNamed('/announcements');
+                  break;
+                case 2:
+                  _navigatorKey.currentState?.pushReplacementNamed('/me');
                   break;
                 default:
                   throw Exception('Invalid index called');
@@ -99,6 +100,10 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.all_inbox_rounded),
                 label: 'Aankondigingen',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Account',
               ),
             ]));
   }
