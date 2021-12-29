@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/pages/announcement.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
 
 const String announcements = r'''
   query announcements {
@@ -29,17 +31,21 @@ class AnnouncementsPage extends HookConsumerWidget {
     final Future<QueryResult> result = client.query(options);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mededelingen'),
-      ),
-      body: FutureBuilder(
+        appBar: AppBar(
+            title: const Text('Aankondigingen'),
+            backgroundColor: Colors.lightBlue,
+            shadowColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        body: FutureBuilder(
           future: result,
           builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return const Text('not started');
               case ConnectionState.waiting:
-                return const Text('loading');
+                return const Loading();
               default:
                 var announcementsList =
                     snapshot.data?.data?['announcements']['data'];
@@ -72,7 +78,7 @@ class AnnouncementsPage extends HookConsumerWidget {
                   ),
                 );
             }
-          }),
-    );
+          },
+        ));
   }
 }

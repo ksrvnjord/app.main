@@ -12,6 +12,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final authenticationProvider =
     ChangeNotifierProvider((ref) => AuthenticationService(ref.read));
@@ -20,6 +21,7 @@ class AuthenticationService extends ChangeNotifier {
   AuthenticationService(this._read);
 
   final Reader _read;
+  final storage = const FlutterSecureStorage();
 
   String bearer = '';
   bool loggedIn = false;
@@ -39,6 +41,7 @@ class AuthenticationService extends ChangeNotifier {
 
       if (tokenResponse.statusCode == 200) {
         bearer = tokenResponse.data!['token'].toString();
+        storage.write(key: 'bearerToken', value: bearer);
         loggedIn = true;
         notifyListeners();
         return 'OK';
