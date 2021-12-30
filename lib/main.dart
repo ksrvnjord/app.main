@@ -13,18 +13,13 @@ Future<void> main() async {
       (options) {
         options.dsn =
             'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/3';
+        options.tracesSampleRate = 0.1;
       },
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
     );
   } else {
-    // Run it inside of SentryFlutter, but log / except to the debug-app
-    await SentryFlutter.init(
-      (options) {
-        options.dsn =
-            'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/4';
-      },
-      appRunner: () => runApp(const ProviderScope(child: MyApp())),
-    );
+    // Running in debug, no need to send exceptions to Sentry
+    runApp(const ProviderScope(child: MyApp()));
   }
 }
 
