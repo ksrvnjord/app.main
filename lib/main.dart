@@ -8,6 +8,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   if (kReleaseMode) {
+    // Run it inside of SentryFlutter, but log / except to the debug-app
     await SentryFlutter.init(
       (options) {
         options.dsn =
@@ -16,7 +17,14 @@ Future<void> main() async {
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
     );
   } else {
-    runApp(const ProviderScope(child: MyApp()));
+    // Run it inside of SentryFlutter, but log / except to the debug-app
+    await SentryFlutter.init(
+      (options) {
+        options.dsn =
+            'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/4';
+      },
+      appRunner: () => runApp(const ProviderScope(child: MyApp())),
+    );
   }
 }
 
