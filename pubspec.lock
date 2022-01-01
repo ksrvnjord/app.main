@@ -82,7 +82,7 @@ packages:
       name: flutter_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.1"
+    version: "0.18.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -96,7 +96,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -218,7 +218,7 @@ packages:
       name: hooks_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   http:
     dependency: transitive
     description:
@@ -288,7 +288,7 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   rxdart:
     dependency: transitive
     description:
