@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:ksrv_njord_app/widgets/images/splash_logo.dart';
 import 'package:ksrv_njord_app/assets/images.dart';
 import 'package:ksrv_njord_app/providers/authentication.dart';
+import 'package:ksrv_njord_app/pages/login/dev.dart';
 
 class LoginScreen extends StatefulHookConsumerWidget {
   static const routename = '/login';
@@ -103,18 +105,52 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       'Een wachtwoordreset via de app is nog '
                                       'niet mogelijk, dit kan wel via de site.'),
                                   actions: [
-                                    TextButton(
+                                    ElevatedButton(
                                         onPressed: () {
                                           launch(
                                               'https://heimdall.njord.nl/forgot-password');
                                         },
-                                        child: const Text('Ga naar website')),
-                                    TextButton(
-                                        child: const Text('Annuleer'),
-                                        onPressed: () => Navigator.pop(context))
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.blue),
+                                        child: const Text('Ga naar website'))
                                   ]));
                     },
-                    child: const Text('?')))
+                    child: const Text('?'))),
+            !kReleaseMode
+                ? Container(
+                    margin: const EdgeInsets.only(left: 8),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.red),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                      title: const Text(
+                                          'Verbinden met een ontwikkelomgeving'),
+                                      content: const Text(
+                                          'De app bevindt zich in ontwikkelmodus, verbind '
+                                          'met een ontwikkelomgeving door de QR te scannen '
+                                          'of door de base64-string te kopiëren en te plakken.'),
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {},
+                                            child: const Icon(
+                                                Icons.paste_rounded)),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) => const AlertDialog(
+                                                      title: Text('QR'),
+                                                      content:
+                                                          DevelopmentQRScanner()));
+                                            },
+                                            child: const Icon(
+                                                Icons.qr_code_rounded))
+                                      ]));
+                        },
+                        child: const Icon(Icons.qr_code_rounded)))
+                : Container()
           ]),
         ),
       ]),
