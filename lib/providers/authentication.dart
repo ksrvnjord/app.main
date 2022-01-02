@@ -25,19 +25,19 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
+  final String baseURL = 'https://heimdall.njord.nl/';
 
   Future<String> attemptLogin(String username, String password) async {
     try {
-      var csrfResponse = await _read(dioProvider).get<Map<String, Object?>>(
-          'https://heimdall.njord.nl/api/v1/auth/csrf');
+      var csrfResponse = await _read(dioProvider)
+          .get<Map<String, Object?>>('${baseURL}api/v1/auth/csrf');
 
-      var tokenResponse = await _read(dioProvider).post<Map<String, Object?>>(
-          'https://heimdall.njord.nl/api/v1/auth/login',
-          data: {
-            'username': username,
-            'password': password,
-            'csrf_token': csrfResponse.data!['csrf_token']
-          });
+      var tokenResponse = await _read(dioProvider)
+          .post<Map<String, Object?>>('${baseURL}api/v1/auth/login', data: {
+        'username': username,
+        'password': password,
+        'csrf_token': csrfResponse.data!['csrf_token']
+      });
 
       if (tokenResponse.statusCode == 200) {
         bearer = tokenResponse.data!['token'].toString();
