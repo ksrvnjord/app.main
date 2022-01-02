@@ -106,6 +106,10 @@ class _MainScreenState extends State<MainScreen> {
                 icon: Icon(Icons.all_inbox_rounded),
                 label: 'Aankondigingen',
               ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.clean_hands_rounded),
+                  label: 'Almanak',
+              ),
             ]));
   }
 }

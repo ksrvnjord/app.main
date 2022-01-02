@@ -18,7 +18,8 @@ class MyApp extends HookConsumerWidget {
 
     return MaterialApp(
         title: 'K.S.R.V. Njord',
-        home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
+       home: const MainScreen(),
+       // home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
         debugShowCheckedModeBanner: false);
   }
 }
