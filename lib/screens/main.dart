@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrv_njord_app/pages/announcements.dart';
-import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/pages/me.dart';
+import 'package:ksrv_njord_app/pages/main/announcements/announcements.dart';
+import 'package:ksrv_njord_app/pages/main/home.dart';
+import 'package:ksrv_njord_app/pages/main/user/me.dart';
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/pages/announcement.dart';
+import 'package:ksrv_njord_app/pages/main/announcements/announcement.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
 
