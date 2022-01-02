@@ -50,15 +50,17 @@ class MeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-      const Center(child: UserAvatar()),
-      const SizedBox(height: 10),
-      const SizedBox(height: 20),
-      StaticUserField('Naam', user['name'] ?? '-'),
-      StaticUserField('Lidnummer', user['identifier'] ?? '-'),
-      StaticUserField('E-mailadres', user['email'] ?? '-'),
-      StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
-      StaticUserField('Njord-account', user['username'] ?? '-'),
-    ]);
+    return user
+        ? ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
+            const Center(child: UserAvatar()),
+            const SizedBox(height: 10),
+            const SizedBox(height: 20),
+            StaticUserField('Naam', user['name'] ?? '-'),
+            StaticUserField('Lidnummer', user['identifier'] ?? '-'),
+            StaticUserField('E-mailadres', user['email'] ?? '-'),
+            StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+            StaticUserField('Njord-account', user['username'] ?? '-'),
+          ])
+        : Container();
   }
 }

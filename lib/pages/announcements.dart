@@ -48,7 +48,7 @@ class AnnouncementsPage extends HookConsumerWidget {
                 return const Loading();
               default:
                 var announcementsList =
-                    snapshot.data?.data?['announcements']['data'];
+                    snapshot.data?.data?['announcements']['data'] ?? [];
                 return Padding(
                   // Add padding to whole body
                   padding: EdgeInsets.all(paddingBody),

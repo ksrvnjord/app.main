@@ -51,41 +51,43 @@ class AnnouncementPage extends HookConsumerWidget {
                 return const Loading();
               default:
                 var announcement = snapshot.data?.data?['announcement'];
-                return Padding(
-                  // Add padding to whole body
-                  padding: EdgeInsets.all(paddingBody),
-                  child: ListView(
-                    children: <Widget>[
-                      Container(
-                        // Title Container
-                        height: 40,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            announcement?['title'],
-                            style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold),
-                          ),
+                return announcement
+                    ? Padding(
+                        // Add padding to whole body
+                        padding: EdgeInsets.all(paddingBody),
+                        child: ListView(
+                          children: <Widget>[
+                            Container(
+                              // Title Container
+                              height: 40,
+                              color: Colors.white,
+                              child: Center(
+                                child: Text(
+                                  announcement?['title'],
+                                  style: TextStyle(
+                                      fontSize: titleFontSize,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Container(
+                                // Author
+                                height: 40,
+                                color: Colors.white,
+                                child: Text(announcement?['author'])),
+                            Container(
+                              // Content
+                              color: Colors.white,
+                              child: Center(
+                                child: MarkdownBody(
+                                    data: announcement?['contents'] ?? ""),
+                              ),
+                            ),
+                          ],
+                          scrollDirection: Axis.vertical,
                         ),
-                      ),
-                      Container(
-                          // Author
-                          height: 40,
-                          color: Colors.white,
-                          child: Text(announcement?['author'])),
-                      Container(
-                        // Content
-                        color: Colors.white,
-                        child: Center(
-                          child: MarkdownBody(
-                              data: announcement?['contents'] ?? ""),
-                        ),
-                      ),
-                    ],
-                    scrollDirection: Axis.vertical,
-                  ),
-                );
+                      )
+                    : Container();
             }
           },
         ));
