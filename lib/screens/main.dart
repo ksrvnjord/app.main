@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                 label: 'Aankondigingen',
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.clean_hands_rounded),
+                  icon: Icon(Icons.book),
                   label: 'Almanak',
               ),
             ]));
