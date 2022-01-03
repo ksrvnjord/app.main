@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,57 +25,68 @@ class AlmanakPage extends HookConsumerWidget {
   const AlmanakPage({Key? key}) : super(key: key);
 
   @override
-
   @override
-  Widget build(BuildContext context, WidgetRef ref){
+  Widget build(BuildContext context, WidgetRef ref) {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
     final QueryOptions options = QueryOptions(document: gql(users));
     final Future<QueryResult> result = client.query(options);
 
-    // Do I need a FutureBuilder method?
-    // How do I read data from queries?
-    // How do I get a query?
-
-    return MaterialApp(
-      title: "Almanak",
-      home: Builder( // Wrap in a builder widget to get the right context for showSearch.
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: [
-                Text('Almanak'),
-                IconButton( // Put in the title for now, needs styling later.
-                  onPressed: () {
-                    showSearch(
-                      context: context,
-                      delegate: CustomSearchDelegate(voorbeeldLeden), // Give the possible search terms as parameter to the search bar function.
-                    );
-                  },
-                  icon: const Icon(Icons.search), // Use classic search icon.
+    return FutureBuilder(
+        future: result,
+        builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return const Text('not started');
+            case ConnectionState.waiting:
+              return const Text('loading');
+            default:
+              var userList = snapshot.data?.data?['users']['data'];
+              return MaterialApp(
+                title: 'Almanak',
+                home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(
+                      title: Row(
+                        children: [
+                          Text('Almanak'),
+                          IconButton(
+                            onPressed: () {
+                              showSearch(
+                                context: context,
+                                delegate: CustomSearchDelegate(
+                                    userList['name']
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.search))
+                        ],
+                      ),
+                      backgroundColor: Colors.lightBlue,
+                      shadowColor: Colors.transparent,
+                    ),
+                    body: ListView.builder(
+                      itemCount: voorbeeldLeden.length,
+                      itemBuilder: (context, index) {
+                        final lid = userList[index]['name'];
+                        return ListTile(
+                          title: Text(lid),
+                          onTap: () {
+                            print(lid);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => AlmanakPage(),
+                            //   )
+                            // );
+                          },
+                      );
+                    },
+                  ),
                 ),
-              ],
-            ),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-          ),
-          body: ListView.builder(
-            itemCount: voorbeeldLeden.length,
-            itemBuilder: (context, index) {
-              final lid = voorbeeldLeden[index];
-              return ListTile(
-                title: Text(lid),
-                onTap: () {print(lid);
-                 // Navigator.push(
-                 // context,
-                 // MaterialPageRoute(
-                 //     builder: (context) => AlmanakPage(//        UserId: lid ['id'])),
-               // );
-              },
+                ),
               );
-              },
-          ),
-        )
-      )
+          }
+        }
     );
   }
 }
