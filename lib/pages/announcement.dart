@@ -66,7 +66,7 @@ class AnnouncementPage extends HookConsumerWidget {
                         ),
                       ),
                       Container(
-                          // Author
+                        // Author
                           height: 40,
                           color: Colors.white,
                           child: Text(announcement?['author'])),

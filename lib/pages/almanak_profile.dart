@@ -4,7 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 
 const String users = r'''
-  query users {
+  query {
+    users {
       data {
         identifier,
         name,
@@ -12,15 +13,48 @@ const String users = r'''
         username
       }
     }
+  }
 ''';
 
 class AlmanakProfile extends HookConsumerWidget {
-  const AlmanakProfile({Key? key,}) : super(key: key);
+  const AlmanakProfile({
+    Key? key,
+    required this.profileId,
+  }) : super(key: key);
+
+  final String profileId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: implement build
-    throw UnimplementedError();
+    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
+    final QueryOptions options = QueryOptions(
+        document: gql(users),
+        variables: {'identifier': profileId}
+    );
+    final Future<QueryResult> result = client.query(options);
+
+  return FutureBuilder(
+      future: result,
+      builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+      switch (snapshot.connectionState) {
+        case ConnectionState.none:
+          return const Text('not started');
+        case ConnectionState.waiting:
+          return const Text('loading');
+        default:
+          var user = snapshot.data?.data?['users']['data'];
+          print(user);
+
+          return Scaffold(
+              appBar: AppBar(
+              title: const Text('Profile'),
+              ),
+              body: Card(
+                child: Text('Hello'),
+              ),
+          );
+        }
+      },
+    );
   }
-  // Make a profile page with name and ploeg etc.
 }
