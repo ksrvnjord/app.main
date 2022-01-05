@@ -6,17 +6,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 //import './almanak_profile.dart';
 import 'package:ksrv_njord_app/widgets/general/searchbar.dart';
 
-List<String> voorbeeldLeden = ['Boone', // Replace with info from the database.
+List<String> voorbeeldLeden = [
+  'Boone', // Replace with info from the database.
   'Kristie',
-  'Mark'];
+  'Mark'
+];
 
 const String users = r'''
-  query users {
-      data {
-        identifier,
-        name,
-        email,
-        username
+  query {
+      users {
+        data {
+          identifier,
+          name,
+          email,
+          username
+        }
       }
     }
 ''';
@@ -24,7 +28,6 @@ const String users = r'''
 class AlmanakPage extends HookConsumerWidget {
   const AlmanakPage({Key? key}) : super(key: key);
 
-  @override
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
@@ -41,54 +44,44 @@ class AlmanakPage extends HookConsumerWidget {
               return const Text('loading');
             default:
               var userList = snapshot.data?.data?['users']['data'];
-              print(snapshot.data?.data);
 
-              return MaterialApp(
-                title: 'Almanak',
-                // home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
-                //   builder: (context) => Scaffold(
-                //     appBar: AppBar(
-                //       title: Row(
-                //         children: [
-                //           Text('Almanak'),
-                //           IconButton(
-                //             onPressed: () {
-                //               showSearch(
-                //                 context: context,
-                //                 delegate: CustomSearchDelegate(
-                //                     userList['name']
-                //                 ),
-                //               );
-                //             },
-                //             icon: const Icon(Icons.search))
-                //         ],
-                //       ),
-                //       backgroundColor: Colors.lightBlue,
-                //       shadowColor: Colors.transparent,
-                //     ),
-                //     body: ListView.builder(
-                //       itemCount: voorbeeldLeden.length,
-                //       itemBuilder: (context, index) {
-                //         final lid = userList[index]['name'];
-                //         return ListTile(
-                //           title: Text(lid),
-                //           onTap: () {
-                //             print(lid);
-                //             // Navigator.push(
-                //             //   context,
-                //             //   MaterialPageRoute(
-                //             //     builder: (context) => AlmanakPage(),
-                //             //   )
-                //             // );
-                //           },
-                //       );
-                //     },
-                //   ),
-                // ),
-                // ),
+              return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    children: [
+                      const Text('Almanak'),
+                      IconButton(
+                          onPressed: () {
+                            showSearch(
+                              context: context,
+                              delegate: CustomSearchDelegate(userList['name']),
+                            );
+                          },
+                          icon: const Icon(Icons.search))
+                    ],
+                  ),
+                  backgroundColor: Colors.lightBlue,
+                  shadowColor: Colors.transparent,
+                ),
+                body: ListView.builder(
+                  itemCount: voorbeeldLeden.length,
+                  itemBuilder: (context, index) {
+                    final lid = userList[index]['name'];
+                    return ListTile(
+                      title: Text(lid),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AlmanakPage(),
+                            ));
+                      },
+                    );
+                  },
+                ),
               );
           }
-        }
-    );
+        });
   }
 }
