@@ -41,49 +41,51 @@ class AlmanakPage extends HookConsumerWidget {
               return const Text('loading');
             default:
               var userList = snapshot.data?.data?['users']['data'];
+              print(snapshot.data?.data);
+
               return MaterialApp(
                 title: 'Almanak',
-                home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(
-                      title: Row(
-                        children: [
-                          Text('Almanak'),
-                          IconButton(
-                            onPressed: () {
-                              showSearch(
-                                context: context,
-                                delegate: CustomSearchDelegate(
-                                    userList['name']
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.search))
-                        ],
-                      ),
-                      backgroundColor: Colors.lightBlue,
-                      shadowColor: Colors.transparent,
-                    ),
-                    body: ListView.builder(
-                      itemCount: voorbeeldLeden.length,
-                      itemBuilder: (context, index) {
-                        final lid = userList[index]['name'];
-                        return ListTile(
-                          title: Text(lid),
-                          onTap: () {
-                            print(lid);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => AlmanakPage(),
-                            //   )
-                            // );
-                          },
-                      );
-                    },
-                  ),
-                ),
-                ),
+                // home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
+                //   builder: (context) => Scaffold(
+                //     appBar: AppBar(
+                //       title: Row(
+                //         children: [
+                //           Text('Almanak'),
+                //           IconButton(
+                //             onPressed: () {
+                //               showSearch(
+                //                 context: context,
+                //                 delegate: CustomSearchDelegate(
+                //                     userList['name']
+                //                 ),
+                //               );
+                //             },
+                //             icon: const Icon(Icons.search))
+                //         ],
+                //       ),
+                //       backgroundColor: Colors.lightBlue,
+                //       shadowColor: Colors.transparent,
+                //     ),
+                //     body: ListView.builder(
+                //       itemCount: voorbeeldLeden.length,
+                //       itemBuilder: (context, index) {
+                //         final lid = userList[index]['name'];
+                //         return ListTile(
+                //           title: Text(lid),
+                //           onTap: () {
+                //             print(lid);
+                //             // Navigator.push(
+                //             //   context,
+                //             //   MaterialPageRoute(
+                //             //     builder: (context) => AlmanakPage(),
+                //             //   )
+                //             // );
+                //           },
+                //       );
+                //     },
+                //   ),
+                // ),
+                // ),
               );
           }
         }
