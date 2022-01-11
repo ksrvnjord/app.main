@@ -1,6 +1,6 @@
 {
-    "name": "ksrv_njord_app",
-    "short_name": "ksrv_njord_app",
+    "name": "app",
+    "short_name": "app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

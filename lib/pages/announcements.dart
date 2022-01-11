@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/pages/announcement.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
-import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/pages/announcement.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 const String announcements = r'''
   query announcements {

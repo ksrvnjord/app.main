@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:ksrv_njord_app/widgets/images/splash_logo.dart';
-import 'package:ksrv_njord_app/assets/images.dart';
-import 'package:ksrv_njord_app/providers/authentication.dart';
+import 'package:ksrvnjord_main_app/widgets/images/splash_logo.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/providers/authentication.dart';
 
 class LoginScreen extends StatefulHookConsumerWidget {
   static const routename = '/login';
