@@ -1,4 +1,4 @@
-package com.example.ksrv_njord_app
+package com.ksrvnjord.app
 
 import io.flutter.embedding.android.FlutterActivity
 
