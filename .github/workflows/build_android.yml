@@ -37,6 +37,7 @@ jobs:
       with:
         name: Njord Android App
         path: $GITHUB_WORKSPACE/a/build/app/outputs/bundle/release/app.aab
+        if-no-files-found: error
     
 
         
