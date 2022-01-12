@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: njord_android_bundle
-        path: $GITHUB_WORKSPACE/a/build/app/outputs/bundle/release/app-release.aab
+        path: $GITHUB_WORKSPACE/build/app/outputs/bundle/release/app-release.aab
         if-no-files-found: error
   sign:
     runs-on: ubuntu-latest
