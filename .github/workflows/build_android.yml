@@ -28,6 +28,9 @@ jobs:
             distribution: 'zulu'
             java-version: '11'
     - uses: subosito/flutter-action@v2
+      with:
+        cache: true
+        cache-key: flutter # optional, change this to force refresh cache
     - name: Get dependencies
       run: flutter pub get
 #     - name: Run tests
