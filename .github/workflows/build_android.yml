@@ -16,6 +16,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    name: Build the Android App Bundle with Flutter
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -31,17 +32,33 @@ jobs:
     - name: Build App Bundle
       run: flutter build appbundle
       
-    - name: Upload App Bundle
-      id: uploadArtifact
+    - name: Upload App Bundle Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Njord Android App
+        name: njord_android_bundle
         path: $GITHUB_WORKSPACE/a/build/app/outputs/bundle/release/app.aab
         if-no-files-found: error
+  sign:
+    runs-on: ubuntu-latest
+    name: Sign the App Bundle
+    needs: build
+    steps:
+      - name: Download App Bundle Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: njord_android_bundle
+      - name: Sign AAB
+        id: signer
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: $HOME
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Upload Signed AAB Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: njord_android_bundle_signed
+          path: ${{steps.signer.outputs.signedReleaseFile}}
     
-
-        
-    
-
-
-
