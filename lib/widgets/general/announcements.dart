@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+const double titleSize = 20;
+
 class Announcements extends HookConsumerWidget {
   const Announcements({
     Key? key,
@@ -49,11 +51,12 @@ class Announcements extends HookConsumerWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     color: Colors.white,
-                    elevation: 5, // give more card-like feel
+                    elevation: 3, // give more card-like feel
                     child: ListTile(
                       title: Text(
                         announcementsList[index]['title'] ?? '',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: titleSize),
                       ),
                       onTap: () {
                         Navigator.push(
