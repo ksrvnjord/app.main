@@ -24,13 +24,13 @@ class VaarverbodCardWidget extends StatelessWidget {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
             leading: status
-                ? Icon(Icons.warning_amber_rounded, color: color)
-                : Icon(Icons.check, color: color),
+                ? Icon(Icons.warning_amber_rounded, color: color, size: 50)
+                : Icon(Icons.check, color: color, size: 50),
             title: Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                     status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod',
-                    style: TextStyle(color: color))),
+                    style: TextStyle(color: color, fontSize: 22))),
             subtitle: Text(message)));
   }
 }
@@ -45,7 +45,7 @@ class VaarverbodWidget extends HookConsumerWidget {
 
     return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: FutureBuilder(
             future: vaarverbod,
             builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
