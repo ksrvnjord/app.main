@@ -53,6 +53,7 @@ Change_Field(context, label) {
       builder: (BuildContext context) => AlertDialog(
             title: Center(child: Text('Verander je $label')),
             content: TextField(
+                autofocus: true,
                 keyboardType: decide_keyboard(label),
                 onChanged: (text) {
                   new_value = text;
@@ -99,8 +100,9 @@ decide_keyboard(label) {
 }
 
 Show_change_confirmation(context) {
-  const String confirm_text =
-      '''Gegevensverandering was succesvol!\nAangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+  const String confirm_text1 = '''Gegevensverandering was succesvol!\n\n''';
+  const String confirm_text2 =
+      '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
 
   return (showDialog(
       barrierDismissible: false,
@@ -126,7 +128,19 @@ Show_change_confirmation(context) {
                       onPressed: () {
                         Navigator.pop(context);
                       })),
-              const Text(confirm_text, textAlign: TextAlign.center)
+              RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(children: <TextSpan>[
+                    TextSpan(
+                        text: confirm_text1,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black)),
+                    TextSpan(
+                        text: confirm_text2,
+                        style: TextStyle(color: Colors.black, fontSize: 16))
+                  ]))
             ],
           ))));
 }
