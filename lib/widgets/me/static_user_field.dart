@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StaticUserField extends StatelessWidget {
@@ -51,9 +52,11 @@ Change_Field(context, label) {
       context: context,
       builder: (BuildContext context) => AlertDialog(
             title: Center(child: Text('Verander je $label')),
-            content: TextField(onChanged: (text) {
-              new_value = text;
-            }),
+            content: TextField(
+                keyboardType: decide_keyboard(label),
+                onChanged: (text) {
+                  new_value = text;
+                }),
             actions: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -81,6 +84,18 @@ Change_Field(context, label) {
               )
             ],
           )));
+}
+
+decide_keyboard(label) {
+  if (label == 'Naam') {
+    return (TextInputType.name);
+  } else if (label == 'E-mailadres' || label == 'Njord-account') {
+    return (TextInputType.emailAddress);
+  } else if (label == 'Lidnummer') {
+    return (TextInputType.number);
+  } else if (label == 'Telefoonnummer') {
+    return (TextInputType.phone);
+  }
 }
 
 Show_change_confirmation(context) {
