@@ -28,8 +28,11 @@ class StaticUserField extends StatelessWidget {
           constraints: const BoxConstraints(),
           iconSize: 20,
           icon: const Icon(Icons.edit, color: Colors.grey),
-          onPressed: () {
-            Change_Field(context, label);
+          onPressed: () async {
+            bool succesful_change = await Change_Field(context, label);
+            if (succesful_change == true) {
+              Show_change_confirmation(context);
+            }
           },
         ),
       ]),
@@ -48,7 +51,7 @@ Change_Field(context, label) {
       context: context,
       builder: (BuildContext context) => AlertDialog(
             title: Center(child: Text('Verander je $label')),
-            content: TextField(onSubmitted: (text) {
+            content: TextField(onChanged: (text) {
               new_value = text;
             }),
             actions: [
@@ -60,7 +63,7 @@ Change_Field(context, label) {
                       iconSize: 30,
                       icon: const Icon(Icons.close_rounded, color: Colors.red),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.pop(context, false);
                       }),
                   IconButton(
                       padding: const EdgeInsets.all(8),
@@ -68,10 +71,10 @@ Change_Field(context, label) {
                       icon: const Icon(Icons.done_rounded, color: Colors.green),
                       onPressed: () {
                         if (new_value == '') {
-                          Navigator.pop(context);
+                          Navigator.pop(context, false);
                         } else {
                           // Update_User(label, new_value)
-                          Navigator.pop(context);
+                          Navigator.pop(context, true);
                         }
                       }),
                 ],
@@ -80,4 +83,35 @@ Change_Field(context, label) {
           )));
 }
 
-Confirm_Change() {}
+Show_change_confirmation(context) {
+  const String confirm_text =
+      '''Gegevensverandering was succesvol!\nAangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+
+  return (showDialog(
+      barrierDismissible: false,
+      barrierColor: null,
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+          backgroundColor: Colors.green,
+          alignment: Alignment.bottomCenter,
+          insetPadding: const EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(10),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.all(0),
+                  child: IconButton(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      constraints: BoxConstraints.tight(const Size(20, 20)),
+                      iconSize: 20,
+                      icon:
+                          const Icon(Icons.close_rounded, color: Colors.black),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })),
+              const Text(confirm_text, textAlign: TextAlign.center)
+            ],
+          ))));
+}
