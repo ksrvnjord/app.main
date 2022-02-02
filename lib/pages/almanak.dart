@@ -40,6 +40,7 @@ class AlmanakPage extends HookConsumerWidget {
               var userList = snapshot.data?.data?['users']['data'];
               List<String> names = [];
               for (var i = 0; i < userList.length; i++) { // TODO: Dit is heel lelijk.
+
                 names.add(userList[i]['name']);
               }
 
