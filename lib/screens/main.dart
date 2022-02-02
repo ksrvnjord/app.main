@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/pages/almanak.dart';
 import 'package:ksrvnjord_main_app/pages/announcements.dart';
 import 'package:ksrvnjord_main_app/pages/home.dart';
 import 'package:ksrvnjord_main_app/pages/me.dart';
@@ -28,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
     '/me': RoutedWidget(2, 'Current User', const MePage()),
+    '/almanak': RoutedWidget(3, 'Almanak', const AlmanakPage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -84,6 +86,9 @@ class _MainScreenState extends State<MainScreen> {
                 case 2:
                   _navigatorKey.currentState?.pushReplacementNamed('/me');
                   break;
+                case 3:
+                  _navigatorKey.currentState?.pushReplacementNamed('/almanak');
+                  break;
                 default:
                   throw Exception('Invalid index called');
               }
@@ -101,6 +106,10 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Account',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                label: 'Almanak',
               ),
             ]));
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 
 const String users = r'''
   query {

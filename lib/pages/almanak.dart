@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import './almanak_profile.dart';
-import 'package:ksrv_njord_app/widgets/general/searchbar.dart';
+import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
 const String users = r'''
   query {
@@ -38,6 +38,10 @@ class AlmanakPage extends HookConsumerWidget {
               return const Text('loading');
             default:
               var userList = snapshot.data?.data?['users']['data'];
+              List<String> names = [];
+              for (var i = 0; i < userList.length; i++) { // TODO: Dit is heel lelijk.
+                names.add(userList[i]['name']);
+              }
 
               return MaterialApp(
                 title: 'Almanak',
@@ -51,8 +55,7 @@ class AlmanakPage extends HookConsumerWidget {
                              showSearch(
                                context: context,
                                delegate: CustomSearchDelegate(
-                                   userList, // TODO: How to give a list containing only the names?
-                                 // TODO: Make listtiles from searchbar go to almanak profile page.
+                                   names
                                 ),
                               );
                              },
