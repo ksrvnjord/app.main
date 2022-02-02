@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 const String announcement = r'''
   query announcement($id: ID!) {
@@ -35,7 +37,9 @@ class AnnouncementPage extends HookConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Mededeling'),
+          title: const Text('Aankondiging'),
+          backgroundColor: Colors.lightBlue,
+          shadowColor: Colors.transparent,
         ),
         body: FutureBuilder(
           future: result,
@@ -44,7 +48,7 @@ class AnnouncementPage extends HookConsumerWidget {
               case ConnectionState.none:
                 return const Text('not started');
               case ConnectionState.waiting:
-                return const Text('loading');
+                return const Loading();
               default:
                 var announcement = snapshot.data?.data?['announcement'];
                 return Padding(
@@ -66,7 +70,7 @@ class AnnouncementPage extends HookConsumerWidget {
                         ),
                       ),
                       Container(
-                        // Author
+                          // Author
                           height: 40,
                           color: Colors.white,
                           child: Text(announcement?['author'])),
@@ -74,8 +78,8 @@ class AnnouncementPage extends HookConsumerWidget {
                         // Content
                         color: Colors.white,
                         child: Center(
-                          child: Text(announcement?['contents'],
-                              style: TextStyle(fontSize: contentFontSize)),
+                          child: MarkdownBody(
+                              data: announcement?['contents'] ?? ""),
                         ),
                       ),
                     ],

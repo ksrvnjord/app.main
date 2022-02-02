@@ -23,7 +23,6 @@ class AlmanakPage extends HookConsumerWidget {
   const AlmanakPage({Key? key}) : super(key: key);
 
   @override
-  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
     final QueryOptions options = QueryOptions(document: gql(users));
@@ -52,7 +51,8 @@ class AlmanakPage extends HookConsumerWidget {
                              showSearch(
                                context: context,
                                delegate: CustomSearchDelegate(
-                                   userList, // TODO: Probably only return the usernames to this widget.
+                                   userList, // TODO: How to give a list containing only the names?
+                                 // TODO: Make listtiles from searchbar go to almanak profile page.
                                 ),
                               );
                              },
@@ -70,7 +70,7 @@ class AlmanakPage extends HookConsumerWidget {
                          return ListTile(
                            title: Text(userList[index]['name']),
                            onTap: () {
-                              Navigator.push(
+                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AlmanakProfile(

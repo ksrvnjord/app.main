@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ksrv_njord_app/assets/images.dart';
-import 'package:ksrv_njord_app/pages/announcements.dart';
-import 'package:ksrv_njord_app/pages/almanak.dart';
-import 'package:ksrv_njord_app/pages/home.dart';
-import 'package:ksrv_njord_app/widgets/images/bar_logo.dart';
+import 'package:ksrvnjord_main_app/pages/announcements.dart';
+import 'package:ksrvnjord_main_app/pages/home.dart';
+import 'package:ksrvnjord_main_app/pages/me.dart';
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);
@@ -30,8 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
-    '/almanak':
-        RoutedWidget(2, 'Almanak', const AlmanakPage()),
+    '/me': RoutedWidget(2, 'Current User', const MePage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -49,12 +45,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const BarLogoWidget(image: Images.appLogo),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        appBar: null,
         body: Navigator(
           key: _navigatorKey,
           initialRoute: '/',
@@ -84,13 +75,14 @@ class _MainScreenState extends State<MainScreen> {
             onTap: (int index) {
               switch (index) {
                 case 0:
-                  _navigatorKey.currentState?.pushNamed('/');
+                  _navigatorKey.currentState?.pushReplacementNamed('/');
                   break;
                 case 1:
-                  _navigatorKey.currentState?.pushNamed('/announcements');
+                  _navigatorKey.currentState
+                      ?.pushReplacementNamed('/announcements');
                   break;
                 case 2:
-                  _navigatorKey.currentState?.pushNamed('/almanak');
+                  _navigatorKey.currentState?.pushReplacementNamed('/me');
                   break;
                 default:
                   throw Exception('Invalid index called');
@@ -107,8 +99,8 @@ class _MainScreenState extends State<MainScreen> {
                 label: 'Aankondigingen',
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.book),
-                  label: 'Almanak',
+                icon: Icon(Icons.person),
+                label: 'Account',
               ),
             ]));
   }

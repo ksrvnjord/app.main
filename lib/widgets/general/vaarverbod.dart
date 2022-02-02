@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 class VaarverbodCardWidget extends StatelessWidget {
   const VaarverbodCardWidget(this.status, this.message, {Key? key})
@@ -23,13 +24,13 @@ class VaarverbodCardWidget extends StatelessWidget {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
             leading: status
-                ? Icon(Icons.warning_amber_rounded, color: color)
-                : Icon(Icons.check, color: color),
+                ? Icon(Icons.warning_amber_rounded, color: color, size: 50)
+                : Icon(Icons.check, color: color, size: 50),
             title: Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                     status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod',
-                    style: TextStyle(color: color))),
+                    style: TextStyle(color: color, fontSize: 22))),
             subtitle: Text(message)));
   }
 }
@@ -44,7 +45,7 @@ class VaarverbodWidget extends HookConsumerWidget {
 
     return Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: FutureBuilder(
             future: vaarverbod,
             builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
@@ -52,7 +53,7 @@ class VaarverbodWidget extends HookConsumerWidget {
                 case ConnectionState.none:
                   return const Text('not started');
                 case ConnectionState.waiting:
-                  return const Text('loading');
+                  return const Loading();
                 default:
                   var vaarverbod = snapshot.data?.data;
                   return VaarverbodCardWidget(

@@ -11,7 +11,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/dio.dart';
+import 'package:ksrvnjord_main_app/providers/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final authenticationProvider =

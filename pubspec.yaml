@@ -1,5 +1,5 @@
-name: ksrv_njord_app
-description: A new Flutter project.
+name: ksrvnjord_main_app
+description: K.S.R.V. Njord Ledenapplicatie
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,7 +39,10 @@ dependencies:
   dio: ^4.0.4
   url_launcher: ^6.0.17
   graphql: ^5.0.0
+  flutter_markdown: ^0.6.9
   flutter_secure_storage: ^5.0.2
+  sentry_flutter: ^6.2.0
+
 
 dev_dependencies:
   flutter_test:
