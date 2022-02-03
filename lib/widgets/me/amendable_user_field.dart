@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
+import 'package:ksrvnjord_main_app/widgets/me/change_userinfo_dialog.dart';
 
 class AmendableUserField extends StatelessWidget {
   const AmendableUserField(this.label, this.value, {Key? key})
@@ -48,46 +49,9 @@ class AmendableUserField extends StatelessWidget {
 }
 
 Change_Field(context, label) {
-  String new_value = '';
-
   return (showDialog(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-            title: Center(child: Text('Verander je $label')),
-            content: TextField(
-                autofocus: true,
-                keyboardType: decide_keyboard(label),
-                onChanged: (text) {
-                  new_value = text;
-                }),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                      padding: const EdgeInsets.all(8),
-                      iconSize: 30,
-                      icon: const Icon(Icons.close_rounded, color: Colors.red),
-                      onPressed: () {
-                        Navigator.pop(context, false);
-                      }),
-                  IconButton(
-                      padding: const EdgeInsets.all(8),
-                      iconSize: 30,
-                      icon: const Icon(Icons.done_rounded, color: Colors.green),
-                      onPressed: () {
-                        if (new_value == '') {
-                          Navigator.pop(context, false);
-                        } else {
-                          // Update_User(label, new_value):TODO
-                          //TODO::
-                          Navigator.pop(context, true);
-                        }
-                      }),
-                ],
-              )
-            ],
-          )));
+      builder: (BuildContext context) => ChangeUserinfoDialog(label)));
 }
 
 decide_keyboard(label) {
