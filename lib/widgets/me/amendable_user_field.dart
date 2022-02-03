@@ -1,29 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StaticUserField extends StatelessWidget {
-  const StaticUserField(this.label, this.value, {Key? key}) : super(key: key);
+class AmendableUserField extends StatelessWidget {
+  const AmendableUserField(this.label, this.value, {Key? key})
+      : super(key: key);
 
   final String label;
   final String value;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-          ),
-          const SizedBox(height: 3),
-          Text(value),
-          const Divider(
-            color: Colors.grey,
-            thickness: 1,
-          ),
-        ]);
+    return Column(children: [
+      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+            const SizedBox(height: 3),
+            Text(value),
+          ],
+        ),
+        const Spacer(),
+        IconButton(
+          padding: const EdgeInsets.all(0),
+          constraints: const BoxConstraints(),
+          iconSize: 20,
+          icon: const Icon(Icons.edit, color: Colors.grey),
+          onPressed: () async {
+            bool succesful_change = await Change_Field(context, label);
+            if (succesful_change == true) {
+              Show_change_confirmation(context);
+            }
+          },
+        ),
+      ]),
+      const Divider(
+        color: Colors.grey,
+        thickness: 1,
+      ),
+    ]);
   }
 }
 
