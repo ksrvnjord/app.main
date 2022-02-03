@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       lane:
-        description: 'Lane to use (interal, or deploy)'
+        description: 'Lane to use (beta for internal testing, or deploy for production)'
         required: true
-        default: 'internal'
+        default: 'beta'
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
@@ -65,7 +65,7 @@ jobs:
       working-directory: android
 
     - name: Build App Bundle
-      run: bundle exec fastlane ${{ github.event.inputs.lane || 'internal' }}
+      run: bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}
       env:
           PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
       working-directory: android
