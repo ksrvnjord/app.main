@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
 
 class AmendableUserField extends StatelessWidget {
   const AmendableUserField(this.label, this.value, {Key? key})
@@ -110,39 +111,6 @@ Show_change_confirmation(context) {
       barrierDismissible: false,
       barrierColor: null,
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-          backgroundColor: Colors.green,
-          alignment: Alignment.bottomCenter,
-          insetPadding: const EdgeInsets.all(0),
-          contentPadding: const EdgeInsets.all(10),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.all(0),
-                  child: IconButton(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      constraints: BoxConstraints.tight(const Size(20, 20)),
-                      iconSize: 20,
-                      icon:
-                          const Icon(Icons.close_rounded, color: Colors.black),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      })),
-              RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(children: <TextSpan>[
-                    TextSpan(
-                        text: confirm_text1,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.black)),
-                    TextSpan(
-                        text: confirm_text2,
-                        style: TextStyle(color: Colors.black, fontSize: 16))
-                  ]))
-            ],
-          ))));
+      builder: (BuildContext context) =>
+          const VerificationDialog(confirm_text1, confirm_text2)));
 }
