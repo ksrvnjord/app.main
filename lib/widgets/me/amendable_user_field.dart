@@ -33,9 +33,19 @@ class AmendableUserField extends StatelessWidget {
           iconSize: 20,
           icon: const Icon(Icons.edit, color: Colors.grey),
           onPressed: () async {
-            bool succesful_change = await Change_Field(context, label);
+            bool succesful_change = await showDialog(
+                context: context,
+                builder: (BuildContext context) => ChangeUserinfoDialog(label));
             if (succesful_change == true) {
-              Show_change_confirmation(context);
+              const String title = '''Gegevensverandering was succesvol!\n\n''';
+              const String body =
+                  '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+              showDialog(
+                  barrierDismissible: false,
+                  barrierColor: null,
+                  context: context,
+                  builder: (BuildContext context) =>
+                      const VerificationDialog(title, body));
             }
           },
         ),
@@ -46,35 +56,4 @@ class AmendableUserField extends StatelessWidget {
       ),
     ]);
   }
-}
-
-Change_Field(context, label) {
-  return (showDialog(
-      context: context,
-      builder: (BuildContext context) => ChangeUserinfoDialog(label)));
-}
-
-decide_keyboard(label) {
-  if (label == 'Naam') {
-    return (TextInputType.name);
-  } else if (label == 'E-mailadres' || label == 'Njord-account') {
-    return (TextInputType.emailAddress);
-  } else if (label == 'Lidnummer') {
-    return (TextInputType.number);
-  } else if (label == 'Telefoonnummer') {
-    return (TextInputType.phone);
-  }
-}
-
-Show_change_confirmation(context) {
-  const String confirm_text1 = '''Gegevensverandering was succesvol!\n\n''';
-  const String confirm_text2 =
-      '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
-
-  return (showDialog(
-      barrierDismissible: false,
-      barrierColor: null,
-      context: context,
-      builder: (BuildContext context) =>
-          const VerificationDialog(confirm_text1, confirm_text2)));
 }
