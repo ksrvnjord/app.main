@@ -44,6 +44,7 @@ class AlmanakPage extends HookConsumerWidget {
                 names.add(userList[i]['name']);
               }
 
+
               return MaterialApp(
                 title: 'Almanak',
                  home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
