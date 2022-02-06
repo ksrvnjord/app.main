@@ -44,7 +44,6 @@ class AlmanakPage extends HookConsumerWidget {
                 names.add(userList[i]['name']);
               }
 
-
               return MaterialApp(
                 title: 'Almanak',
                  home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
@@ -71,7 +70,7 @@ class AlmanakPage extends HookConsumerWidget {
                      body: ListView.builder(
                        itemCount: userList.length,
                        itemBuilder: (context, index) {
-
+                      //   print(userList[index]['identifier'].runtimeType);
                          return ListTile(
                            title: Text(userList[index]['name']),
                            onTap: () {
@@ -79,7 +78,7 @@ class AlmanakPage extends HookConsumerWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AlmanakProfile(
-                                      profileId: userList[userList[index]['identifier']]),
+                                      profileId: userList[index]['identifier']),
                                 )
                               );
                            },
