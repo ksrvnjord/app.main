@@ -25,7 +25,13 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           Center(child: Column(children: const [VaarverbodWidget()])),
           const Announcements(amount: 3),
-          const MyProfileCard(),
+          GridView.count(
+              crossAxisCount: 2,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: const <Widget>[
+                MyProfileCard(),
+              ]),
         ],
       ),
     );
