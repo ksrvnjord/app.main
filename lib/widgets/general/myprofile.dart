@@ -14,9 +14,12 @@ class MyProfileCard extends StatelessWidget {
       child: Card(
         color: Colors.white,
         elevation: 3,
-        child: ListTile(
-            title: const Icon(Icons.person, size: 40),
-            onTap: () {
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        child: IconButton(
+            icon: const Icon(Icons.account_circle_rounded),
+            color: Colors.grey,
+            iconSize: 150,
+            onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MePage()));
             }),
