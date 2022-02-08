@@ -15,11 +15,7 @@ class MyProfileCard extends StatelessWidget {
         color: Colors.white,
         elevation: 3,
         child: ListTile(
-            title: const Text(
-              "Mijn Profiel",
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: titleSize),
-            ),
+            title: const Icon(Icons.person, size: 40),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MePage()));
