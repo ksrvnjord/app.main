@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
-    '/me': RoutedWidget(2, 'Current User', const MePage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -81,9 +80,6 @@ class _MainScreenState extends State<MainScreen> {
                   _navigatorKey.currentState
                       ?.pushReplacementNamed('/announcements');
                   break;
-                case 2:
-                  _navigatorKey.currentState?.pushReplacementNamed('/me');
-                  break;
                 default:
                   throw Exception('Invalid index called');
               }
@@ -97,10 +93,6 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.all_inbox_rounded),
                 label: 'Aankondigingen',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Account',
               ),
             ]));
   }
