@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/change_userinfo_dialog.dart';
@@ -35,7 +34,8 @@ class AmendableUserField extends StatelessWidget {
           onPressed: () async {
             bool succesful_change = await showDialog(
                 context: context,
-                builder: (BuildContext context) => ChangeUserinfoDialog(label));
+                builder: (BuildContext context) =>
+                    ChangeUserinfoDialog(label: label));
             if (succesful_change == true) {
               const String title = '''Gegevensverandering was succesvol!\n\n''';
               const String body =

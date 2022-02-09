@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChangeUserinfoDialog extends StatelessWidget {
-  ChangeUserinfoDialog(this.label, {Key? key}) : super(key: key);
-
+class ChangeUserinfoDialog extends StatefulWidget {
   final String label;
+
+  ChangeUserinfoDialog({required this.label});
+
+  @override
+  _ChangeUserinfoDialogState createState() => _ChangeUserinfoDialogState();
+}
+
+class _ChangeUserinfoDialogState extends State<ChangeUserinfoDialog> {
   String new_value = '';
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Center(child: Text('Verander je $label')),
+      title: Center(child: Text('Verander je ${widget.label}')),
       content: TextField(
           autofocus: true,
-          keyboardType: decide_keyboard(label),
+          keyboardType: decide_keyboard(widget.label),
           onChanged: (text) {
             new_value = text;
           }),
