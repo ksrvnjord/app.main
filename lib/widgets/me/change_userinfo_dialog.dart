@@ -1,18 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChangeUserinfoDialog extends StatefulWidget {
   final String label;
 
-  ChangeUserinfoDialog({required this.label});
+  const ChangeUserinfoDialog({Key? key, required this.label}) : super(key: key);
 
   @override
   _ChangeUserinfoDialogState createState() => _ChangeUserinfoDialogState();
 }
 
 class _ChangeUserinfoDialogState extends State<ChangeUserinfoDialog> {
-  String new_value = '';
+  String newValue = '';
+
+  TextInputType decideKeyboard(label) {
+    if (label == 'E-mailadres' || label == 'Njord-account') {
+      return (TextInputType.emailAddress);
+    } else if (label == 'Telefoonnummer') {
+      return (TextInputType.phone);
+    } else {
+      return (TextInputType.text);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +28,9 @@ class _ChangeUserinfoDialogState extends State<ChangeUserinfoDialog> {
       title: Center(child: Text('Verander je ${widget.label}')),
       content: TextField(
           autofocus: true,
-          keyboardType: decide_keyboard(widget.label),
+          keyboardType: decideKeyboard(widget.label),
           onChanged: (text) {
-            new_value = text;
+            newValue = text;
           }),
       actions: [
         Row(
@@ -40,7 +48,7 @@ class _ChangeUserinfoDialogState extends State<ChangeUserinfoDialog> {
                 iconSize: 30,
                 icon: const Icon(Icons.done_rounded, color: Colors.green),
                 onPressed: () {
-                  if (new_value == '') {
+                  if (newValue == '') {
                     Navigator.pop(context, false);
                   } else {
                     // Update_User(label, new_value):TODO
@@ -52,13 +60,5 @@ class _ChangeUserinfoDialogState extends State<ChangeUserinfoDialog> {
         )
       ],
     );
-  }
-}
-
-decide_keyboard(label) {
-  if (label == 'E-mailadres' || label == 'Njord-account') {
-    return (TextInputType.emailAddress);
-  } else if (label == 'Telefoonnummer') {
-    return (TextInputType.phone);
   }
 }
