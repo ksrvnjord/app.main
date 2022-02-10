@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:ksrvnjord_main_app/widgets/images/splash_logo.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/providers/authentication.dart';
+import 'package:ksrvnjord_main_app/pages/login/dev.dart';
 
 class LoginScreen extends StatefulHookConsumerWidget {
   static const routename = '/login';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/pages/almanak.dart';
-import 'package:ksrvnjord_main_app/pages/announcements.dart';
-import 'package:ksrvnjord_main_app/pages/home.dart';
+import 'package:ksrvnjord_main_app/pages/main/announcements/announcements.dart';
+import 'package:ksrvnjord_main_app/pages/main/home.dart';
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);
