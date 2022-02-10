@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ksrv_njord_app">
+    package="com.ksrvnjord.app">
    <application
-        android:label="ksrv_njord_app"
+        android:label="K.S.R.V. Njord"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

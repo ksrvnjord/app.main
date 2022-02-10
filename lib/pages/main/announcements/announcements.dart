@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+<<<<<<< HEAD:lib/pages/main/announcements/announcements.dart
 import 'package:ksrv_njord_app/pages/main/announcements/announcement.dart';
 import 'package:ksrv_njord_app/providers/heimdall.dart';
 import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
@@ -16,6 +16,9 @@ const String announcements = r'''
     }
   }
 ''';
+=======
+import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
+>>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8:lib/pages/announcements.dart
 
 double titleFontSize = 28;
 double contentFontSize = 22;
@@ -26,10 +29,6 @@ class AnnouncementsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
-    final QueryOptions options = QueryOptions(document: gql(announcements));
-    final Future<QueryResult> result = client.query(options);
-
     return Scaffold(
         appBar: AppBar(
             title: const Text('Aankondigingen'),
@@ -38,6 +37,7 @@ class AnnouncementsPage extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+<<<<<<< HEAD:lib/pages/main/announcements/announcements.dart
         body: FutureBuilder(
           future: result,
           builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
@@ -80,5 +80,8 @@ class AnnouncementsPage extends HookConsumerWidget {
             }
           },
         ));
+=======
+        body: const Announcements(amount: 10)); // show first 10 announcements
+>>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8:lib/pages/announcements.dart
   }
 }

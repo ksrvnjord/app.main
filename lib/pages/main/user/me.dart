@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/heimdall.dart';
-import 'package:ksrv_njord_app/widgets/me/static_user_field.dart';
-import 'package:ksrv_njord_app/widgets/me/user_avatar.dart';
-import 'package:ksrv_njord_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -24,7 +25,7 @@ class MePage extends HookConsumerWidget {
             title: const Text('Gebruiker'),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
         body: FutureBuilder(
@@ -50,6 +51,7 @@ class MeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD:lib/pages/main/user/me.dart
     return user
         ? ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
             const Center(child: UserAvatar()),
@@ -62,5 +64,17 @@ class MeWidget extends StatelessWidget {
             StaticUserField('Njord-account', user['username'] ?? '-'),
           ])
         : Container();
+=======
+    return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
+      const Center(child: UserAvatar()),
+      const SizedBox(height: 10),
+      const SizedBox(height: 20),
+      StaticUserField('Naam', user['name'] ?? '-'),
+      StaticUserField('Lidnummer', user['identifier'] ?? '-'),
+      AmendableUserField('E-mailadres', user['email'] ?? '-'),
+      AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+      StaticUserField('Njord-account', user['username'] ?? '-'),
+    ]);
+>>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8:lib/pages/me.dart
   }
 }

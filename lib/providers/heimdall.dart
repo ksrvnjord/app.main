@@ -8,8 +8,8 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:graphql/client.dart' as graphql;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:ksrv_njord_app/providers/authentication.dart';
-import 'package:ksrv_njord_app/providers/dio.dart';
+import 'package:ksrvnjord_main_app/providers/authentication.dart';
+import 'package:ksrvnjord_main_app/providers/dio.dart';
 
 final heimdallProvider = Provider((ref) => HeimdallService(ref.read));
 

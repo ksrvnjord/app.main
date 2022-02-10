@@ -1,8 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:ksrv_njord_app/pages/main/announcements/announcements.dart';
 import 'package:ksrv_njord_app/pages/main/home.dart';
 import 'package:ksrv_njord_app/pages/main/user/me.dart';
+=======
+import 'package:ksrvnjord_main_app/pages/almanak.dart';
+import 'package:ksrvnjord_main_app/pages/announcements.dart';
+import 'package:ksrvnjord_main_app/pages/home.dart';
+>>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);
@@ -27,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     '/': RoutedWidget(0, 'Home', const HomePage()),
     '/announcements':
         RoutedWidget(1, 'Announcements', const AnnouncementsPage()),
-    '/me': RoutedWidget(2, 'Current User', const MePage()),
+    '/almanak': RoutedWidget(2, 'Almanak', const AlmanakPage()),
   };
 
   RoutedWidget generateRoute(RouteSettings s) {
@@ -82,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
                       ?.pushReplacementNamed('/announcements');
                   break;
                 case 2:
-                  _navigatorKey.currentState?.pushReplacementNamed('/me');
+                  _navigatorKey.currentState?.pushReplacementNamed('/almanak');
                   break;
                 default:
                   throw Exception('Invalid index called');
@@ -99,8 +104,8 @@ class _MainScreenState extends State<MainScreen> {
                 label: 'Aankondigingen',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Account',
+                icon: Icon(Icons.book),
+                label: 'Almanak',
               ),
             ]));
   }
