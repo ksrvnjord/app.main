@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/pages/almanak.dart';
 import 'package:ksrvnjord_main_app/pages/announcements.dart';
