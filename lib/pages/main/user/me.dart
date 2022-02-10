@@ -51,20 +51,6 @@ class MeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD:lib/pages/main/user/me.dart
-    return user
-        ? ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-            const Center(child: UserAvatar()),
-            const SizedBox(height: 10),
-            const SizedBox(height: 20),
-            StaticUserField('Naam', user['name'] ?? '-'),
-            StaticUserField('Lidnummer', user['identifier'] ?? '-'),
-            StaticUserField('E-mailadres', user['email'] ?? '-'),
-            StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
-            StaticUserField('Njord-account', user['username'] ?? '-'),
-          ])
-        : Container();
-=======
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
       const Center(child: UserAvatar()),
       const SizedBox(height: 10),
@@ -75,6 +61,5 @@ class MeWidget extends StatelessWidget {
       AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
     ]);
->>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8:lib/pages/me.dart
   }
 }

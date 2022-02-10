@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:ksrv_njord_app/pages/main/announcements/announcements.dart';
-import 'package:ksrv_njord_app/pages/main/home.dart';
-import 'package:ksrv_njord_app/pages/main/user/me.dart';
-=======
 import 'package:ksrvnjord_main_app/pages/almanak.dart';
 import 'package:ksrvnjord_main_app/pages/announcements.dart';
 import 'package:ksrvnjord_main_app/pages/home.dart';
->>>>>>> c08bd18a5b9e11598e4aec292b3f357b5650b8b8
 
 class RoutedWidget {
   RoutedWidget(this.index, this.label, this.widget);
