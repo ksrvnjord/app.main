@@ -24,6 +24,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authentication = ref.watch(authenticationProvider);
+    authentication.loginFromStorage();
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 128,
@@ -75,7 +78,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Expanded(
               child: ElevatedButton(
                   onPressed: () {
-                    final authentication = ref.watch(authenticationProvider);
                     authentication
                         .attemptLogin(_username.text, _password.text)
                         .then((loggedIn) => {
@@ -88,7 +90,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           content: Text(loggedIn)))
                                 }
                             });
-                    // Navigator.popAndPushNamed(context, '/');
                   },
                   child: const Text('Inloggen')),
             ),
@@ -136,15 +137,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                               showDialog(
                                                   context: context,
                                                   builder: (_) => const AlertDialog(
-                                                      title: Text('QR'),
+                                                      title:
+                                                          Text('Development'),
                                                       content:
                                                           SelectDevelopmentServer()));
                                             },
-                                            child: const Icon(
-                                                Icons.qr_code_rounded))
+                                            child: const Icon(Icons.settings))
                                       ]));
                         },
-                        child: const Icon(Icons.qr_code_rounded)))
+                        child: const Icon(Icons.settings)))
                 : Container()
           ]),
         ),

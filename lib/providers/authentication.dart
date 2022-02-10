@@ -27,6 +27,17 @@ class AuthenticationService extends ChangeNotifier {
   bool loggedIn = false;
   final String baseURL = 'https://heimdall.njord.nl/';
 
+  Future<bool> loginFromStorage() async {
+    String storedBearer = await storage.read(key: 'bearerToken') ?? '-';
+    if (storedBearer.length > 1) {
+      bearer = storedBearer;
+      loggedIn = true;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
   Future<String> attemptLogin(String username, String password) async {
     try {
       var csrfResponse = await _read(dioProvider)
