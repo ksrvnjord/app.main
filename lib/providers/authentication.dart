@@ -29,11 +29,22 @@ class AuthenticationService extends ChangeNotifier {
 
   Future<bool> loginFromStorage() async {
     String storedBearer = await storage.read(key: 'bearerToken') ?? '-';
+
     if (storedBearer.length > 1) {
-      bearer = storedBearer;
-      loggedIn = true;
-      notifyListeners();
-      return true;
+      var userResponse = await _read(dioProvider).get<Map<String, Object?>>(
+          '${baseURL}api/v4/user',
+          options: Options(headers: {'Authorization': 'Bearer $storedBearer'}));
+
+      if (userResponse.statusCode == 200) {
+        bearer = storedBearer;
+        loggedIn = true;
+        notifyListeners();
+        return true;
+      } else {
+        bearer = '';
+        loggedIn = false;
+        await storage.delete(key: 'bearerToken');
+      }
     }
     return false;
   }
