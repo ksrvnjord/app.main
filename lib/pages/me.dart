@@ -25,7 +25,7 @@ class MePage extends HookConsumerWidget {
             title: const Text('Gebruiker'),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
         body: FutureBuilder(
