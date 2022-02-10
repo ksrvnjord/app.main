@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/pages/me.dart';
-import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
 
 class MyProfileCard extends StatelessWidget {
   const MyProfileCard({
