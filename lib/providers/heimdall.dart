@@ -21,37 +21,34 @@ class HeimdallService {
         );
 
   final Reader _read;
+  final String baseURL = 'https://heimdall.njord.nl/';
   final graphql.AuthLink _authLink;
-  final graphql.HttpLink _httpLink =
-      graphql.HttpLink('https://heimdall.njord.nl/graphql');
 
   Future<dio.Response<Map<String, Object?>>> get(
       String path, Map<String, dynamic>? params) {
     String bearer = _read(authenticationProvider).bearer;
-    return _read(dioProvider).get<Map<String, Object?>>(
-        'https://heimdall.njord.nl/$path',
+    return _read(dioProvider).get<Map<String, Object?>>('$baseURL$path',
         queryParameters: params,
         options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
   Future<dio.Response<Map<String, Object?>>> post(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
-    return _read(dioProvider).post<Map<String, Object?>>(
-        'https://heimdall.njord.nl/$path',
+    return _read(dioProvider).post<Map<String, Object?>>('$baseURL$path',
         data: data,
         options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
   Future<dio.Response<Map<String, Object?>>> put(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
-    return _read(dioProvider).post<Map<String, Object?>>(
-        'https://heimdall.njord.nl/$path',
+    return _read(dioProvider).post<Map<String, Object?>>('$baseURL$path',
         data: data,
         options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
   }
 
   graphql.GraphQLClient graphQLClient() {
     return graphql.GraphQLClient(
-        cache: graphql.GraphQLCache(), link: _authLink.concat(_httpLink));
+        cache: graphql.GraphQLCache(),
+        link: _authLink.concat(graphql.HttpLink('${baseURL}graphql')));
   }
 }

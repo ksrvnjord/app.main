@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/pages/me.dart';
+import 'package:ksrvnjord_main_app/pages/main/user/me.dart';
 
 class MyProfileCard extends StatelessWidget {
   const MyProfileCard({
