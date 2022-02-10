@@ -31,21 +31,34 @@ class AuthenticationService extends ChangeNotifier {
     String storedBearer = await storage.read(key: 'bearerToken') ?? '-';
 
     if (storedBearer.length > 1) {
-      var userResponse = await _read(dioProvider).get<Map<String, Object?>>(
-          '${baseURL}api/v4/user',
-          options: Options(headers: {'Authorization': 'Bearer $storedBearer'}));
+      try {
+        var authResponse = await _read(dioProvider).get<Map<String, Object?>>(
+            '${baseURL}api/v1/user',
+            options: Options(headers: {
+              'Authorization': 'Bearer $storedBearer',
+              'Accept': 'application/json'
+            }));
 
-      if (userResponse.statusCode == 200) {
-        bearer = storedBearer;
-        loggedIn = true;
-        notifyListeners();
-        return true;
-      } else {
-        bearer = '';
-        loggedIn = false;
-        await storage.delete(key: 'bearerToken');
+        if (authResponse.statusCode == 200) {
+          bearer = storedBearer;
+          loggedIn = true;
+          notifyListeners();
+          return true;
+        }
+      } catch (e) {
+        if (e is DioError) {
+          if (e.response != null && e.response!.statusCode == 401) {
+            bearer = '';
+            loggedIn = false;
+            await storage.delete(key: 'bearerToken');
+            return false;
+          }
+        }
       }
     }
+    bearer = '';
+    loggedIn = false;
+    await storage.delete(key: 'bearerToken');
     return false;
   }
 
