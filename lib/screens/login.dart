@@ -129,13 +129,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           'Verbinden met een ontwikkelomgeving'),
                                       content: const Text(
                                           'De app bevindt zich in ontwikkelmodus, verbind '
-                                          'met een ontwikkelomgeving door de QR te scannen '
-                                          'of door de base64-string te kopiëren en te plakken.'),
+                                          'met een ontwikkelomgeving.'),
                                       actions: [
-                                        ElevatedButton(
-                                            onPressed: () {},
-                                            child: const Icon(
-                                                Icons.paste_rounded)),
                                         ElevatedButton(
                                             onPressed: () {
                                               showDialog(
@@ -143,7 +138,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                                   builder: (_) => const AlertDialog(
                                                       title: Text('QR'),
                                                       content:
-                                                          DevelopmentQRScanner()));
+                                                          SelectDevelopmentServer()));
                                             },
                                             child: const Icon(
                                                 Icons.qr_code_rounded))
