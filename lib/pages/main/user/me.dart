@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/amendable_groep_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
@@ -45,9 +46,19 @@ class MePage extends HookConsumerWidget {
 }
 
 class MeWidget extends StatelessWidget {
-  const MeWidget(this.user, {Key? key}) : super(key: key);
+  MeWidget(this.user, {Key? key}) : super(key: key);
 
   final dynamic user;
+  final Map groepen = {
+    'commissies': [
+      'Competitiecomissie',
+      'Appcommissie',
+      'Buffetcommissie',
+      'Rowing blind'
+    ],
+    'ploegen': ['EJD', 'EJZ', 'TopC4'],
+    'verticalen': ['Vanir', 'Heeren XII', 'Dames 6']
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +71,9 @@ class MeWidget extends StatelessWidget {
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
+      AmendableGroepField('Ploeg(en)', groepen['ploegen']),
+      AmendableGroepField('Commissies', groepen['commissies']),
+      AmendableGroepField('Verband/Verticaal/Dispuut', groepen['verticalen'])
     ]);
   }
 }
