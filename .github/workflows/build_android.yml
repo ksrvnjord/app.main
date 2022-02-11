@@ -4,13 +4,19 @@ name: CI Android App Bundle
 
 # Controls when the workflow will run
 on:
+  # Allow manual running of this action
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Lane to use (beta for internal testing, or deploy for production)'
+        required: true
+        default: 'beta'
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  # Allow manual running of this action
-  workflow_dispatch:
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,6 +33,14 @@ jobs:
       with:
             distribution: 'zulu'
             java-version: '11'
+            
+    - name: Setup Fastlane
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.6'
+        bundler-cache: true
+        working-directory: android
+      
     - uses: subosito/flutter-action@v2
       with:
         cache: true
@@ -35,36 +49,48 @@ jobs:
       run: flutter pub get
 #     - name: Run tests
 #       run: flutter test
+
+    - name: Setup Keystore
+      run: |
+        echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+        echo "storeFile=upload-keystore.jks" >> key.properties
+        echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+        echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+        echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+      env:
+        PLAY_STORE_UPLOAD_KEY: ${{ secrets.ANDROID_SIGN_KEY_BASE64 }}
+        KEYSTORE_KEY_ALIAS: ${{ secrets.ANDROID_SIGN_KEY_ALIAS }}
+        KEYSTORE_KEY_PASSWORD: ${{ secrets.ANDROID_SIGN_KEY_PASSWORD }}
+        KEYSTORE_STORE_PASSWORD: ${{ secrets.ANDROID_SIGN_KEY_PASSWORD }}
+      working-directory: android
+
     - name: Build App Bundle
-      run: flutter build appbundle
+      run: bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}
+      env:
+          PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
+      working-directory: android
       
-    - name: Upload App Bundle Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: njord_android_bundle
-        path: ${{ github.workspace }}/build/app/outputs/bundle/release/app-release.aab
-        if-no-files-found: error
-  sign:
-    runs-on: ubuntu-latest
-    name: Sign the App Bundle
-    needs: build
-    steps:
-      - name: Download App Bundle Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: njord_android_bundle
-      - name: Sign AAB
-        id: signer
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: $HOME
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-      - name: Upload Signed AAB Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: njord_android_bundle_signed
-          path: ${{steps.signer.outputs.signedReleaseFile}}
+#   sign:
+#     runs-on: ubuntu-latest
+#     name: Sign the App Bundle
+#     needs: build
+#     steps:
+#       - name: Download App Bundle Artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: njord_android_bundle
+#       - name: Sign AAB
+#         id: signer
+#         uses: r0adkll/sign-android-release@v1
+#         with:
+#           releaseDirectory: $HOME
+#           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+#           alias: ${{ secrets.ALIAS }}
+#           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+#           keyPassword: ${{ secrets.KEY_PASSWORD }}
+#       - name: Upload Signed AAB Artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: njord_android_bundle_signed
+#           path: ${{steps.signer.outputs.signedReleaseFile}}
     
