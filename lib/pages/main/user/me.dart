@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
-import 'package:ksrvnjord_main_app/widgets/me/amendable_groep_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/amendable_group_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
@@ -71,9 +71,9 @@ class MeWidget extends StatelessWidget {
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
-      AmendableGroepField('Ploeg(en)', groepen['ploegen']),
-      AmendableGroepField('Commissies', groepen['commissies']),
-      AmendableGroepField('Verband/Verticaal/Dispuut', groepen['verticalen'])
+      AmendableGroupField('Ploeg(en)', groepen['ploegen']),
+      AmendableGroupField('Commissies', groepen['commissies']),
+      AmendableGroupField('Verband/Verticaal/Dispuut', groepen['verticalen'])
     ]);
   }
 }
