@@ -18,13 +18,16 @@ default_platform(:android)
 platform :android do
   desc "Runs all the tests"
   lane :test do
-    gradle(task: "test")
+    gradle(task: "clean assembleRelease")
   end
 
   desc "Submit a new Beta Build Google Play beta track"
   lane :beta do
     gradle(task: "clean assembleRelease")
-    crashlytics
+    upload_to_play_store(
+      json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
+      track: 'internal'
+    )
   
     # sh "your_script.sh"
     # You can also use other beta testing services here
@@ -34,7 +37,8 @@ platform :android do
   lane :deploy do
     gradle(task: "clean assembleRelease")
     upload_to_play_store(
-      json_key_data: ENV["PLAY_STORE_CONFIG_JSON"]
+      json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
+      track: 'production'
     )
   end
 end
