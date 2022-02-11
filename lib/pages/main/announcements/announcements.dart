@@ -20,6 +20,35 @@ class AnnouncementsPage extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
-        body: const Announcements(amount: 10)); // show first 10 announcements
+        body: const Announcements(amount: 10),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // do stuff
+            // set up the button
+            Widget okButton = TextButton(
+              child: Text("OK"),
+              onPressed: () { },
+            );
+
+            // set up the AlertDialog
+            AlertDialog alert = AlertDialog(
+              title: Text("Wowie"),
+              content: Text("Wowie, aankondigingtj toevoegen ja"),
+              actions: [
+                okButton,
+              ],
+            );
+
+            // show the dialog
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return alert;
+              },
+            );
+          },
+          backgroundColor: Colors.lightBlue,
+          child: const Icon(Icons.add),
+        )); // show first 10 announcements
   }
 }
