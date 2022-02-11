@@ -71,7 +71,7 @@ class MeWidget extends StatelessWidget {
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
-      AmendableGroupField('Ploeg(en)', groepen['ploegen']),
+      AmendableGroupField('Ploegen', groepen['ploegen']),
       AmendableGroupField('Commissies', groepen['commissies']),
       AmendableGroupField('Verband/Verticaal/Dispuut', groepen['verticalen'])
     ]);
