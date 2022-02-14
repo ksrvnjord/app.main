@@ -24,7 +24,7 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       onPressed: () {
-        close(context, null); // To leave and close the search bar.
+        close(context, ''); // To leave and close the search bar.
       },
       icon: const Icon(Icons.arrow_back),
     );
@@ -45,9 +45,19 @@ class CustomSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
 
-        return ListTile(
-          title: Text(result),
-        );
+        return Column(children: [
+          ListTile(
+            title: Text(result),
+            onTap: () {
+              String selected = result;
+              Navigator.pop(context, selected);
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          )
+        ]);
       },
     );
   }
@@ -66,12 +76,19 @@ class CustomSearchDelegate extends SearchDelegate {
       itemCount: matchQuery.length,
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-          onTap: () {
-            Navigator.pop(context, result);
-          },
-        );
+        return Column(children: [
+          ListTile(
+            title: Text(result),
+            onTap: () {
+              String selected = result;
+              Navigator.pop(context, selected);
+            },
+          ),
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+          )
+        ]);
       },
     );
   }

@@ -69,20 +69,45 @@ class _AddGroupDialogState extends State<AddGroupDialog> {
       title: Center(
           child: Text(
               'Kies de ${decideTitle(widget.label)} die je wil toevoegen.')),
-      content: Container(
-          height: 80 + widget.values.length * 30,
+      content: SizedBox(
+          height: 140,
           width: 250,
-          child: Column(children: [
-            TextButton(
-                child: const Text('Search...'),
-                onPressed: () {
-                  newGroup = showSearch(
-                    context: context,
-                    delegate:
-                        CustomSearchDelegate(widget.groepen[widget.label]),
-                  ) as String;
-                }),
-            Text('Toe te voegen groep: $newGroup'),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(bottom: 20, left: 40, right: 40),
+                width: 225,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    border: Border.all(width: 2, color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(20)),
+                child: TextButton(
+                    onPressed: () async {
+                      String searchResult = await showSearch(
+                        context: context,
+                        delegate:
+                            CustomSearchDelegate(widget.groepen[widget.label]),
+                      );
+                      setState(() {
+                        newGroup = searchResult;
+                      });
+                    },
+                    child: Row(children: [
+                      const Text('Search...',
+                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                      const Spacer(),
+                      Icon(Icons.search, color: Colors.grey.shade800)
+                    ]))),
+            const Text('Door jou gekozen groep:',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+            const SizedBox(height: 20),
+            Center(
+                child: (newGroup == '')
+                    ? const Text('Geen groep gekozen')
+                    : Text(newGroup))
           ])),
       actions: [
         Row(

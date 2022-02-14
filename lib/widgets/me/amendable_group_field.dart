@@ -22,14 +22,17 @@ class AmendableGroupField extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
             ),
             const SizedBox(height: 3),
-            Container(width: 325, child: GroupGrid(values)),
+            SizedBox(
+                width: MediaQuery.of(context).size.width - 60,
+                child: GroupGrid(values)),
           ],
         ),
         const Spacer(),
         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GroupIcon(label, values, false),
+            const SizedBox(height: 10),
             GroupIcon(label, values, true)
           ],
         )
