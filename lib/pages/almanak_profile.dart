@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 const String users = r'''
   query {
@@ -42,12 +43,11 @@ class AlmanakProfile extends HookConsumerWidget {
             case ConnectionState.none:
               return const Text('not started');
             case ConnectionState.waiting:
-              return const Text('loading');
+              return const Loading();
             default:
               var ind = snapshot.data?.data?['users']['data'].indexWhere((element) => element['identifier']==profileId);
               var user = snapshot.data?.data?['users']['data'][ind];
               // TODO: Dit efficienter maken
-              print(user['identifier'].runtimeType);
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Profile'),
@@ -58,9 +58,9 @@ class AlmanakProfile extends HookConsumerWidget {
                       const SizedBox(height: 10),
                       const SizedBox(height: 20),
                       StaticUserField('Naam', user['name'] ?? '-'),
-                      StaticUserField('Lidnummer', user['identifier'].toString() ?? '-'),
+                      StaticUserField('Lidnummer', user['identifier'].toString() ?? '-'), // TODO: betere manier om hier een string van te maken?
                       StaticUserField('E-mailadres', user['email'] ?? '-'),
-                    //  StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+                    //  StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'), // TODO: Telefoonnr toevoegen.
                       StaticUserField('Njord-account', user['username'] ?? '-'),
                     ]),
               );
