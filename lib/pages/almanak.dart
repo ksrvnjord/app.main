@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import './almanak_profile.dart';
 import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
@@ -10,9 +11,12 @@ const String users = r'''
     users {
       data {
         identifier,
-        name,
         email,
-        username
+        username,
+        contact {
+          first_name,
+          last_name
+        }
       }
     }
   }
@@ -36,13 +40,18 @@ class AlmanakPage extends HookConsumerWidget {
             case ConnectionState.waiting:
               return const Text('loading');
             default:
-              var userList = snapshot.data?.data?['users']['data'];
-              List<String> names = [];
-              for (var i = 0; i < userList.length; i++) {
-                // TODO: Dit is heel lelijk.
-
-                names.add(userList[i]['name']);
+              if (snapshot.hasError) {
+                return const Loading();
               }
+
+              List<dynamic> users = snapshot.data?.data?['users']['data'];
+              List<Map<int, String>> names = users.map((e) {
+                int identifier = e['identifier'];
+                String name = (e['contact']['first_name'] ?? '-') +
+                    " " +
+                    (e['contact']['last_name'] ?? '-');
+                return {identifier: name};
+              }).toList();
 
               return MaterialApp(
                 title: 'Almanak',
@@ -50,7 +59,7 @@ class AlmanakPage extends HookConsumerWidget {
                   // Wrap in a Builder widget to get the right context for showSearch.
                   builder: (context) => Scaffold(
                     appBar: AppBar(
-                      title: Text('Almanak'),
+                      title: const Text('Almanak'),
                       actions: [
                         IconButton(
                           onPressed: () {
@@ -66,17 +75,19 @@ class AlmanakPage extends HookConsumerWidget {
                       shadowColor: Colors.transparent,
                     ),
                     body: ListView.builder(
-                      itemCount: userList.length,
+                      itemCount: users.length,
                       itemBuilder: (context, index) {
-                        //   print(userList[index]['identifier'].runtimeType);
                         return ListTile(
-                          title: Text(userList[index]['name']),
+                          title: Text((users[index]['contact']['first_name'] ??
+                                  '-') +
+                              ' ' +
+                              (users[index]['contact']['last_name'] ?? '-')),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AlmanakProfile(
-                                      profileId: userList[index]['identifier']),
+                                      profileId: users[index]['identifier']),
                                 ));
                           },
                         );
