@@ -22,7 +22,8 @@ class Announcements extends HookConsumerWidget {
         announcements(first: $amount) {
           data {
             id,
-            title
+            title,
+            author
           }
         }
       }
@@ -57,6 +58,12 @@ class Announcements extends HookConsumerWidget {
                         announcementsList[index]['title'] ?? '',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: titleSize),
+                      ),
+                      subtitle: Text(
+                        announcementsList[index]['author'] ?? '',
+                        style: const TextStyle(
+                          // TODO: aanpassen naar app stijl.
+                        )
                       ),
                       onTap: () {
                         Navigator.push(
