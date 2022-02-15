@@ -31,9 +31,7 @@ class AlmanakProfile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
     final QueryOptions options = QueryOptions(
-        document: gql(users),
-        variables: {'identifier': profileId}
-    );
+        document: gql(users), variables: {'identifier': profileId});
     final Future<QueryResult> result = client.query(options);
 
     return FutureBuilder(
@@ -45,7 +43,8 @@ class AlmanakProfile extends HookConsumerWidget {
             case ConnectionState.waiting:
               return const Loading();
             default:
-              var ind = snapshot.data?.data?['users']['data'].indexWhere((element) => element['identifier']==profileId);
+              var ind = snapshot.data?.data?['users']['data']
+                  .indexWhere((element) => element['identifier'] == profileId);
               var user = snapshot.data?.data?['users']['data'][ind];
               // TODO: Dit efficienter maken
               return Scaffold(
@@ -53,19 +52,19 @@ class AlmanakProfile extends HookConsumerWidget {
                   title: const Text('Profile'),
                 ),
                 body: ListView(
-                    children: <Widget>[
-                      const Center(child: UserAvatar()),
-                      const SizedBox(height: 10),
-                      const SizedBox(height: 20),
-                      StaticUserField('Naam', user['name'] ?? '-'),
-                      StaticUserField('Lidnummer', user['identifier'].toString() ?? '-'), // TODO: betere manier om hier een string van te maken?
-                      StaticUserField('E-mailadres', user['email'] ?? '-'),
-                    //  StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'), // TODO: Telefoonnr toevoegen.
-                      StaticUserField('Njord-account', user['username'] ?? '-'),
-                    ]),
+                  children: <Widget>[
+                  const Center(child: UserAvatar()),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
+                  StaticUserField('Naam', user['name'] ?? '-'),
+                  StaticUserField(
+                      'Lidnummer', (user['identifier'] ?? '-').toString()),
+                  StaticUserField('E-mailadres', user['email'] ?? '-'),
+                  //  StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+                  StaticUserField('Njord-account', user['username'] ?? '-'),
+                ]),
               );
           }
-        }
-    );
+        });
   }
 }

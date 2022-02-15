@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -40,56 +39,51 @@ class AlmanakPage extends HookConsumerWidget {
               var userList = snapshot.data?.data?['users']['data'];
               List<String> names = [];
               for (var i = 0; i < userList.length; i++) { // TODO: Vervangen door userList[alles:]['name']
-
                 names.add(userList[i]['name']);
               }
 
               return MaterialApp(
                 title: 'Almanak',
-                 home: Builder( // Wrap in a Builder widget to get the right context for showSearch.
-                   builder: (context) => Scaffold(
-                     appBar: AppBar(
-                       title: Text('Almanak'),
-                       actions: [
-                         IconButton(
-                           onPressed: () {
-                             showSearch(
-                               context: context,
-                               delegate: CustomSearchDelegate(
-                                   names
-                                ),
-                              );
-                             },
-                           icon: const Icon(Icons.search),
-                         )
-                       ],
-
-                       backgroundColor: Colors.lightBlue,
-                       shadowColor: Colors.transparent,
-                     ),
-                     body: ListView.builder(
-                       itemCount: userList.length,
-                       itemBuilder: (context, index) {
-                      //   print(userList[index]['identifier'].runtimeType);
-                         return ListTile(
-                           title: Text(userList[index]['name']),
-                           onTap: () {
-                             Navigator.push(
+                home: Builder(
+                  // Wrap in a Builder widget to get the right context for showSearch.
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(
+                      title: Text('Almanak'),
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            showSearch(
+                              context: context,
+                              delegate: CustomSearchDelegate(names),
+                            );
+                          },
+                          icon: const Icon(Icons.search),
+                        )
+                      ],
+                      backgroundColor: Colors.lightBlue,
+                      shadowColor: Colors.transparent,
+                    ),
+                    body: ListView.builder(
+                      itemCount: userList.length,
+                      itemBuilder: (context, index) {
+                        //   print(userList[index]['identifier'].runtimeType);
+                        return ListTile(
+                          title: Text(userList[index]['name']),
+                          onTap: () {
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AlmanakProfile(
                                       profileId: userList[index]['identifier']),
-                                )
-                              );
-                           },
-                         );
-                       },
-                     ),
-                   ),
-                 ),
+                                ));
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
               );
           }
-        }
-    );
+        });
   }
 }

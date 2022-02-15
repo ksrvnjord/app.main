@@ -1,4 +1,4 @@
-import 'package:ksrvnjord_main_app/pages/announcement.dart';
+import 'package:ksrvnjord_main_app/pages/main/announcements/announcement.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:flutter/material.dart';
