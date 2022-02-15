@@ -51,11 +51,16 @@ class VaarverbodWidget extends HookConsumerWidget {
             builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return const Text('not started');
+                  return const Loading();
                 case ConnectionState.waiting:
                   return const Loading();
                 default:
-                  var vaarverbod = snapshot.data?.data;
+                  if (snapshot.hasError) {
+                    return const Loading(); // TODO: ErrorZwaan
+                  }
+
+                  dynamic vaarverbod = snapshot.data!.data;
+
                   return VaarverbodCardWidget(
                       vaarverbod['status'], vaarverbod['message']);
               }

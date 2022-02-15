@@ -29,21 +29,30 @@ class HeimdallService {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).get<Map<String, Object?>>('$baseURL$path',
         queryParameters: params,
-        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {
+          'Authorization': 'Bearer $bearer',
+          'Accept': 'application/json'
+        }));
   }
 
   Future<dio.Response<Map<String, Object?>>> post(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).post<Map<String, Object?>>('$baseURL$path',
         data: data,
-        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {
+          'Authorization': 'Bearer $bearer',
+          'Accept': 'application/json'
+        }));
   }
 
   Future<dio.Response<Map<String, Object?>>> put(String path, dynamic data) {
     String bearer = _read(authenticationProvider).bearer;
     return _read(dioProvider).post<Map<String, Object?>>('$baseURL$path',
         data: data,
-        options: dio.Options(headers: {'Authorization': 'Bearer $bearer'}));
+        options: dio.Options(headers: {
+          'Authorization': 'Bearer $bearer',
+          'Accept': 'application/json'
+        }));
   }
 
   graphql.GraphQLClient graphQLClient() {
