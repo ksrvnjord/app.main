@@ -13,7 +13,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const BarLogoWidget(image: Images.appLogo),
+          title: Row(
+              children: const <Widget>[
+                BarLogoWidget(image: Images.appLogo),
+                MyProfileCard()
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center),
           automaticallyImplyLeading: false,
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
@@ -29,9 +35,7 @@ class HomePage extends StatelessWidget {
               crossAxisCount: 2,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              children: const <Widget>[
-                MyProfileCard(),
-              ]),
+              children: const <Widget>[]),
         ],
       ),
     );

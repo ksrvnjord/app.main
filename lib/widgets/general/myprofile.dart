@@ -8,16 +8,20 @@ class MyProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
+    return Container(
+      margin: const EdgeInsets.all(12),
       child: Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
         color: Colors.white,
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         child: IconButton(
             icon: const Icon(Icons.account_circle_rounded),
             color: Colors.grey,
-            iconSize: 150,
+            padding: EdgeInsets.zero,
+            iconSize: 24,
+            alignment: Alignment.center,
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MePage()));
