@@ -27,6 +27,14 @@ class AuthenticationService extends ChangeNotifier {
   bool loggedIn = false;
   final String baseURL = 'https://heimdall.njord.nl/';
 
+  Future<void> logout() async {
+    // TODO: add a call to the API to purge the current token
+    await storage.delete(key: 'bearerToken');
+    bearer = '';
+    loggedIn = false;
+    notifyListeners();
+  }
+
   Future<bool> loginFromStorage() async {
     String storedBearer = await storage.read(key: 'bearerToken') ?? '-';
 
