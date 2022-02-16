@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
@@ -22,7 +23,7 @@ class MePage extends HookConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Gebruiker'),
+            title: const Text('Jouw Njord-Account'),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
             automaticallyImplyLeading: true,
@@ -33,10 +34,14 @@ class MePage extends HookConsumerWidget {
             builder: (BuildContext context, AsyncSnapshot<Response> snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return const Text('not started');
+                  return const Loading();
                 case ConnectionState.waiting:
                   return const Loading();
                 default:
+                  if (snapshot.hasError) {
+                    return const Loading();
+                  }
+
                   var user = snapshot.data?.data;
                   return MeWidget(user);
               }
@@ -44,13 +49,13 @@ class MePage extends HookConsumerWidget {
   }
 }
 
-class MeWidget extends StatelessWidget {
+class MeWidget extends HookConsumerWidget {
   const MeWidget(this.user, {Key? key}) : super(key: key);
 
   final dynamic user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
       const Center(child: UserAvatar()),
       const SizedBox(height: 10),
@@ -60,6 +65,19 @@ class MeWidget extends StatelessWidget {
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
+      Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              color: Colors.red,
+              onPressed: () {
+                ref.read(authenticationProvider).logout();
+              },
+            ),
+            const Text('Uitloggen', style: TextStyle(color: Colors.red))
+          ])
     ]);
   }
 }
