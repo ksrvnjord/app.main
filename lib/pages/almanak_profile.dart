@@ -45,17 +45,20 @@ class AlmanakProfile extends HookConsumerWidget {
               return const Loading();
             default:
               var user = snapshot.data?.data?['user'];
-              
+
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Profile'),
                 ),
-                body: ListView(
-                  children: <Widget>[
+                body: ListView(children: <Widget>[
                   const Center(child: UserAvatar()),
                   const SizedBox(height: 10),
                   const SizedBox(height: 20),
-                  StaticUserField('Naam', user['name'] ?? '-'),
+                  StaticUserField(
+                      'Naam',
+                      (user['contact']['first_name'] ?? '-') +
+                          ' ' +
+                          (user['contact']['last_name'] ?? '-')),
                   StaticUserField(
                       'Lidnummer', (user['identifier'] ?? '-').toString()),
                   StaticUserField('E-mailadres', user['email'] ?? '-'),
