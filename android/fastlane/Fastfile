@@ -26,6 +26,7 @@ platform :android do
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
       json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
+      skip_upload_metadata: true,
       track: 'internal'
     )
   
