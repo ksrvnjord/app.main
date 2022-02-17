@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +11,7 @@ const String users = r'''
   query {
     users {
       data {
-        identifier,
+        id,
         email,
         username,
         contact {
@@ -21,6 +22,21 @@ const String users = r'''
     }
   }
 ''';
+
+class _LoadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('Almanak'),
+            backgroundColor: Colors.lightBlue,
+            shadowColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        body: const Loading());
+  }
+}
 
 class AlmanakPage extends HookConsumerWidget {
   const AlmanakPage({Key? key}) : super(key: key);
@@ -36,63 +52,61 @@ class AlmanakPage extends HookConsumerWidget {
         builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return const Text('not started');
+              return _LoadingScreen();
             case ConnectionState.waiting:
-              return const Text('loading');
+              return _LoadingScreen();
             default:
               if (snapshot.hasError) {
-                return const Loading();
+                return _LoadingScreen();
               }
 
               List<dynamic> users = snapshot.data?.data?['users']['data'];
-              List<Map<int, String>> names = users.map((e) {
-                int identifier = e['identifier'];
+              List<Map<String, String>> names = users.map((e) {
+                String id = e['id'].toString();
                 String name = (e['contact']['first_name'] ?? '-') +
                     " " +
                     (e['contact']['last_name'] ?? '-');
-                return {identifier: name};
+                return {id: name};
               }).toList();
 
-              return MaterialApp(
-                title: 'Almanak',
-                home: Builder(
-                  // Wrap in a Builder widget to get the right context for showSearch.
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Almanak'),
-                      actions: [
-                        IconButton(
-                          onPressed: () {
-                            showSearch(
-                              context: context,
-                              delegate: CustomSearchDelegate(names),
-                            );
-                          },
-                          icon: const Icon(Icons.search),
-                        )
-                      ],
-                      backgroundColor: Colors.lightBlue,
-                      shadowColor: Colors.transparent,
-                    ),
-                    body: ListView.builder(
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text((users[index]['contact']['first_name'] ??
-                                  '-') +
-                              ' ' +
-                              (users[index]['contact']['last_name'] ?? '-')),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AlmanakProfile(
-                                      profileId: users[index]['identifier']),
-                                ));
-                          },
-                        );
-                      },
-                    ),
+              return Builder(
+                // Wrap in a Builder widget to get the right context for showSearch.
+                builder: (context) => Scaffold(
+                  appBar: AppBar(
+                    title: const Text('Almanak'),
+                    automaticallyImplyLeading: false,
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          showSearch(
+                            context: context,
+                            delegate: CustomSearchDelegate(names),
+                          );
+                        },
+                        icon: const Icon(Icons.search),
+                      )
+                    ],
+                    backgroundColor: Colors.lightBlue,
+                    shadowColor: Colors.transparent,
+                  ),
+                  body: ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                            (users[index]['contact']['first_name'] ?? '-') +
+                                ' ' +
+                                (users[index]['contact']['last_name'] ?? '-')),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlmanakProfile(
+                                    profileId: users[index]['id']),
+                              ));
+                        },
+                      );
+                    },
                   ),
                 ),
               );
