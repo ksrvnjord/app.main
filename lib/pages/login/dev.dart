@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/providers/authentication.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/input.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SelectDevelopmentServer extends StatefulHookConsumerWidget {
@@ -12,14 +17,23 @@ class SelectDevelopmentServer extends StatefulHookConsumerWidget {
 
 class _SelectDevelopmentServerState
     extends ConsumerState<SelectDevelopmentServer> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'DevServer');
+  final GlobalKey fieldKey = GlobalKey(debugLabel: 'DevServer');
+  final TextEditingController _baseURL = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: const <Widget>[Card(child: Text('Placeholder'))],
-      ),
-    );
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      Input(label: 'Server URL', controller: _baseURL),
+      Row(children: [
+        Expanded(
+          child: ElevatedButton(
+              onPressed: () {
+                ref.read(authenticationProvider).updateBaseURL(_baseURL.text);
+                ref.read(heimdallProvider).updateBaseURL(_baseURL.text);
+              },
+              child: const Text('Use')),
+        )
+      ])
+    ]);
   }
 }

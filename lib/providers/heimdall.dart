@@ -21,8 +21,12 @@ class HeimdallService {
         );
 
   final Reader _read;
-  final String baseURL = 'https://heimdall.njord.nl/';
+  String baseURL = 'https://heimdall.njord.nl/';
   final graphql.AuthLink _authLink;
+
+  void updateBaseURL(String _baseURL) {
+    baseURL = _baseURL;
+  }
 
   Future<dio.Response<Map<String, Object?>>> get(
       String path, Map<String, dynamic>? params) {
