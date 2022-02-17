@@ -34,12 +34,16 @@ jobs:
             distribution: 'zulu'
             java-version: '11'
             
-    - name: Setup Fastlane
+    - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '2.6'
         bundler-cache: true
         working-directory: android
+        
+    - name: Bundler install
+      run: bundler install
+      working-directory: android
       
     - uses: subosito/flutter-action@v2
       with:
