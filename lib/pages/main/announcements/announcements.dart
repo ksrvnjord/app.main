@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrvnjord_main_app/pages/main/announcements/add_announcement.dart';
 import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
 
 double titleFontSize = 28;
@@ -23,29 +24,13 @@ class AnnouncementsPage extends HookConsumerWidget {
         body: const Announcements(amount: 10),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // do stuff
-            // set up the button
-            Widget okButton = TextButton(
-              child: Text("OK"),
-              onPressed: () { },
-            );
-
-            // set up the AlertDialog
-            AlertDialog alert = AlertDialog(
-              title: Text("Wowie"),
-              content: Text("Wowie, aankondigingtj toevoegen ja"),
-              actions: [
-                okButton,
-              ],
-            );
-
-            // show the dialog
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return alert;
-              },
-            );
+            // Go to the AddAnnouncementPage
+            Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder:(context) => const AddAnnouncementPage()
+              ),
+              );
           },
           backgroundColor: Colors.lightBlue,
           child: const Icon(Icons.add),
