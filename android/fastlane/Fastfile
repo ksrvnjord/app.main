@@ -11,7 +11,7 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+update_fastlane
 
 default_platform(:android)
 
@@ -23,7 +23,7 @@ platform :android do
 
   desc "Submit a new Beta Build Google Play beta track"
   lane :beta do
-    gradle(task: "clean assembleRelease")
+    gradle(task: "clean bundleRelease")
     upload_to_play_store(
       json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
       track: 'internal'
@@ -35,7 +35,7 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
+    gradle(task: "clean bundleRelease")
     upload_to_play_store(
       json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
       track: 'production'
