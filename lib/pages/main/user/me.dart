@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
@@ -24,7 +25,7 @@ class MePage extends HookConsumerWidget {
             title: const Text('Gebruiker'),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
         body: FutureBuilder(
@@ -56,8 +57,8 @@ class MeWidget extends StatelessWidget {
       const SizedBox(height: 20),
       StaticUserField('Naam', user['name'] ?? '-'),
       StaticUserField('Lidnummer', user['identifier'] ?? '-'),
-      StaticUserField('E-mailadres', user['email'] ?? '-'),
-      StaticUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
+      AmendableUserField('E-mailadres', user['email'] ?? '-'),
+      AmendableUserField('Telefoonnummer', user['phone_sms'] ?? '-'),
       StaticUserField('Njord-account', user['username'] ?? '-'),
     ]);
   }
