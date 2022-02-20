@@ -37,6 +37,7 @@ platform :android do
     upload_to_play_store(
       json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
       version_code: new_vc,
+      skip_upload_changelogs: true,
       skip_upload_metadata: true,
       track: 'internal'
     )
@@ -61,6 +62,7 @@ platform :android do
 
     upload_to_play_store(
       json_key_data: ENV["PLAY_STORE_CONFIG_JSON"],
+      version_code: new_vc,
       track: 'production'
     )
   end
