@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
-import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
-import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
-import 'package:ksrvnjord_main_app/widgets/me/amendable_group_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/amendable_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/groups/amendable_group_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
