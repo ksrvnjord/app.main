@@ -7,7 +7,6 @@
 ///
 /// It also includes all the intermediate objects used to deserialize the
 /// response from the API.
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +24,22 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
-  final String baseURL = 'https://heimdall.njord.nl/';
+  String baseURL = 'https://heimdall.njord.nl/';
+
+  void updateBaseURL(String _baseURL) {
+    baseURL = _baseURL;
+    bearer = '';
+    loggedIn = false;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    // TODO: add a call to the API to purge the current token
+    await storage.delete(key: 'bearerToken');
+    bearer = '';
+    loggedIn = false;
+    notifyListeners();
+  }
 
   Future<bool> loginFromStorage() async {
     String storedBearer = await storage.read(key: 'bearerToken') ?? '-';
