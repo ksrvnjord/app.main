@@ -11,10 +11,10 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
+// def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+// if (flutterVersionCode == null) {
+//     flutterVersionCode = '1'
+// }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
@@ -52,7 +52,7 @@ android {
         applicationId "com.ksrvnjord.app"
         minSdkVersion 20
         targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
+        versionCode 1
         versionName flutterVersionName
     }
 
