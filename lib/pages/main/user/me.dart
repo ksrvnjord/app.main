@@ -5,8 +5,9 @@ import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
-import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
-import 'package:ksrvnjord_main_app/widgets/me/amendable_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/amendable_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/groups/amendable_group_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
@@ -70,6 +71,16 @@ class MeWidget extends HookConsumerWidget {
   const MeWidget(this.user, {Key? key}) : super(key: key);
 
   final dynamic user;
+  final Map groepen = {
+    'commissies': [
+      // 'Competitiecomissie',
+      // 'Appcommissie',
+      // 'Buffetcommissie',
+      // 'Rowing blind'
+    ],
+    'ploegen': [], // ['EJD', 'EJZ', 'TopC4'],
+    'verticalen': [] // ['Vanir', 'Heeren XII', 'Dames 6']
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,6 +90,12 @@ class MeWidget extends HookConsumerWidget {
       const SizedBox(height: 20),
       StaticUserField('Lidnummer', user['identifier'].toString()),
       StaticUserField('Njord-account', user['username'] ?? '-'),
+      const Divider(
+        height: 64,
+      ),
+      AmendableGroupField('Ploegen', groepen['ploegen'] ?? '-'),
+      AmendableGroupField('Commissies', groepen['commissies'] ?? '-'),
+      AmendableGroupField('Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
       const Divider(
         height: 64,
       ),

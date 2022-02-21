@@ -7,7 +7,6 @@
 ///
 /// It also includes all the intermediate objects used to deserialize the
 /// response from the API.
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

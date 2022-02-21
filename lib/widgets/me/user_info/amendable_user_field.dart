@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
-import 'package:ksrvnjord_main_app/widgets/me/change_userinfo_dialog.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/change_userinfo_dialog.dart';
 
 class AmendableUserField extends StatelessWidget {
   const AmendableUserField(this.label, this.value, {Key? key})

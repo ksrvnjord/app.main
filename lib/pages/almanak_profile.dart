@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
-import 'package:ksrvnjord_main_app/widgets/me/static_user_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
