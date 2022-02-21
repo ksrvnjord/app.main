@@ -47,7 +47,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: TextFormField(
                     controller: _username,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp('[a-z.@]')),
+                      FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
                     ],
                     obscureText: false,
                     autocorrect: false,
@@ -55,7 +55,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textCapitalization: TextCapitalization.none,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: '@leden.ksrv.nl-account',
+                      labelText: 'Njord-account',
                     ),
                   )),
               Container(
