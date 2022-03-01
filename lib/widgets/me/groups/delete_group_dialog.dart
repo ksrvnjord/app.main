@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DeleteGroupDialog extends StatefulWidget {
   final String label;
-  final List<String> values;
+  final List<dynamic> values;
 
   const DeleteGroupDialog({Key? key, required this.label, required this.values})
       : super(key: key);

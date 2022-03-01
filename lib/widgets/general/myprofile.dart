@@ -8,25 +8,17 @@ class MyProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(12),
-      child: Card(
-        margin: EdgeInsets.zero,
-        clipBehavior: Clip.antiAlias,
-        color: Colors.white,
-        elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        child: IconButton(
-            icon: const Icon(Icons.account_circle_rounded),
-            color: Colors.grey,
-            padding: EdgeInsets.zero,
-            iconSize: 24,
-            alignment: Alignment.center,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MePage()));
-            }),
-      ),
+    return Center(
+      child: IconButton(
+          icon: const Icon(Icons.account_circle),
+          color: Colors.white,
+          padding: EdgeInsets.zero,
+          iconSize: 32,
+          alignment: Alignment.center,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const MePage()));
+          }),
     );
   }
 }

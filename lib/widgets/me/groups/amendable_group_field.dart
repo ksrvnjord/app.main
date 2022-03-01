@@ -7,7 +7,7 @@ class AmendableGroupField extends StatelessWidget {
       : super(key: key);
 
   final String label;
-  final List<String> values;
+  final List<dynamic> values;
 
   @override
   Widget build(BuildContext context) {

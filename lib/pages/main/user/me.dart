@@ -68,7 +68,7 @@ class MePage extends HookConsumerWidget {
 }
 
 class MeWidget extends HookConsumerWidget {
-  const MeWidget(this.user, {Key? key}) : super(key: key);
+  MeWidget(this.user, {Key? key}) : super(key: key);
 
   final dynamic user;
   final Map groepen = {
@@ -90,22 +90,20 @@ class MeWidget extends HookConsumerWidget {
       const SizedBox(height: 20),
       StaticUserField('Lidnummer', user['identifier'].toString()),
       StaticUserField('Njord-account', user['username'] ?? '-'),
+      AmendableUserField('Voornaam', user['contact']['first_name'] ?? '-'),
+      AmendableUserField('Achternaam', user['contact']['last_name'] ?? '-'),
+      AmendableUserField(
+          'Telefoonnummer', user['contact']['phone_primary'] ?? '-'),
+      AmendableUserField('E-mailadres', user['email'] ?? '-'),
       const Divider(
-        height: 64,
+        height: 32,
       ),
       AmendableGroupField('Ploegen', groepen['ploegen'] ?? '-'),
       AmendableGroupField('Commissies', groepen['commissies'] ?? '-'),
-      AmendableGroupField('Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
+      AmendableGroupField(
+          'Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
       const Divider(
-        height: 64,
-      ),
-      AmendableUserField('Voornaam', user['contact']['first_name'] ?? '-'),
-      AmendableUserField('Achternaam', user['contact']['last_name'] ?? '-'),
-      AmendableUserField('E-mailadres', user['email'] ?? '-'),
-      AmendableUserField(
-          'Telefoonnummer', user['contact']['phone_primary'] ?? '-'),
-      const Divider(
-        height: 64,
+        height: 32,
       ),
       Row(
           mainAxisAlignment: MainAxisAlignment.center,

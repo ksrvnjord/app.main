@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/widgets/me/groups/group_searchbar.dart';
 
 class AddGroupDialog extends StatefulWidget {
   final String label;
-  final List<String> values;
+  final List<dynamic> values;
   Map groepen = {
     'Commissies': [
       'Competitiecomissie',
