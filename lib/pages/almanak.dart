@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 import './almanak_profile.dart';
 import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
@@ -76,7 +77,8 @@ class AlmanakPage extends HookConsumerWidget {
                     title: const Text('Almanak'),
                     automaticallyImplyLeading: false,
                     actions: [
-                      IconButton(
+                      DevelopmentFeature(
+                          child: IconButton(
                         onPressed: () {
                           showSearch(
                             context: context,
@@ -84,7 +86,7 @@ class AlmanakPage extends HookConsumerWidget {
                           );
                         },
                         icon: const Icon(Icons.search),
-                      )
+                      ))
                     ],
                     backgroundColor: Colors.lightBlue,
                     shadowColor: Colors.transparent,

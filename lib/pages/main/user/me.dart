@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/widgets/me/user_info/amendable_user_field.dar
 import 'package:ksrvnjord_main_app/widgets/me/groups/amendable_group_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -98,13 +99,16 @@ class MeWidget extends HookConsumerWidget {
       const Divider(
         height: 32,
       ),
-      AmendableGroupField('Ploegen', groepen['ploegen'] ?? '-'),
-      AmendableGroupField('Commissies', groepen['commissies'] ?? '-'),
-      AmendableGroupField(
-          'Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
-      const Divider(
-        height: 32,
-      ),
+      DevelopmentFeature(
+          child: Column(children: [
+        AmendableGroupField('Ploegen', groepen['ploegen'] ?? '-'),
+        AmendableGroupField('Commissies', groepen['commissies'] ?? '-'),
+        AmendableGroupField(
+            'Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
+        const Divider(
+          height: 32,
+        )
+      ])),
       Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

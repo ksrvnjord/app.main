@@ -13,9 +13,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          // TODO: Have the title with only the Logo, and size it correctly
           title: Row(
               children: const <Widget>[
                 BarLogoWidget(image: Images.appLogo),
+                // TODO: Rewrite this Row-construction to AppBar(..., actions: [])
                 MyProfileCard()
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
