@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/widgets/me/groups/group_container.dart';
 class GroupGrid extends StatelessWidget {
   const GroupGrid(this.values, {Key? key}) : super(key: key);
 
-  final List<String> values;
+  final List<dynamic> values;
 
   @override
   Widget build(BuildContext context) {

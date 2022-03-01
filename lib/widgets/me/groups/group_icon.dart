@@ -10,7 +10,7 @@ class GroupIcon extends StatelessWidget {
       : super(key: key);
 
   final String label;
-  final List<String> values;
+  final List<dynamic> values;
   final bool isDelete;
 
   @override
