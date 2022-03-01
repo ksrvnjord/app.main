@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/me/groups/delete_group_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/groups/add_group_dialog.dart';

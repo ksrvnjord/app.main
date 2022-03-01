@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/change_userinfo_dialog.dart';
+import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 
 class AmendableUserField extends StatelessWidget {
   const AmendableUserField(this.label, this.value, {Key? key})
@@ -26,7 +27,8 @@ class AmendableUserField extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        IconButton(
+        DevelopmentFeature(
+            child: IconButton(
           padding: const EdgeInsets.all(0),
           constraints: const BoxConstraints(),
           iconSize: 20,
@@ -48,7 +50,7 @@ class AmendableUserField extends StatelessWidget {
                       const VerificationDialog(title, body));
             }
           },
-        ),
+        )),
       ]),
       const Divider(
         color: Colors.grey,

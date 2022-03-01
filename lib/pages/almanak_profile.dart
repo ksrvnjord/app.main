@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 
 const String user = r'''
   query ($profileId: ID!) {
@@ -62,7 +63,10 @@ class AlmanakProfile extends HookConsumerWidget {
                         (user['contact']['first_name'] ?? '-') +
                             ' ' +
                             (user['contact']['last_name'] ?? '-')),
-                    StaticUserField('E-mailadres', user['email'] ?? '-'),
+                    // TODO: non-default public
+                    DevelopmentFeature(
+                        child: StaticUserField(
+                            'E-mailadres', user['email'] ?? '-')),
                     StaticUserField('Njord-account', user['username'] ?? '-'),
                   ]);
               }
