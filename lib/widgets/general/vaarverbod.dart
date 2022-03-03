@@ -57,7 +57,10 @@ class VaarverbodWidget extends HookConsumerWidget {
                   return const Loading();
                 default:
                   if (snapshot.hasError) {
-                    return const ErrorCardWidget("Problemski"); // TODO: ErrorZwaan
+                    return ErrorCardWidget(
+                      errorMessage: "Er is een fout opgetreden tijdens het laden van het vaarverbod!",
+                      causingError: snapshot.error
+                      );
                   }
 
                   dynamic vaarverbod = snapshot.data!.data;

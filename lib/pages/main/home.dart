@@ -30,8 +30,7 @@ class HomePage extends StatelessWidget {
         // TODO: ListView should be inside a Padding element instead of padding each child of listView separately
         shrinkWrap: true,
         children: <Widget>[
-          // Center(child: Column(children: const [VaarverbodWidget()])),
-          Center(child: Column(children: const [ErrorCardWidget('whoopsie')])),
+          const VaarverbodWidget(),
           const Announcements(amount: 3),
           GridView.count(
               crossAxisCount: 2,

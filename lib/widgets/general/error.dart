@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 
 class ErrorCardWidget extends StatelessWidget {
-  const ErrorCardWidget(this.errorMessage, {Key? key}) : super(key: key);
+  const ErrorCardWidget({
+    Key? key,
+    required this.errorMessage,
+    this.causingError,
+     }) : super(key: key);
 
   final String errorMessage;
+  final Object? causingError;
 
   @override
   Widget build(BuildContext context) {
