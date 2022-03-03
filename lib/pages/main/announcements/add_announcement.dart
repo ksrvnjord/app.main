@@ -87,9 +87,7 @@ class AddAnnouncementForm extends ConsumerState<AddAnnouncementPage> {
                 ),
                 // TODO: make scrollable, now it just overflows if the content
                 //       is large enough.
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: elemPadding,
+                Expanded(
                   child: Markdown(
                     data: _preview,
                     selectable: false,
