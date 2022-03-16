@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
+import './almanak_search.dart';
 import './almanak_profile.dart';
 import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
@@ -80,10 +81,10 @@ class AlmanakPage extends HookConsumerWidget {
                       DevelopmentFeature(
                           child: IconButton(
                         onPressed: () {
-                          showSearch(
-                            context: context,
-                            delegate: CustomSearchDelegate(names),
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AlmanakSearch()));
                         },
                         icon: const Icon(Icons.search),
                       ))
