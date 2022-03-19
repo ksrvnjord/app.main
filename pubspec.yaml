@@ -43,6 +43,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   sentry_flutter: ^6.2.0
   graphql_flutter: ^5.0.1
+  connectivity_plus_web: ^1.2.0
 
 
 dev_dependencies:
