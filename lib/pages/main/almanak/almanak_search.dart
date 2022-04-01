@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/almanak/almanak_list.dart';
+import 'package:ksrvnjord_main_app/widgets/almanak/almanak_show_results.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 import 'package:flutter/services.dart';
@@ -39,71 +41,39 @@ class _LoadingScreen extends StatelessWidget {
   }
 }
 
-class AlmanakSearch extends StatefulHookConsumerWidget {
-  const AlmanakSearch({Key? key}) : super(key: key);
+class AlmanakSearch extends StatefulWidget {
+  AlmanakSearch({Key? key}) : super(key: key);
 
   @override
   _AlmanakSearchState createState() => _AlmanakSearchState();
 }
 
-class _AlmanakSearchState extends ConsumerState<AlmanakSearch> {
+class _AlmanakSearchState extends State<AlmanakSearch> {
+  final StreamController<String> _searchController = StreamController<String>();
   TextEditingController currentSearch = TextEditingController();
 
-  @override
-  void initState() {
-    currentSearch.text = ""; //Enter own name to see that still all are shown
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
-    final QueryOptions options = QueryOptions(
-        document: gql(users), variables: {'search': currentSearch.text});
-    final Future<QueryResult> result = client.query(options);
-
-    return FutureBuilder(
-        future: result,
-        builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return _LoadingScreen();
-            case ConnectionState.waiting:
-              return _LoadingScreen();
-            default:
-              if (snapshot.hasError) {
-                return _LoadingScreen();
-              }
-
-              // Query here
-              List<dynamic> users = snapshot.data?.data?['users']['data'];
-
-              return Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.lightBlue,
-                    shadowColor: Colors.transparent,
-                    title: TextField(
+    return Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.lightBlue,
+            shadowColor: Colors.transparent,
+            title: Row(children: [
+              SizedBox(
+                  width: 180,
+                  child: TextField(
                       autofocus: true,
                       controller: currentSearch,
                       onChanged: (text) {
-                        setState(() {
-                          currentSearch.text = text;
-                        });
-                      },
-                    ),
-                    actions: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            currentSearch.clear();
-                          });
-                        },
-                        icon: const Icon(Icons.clear),
-                      )
-                    ],
-                  ),
-                  body: AlmanakListView(users));
-          }
-        });
+                        _searchController.add(text);
+                      })),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  currentSearch.clear();
+                },
+                icon: const Icon(Icons.clear),
+              )
+            ])),
+        body: ShowResults(stream: _searchController.stream));
   }
 }
