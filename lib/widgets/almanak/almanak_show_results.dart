@@ -7,8 +7,8 @@ import 'package:ksrvnjord_main_app/widgets/almanak/almanak_list.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 const String users = r'''
-  query {
-    users {
+  query ($search: String!){
+    users (search: $search){
       data {
         id,
         email,
