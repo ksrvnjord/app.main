@@ -99,16 +99,6 @@ class MeWidget extends HookConsumerWidget {
       const Divider(
         height: 32,
       ),
-      DevelopmentFeature(
-          child: Column(children: [
-        AmendableGroupField('Ploegen', groepen['ploegen'] ?? '-'),
-        AmendableGroupField('Commissies', groepen['commissies'] ?? '-'),
-        AmendableGroupField(
-            'Verband/Verticaal/Dispuut', groepen['verticalen'] ?? '-'),
-        const Divider(
-          height: 32,
-        )
-      ])),
       Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
