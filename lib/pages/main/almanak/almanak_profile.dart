@@ -60,14 +60,19 @@ class AlmanakProfile extends HookConsumerWidget {
                     const SizedBox(height: 20),
                     StaticUserField(
                         'Naam',
-                        (user['contact']['first_name'] ?? '-') +
+                        (user != null
+                                ? (user['contact']['first_name'] ?? '-')
+                                : '-') +
                             ' ' +
-                            (user['contact']['last_name'] ?? '-')),
+                            (user != null
+                                ? (user['contact']['last_name'] ?? '-')
+                                : '-')),
                     // TODO: non-default public
                     DevelopmentFeature(
-                        child: StaticUserField(
-                            'E-mailadres', user['email'] ?? '-')),
-                    StaticUserField('Njord-account', user['username'] ?? '-'),
+                        child: StaticUserField('E-mailadres',
+                            user != null ? (user['email'] ?? '-') : '-')),
+                    StaticUserField('Njord-account',
+                        user != null ? (user['username'] ?? '-') : '-'),
                   ]);
               }
             }));
