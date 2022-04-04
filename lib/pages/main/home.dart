@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
+import 'package:ksrvnjord_main_app/widgets/general/error.dart';
 import 'package:ksrvnjord_main_app/widgets/general/vaarverbod.dart';
 import 'package:ksrvnjord_main_app/widgets/general/myprofile.dart';
 import 'package:ksrvnjord_main_app/widgets/images/bar_logo.dart';
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
         // TODO: ListView should be inside a Padding element instead of padding each child of listView separately
         shrinkWrap: true,
         children: <Widget>[
-          Center(child: Column(children: const [VaarverbodWidget()])),
+          const VaarverbodWidget(),
           const Announcements(amount: 3),
           GridView.count(
               crossAxisCount: 2,
