@@ -93,8 +93,6 @@ class MeWidget extends HookConsumerWidget {
       StaticUserField('Njord-account', user['username'] ?? '-'),
       AmendableUserField('Voornaam', user['contact']['first_name'] ?? '-'),
       AmendableUserField('Achternaam', user['contact']['last_name'] ?? '-'),
-      AmendableUserField(
-          'Telefoonnummer', user['contact']['phone_primary'] ?? '-'),
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       const Divider(
         height: 32,
