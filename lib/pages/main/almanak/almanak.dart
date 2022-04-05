@@ -62,13 +62,6 @@ class AlmanakPage extends HookConsumerWidget {
               }
 
               List<dynamic> users = snapshot.data?.data?['users']['data'];
-              List<Map<String, String>> names = users.map((e) {
-                String id = e['id'].toString();
-                String name = (e['contact']['first_name'] ?? '-') +
-                    " " +
-                    (e['contact']['last_name'] ?? '-');
-                return {id: name};
-              }).toList();
 
               return Builder(
                 // Wrap in a Builder widget to get the right context for showSearch.
