@@ -76,18 +76,6 @@ class AlmanakPage extends HookConsumerWidget {
                   appBar: AppBar(
                     title: const Text('Almanak'),
                     automaticallyImplyLeading: false,
-                    actions: [
-                      DevelopmentFeature(
-                          child: IconButton(
-                        onPressed: () {
-                          showSearch(
-                            context: context,
-                            delegate: CustomSearchDelegate(names),
-                          );
-                        },
-                        icon: const Icon(Icons.search),
-                      ))
-                    ],
                     backgroundColor: Colors.lightBlue,
                     shadowColor: Colors.transparent,
                   ),
