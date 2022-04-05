@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/pages/almanak.dart';
+import 'package:ksrvnjord_main_app/pages/main/almanak/almanak.dart';
 import 'package:ksrvnjord_main_app/pages/main/announcements/announcements.dart';
 import 'package:ksrvnjord_main_app/pages/main/home.dart';
 

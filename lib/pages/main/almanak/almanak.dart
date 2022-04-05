@@ -4,9 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
-import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 import './almanak_profile.dart';
-import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
 const String users = r'''
   query {
@@ -62,13 +60,6 @@ class AlmanakPage extends HookConsumerWidget {
               }
 
               List<dynamic> users = snapshot.data?.data?['users']['data'];
-              List<Map<String, String>> names = users.map((e) {
-                String id = e['id'].toString();
-                String name = (e['contact']['first_name'] ?? '-') +
-                    " " +
-                    (e['contact']['last_name'] ?? '-');
-                return {id: name};
-              }).toList();
 
               return Builder(
                 // Wrap in a Builder widget to get the right context for showSearch.
@@ -76,18 +67,6 @@ class AlmanakPage extends HookConsumerWidget {
                   appBar: AppBar(
                     title: const Text('Almanak'),
                     automaticallyImplyLeading: false,
-                    actions: [
-                      DevelopmentFeature(
-                          child: IconButton(
-                        onPressed: () {
-                          showSearch(
-                            context: context,
-                            delegate: CustomSearchDelegate(names),
-                          );
-                        },
-                        icon: const Icon(Icons.search),
-                      ))
-                    ],
                     backgroundColor: Colors.lightBlue,
                     shadowColor: Colors.transparent,
                   ),
