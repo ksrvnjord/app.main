@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/widgets/almanak/almanak_show_results.dart';
+import 'package:ksrvnjord_main_app/widgets/almanak/almanak_show_search_results.dart';
 
 class AlmanakSearch extends StatefulWidget {
   AlmanakSearch({Key? key}) : super(key: key);
@@ -36,6 +36,6 @@ class _AlmanakSearchState extends State<AlmanakSearch> {
                 icon: const Icon(Icons.clear),
               )
             ])),
-        body: ShowResults(stream: _searchController.stream));
+        body: ShowSearchResultsAlmanak(stream: _searchController.stream));
   }
 }

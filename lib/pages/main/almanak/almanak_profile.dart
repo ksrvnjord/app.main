@@ -54,26 +54,26 @@ class AlmanakProfile extends HookConsumerWidget {
                 default:
                   var user = snapshot.data?.data?['user'];
 
-                  return ListView(children: <Widget>[
-                    const Center(child: UserAvatar()),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 20),
-                    StaticUserField(
-                        'Naam',
-                        (user != null
-                                ? (user['contact']['first_name'] ?? '-')
-                                : '-') +
-                            ' ' +
-                            (user != null
-                                ? (user['contact']['last_name'] ?? '-')
-                                : '-')),
-                    // TODO: non-default public
-                    DevelopmentFeature(
-                        child: StaticUserField('E-mailadres',
-                            user != null ? (user['email'] ?? '-') : '-')),
-                    StaticUserField('Njord-account',
-                        user != null ? (user['username'] ?? '-') : '-'),
-                  ]);
+                  return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(children: <Widget>[
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Center(child: UserAvatar()),
+                        const SizedBox(height: 10),
+                        StaticUserField(
+                            'Naam',
+                            (user['contact']['first_name'] ?? '-') +
+                                ' ' +
+                                (user['contact']['last_name'] ??
+                                    '-')), // TODO: non-default public
+                        DevelopmentFeature(
+                            child: StaticUserField(
+                                'E-mailadres', (user['email'] ?? '-'))),
+                        StaticUserField(
+                            'Njord-account', (user['username'] ?? '-')),
+                      ]));
               }
             }));
   }

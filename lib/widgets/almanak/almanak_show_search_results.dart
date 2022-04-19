@@ -29,16 +29,19 @@ class _LoadingScreen extends StatelessWidget {
   }
 }
 
-class ShowResults extends StatefulHookConsumerWidget {
+class ShowSearchResultsAlmanak extends StatefulHookConsumerWidget {
   final Stream<String> stream;
 
-  const ShowResults({Key? key, required this.stream}) : super(key: key);
+  const ShowSearchResultsAlmanak({Key? key, required this.stream})
+      : super(key: key);
 
   @override
-  _ShowResultsState createState() => _ShowResultsState();
+  _ShowSearchResultsAlmanakState createState() =>
+      _ShowSearchResultsAlmanakState();
 }
 
-class _ShowResultsState extends ConsumerState<ShowResults> {
+class _ShowSearchResultsAlmanakState
+    extends ConsumerState<ShowSearchResultsAlmanak> {
   String currentSearch = '';
 
   @override
