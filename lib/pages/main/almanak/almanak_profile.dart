@@ -74,6 +74,7 @@ class AlmanakProfile extends HookConsumerWidget {
                         StaticUserField(
                             'Njord-account', (user['username'] ?? '-')),
                       ]));
+
               }
             }));
   }

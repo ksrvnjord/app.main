@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/general/error.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
 class VaarverbodCardWidget extends StatelessWidget {
@@ -56,7 +57,10 @@ class VaarverbodWidget extends HookConsumerWidget {
                   return const Loading();
                 default:
                   if (snapshot.hasError) {
-                    return const Loading(); // TODO: ErrorZwaan
+                    return ErrorCardWidget(
+                      errorMessage: "Er is een fout opgetreden tijdens het laden van het vaarverbod!",
+                      causingError: snapshot.error
+                      );
                   }
 
                   dynamic vaarverbod = snapshot.data!.data;

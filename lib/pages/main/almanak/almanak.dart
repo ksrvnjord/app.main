@@ -72,6 +72,7 @@ class AlmanakPage extends HookConsumerWidget {
                 return {id: name};
               }).toList();
 
+
               return Builder(
                 // Wrap in a Builder widget to get the right context for showSearch.
                 builder: (context) => Scaffold(
