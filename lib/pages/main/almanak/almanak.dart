@@ -3,8 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ksrvnjord_main_app/widgets/almanak/almanak_list.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
-import './almanak_profile.dart';
+import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
+import 'almanak_search.dart';
+import 'almanak_profile.dart';
+import 'package:ksrvnjord_main_app/widgets/general/searchbar.dart';
 
 const String users = r'''
   query {
@@ -60,36 +64,37 @@ class AlmanakPage extends HookConsumerWidget {
               }
 
               List<dynamic> users = snapshot.data?.data?['users']['data'];
+              List<Map<String, String>> names = users.map((e) {
+                String id = e['id'].toString();
+                String name = (e['contact']['first_name'] ?? '-') +
+                    " " +
+                    (e['contact']['last_name'] ?? '-');
+                return {id: name};
+              }).toList();
+
 
               return Builder(
                 // Wrap in a Builder widget to get the right context for showSearch.
                 builder: (context) => Scaffold(
-                  appBar: AppBar(
-                    title: const Text('Almanak'),
-                    automaticallyImplyLeading: false,
-                    backgroundColor: Colors.lightBlue,
-                    shadowColor: Colors.transparent,
-                  ),
-                  body: ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                            (users[index]['contact']['first_name'] ?? '-') +
-                                ' ' +
-                                (users[index]['contact']['last_name'] ?? '-')),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlmanakProfile(
-                                    profileId: users[index]['id']),
-                              ));
-                        },
-                      );
-                    },
-                  ),
-                ),
+                    appBar: AppBar(
+                      title: const Text('Almanak'),
+                      automaticallyImplyLeading: false,
+                      actions: [
+                        DevelopmentFeature(
+                            child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlmanakSearch()));
+                          },
+                          icon: const Icon(Icons.search),
+                        ))
+                      ],
+                      backgroundColor: Colors.lightBlue,
+                      shadowColor: Colors.transparent,
+                    ),
+                    body: AlmanakListView(users)),
               );
           }
         });
