@@ -21,7 +21,7 @@ class HeimdallService {
         );
 
   final Reader _read;
-  String baseURL = 'https://heimdall.njord.nl/';
+  String baseURL = 'http://10.0.2.2:8000/';
   final graphql.AuthLink _authLink;
 
   void updateBaseURL(String _baseURL) {

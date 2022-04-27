@@ -24,7 +24,7 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
-  String baseURL = 'https://heimdall.njord.nl/';
+  String baseURL = 'http://10.0.2.2:8000/';
 
   void updateBaseURL(String _baseURL) {
     baseURL = _baseURL;

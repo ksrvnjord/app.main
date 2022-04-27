@@ -10,8 +10,8 @@ import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 const String users = r'''
-  query ($search: String!, $first: Int!, $page: Int!){
-    users (search: $search, first: $first, page: $page){
+  query ($first: Int!, $page: Int!){
+    users (first: $first, page: $page){
       paginatorInfo{
         hasMorePages,
       }
@@ -35,20 +35,14 @@ class _LoadingScreen extends StatelessWidget {
   }
 }
 
-class ShowSearchResultsAlmanak extends StatefulHookConsumerWidget {
-  final Stream<String> stream;
-
-  const ShowSearchResultsAlmanak({Key? key, required this.stream})
-      : super(key: key);
+class ShowFullAlmanak extends StatefulHookConsumerWidget {
+  const ShowFullAlmanak({Key? key}) : super(key: key);
 
   @override
-  _ShowSearchResultsAlmanakState createState() =>
-      _ShowSearchResultsAlmanakState();
+  _ShowFullAlmanakState createState() => _ShowFullAlmanakState();
 }
 
-class _ShowSearchResultsAlmanakState
-    extends ConsumerState<ShowSearchResultsAlmanak> {
-  String currentSearch = '';
+class _ShowFullAlmanakState extends ConsumerState<ShowFullAlmanak> {
   final _pagingController = PagingController<int, dynamic>(
     // 2
     firstPageKey: 1,
@@ -56,29 +50,22 @@ class _ShowSearchResultsAlmanakState
 
   @override
   void initState() {
-    widget.stream.listen((text) {
-      setState(() {
-        currentSearch = text;
-        _pagingController.refresh();
-      });
-    });
     _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey, currentSearch);
+      _fetchPage(pageKey);
     });
     super.initState();
   }
 
-  Future<void> _fetchPage(int pageKey, String currentSearch) async {
+  Future<void> _fetchPage(int pageKey) async {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
     int usersPerPage = 10;
-    final QueryOptions options = QueryOptions(document: gql(users), variables: {
-      'search': currentSearch,
-      'first': usersPerPage,
-      'page': pageKey
-    });
+    final QueryOptions options = QueryOptions(
+        document: gql(users),
+        variables: {'first': usersPerPage, 'page': pageKey});
     final QueryResult results = await client.query(options);
 
     List<dynamic> newPage = results.data?['users']['data'];
+
     final bool isLastPage =
         !results.data?['users']['paginatorInfo']['hasMorePages'];
 
@@ -97,16 +84,11 @@ class _ShowSearchResultsAlmanakState
   }
 
   @override
-  Widget build(BuildContext context) =>
-      // 1
-      RefreshIndicator(
+  Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(
-          // 2
           () => _pagingController.refresh(),
         ),
-        // 3
         child: PagedListView.separated(
-          // 4
           pagingController: _pagingController,
           padding: const EdgeInsets.all(0),
           separatorBuilder: (context, index) => const SizedBox(
@@ -114,8 +96,8 @@ class _ShowSearchResultsAlmanakState
           ),
           builderDelegate: PagedChildBuilderDelegate(
             itemBuilder: (context, user, index) => AlmanakField(user),
-            //firstPageErrorIndicatorBuilder: (context) => const Text('error'),
-            //noItemsFoundIndicatorBuilder: (context) => const Text('The end'),
+            firstPageErrorIndicatorBuilder: (context) => _LoadingScreen(),
+            noItemsFoundIndicatorBuilder: (context) => const Text('The end'),
           ),
         ),
       );
