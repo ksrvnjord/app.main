@@ -62,19 +62,23 @@ class AlmanakProfile extends HookConsumerWidget {
                         ),
                         const Center(child: UserAvatar()),
                         const SizedBox(height: 10),
-                        StaticUserField(
-                            'Naam',
-                            (user['contact']['first_name'] ?? '-') +
-                                ' ' +
-                                (user['contact']['last_name'] ??
-                                    '-')), // TODO: non-default public
-                        DevelopmentFeature(
-                            child: StaticUserField(
-                                'E-mailadres', (user['email'] ?? '-'))),
-                        StaticUserField(
-                            'Njord-account', (user['username'] ?? '-')),
+                        if (user == null) ...{
+                          const Text(
+                              'The user retrieved from the database is empty'),
+                        } else ...{
+                          StaticUserField(
+                              'Naam',
+                              (user['contact']['first_name'] ?? '-') +
+                                  ' ' +
+                                  (user['contact']['last_name'] ??
+                                      '-')), // TODO: non-default public
+                          DevelopmentFeature(
+                              child: StaticUserField(
+                                  'E-mailadres', (user['email'] ?? '-'))),
+                          StaticUserField(
+                              'Njord-account', (user['username'] ?? '-')),
+                        },
                       ]));
-
               }
             }));
   }
