@@ -7,7 +7,7 @@
   <key>teamID</key>
   <string>L5JPUD4Y73</string>
 	<key>signingStyle</key>
-	<string>manual</string>
+	<string>automatic</string>
   <key>provisioningProfiles</key>
 	<dict>
 		<key>YOUR_BUNDLE_ID</key>
