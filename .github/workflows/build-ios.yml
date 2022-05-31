@@ -19,7 +19,7 @@ jobs:
         uses: apple-actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.P12_BASE64 }}
-          p12-password: ''
+          p12-password: ${{ secrets.P12_PASSWORD }}
 
       - name: Install the provisioning profile
         env:
