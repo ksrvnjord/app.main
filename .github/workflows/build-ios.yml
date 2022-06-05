@@ -3,13 +3,10 @@ name: Build iOS Application
 on:
   push:
     branches: [main]
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
   build_ios:
-    runs-on: [self-hosted, macOS]
+    runs-on: macos-latest
     env:
       SHEME: Runner
       BUILD_CONFIGURATION: Release
