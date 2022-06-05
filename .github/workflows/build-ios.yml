@@ -1,12 +1,15 @@
-name: Flutter_iOS
+name: Build iOS Application
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build_ios:
-    runs-on: macos-latest
+    runs-on: [self-hosted, macOS]
     env:
       SHEME: Runner
       BUILD_CONFIGURATION: Release
