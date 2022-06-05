@@ -79,7 +79,7 @@ class AuthenticationService extends ChangeNotifier {
 
   Future<String> attemptLogin(String username, String password) async {
     try {
-      if (username == 'demo' && password == 'demo') {
+      if (username == 'demo' && password == 'testing') {
         var demoURL = 'https://heimdall-test.ksrv.nl/';
         _read(heimdallProvider).updateBaseURL(demoURL);
         baseURL = demoURL;

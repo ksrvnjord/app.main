@@ -1,4 +1,4 @@
-name: Flutter_iOS
+name: Build iOS Application
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
 
       - name: Build xArchive
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }} -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=07611537-8723-4f6a-9c36-8abe3ea90305 clean archive CODE_SIGN_IDENTITY="Apple Distribution: Max Boone"
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }} -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=e365e058-320f-4b47-b95c-bec2d7a9e46a clean archive CODE_SIGN_IDENTITY="Apple Distribution: Max Boone"
       - name: Export ipa
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
 
