@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final authenticationProvider =
@@ -78,6 +79,11 @@ class AuthenticationService extends ChangeNotifier {
 
   Future<String> attemptLogin(String username, String password) async {
     try {
+      if (username == 'demo' && password == 'testing') {
+        var demoURL = 'https://heimdall-test.ksrv.nl/';
+        _read(heimdallProvider).updateBaseURL(demoURL);
+        baseURL = demoURL;
+      }
       var csrfResponse = await _read(dioProvider)
           .get<Map<String, Object?>>('${baseURL}api/v1/auth/csrf');
 
