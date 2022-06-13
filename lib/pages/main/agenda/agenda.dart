@@ -1,105 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graphql/client.dart';
+import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AgendaPage extends StatelessWidget {
+class AgendaPage extends HookConsumerWidget {
   AgendaPage({Key? key}) : super(key: key);
 
-  final List items = [
-    {
-      'startTime': DateTime(2022, 03, 15, 7, 0, 0),
-      'endTime': DateTime(2022, 03, 15, 17, 0, 0),
-      'title': 'Roeiwedstrijd',
-      'color': Colors.blue,
-      //'body': 'Beschrijving van de wedstrijd eventueel met link naar site ofzo'
-    },
-    {
-      'startTime': DateTime(2022, 03, 18, 21, 0, 0),
-      'endTime': DateTime(2022, 03, 19, 2, 0, 0),
-      'title': 'Feestje',
-      'color': Colors.pink,
-      //'body': 'Hartstikke gezellig allemaal komen'
-    },
-    {
-      'startTime': DateTime(2022, 03, 22, 17, 26, 0),
-      'endTime': DateTime(2022, 03, 22, 23, 59, 0),
-      'title': 'ALV',
-      'color': Colors.green,
-      //'body': 'Hier kan je stemmen over wat er met Njord moet gebeuren.'
-    },
-    {
-      'startTime': DateTime(2022, 04, 1, 9, 0, 0),
-      'endTime': DateTime(2022, 04, 1, 15, 0, 0),
-      'title': 'Roeiwedstrijd Wedstrijd',
-      'color': Colors.blue,
-      //'body': 'Beschrijving van de wedstrijd eventueel met link naar site ofzo'
-    },
-    {
-      'startTime': DateTime(2022, 04, 1, 7, 0, 0),
-      'endTime': DateTime(2022, 04, 1, 14, 0, 0),
-      'title': 'Roeiwedstrijd Competitie',
-      'color': Colors.blue,
-      //'body': 'Beschrijving van de wedstrijd eventueel met link naar site ofzo'
-    },
-    {
-      'startTime': DateTime(2022, 04, 1, 22, 0, 0),
-      'endTime': DateTime(2022, 04, 2, 3, 0, 0),
-      'title': 'Feestje II',
-      'color': Colors.pink,
-      //'body': 'Wat een gezelligheid!!! Trek je leukste costuum aan.'
-    },
-    {
-      'startTime': DateTime(2022, 05, 3, 7, 0, 0),
-      'endTime': DateTime(2022, 05, 3, 14, 0, 0),
-      'title': 'Roeiwedstrijd III',
-      'color': Colors.blue,
-      //'body': 'Beschrijving van de wedstrijd eventueel met link naar site ofzo'
-    },
-    {
-      'startTime': DateTime(2022, 05, 7, 22, 0, 0),
-      'endTime': DateTime(2022, 05, 8, 3, 0, 0),
-      'title': 'Feestje III',
-      'color': Colors.pink,
-      //'body': 'Wat een gezelligheid!!! Trek je leukste kostuum aan.'
-    },
-  ];
+  final QueryOptions options = QueryOptions(document: gql('''
+      query CalendarItems {
+        events {
+          id,
+          title,
+          start_time,
+          end_time
+        }
+      }
+    '''));
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: const Text('Agenda', style: TextStyle(fontSize: 24)),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            automaticallyImplyLeading: true,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
-        body: SfCalendar(
-          view: CalendarView.schedule,
-          minDate: DateTime.now(),
-          maxDate: DateTime.now().add(const Duration(days: 365)),
-          dataSource: MeetingDataSource(_getDataSource()),
-          scheduleViewSettings: const ScheduleViewSettings(
-              hideEmptyScheduleWeek: true,
-              monthHeaderSettings: MonthHeaderSettings(
-                  monthFormat: 'MMM yyyy',
-                  backgroundColor: Colors.transparent,
-                  height: 60,
-                  textAlign: TextAlign.center,
-                  monthTextStyle: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold))),
-        ));
+  static List<Meeting> mapResultToItems(QueryResult result) {
+    if ((result.data != null) && (result.data!['events'] != null)) {
+      List<dynamic> events = result.data!['events'];
+      return events
+          .map<Meeting>((e) => Meeting(
+              e['title'],
+              DateTime.parse(e['start_time']),
+              DateTime.parse(e['end_time']),
+              Colors.blue))
+          .toList();
+    }
+    return [];
   }
 
-  List<Meeting> _getDataSource() {
-    final List<Meeting> meetings = <Meeting>[];
-    for (var i = 0; i < items.length; i++) {
-      meetings.add(Meeting(items[i]['title'], items[i]['startTime'],
-          items[i]['endTime'], items[i]['color']));
-    }
-    return meetings;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
+    final Future<QueryResult> result = client.query(options);
+
+    return FutureBuilder(
+        future: result,
+        builder: (BuildContext context, AsyncSnapshot<QueryResult> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return const Text('not started');
+            case ConnectionState.waiting:
+              return const Loading();
+            default:
+              return Scaffold(
+                  appBar: AppBar(
+                      title:
+                          const Text('Agenda', style: TextStyle(fontSize: 24)),
+                      backgroundColor: Colors.lightBlue,
+                      shadowColor: Colors.transparent,
+                      automaticallyImplyLeading: true,
+                      systemOverlayStyle: const SystemUiOverlayStyle(
+                          statusBarColor: Colors.lightBlue)),
+                  body: SfCalendar(
+                    view: CalendarView.schedule,
+                    minDate: DateTime.now(),
+                    maxDate: DateTime.now().add(const Duration(days: 365)),
+                    dataSource: snapshot.hasData
+                        ? MeetingDataSource(mapResultToItems(snapshot.data!))
+                        : null,
+                    scheduleViewSettings: const ScheduleViewSettings(
+                        hideEmptyScheduleWeek: true,
+                        monthHeaderSettings: MonthHeaderSettings(
+                            monthFormat: 'MMM yyyy',
+                            backgroundColor: Colors.transparent,
+                            height: 60,
+                            textAlign: TextAlign.center,
+                            monthTextStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold))),
+                  ));
+          }
+        });
   }
 }
 
