@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
+
 const String announcement = r'''
   query announcement($id: ID!) {
     announcement(id: $id) {
@@ -54,7 +55,7 @@ class AnnouncementPage extends HookConsumerWidget {
                 return Padding(
                   // Add padding to whole body
                   padding: EdgeInsets.all(paddingBody),
-                  child: Column(
+                  child: ListView(
                     children: [
                       Row(children: <Widget>[
                         Text(
@@ -63,9 +64,11 @@ class AnnouncementPage extends HookConsumerWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
+                        ),// TODO: also list author affiliation, e.g. 'Bestuur'
                       ]),
-                      MarkdownBody(data: announcement?['contents'] ?? ""),
+                      MarkdownBody(
+                        data: announcement?['contents'] ?? "",
+                        ),
                     ],
                   ),
                 );
