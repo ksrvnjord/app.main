@@ -44,7 +44,6 @@ class ShowFullAlmanak extends StatefulHookConsumerWidget {
 
 class _ShowFullAlmanakState extends ConsumerState<ShowFullAlmanak> {
   final _pagingController = PagingController<int, dynamic>(
-    // 2
     firstPageKey: 1,
   );
 

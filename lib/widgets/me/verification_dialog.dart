@@ -9,7 +9,7 @@ class VerificationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.orange,
         alignment: Alignment.bottomCenter,
         insetPadding: const EdgeInsets.all(0),
         contentPadding: const EdgeInsets.all(10),
