@@ -53,28 +53,46 @@ class Announcements extends HookConsumerWidget {
                   return Card(
                     color: Colors.white,
                     elevation: 3, // give more card-like feel
-                    child: ListTile(
-                      title: Text(
-                        announcementsList[index]['title'] ?? '',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: titleSize),
+                    child: InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(children: <Widget>[
+                            Row(children: <Widget>[
+                              Text(
+                                announcementsList[index]['author'] ?? '',
+                                style: const TextStyle(
+                                  fontSize: titleSize - 4,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                        announcementsList[index]['title'] ?? '',
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                  const Icon(Icons.arrow_forward_ios)
+                                ]),
+                          ]),
                       ),
-                      subtitle: Text(
-                        announcementsList[index]['author'] ?? '',
-                        style: const TextStyle(
-                          // TODO: aanpassen naar app stijl.
-                        )
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AnnouncementPage(
-                                  announcementId: announcementsList[index]
-                                      ['id'])),
-                        );
-                      },
+                       onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AnnouncementPage(
+                                    announcementId: announcementsList[index]
+                                        ['id'])),
+                          );
+                        }
                     ),
+                    
                   );
                 },
               ),
@@ -84,3 +102,26 @@ class Announcements extends HookConsumerWidget {
     );
   }
 }
+
+// ListTile(
+//                       title: Text(
+//                         announcementsList[index]['title'] ?? '',
+//                         style: const TextStyle(
+//                             fontWeight: FontWeight.bold, fontSize: titleSize),
+//                       ),
+//                       subtitle: Text(
+//                         announcementsList[index]['author'] ?? '',
+//                         style: const TextStyle(
+//                           // TODO: aanpassen naar app stijl.
+//                         )
+//                       ),
+//                       onTap: () {
+//                         Navigator.push(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) => AnnouncementPage(
+//                                   announcementId: announcementsList[index]
+//                                       ['id'])),
+//                         );
+//                       },
+//                     ),
