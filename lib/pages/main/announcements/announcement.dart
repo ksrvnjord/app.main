@@ -57,19 +57,6 @@ class AnnouncementPage extends HookConsumerWidget {
                   child: ListView(
                     children: <Widget>[
                       Container(
-                        // Title Container
-                        height: 40,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            announcement?['title'],
-                            style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Container(
                           // Author
                           height: 40,
                           color: Colors.white,
