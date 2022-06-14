@@ -62,7 +62,6 @@ class Announcements extends HookConsumerWidget {
                                 announcementsList[index]['author'] ?? '',
                                 style: const TextStyle(
                                   fontSize: titleSize - 4,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ]),
