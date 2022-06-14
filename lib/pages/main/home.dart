@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/widgets/general/agenda_icon.dart';
 import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
 import 'package:ksrvnjord_main_app/widgets/general/error.dart';
 import 'package:ksrvnjord_main_app/widgets/general/vaarverbod.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatelessWidget {
           // TODO: Have the title with only the Logo, and size it correctly
           title: Row(
               children: const <Widget>[
+                AgendaCard(),
                 BarLogoWidget(image: Images.appLogo),
                 // TODO: Rewrite this Row-construction to AppBar(..., actions: [])
                 MyProfileCard()
