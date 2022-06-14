@@ -54,23 +54,19 @@ class AnnouncementPage extends HookConsumerWidget {
                 return Padding(
                   // Add padding to whole body
                   padding: EdgeInsets.all(paddingBody),
-                  child: ListView(
-                    children: <Widget>[
-                      Container(
-                          // Author
-                          height: 40,
-                          color: Colors.white,
-                          child: Text(announcement?['author'])),
-                      Container(
-                        // Content
-                        color: Colors.white,
-                        child: Center(
-                          child: MarkdownBody(
-                              data: announcement?['contents'] ?? ""),
+                  child: Column(
+                    children: [
+                      Row(children: <Widget>[
+                        Text(
+                          announcement?['author'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                      ]),
+                      MarkdownBody(data: announcement?['contents'] ?? ""),
                     ],
-                    scrollDirection: Axis.vertical,
                   ),
                 );
             }
