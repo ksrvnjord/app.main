@@ -105,6 +105,12 @@ class MeWidget extends HookConsumerWidget {
           'Achternaam', user['fullContact']['private']['last_name'] ?? '-'),
       AmendableUserField('E-mailadres', user['email'] ?? '-'),
       AmendableUserField(
+          'Straat', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
+          'Huisnummer', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
+          'Toevoeging', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
           'Postcode', user['fullContact']['private']['zipcode'] ?? '-'),
       AmendableUserField('Stad', user['fullContact']['private']['city'] ?? '-'),
       const Divider(

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class VerificationDialog extends StatelessWidget {
-  const VerificationDialog(this.title, this.body, {Key? key}) : super(key: key);
+  const VerificationDialog(this.title, this.body, this.color, {Key? key})
+      : super(key: key);
 
   final String title;
   final String body;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: Colors.orange,
+        backgroundColor: color,
         alignment: Alignment.bottomCenter,
         insetPadding: const EdgeInsets.all(0),
         contentPadding: const EdgeInsets.all(10),

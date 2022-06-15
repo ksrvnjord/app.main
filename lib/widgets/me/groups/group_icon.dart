@@ -29,12 +29,13 @@ class GroupIcon extends StatelessWidget {
             const String title = '''Gegevensverandering was succesvol!\n\n''';
             const String body =
                 '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+            const Color color = Colors.orange;
             showDialog(
                 barrierDismissible: false,
                 barrierColor: null,
                 context: context,
                 builder: (BuildContext context) =>
-                    const VerificationDialog(title, body));
+                    const VerificationDialog(title, body, color));
           }
         });
   }

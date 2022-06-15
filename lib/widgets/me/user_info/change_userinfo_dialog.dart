@@ -3,6 +3,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 
+String me_mutation = '''
+      mutation (\$contact: IContact!){
+        updateContactDetails(contact: \$contact) {
+            first_name,
+            last_name
+            email,
+            street,
+            housenumber,
+            housenumber_addition,
+            city,
+            zipcode,
+        }
+      }
+      ''';
+
 class ChangeUserinfoDialog extends StatefulHookConsumerWidget {
   final String label;
 
@@ -27,10 +42,12 @@ class _ChangeUserinfoDialogState extends ConsumerState<ChangeUserinfoDialog> {
   };
 
   TextInputType decideKeyboard(label) {
-    if (label == 'E-mailadres' || label == 'Njord-account') {
+    if (label == 'E-mailadres') {
       return (TextInputType.emailAddress);
     } else if (label == 'Telefoonnummer') {
       return (TextInputType.phone);
+    } else if (label == 'Huisnummer') {
+      return (TextInputType.number);
     } else {
       return (TextInputType.text);
     }
@@ -38,13 +55,7 @@ class _ChangeUserinfoDialogState extends ConsumerState<ChangeUserinfoDialog> {
 
   update_user(label, newValue) async {
     String backend_label = transform_label[label];
-    String me_mutation = '''
-      mutation (\$contact: IContact!){
-        updateContactDetails(contact: \$contact) {
-          $backend_label
-        }
-      }
-      ''';
+
     Map<String, dynamic> contact = {
       "contact": {backend_label: newValue}
     };
@@ -56,6 +67,7 @@ class _ChangeUserinfoDialogState extends ConsumerState<ChangeUserinfoDialog> {
 
     if (result.data != null) {
       if (result.data!['updateContactDetails'][backend_label] == newValue) {
+        //sanity check
         return true;
       }
     }
@@ -81,7 +93,8 @@ class _ChangeUserinfoDialogState extends ConsumerState<ChangeUserinfoDialog> {
                 iconSize: 30,
                 icon: const Icon(Icons.close_rounded, color: Colors.red),
                 onPressed: () {
-                  Navigator.pop(context, false);
+                  Navigator.pop(context,
+                      {'pressed_change': false, 'succesful_change': false});
                 }),
             IconButton(
                 padding: const EdgeInsets.all(8),
@@ -89,10 +102,15 @@ class _ChangeUserinfoDialogState extends ConsumerState<ChangeUserinfoDialog> {
                 icon: const Icon(Icons.done_rounded, color: Colors.green),
                 onPressed: () async {
                   if (newValue == '') {
-                    Navigator.pop(context, false);
+                    Navigator.pop(context,
+                        {'pressed_change': true, 'succesful_change': false});
                   } else {
-                    bool succes = await update_user(widget.label, newValue);
-                    Navigator.pop(context, succes);
+                    bool succesful_change =
+                        await update_user(widget.label, newValue);
+                    Navigator.pop(context, {
+                      'pressed_change': true,
+                      'succesful_change': succesful_change
+                    });
                   }
                 }),
           ],
