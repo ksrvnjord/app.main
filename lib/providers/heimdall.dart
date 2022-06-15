@@ -10,7 +10,7 @@ import 'package:graphql/client.dart' as graphql;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
-import 'package:ksrvnjord_main_app/config.dart' as config show baseURL;
+import 'package:ksrvnjord_main_app/constant.dart' as constant show baseURL, demoURL, Endpoint;
 
 final heimdallProvider = Provider((ref) => HeimdallService(ref.read));
 
@@ -22,7 +22,7 @@ class HeimdallService {
         );
 
   final Reader _read;
-  String baseURL = config.baseURL;
+  String baseURL = constant.baseURL;
   final graphql.AuthLink _authLink;
 
   void updateBaseURL(String _baseURL) {

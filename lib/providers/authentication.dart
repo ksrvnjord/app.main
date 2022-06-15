@@ -13,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ksrvnjord_main_app/config.dart' as config show baseURL;
+import 'package:ksrvnjord_main_app/constant.dart' as constant show baseURL, demoURL, Endpoint;
 
 final authenticationProvider =
     ChangeNotifierProvider((ref) => AuthenticationService(ref.read));
@@ -26,7 +26,7 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
-  String baseURL = config.baseURL;
+  String baseURL = constant.baseURL;
 
   void updateBaseURL(String _baseURL) {
     baseURL = _baseURL;
@@ -81,15 +81,15 @@ class AuthenticationService extends ChangeNotifier {
   Future<String> attemptLogin(String username, String password) async {
     try {
       if (username == 'demo' && password == 'testing') {
-        var demoURL = 'https://heimdall-test.ksrv.nl/';
+        var demoURL = constant.demoURL;
         _read(heimdallProvider).updateBaseURL(demoURL);
         baseURL = demoURL;
       }
       var csrfResponse = await _read(dioProvider)
-          .get<Map<String, Object?>>('${baseURL}api/v1/auth/csrf');
+          .get<Map<String, Object?>>(baseURL + constant.Endpoint.csrf);
 
       var tokenResponse = await _read(dioProvider)
-          .post<Map<String, Object?>>('${baseURL}api/v1/auth/login', data: {
+          .post<Map<String, Object?>>(baseURL + constant.Endpoint.login, data: {
         'username': username,
         'password': password,
         'csrf_token': csrfResponse.data!['csrf_token']
