@@ -13,6 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ksrvnjord_main_app/config.dart' as config show baseURL;
 
 final authenticationProvider =
     ChangeNotifierProvider((ref) => AuthenticationService(ref.read));
@@ -25,7 +26,7 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
-  String baseURL = 'https://heimdall.ksrv.nl/';
+  String baseURL = config.baseURL;
 
   void updateBaseURL(String _baseURL) {
     baseURL = _baseURL;
