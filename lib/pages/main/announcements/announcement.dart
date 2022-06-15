@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
+
 const String announcement = r'''
   query announcement($id: ID!) {
     announcement(id: $id) {
@@ -55,35 +56,20 @@ class AnnouncementPage extends HookConsumerWidget {
                   // Add padding to whole body
                   padding: EdgeInsets.all(paddingBody),
                   child: ListView(
-                    children: <Widget>[
-                      Container(
-                        // Title Container
-                        height: 40,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            announcement?['title'],
-                            style: TextStyle(
-                                fontSize: titleFontSize,
-                                fontWeight: FontWeight.bold),
+                    children: [
+                      Row(children: <Widget>[
+                        Text(
+                          announcement?['author'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
+                        ),// TODO: also list author affiliation, e.g. 'Bestuur'
+                      ]),
+                      MarkdownBody(
+                        data: announcement?['contents'] ?? "",
                         ),
-                      ),
-                      Container(
-                          // Author
-                          height: 40,
-                          color: Colors.white,
-                          child: Text(announcement?['author'])),
-                      Container(
-                        // Content
-                        color: Colors.white,
-                        child: Center(
-                          child: MarkdownBody(
-                              data: announcement?['contents'] ?? ""),
-                        ),
-                      ),
                     ],
-                    scrollDirection: Axis.vertical,
                   ),
                 );
             }
