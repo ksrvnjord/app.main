@@ -92,10 +92,9 @@ class AlmanakProfile extends HookConsumerWidget {
                                   (user_contact['housenumber_addition'] ?? '')),
 
                           StaticUserField(
-                              'Postcode',
-                              (user_contact['zipcode'] ?? '-') +
-                                  '        ' +
-                                  (user_contact['city'] ?? '')),
+                              'Postcode', user_contact['zipcode'] ?? '-'),
+                          StaticUserField(
+                              'Woonplaats', user_contact['city'] ?? '-'),
                         },
                       ]));
               }
