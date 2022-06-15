@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/general/error.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+import 'package:ksrvnjord_main_app/constant.dart' as constant show Endpoint;
 
 class VaarverbodCardWidget extends StatelessWidget {
   const VaarverbodCardWidget(this.status, this.message, {Key? key})
@@ -42,7 +43,7 @@ class VaarverbodWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var api = ref.watch(heimdallProvider);
-    var vaarverbod = api.get('api/v1/vaarverbod', null);
+    var vaarverbod = api.get(constant.Endpoint.vaarverbod, null);
 
     return Container(
         alignment: Alignment.center,
@@ -58,9 +59,9 @@ class VaarverbodWidget extends HookConsumerWidget {
                 default:
                   if (snapshot.hasError) {
                     return ErrorCardWidget(
-                      errorMessage: "Er is een fout opgetreden tijdens het laden van het vaarverbod!",
-                      causingError: snapshot.error
-                      );
+                        errorMessage:
+                            "Er is een fout opgetreden tijdens het laden van het vaarverbod!",
+                        causingError: snapshot.error);
                   }
 
                   dynamic vaarverbod = snapshot.data!.data;

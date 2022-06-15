@@ -63,6 +63,6 @@ class HeimdallService {
   graphql.GraphQLClient graphQLClient() {
     return graphql.GraphQLClient(
         cache: graphql.GraphQLCache(),
-        link: _authLink.concat(graphql.HttpLink('${baseURL}graphql')));
+        link: _authLink.concat(graphql.HttpLink(baseURL + constant.Endpoint.graphql)));
   }
 }

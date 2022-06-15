@@ -49,7 +49,7 @@ class AuthenticationService extends ChangeNotifier {
     if (storedBearer.length > 1) {
       try {
         var authResponse = await _read(dioProvider).get<Map<String, Object?>>(
-            '${baseURL}api/v1/user',
+            baseURL + constant.Endpoint.user,
             options: Options(headers: {
               'Authorization': 'Bearer $storedBearer',
               'Accept': 'application/json'
