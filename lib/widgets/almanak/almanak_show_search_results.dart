@@ -19,9 +19,11 @@ const String users = r'''
         id,
         email,
         username,
-        contact {
-          first_name,
-          last_name
+        fullContact {
+          public{
+            first_name,
+            last_name
+          }
         }
       }
     }

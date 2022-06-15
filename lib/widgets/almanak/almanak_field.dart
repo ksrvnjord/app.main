@@ -13,10 +13,10 @@ class AlmanakField extends StatelessWidget {
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              (user['contact']['first_name'] != null)
-                  ? user['contact']['first_name'] +
-                      ' ' +
-                      user['contact']['last_name']
+              (user['fullContact']['public']['first_name'] != null)
+                  ? user['fullContact']['public']['last_name'] +
+                      ', ' +
+                      user['fullContact']['public']['first_name']
                   : user['username'],
               style: const TextStyle(fontSize: 16, color: Colors.black54),
             )),

@@ -22,9 +22,17 @@ const String me = r'''
       identifier,
       email,
       username,
-      contact {
-        first_name,
-        last_name
+      fullContact {
+          private{
+            first_name,
+            last_name
+            email,
+            street,
+            housenumber,
+            housenumber_addition,
+            city,
+            zipcode,
+        }
       }
     }
   }
@@ -91,9 +99,20 @@ class MeWidget extends HookConsumerWidget {
       const SizedBox(height: 20),
       StaticUserField('Lidnummer', user['identifier'].toString()),
       StaticUserField('Njord-account', user['username'] ?? '-'),
-      StaticUserField('Voornaam', user['contact']['first_name'] ?? '-'),
-      StaticUserField('Achternaam', user['contact']['last_name'] ?? '-'),
-      StaticUserField('E-mailadres', user['email'] ?? '-'),
+      AmendableUserField(
+          'Voornaam', user['fullContact']['private']['first_name'] ?? '-'),
+      AmendableUserField(
+          'Achternaam', user['fullContact']['private']['last_name'] ?? '-'),
+      AmendableUserField('E-mailadres', user['email'] ?? '-'),
+      AmendableUserField(
+          'Straat', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
+          'Huisnummer', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
+          'Toevoeging', user['fullContact']['private']['city'] ?? '-'),
+      AmendableUserField(
+          'Postcode', user['fullContact']['private']['zipcode'] ?? '-'),
+      AmendableUserField('Stad', user['fullContact']['private']['city'] ?? '-'),
       const Divider(
         height: 32,
       ),

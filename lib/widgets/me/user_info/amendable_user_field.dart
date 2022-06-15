@@ -27,30 +27,40 @@ class AmendableUserField extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        DevelopmentFeature(
-            child: IconButton(
+        IconButton(
           padding: const EdgeInsets.all(0),
           constraints: const BoxConstraints(),
           iconSize: 20,
           icon: const Icon(Icons.edit, color: Colors.grey),
           onPressed: () async {
-            bool succesful_change = await showDialog(
+            Map succeses = await showDialog(
                 context: context,
                 builder: (BuildContext context) =>
                     ChangeUserinfoDialog(label: label));
-            if (succesful_change == true) {
-              const String title = '''Gegevensverandering was succesvol!\n\n''';
-              const String body =
-                  '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+            if (succeses['pressed_change'] == true) {
+              String title = '';
+              String body = '';
+              Color color = Colors.red;
+
+              if ((succeses['succesful_change'] == true)) {
+                title = '''Gegevensverandering was succesvol!\n\n''';
+                body =
+                    '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
+                color = Colors.orange;
+              } else {
+                title = '''Gegevensverandering was NIET succesvol!\n\n''';
+                body =
+                    '''Er is iets misgegaan met het invullen! Weet je zeker dat je een geldige waarde hebt ingevuld?''';
+              }
               showDialog(
                   barrierDismissible: false,
                   barrierColor: null,
                   context: context,
                   builder: (BuildContext context) =>
-                      const VerificationDialog(title, body));
+                      VerificationDialog(title, body, color));
             }
           },
-        )),
+        ),
       ]),
       const Divider(
         color: Colors.grey,

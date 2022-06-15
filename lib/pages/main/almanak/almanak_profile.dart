@@ -13,9 +13,17 @@ const String user = r'''
       identifier,
       email,
       username,
-      contact {
-        first_name,
-        last_name
+      fullContact {
+          public{
+            first_name,
+            last_name
+            email,
+            street,
+            housenumber,
+            housenumber_addition,
+            city,
+            zipcode,
+          }
       }
     }
   }
@@ -53,6 +61,7 @@ class AlmanakProfile extends HookConsumerWidget {
                   return const Loading();
                 default:
                   var user = snapshot.data?.data?['user'];
+                  var user_contact = user['fullContact']['public'];
 
                   return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -68,15 +77,24 @@ class AlmanakProfile extends HookConsumerWidget {
                         } else ...{
                           StaticUserField(
                               'Naam',
-                              (user['contact']['first_name'] ?? '-') +
+                              (user_contact['first_name'] ?? '-') +
                                   ' ' +
-                                  (user['contact']['last_name'] ??
+                                  (user_contact['last_name'] ??
                                       '-')), // TODO: non-default public
-                          DevelopmentFeature(
-                              child: StaticUserField(
-                                  'E-mailadres', (user['email'] ?? '-'))),
+
+                          StaticUserField('E-mailadres', user['email']),
                           StaticUserField(
-                              'Njord-account', (user['username'] ?? '-')),
+                              'Adres',
+                              (user_contact['street'] ?? '-') +
+                                  ' ' +
+                                  (user_contact['housenumber'] ?? '') +
+                                  ' ' +
+                                  (user_contact['housenumber_addition'] ?? '')),
+
+                          StaticUserField(
+                              'Postcode', user_contact['zipcode'] ?? '-'),
+                          StaticUserField(
+                              'Woonplaats', user_contact['city'] ?? '-'),
                         },
                       ]));
               }
