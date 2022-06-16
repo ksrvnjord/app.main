@@ -13,14 +13,13 @@ class AlmanakPage extends StatelessWidget {
         title: const Text('Almanak'),
         automaticallyImplyLeading: false,
         actions: [
-          DevelopmentFeature(
-              child: IconButton(
+          IconButton(
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AlmanakSearch()));
             },
             icon: const Icon(Icons.search),
-          ))
+          )
         ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
