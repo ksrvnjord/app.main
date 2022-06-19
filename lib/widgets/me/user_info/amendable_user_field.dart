@@ -1,71 +1,130 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
-import 'package:ksrvnjord_main_app/widgets/me/user_info/change_userinfo_dialog.dart';
-import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
 
-class AmendableUserField extends StatelessWidget {
-  const AmendableUserField(this.label, this.value, {Key? key})
+class AmendableUserField extends StatefulWidget {
+  AmendableUserField(this.label, this.value, this.width, this.callBack,
+      {Key? key})
       : super(key: key);
 
-  final String label;
-  final String value;
+  final Map<String, dynamic> label;
+  final Map<String, dynamic> value;
+  final double width;
+  final Function callBack;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
-            ),
-            const SizedBox(height: 3),
-            Text(value),
-          ],
-        ),
-        const Spacer(),
-        IconButton(
+  _AmendableUserFieldState createState() => _AmendableUserFieldState();
+}
+
+class _AmendableUserFieldState extends State<AmendableUserField> {
+  Map initialText(private, update, change) {
+    if (update == null) {
+      return ({'text': '-', 'font': FontStyle.normal, 'color': Colors.black});
+    } else if (update != change) {
+      return ({'text': change, 'font': FontStyle.normal, 'color': Colors.blue});
+    } else if (update == private) {
+      return ({
+        'text': update,
+        'font': FontStyle.normal,
+        'color': Colors.black
+      });
+    } else {
+      return ({
+        'text': update,
+        'font': FontStyle.italic,
+        'color': Colors.black
+      });
+    }
+  }
+
+  TextInputType decideKeyboard(label) {
+    if (label == 'email') {
+      return (TextInputType.emailAddress);
+    } else if (label == 'housenumber') {
+      return (TextInputType.number);
+    } else {
+      return (TextInputType.text);
+    }
+  }
+
+  TextEditingController textcontroller = TextEditingController();
+  bool enabled = false;
+
+  late FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    textcontroller.text = initialText(widget.value['private'],
+        widget.value['update'], widget.value['change'])['text'];
+    focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
+    return //Column(children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            widget.label['display'] ?? '-',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+          const SizedBox(height: 3),
+          SizedBox(
+              height: 15,
+              width: widget.width,
+              child: TextField(
+                enabled: enabled,
+                focusNode: focusNode,
+                keyboardType: decideKeyboard(widget.label['backend']),
+                decoration: const InputDecoration(border: InputBorder.none),
+                style: TextStyle(
+                    color: initialText(
+                        widget.value['private'],
+                        widget.value['update'],
+                        widget.value['change'])['color'],
+                    fontSize: 13,
+                    fontStyle: initialText(
+                        widget.value['private'],
+                        widget.value['update'],
+                        widget.value['change'])['font']),
+                controller: textcontroller,
+                onSubmitted: (value) {
+                  enabled = false;
+                  widget.callBack(widget.label['backend'], textcontroller.text);
+                },
+              )),
+        ],
+      ),
+      const Spacer(),
+      IconButton(
           padding: const EdgeInsets.all(0),
           constraints: const BoxConstraints(),
           iconSize: 20,
           icon: const Icon(Icons.edit, color: Colors.grey),
-          onPressed: () async {
-            Map succeses = await showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    ChangeUserinfoDialog(label: label));
-            if (succeses['pressed_change'] == true) {
-              String title = '';
-              String body = '';
-              Color color = Colors.red;
-
-              if ((succeses['succesful_change'] == true)) {
-                title = '''Gegevensverandering was succesvol!\n\n''';
-                body =
-                    '''Aangezien elke verandering door het bestuur moet worden goedgekeurd, kan het even duren voordat de verandering daadwerkelijk zichtbaar is.''';
-                color = Colors.orange;
-              } else {
-                title = '''Gegevensverandering was NIET succesvol!\n\n''';
-                body =
-                    '''Er is iets misgegaan met het invullen! Weet je zeker dat je een geldige waarde hebt ingevuld?''';
-              }
-              showDialog(
-                  barrierDismissible: false,
-                  barrierColor: null,
-                  context: context,
-                  builder: (BuildContext context) =>
-                      VerificationDialog(title, body, color));
-            }
-          },
-        ),
-      ]),
-      const Divider(
-        color: Colors.grey,
-        thickness: 1,
-      ),
+          onPressed: () {
+            Timer(const Duration(milliseconds: 20), () {
+              focusNode.requestFocus();
+            });
+            setState(() {
+              enabled = true;
+            });
+          }),
     ]);
+    //const Divider(
+    //  color: Colors.grey,
+    //  thickness: 1,
+    //]);
   }
 }

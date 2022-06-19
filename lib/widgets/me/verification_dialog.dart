@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
 class VerificationDialog extends StatelessWidget {
-  const VerificationDialog(this.title, this.body, this.color, {Key? key})
+  const VerificationDialog(this.verificationSettings, {Key? key})
       : super(key: key);
 
-  final String title;
-  final String body;
-  final Color color;
+  final Map verificationSettings;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: color,
+        backgroundColor: verificationSettings['color'],
         alignment: Alignment.bottomCenter,
-        insetPadding: const EdgeInsets.all(0),
+        insetPadding: const EdgeInsets.all(10),
         contentPadding: const EdgeInsets.all(10),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -33,14 +31,14 @@ class VerificationDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
                   TextSpan(
-                      text: title,
+                      text: verificationSettings['title'],
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.black)),
                   TextSpan(
-                      text: body,
-                      style: const TextStyle(color: Colors.black, fontSize: 16))
+                      text: verificationSettings['body'],
+                      style: const TextStyle(color: Colors.black, fontSize: 15))
                 ]))
           ],
         ));
