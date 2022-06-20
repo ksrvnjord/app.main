@@ -1,15 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
 
 class AmendableUserField extends StatefulWidget {
-  AmendableUserField(this.label, this.value, this.width, this.callBack,
+  AmendableUserField(this.label, this.value, this.fieldWidth, this.callBack,
       {Key? key})
       : super(key: key);
 
   final Map<String, dynamic> label;
   final Map<String, dynamic> value;
-  final double width;
+  final double fieldWidth;
   final Function callBack;
 
   @override
@@ -19,7 +20,15 @@ class AmendableUserField extends StatefulWidget {
 class _AmendableUserFieldState extends State<AmendableUserField> {
   Map initialText(private, update, change) {
     if (update == null) {
-      return ({'text': '-', 'font': FontStyle.normal, 'color': Colors.black});
+      if (change == null) {
+        return ({'text': '-', 'font': FontStyle.normal, 'color': Colors.black});
+      } else {
+        return ({
+          'text': change,
+          'font': FontStyle.normal,
+          'color': Colors.blue
+        });
+      }
     } else if (update != change) {
       return ({'text': change, 'font': FontStyle.normal, 'color': Colors.blue});
     } else if (update == private) {
@@ -48,6 +57,7 @@ class _AmendableUserFieldState extends State<AmendableUserField> {
   }
 
   TextEditingController textcontroller = TextEditingController();
+  ScrollController scrollcontroller = ScrollController();
   bool enabled = false;
 
   late FocusNode focusNode;
@@ -55,8 +65,13 @@ class _AmendableUserFieldState extends State<AmendableUserField> {
   @override
   void initState() {
     super.initState();
-    textcontroller.text = initialText(widget.value['private'],
+    String initialValue = initialText(widget.value['private'],
         widget.value['update'], widget.value['change'])['text'];
+    textcontroller.text = initialValue;
+    textcontroller.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: initialValue.length,
+    );
     focusNode = FocusNode();
   }
 
@@ -71,60 +86,68 @@ class _AmendableUserFieldState extends State<AmendableUserField> {
     BuildContext context,
   ) {
     return //Column(children: [
-        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            widget.label['display'] ?? '-',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                widget.label['display'] ?? '-',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+              const SizedBox(height: 3),
+              SizedBox(
+                  width: widget.fieldWidth - 20,
+                  height: 15,
+                  child: CupertinoTextField(
+                    enabled: enabled,
+                    focusNode: focusNode,
+                    padding: const EdgeInsets.all(0),
+                    keyboardType: decideKeyboard(widget.label['backend']),
+                    scrollController: scrollcontroller,
+                    decoration: const BoxDecoration(border: null),
+                    style: TextStyle(
+                        color: initialText(
+                            widget.value['private'],
+                            widget.value['update'],
+                            widget.value['change'])['color'],
+                        fontSize: 13,
+                        fontStyle: initialText(
+                            widget.value['private'],
+                            widget.value['update'],
+                            widget.value['change'])['font']),
+                    controller: textcontroller,
+                    onSubmitted: (value) {
+                      enabled = false;
+                      textcontroller.selection = TextSelection(
+                        baseOffset: 0,
+                        extentOffset: textcontroller.text.length,
+                      );
+                      widget.callBack(
+                          widget.label['backend'], textcontroller.text);
+                    },
+                  )),
+            ],
           ),
-          const SizedBox(height: 3),
-          SizedBox(
-              height: 15,
-              width: widget.width,
-              child: TextField(
-                enabled: enabled,
-                focusNode: focusNode,
-                keyboardType: decideKeyboard(widget.label['backend']),
-                decoration: const InputDecoration(border: InputBorder.none),
-                style: TextStyle(
-                    color: initialText(
-                        widget.value['private'],
-                        widget.value['update'],
-                        widget.value['change'])['color'],
-                    fontSize: 13,
-                    fontStyle: initialText(
-                        widget.value['private'],
-                        widget.value['update'],
-                        widget.value['change'])['font']),
-                controller: textcontroller,
-                onSubmitted: (value) {
-                  enabled = false;
-                  widget.callBack(widget.label['backend'], textcontroller.text);
-                },
-              )),
-        ],
-      ),
-      const Spacer(),
-      IconButton(
-          padding: const EdgeInsets.all(0),
-          constraints: const BoxConstraints(),
-          iconSize: 20,
-          icon: const Icon(Icons.edit, color: Colors.grey),
-          onPressed: () {
-            Timer(const Duration(milliseconds: 20), () {
-              focusNode.requestFocus();
-            });
-            setState(() {
-              enabled = true;
-            });
-          }),
-    ]);
-    //const Divider(
-    //  color: Colors.grey,
-    //  thickness: 1,
-    //]);
+          //const Spacer(),
+          IconButton(
+              padding: const EdgeInsets.all(0),
+              constraints: const BoxConstraints(),
+              iconSize: 20,
+              icon: const Icon(Icons.edit, color: Colors.grey),
+              onPressed: () {
+                Timer(const Duration(milliseconds: 50), () {
+                  focusNode.requestFocus();
+                });
+                setState(() {
+                  enabled = true;
+                });
+              }),
+        ]);
   }
 }
