@@ -11,8 +11,7 @@ void verificationDialog(context, querySucces) {
   } else {
     verificationSettings['title'] = 'Aanvraag Geslaagd!\n\n';
     verificationSettings['body'] =
-        '''Het even duren voordat de wijzigingen in de almanak
-                  zichtbaar zijn!''';
+        '''Voordat wijzigingen in de almanak komen worden ze eerst gecontroleerd, dit kan even duren!''';
     verificationSettings['color'] = Colors.green;
   }
   showDialog(

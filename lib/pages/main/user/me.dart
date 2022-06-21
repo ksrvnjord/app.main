@@ -71,13 +71,15 @@ class MeWidget extends StatefulHookConsumerWidget {
 }
 
 class _MeWidgetState extends ConsumerState<MeWidget> {
-  bool any_changes = false;
+  bool anyChanges = false;
 
   callBack(String label, String value) {
     setState(() {
       widget.contactChanges[label] = value;
-      if (widget.user['fullContact']['update'][label] != value) {
-        any_changes = true;
+      if ((widget.user['fullContact']['update'][label] != value) &
+          !((widget.user['fullContact']['update'][label] == null) &
+              (value == '-'))) {
+        anyChanges = true;
       }
     });
   }
@@ -162,7 +164,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
       const Divider(
         height: 32,
       ),
-      if (any_changes == true) ...[
+      if (anyChanges == true) ...[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -171,7 +173,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               child: const Text(
                 'Wijzigingen opslaan',
                 style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
               ),
               onPressed: () async {
                 QueryResult queryResult = await _sendInfoToHeimdall(
@@ -188,7 +190,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               child: const Text(
                 'Wijzigingen ongedaan maken',
                 style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
               ),
               onPressed: () {
                 setState(() {

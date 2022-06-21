@@ -20,7 +20,7 @@ class AmendableUserField extends StatefulWidget {
 class _AmendableUserFieldState extends State<AmendableUserField> {
   Map initialText(private, update, change) {
     if (update == null) {
-      if (change == null) {
+      if (change == null || change == '-') {
         return ({'text': '-', 'font': FontStyle.normal, 'color': Colors.black});
       } else {
         return ({
