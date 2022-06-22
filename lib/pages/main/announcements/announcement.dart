@@ -4,7 +4,8 @@ import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const String announcement = r'''
   query announcement($id: ID!) {
@@ -64,11 +65,18 @@ class AnnouncementPage extends HookConsumerWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),// TODO: also list author affiliation, e.g. 'Bestuur'
+                        ), // TODO: also list author affiliation, e.g. 'Bestuur'
                       ]),
                       MarkdownBody(
                         data: announcement?['contents'] ?? "",
-                        ),
+                        onTapLink: (text, url, title) {
+                          // Check if an URL is actually given
+                          if (url?.isNotEmpty ?? false) {
+                            // Launch the URL
+                            launchUrlString(url!);
+                          }
+                        },
+                      ),
                     ],
                   ),
                 );
