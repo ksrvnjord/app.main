@@ -19,31 +19,22 @@ class AmendableUserField extends StatefulWidget {
 
 class _AmendableUserFieldState extends State<AmendableUserField> {
   Map initialText(private, update, change) {
-    if (update == null) {
-      if (change == null || change == '-') {
-        return ({'text': '-', 'font': FontStyle.normal, 'color': Colors.black});
-      } else {
-        return ({
-          'text': change,
-          'font': FontStyle.normal,
-          'color': Colors.blue
-        });
-      }
-    } else if (update != change) {
-      return ({'text': change, 'font': FontStyle.normal, 'color': Colors.blue});
-    } else if (update == private) {
-      return ({
-        'text': update,
-        'font': FontStyle.normal,
-        'color': Colors.black
-      });
-    } else {
-      return ({
-        'text': update,
-        'font': FontStyle.italic,
-        'color': Colors.black
-      });
+    var field = {
+      'text': private ?? '-',
+      'font': FontStyle.normal,
+      'color': Colors.black
+    };
+
+    if (change != null && change != private && change != update) {
+      field['text'] = change;
+      field['color'] = Colors.blue;
+      field['font'] = FontStyle.italic;
+    } else if (update != null && update != private) {
+      field['text'] = update;
+      field['font'] = FontStyle.italic;
     }
+
+    return field;
   }
 
   TextInputType decideKeyboard(label) {
