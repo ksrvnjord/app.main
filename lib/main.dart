@@ -32,8 +32,9 @@ class MyApp extends HookConsumerWidget {
     final authenticator = ref.watch(authenticationProvider);
 
     return MaterialApp(
-        title: 'K.S.R.V. Njord',
-        home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
-        debugShowCheckedModeBanner: false);
+      title: 'K.S.R.V. Njord',
+      home: authenticator.loggedIn ? const MainScreen() : const LoginScreen(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }

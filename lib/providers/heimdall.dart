@@ -10,7 +10,8 @@ import 'package:graphql/client.dart' as graphql;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
-import 'package:ksrvnjord_main_app/constant.dart' as constant show baseURL, demoURL, Endpoint;
+import 'package:ksrvnjord_main_app/constant.dart' as constant
+    show baseURL, demoURL, Endpoint;
 
 final heimdallProvider = Provider((ref) => HeimdallService(ref.read));
 
@@ -63,6 +64,7 @@ class HeimdallService {
   graphql.GraphQLClient graphQLClient() {
     return graphql.GraphQLClient(
         cache: graphql.GraphQLCache(),
-        link: _authLink.concat(graphql.HttpLink(baseURL + constant.Endpoint.graphql)));
+        link: _authLink
+            .concat(graphql.HttpLink(baseURL + constant.Endpoint.graphql)));
   }
 }
