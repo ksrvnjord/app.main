@@ -3,14 +3,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/authentication.dart';
+import 'package:ksrvnjord_main_app/push_notifications.dart';
 import 'package:ksrvnjord_main_app/screens/main.dart';
 import 'package:ksrvnjord_main_app/screens/login.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  PushNotificationsManager().init();
   if (kReleaseMode) {
     // Run it inside of SentryFlutter, but log / except to the debug-app
     await SentryFlutter.init(

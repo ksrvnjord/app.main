@@ -50,10 +50,11 @@ android {
 
     defaultConfig {
         applicationId "com.ksrvnjord.app"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     signingConfigs {

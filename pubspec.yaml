@@ -48,7 +48,8 @@ dependencies:
   infinite_scroll_pagination: ^3.1.0
   firebase_core: ^1.18.0
   firebase_messaging: ^11.4.2
-  cloud_firestore: ^3.1.18
+  overlay_support: ^2.0.1
+  
 
 
 dev_dependencies:
