@@ -14,7 +14,7 @@ class AnnouncementsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Aankondigingen'),
+            title: const Text('Ad Valvas'),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
             automaticallyImplyLeading: false,
