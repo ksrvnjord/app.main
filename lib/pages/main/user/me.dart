@@ -6,12 +6,14 @@ import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/queries/mutations/me.dart' as mutation;
 import 'package:ksrvnjord_main_app/queries/queries/me.dart' as query;
-import 'package:ksrvnjord_main_app/widgets/me/show_change_visibility_dialog.dart';
+import 'package:ksrvnjord_main_app/widgets/me/visibility/show_change_visibility_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/amendable_user_row.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/me/verification_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+
+import '../../../widgets/me/visibility/show_change_visibility_dialog.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -66,8 +68,7 @@ class MePage extends HookConsumerWidget {
 
                   Map<String, dynamic> shallowChanges =
                       user['fullContact']['update'];
-                  Map<String, dynamic> deepChanges =
-                      new Map.from(shallowChanges);
+                  Map<String, dynamic> deepChanges = Map.from(shallowChanges);
                   deepChanges.remove('__typename');
 
                   return MeWidget(user, deepChanges);
