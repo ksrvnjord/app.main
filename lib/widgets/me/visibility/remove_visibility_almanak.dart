@@ -30,7 +30,7 @@ class _RemoveVisibilityAlmanakState extends State<RemoveVisibilityAlmanak> {
         Switch(
             value: widget.listed,
             onChanged: (value) {
-              widget.callBack();
+              widget.callBack(value);
               setState(() {
                 widget.listed = value;
               });

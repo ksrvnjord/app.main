@@ -81,7 +81,7 @@ class ChangeVisibilityDialog extends HookConsumerWidget {
                     },
                     {
                       'backend': 'housenumber',
-                      'display': 'Huisnmr',
+                      'display': 'Huisnummer',
                       'is_amendable': true
                     },
                     {

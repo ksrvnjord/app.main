@@ -29,8 +29,9 @@ class _ChangeVisibilityDialogContentState
     widget.changedSettings[label] = !value;
   }
 
-  callBackListed() {
-    widget.listed = !widget.listed;
+  callBackListed(value) {
+    print(value);
+    widget.listed = !value;
   }
 
   Future<QueryResult> _sendChangesToHeimdall(changes) async {
