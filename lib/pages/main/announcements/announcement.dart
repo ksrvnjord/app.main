@@ -12,7 +12,8 @@ const String announcement = r'''
       id,
       title,
       contents,
-      author
+      author,
+      created_at
     }
   }
 ''';

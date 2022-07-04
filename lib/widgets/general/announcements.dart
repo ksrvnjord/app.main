@@ -4,8 +4,10 @@ import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 const double titleSize = 20;
+
 
 class Announcements extends HookConsumerWidget {
   const Announcements({
@@ -23,7 +25,8 @@ class Announcements extends HookConsumerWidget {
           data {
             id,
             title,
-            author
+            author,
+            created_at
           }
         }
       }
@@ -41,6 +44,8 @@ class Announcements extends HookConsumerWidget {
           case ConnectionState.waiting:
             return const Loading();
           default:
+            // Add Dutch time messages
+            timeago.setLocaleMessages('nl', timeago.NlMessages());
             var announcementsList =
                 snapshot.data?.data?['announcements']['data'];
             return Padding(
@@ -50,18 +55,30 @@ class Announcements extends HookConsumerWidget {
                 shrinkWrap: true,
                 itemCount: announcementsList.length ?? 0,
                 itemBuilder: (context, index) {
+                  DateTime dt =
+                      DateTime.parse(announcementsList[index]['created_at']);
+                  String time =
+                  timeago.format(dt, locale: 'nl');
                   return Card(
                     color: Colors.white,
                     elevation: 3, // give more card-like feel
                     child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(children: <Widget>[
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(children: <Widget>[
                             Row(children: <Widget>[
                               Text(
                                 announcementsList[index]['author'] ?? '',
                                 style: const TextStyle(
                                   fontSize: titleSize - 4,
+                                ),
+                              ),
+                            ]),
+                            Row(children: <Widget>[
+                              Text(
+                                time,
+                                style: const TextStyle(
+                                  fontSize: titleSize - 8,
                                 ),
                               ),
                             ]),
@@ -80,8 +97,8 @@ class Announcements extends HookConsumerWidget {
                                   const Icon(Icons.arrow_forward_ios)
                                 ]),
                           ]),
-                      ),
-                       onTap: () {
+                        ),
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -89,9 +106,7 @@ class Announcements extends HookConsumerWidget {
                                     announcementId: announcementsList[index]
                                         ['id'])),
                           );
-                        }
-                    ),
-                    
+                        }),
                   );
                 },
               ),
