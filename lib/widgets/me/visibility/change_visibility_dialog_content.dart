@@ -3,19 +3,19 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/me/visibility/change_visibility_field.dart';
+import 'package:ksrvnjord_main_app/widgets/me/visibility/change_visibility_succes_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/visibility/remove_visibility_almanak.dart';
 import 'package:ksrvnjord_main_app/queries/mutations/change_visibility.dart'
     as mutation;
 
 class ChangeVisibilityDialogContent extends StatefulHookConsumerWidget {
   ChangeVisibilityDialogContent(
-      this.listed, this.labels, this.initialSettings, this.changedSettings,
+      this.unlisted, this.labels, this.changedSettings,
       {Key? key})
       : super(key: key);
 
-  bool listed;
-  List<Map<String, dynamic>> labels;
-  Map<String, bool> initialSettings;
+  bool unlisted;
+  final List<Map<String, dynamic>> labels;
   Map<String, bool> changedSettings;
 
   @override
@@ -30,11 +30,10 @@ class _ChangeVisibilityDialogContentState
   }
 
   callBackListed(value) {
-    print(value);
-    widget.listed = !value;
+    widget.unlisted = value;
   }
 
-  Future<QueryResult> _sendChangesToHeimdall(changes) async {
+  Future<QueryResult<Object?>> _sendChangesToHeimdall(changes) async {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
     final MutationOptions options = MutationOptions(
         document: gql(mutation.changeVisibilityMutation), variables: changes);
@@ -69,7 +68,7 @@ class _ChangeVisibilityDialogContentState
               itemBuilder: (BuildContext context, int index) {
                 return (changeVisibilityField(
                     widget.labels[index],
-                    widget.initialSettings[widget.labels[index]['backend']],
+                    widget.changedSettings[widget.labels[index]['backend']],
                     callBackField));
               })),
       const Divider(
@@ -77,7 +76,7 @@ class _ChangeVisibilityDialogContentState
         thickness: 1,
       ),
       const Spacer(),
-      RemoveVisibilityAlmanak(widget.listed, callBackListed),
+      RemoveVisibilityAlmanak(widget.unlisted, callBackListed),
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         TextButton(
           style: TextButton.styleFrom(backgroundColor: Colors.red),
@@ -99,9 +98,13 @@ class _ChangeVisibilityDialogContentState
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.w500, fontSize: 12),
           ),
-          onPressed: () {
-            _sendChangesToHeimdall({'listed': widget.listed});
-            Navigator.pop(context);
+          onPressed: () async {
+            QueryResult<Object?> mutationResult = await _sendChangesToHeimdall({
+              'listed': !widget.unlisted,
+              'contact': widget.changedSettings
+            });
+            bool mutationSucces = mutationResult.data?['__typename'] != null;
+            Navigator.pop(context, mutationSucces);
           },
         ),
       ]),

@@ -2,32 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/queries/queries/almanak_profile.dart'
+    as query;
 import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_avatar.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
-import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
-
-const String user = r'''
-  query ($profileId: ID!) {
-    user (id: $profileId) {
-      identifier,
-      email,
-      username,
-      fullContact {
-          public{
-            first_name,
-            last_name
-            email,
-            street,
-            housenumber,
-            housenumber_addition,
-            city,
-            zipcode,
-          }
-      }
-    }
-  }
-''';
 
 class AlmanakProfile extends HookConsumerWidget {
   const AlmanakProfile({
@@ -40,8 +19,9 @@ class AlmanakProfile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
-    final QueryOptions options =
-        QueryOptions(document: gql(user), variables: {'profileId': profileId});
+    final QueryOptions options = QueryOptions(
+        document: gql(query.almanakProfileQuery),
+        variables: {'profileId': profileId});
     final Future<QueryResult> result = client.query(options);
 
     return Scaffold(
@@ -61,7 +41,37 @@ class AlmanakProfile extends HookConsumerWidget {
                   return const Loading();
                 default:
                   var user = snapshot.data?.data?['user'];
-                  var user_contact = user['fullContact']['public'];
+                  Map<String, dynamic> userPublicRaw =
+                      user['fullContact']['public'];
+
+                  Map<String, dynamic> userPublic =
+                      userPublicRaw.map((key, value) {
+                    value = value == '0' ? null : value;
+                    return MapEntry(key, value);
+                  });
+
+                  List<String> labels = [
+                    'Naam',
+                    'Telefoonnummer',
+                    'E-mailadres',
+                    'Adres',
+                    'Postcode',
+                    'Woonplaats'
+                  ];
+
+                  List<String> values = [
+                    (userPublic['first_name'] ?? '-') +
+                        ' ' +
+                        (userPublic['last_name'] ?? '-'),
+                    userPublic['phone_primary'] ?? '-',
+                    userPublic['email'] ?? '-',
+                    (userPublic['street'] ?? '-') +
+                        ' ' +
+                        (userPublic['housenumber'] ?? '') +
+                        (userPublic['housenumber_addition'] ?? ''),
+                    userPublic['zipcode'] ?? '-',
+                    userPublic['city'] ?? '-'
+                  ];
 
                   return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -75,27 +85,17 @@ class AlmanakProfile extends HookConsumerWidget {
                           const Text(
                               'The user retrieved from the database is empty'),
                         } else ...{
-                          StaticUserField(
-                              'Naam',
-                              (user_contact['first_name'] ?? '-') +
-                                  ' ' +
-                                  (user_contact['last_name'] ??
-                                      '-')), // TODO: non-default public
-
-                          StaticUserField('E-mailadres', user['email']),
-                          StaticUserField(
-                              'Adres',
-                              (user_contact['street'] ?? '-') +
-                                  ' ' +
-                                  (user_contact['housenumber'] ?? '') +
-                                  ' ' +
-                                  (user_contact['housenumber_addition'] ?? '')),
-
-                          StaticUserField(
-                              'Postcode', user_contact['zipcode'] ?? '-'),
-                          StaticUserField(
-                              'Woonplaats', user_contact['city'] ?? '-'),
-                        },
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height - 316,
+                              child: ListView.builder(
+                                  physics: const PageScrollPhysics(),
+                                  itemCount: labels.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return StaticUserField(
+                                        labels[index], values[index]);
+                                  }))
+                        }
                       ]));
               }
             }));

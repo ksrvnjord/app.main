@@ -1,8 +1,11 @@
-const String changeVisibilityQuery = r'''
-  query {
-    me {
+const String almanakProfileQuery = r'''
+  query ($profileId: ID!) {
+    user (id: $profileId) {
+      identifier,
+      email,
+      username,
       fullContact {
-          privacy{
+          public{
             first_name,
             last_name
             email,
@@ -11,10 +14,9 @@ const String changeVisibilityQuery = r'''
             housenumber_addition,
             city,
             zipcode,
-            phone_primary
-        }
+            phone_primary,
+          }
       }
-      listed
     }
   }
 ''';

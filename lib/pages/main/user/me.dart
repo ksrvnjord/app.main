@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/providers/authentication.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/queries/mutations/me.dart' as mutation;
 import 'package:ksrvnjord_main_app/queries/queries/me.dart' as query;
+import 'package:ksrvnjord_main_app/widgets/me/visibility/change_visibility_succes_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/visibility/show_change_visibility_dialog.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/amendable_user_row.dart';
 import 'package:ksrvnjord_main_app/widgets/me/user_info/static_user_field.dart';
@@ -37,8 +38,10 @@ class MePage extends HookConsumerWidget {
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    onTap: () {
-                      showChangeVisibilityDialog(context);
+                    onTap: () async {
+                      bool mutationSucces =
+                          await showChangeVisibilityDialog(context);
+                      changeVisibilitySuccesDialog(context, mutationSucces);
                     },
                     child: const Center(child: Text('Zichtbaarheid Almanak')),
                   )

@@ -7,12 +7,13 @@ import 'package:ksrvnjord_main_app/queries/queries/change_visibility.dart'
 import 'package:ksrvnjord_main_app/widgets/me/visibility/change_visibility_dialog_content.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 
-void showChangeVisibilityDialog(context) {
-  showDialog(
+Future<bool> showChangeVisibilityDialog(context) async {
+  bool mutationSucces = await showDialog(
       barrierDismissible: true,
       barrierColor: null,
       context: context,
       builder: (BuildContext context) => const ChangeVisibilityDialog());
+  return mutationSucces;
 }
 
 class ChangeVisibilityDialog extends HookConsumerWidget {
@@ -42,16 +43,17 @@ class ChangeVisibilityDialog extends HookConsumerWidget {
                     return const Loading();
                   }
                   Map<String, dynamic> userPublic =
-                      snapshot.data?.data!['me']['fullContact']['public'];
+                      snapshot.data?.data!['me']['fullContact']['privacy'];
 
-                  bool listed = false;
+                  bool delisted = !snapshot.data?.data!['me']['listed'];
 
                   Map<String, bool> initialSettings =
                       userPublic.map(((key, value) {
-                    value = (value == null ? false : true);
+                    value = (value == '0' ? false : true);
                     return MapEntry(key, value);
                   }));
                   Map<String, bool> changedSettings = Map.from(initialSettings);
+                  changedSettings.remove('__typename');
 
                   List<Map<String, dynamic>> labels = [
                     {
@@ -101,7 +103,7 @@ class ChangeVisibilityDialog extends HookConsumerWidget {
                     },
                   ];
                   return ChangeVisibilityDialogContent(
-                      listed, labels, initialSettings, changedSettings);
+                      delisted, labels, changedSettings);
               }
             }));
   }
