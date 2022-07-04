@@ -23,7 +23,7 @@ class HeimdallService {
         );
 
   final Reader _read;
-  String baseURL = constant.demoURL;
+  String baseURL = constant.baseURL;
   final graphql.AuthLink _authLink;
 
   void updateBaseURL(String _baseURL) {

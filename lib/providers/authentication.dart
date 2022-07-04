@@ -27,7 +27,7 @@ class AuthenticationService extends ChangeNotifier {
 
   String bearer = '';
   bool loggedIn = false;
-  String baseURL = constant.demoURL;
+  String baseURL = constant.baseURL;
 
   void updateBaseURL(String _baseURL) {
     baseURL = _baseURL;
