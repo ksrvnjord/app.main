@@ -134,7 +134,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
       ],
       [
         {'backend': 'street', 'display': 'Straatnaam'},
-        {'backend': 'housenumber', 'display': 'Huisnmr'},
+        {'backend': 'housenumber', 'display': 'Huisnr'},
         {'backend': 'housenumber_addition', 'display': 'Toevoeging'}
       ],
       [
