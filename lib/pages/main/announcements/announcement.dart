@@ -4,6 +4,8 @@ import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 const String announcement =
@@ -88,6 +90,13 @@ class AnnouncementPage extends HookConsumerWidget {
                       ]),
                       MarkdownBody(
                         data: announcement?['contents'] ?? "",
+                        onTapLink: (text, url, title) {
+                          // Check if an URL is actually given
+                          if (url?.isNotEmpty ?? false) {
+                            // Launch the URL
+                            launchUrlString(url!);
+                          }
+                        },
                       ),
                     ],
                   ),
