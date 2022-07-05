@@ -114,6 +114,9 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         {'backend': 'email', 'display': 'E-mailadres'}
       ],
       [
+        {'backend': 'phone_primary', 'display': 'Telefoonnummer'}
+      ],
+      [
         {'backend': 'street', 'display': 'Straatnaam'},
         {'backend': 'housenumber', 'display': 'Huisnmr'},
         {'backend': 'housenumber_addition', 'display': 'Toevoeging'}
@@ -125,6 +128,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     ];
     List<List<double>> amendableFieldRelativeSizes = [
       [1 / 2, 1 / 2],
+      [1],
       [1],
       [3 / 7, 2 / 7, 2 / 7],
       [1 / 2, 1 / 2]

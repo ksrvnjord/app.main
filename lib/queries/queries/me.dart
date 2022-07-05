@@ -14,6 +14,7 @@ const String meQuery = r'''
             housenumber_addition,
             city,
             zipcode,
+            phone_primary,
         }
         update{
             first_name,
@@ -24,6 +25,7 @@ const String meQuery = r'''
             housenumber_addition,
             city,
             zipcode,
+            phone_primary
         }
       }
     }
