@@ -6,14 +6,17 @@ import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-const String announcement = r'''
+const String announcement =
+    r'''
   query announcement($id: ID!) {
     announcement(id: $id) {
       id,
       title,
       contents,
-      author
+      author,
+      created_at
     }
   }
 ''';
@@ -53,6 +56,8 @@ class AnnouncementPage extends HookConsumerWidget {
                 return const Loading();
               default:
                 var announcement = snapshot.data?.data?['announcement'];
+                DateTime dt = DateTime.parse(announcement['created_at']);
+                String time = timeago.format(dt, locale: 'nl');
                 return Padding(
                   // Add padding to whole body
                   padding: EdgeInsets.all(paddingBody),
@@ -62,8 +67,24 @@ class AnnouncementPage extends HookConsumerWidget {
                         Text(
                           announcement?['author'],
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ), // TODO: also list author affiliation, e.g. 'Bestuur'
+                      ]),
+                      Row(children: <Widget>[
+                        Text(
+                          time,
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        ), // TODO: also list author affiliation, e.g. 'Bestuur'
+                      ]),
+                                            Row(children: <Widget>[
+                        Text(
+                          announcement?['title'],
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
                           ),
                         ), // TODO: also list author affiliation, e.g. 'Bestuur'
                       ]),

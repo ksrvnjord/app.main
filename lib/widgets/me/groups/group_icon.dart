@@ -35,7 +35,7 @@ class GroupIcon extends StatelessWidget {
                 barrierColor: null,
                 context: context,
                 builder: (BuildContext context) =>
-                    const VerificationDialog(title, body, color));
+                    const Text('placeholder for changed verificationdialog'));
           }
         });
   }

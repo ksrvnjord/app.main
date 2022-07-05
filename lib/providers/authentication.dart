@@ -13,7 +13,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/dio.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ksrvnjord_main_app/constant.dart' as constant show baseURL, demoURL, Endpoint;
+import 'package:ksrvnjord_main_app/constant.dart' as constant
+    show baseURL, demoURL, Endpoint;
 
 final authenticationProvider =
     ChangeNotifierProvider((ref) => AuthenticationService(ref.read));
