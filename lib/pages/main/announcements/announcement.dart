@@ -3,13 +3,13 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:graphql/client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
+import 'package:ksrvnjord_main_app/widgets/general/error.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-const String announcement =
-    r'''
+const String announcement = r'''
   query announcement($id: ID!) {
     announcement(id: $id) {
       id,
@@ -56,7 +56,15 @@ class AnnouncementPage extends HookConsumerWidget {
                 return const Loading();
               default:
                 var announcement = snapshot.data?.data?['announcement'];
-                DateTime dt = DateTime.parse(announcement['created_at']);
+
+                if (announcement == null) {
+                  return Padding(
+                      padding: EdgeInsets.all(paddingBody),
+                      child: const ErrorCardWidget(
+                          errorMessage: "Deze announcement bestaat niet!"));
+                }
+
+                DateTime dt = DateTime.parse(announcement?['created_at'] ?? "");
                 String time = timeago.format(dt, locale: 'nl');
                 return Padding(
                   // Add padding to whole body
@@ -79,7 +87,7 @@ class AnnouncementPage extends HookConsumerWidget {
                           ),
                         ), // TODO: also list author affiliation, e.g. 'Bestuur'
                       ]),
-                                            Row(children: <Widget>[
+                      Row(children: <Widget>[
                         Text(
                           announcement?['title'],
                           style: const TextStyle(
