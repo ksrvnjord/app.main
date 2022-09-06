@@ -63,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
                   onPressed: login,
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blueAccent)),
+                          MaterialStateProperty.all<Color>(Colors.lightBlue)),
                   child: const Text('Inloggen'))
               .height(54)
               .padding(all: 10)

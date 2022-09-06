@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: null,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.lightBlue,
         body: <Widget>[
           const LogoWidget(image: Images.appLogo).padding(bottom: 10),
           const _LoginFormCard()
