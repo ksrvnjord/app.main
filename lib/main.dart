@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/application_router.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.gr.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -16,16 +16,18 @@ Future<void> main() async {
             'https://a752158d2c2d463086dde1f15e863aac@o1396616.ingest.sentry.io/6720336';
         options.tracesSampleRate = 0.1;
       },
-      appRunner: () => runApp(const Application()),
+      appRunner: () => runApp(Application()),
     );
   } else {
     // Running in debug, no need to send exceptions to Sentry
-    runApp(const Application());
+    runApp(Application());
   }
 }
 
 class Application extends StatelessWidget {
-  const Application({Key? key}) : super(key: key);
+  Application({Key? key}) : super(key: key);
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class Application extends StatelessWidget {
     // itself.
     return ChangeNotifierProvider(
         create: (context) => AuthModel(),
-        child: MaterialApp(
+        child: MaterialApp.router(
           title: 'K.S.R.V. Njord',
           theme: ThemeData(
             primarySwatch: Colors.blue,
@@ -42,8 +44,9 @@ class Application extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          home: const ApplicationRouter(),
           debugShowCheckedModeBanner: false,
+          routerDelegate: _appRouter.delegate(),
+          routeInformationParser: _appRouter.defaultRouteParser(),
         ));
   }
 }
