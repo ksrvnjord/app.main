@@ -1,0 +1,10 @@
+query Announcement($announcementId: ID) {
+  announcement(id: $announcementId) {
+    author
+    contents
+    created_at
+    id
+    title
+    updated_at
+  }
+}
