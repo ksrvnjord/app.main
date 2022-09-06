@@ -2,6 +2,11 @@ const String baseURL = 'https://heimdall.njord.nl/';
 const String demoURL = 'https://heimdall-test.ksrv.nl/';
 
 class Endpoint {
+  static const String oauthId = '11';
+  static const String oauthSecret = 'YvbiNaGmgkBBNPbJ5REwtviiPxMb1tCXrdqIhqNQ';
+  static final Uri oauthEndpoint =
+      Uri.parse('https://heimdall.njord.nl/oauth/token');
+
   static const String csrf = 'api/v1/auth/csrf';
   static const String login = 'api/v1/auth/login';
   static const String user = 'api/v1/user';
