@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ksrvnjord_main_app/providers/heimdall.dart';
 import 'package:ksrvnjord_main_app/widgets/almanak/almanak_field.dart';
 import 'package:ksrvnjord_main_app/widgets/ui/general/loading.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 const String users = r'''
   query ($first: Int!, $page: Int!){

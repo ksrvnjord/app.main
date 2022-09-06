@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/widgets/almanak/almanak_show_full.dart';
-import 'package:ksrvnjord_main_app/widgets/utilities/development_feature.dart';
+
 import 'almanak_search.dart';
 
 class AlmanakPage extends StatelessWidget {

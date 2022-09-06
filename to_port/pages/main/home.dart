@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/widgets/general/agenda_icon.dart';
 import 'package:ksrvnjord_main_app/widgets/general/announcements.dart';
-import 'package:ksrvnjord_main_app/widgets/general/error.dart';
-import 'package:ksrvnjord_main_app/widgets/general/vaarverbod.dart';
 import 'package:ksrvnjord_main_app/widgets/general/myprofile.dart';
+import 'package:ksrvnjord_main_app/widgets/general/vaarverbod.dart';
 import 'package:ksrvnjord_main_app/widgets/images/bar_logo.dart';
 
 class HomePage extends StatelessWidget {
