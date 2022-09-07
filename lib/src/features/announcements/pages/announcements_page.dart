@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/models/announcements.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/presentation/future_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -11,18 +13,20 @@ class AnnouncementsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var client = Provider.of<GraphQLProvider>(context, listen: false).client;
+    var client = GetIt.I<GraphQLModel>().client;
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Aankondigingen'),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-        ),
-        body: FutureWrapper<Query$Announcements?>(
-            future: announcements(0, client!.value),
-            success: (data) {
-              return Text(data.toString());
-            }));
+    return client != null
+        ? Scaffold(
+            appBar: AppBar(
+              title: const Text('Aankondigingen'),
+              backgroundColor: Colors.lightBlue,
+              shadowColor: Colors.transparent,
+            ),
+            body: FutureWrapper<Query$Announcements?>(
+                future: announcements(0, client),
+                success: (data) {
+                  return Text(data.toString());
+                }))
+        : Container();
   }
 }

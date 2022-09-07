@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginForm extends StatefulWidget {
@@ -19,9 +20,15 @@ class _LoginFormState extends State<LoginForm> {
   final _username = TextEditingController();
   final _password = TextEditingController();
   final auth = GetIt.I<AuthModel>();
+  final graphql = GetIt.I<GraphQLModel>();
 
   void login() {
-    widget.loginCallback(auth.login(_username.text, _password.text));
+    auth.login(_username.text, _password.text).then((result) {
+      if (result) {
+        graphql.boot(auth);
+      }
+      widget.loginCallback(result);
+    });
   }
 
   @override

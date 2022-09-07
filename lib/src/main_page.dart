@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.gr.dart';
 import 'package:auto_route/auto_route.dart';
 
-class MainPage extends StatelessWidget implements AutoRouteWrapper {
+class MainPage extends StatelessWidget {
   const MainPage({
     Key? key,
   }) : super(key: key);
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return GraphQLWrapper(child: this);
-  }
 
   @override
   Widget build(BuildContext context) {

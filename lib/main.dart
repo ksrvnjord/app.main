@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/guards.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.gr.dart';
-import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
@@ -20,12 +20,13 @@ Future<void> main() async {
       },
       appRunner: () => () {
         GetIt.I.registerSingleton<AuthModel>(AuthModel());
+        GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
         return runApp(Application());
       },
     );
   } else {
-    // Running in debug, no need to send exceptions to Sentry
     GetIt.I.registerSingleton<AuthModel>(AuthModel());
+    GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
     runApp(Application());
   }
 }
@@ -37,9 +38,6 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize the root application with the Authentication Model,
-    // as this defines if we'll show the login screen or the application
-    // itself.
     return MaterialApp.router(
       title: 'K.S.R.V. Njord',
       theme: ThemeData(

@@ -8,7 +8,7 @@ class AuthModel extends ChangeNotifier {
   String error = '';
 
   /// Tries to login
-  bool login(String username, String password) {
+  Future<bool> login(String username, String password) async {
     var loginState = false;
 
     if (username == '') {
@@ -27,20 +27,19 @@ class AuthModel extends ChangeNotifier {
     notifyListeners();
 
     error = '';
-    oauth2
-        .resourceOwnerPasswordGrant(Endpoint.oauthEndpoint, username, password,
-            identifier: Endpoint.oauthId, secret: Endpoint.oauthSecret)
-        .then((value) {
-      client = value;
-      isBusy = false;
-      loginState = true;
-      notifyListeners();
-    }).onError((err, stackTrace) {
-      isBusy = false;
-      error = "Login failed";
-      notifyListeners();
-    });
 
-    return loginState;
+    try {
+      client = await oauth2.resourceOwnerPasswordGrant(
+          Endpoint.oauthEndpoint, username, password,
+          identifier: Endpoint.oauthId, secret: Endpoint.oauthSecret);
+    } catch (e) {
+      error = e.toString();
+      isBusy = false;
+      notifyListeners();
+      return false;
+    }
+
+    isBusy = false;
+    return true;
   }
 }
