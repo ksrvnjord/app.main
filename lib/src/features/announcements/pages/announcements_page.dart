@@ -27,6 +27,7 @@ class AnnouncementsPage extends StatelessWidget {
                 return AnnouncementListWidget(
                     announcements: data.announcements!.data);
               }
+              return null;
             }));
   }
 }
