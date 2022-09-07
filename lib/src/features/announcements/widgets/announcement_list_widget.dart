@@ -17,11 +17,10 @@ class AnnouncementListWidget extends StatelessWidget {
             title: announcement.title,
             subtitle: announcement.author + announcement.created_at.toString(),
             text: '',
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           );
         })
         .toList()
-        .toColumn()
-        .expanded()
-        .card();
+        .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch);
   }
 }

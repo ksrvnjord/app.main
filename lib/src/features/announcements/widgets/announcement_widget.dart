@@ -6,19 +6,23 @@ class AnnouncementWidget extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.text,
-      required this.subtitle})
+      required this.subtitle,
+      this.padding = EdgeInsets.zero})
       : super(key: key);
 
   final String title;
   final String subtitle;
   final String text;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return <Widget>[
-      Text('Title'),
-      Text('Subtitle'),
-      Text('Text'),
-    ].toColumn().expanded().card();
+    return Padding(
+        padding: padding,
+        child: <Widget>[
+          Text('Title'),
+          Text('Subtitle'),
+          Text('Text'),
+        ].toColumn().card());
   }
 }
