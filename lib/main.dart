@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/guards.dart';
@@ -17,10 +18,14 @@ Future<void> main() async {
             'https://a752158d2c2d463086dde1f15e863aac@o1396616.ingest.sentry.io/6720336';
         options.tracesSampleRate = 0.1;
       },
-      appRunner: () => runApp(Application()),
+      appRunner: () => () {
+        GetIt.I.registerSingleton<AuthModel>(AuthModel());
+        return runApp(Application());
+      },
     );
   } else {
     // Running in debug, no need to send exceptions to Sentry
+    GetIt.I.registerSingleton<AuthModel>(AuthModel());
     runApp(Application());
   }
 }
@@ -35,19 +40,17 @@ class Application extends StatelessWidget {
     // Initialize the root application with the Authentication Model,
     // as this defines if we'll show the login screen or the application
     // itself.
-    return ChangeNotifierProvider(
-        create: (context) => AuthModel(),
-        child: MaterialApp.router(
-          title: 'K.S.R.V. Njord',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: GoogleFonts.ibmPlexSansTextTheme(
-              Theme.of(context).textTheme,
-            ),
-          ),
-          debugShowCheckedModeBanner: false,
-          routerDelegate: _appRouter.delegate(),
-          routeInformationParser: _appRouter.defaultRouteParser(),
-        ));
+    return MaterialApp.router(
+      title: 'K.S.R.V. Njord',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.ibmPlexSansTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+    );
   }
 }

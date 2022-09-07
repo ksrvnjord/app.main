@@ -20,6 +20,7 @@ dependencies:
   google_fonts: ^3.0.1
   oauth2: ^2.0.0
   auto_route: ^5.0.1
+  get_it: ^7.2.0
 
 
 dev_dependencies:

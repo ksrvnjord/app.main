@@ -8,21 +8,24 @@ class AuthModel extends ChangeNotifier {
   String error = '';
 
   /// Tries to login
-  void login(String username, String password) {
+  bool login(String username, String password) {
+    var loginState = false;
+
     if (username == '') {
       error = 'Please enter a username';
       notifyListeners();
-      return;
+      return loginState;
     }
 
     if (password == '') {
       error = 'Please enter a password';
       notifyListeners();
-      return;
+      return loginState;
     }
 
     isBusy = true;
     notifyListeners();
+
     error = '';
     oauth2
         .resourceOwnerPasswordGrant(Endpoint.oauthEndpoint, username, password,
@@ -30,11 +33,14 @@ class AuthModel extends ChangeNotifier {
         .then((value) {
       client = value;
       isBusy = false;
+      loginState = true;
       notifyListeners();
     }).onError((err, stackTrace) {
       isBusy = false;
       error = "Login failed";
       notifyListeners();
     });
+
+    return loginState;
   }
 }

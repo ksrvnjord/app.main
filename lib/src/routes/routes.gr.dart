@@ -38,8 +38,11 @@ class AppRouter extends _i8.RootStackRouter {
           child: _i8.WrappedRoute(child: const _i1.MainPage()));
     },
     LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>();
       return _i8.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.LoginPage());
+          routeData: routeData,
+          child:
+              _i2.LoginPage(key: args.key, loginCallback: args.loginCallback));
     },
     HomeRoute.name: (routeData) {
       return _i8.MaterialPageX<dynamic>(
@@ -121,10 +124,26 @@ class MainRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginPage]
-class LoginRoute extends _i8.PageRouteInfo<void> {
-  const LoginRoute() : super(LoginRoute.name, path: '/login');
+class LoginRoute extends _i8.PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({_i7.Key? key, required void Function(bool) loginCallback})
+      : super(LoginRoute.name,
+            path: '/login',
+            args: LoginRouteArgs(key: key, loginCallback: loginCallback));
 
   static const String name = 'LoginRoute';
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.key, required this.loginCallback});
+
+  final _i7.Key? key;
+
+  final void Function(bool) loginCallback;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key, loginCallback: $loginCallback}';
+  }
 }
 
 /// generated route for
