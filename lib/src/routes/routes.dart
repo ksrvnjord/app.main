@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcements_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
@@ -35,6 +36,10 @@ final routeMap = RouteMap(
     '/announcements': (_) => const MaterialPage(
           name: 'Announcements',
           child: AnnouncementsPage(),
+        ),
+    '/announcements/:announcementId': (info) => const MaterialPage(
+          name: 'Announcementt',
+          child: AnnouncementPage(),
         ),
     '/almanak': (_) => const MaterialPage(
           name: 'Almanak',
