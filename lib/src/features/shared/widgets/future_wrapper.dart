@@ -1,3 +1,4 @@
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -36,8 +37,7 @@ class FutureWrapper<T> extends StatelessWidget {
               : Container();
         }
 
-        return loading ??
-            const CircularProgressIndicator().padding(all: 10).expanded();
+        return loading ?? const LoadingWidget();
       },
     );
   }

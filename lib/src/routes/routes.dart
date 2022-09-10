@@ -1,31 +1,44 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcements_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
-import 'package:ksrvnjord_main_app/src/routes/guards.dart';
+import 'package:routemaster/routemaster.dart';
 
-@MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
-  AutoRoute(
-    path: '/',
-    page: MainPage,
-    guards: [AuthGuard],
-    children: <AutoRoute>[
-      AutoRoute(path: 'home', page: HomePage, initial: true),
-      AutoRoute(
-          path: 'announcements',
-          page: AnnouncementsPage,
-          children: <AutoRoute>[
-            AutoRoute(path: ':announcementId', page: AnnouncementPage)
-          ]),
-      AutoRoute(path: 'almanak', page: AlmanakPage, children: <AutoRoute>[
-        AutoRoute(path: ':profileId', page: Container)
-      ]),
-    ],
-  ),
-  AutoRoute(page: LoginPage, path: '/login')
-])
-class $AppRouter {}
+// This is the logged out route map.
+// This only allows the user to navigate to the root path.
+// Note: building the route map from methods allows hot reload to work
+final loggedOutRouteMap = RouteMap(
+  onUnknownRoute: (route) => const Redirect('/'),
+  routes: {
+    '/': (_) => const MaterialPage(child: LoginPage()),
+  },
+);
+
+final routeMap = RouteMap(
+  routes: {
+    '/': (_) => CupertinoTabPage(
+          pageBuilder: (child) => MaterialPage(child: child),
+          child: const MainPage(),
+          paths: const [
+            '/home',
+            '/announcements',
+            '/almanak',
+          ],
+          backBehavior: TabBackBehavior.none,
+        ),
+    '/home': (_) => const MaterialPage(
+          name: 'Home',
+          child: HomePage(),
+        ),
+    '/announcements': (_) => const MaterialPage(
+          name: 'Announcements',
+          child: AnnouncementsPage(),
+        ),
+    '/almanak': (_) => const MaterialPage(
+          name: 'Almanak',
+          child: AlmanakPage(),
+        ),
+  },
+);

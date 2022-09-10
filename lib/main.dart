@@ -4,11 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
-import 'package:ksrvnjord_main_app/src/routes/guards.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.gr.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
+  Routemaster.setPathUrlStrategy();
+
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {
     // Run it inside of SentryFlutter, but log / except to the debug-app
@@ -21,20 +23,18 @@ Future<void> main() async {
       appRunner: () => () {
         GetIt.I.registerSingleton<AuthModel>(AuthModel());
         GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
-        return runApp(Application());
+        return runApp(const Application());
       },
     );
   } else {
     GetIt.I.registerSingleton<AuthModel>(AuthModel());
     GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
-    runApp(Application());
+    runApp(const Application());
   }
 }
 
 class Application extends StatelessWidget {
-  Application({Key? key}) : super(key: key);
-
-  final _appRouter = AppRouter(authGuard: AuthGuard());
+  const Application({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,16 @@ class Application extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+      routeInformationParser: const RoutemasterParser(),
+      routerDelegate: RoutemasterDelegate(
+        observers: [],
+        routesBuilder: (context) {
+          // We swap out the routing map at runtime based on app state
+          final auth = GetIt.I<AuthModel>();
+
+          return auth.client != null ? routeMap : loggedOutRouteMap;
+        },
+      ),
     );
   }
 }

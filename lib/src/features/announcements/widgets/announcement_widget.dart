@@ -17,12 +17,36 @@ class AnnouncementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var announcementText = <Widget>[];
+
+    (title != '')
+        ? announcementText.add(Text(title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
+        : null;
+
+    (subtitle != '')
+        ? announcementText.add(Text(subtitle,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w100))
+            .padding(top: 5))
+        : null;
+
+    (text != '')
+        ? announcementText.add(Text(text,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w200))
+            .padding(top: 5))
+        : null;
+
     return Padding(
         padding: padding,
         child: <Widget>[
-          Text('Title'),
-          Text('Subtitle'),
-          Text('Text'),
-        ].toColumn().card());
+          const Icon(Icons.campaign).padding(left: 15),
+          announcementText
+              .toColumn(crossAxisAlignment: CrossAxisAlignment.start)
+              .padding(all: 15)
+        ].toRow().card(
+              elevation: 1,
+            ));
   }
 }

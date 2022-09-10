@@ -38,9 +38,12 @@ class _LoginFormCardState extends State<_LoginFormCard> {
   }
 }
 
+void dontCall(bool arg) {}
+
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key, required this.loginCallback}) : super(key: key);
   final void Function(bool) loginCallback;
+
+  const LoginPage({Key? key, this.loginCallback = dontCall}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

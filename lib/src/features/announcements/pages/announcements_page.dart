@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/models/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_list_widget.dart';
@@ -16,9 +17,11 @@ class AnnouncementsPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Aankondigingen'),
-          leading: null,
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         ),
         body: FutureWrapper<Query$Announcements?>(
             future: announcements(0, client),

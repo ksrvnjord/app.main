@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AnnouncementListWidget extends StatelessWidget {
@@ -13,12 +15,20 @@ class AnnouncementListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return announcements
         .map<Widget>((Query$Announcements$announcements$data announcement) {
-          return AnnouncementWidget(
-            title: announcement.title,
-            subtitle: announcement.author + announcement.created_at.toString(),
-            text: '',
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          );
+          var createdDate = DateFormat.yMMMd().format(announcement.created_at);
+
+          return GestureDetector(
+              child: AnnouncementWidget(
+                title: announcement.title,
+                subtitle: "${announcement.author} - $createdDate",
+                text: '',
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              ),
+              onTap: () {
+                Routemaster.of(context)
+                    .push('/announcements/${announcement.id}');
+              });
         })
         .toList()
         .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch);

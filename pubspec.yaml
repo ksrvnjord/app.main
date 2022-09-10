@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 0.0.4+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -21,6 +21,8 @@ dependencies:
   oauth2: ^2.0.0
   auto_route: ^5.0.1
   get_it: ^7.2.0
+  intl: ^0.17.0
+  routemaster: ^1.0.1
 
 
 dev_dependencies:

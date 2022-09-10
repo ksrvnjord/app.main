@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginDoneWidget extends StatelessWidget {
@@ -7,8 +7,6 @@ class LoginDoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = AutoRouter.of(context);
-
     return <Widget>[
       <Widget>[const Text('\uD83E\uDDA2', style: TextStyle(fontSize: 40))]
           .toRow(mainAxisAlignment: MainAxisAlignment.center),
@@ -17,7 +15,7 @@ class LoginDoneWidget extends StatelessWidget {
         ElevatedButton(
           child: const Text('Doorgaan'),
           onPressed: () {
-            router.replaceNamed('/');
+            Routemaster.of(context).push('/');
           },
         )
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
