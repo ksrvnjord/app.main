@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -21,14 +21,10 @@ Future<void> main() async {
         options.tracesSampleRate = 0.1;
       },
       appRunner: () => () {
-        GetIt.I.registerSingleton<AuthModel>(AuthModel());
-        GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
         return runApp(const Application());
       },
     );
   } else {
-    GetIt.I.registerSingleton<AuthModel>(AuthModel());
-    GetIt.I.registerSingleton<GraphQLModel>(GraphQLModel());
     runApp(const Application());
   }
 }
@@ -38,25 +34,29 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'K.S.R.V. Njord',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.ibmPlexSansTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
-      debugShowCheckedModeBanner: false,
-      routeInformationParser: const RoutemasterParser(),
-      routerDelegate: RoutemasterDelegate(
-        observers: [],
-        routesBuilder: (context) {
-          // We swap out the routing map at runtime based on app state
-          final auth = GetIt.I<AuthModel>();
-
-          return auth.client != null ? routeMap : loggedOutRouteMap;
-        },
-      ),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
+          ChangeNotifierProvider<GraphQLModel>(create: (_) => GraphQLModel()),
+        ],
+        child: Builder(
+            builder: (context) => MaterialApp.router(
+                  title: 'K.S.R.V. Njord',
+                  theme: ThemeData(
+                    primarySwatch: Colors.blue,
+                    textTheme: GoogleFonts.ibmPlexSansTextTheme(
+                      Theme.of(context).textTheme,
+                    ),
+                  ),
+                  debugShowCheckedModeBanner: false,
+                  routeInformationParser: const RoutemasterParser(),
+                  routerDelegate: RoutemasterDelegate(
+                    routesBuilder: (context) {
+                      final auth = Provider.of<AuthModel>(context);
+                      final loggedIn = auth.client != null;
+                      return loggedIn ? routeMap : loggedOutRouteMap;
+                    },
+                  ),
+                )));
   }
 }

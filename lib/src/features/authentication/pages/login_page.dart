@@ -6,35 +6,27 @@ import 'package:ksrvnjord_main_app/src/features/authentication/widgets/done_widg
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class _LoginFormCard extends StatefulWidget {
+class _LoginFormCard extends StatelessWidget {
   const _LoginFormCard({Key? key, required this.loginCallback})
       : super(key: key);
   final void Function(bool) loginCallback;
 
   @override
-  _LoginFormCardState createState() => _LoginFormCardState();
-}
-
-class _LoginFormCardState extends State<_LoginFormCard> {
-  var auth = GetIt.I.get<AuthModel>();
-
-  @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: auth,
-        builder: (_, __) {
-          if (auth.isBusy) {
-            return const LoginLoadingWidget();
-          }
+    var auth = Provider.of<AuthModel>(context);
 
-          if (auth.client != null) {
-            return const LoginDoneWidget();
-          }
+    if (auth.isBusy) {
+      return const LoginLoadingWidget();
+    }
 
-          return LoginForm(loginCallback: widget.loginCallback);
-        });
+    if (auth.client != null) {
+      return const LoginDoneWidget();
+    }
+
+    return LoginForm(loginCallback: loginCallback);
   }
 }
 

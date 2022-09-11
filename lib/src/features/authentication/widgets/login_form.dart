@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginForm extends StatefulWidget {
@@ -19,10 +20,8 @@ class _LoginFormState extends State<LoginForm> {
 
   final _username = TextEditingController();
   final _password = TextEditingController();
-  final auth = GetIt.I<AuthModel>();
-  final graphql = GetIt.I<GraphQLModel>();
 
-  void login() {
+  void login(AuthModel auth, GraphQLModel graphql) {
     auth.login(_username.text, _password.text).then((result) {
       if (result) {
         graphql.boot(auth);
@@ -33,6 +32,9 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthModel>(context);
+    final graphql = Provider.of<GraphQLModel>(context);
+
     return <Widget>[
       AnimatedBuilder(
           animation: auth,
@@ -72,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
           ].toColumn(mainAxisSize: MainAxisSize.min)),
       <Widget>[
         ElevatedButton(
-                onPressed: login,
+                onPressed: () => login(auth, graphql),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.lightBlue)),
