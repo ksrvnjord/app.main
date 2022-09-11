@@ -1,13 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ksrvnjord_main_app/constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+
+const _storage = FlutterSecureStorage();
 
 class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
   bool isBusy = false;
   String error = '';
 
-  /// Tries to login
   Future<bool> login(String username, String password) async {
     var loginState = false;
 
@@ -39,7 +41,20 @@ class AuthModel extends ChangeNotifier {
       return false;
     }
 
+    if (client != null && client?.credentials != null) {
+      isBusy = false;
+      await _storage.write(
+          key: 'oauth2_credentails', value: client?.credentials.toJson());
+      notifyListeners();
+      return true;
+    }
+
     isBusy = false;
-    return true;
+    notifyListeners();
+    return false;
+  }
+
+  void boot() {
+    var creds = _storage.read(key: 'oauth2_credentails');
   }
 }

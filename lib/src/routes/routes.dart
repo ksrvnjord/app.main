@@ -5,7 +5,20 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
+import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
+
+class RoutedPageTransition<T> extends Page {
+  final Widget child;
+  final pt.PageTransitionType transition;
+
+  const RoutedPageTransition({required this.child, required this.transition});
+
+  @override
+  Route createRoute(BuildContext context) {
+    return pt.PageTransition(child: child, type: transition, settings: this);
+  }
+}
 
 // This is the logged out route map.
 // This only allows the user to navigate to the root path.
@@ -18,6 +31,7 @@ final loggedOutRouteMap = RouteMap(
 );
 
 final routeMap = RouteMap(
+  onUnknownRoute: (route) => const Redirect('/'),
   routes: {
     '/': (_) => const TabPage(
           child: MainPage(),
@@ -36,13 +50,13 @@ final routeMap = RouteMap(
           name: 'Announcements',
           child: AnnouncementsPage(),
         ),
-    '/announcements/:announcementId': (info) => const MaterialPage(
-          name: 'Announcement',
-          child: AnnouncementPage(),
-        ),
     '/almanak': (_) => const MaterialPage(
           name: 'Almanak',
           child: AlmanakPage(),
+        ),
+    '/announcements/:announcementId': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: AnnouncementPage(),
         ),
   },
 );

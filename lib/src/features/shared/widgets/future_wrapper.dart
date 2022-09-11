@@ -10,14 +10,14 @@ class FutureWrapper<T> extends StatelessWidget {
   final Future<T> future;
   final Widget? loading;
   final Widget? Function(Object? error)? error;
-  final Widget? Function(dynamic data)? success;
+  final Widget? Function(T? data)? success;
 
   const FutureWrapper(
       {Key? key,
       required this.future,
+      required this.success,
       this.loading,
-      this.error = onEmpty,
-      this.success = onEmpty})
+      this.error = onEmpty})
       : super(key: key);
 
   @override
