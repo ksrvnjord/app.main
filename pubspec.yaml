@@ -19,10 +19,13 @@ dependencies:
   styled_widget: ^0.4.0+3
   google_fonts: ^3.0.1
   oauth2: ^2.0.0
-  auto_route: ^5.0.1
   get_it: ^7.2.0
   intl: ^0.17.0
   routemaster: ^1.0.1
+  flutter_markdown: ^0.6.10+5
+  page_transition: ^2.0.9
+  flutter_secure_storage: ^6.0.0
+  dio: ^4.0.6
 
 
 dev_dependencies:
@@ -31,7 +34,6 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   graphql_codegen: ^0.11.0
   build_runner: ^2.2.0
-  auto_route_generator: ^5.0.2
 
 flutter:
   uses-material-design: true
