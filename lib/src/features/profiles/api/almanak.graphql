@@ -1,0 +1,18 @@
+query Almanak ($first: Int!, $page: Int!){
+  users (first: $first, page: $page){
+    paginatorInfo{
+      hasMorePages,
+    }
+    data {
+      id,
+      email,
+      username,
+      fullContact {
+        public {
+          first_name,
+          last_name
+        }
+      }
+    }
+  }
+}

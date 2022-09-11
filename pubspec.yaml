@@ -27,6 +27,7 @@ dependencies:
   flutter_secure_storage: ^6.0.0
   dio: ^4.0.6
   shimmer: ^2.0.0
+  infinite_scroll_pagination: ^3.2.0
 
 
 dev_dependencies:
