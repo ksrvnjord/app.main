@@ -59,7 +59,7 @@ final routeMap = RouteMap(
           name: 'Almanak',
           child: AlmanakPage(),
         ),
-    '/almanak/:userId': (info) => const RoutedPageTransition(
+    '/almanak/:profileId': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: AlmanakProfilePage(),
         ),
