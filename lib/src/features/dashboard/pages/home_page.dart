@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,7 +14,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const LogoWidget(image: Images.appLogo),
+          title: [
+            const LogoWidget(image: Images.appLogo),
+            ElevatedButton(
+                onPressed: () {
+                  Routemaster.of(context).push('/settings');
+                },
+                child: const Text('Hello!'))
+          ].toRow(),
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
           systemOverlayStyle:

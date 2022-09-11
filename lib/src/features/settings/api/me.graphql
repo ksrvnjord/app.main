@@ -1,5 +1,4 @@
-const String meQuery = r'''
-  query {
+query Me {
     me {
       identifier,
       email,
@@ -30,4 +29,3 @@ const String meQuery = r'''
       }
     }
   }
-''';
