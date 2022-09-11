@@ -3,7 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_button_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class AlmanakScrollingWidget extends StatefulWidget {
@@ -69,9 +69,9 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
           height: 0,
         ),
         builderDelegate: PagedChildBuilderDelegate<Query$Almanak$users$data>(
-          itemBuilder: (context, item, index) => AlmanakUserWidget(item),
+          itemBuilder: (context, item, index) => AlmanakUserButtonWidget(item),
           firstPageErrorIndicatorBuilder: (context) => const LoadingWidget(),
-          noItemsFoundIndicatorBuilder: (context) => const Text('The end'),
+          noItemsFoundIndicatorBuilder: (context) => const Text('404'),
         ),
       ),
     );

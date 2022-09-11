@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakUserWidget extends StatelessWidget {
+class AlmanakUserButtonWidget extends StatelessWidget {
   final Query$Almanak$users$data user;
 
-  const AlmanakUserWidget(this.user, {Key? key}) : super(key: key);
+  const AlmanakUserButtonWidget(this.user, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
