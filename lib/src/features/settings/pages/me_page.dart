@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql/client.dart';
@@ -61,7 +63,7 @@ class MeWidget extends StatefulWidget {
 }
 
 class _MeWidgetState extends State<MeWidget> {
-  bool anyChanges = false;
+  List<List<Map<String, dynamic>>> amendableFieldLabels = [];
 
   // callBack(String label, String value) {
   //   setState(() {
@@ -93,39 +95,110 @@ class _MeWidgetState extends State<MeWidget> {
   // }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     final contact = widget.user?.fullContact.private;
+    final updated = widget.user?.fullContact.update;
+
+    amendableFieldLabels = [
+      [
+        {
+          'changed': false,
+          'width': 1 / 2,
+          'controller': TextEditingController(text: contact?.first_name),
+          'backend': 'first_name',
+          'display': 'Voornaam',
+          'initial': contact?.first_name,
+          'updated': updated?.first_name,
+        },
+        {
+          'changed': false,
+          'width': 1 / 2,
+          'controller': TextEditingController(text: contact?.last_name),
+          'backend': 'last_name',
+          'display': 'Achternaam',
+          'initial': contact?.last_name,
+          'updated': updated?.last_name,
+        }
+      ],
+      [
+        {
+          'changed': false,
+          'width': 1,
+          'controller': TextEditingController(text: contact?.email),
+          'backend': 'email',
+          'display': 'E-mailadres',
+          'initial': contact?.email,
+          'updated': updated?.email,
+        }
+      ],
+      [
+        {
+          'changed': false,
+          'width': 1,
+          'controller': TextEditingController(text: contact?.phone_primary),
+          'backend': 'phone_primary',
+          'display': 'Telefoonnummer',
+          'initial': contact?.phone_primary,
+          'updated': updated?.phone_primary,
+        }
+      ],
+      [
+        {
+          'changed': false,
+          'width': 4 / 6,
+          'controller': TextEditingController(text: contact?.street),
+          'backend': 'street',
+          'display': 'Straatnaam',
+          'initial': contact?.street,
+          'updated': updated?.street,
+        },
+        {
+          'changed': false,
+          'width': 1 / 6,
+          'controller': TextEditingController(text: contact?.housenumber),
+          'backend': 'housenumber',
+          'display': 'Huisnr',
+          'initial': contact?.housenumber,
+          'updated': updated?.housenumber,
+        },
+        {
+          'changed': false,
+          'width': 1 / 6,
+          'controller':
+              TextEditingController(text: contact?.housenumber_addition),
+          'backend': 'housenumber_addition',
+          'display': 'Toevoeging',
+          'initial': contact?.housenumber_addition,
+          'updated': updated?.housenumber_addition,
+        }
+      ],
+      [
+        {
+          'changed': false,
+          'width': 1 / 2,
+          'controller': TextEditingController(text: contact?.zipcode),
+          'backend': 'zipcode',
+          'display': 'Postcode',
+          'initial': contact?.zipcode,
+          'updated': updated?.zipcode,
+        },
+        {
+          'changed': false,
+          'width': 1 / 2,
+          'controller': TextEditingController(text: contact?.city),
+          'backend': 'city',
+          'display': 'Stad',
+          'initial': contact?.city,
+          'updated': updated?.city,
+        }
+      ],
+    ];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final double rowWidth = MediaQuery.of(context).size.width - 2 * paddingBody;
-
-    List<List<Map<String, dynamic>>> amendableFieldLabels = [
-      [
-        {'backend': 'first_name', 'display': 'Voornaam'},
-        {'backend': 'last_name', 'display': 'Achternaam'}
-      ],
-      [
-        {'backend': 'email', 'display': 'E-mailadres'}
-      ],
-      [
-        {'backend': 'phone_primary', 'display': 'Telefoonnummer'}
-      ],
-      [
-        {'backend': 'street', 'display': 'Straatnaam'},
-        {'backend': 'housenumber', 'display': 'Huisnr'},
-        {'backend': 'housenumber_addition', 'display': 'Toevoeging'}
-      ],
-      [
-        {'backend': 'zipcode', 'display': 'Postcode'},
-        {'backend': 'city', 'display': 'Stad'}
-      ],
-    ];
-
-    List<List<double>> amendableFieldRelativeSizes = [
-      [1 / 2, 1 / 2],
-      [1],
-      [1],
-      [3 / 7, 2 / 7, 2 / 7],
-      [1 / 2, 1 / 2]
-    ];
 
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
       Center(child: Container()),
@@ -144,12 +217,37 @@ class _MeWidgetState extends State<MeWidget> {
       ...amendableFieldLabels.map<Widget>((labels) {
         return labels
             .map<Widget>((label) {
-              return TextFormField(
-                      decoration:
-                          InputDecoration(labelText: label['display'] ?? ''),
-                      initialValue: contact?.toJson()[label['backend']])
-                  .padding(all: 5)
-                  .expanded();
+              var textStyle = const TextStyle();
+
+              if (label['changed']) {
+                textStyle = const TextStyle(color: Colors.blueAccent);
+              }
+
+              if (label['updated'] != null) {
+                textStyle = const TextStyle(fontWeight: FontWeight.w400);
+              }
+
+              if (label['changed'] && label['updated'] != null) {
+                textStyle = const TextStyle(
+                    fontWeight: FontWeight.w400, color: Colors.blueAccent);
+              }
+
+              return SizedBox(
+                  width: label['width'] * rowWidth,
+                  child: Builder(builder: (_) {
+                    return TextFormField(
+                        style: textStyle,
+                        decoration: InputDecoration(
+                          labelText: label['display'] ?? '',
+                          labelStyle: textStyle,
+                        ),
+                        controller: label['controller'],
+                        onChanged: (value) {
+                          label['changed'] =
+                              (label['initial'] != label['controller'].text);
+                          setState(() {});
+                        }).padding(all: 5);
+                  }));
             })
             .toList()
             .toRow();
