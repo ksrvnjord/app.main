@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,6 +19,9 @@ class HomePage extends StatelessWidget {
           systemOverlayStyle:
               const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         ),
-        body: <Widget>[const VaarverbodWidget()].toColumn());
+        body: <Widget>[
+          const VaarverbodWidget(),
+          const AnnouncementsHomeWidget()
+        ].toColumn());
   }
 }

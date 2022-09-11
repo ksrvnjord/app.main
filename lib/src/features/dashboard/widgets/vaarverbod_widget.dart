@@ -33,7 +33,10 @@ class VaarverbodWidget extends StatelessWidget {
                           color: fgColor))
                   .padding(all: 10)
                   .expanded()
-            ].toRow().card(color: bgColor, elevation: 0).padding(all: 10);
+            ]
+                .toRow()
+                .card(color: bgColor, elevation: 0)
+                .padding(all: 15, bottom: 0);
           }
 
           return Container();
