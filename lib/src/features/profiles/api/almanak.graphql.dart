@@ -4,8 +4,10 @@ import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 
 class Variables$Query$Almanak {
-  factory Variables$Query$Almanak({required int first, required int page}) =>
+  factory Variables$Query$Almanak(
+          {required String search, required int first, required int page}) =>
       Variables$Query$Almanak._({
+        r'search': search,
         r'first': first,
         r'page': page,
       });
@@ -14,6 +16,8 @@ class Variables$Query$Almanak {
 
   factory Variables$Query$Almanak.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
+    final l$search = data['search'];
+    result$data['search'] = (l$search as String);
     final l$first = data['first'];
     result$data['first'] = (l$first as int);
     final l$page = data['page'];
@@ -23,10 +27,13 @@ class Variables$Query$Almanak {
 
   Map<String, dynamic> _$data;
 
+  String get search => (_$data['search'] as String);
   int get first => (_$data['first'] as int);
   int get page => (_$data['page'] as int);
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
+    final l$search = search;
+    result$data['search'] = l$search;
     final l$first = first;
     result$data['first'] = l$first;
     final l$page = page;
@@ -45,6 +52,11 @@ class Variables$Query$Almanak {
         runtimeType != other.runtimeType) {
       return false;
     }
+    final l$search = search;
+    final lOther$search = other.search;
+    if (l$search != lOther$search) {
+      return false;
+    }
     final l$first = first;
     final lOther$first = other.first;
     if (l$first != lOther$first) {
@@ -60,9 +72,10 @@ class Variables$Query$Almanak {
 
   @override
   int get hashCode {
+    final l$search = search;
     final l$first = first;
     final l$page = page;
-    return Object.hashAll([l$first, l$page]);
+    return Object.hashAll([l$search, l$first, l$page]);
   }
 }
 
@@ -74,7 +87,7 @@ abstract class CopyWith$Variables$Query$Almanak<TRes> {
   factory CopyWith$Variables$Query$Almanak.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$Almanak;
 
-  TRes call({int? first, int? page});
+  TRes call({String? search, int? first, int? page});
 }
 
 class _CopyWithImpl$Variables$Query$Almanak<TRes>
@@ -87,9 +100,14 @@ class _CopyWithImpl$Variables$Query$Almanak<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? first = _undefined, Object? page = _undefined}) =>
+  TRes call(
+          {Object? search = _undefined,
+          Object? first = _undefined,
+          Object? page = _undefined}) =>
       _then(Variables$Query$Almanak._({
         ..._instance._$data,
+        if (search != _undefined && search != null)
+          'search': (search as String),
         if (first != _undefined && first != null) 'first': (first as int),
         if (page != _undefined && page != null) 'page': (page as int),
       }));
@@ -101,7 +119,7 @@ class _CopyWithStubImpl$Variables$Query$Almanak<TRes>
 
   TRes _res;
 
-  call({int? first, int? page}) => _res;
+  call({String? search, int? first, int? page}) => _res;
 }
 
 class Query$Almanak {
@@ -219,6 +237,12 @@ const documentNodeQueryAlmanak = DocumentNode(definitions: [
       name: NameNode(value: 'Almanak'),
       variableDefinitions: [
         VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'search')),
+            type:
+                NamedTypeNode(name: NameNode(value: 'String'), isNonNull: true),
+            defaultValue: DefaultValueNode(value: null),
+            directives: []),
+        VariableDefinitionNode(
             variable: VariableNode(name: NameNode(value: 'first')),
             type: NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
             defaultValue: DefaultValueNode(value: null),
@@ -235,6 +259,9 @@ const documentNodeQueryAlmanak = DocumentNode(definitions: [
             name: NameNode(value: 'users'),
             alias: null,
             arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'search'),
+                  value: VariableNode(name: NameNode(value: 'search'))),
               ArgumentNode(
                   name: NameNode(value: 'first'),
                   value: VariableNode(name: NameNode(value: 'first'))),

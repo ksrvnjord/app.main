@@ -15,15 +15,6 @@ class AlmanakPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Almanak'),
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => AlmanakSearch()));
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
