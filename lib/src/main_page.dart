@@ -10,25 +10,6 @@ class MainPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            controller: tabPage.controller,
-            tabs: const <Tab>[
-              Tab(
-                icon: Icon(Icons.home_filled),
-                text: 'Home',
-              ),
-              Tab(
-                icon: Icon(Icons.all_inbox_rounded),
-                text: 'Aankondigingen',
-              ),
-              Tab(
-                icon: Icon(Icons.book),
-                text: 'Almanak',
-              ),
-            ],
-          ),
-        ),
         body: TabBarView(
           controller: tabPage.controller,
           children: [
@@ -36,6 +17,25 @@ class MainPage extends StatelessWidget {
               PageStackNavigator(stack: stack),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: tabPage.controller.index,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.all_inbox_rounded),
+                label: 'Aankondigingen',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                label: 'Almanak',
+              ),
+            ],
+            onTap: (value) {
+              tabPage.controller.index = value;
+            }),
       ),
     );
   }
