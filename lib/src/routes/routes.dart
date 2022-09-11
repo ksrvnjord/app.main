@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
@@ -50,13 +51,17 @@ final routeMap = RouteMap(
           name: 'Announcements',
           child: AnnouncementsPage(),
         ),
+    '/announcements/:announcementId': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: AnnouncementPage(),
+        ),
     '/almanak': (_) => const MaterialPage(
           name: 'Almanak',
           child: AlmanakPage(),
         ),
-    '/announcements/:announcementId': (info) => const RoutedPageTransition(
+    '/almanak/:userId': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
-          child: AnnouncementPage(),
+          child: AlmanakProfilePage(),
         ),
   },
 );
