@@ -15,15 +15,25 @@ class VaarverbodWidget extends StatelessWidget {
         success: (data) {
           if (data != null) {
             dynamic r = data.data;
-            final Color color =
-                r['status'] ? Colors.redAccent : Colors.greenAccent;
+            final Color bgColor =
+                r['status'] ? Colors.redAccent : Colors.lightBlue;
+            final Color fgColor = r['status'] ? Colors.black : Colors.white;
 
             return <Widget>[
               r['status']
-                  ? Icon(Icons.warning_amber_rounded, color: color, size: 50)
-                  : Icon(Icons.check, color: color, size: 50),
-              Text(r['message']).padding(all: 10)
-            ].toRow().card(color: color);
+                  ? Icon(Icons.priority_high, color: fgColor, size: 15)
+                      .padding(all: 10)
+                  : Icon(Icons.favorite_outlined, color: fgColor, size: 15)
+                      .padding(all: 10),
+              Text(r['message'],
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                          color: fgColor))
+                  .padding(all: 10)
+                  .expanded()
+            ].toRow().card(color: bgColor, elevation: 0).padding(all: 10);
           }
 
           return Container();
