@@ -1,49 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  // TODO: Make this a better value, so it doesn't fall back to 0.
-  int _currentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
-    final tabState = CupertinoTabPage.of(context);
+    final tabPage = TabPage.of(context);
 
     return SafeArea(
       child: Scaffold(
-        body: tabState.tabBuilder(context, _currentIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blue,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Home',
-              backgroundColor: Colors.blue,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox_rounded),
-              label: 'Aankondigingen',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Almanak',
-            ),
+        appBar: AppBar(
+          bottom: TabBar(
+            controller: tabPage.controller,
+            tabs: const <Tab>[
+              Tab(
+                icon: Icon(Icons.home_filled),
+                text: 'Home',
+              ),
+              Tab(
+                icon: Icon(Icons.all_inbox_rounded),
+                text: 'Aankondigingen',
+              ),
+              Tab(
+                icon: Icon(Icons.book),
+                text: 'Almanak',
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          controller: tabPage.controller,
+          children: [
+            for (final stack in tabPage.stacks)
+              PageStackNavigator(stack: stack),
           ],
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              tabState.tabBuilder(context, _currentIndex);
-            });
-          },
         ),
       ),
     );

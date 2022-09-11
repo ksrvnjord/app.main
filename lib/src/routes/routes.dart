@@ -19,10 +19,9 @@ final loggedOutRouteMap = RouteMap(
 
 final routeMap = RouteMap(
   routes: {
-    '/': (_) => CupertinoTabPage(
-          pageBuilder: (child) => MaterialPage(child: child),
-          child: const MainPage(),
-          paths: const [
+    '/': (_) => const TabPage(
+          child: MainPage(),
+          paths: [
             '/home',
             '/announcements',
             '/almanak',
@@ -38,7 +37,7 @@ final routeMap = RouteMap(
           child: AnnouncementsPage(),
         ),
     '/announcements/:announcementId': (info) => const MaterialPage(
-          name: 'Announcementt',
+          name: 'Announcement',
           child: AnnouncementPage(),
         ),
     '/almanak': (_) => const MaterialPage(
