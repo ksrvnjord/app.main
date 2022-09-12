@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +22,6 @@ class _LoginFormState extends State<LoginForm> {
 
   void login(AuthModel auth, GraphQLModel graphql) {
     auth.login(_username.text, _password.text).then((result) {
-      if (result) {
-        graphql.boot(auth);
-      }
       widget.loginCallback(result);
     });
   }

@@ -41,7 +41,9 @@ class Application extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
-          ChangeNotifierProvider<GraphQLModel>(create: (_) => GraphQLModel()),
+          ChangeNotifierProxyProvider<AuthModel, GraphQLModel>(
+              update: (context, auth, _) => GraphQLModel(auth),
+              create: (_) => GraphQLModel(null)),
         ],
         child: Builder(
             builder: (context) => MaterialApp.router(

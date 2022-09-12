@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ksrvnjord_main_app/constants.dart';
@@ -9,6 +11,15 @@ class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
   bool isBusy = false;
   String error = '';
+
+  AuthModel() {
+    isBusy = true;
+    boot().then((value) {
+      client = value;
+    }).whenComplete(() {
+      isBusy = false;
+    });
+  }
 
   Future<bool> login(String username, String password) async {
     var loginState = false;
@@ -44,7 +55,7 @@ class AuthModel extends ChangeNotifier {
     if (client != null && client?.credentials != null) {
       isBusy = false;
       await _storage.write(
-          key: 'oauth2_credentails', value: client?.credentials.toJson());
+          key: 'oauth2_credentials', value: client?.credentials.toJson());
       notifyListeners();
       return true;
     }
@@ -54,7 +65,18 @@ class AuthModel extends ChangeNotifier {
     return false;
   }
 
-  void boot() {
-    var creds = _storage.read(key: 'oauth2_credentails');
+  Future<oauth2.Client?> boot() async {
+    String? storedCreds = await _storage.read(key: 'oauth2_credentials');
+    dynamic credentials = jsonDecode(storedCreds ?? '{}');
+
+    if (credentials['expiration'] != null) {
+      DateTime expiration =
+          DateTime.fromMillisecondsSinceEpoch(credentials['expiration']);
+      if (expiration.isAfter(DateTime.now())) {
+        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds!));
+      }
+    }
+
+    return null;
   }
 }

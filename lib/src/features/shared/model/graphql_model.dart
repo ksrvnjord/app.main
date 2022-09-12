@@ -8,7 +8,13 @@ final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
 class GraphQLModel extends ChangeNotifier {
   GraphQLClient client = GraphQLClient(link: httpLink, cache: cache);
 
-  void boot(AuthModel auth) {
+  GraphQLModel(AuthModel? auth) {
+    if (auth != null) {
+      client = boot(auth);
+    }
+  }
+
+  GraphQLClient boot(AuthModel auth) {
     final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
 
     final AuthLink authLink = AuthLink(
@@ -16,7 +22,7 @@ class GraphQLModel extends ChangeNotifier {
 
     final Link link = authLink.concat(httpLink);
 
-    client = GraphQLClient(
+    return GraphQLClient(
       link: link,
       cache: cache,
     );
