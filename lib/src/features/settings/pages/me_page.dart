@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -63,54 +60,24 @@ class MeWidget extends StatefulWidget {
 }
 
 class _MeWidgetState extends State<MeWidget> {
-  List<List<Map<String, dynamic>>> amendableFieldLabels = [];
-
-  // callBack(String label, String value) {
-  //   setState(() {
-  //     widget.contactChanges[label] = value;
-  //     if ((widget.user['fullContact']['update'][label] != value) &
-  //         !((widget.user['fullContact']['update'][label] == null) &
-  //             (value == '-'))) {
-  //       anyChanges = true;
-  //     }
-  //   });
-  // }
-
-  // void _reset() {
-  //   Navigator.pushReplacement(
-  //     context,
-  //     PageRouteBuilder(
-  //       transitionDuration: Duration.zero,
-  //       pageBuilder: (_, __, ___) => const MePage(),
-  //     ),
-  //   );
-  // }
-
-  // Future<QueryResult> _sendInfoToHeimdall(contact) async {
-  //   final GraphQLClient client = ref.watch(heimdallProvider).graphQLClient();
-  //   final MutationOptions options =
-  //       MutationOptions(document: gql(mutation.meMutation), variables: contact);
-  //   final QueryResult result = await client.mutate(options);
-  //   return (result);
-  // }
+  List<Map<String, Map<String, dynamic>>> fields = [];
 
   @override
   void initState() {
     final contact = widget.user?.fullContact.private;
     final updated = widget.user?.fullContact.update;
 
-    amendableFieldLabels = [
-      [
-        {
+    fields = [
+      {
+        'first_name': {
           'changed': false,
           'width': 1 / 2,
           'controller': TextEditingController(text: contact?.first_name),
-          'backend': 'first_name',
           'display': 'Voornaam',
           'initial': contact?.first_name,
           'updated': updated?.first_name,
         },
-        {
+        'last_name': {
           'changed': false,
           'width': 1 / 2,
           'controller': TextEditingController(text: contact?.last_name),
@@ -119,9 +86,9 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.last_name,
           'updated': updated?.last_name,
         }
-      ],
-      [
-        {
+      },
+      {
+        'email': {
           'changed': false,
           'width': 1,
           'controller': TextEditingController(text: contact?.email),
@@ -130,9 +97,9 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.email,
           'updated': updated?.email,
         }
-      ],
-      [
-        {
+      },
+      {
+        'phone_primary': {
           'changed': false,
           'width': 1,
           'controller': TextEditingController(text: contact?.phone_primary),
@@ -141,9 +108,9 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.phone_primary,
           'updated': updated?.phone_primary,
         }
-      ],
-      [
-        {
+      },
+      {
+        'street': {
           'changed': false,
           'width': 4 / 6,
           'controller': TextEditingController(text: contact?.street),
@@ -152,7 +119,7 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.street,
           'updated': updated?.street,
         },
-        {
+        'housenumber': {
           'changed': false,
           'width': 1 / 6,
           'controller': TextEditingController(text: contact?.housenumber),
@@ -161,7 +128,7 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.housenumber,
           'updated': updated?.housenumber,
         },
-        {
+        'housenumber_addition': {
           'changed': false,
           'width': 1 / 6,
           'controller':
@@ -171,9 +138,9 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.housenumber_addition,
           'updated': updated?.housenumber_addition,
         }
-      ],
-      [
-        {
+      },
+      {
+        'zipcode': {
           'changed': false,
           'width': 1 / 2,
           'controller': TextEditingController(text: contact?.zipcode),
@@ -182,7 +149,7 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.zipcode,
           'updated': updated?.zipcode,
         },
-        {
+        'city': {
           'changed': false,
           'width': 1 / 2,
           'controller': TextEditingController(text: contact?.city),
@@ -191,9 +158,25 @@ class _MeWidgetState extends State<MeWidget> {
           'initial': contact?.city,
           'updated': updated?.city,
         }
-      ],
+      },
     ];
     super.initState();
+  }
+
+  TextStyle labelTextStyle(dynamic label) {
+    if (label['changed']) {
+      return const TextStyle(color: Colors.blueAccent);
+    }
+
+    if (label['updated'] != null) {
+      return const TextStyle(fontWeight: FontWeight.w400);
+    }
+
+    if (label['changed'] && label['updated'] != null) {
+      return const TextStyle(
+          fontWeight: FontWeight.w400, color: Colors.blueAccent);
+    }
+    return const TextStyle();
   }
 
   @override
@@ -214,46 +197,39 @@ class _MeWidgetState extends State<MeWidget> {
               enabled: false,
               initialValue: '${widget.user?.username}')
           .padding(all: 5),
-      ...amendableFieldLabels.map<Widget>((labels) {
-        return labels
-            .map<Widget>((label) {
-              var textStyle = const TextStyle();
+      ...fields.asMap().entries.map<Widget>((i) {
+        int idx = i.key;
+        final row = i.value;
 
-              if (label['changed']) {
-                textStyle = const TextStyle(color: Colors.blueAccent);
-              }
-
-              if (label['updated'] != null) {
-                textStyle = const TextStyle(fontWeight: FontWeight.w400);
-              }
-
-              if (label['changed'] && label['updated'] != null) {
-                textStyle = const TextStyle(
-                    fontWeight: FontWeight.w400, color: Colors.blueAccent);
-              }
+        return row.keys
+            .map<Widget>((key) {
+              dynamic label = row[key];
 
               return SizedBox(
                   width: label['width'] * rowWidth,
                   child: Builder(builder: (_) {
                     return TextFormField(
-                        style: textStyle,
+                        style: labelTextStyle(label),
                         decoration: InputDecoration(
                           labelText: label['display'] ?? '',
-                          labelStyle: textStyle,
+                          labelStyle: labelTextStyle(label),
                         ),
                         controller: label['controller'],
                         onChanged: (value) {
-                          label['changed'] =
-                              (label['initial'] != label['controller'].text);
-                          setState(() {});
+                          setState(() {
+                            fields[idx][key]?['changed'] =
+                                (label['initial'] != label['controller'].text);
+                          });
                         }).padding(all: 5);
                   }));
             })
             .toList()
             .toRow();
       }).toList(),
+      ElevatedButton(onPressed: () {}, child: const Text('Opslaan'))
+          .padding(all: 5),
       const Text(
-        '*Cursief gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
+        '* Dik gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
         style: TextStyle(fontSize: 11),
       ),
       const Divider(
