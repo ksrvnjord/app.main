@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  @override
+  createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     final tabPage = TabPage.of(context);
@@ -25,8 +30,8 @@ class MainPage extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.all_inbox_rounded),
-              label: 'Aankondigingen',
+              icon: Icon(Icons.campaign),
+              label: 'Ad Valvas',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
@@ -34,7 +39,7 @@ class MainPage extends StatelessWidget {
             ),
           ],
           onTap: (value) {
-            tabPage.controller.index = value;
+            tabPage.controller.animateTo(value);
           }),
     );
   }

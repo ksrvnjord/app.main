@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
@@ -21,10 +23,12 @@ Future<void> main() async {
         options.tracesSampleRate = 0.1;
       },
       appRunner: () => () {
+        GetIt.I.registerSingleton(GlobalObserverService());
         return runApp(const Application());
       },
     );
   } else {
+    GetIt.I.registerSingleton(GlobalObserverService());
     runApp(const Application());
   }
 }
@@ -51,6 +55,7 @@ class Application extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   routeInformationParser: const RoutemasterParser(),
                   routerDelegate: RoutemasterDelegate(
+                    observers: [GlobalObserver()],
                     routesBuilder: (context) {
                       final auth = Provider.of<AuthModel>(context);
                       final loggedIn = auth.client != null;
