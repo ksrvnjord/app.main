@@ -1,6 +1,5 @@
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 Widget? onEmpty<T>(T arg) {
   return Text(arg.toString());
