@@ -16,12 +16,17 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: [
             const LogoWidget(image: Images.appLogo),
-            ElevatedButton(
-                onPressed: () {
-                  Routemaster.of(context).push('/settings');
-                },
-                child: const Text('Hello!'))
-          ].toRow(),
+            IconButton(
+              padding: const EdgeInsets.all(0),
+              iconSize: 40,
+              icon: const Icon(Icons.account_circle),
+              onPressed: () {
+                Routemaster.of(context).push('/settings');
+              },
+            )
+          ].toRow(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center),
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
           systemOverlayStyle:

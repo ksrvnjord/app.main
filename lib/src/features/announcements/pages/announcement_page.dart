@@ -16,33 +16,39 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  var title = 'Bericht';
+  String title = 'Bericht';
 
   @override
   Widget build(BuildContext context) {
     var client = Provider.of<GraphQLModel>(context).client;
     var params = RouteData.of(context).pathParameters;
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: FutureWrapper<Query$Announcement$announcement?>(
-            future: announcement(params['announcementId'] ?? '1', client),
-            success: (Query$Announcement$announcement? data) {
-              if (data != null) {
-                title = data.title;
-
-                return AnnouncementBodyWidget(
-                  title: data.title,
-                  text: data.contents,
-                );
-              }
-              return null;
-            }));
+    return FutureWrapper<Query$Announcement$announcement?>(
+        future: announcement(params['announcementId'] ?? '1', client),
+        success: (Query$Announcement$announcement? data) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text((data != null) ? data.title : 'Bericht'),
+                backgroundColor: Colors.lightBlue,
+                shadowColor: Colors.transparent,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: Colors.lightBlue),
+              ),
+              body: (data != null)
+                  ? AnnouncementBodyWidget(
+                      title: data.title,
+                      text: data.contents,
+                    )
+                  : Container());
+        },
+        loading: Scaffold(
+            appBar: AppBar(
+              title: const Text('Bericht'),
+              backgroundColor: Colors.lightBlue,
+              shadowColor: Colors.transparent,
+              systemOverlayStyle:
+                  const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+            ),
+            body: const LinearProgressIndicator()));
   }
 }
