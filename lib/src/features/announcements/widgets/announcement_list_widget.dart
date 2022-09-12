@@ -26,8 +26,9 @@ class AnnouncementListWidget extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
               onTap: () {
-                Routemaster.of(context)
-                    .push('/announcements/${announcement.id}');
+                var routemaster = Routemaster.of(context);
+                routemaster.push(
+                    '${routemaster.currentRoute}/announcements/${announcement.id}');
               });
         })
         .toList()

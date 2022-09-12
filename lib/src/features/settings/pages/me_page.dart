@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -280,19 +281,23 @@ class _MeWidgetState extends State<MeWidget> {
       const Divider(
         height: 32,
       ),
-      Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              color: Colors.red,
-              onPressed: () {
-                // ref.read(authenticationProvider).logout();
-              },
-            ),
-            const Text('Uitloggen', style: TextStyle(color: Colors.red))
-          ])
+      GestureDetector(
+          onTap: () {
+            Provider.of<AuthModel>(context, listen: false).logout();
+          },
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  color: Colors.red,
+                  onPressed: () {
+                    // ref.read(authenticationProvider).logout();
+                  },
+                ),
+                const Text('Uitloggen', style: TextStyle(color: Colors.red))
+              ]))
     ]);
   }
 }

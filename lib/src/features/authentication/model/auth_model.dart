@@ -11,6 +11,7 @@ class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
   bool isBusy = false;
   String error = '';
+  String storedUser = '';
 
   AuthModel() {
     isBusy = true;
@@ -78,5 +79,12 @@ class AuthModel extends ChangeNotifier {
     }
 
     return null;
+  }
+
+  void logout() {
+    _storage.delete(key: 'oauth2_credentials').then((value) {
+      client = null;
+      notifyListeners();
+    });
   }
 }

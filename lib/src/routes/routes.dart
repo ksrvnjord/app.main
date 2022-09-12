@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/advalvas/pages/advalvas_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcements_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
+import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
@@ -40,7 +42,7 @@ final routeMap = RouteMap(
           child: MainPage(),
           paths: [
             '/home',
-            '/announcements',
+            '/ad-valvas',
             '/almanak',
           ],
           backBehavior: TabBackBehavior.none,
@@ -49,13 +51,22 @@ final routeMap = RouteMap(
           name: 'Home',
           child: HomePage(),
         ),
-    '/announcements': (_) => const MaterialPage(
-          name: 'Announcements',
-          child: AnnouncementsPage(),
-        ),
-    '/announcements/:announcementId': (info) => const RoutedPageTransition(
+    '/home/announcements/:announcementId': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: AnnouncementPage(),
+        ),
+    '/ad-valvas': (_) => const MaterialPage(
+          name: 'Ad Valvas',
+          child: AdValvasPage(),
+        ),
+    '/ad-valvas/announcements/:announcementId': (info) =>
+        const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: AnnouncementPage(),
+        ),
+    '/ad-valvas/events': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: EventsPage(),
         ),
     '/almanak': (_) => const MaterialPage(
           name: 'Almanak',
@@ -65,9 +76,13 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: AlmanakProfilePage(),
         ),
-    '/settings': (info) =>
-        const MaterialPage(name: 'Settings', child: MePage()),
-    '/settings/privacy': (info) =>
-        const MaterialPage(name: 'Privacy Settings', child: MePrivacyPage()),
+    '/settings': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: MePage(),
+        ),
+    '/settings/privacy': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: MePrivacyPage(),
+        ),
   },
 );
