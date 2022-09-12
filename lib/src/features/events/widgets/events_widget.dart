@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -14,8 +13,8 @@ class EventsWidget extends StatelessWidget {
       {
         return Meeting(
             e!.toJson()['title'],
-            DateTime.parse(e.toJson()!['start_time']),
-            DateTime.parse(e.toJson()!['end_time']),
+            DateTime.parse(e.toJson()['start_time']),
+            DateTime.parse(e.toJson()['end_time']),
             Colors.blue);
       }
     }).toList();
@@ -27,8 +26,7 @@ class EventsWidget extends StatelessWidget {
         view: CalendarView.schedule,
         minDate: DateTime.now(),
         maxDate: DateTime.now().add(const Duration(days: 365)),
-        dataSource:
-            data != null ? MeetingDataSource(mapResultToItems(data)) : null,
+        dataSource: MeetingDataSource(mapResultToItems(data)),
         scheduleViewSettings: const ScheduleViewSettings(
             hideEmptyScheduleWeek: true,
             monthHeaderSettings: MonthHeaderSettings(
