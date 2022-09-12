@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
@@ -64,6 +65,9 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: AlmanakProfilePage(),
         ),
-    '/settings': (info) => const MaterialPage(name: 'Settings', child: MePage())
+    '/settings': (info) =>
+        const MaterialPage(name: 'Settings', child: MePage()),
+    '/settings/privacy': (info) =>
+        const MaterialPage(name: 'Privacy Settings', child: MePrivacyPage()),
   },
 );

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 double betweenFields = 20;
@@ -29,9 +32,7 @@ class MePage extends StatelessWidget {
                   PopupMenuItem(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     onTap: () async {
-                      // bool mutationSucces =
-                      //     await showChangeVisibilityDialog(context);
-                      // changeVisibilitySuccesDialog(context, mutationSucces);
+                      Routemaster.of(context).push('/settings/privacy');
                     },
                     child: const Center(child: Text('Zichtbaarheid Almanak')),
                   )
@@ -61,6 +62,8 @@ class MeWidget extends StatefulWidget {
 
 class _MeWidgetState extends State<MeWidget> {
   List<Map<String, Map<String, dynamic>>> fields = [];
+  bool saving = false;
+  Color buttonColor = Colors.blue;
 
   @override
   void initState() {
@@ -169,19 +172,16 @@ class _MeWidgetState extends State<MeWidget> {
     }
 
     if (label['updated'] != null) {
-      return const TextStyle(fontWeight: FontWeight.w400);
+      return const TextStyle(color: Colors.blueGrey);
     }
 
-    if (label['changed'] && label['updated'] != null) {
-      return const TextStyle(
-          fontWeight: FontWeight.w400, color: Colors.blueAccent);
-    }
     return const TextStyle();
   }
 
   @override
   Widget build(BuildContext context) {
     final double rowWidth = MediaQuery.of(context).size.width - 2 * paddingBody;
+    final client = Provider.of<GraphQLModel>(context).client;
 
     return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
       Center(child: Container()),
@@ -226,12 +226,57 @@ class _MeWidgetState extends State<MeWidget> {
             .toList()
             .toRow();
       }).toList(),
-      ElevatedButton(onPressed: () {}, child: const Text('Opslaan'))
+      ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+              onPressed: () {
+                setState(() {
+                  saving = true;
+                  buttonColor = Colors.blueGrey;
+                });
+                updateMe(
+                    client,
+                    Input$IContact(
+                      first_name: fields[0]['first_name']?['controller'].text,
+                      last_name: fields[0]['last_name']?['controller'].text,
+                      email: fields[1]['email']?['controller'].text,
+                      phone_primary:
+                          fields[2]['phone_primary']?['controller'].text,
+                      street: fields[3]['street']?['controller'].text,
+                      housenumber: fields[3]['housenumber']?['controller'].text,
+                      housenumber_addition:
+                          fields[3]['housenumber_addition']?['controller'].text,
+                      zipcode: fields[3]['zipcode']?['controller'].text,
+                      city: fields[3]['city']?['controller'].text,
+                    )).then((data) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Updateverzoek verstuurd')));
+                  setState(() {
+                    saving = false;
+                    buttonColor = Colors.blue;
+                  });
+                }).onError((error, stackTrace) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.red,
+                      content:
+                          Text('Updateverzoek mislukt, melding gemaakt.')));
+                  setState(() {
+                    saving = false;
+                    buttonColor = Colors.red;
+                  });
+                });
+              },
+              child: saving
+                  ? const SizedBox(
+                          height: 10,
+                          width: 10,
+                          child: CircularProgressIndicator(color: Colors.white))
+                      .center()
+                      .padding(all: 10)
+                  : const Text('Opslaan'))
           .padding(all: 5),
       const Text(
-        '* Dik gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-        style: TextStyle(fontSize: 11),
-      ),
+          '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
+          style: TextStyle(color: Colors.blueGrey, fontSize: 11)),
       const Divider(
         height: 32,
       ),
