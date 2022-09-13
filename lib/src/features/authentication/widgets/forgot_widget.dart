@@ -6,25 +6,26 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class LoginForm extends StatefulWidget {
-  static const routename = '/login';
-  const LoginForm({Key? key, required this.loginCallback}) : super(key: key);
-  final void Function(bool) loginCallback;
+class ForgotForm extends StatefulWidget {
+  static const routename = '/login/forgot';
+  const ForgotForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  createState() => _ForgotFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: 'LoginForm');
+class _ForgotFormState extends State<ForgotForm> {
+  final GlobalKey<FormState> _formKey =
+      GlobalKey(debugLabel: 'ForgotPasswordForm');
 
   final _username = TextEditingController();
-  final _password = TextEditingController();
+  String error = '';
+  String message = '';
 
-  void login(AuthModel auth, GraphQLModel graphql) {
-    auth.login(_username.text, _password.text).then((result) {
-      widget.loginCallback(result);
-    });
+  void forgot(AuthModel auth, GraphQLModel graphql) {
+    // auth.forgot(_username.text).then((result) {
+    //   widget.loginCallback(result);
+    // });
   }
 
   @override
@@ -33,15 +34,14 @@ class _LoginFormState extends State<LoginForm> {
     final graphql = Provider.of<GraphQLModel>(context);
 
     return <Widget>[
-      AnimatedBuilder(
-          animation: auth,
-          builder: (_, __) {
-            if (auth.error != '') {
-              return Text(auth.error, style: const TextStyle(color: Colors.red))
-                  .padding(all: 10);
-            }
-            return Container();
-          }),
+      error != ''
+          ? Text(auth.error, style: const TextStyle(color: Colors.red))
+              .padding(all: 10)
+          : Container(),
+      message != ''
+          ? Text(auth.error, style: const TextStyle(color: Colors.blue))
+              .padding(all: 10)
+          : Container(),
       Form(
           key: _formKey,
           child: <Widget>[
@@ -59,37 +59,26 @@ class _LoginFormState extends State<LoginForm> {
                 labelText: 'Njord-account',
               ),
             ).padding(all: 10),
-            TextFormField(
-              controller: _password,
-              obscureText: true,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Wachtwoord',
-              ),
-            ).padding(all: 10)
           ].toColumn(mainAxisSize: MainAxisSize.min)),
       <Widget>[
         ElevatedButton(
-                onPressed: () => login(auth, graphql),
+                onPressed: () => forgot(auth, graphql),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                child: const Text('Inloggen'))
+                child: const Text('Wachtwoord vergeten'))
             .height(54)
             .padding(all: 10)
             .expanded(),
         ElevatedButton(
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
                 onPressed: () {
-                  Routemaster.of(context).push('/forgot');
+                  Routemaster.of(context).pop();
                 },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueGrey)),
-                child: const Text('Vergeten'))
+                child: const Icon(Icons.arrow_back))
             .height(54)
             .padding(all: 10)
-            .expanded()
       ].toRow()
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)

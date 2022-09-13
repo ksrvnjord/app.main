@@ -61,7 +61,7 @@ class Application extends StatelessWidget {
                     routesBuilder: (context) {
                       final auth = Provider.of<AuthModel>(context);
                       final loggedIn = auth.client != null;
-                      return loggedIn ? routeMap : loggedOutRouteMap;
+                      return loggedIn ? routeMap : authenticationRoutes;
                     },
                   ),
                 )));

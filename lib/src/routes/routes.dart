@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/advalvas/pages/advalvas_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcements_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
@@ -24,16 +26,6 @@ class RoutedPageTransition<T> extends Page {
     return pt.PageTransition(child: child, type: transition, settings: this);
   }
 }
-
-// This is the logged out route map.
-// This only allows the user to navigate to the root path.
-// Note: building the route map from methods allows hot reload to work
-final loggedOutRouteMap = RouteMap(
-  onUnknownRoute: (route) => const Redirect('/'),
-  routes: {
-    '/': (_) => const MaterialPage(child: LoginPage()),
-  },
-);
 
 final routeMap = RouteMap(
   onUnknownRoute: (route) => const Redirect('/'),
@@ -84,5 +76,21 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: MePrivacyPage(),
         ),
+  },
+);
+
+final authenticationRoutes = RouteMap(
+  onUnknownRoute: (route) => const Redirect('/'),
+  routes: {
+    '/': (_) => const MaterialPage(
+          name: 'Login',
+          child: LoginPage(),
+        ),
+    '/forgot': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.fade,
+          child: ForgotPage(),
+        ),
+    '/forgot/webview': (info) => const RoutedPageTransition(
+        child: ForgotWebPage(), transition: pt.PageTransitionType.rightToLeft)
   },
 );

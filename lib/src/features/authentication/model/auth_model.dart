@@ -19,6 +19,7 @@ class AuthModel extends ChangeNotifier {
       client = value;
     }).whenComplete(() {
       isBusy = false;
+      notifyListeners();
     });
   }
 
