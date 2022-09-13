@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.da
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -288,16 +289,13 @@ class _MeWidgetState extends State<MeWidget> {
           child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.logout),
+              children: const [
+                Icon(
+                  Icons.logout,
                   color: Colors.red,
-                  onPressed: () {
-                    // ref.read(authenticationProvider).logout();
-                  },
                 ),
-                const Text('Uitloggen', style: TextStyle(color: Colors.red))
-              ]))
+                Text('Uitloggen', style: TextStyle(color: Colors.red))
+              ])),
     ]);
   }
 }
