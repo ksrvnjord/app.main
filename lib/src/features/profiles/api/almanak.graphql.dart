@@ -5,9 +5,9 @@ import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 
 class Variables$Query$Almanak {
   factory Variables$Query$Almanak(
-          {required String search, required int first, required int page}) =>
+          {String? search, required int first, required int page}) =>
       Variables$Query$Almanak._({
-        r'search': search,
+        if (search != null) r'search': search,
         r'first': first,
         r'page': page,
       });
@@ -16,8 +16,10 @@ class Variables$Query$Almanak {
 
   factory Variables$Query$Almanak.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$search = data['search'];
-    result$data['search'] = (l$search as String);
+    if (data.containsKey('search')) {
+      final l$search = data['search'];
+      result$data['search'] = (l$search as String?);
+    }
     final l$first = data['first'];
     result$data['first'] = (l$first as int);
     final l$page = data['page'];
@@ -27,13 +29,15 @@ class Variables$Query$Almanak {
 
   Map<String, dynamic> _$data;
 
-  String get search => (_$data['search'] as String);
+  String? get search => (_$data['search'] as String?);
   int get first => (_$data['first'] as int);
   int get page => (_$data['page'] as int);
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$search = search;
-    result$data['search'] = l$search;
+    if (_$data.containsKey('search')) {
+      final l$search = search;
+      result$data['search'] = l$search;
+    }
     final l$first = first;
     result$data['first'] = l$first;
     final l$page = page;
@@ -54,6 +58,9 @@ class Variables$Query$Almanak {
     }
     final l$search = search;
     final lOther$search = other.search;
+    if (_$data.containsKey('search') != other._$data.containsKey('search')) {
+      return false;
+    }
     if (l$search != lOther$search) {
       return false;
     }
@@ -75,7 +82,8 @@ class Variables$Query$Almanak {
     final l$search = search;
     final l$first = first;
     final l$page = page;
-    return Object.hashAll([l$search, l$first, l$page]);
+    return Object.hashAll(
+        [_$data.containsKey('search') ? l$search : const {}, l$first, l$page]);
   }
 }
 
@@ -106,8 +114,7 @@ class _CopyWithImpl$Variables$Query$Almanak<TRes>
           Object? page = _undefined}) =>
       _then(Variables$Query$Almanak._({
         ..._instance._$data,
-        if (search != _undefined && search != null)
-          'search': (search as String),
+        if (search != _undefined) 'search': (search as String?),
         if (first != _undefined && first != null) 'first': (first as int),
         if (page != _undefined && page != null) 'page': (page as int),
       }));
@@ -238,8 +245,8 @@ const documentNodeQueryAlmanak = DocumentNode(definitions: [
       variableDefinitions: [
         VariableDefinitionNode(
             variable: VariableNode(name: NameNode(value: 'search')),
-            type:
-                NamedTypeNode(name: NameNode(value: 'String'), isNonNull: true),
+            type: NamedTypeNode(
+                name: NameNode(value: 'String'), isNonNull: false),
             defaultValue: DefaultValueNode(value: null),
             directives: []),
         VariableDefinitionNode(

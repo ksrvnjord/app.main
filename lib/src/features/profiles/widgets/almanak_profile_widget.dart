@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_profile_bottomsheet_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +34,11 @@ class AlmanakProfileWidget extends StatelessWidget {
 
             final List<String> values = [
               '${contact.first_name} ${contact.last_name}',
-              contact.phone_primary ?? ' ',
-              contact.email ?? ' ',
-              '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}',
+              contact.phone_primary ?? '',
+              contact.email ?? '',
+              contact.street != ''
+                  ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
+                  : '',
               contact.zipcode ?? ' ',
               contact.city ?? ' ',
             ];
@@ -53,14 +56,29 @@ class AlmanakProfileWidget extends StatelessWidget {
                         physics: const PageScrollPhysics(),
                         itemCount: labels.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return TextFormField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              labelText: labels[index],
-                              border: const OutlineInputBorder(),
-                            ),
-                            initialValue: values[index],
-                          ).padding(all: 15);
+                          if (values[index] != '') {
+                            return GestureDetector(
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: labels[index],
+                                  border: const OutlineInputBorder(),
+                                ),
+                                initialValue: values[index],
+                              ).padding(all: 15),
+                              onLongPress: () {
+                                HapticFeedback.vibrate();
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) =>
+                                        AlmanakProfileBottomsheetWidget(
+                                            label: labels[index],
+                                            value: values[index]));
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
                         })));
           }
         });

@@ -1,4 +1,4 @@
-query Almanak ($search: String!, $first: Int!, $page: Int!){
+query Almanak ($search: String, $first: Int!, $page: Int!){
   users (search: $search, first: $first, page: $page){
     paginatorInfo{
       hasMorePages,
