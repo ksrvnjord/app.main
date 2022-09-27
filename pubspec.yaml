@@ -31,6 +31,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.6.2
   syncfusion_flutter_calendar: ^20.2.48
   webview_flutter: ^3.0.4
+  lucide_icons: ^0.90.0
 
 
 dev_dependencies:
