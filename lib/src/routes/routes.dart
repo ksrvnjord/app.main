@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/advalvas/pages/advalvas_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcements_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
@@ -11,6 +10,10 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
@@ -35,6 +38,7 @@ final routeMap = RouteMap(
           paths: [
             '/home',
             '/ad-valvas',
+            '/training',
             '/almanak',
           ],
           backBehavior: TabBackBehavior.none,
@@ -75,6 +79,22 @@ final routeMap = RouteMap(
     '/settings/privacy': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: MePrivacyPage(),
+        ),
+    '/training': (_) => const MaterialPage(
+          name: 'Training',
+          child: TrainingPage(),
+        ),
+    '/training/all': (_) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: AllTrainingPage(),
+        ),
+    '/training/plan': (_) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: PlanTrainingPage(),
+        ),
+    '/training/:id': (_) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: ShowTrainingPage(),
         ),
   },
 );
