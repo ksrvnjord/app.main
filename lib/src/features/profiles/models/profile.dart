@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
+
 import '../api/profile.graphql.dart';
 
 Future<Query$AlmanakProfile$user?> almanakProfile(
