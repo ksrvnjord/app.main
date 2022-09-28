@@ -32,6 +32,7 @@ dependencies:
   syncfusion_flutter_calendar: ^20.2.48
   webview_flutter: ^3.0.4
   lucide_icons: ^0.90.0
+  sticky_headers: ^0.3.0+2
 
 
 dev_dependencies:

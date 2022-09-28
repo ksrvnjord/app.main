@@ -74,7 +74,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           ),
           body: TabBarView(
             children: days
-                .map<Widget>((e) => TrainingShowAll(now: e, filters: filters))
+                .map<Widget>(
+                    (date) => TrainingShowAll(date: date, filters: filters))
                 .toList(),
           ),
         ));
