@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cloud_firestore:
   provider: ^6.0.3
   url_launcher: ^6.1.5
   sentry_flutter: ^6.9.1
