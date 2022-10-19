@@ -49,7 +49,7 @@ android {
 
     defaultConfig {
         applicationId "com.ksrvnjord.app"
-        minSdkVersion 33
+        minSdkVersion 30
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
