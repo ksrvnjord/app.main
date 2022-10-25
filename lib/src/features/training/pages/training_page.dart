@@ -23,7 +23,7 @@ class TrainingPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: <Widget>[
-        const TrainingList().expanded(),
+        TrainingList().expanded(),
         const TrainingHomeNav(),
       ].toColumn(),
     );
