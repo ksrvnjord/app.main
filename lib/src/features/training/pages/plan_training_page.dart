@@ -21,7 +21,7 @@ class PlanTrainingPage extends StatelessWidget {
         reservationObjectName = queryParams['reservationObjectName'] as String,
         hour = int.parse(queryParams['hour']),
         minute = int.parse(queryParams['minute']),
-        date = DateTime.parse(queryParams['date'] as String),
+        date = DateTime.parse(queryParams['date'] as String), // TODO: round to begin of day
         super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class PlanTrainingPage extends StatelessWidget {
     DateTime startTime =
         DateTime(date.year, date.month, date.day, hour, minute);
 
-    // query all afschrijvingen van die dag van die boot
+
     FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference<Reservation> reservationsRef =
         db.collection('reservations').withConverter<Reservation>(
@@ -39,20 +39,17 @@ class PlanTrainingPage extends StatelessWidget {
                   Reservation.fromJson(snapshot.data()!),
               toFirestore: (reservation, _) => reservation.toJson(),
             );
-    // bepaal laatste eindtijd die voor de starttijd ligt
-    // bepaal eerste starttijd die na de eindtijd ligt
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
-        // automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: StreamBuilder<QuerySnapshot<Reservation>>(
-        stream: reservationsRef
+        stream: reservationsRef  // query all afschrijvingen van die dag van die boot
             .where('object', isEqualTo: reservationObjectPath)
             .where('startTime', isGreaterThanOrEqualTo: date)
             .where('startTime',
@@ -85,6 +82,8 @@ class PlanTrainingPage extends StatelessWidget {
           }
           print("startTime of new training page: $startTime");
           print("Latest endtime before startTime: ${latestEndTime.toString()}");
+          // bepaal laatste eindtijd die voor de starttijd ligt
+          // bepaal eerste starttijd die na de eindtijd ligt
           return <Widget>[
             TextFormField(
               enabled: false,
