@@ -44,7 +44,7 @@ class TrainingDayList extends StatelessWidget {
                             icon: const Icon(LucideIcons.plusCircle,
                                 size: 12, color: Colors.grey),
                             onPressed: () {
-                              navigator.push('plan', queryParameters: {
+                              navigator.replace('plan', queryParameters: {
                                 'id': boat.id.toString(),
                                 'hour': e.hour.toString(),
                                 'minute': e.minute.toString(),

@@ -88,7 +88,7 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: AllTrainingPage(),
         ),
-    '/training/all/plan': (_) => const RoutedPageTransition(
+    '/training/plan': (_) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: PlanTrainingPage(),
         ),
