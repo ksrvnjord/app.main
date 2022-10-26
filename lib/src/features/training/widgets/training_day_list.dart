@@ -45,7 +45,7 @@ class TrainingDayList extends StatelessWidget {
                                 size: 12, color: Colors.grey),
                             onPressed: () {
                               navigator.replace('plan', queryParameters: {
-                                'id': boat.id.toString(),
+                                'reservationObjectReference': '/reservationObjects/De Vijf Pijlen',
                                 'hour': e.hour.toString(),
                                 'minute': e.minute.toString(),
                                 'date': date.toIso8601String()
