@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Reservation {
   final DateTime startTime;
   final DateTime endTime;
-  final DocumentReference reservationObject;
+  final String reservationObject;
   final int creator;
 
   const Reservation(
@@ -14,19 +14,26 @@ class Reservation {
   );
 
   Reservation.fromJson(Map<String, Object?> json)
-      : this(
-          DateTime.parse(json['startTime'] as String),
-          DateTime.parse(json['endTime'] as String),
-          json['object']! as DocumentReference,
+      : 
+      this(
+          (json['startTime'] as Timestamp).toDate(),
+          (json['endTime'] as Timestamp).toDate(),
+          json['object']! as String,
           json['creatorId']! as int,
         );
 
-  Map<String, Object?> toJson() {
+  Map<String, Object> toJson() {
     return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
-      'object': reservationObject.path,
+      'startTime': Timestamp.fromDate(startTime),
+      'endTime': Timestamp.fromDate(startTime),
+      'object': reservationObject,
       'creatorId': creator,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Reservation{startTime: $startTime, endTime: $endTime, reservationObject: $reservationObject, creator: $creator}';
+  
   }
 }
