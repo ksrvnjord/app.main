@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
@@ -45,10 +46,16 @@ class TrainingDayList extends StatelessWidget {
                                 size: 12, color: Colors.grey),
                             onPressed: () {
                               navigator.push('plan', queryParameters: {
-                                'id': boat.id.toString(),
+                                'reservationObjectName': 'De Vijf Pijlen',
+                                'reservationObjectPath':
+                                    '/reservationObjects/De Vijf Pijlen',
                                 'hour': e.hour.toString(),
                                 'minute': e.minute.toString(),
-                                'date': date.toIso8601String()
+                                'date': (date) {
+                                  // String s = date.toIso8601String(); convert given date
+                                  final String d = DateTime(2022, 9, 28).toIso8601String();
+                                  return d;
+                                }(date)
                               });
                             })).border(
                         bottom: 1,
