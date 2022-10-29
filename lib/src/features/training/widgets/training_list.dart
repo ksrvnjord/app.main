@@ -11,6 +11,8 @@ class TrainingList extends StatelessWidget {
   Widget build(BuildContext context) {
     final CollectionReference reservations =
         FirebaseFirestore.instance.collection('reservations');
+    final CollectionReference reservationObjects =
+        FirebaseFirestore.instance.collection('reservationObjects');
     DateFormat dateFormat = DateFormat('MMM d, hh:mm');
 
     String trainingTimeFromTimestamps(reservation) {
@@ -34,7 +36,12 @@ class TrainingList extends StatelessWidget {
                 'Laden ingeplande trainingen niet mogelijk. Probeer het later opnieuw');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return const Center(
+                child: SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(),
+            ));
           } else {
             return snapshot.data?.docs != null
                 ? ListView.separated(
