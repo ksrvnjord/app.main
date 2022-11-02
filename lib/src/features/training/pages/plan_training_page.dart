@@ -112,7 +112,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: (MediaQuery.of(context).size.width / 4) * range.inHours,
+                width: (MediaQuery.of(context).size.width / 3) * range.inHours,
                 height: 140,
                 child: SfRangeSlider(
                   min: earliestPossibleTime,
