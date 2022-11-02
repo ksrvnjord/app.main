@@ -100,6 +100,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 border: OutlineInputBorder(),
               ),
               initialValue: reservationObjectName,
+              style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             TextFormField(
               enabled: false,
@@ -108,6 +109,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 border: OutlineInputBorder(),
               ),
               initialValue: DateFormat.yMMMMd().format(date),
+              style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
