@@ -16,18 +16,21 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   final int hour;
   final int minute;
   final DateTime date;
+  late DateTime _startTime;
+  late DateTime _endTime;
+
   _PlanTrainingPageState({required Map<String, dynamic> queryParams})
       : reservationObjectPath = queryParams['reservationObjectPath'] as String,
         reservationObjectName = queryParams['reservationObjectName'] as String,
         hour = int.parse(queryParams['hour']),
         minute = int.parse(queryParams['minute']),
-        date = DateTime.parse(
-            queryParams['date'] as String); // TODO: round to begin of day;
+        date = DateTime.parse(queryParams['date'] as String) {
+    _startTime = DateTime(date.year, date.month, date.day, hour, minute);
+    _endTime = _startTime.add(const Duration(hours: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
-    DateTime startTime =
-        DateTime(date.year, date.month, date.day, hour, minute);
     FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference<Reservation> reservationsRef =
         db.collection('reservations').withConverter<Reservation>(
@@ -73,18 +76,19 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           for (QueryDocumentSnapshot<Reservation> document in data.docs) {
             // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
-            if (reservation.endTime.isBefore(startTime) &&
+            if (reservation.endTime.isBefore(_startTime) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
               earliestPossibleTime = reservation.endTime;
             }
             if (reservation.startTime.isBefore(latestPossibleTime) &&
-                reservation.startTime.isAfter(startTime)) {
+                reservation.startTime.isAfter(_startTime)) {
               latestPossibleTime = reservation.startTime;
             }
           }
-          print("startTime of new training page: $startTime");
-          print("Earliest start time: ${earliestPossibleTime.toString()}");
-          print("latest end time: ${latestPossibleTime.toString()}");
+
+          if (_endTime.isAfter(latestPossibleTime)) {
+            _endTime = latestPossibleTime;
+          }
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           return <Widget>[
@@ -105,23 +109,22 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               initialValue: DateFormat.yMMMMd().format(date),
             ).padding(all: 15),
             SfRangeSlider(
-              min: earliestPossibleTime.millisecondsSinceEpoch.toDouble(),
-              max: latestPossibleTime.millisecondsSinceEpoch.toDouble(),
-              values: SfRangeValues(
-                startTime.millisecondsSinceEpoch.toDouble(),
-                startTime.add(const Duration(hours: 1)).millisecondsSinceEpoch
-                    .toDouble(),
-              ),
-              interval: 15 * 60 * 1000,
+              min: earliestPossibleTime,
+              max: latestPossibleTime,
+              values: SfRangeValues(_startTime, _endTime),
+              dragMode: SliderDragMode.both,
               showTicks: true,
               showLabels: true,
               enableTooltip: true,
               dateFormat: DateFormat.Hm(),
-              dateIntervalType: DateIntervalType.minutes,
+              stepDuration: const SliderStepDuration(minutes: 15),
+              dateIntervalType: DateIntervalType.hours,
+              interval: 1,
+              minorTicksPerInterval: 3,
               onChanged: (SfRangeValues values) {
                 setState(() {
-                  startTime = DateTime.fromMillisecondsSinceEpoch(
-                      values.start.toInt());
+                  _startTime = values.start;
+                  _endTime = values.end;
                 });
               },
             ).padding(all: 15),
