@@ -8,27 +8,24 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class PlanTrainingPage extends StatelessWidget {
+class _PlanTrainingPageState extends State<PlanTrainingPage> {
   final String reservationObjectPath;
   final String reservationObjectName;
   final int hour;
   final int minute;
   final DateTime date;
-
-  PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
+  _PlanTrainingPageState({required Map<String, dynamic> queryParams})
       : reservationObjectPath = queryParams['reservationObjectPath'] as String,
         reservationObjectName = queryParams['reservationObjectName'] as String,
         hour = int.parse(queryParams['hour']),
         minute = int.parse(queryParams['minute']),
         date = DateTime.parse(
-            queryParams['date'] as String), // TODO: round to begin of day
-        super(key: key);
+            queryParams['date'] as String); // TODO: round to begin of day;
 
   @override
   Widget build(BuildContext context) {
-    var navigator = Routemaster.of(context);
-
     DateTime startTime =
         DateTime(date.year, date.month, date.day, hour, minute);
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -73,7 +70,8 @@ class PlanTrainingPage extends StatelessWidget {
               hours: 6)); // people can reservate starting at 06:00
 
           DateTime latestPossibleTime = date.add(const Duration(hours: 22));
-          for (QueryDocumentSnapshot<Reservation> document in data.docs) { // determine earliest/latest possible time for slider
+          for (QueryDocumentSnapshot<Reservation> document in data.docs) {
+            // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
             if (reservation.endTime.isBefore(startTime) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
@@ -106,7 +104,27 @@ class PlanTrainingPage extends StatelessWidget {
               ),
               initialValue: DateFormat.yMMMMd().format(date),
             ).padding(all: 15),
-            Text('Time Slider...'),
+            SfRangeSlider(
+              min: earliestPossibleTime.millisecondsSinceEpoch.toDouble(),
+              max: latestPossibleTime.millisecondsSinceEpoch.toDouble(),
+              values: SfRangeValues(
+                startTime.millisecondsSinceEpoch.toDouble(),
+                startTime.add(const Duration(hours: 1)).millisecondsSinceEpoch
+                    .toDouble(),
+              ),
+              interval: 15 * 60 * 1000,
+              showTicks: true,
+              showLabels: true,
+              enableTooltip: true,
+              dateFormat: DateFormat.Hm(),
+              dateIntervalType: DateIntervalType.minutes,
+              onChanged: (SfRangeValues values) {
+                setState(() {
+                  startTime = DateTime.fromMillisecondsSinceEpoch(
+                      values.start.toInt());
+                });
+              },
+            ).padding(all: 15),
             ElevatedButton(
                     onPressed: () => {
                           // reservationsRef
@@ -136,4 +154,27 @@ class PlanTrainingPage extends StatelessWidget {
       ),
     );
   }
+}
+
+class PlanTrainingPage extends StatefulWidget {
+  final String reservationObjectPath;
+  final String reservationObjectName;
+  final int hour;
+  final int minute;
+  final DateTime date;
+  final Map<String, dynamic> queryParams;
+
+  PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
+      : reservationObjectPath = queryParams['reservationObjectPath'] as String,
+        reservationObjectName = queryParams['reservationObjectName'] as String,
+        hour = int.parse(queryParams['hour']),
+        minute = int.parse(queryParams['minute']),
+        date = DateTime.parse(
+            queryParams['date'] as String), // TODO: round to begin of day
+        queryParams = queryParams,
+        super(key: key);
+
+  @override
+  State<PlanTrainingPage> createState() =>
+      _PlanTrainingPageState(queryParams: queryParams);
 }

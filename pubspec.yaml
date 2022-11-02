@@ -34,6 +34,7 @@ dependencies:
   webview_flutter: ^3.0.4
   lucide_icons: ^0.90.0
   sticky_headers: ^0.3.0+2
+  syncfusion_flutter_sliders: ^20.3.52
 
 
 dev_dependencies:
