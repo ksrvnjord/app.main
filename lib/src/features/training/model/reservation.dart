@@ -13,14 +13,14 @@ class Reservation {
     this.creator,
   );
 
-  Reservation.fromJson(Map<String, Object?> json)
-      : 
-      this(
-          (json['startTime'] as Timestamp).toDate(),
-          (json['endTime'] as Timestamp).toDate(),
-          json['object']! as String,
-          json['creatorId']! as int,
-        );
+  static Reservation fromJson(Map<String, dynamic> json) {
+    return Reservation(
+      (json['startTime'] as Timestamp).toDate(),
+      (json['endTime'] as Timestamp).toDate(),
+      (json['object']! as DocumentReference).path,
+      json['creatorId']! as int,
+    );
+  }
 
   Map<String, Object> toJson() {
     return {
@@ -34,6 +34,5 @@ class Reservation {
   @override
   String toString() {
     return 'Reservation{startTime: $startTime, endTime: $endTime, reservationObject: $reservationObject, creator: $creator}';
-  
   }
 }
