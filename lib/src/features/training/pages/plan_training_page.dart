@@ -91,6 +91,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           }
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
+          Duration range = latestPossibleTime.difference(earliestPossibleTime);
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -108,26 +109,34 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
               initialValue: DateFormat.yMMMMd().format(date),
             ).padding(all: 15),
-            SfRangeSlider(
-              min: earliestPossibleTime,
-              max: latestPossibleTime,
-              values: SfRangeValues(_startTime, _endTime),
-              dragMode: SliderDragMode.both,
-              showTicks: true,
-              showLabels: true,
-              enableTooltip: true,
-              dateFormat: DateFormat.Hm(),
-              stepDuration: const SliderStepDuration(minutes: 15),
-              dateIntervalType: DateIntervalType.hours,
-              interval: 1,
-              minorTicksPerInterval: 3,
-              onChanged: (SfRangeValues values) {
-                setState(() {
-                  _startTime = values.start;
-                  _endTime = values.end;
-                });
-              },
-            ).padding(all: 15),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: (MediaQuery.of(context).size.width / 4) * range.inHours,
+                height: 140,
+                child: SfRangeSlider(
+                  min: earliestPossibleTime,
+                  max: latestPossibleTime,
+                  values: SfRangeValues(_startTime, _endTime),
+                  dragMode: SliderDragMode.both,
+                  showTicks: true,
+                  showLabels: true,
+                  enableTooltip: true,
+                  shouldAlwaysShowTooltip: true,
+                  dateFormat: DateFormat.Hm(),
+                  stepDuration: const SliderStepDuration(minutes: 15),
+                  dateIntervalType: DateIntervalType.hours,
+                  interval: 1,
+                  minorTicksPerInterval: 3,
+                  onChanged: (SfRangeValues values) {
+                    setState(() {
+                      _startTime = values.start;
+                      _endTime = values.end;
+                    });
+                  },
+                ),
+              ),
+            ),
             ElevatedButton(
                     onPressed: () => {
                           // reservationsRef
