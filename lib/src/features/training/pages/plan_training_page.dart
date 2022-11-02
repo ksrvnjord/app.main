@@ -21,7 +21,8 @@ class PlanTrainingPage extends StatelessWidget {
         reservationObjectName = queryParams['reservationObjectName'] as String,
         hour = int.parse(queryParams['hour']),
         minute = int.parse(queryParams['minute']),
-        date = DateTime.parse(queryParams['date'] as String), // TODO: round to begin of day
+        date = DateTime.parse(
+            queryParams['date'] as String), // TODO: round to begin of day
         super(key: key);
 
   @override
@@ -30,8 +31,6 @@ class PlanTrainingPage extends StatelessWidget {
 
     DateTime startTime =
         DateTime(date.year, date.month, date.day, hour, minute);
-
-
     FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference<Reservation> reservationsRef =
         db.collection('reservations').withConverter<Reservation>(
@@ -49,12 +48,13 @@ class PlanTrainingPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: StreamBuilder<QuerySnapshot<Reservation>>(
-        stream: reservationsRef  // query all afschrijvingen van die dag van die boot
-            .where('object', isEqualTo: reservationObjectPath)
-            .where('startTime', isGreaterThanOrEqualTo: date)
-            .where('startTime',
-                isLessThanOrEqualTo: date.add(const Duration(days: 1)))
-            .snapshots(),
+        stream:
+            reservationsRef // query all afschrijvingen van die dag van die boot
+                // .where('object', isEqualTo: reservationObjectPath)
+                // .where('startTime', isGreaterThanOrEqualTo: date)
+                // .where('startTime',
+                //     isLessThanOrEqualTo: date.add(const Duration(days: 1)))
+                .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -69,19 +69,24 @@ class PlanTrainingPage extends StatelessWidget {
           final data = snapshot.requireData;
           // find last reservation that ends before the start time
           // find first reservation that starts after the end time
-          DateTime endTime = startTime;
+          DateTime earliestPossibleTime = date.add(const Duration(
+              hours: 6)); // people can reservate starting at 06:00
 
-          DateTime latestEndTime = startTime.subtract(const Duration(days: 1));
-          for (QueryDocumentSnapshot<Reservation> document in data.docs) {
+          DateTime latestPossibleTime = date.add(const Duration(hours: 22));
+          for (QueryDocumentSnapshot<Reservation> document in data.docs) { // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
-            print("Reservation: ${reservation.toString()}");
             if (reservation.endTime.isBefore(startTime) &&
-                reservation.endTime.isAfter(latestEndTime)) {
-              latestEndTime = reservation.endTime;
+                reservation.endTime.isAfter(earliestPossibleTime)) {
+              earliestPossibleTime = reservation.endTime;
+            }
+            if (reservation.startTime.isBefore(latestPossibleTime) &&
+                reservation.startTime.isAfter(startTime)) {
+              latestPossibleTime = reservation.startTime;
             }
           }
           print("startTime of new training page: $startTime");
-          print("Latest endtime before startTime: ${latestEndTime.toString()}");
+          print("Earliest start time: ${earliestPossibleTime.toString()}");
+          print("latest end time: ${latestPossibleTime.toString()}");
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           return <Widget>[
