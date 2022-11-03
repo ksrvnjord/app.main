@@ -10,6 +10,15 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+// HELP: What to do with these 'constants'. Maybe make a separate file to store them?
+FirebaseFirestore db = FirebaseFirestore.instance;
+final CollectionReference<Reservation> reservationsRef = db
+    .collection('reservations')
+    .withConverter<Reservation>(
+      fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
+      toFirestore: (reservation, _) => reservation.toJson(),
+    );
+
 class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late DocumentReference reservationObject;
   late int hour;
@@ -17,7 +26,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late DateTime date;
   late DateTime _startTime; // Selected start time of the slider
   late DateTime _endTime; // Selected end time of the slider
-  FirebaseFirestore db = FirebaseFirestore.instance;
 
   _PlanTrainingPageState({required Map<String, dynamic> queryParams}) {
     reservationObject = db
@@ -32,13 +40,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference<Reservation> reservationsRef =
-        db.collection('reservations').withConverter<Reservation>(
-              fromFirestore: (snapshot, _) =>
-                  Reservation.fromJson(snapshot.data()!),
-              toFirestore: (reservation, _) => reservation.toJson(),
-            );
-
+    var navigator = Routemaster.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -76,7 +78,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           for (QueryDocumentSnapshot<Reservation> document in data.docs) {
             // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
-            print(reservation.toString());
             if (reservation.endTime.isBefore(_startTime) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
               earliestPossibleTime = reservation.endTime;
@@ -93,6 +94,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           Duration range = latestPossibleTime.difference(earliestPossibleTime);
+          Reservation newReservation;
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -142,18 +144,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             ),
             ElevatedButton(
                     onPressed: () => {
-                          // reservationsRef
-                          //     .add({
-                          //       'object': reservationObjectPath,
-                          //       'creatorId': 21203,
-                          //       'startTime': Timestamp.fromDate(startTime),
-                          //       'endTime': Timestamp.fromDate(endTime),
-                          //       'createdTime': DateTime.now(),
-                          //     })
-                          //     .then((value) => print("Afschrijving Added"))
-                          //     .catchError(
-                          //         (error) => print("Failed to add user: $error")),
-                          // navigator.push('/training')
+                          newReservation = Reservation(
+                              _startTime, _endTime, reservationObject, 21203),
+                          newReservation.createdAt = DateTime.now(),
+                          createReservation(newReservation),
+                          navigator.push('/training'),
                         },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue),
@@ -180,4 +175,11 @@ class PlanTrainingPage extends StatefulWidget {
   @override
   State<PlanTrainingPage> createState() =>
       _PlanTrainingPageState(queryParams: queryParams);
+}
+
+void createReservation(Reservation r) {
+  reservationsRef
+      .add(r)
+      .then((value) => print("Afschrijving Added"))
+      .catchError((error) => print("Failed to add reservation: $error"));
 }

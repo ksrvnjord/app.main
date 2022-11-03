@@ -5,8 +5,9 @@ class Reservation {
   final DateTime endTime;
   final DocumentReference reservationObject;
   final int creator;
+  late DateTime createdAt;
 
-  const Reservation(
+  Reservation(
     this.startTime,
     this.endTime,
     this.reservationObject,
@@ -25,9 +26,10 @@ class Reservation {
   Map<String, Object> toJson() {
     return {
       'startTime': Timestamp.fromDate(startTime),
-      'endTime': Timestamp.fromDate(startTime),
+      'endTime': Timestamp.fromDate(endTime),
       'object': reservationObject,
       'creatorId': creator,
+      'createdTime': Timestamp.fromDate(createdAt),
     };
   }
 
