@@ -8,7 +8,7 @@ class TrainingDayLeftView extends StatelessWidget {
   }) : super(key: key);
 
   final List<DateTime> timestamps = List.generate(
-      36,
+      32,
       (index) =>
           DateTime(2020, 01, 01, 6, 0).add(Duration(minutes: index * 30)));
 

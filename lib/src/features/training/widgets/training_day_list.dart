@@ -19,7 +19,7 @@ class TrainingDayList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<DateTime> timestamps = List.generate(
-        36,
+        32,
         (index) =>
             DateTime(2020, 01, 01, 6, 0).add(Duration(minutes: index * 30)));
 
