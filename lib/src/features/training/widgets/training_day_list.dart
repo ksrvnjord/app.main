@@ -50,13 +50,12 @@ class TrainingDayList extends StatelessWidget {
                             onPressed: () {
                               navigator.push('plan', queryParameters: {
                                 'reservationObjectId': reservationObject.id,
-                                'hour': e.hour.toString(),
-                                'minute': e.minute.toString(),
-                                'date': (date) {
-                                  final String d =
-                                      DateTime(2022, 9, 28).toIso8601String();
-                                  return d;
-                                }(date)
+                                // 'startTime': e.toIso8601String(),
+                                'startTime': (date) {
+                                  return DateTime(2022, 9,
+                                          28, date.hour, date.minute)
+                                      .toIso8601String();
+                                }(e),
                               });
                             })).border(
                         bottom: 1,

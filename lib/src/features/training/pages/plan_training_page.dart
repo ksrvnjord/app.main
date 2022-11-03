@@ -18,34 +18,32 @@ final CollectionReference<Reservation> reservationsRef = db
     );
 
 class PlanTrainingPage extends StatefulWidget {
-  final Map<String, dynamic> queryParams;
+  final DocumentReference reservationObject;
+  final DateTime startTime;
+  late final DateTime date;
 
-  const PlanTrainingPage({Key? key, required this.queryParams})
-      : super(key: key);
+  PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
+      : reservationObject = db
+            .collection('reservationObjects')
+            .doc(queryParams['reservationObjectId']),
+        startTime = DateTime.parse(queryParams['startTime']),
+        super(key: key) {
+          date = DateTime(startTime.year, startTime.month, startTime.day);
+        }
 
   @override
-  State<PlanTrainingPage> createState() =>
-      _PlanTrainingPageState(queryParams: queryParams);
+  State<PlanTrainingPage> createState() => _PlanTrainingPageState();
 }
 
-
 class _PlanTrainingPageState extends State<PlanTrainingPage> {
-  late DocumentReference reservationObject;
-  late int hour;
-  late int minute;
-  late DateTime date;
   late DateTime _startTime; // Selected start time of the slider
   late DateTime _endTime; // Selected end time of the slider
 
-  _PlanTrainingPageState({required Map<String, dynamic> queryParams}) {
-    reservationObject = db
-        .collection('reservationObjects')
-        .doc(queryParams['reservationObjectId']);
-    hour = int.parse(queryParams['hour']);
-    minute = int.parse(queryParams['minute']);
-    date = DateTime.parse(queryParams['date']);
-    _startTime = DateTime(date.year, date.month, date.day, hour, minute);
-    _endTime = _startTime.add(const Duration(minutes: 30));
+  @override
+  void initState() {
+    super.initState();
+    _startTime = widget.startTime;
+    _endTime = widget.startTime.add(const Duration(minutes: 30));
   }
 
   @override
@@ -61,10 +59,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       body: StreamBuilder<QuerySnapshot<Reservation>>(
         stream:
             reservationsRef // query all afschrijvingen van die dag van die boot
-                .where('object', isEqualTo: reservationObject)
-                .where('startTime', isGreaterThanOrEqualTo: date)
+                .where('object', isEqualTo: widget.reservationObject)
+                .where('startTime', isGreaterThanOrEqualTo: widget.startTime)
                 .where('startTime',
-                    isLessThanOrEqualTo: date.add(const Duration(days: 1)))
+                    isLessThanOrEqualTo:
+                        widget.date.add(const Duration(days: 1)))
                 .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -80,10 +79,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           final data = snapshot.requireData;
           // find last reservation that ends before the start time
           // find first reservation that starts after the end time
-          DateTime earliestPossibleTime = date.add(const Duration(
+          DateTime earliestPossibleTime = widget.date.add(const Duration(
               hours: 6)); // people can reservate starting at 06:00
 
-          DateTime latestPossibleTime = date.add(const Duration(hours: 22));
+          DateTime latestPossibleTime =
+              widget.date.add(const Duration(hours: 22));
           for (QueryDocumentSnapshot<Reservation> document in data.docs) {
             // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
@@ -111,7 +111,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 labelText: 'Afschrijven',
                 border: OutlineInputBorder(),
               ),
-              initialValue: reservationObject.id,
+              initialValue: widget.reservationObject.id,
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             TextFormField(
@@ -120,7 +120,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 labelText: 'Dag',
                 border: OutlineInputBorder(),
               ),
-              initialValue: DateFormat.yMMMMd().format(date),
+              initialValue: DateFormat.yMMMMd().format(widget.date),
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             SingleChildScrollView(
@@ -153,11 +153,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             ),
             ElevatedButton(
                     onPressed: () => {
-                          newReservation = Reservation(
-                              _startTime, _endTime, reservationObject, 21203),
+                          newReservation = Reservation(_startTime, _endTime,
+                              widget.reservationObject, 21203),
                           newReservation.createdAt = DateTime.now(),
                           createReservation(newReservation),
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_)=> const TrainingPage())), // Training page is refreshed by not using RouteMaster
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  const TrainingPage())), // Training page is refreshed by not using RouteMaster
                         },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue),
@@ -174,20 +176,18 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   }
 }
 
-
 void createReservation(Reservation r) async {
-  DateTime startDate = DateTime(r.startTime.year, r.startTime.month,
-      r.startTime.day);
+  DateTime startDate =
+      DateTime(r.startTime.year, r.startTime.month, r.startTime.day);
   db
       .runTransaction((transaction) async {
         // Get the document
-        QuerySnapshot<Reservation> reservations =
-            await reservationsRef
-                .where('object', isEqualTo: r.reservationObject)
-                .where('startTime', isGreaterThanOrEqualTo: startDate)
-                .where('startTime',
-                    isLessThanOrEqualTo: startDate.add(const Duration(days: 1)))
-                .get();
+        QuerySnapshot<Reservation> reservations = await reservationsRef
+            .where('object', isEqualTo: r.reservationObject)
+            .where('startTime', isGreaterThanOrEqualTo: startDate)
+            .where('startTime',
+                isLessThanOrEqualTo: startDate.add(const Duration(days: 1)))
+            .get();
 
         // check for overlap of current reservation with existing reservations
         for (QueryDocumentSnapshot<Reservation> document in reservations.docs) {
@@ -202,10 +202,12 @@ void createReservation(Reservation r) async {
             // ignore: avoid_print
             .then((value) => print("Afschrijving Added"))
             // ignore: avoid_print
-            .catchError((error) => print("Firestore can't add the reservation at this moment: $error"));
+            .catchError((error) => print(
+                "Firestore can't add the reservation at this moment: $error"));
       }, maxAttempts: 1) // only try once
       // ignore: avoid_print
       .then((value) => print("Transaction completed: Added reservation"))
       // ignore: avoid_print
-      .catchError((error) => print("Transaction failed: Did not add reservation : $error"));
+      .catchError((error) =>
+          print("Transaction failed: Did not add reservation : $error"));
 }
