@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
@@ -23,7 +24,9 @@ class TrainingDayList extends StatelessWidget {
             DateTime(2020, 01, 01, 6, 0).add(Duration(minutes: index * 30)));
 
     var navigator = Routemaster.of(context);
-
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    DocumentReference reservationObject =
+        db.collection('reservationObjects').doc("De Vijf Pijlen");
     return SizedBox(
         width: 96,
         child: <Widget>[
@@ -46,14 +49,12 @@ class TrainingDayList extends StatelessWidget {
                                 size: 12, color: Colors.grey),
                             onPressed: () {
                               navigator.push('plan', queryParameters: {
-                                'reservationObjectName': 'De Vijf Pijlen',
-                                'reservationObjectPath':
-                                    '/reservationObjects/De Vijf Pijlen',
+                                'reservationObjectId': reservationObject.id,
                                 'hour': e.hour.toString(),
                                 'minute': e.minute.toString(),
                                 'date': (date) {
-                                  // String s = date.toIso8601String(); convert given date
-                                  final String d = DateTime(2022, 9, 28).toIso8601String();
+                                  final String d =
+                                      DateTime(2022, 9, 28).toIso8601String();
                                   return d;
                                 }(date)
                               });

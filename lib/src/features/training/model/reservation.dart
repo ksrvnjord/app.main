@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Reservation {
   final DateTime startTime;
   final DateTime endTime;
-  final String reservationObject;
+  final DocumentReference reservationObject;
   final int creator;
 
   const Reservation(
@@ -17,7 +17,7 @@ class Reservation {
     return Reservation(
       (json['startTime'] as Timestamp).toDate(),
       (json['endTime'] as Timestamp).toDate(),
-      (json['object']! as DocumentReference).path,
+      json['object']! as DocumentReference,
       json['creatorId']! as int,
     );
   }
