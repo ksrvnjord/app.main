@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -148,7 +149,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                               _startTime, _endTime, reservationObject, 21203),
                           newReservation.createdAt = DateTime.now(),
                           createReservation(newReservation),
-                          navigator.push('/training'),
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_)=> const TrainingPage())), // Training page is refreshed by not using RouteMaster
                         },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue),
