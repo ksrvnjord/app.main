@@ -18,7 +18,7 @@ class TrainingList extends StatelessWidget {
             );
     final CollectionReference reservationObjectsRef =
         db.collection('reservationObjects');
-    DateFormat dateFormat = DateFormat('MMM d, hh:mm');
+    DateFormat dateFormat = DateFormat('MMM d, HH:mm');
 
     String trainingTimeFromTimestamps(reservation) {
       final DateTime startTime = reservation['startTime'].toDate();
