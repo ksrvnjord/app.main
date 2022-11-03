@@ -17,6 +17,18 @@ final CollectionReference<Reservation> reservationsRef = db
       toFirestore: (reservation, _) => reservation.toJson(),
     );
 
+class PlanTrainingPage extends StatefulWidget {
+  final Map<String, dynamic> queryParams;
+
+  const PlanTrainingPage({Key? key, required this.queryParams})
+      : super(key: key);
+
+  @override
+  State<PlanTrainingPage> createState() =>
+      _PlanTrainingPageState(queryParams: queryParams);
+}
+
+
 class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late DocumentReference reservationObject;
   late int hour;
@@ -162,16 +174,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   }
 }
 
-class PlanTrainingPage extends StatefulWidget {
-  final Map<String, dynamic> queryParams;
-
-  const PlanTrainingPage({Key? key, required this.queryParams})
-      : super(key: key);
-
-  @override
-  State<PlanTrainingPage> createState() =>
-      _PlanTrainingPageState(queryParams: queryParams);
-}
 
 void createReservation(Reservation r) async {
   DateTime startDate = DateTime(r.startTime.year, r.startTime.month,
