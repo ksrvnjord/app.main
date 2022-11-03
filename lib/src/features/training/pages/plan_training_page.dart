@@ -28,8 +28,8 @@ class PlanTrainingPage extends StatefulWidget {
             .doc(queryParams['reservationObjectId']),
         startTime = DateTime.parse(queryParams['startTime']),
         super(key: key) {
-          date = DateTime(startTime.year, startTime.month, startTime.day);
-        }
+    date = DateTime(startTime.year, startTime.month, startTime.day);
+  }
 
   @override
   State<PlanTrainingPage> createState() => _PlanTrainingPageState();
@@ -86,15 +86,27 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               widget.date.add(const Duration(hours: 22));
           for (QueryDocumentSnapshot<Reservation> document in data.docs) {
             // determine earliest/latest possible time for slider
+
             Reservation reservation = document.data();
-            if (reservation.endTime.isBefore(_startTime) &&
+            // TODO: add error handling if initial starttime is within range of another reservaiton -> send to previous page
+
+            if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
+                reservation.endTime.isAfter(_startTime)) {
+              // overlaps
+              throw Exception(
+                  "A time was chosen that overlaps with another reservation of this object.");
+            }
+
+            if ((reservation.endTime.isBefore(_startTime) || reservation.endTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
               earliestPossibleTime = reservation.endTime;
             }
-            if (reservation.startTime.isBefore(latestPossibleTime) &&
-                reservation.startTime.isAfter(_startTime)) {
+
+            if ((reservation.startTime.isAfter(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
+                reservation.startTime.isBefore(latestPossibleTime)) {
               latestPossibleTime = reservation.startTime;
             }
+
           }
 
           if (_endTime.isAfter(latestPossibleTime)) {
@@ -127,12 +139,16 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             ).padding(all: 15),
             SingleChildScrollView(
               controller: ScrollController(
-                initialScrollOffset: _startTime.difference(earliestPossibleTime)
-                    .inMinutes.toDouble() * 3,
+                initialScrollOffset: _startTime
+                        .difference(earliestPossibleTime)
+                        .inMinutes
+                        .toDouble() *
+                    3,
               ),
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width * (range.inMinutes / 120),
+                width:
+                    MediaQuery.of(context).size.width * (range.inMinutes / 120),
                 height: 140,
                 child: SfRangeSlider(
                   min: earliestPossibleTime,
