@@ -43,7 +43,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   void initState() {
     super.initState();
     _startTime = widget.startTime;
-    _endTime = widget.startTime.add(const Duration(minutes: 30));
+    _endTime = widget.startTime.add(const Duration(hours: 1));
   }
 
   @override
@@ -126,9 +126,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             SingleChildScrollView(
+              controller: ScrollController(
+                initialScrollOffset: _startTime.difference(earliestPossibleTime)
+                    .inMinutes.toDouble() * 3,
+              ),
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: (MediaQuery.of(context).size.width / 3) * range.inHours,
+                width: MediaQuery.of(context).size.width * (range.inMinutes / 120),
                 height: 140,
                 child: SfRangeSlider(
                   min: earliestPossibleTime,
