@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -41,7 +38,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
-    var navigator = Routemaster.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -159,7 +155,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           .padding(vertical: 16)
                     ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween))
                 .padding(all: 16)
-            // Text('Menu om mensen uit te nodigen...'), TODO: not essential for first release
           ].toColumn().padding(all: 16);
         },
       ),
@@ -202,9 +197,13 @@ void createReservation(Reservation r) async {
         }
         await reservationsRef
             .add(r)
+            // ignore: avoid_print
             .then((value) => print("Afschrijving Added"))
+            // ignore: avoid_print
             .catchError((error) => print("Firestore can't add the reservation at this moment: $error"));
       }, maxAttempts: 1) // only try once
+      // ignore: avoid_print
       .then((value) => print("Transaction completed: Added reservation"))
+      // ignore: avoid_print
       .catchError((error) => print("Transaction failed: Did not add reservation : $error"));
 }
