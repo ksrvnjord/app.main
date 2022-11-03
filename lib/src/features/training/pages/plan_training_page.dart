@@ -177,9 +177,33 @@ class PlanTrainingPage extends StatefulWidget {
       _PlanTrainingPageState(queryParams: queryParams);
 }
 
-void createReservation(Reservation r) {
-  reservationsRef
-      .add(r)
-      .then((value) => print("Afschrijving Added"))
-      .catchError((error) => print("Failed to add reservation: $error"));
+void createReservation(Reservation r) async {
+  DateTime startDate = DateTime(r.startTime.year, r.startTime.month,
+      r.startTime.day);
+  db
+      .runTransaction((transaction) async {
+        // Get the document
+        QuerySnapshot<Reservation> reservations =
+            await reservationsRef
+                .where('object', isEqualTo: r.reservationObject)
+                .where('startTime', isGreaterThanOrEqualTo: startDate)
+                .where('startTime',
+                    isLessThanOrEqualTo: startDate.add(const Duration(days: 1)))
+                .get();
+
+        // check for overlap of current reservation with existing reservations
+        for (QueryDocumentSnapshot<Reservation> document in reservations.docs) {
+          Reservation reservation = document.data();
+          if (reservation.startTime.isBefore(r.endTime) &&
+              reservation.endTime.isAfter(r.startTime)) {
+            throw Exception('Er is al een reservering op die tijd');
+          }
+        }
+        await reservationsRef
+            .add(r)
+            .then((value) => print("Afschrijving Added"))
+            .catchError((error) => print("Firestore can't add the reservation at this moment: $error"));
+      }, maxAttempts: 1) // only try once
+      .then((value) => print("Transaction completed: Added reservation"))
+      .catchError((error) => print("Transaction failed: Did not add reservation : $error"));
 }
