@@ -11,27 +11,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class _PlanTrainingPageState extends State<PlanTrainingPage> {
-  final String reservationObjectPath;
-  final String reservationObjectName;
-  final int hour;
-  final int minute;
-  final DateTime date;
-  late DateTime _startTime;
-  late DateTime _endTime;
+  late DocumentReference reservationObject;
+  late int hour;
+  late int minute;
+  late DateTime date;
+  late DateTime _startTime; // Selected start time of the slider
+  late DateTime _endTime; // Selected end time of the slider
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
-  _PlanTrainingPageState({required Map<String, dynamic> queryParams})
-      : reservationObjectPath = queryParams['reservationObjectPath'] as String,
-        reservationObjectName = queryParams['reservationObjectName'] as String,
-        hour = int.parse(queryParams['hour']),
-        minute = int.parse(queryParams['minute']),
-        date = DateTime.parse(queryParams['date'] as String) {
+  _PlanTrainingPageState({required Map<String, dynamic> queryParams}) {
+    reservationObject = db
+        .collection('reservationObjects')
+        .doc(queryParams['reservationObjectId']);
+    hour = int.parse(queryParams['hour']);
+    minute = int.parse(queryParams['minute']);
+    date = DateTime.parse(queryParams['date']);
     _startTime = DateTime(date.year, date.month, date.day, hour, minute);
-    _endTime = _startTime.add(const Duration(hours: 1));
+    _endTime = _startTime.add(const Duration(minutes: 30));
   }
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference<Reservation> reservationsRef =
         db.collection('reservations').withConverter<Reservation>(
               fromFirestore: (snapshot, _) =>
@@ -50,10 +50,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       body: StreamBuilder<QuerySnapshot<Reservation>>(
         stream:
             reservationsRef // query all afschrijvingen van die dag van die boot
-                // .where('object', isEqualTo: reservationObjectPath)
-                // .where('startTime', isGreaterThanOrEqualTo: date)
-                // .where('startTime',
-                //     isLessThanOrEqualTo: date.add(const Duration(days: 1)))
+                .where('object', isEqualTo: reservationObject)
+                .where('startTime', isGreaterThanOrEqualTo: date)
+                .where('startTime',
+                    isLessThanOrEqualTo: date.add(const Duration(days: 1)))
                 .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -76,6 +76,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           for (QueryDocumentSnapshot<Reservation> document in data.docs) {
             // determine earliest/latest possible time for slider
             Reservation reservation = document.data();
+            print(reservation.toString());
             if (reservation.endTime.isBefore(_startTime) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
               earliestPossibleTime = reservation.endTime;
@@ -99,7 +100,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 labelText: 'Afschrijven',
                 border: OutlineInputBorder(),
               ),
-              initialValue: reservationObjectName,
+              initialValue: reservationObject.id,
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             TextFormField(
@@ -171,22 +172,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 }
 
 class PlanTrainingPage extends StatefulWidget {
-  final String reservationObjectPath;
-  final String reservationObjectName;
-  final int hour;
-  final int minute;
-  final DateTime date;
   final Map<String, dynamic> queryParams;
 
-  PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
-      : reservationObjectPath = queryParams['reservationObjectPath'] as String,
-        reservationObjectName = queryParams['reservationObjectName'] as String,
-        hour = int.parse(queryParams['hour']),
-        minute = int.parse(queryParams['minute']),
-        date = DateTime.parse(
-            queryParams['date'] as String), // TODO: round to begin of day
-        queryParams = queryParams,
-        super(key: key);
+  const PlanTrainingPage({Key? key, required this.queryParams})
+      : super(key: key);
 
   @override
   State<PlanTrainingPage> createState() =>
