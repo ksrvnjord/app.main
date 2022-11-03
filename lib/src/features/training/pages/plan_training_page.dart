@@ -60,7 +60,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         stream:
             reservationsRef // query all afschrijvingen van die dag van die boot
                 .where('object', isEqualTo: widget.reservationObject)
-                .where('startTime', isGreaterThanOrEqualTo: widget.startTime)
+                .where('startTime', isGreaterThanOrEqualTo: widget.date)
                 .where('startTime',
                     isLessThanOrEqualTo:
                         widget.date.add(const Duration(days: 1)))
@@ -103,6 +103,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           Duration range = latestPossibleTime.difference(earliestPossibleTime);
+          print("earliest possible time: $earliestPossibleTime");
+          print("latest possible time: $latestPossibleTime");
           Reservation newReservation;
           return <Widget>[
             TextFormField(
