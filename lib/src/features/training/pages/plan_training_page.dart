@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
-import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
+import '../../shared/widgets/error.dart';
+import '../model/reservation.dart';
+import 'training_page.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -88,21 +88,24 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             // determine earliest/latest possible time for slider
 
             Reservation reservation = document.data();
-            if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
+            if ((reservation.startTime.isBefore(_startTime) ||
+                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
-                return const ErrorCardWidget(errorMessage: "Deze tijd is al bezet");
+              return const ErrorCardWidget(
+                  errorMessage: "Deze tijd is al bezet");
             }
 
-            if ((reservation.endTime.isBefore(_startTime) || reservation.endTime.isAtSameMomentAs(_startTime)) &&
+            if ((reservation.endTime.isBefore(_startTime) ||
+                    reservation.endTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(earliestPossibleTime)) {
               earliestPossibleTime = reservation.endTime;
             }
 
-            if ((reservation.startTime.isAfter(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
+            if ((reservation.startTime.isAfter(_startTime) ||
+                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.startTime.isBefore(latestPossibleTime)) {
               latestPossibleTime = reservation.startTime;
             }
-
           }
 
           if (_endTime.isAfter(latestPossibleTime)) {
