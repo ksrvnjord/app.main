@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -90,10 +91,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             Reservation reservation = document.data();
             if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
-              // TODO: replace with our custom error widget
-              return Center(
-                child: Text('Deze tijd is al bezet ¯\_(ツ)_/¯'),
-              );
+                return const ErrorCardWidget(errorMessage: "Deze tijd is al bezet");
             }
 
             if ((reservation.endTime.isBefore(_startTime) || reservation.endTime.isAtSameMomentAs(_startTime)) &&
@@ -177,7 +175,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           newReservation = Reservation(_startTime, _endTime,
                               widget.reservationObject, 21203),
                           newReservation.createdAt = DateTime.now(),
+                          try {
                           createReservation(newReservation),
+                          } catch (e) {
+                            print(e);
+                          }
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) =>
                                   const TrainingPage())), // Training page is refreshed by not using RouteMaster
