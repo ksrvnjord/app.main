@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -218,16 +220,11 @@ void createReservation(Reservation r) async {
         }
         await reservationsRef
             .add(r)
-            // ignore: avoid_print
-            .then((value) => print("Afschrijving Added"))
-            // ignore: avoid_print
-            .catchError((error) => print(
+            .then((value) => log("Afschrijving Added"))
+            .catchError((error) => log(
                 "Firestore can't add the reservation at this moment: $error"));
       }, maxAttempts: 1) // only try once
-      // ignore: avoid_print
-      .then((value) => print("Transaction completed: Added reservation"))
-      // ignore: avoid_print
+      .then((value) => log("Transaction completed: Added reservation"))
       .catchError((error) =>
-          // ignore: avoid_print
-          print("Transaction failed: Did not add reservation : $error"));
+          log("Transaction failed: Did not add reservation : $error"));
 }
