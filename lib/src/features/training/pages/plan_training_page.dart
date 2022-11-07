@@ -78,8 +78,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           }
 
           final data = snapshot.requireData;
-          // find last reservation that ends before the start time
-          // find first reservation that starts after the end time
+
           DateTime earliestPossibleTime = widget.date.add(const Duration(
               hours: 6)); // people can reservate starting at 06:00
 
