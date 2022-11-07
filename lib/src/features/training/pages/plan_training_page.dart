@@ -70,9 +70,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            log(snapshot.error.toString());
+            return const ErrorCardWidget(errorMessage: "We konden de afschrijvingen niet ophalen van de server");
           }
 
           if (!snapshot.hasData) {
