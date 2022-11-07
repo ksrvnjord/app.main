@@ -112,8 +112,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           Duration range = latestPossibleTime.difference(earliestPossibleTime);
-          print("earliest possible time: $earliestPossibleTime");
-          print("latest possible time: $latestPossibleTime");
           Reservation newReservation;
           return <Widget>[
             TextFormField(
@@ -175,11 +173,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           newReservation = Reservation(_startTime, _endTime,
                               widget.reservationObject, 21203),
                           newReservation.createdAt = DateTime.now(),
-                          try {
                           createReservation(newReservation),
-                          } catch (e) {
-                            print(e);
-                          }
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) =>
                                   const TrainingPage())), // Training page is refreshed by not using RouteMaster
@@ -232,5 +226,6 @@ void createReservation(Reservation r) async {
       .then((value) => print("Transaction completed: Added reservation"))
       // ignore: avoid_print
       .catchError((error) =>
+          // ignore: avoid_print
           print("Transaction failed: Did not add reservation : $error"));
 }
