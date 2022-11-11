@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -7,8 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingFilters extends StatelessWidget {
-  final List<String> filters;
-  final void Function(String filter) toggleFilter;
+  final List<DocumentReference<Object?>> filters;
+  final void Function(DocumentReference<Object?> filter) toggleFilter;
 
   const TrainingFilters({
     Key? key,
@@ -26,7 +27,7 @@ class TrainingFilters extends StatelessWidget {
           if (data != null) {
             return ListView(
                 children: data.map<Widget>((e) {
-              bool selected = filters.contains(e.label);
+              bool selected = filters.contains(e.document);
               return ListTile(
                   tileColor: selected ? Colors.blue : Colors.white,
                   textColor: selected ? Colors.white : Colors.black,
@@ -35,7 +36,7 @@ class TrainingFilters extends StatelessWidget {
                       ? const Icon(Icons.check_box_outlined)
                       : const Icon(Icons.check_box_outline_blank),
                   title: Text(e.description),
-                  onTap: () => toggleFilter(e.label));
+                  onTap: () => toggleFilter(e.document));
             }).toList());
           }
           return Container();

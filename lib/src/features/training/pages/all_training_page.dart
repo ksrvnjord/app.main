@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,7 @@ class AllTrainingPage extends StatefulWidget {
 
 class _AllTrainingPage extends State<AllTrainingPage> {
   // List of filters to apply
-  List<String> filters = [];
+  List<DocumentReference> filters = [];
 
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
@@ -23,7 +24,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   List<DateTime> days =
       List.generate(14, (index) => DateTime.now().add(Duration(days: index)));
 
-  void toggleFilter(String filter) {
+  void toggleFilter(DocumentReference<Object?> filter) {
     if (filters.contains(filter)) {
       filters.remove(filter);
       setState(() {});
