@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
 import 'training_page.dart';
@@ -17,6 +18,13 @@ final CollectionReference<Reservation> reservationsRef = db
     .collection('reservations')
     .withConverter<Reservation>(
       fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
+      toFirestore: (reservation, _) => reservation.toJson(),
+    );
+
+final CollectionReference<ReservationObject> reservationObjectsRef = db
+    .collection('reservationObjects')
+    .withConverter<ReservationObject>(
+      fromFirestore: (snapshot, _) => ReservationObject.fromJson(snapshot.data()!),
       toFirestore: (reservation, _) => reservation.toJson(),
     );
 
@@ -51,6 +59,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    widget.reservationObject.get().then((obj) {
+      if (obj['isAvailable'] == false) {
+        Navigator.of(context).pop();
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -202,6 +215,13 @@ void createReservation(Reservation r) async {
   db
       .runTransaction((transaction) async {
         // Get the document
+
+        DocumentSnapshot<Object?> reservationObjectSnapshot = await r.reservationObject.get();
+        ReservationObject reservationObject= reservationObjectSnapshot.data() as ReservationObject;
+        if (!reservationObject.isAvailable) {
+          throw Exception("Het object dat je wilde reserveren is niet meer beschikbaar");
+        }
+
         QuerySnapshot<Reservation> reservations = await reservationsRef
             .where('object', isEqualTo: r.reservationObject)
             .where('startTime', isGreaterThanOrEqualTo: startDate)
