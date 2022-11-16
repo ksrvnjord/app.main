@@ -19,7 +19,7 @@ Future<List<AfschrijvingFilter>?> afschrijvingFilters(
     GraphQLClient client) async {
   CollectionReference reservationObjectTypesRef =
       FirebaseFirestore.instance.collection('reservationObjectTypes');
-  return [
+  return [ // TODO: Fetch all different reservationObject types from firestore dynamically?
     AfschrijvingFilter(
         description: '1 - Skiffs',
         label: 'skiffs',
