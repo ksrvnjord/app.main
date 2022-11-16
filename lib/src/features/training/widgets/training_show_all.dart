@@ -35,7 +35,10 @@ class TrainingShowAll extends StatelessWidget {
     if (filters.isNotEmpty) {
       return FutureBuilder(
           //future: reservedSlots(filters, client),
-          future: reservationObjectsRef.where('type', whereIn: filters).get(),
+          future: reservationObjectsRef
+          .where('type', whereIn: filters)
+          .where('isAvailable', isEqualTo: true)
+          .get(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot) {
             if (snapshot.hasError) {
