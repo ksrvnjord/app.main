@@ -22,7 +22,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
 
   // Generate a list of the coming 14 days
   List<DateTime> days =
-      List.generate(14, (index) => DateTime.now().add(Duration(days: index)));
+      List.generate(4, (index) => DateTime.now().add(Duration(days: index)));
 
   void toggleFilter(DocumentReference<Object?> filter) {
     if (filters.contains(filter)) {
@@ -42,7 +42,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
         length: 14,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Afschrijvingen'),
+            title: const Text('Afschrijven'),
             actions: <Widget>[
               IconButton(
                   icon: const Icon(Icons.filter_alt),

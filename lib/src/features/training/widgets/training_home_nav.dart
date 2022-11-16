@@ -17,21 +17,12 @@ class TrainingHomeNav extends StatelessWidget {
                   ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
               child: <Widget>[
                 const Icon(LucideIcons.sheet).padding(bottom: 1),
-                const Text('Overzicht', style: TextStyle(fontSize: 18))
+                const Text('Afschrijven', style: TextStyle(fontSize: 18))
                     .padding(vertical: 16)
               ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween))
           .padding(all: 4)
           .expanded(),
-      ElevatedButton(
-              onPressed: null,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-              child: <Widget>[
-                const Icon(LucideIcons.calendarSearch).padding(bottom: 1),
-                const Text('Planner', style: TextStyle(fontSize: 18))
-                    .padding(vertical: 16)
-              ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween))
-          .padding(all: 4)
-          .expanded(),
+      
     ].toRow().padding(all: 8);
   }
 }
