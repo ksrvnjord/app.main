@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -18,10 +19,22 @@ class TrainingDayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime earliestDateTimeThatCanBeBooked =
+        DateTime(date.year, date.month, date.day, 6, 0); // 6:00
+    final DateTime latestDateTimeThatCanBeBooked =
+        DateTime(date.year, date.month, date.day, 22, 0); // 22:00
+    final DateTimeRange dateTimeRange = DateTimeRange(
+        start: earliestDateTimeThatCanBeBooked,
+        end: latestDateTimeThatCanBeBooked);
+    final int minutes = dateTimeRange.duration.inMinutes;
+    const int timeSlotSize = 30; // minutes
+
+    final int amountOfSlots = minutes ~/ timeSlotSize;
+
     final List<DateTime> timestamps = List.generate(
-        32,
-        (index) => DateTime(date.year, date.month, date.day, 6, 0)
-            .add(Duration(minutes: index * 30)));
+        amountOfSlots,
+        (i) => earliestDateTimeThatCanBeBooked
+            .add(Duration(minutes: i * timeSlotSize)));
 
     var navigator = Routemaster.of(context);
     CollectionReference reservationRef =
@@ -31,7 +44,7 @@ class TrainingDayList extends StatelessWidget {
     List<DateTime> reservationsToReservedSlots(
         List<QueryDocumentSnapshot> reservations) {
       List<DateTime> forbiddenSlots = [];
-      Duration interval = const Duration(minutes: 30);
+      Duration interval = const Duration(minutes: timeSlotSize);
       for (int i = 0; i < reservations.length; i++) {
         DateTime startTime = reservations[i].get('startTime').toDate();
         DateTime endTime = reservations[i].get('endTime').toDate();
@@ -41,9 +54,13 @@ class TrainingDayList extends StatelessWidget {
             startTime.month,
             startTime.day,
             startTime.hour,
-            [0, 30][(endTime.minute / 30).floor()]);
-        DateTime roundedEnd = DateTime(endTime.year, endTime.month, endTime.day,
-            endTime.hour, [0, 30][(endTime.minute / 30).floor()]);
+            [0, timeSlotSize][(endTime.minute / timeSlotSize).floor()]);
+        DateTime roundedEnd = DateTime(
+            endTime.year,
+            endTime.month,
+            endTime.day,
+            endTime.hour,
+            [0, timeSlotSize][(endTime.minute / timeSlotSize).floor()]);
 
         DateTime current = roundedStart;
         while (current.isBefore(roundedEnd)) {
@@ -68,16 +85,15 @@ class TrainingDayList extends StatelessWidget {
               future: reservationRef
                   .where('object', isEqualTo: boat.reference)
                   .where('startTime',
-                      isGreaterThanOrEqualTo:
-                          DateTime(now.year, now.month, now.day, 0, 0, 0))
+                      isGreaterThanOrEqualTo: earliestDateTimeThatCanBeBooked)
                   .where('startTime',
                       isLessThanOrEqualTo:
-                          DateTime(now.year, now.month, now.day, 23, 59, 59))
+                          latestDateTimeThatCanBeBooked)
                   .get(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Container();
+                  return const ErrorCardWidget(errorMessage: "Er is iets misgegaan bij het ophalen van de afschrijvingen");
                 }
 
                 List<DateTime> forbiddenSlots = [];
