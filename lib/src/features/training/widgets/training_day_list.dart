@@ -105,10 +105,10 @@ class TrainingDayList extends StatelessWidget {
                   SizedBox(
                       width: 96,
                       child: timestamps
-                          .map<Widget>((e) => SizedBox(
+                          .map<Widget>((timestamp) => SizedBox(
                                   height: 32,
                                   width: 96,
-                                  child: forbiddenSlots.contains(e)
+                                  child: forbiddenSlots.contains(timestamp)
                                       ? Container(color: Colors.grey)
                                       : IconButton(
                                           icon: const Icon(
@@ -119,12 +119,7 @@ class TrainingDayList extends StatelessWidget {
                                             navigator
                                                 .push('plan', queryParameters: {
                                               'reservationObjectId': boat.id,
-                                              // 'startTime': e.toIso8601String(),
-                                              'startTime': (date) {
-                                                return DateTime(2022, 9, 28,
-                                                        date.hour, date.minute)
-                                                    .toIso8601String();
-                                              }(e),
+                                              'startTime': timestamp.toIso8601String(),
                                             });
                                           }))
                               .border(
