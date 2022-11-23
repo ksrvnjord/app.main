@@ -12,7 +12,7 @@ import 'package:styled_widget/styled_widget.dart';
 
 class TrainingShowAll extends StatelessWidget {
   final DateTime date;
-  final List<DocumentReference<Object?>> filters;
+  final List<String> filters;
 
   const TrainingShowAll({
     Key? key,

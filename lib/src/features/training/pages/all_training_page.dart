@@ -15,7 +15,7 @@ class AllTrainingPage extends StatefulWidget {
 
 class _AllTrainingPage extends State<AllTrainingPage> {
   // List of filters to apply
-  List<DocumentReference> filters = [];
+  List<String> filters = [];
 
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
@@ -26,7 +26,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   List<DateTime> days =
       List.generate(amountOfDaysUserCanBookInAdvance, (index) => DateTime.now().add(Duration(days: index)));
 
-  void toggleFilter(DocumentReference<Object?> filter) {
+  void toggleFilter(String filter) {
     if (filters.contains(filter)) {
       filters.remove(filter);
       setState(() {});
