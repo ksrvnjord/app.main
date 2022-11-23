@@ -22,7 +22,7 @@ class TrainingFilters extends StatelessWidget {
     final client = Provider.of<GraphQLModel>(context).client;
 
     return FutureWrapper(
-        future: afschrijvingFilters(client),
+        future: afschrijvingFilters(),
         success: (data) {
           if (data != null) {
             return ListView(

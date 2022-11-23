@@ -15,8 +15,7 @@ class AfschrijvingFilter {
       required this.document});
 }
 
-Future<List<AfschrijvingFilter>?> afschrijvingFilters(
-    GraphQLClient client) async {
+Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
   CollectionReference reservationObjectTypesRef =
       FirebaseFirestore.instance.collection('reservationObjectTypes');
   return [ // TODO: Fetch all different reservationObject types from firestore dynamically?
