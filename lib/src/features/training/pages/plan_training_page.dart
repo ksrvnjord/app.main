@@ -61,7 +61,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
-        Navigator.of(context).pop();
+        return const ErrorCardWidget(errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
       }
     });
     return Scaffold(
@@ -210,6 +210,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 }
 
 void createReservation(Reservation r) async {
+  print(r);
   DateTime startDate =
       DateTime(r.startTime.year, r.startTime.month, r.startTime.day);
   db
