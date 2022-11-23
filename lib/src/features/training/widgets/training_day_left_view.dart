@@ -14,23 +14,21 @@ class TrainingDayLeftView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return <Widget>[
-      const SizedBox(width: 64, height: 64),
-      SizedBox(
-          width: 64,
-          child: timestamps
-              .map<Widget>((e) => SizedBox(
-                  height: 32,
-                  width: 64,
-                  child: Text(DateFormat('Hm').format(e),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      )).center()))
-              .toList()
-              .toColumn(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center))
-      //.border(right: 1)
-    ].toColumn();
+    return SizedBox(
+            width: 64,
+            child: timestamps
+                .map<Widget>((e) => SizedBox(
+                    height: 32,
+                    width: 64,
+                    child: Text(DateFormat('Hm').format(e),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )).center()))
+                .toList()
+                .toColumn(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center))
+        //.border(right: 1)
+        ;
   }
 }

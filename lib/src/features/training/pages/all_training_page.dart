@@ -66,9 +66,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               isScrollable: true,
               indicatorColor: Colors.white,
               tabs: days
-                  .map<Widget>((e) => Tab(
-                      icon: const Icon(LucideIcons.chevronDown),
-                      text: DateFormat('E d MMM').format(e)))
+                  .map<Widget>(
+                      (e) => Tab(text: DateFormat('E d MMM').format(e)))
                   .toList(),
             ),
           ),
