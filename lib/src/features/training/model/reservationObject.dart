@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReservationObject {
-  final DocumentReference reference;
+  final DocumentReference? reference;
   final String name;
-  final List<DocumentReference> permissions;
+  final List<String> permissions;
   final String type;
   final bool available;
 
@@ -17,9 +17,11 @@ class ReservationObject {
 
   ReservationObject.fromJson(Map<String, Object?> json)
       : this(
-          json['reference']! as DocumentReference,
+          json['reference'] as DocumentReference?,
           json['name']! as String,
-          json['permissions']! as List<DocumentReference>,
+          (json['permissions'] as List)
+              .map(((item) => item as String))
+              .toList(),
           json['type']! as String,
           json['available']! as bool,
         );
