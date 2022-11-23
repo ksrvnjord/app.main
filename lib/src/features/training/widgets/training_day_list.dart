@@ -57,13 +57,6 @@ class TrainingDayList extends StatelessWidget {
     return SizedBox(
         width: 96,
         child: <Widget>[
-          SizedBox(
-              width: 96,
-              height: 64,
-              child: Text(boat.get('name'),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold))
-                  .center()),
           FutureBuilder(
               future: reservationRef
                   .where('object', isEqualTo: boat.reference)
