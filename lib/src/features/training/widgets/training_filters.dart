@@ -27,6 +27,7 @@ class TrainingFilters extends StatelessWidget {
         success: (data) {
           if (data != null) {
             return ListView(
+              shrinkWrap: true,
                 children: data.map<Widget>((e) {
               bool selected = filters.contains(e.type);
               return ListTile(
