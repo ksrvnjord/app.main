@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ksrvnjord_main_app/constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dio/dio.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _storage = FlutterSecureStorage();
 
@@ -80,6 +83,35 @@ class AuthModel extends ChangeNotifier {
     }
 
     return null;
+  }
+
+  Future<bool> firebase() async {
+    // Only fire this if an access token is available
+    if (client == null || client?.credentials.accessToken == null) {
+      return false;
+    }
+
+    try {
+      // Get the token for the configured (constant) endpoint JWT
+      var response = await Dio().get(Endpoint.jwtEndpoint.toString(),
+          options: Options(headers: {
+            'Authorization': 'Bearer ${client?.credentials.accessToken}'
+          }));
+
+      // The token is returned as JSON, decode it
+      var data = json.decode(response.data);
+
+      // If we have data && we have the token in our data, proceed
+      // to login
+      if (data != null && data['token'] != null) {
+        await FirebaseAuth.instance.signInWithCustomToken(data['token']);
+      }
+    } catch (e, st) {
+      // If it fails, we don't want to die just yet - but do send
+      // the exception to Sentry for further research.
+      Sentry.captureException(error, stackTrace: st);
+    }
+    return true;
   }
 
   void logout() {

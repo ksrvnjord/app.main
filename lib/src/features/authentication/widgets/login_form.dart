@@ -23,7 +23,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void login(AuthModel auth, GraphQLModel graphql) {
     auth.login(_username.text, _password.text).then((result) {
-      widget.loginCallback(result);
+      // Also login to firebase.
+      auth.firebase().then((_) => widget.loginCallback(result));
     });
   }
 
