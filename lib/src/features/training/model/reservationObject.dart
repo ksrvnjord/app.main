@@ -4,15 +4,15 @@ class ReservationObject {
   final DocumentReference reference;
   final String name;
   final List<DocumentReference> permissions;
-  final DocumentReference type;
-  final bool isAvailable;
+  final String type;
+  final bool available;
 
   const ReservationObject(
     this.reference,
     this.name,
     this.permissions,
     this.type,
-    this.isAvailable,
+    this.available,
   );
 
   ReservationObject.fromJson(Map<String, Object?> json)
@@ -20,8 +20,8 @@ class ReservationObject {
           json['reference']! as DocumentReference,
           json['name']! as String,
           json['permissions']! as List<DocumentReference>,
-          json['type']! as DocumentReference,
-          json['isAvailable']! as bool,
+          json['type']! as String,
+          json['available']! as bool,
         );
 
   Map<String, Object?> toJson() {
@@ -30,7 +30,7 @@ class ReservationObject {
       'name': name,
       'permissions': permissions,
       'type': type,
-      'isAvailable': isAvailable,
+      'available': available,
     };
   }
 }

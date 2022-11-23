@@ -31,13 +31,13 @@ class TrainingShowAll extends StatelessWidget {
                   ReservationObject.fromJson(snapshot.data()!),
               toFirestore: (reservation, _) => reservation.toJson(),
             );
-
+    print(filters);
     if (filters.isNotEmpty) {
       return FutureBuilder(
           //future: reservedSlots(filters, client),
           future: reservationObjectsRef
-          .where('type', whereIn: filters)
-          .where('isAvailable', isEqualTo: true)
+          // .where('type', whereIn: filters)
+          .where('available', isEqualTo: true)
           .get(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot) {

@@ -60,7 +60,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   @override
   Widget build(BuildContext context) {
     widget.reservationObject.get().then((obj) {
-      if (obj['isAvailable'] == false) {
+      if (obj['available'] == false) {
         Navigator.of(context).pop();
       }
     });
@@ -218,7 +218,7 @@ void createReservation(Reservation r) async {
 
         DocumentSnapshot<Object?> reservationObjectSnapshot = await r.reservationObject.get();
         ReservationObject reservationObject= reservationObjectSnapshot.data() as ReservationObject;
-        if (!reservationObject.isAvailable) {
+        if (!reservationObject.available) {
           throw Exception("Het object dat je wilde reserveren is niet meer beschikbaar");
         }
 
