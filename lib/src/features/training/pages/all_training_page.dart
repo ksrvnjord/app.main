@@ -20,9 +20,11 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
 
+  static const int amountOfDaysUserCanBookInAdvance = 4; // user can book x days in the advance
+
   // Generate a list of the coming 14 days
   List<DateTime> days =
-      List.generate(4, (index) => DateTime.now().add(Duration(days: index)));
+      List.generate(amountOfDaysUserCanBookInAdvance, (index) => DateTime.now().add(Duration(days: index)));
 
   void toggleFilter(DocumentReference<Object?> filter) {
     if (filters.contains(filter)) {
@@ -39,7 +41,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 14,
+        length: days.length,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Afschrijven'),
