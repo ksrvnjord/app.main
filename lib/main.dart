@@ -1,3 +1,4 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -6,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -13,30 +15,32 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  Routemaster.setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+  Routemaster.setPathUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  
+  // AS Long as sentry is not working, we will not use it
   // "kReleaseMode" is true if the app is not being debugged
-  if (kReleaseMode) {
-    // Run it inside of SentryFlutter, but log / except to the debug-app
-    await SentryFlutter.init(
-      (options) {
-        options.dsn =
-            'https://a752158d2c2d463086dde1f15e863aac@o1396616.ingest.sentry.io/6720336';
-        options.tracesSampleRate = 0.1;
-      },
-      appRunner: () => () {
-        GetIt.I.registerSingleton(GlobalObserverService());
-        return runApp(const Application());
-      },
-    );
-  } else {
+  // if (kReleaseMode) {
+  //   // Run it inside of SentryFlutter, but log / except to the debug-app
+  //   await SentryFlutter.init(
+  //     (options) {
+  //       options.dsn =
+  //           'https://a752158d2c2d463086dde1f15e863aac@o1396616.ingest.sentry.io/6720336';
+  //       options.tracesSampleRate = 0.1;
+  //     },
+  //     appRunner: () => () {
+  //       GetIt.I.registerSingleton(GlobalObserverService());
+  //       return runApp(const Application());
+  //     },
+  //   );
+  // } else {
     GetIt.I.registerSingleton(GlobalObserverService());
     runApp(const Application());
-  }
+  // }
 }
 
 class Application extends StatelessWidget {
