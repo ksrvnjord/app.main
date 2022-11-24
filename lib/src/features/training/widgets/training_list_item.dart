@@ -52,7 +52,7 @@ class TrainingListItem extends StatelessWidget {
                       confirmDeleteReservation(context, reservation),
                   icon: const Icon(
                     Icons.cancel,
-                    color: Colors.lightBlueAccent
+                    color: Color.fromARGB(255, 0xf8, 0x71, 0x71),
                     )),
             );
           }
