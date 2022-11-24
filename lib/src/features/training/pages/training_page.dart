@@ -15,7 +15,7 @@ class TrainingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Trainingen'),
+        title: const Text('Afschrijvingen'),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
@@ -23,7 +23,7 @@ class TrainingPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: <Widget>[
-        TrainingList().expanded(),
+        const TrainingList().expanded(),
         const TrainingHomeNav(),
       ].toColumn(),
     );

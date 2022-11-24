@@ -43,11 +43,17 @@ class TrainingListItem extends StatelessWidget {
               tileColor: Colors.white,
               title: Text(boat['name']),
               subtitle: Text(trainingTimeFromTimestamps(reservation)),
-              leading: const Icon(Icons.fitness_center),
+              leading: const Icon(
+                Icons.fitness_center,
+                color: Colors.blueGrey,
+                ),
               trailing: IconButton(
                   onPressed: () =>
                       confirmDeleteReservation(context, reservation),
-                  icon: const Icon(Icons.delete)),
+                  icon: const Icon(
+                    Icons.cancel,
+                    color: Colors.lightBlueAccent
+                    )),
             );
           }
         });

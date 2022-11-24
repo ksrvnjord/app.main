@@ -34,8 +34,8 @@ class _MainPageState extends State<MainPage> {
               label: 'Ad Valvas',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center),
-              label: 'Trainingen',
+              icon: Icon(Icons.edit_calendar),
+              label: 'Afschrijven',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
