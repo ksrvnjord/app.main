@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
-import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
@@ -197,7 +197,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           _startTime,
                           _endTime,
                           widget.reservationObject,
-                          21203));
+                          FirebaseAuth.instance.currentUser!.uid));
                       navigator.pop(
                           res); // let the parent know if reloading is needed because of a new reservation
                     },

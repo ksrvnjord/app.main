@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,7 @@ class TrainingListState extends State<TrainingList> {
 
     return StreamBuilder(
         stream: reservationsRef
-            .where('creatorId', isEqualTo: 21203)
+            .where('creatorId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .where('startTime',
                 isGreaterThanOrEqualTo:
                     DateTime.now().subtract(const Duration(days: 1)))

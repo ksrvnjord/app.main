@@ -4,7 +4,7 @@ class Reservation {
   final DateTime startTime;
   final DateTime endTime;
   final DocumentReference reservationObject;
-  final int creator;
+  final String creator;
   late DateTime createdAt;
 
   Reservation(
@@ -19,7 +19,7 @@ class Reservation {
       (json['startTime'] as Timestamp).toDate(),
       (json['endTime'] as Timestamp).toDate(),
       json['object']! as DocumentReference,
-      json['creatorId']! as int,
+      json['creatorId'].toString(),
     );
   }
 
