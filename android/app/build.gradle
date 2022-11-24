@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    throw new GradleException("Flutter versionCode not found. Define flutter.versionCode in the local.properties file.")
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    throw new GradleException("Flutter versionName not found. Define flutter.versionName in the local.properties file.")
 }
 
 def keystoreProperties = new Properties()
@@ -66,6 +66,8 @@ android {
 
     buildTypes {
         release {
+            shrinkResources false
+            minifyEnabled false
             signingConfig signingConfigs.release
         }
     }
@@ -76,7 +78,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
