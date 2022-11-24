@@ -6,6 +6,7 @@ class ReservationObject {
   final List<String> permissions;
   final String type;
   final bool available;
+  final String? comment;
 
   const ReservationObject(
     this.reference,
@@ -13,6 +14,7 @@ class ReservationObject {
     this.permissions,
     this.type,
     this.available,
+    this.comment
   );
 
   ReservationObject.fromJson(Map<String, Object?> json)
@@ -24,6 +26,7 @@ class ReservationObject {
               .toList(),
           json['type']! as String,
           json['available']! as bool,
+          json['comment'] as String?
         );
 
   Map<String, Object?> toJson() {
@@ -33,6 +36,7 @@ class ReservationObject {
       'permissions': permissions,
       'type': type,
       'available': available,
+      'comment': comment
     };
   }
 }

@@ -21,12 +21,12 @@ final CollectionReference<Reservation> reservationsRef = db
       toFirestore: (reservation, _) => reservation.toJson(),
     );
 
-final CollectionReference<ReservationObject> reservationObjectsRef = db
-    .collection('reservationObjects')
-    .withConverter<ReservationObject>(
-      fromFirestore: (snapshot, _) => ReservationObject.fromJson(snapshot.data()!),
-      toFirestore: (reservation, _) => reservation.toJson(),
-    );
+final CollectionReference<ReservationObject> reservationObjectsRef =
+    db.collection('reservationObjects').withConverter<ReservationObject>(
+          fromFirestore: (snapshot, _) =>
+              ReservationObject.fromJson(snapshot.data()!),
+          toFirestore: (reservation, _) => reservation.toJson(),
+        );
 
 class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
@@ -61,7 +61,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
-        return const ErrorCardWidget(errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
+        return const ErrorCardWidget(
+            errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
       }
     });
     return Scaffold(
@@ -84,7 +85,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             log(snapshot.error.toString());
-            return const ErrorCardWidget(errorMessage: "We konden de afschrijvingen niet ophalen van de server");
+            return const ErrorCardWidget(
+                errorMessage:
+                    "We konden de afschrijvingen niet ophalen van de server");
           }
 
           if (!snapshot.hasData) {
@@ -210,18 +213,26 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 }
 
 void createReservation(Reservation r) async {
-  print(r);
   DateTime startDate =
       DateTime(r.startTime.year, r.startTime.month, r.startTime.day);
   db
       .runTransaction((transaction) async {
         // Get the document
 
-        DocumentSnapshot<Object?> reservationObjectSnapshot = await r.reservationObject.get();
-        ReservationObject reservationObject= reservationObjectSnapshot.data() as ReservationObject;
+        DocumentSnapshot<ReservationObject> reservationObjectSnapshot = await r
+            .reservationObject
+            .withConverter<ReservationObject>(
+                fromFirestore: (snapshot, _) =>
+                    ReservationObject.fromJson(snapshot.data()!),
+                toFirestore: (obj, _) => obj.toJson())
+            .get();
+
+        // Check if object is available for bookings
+        ReservationObject reservationObject = reservationObjectSnapshot.data()!;
         if (!reservationObject.available) {
-          throw Exception("Het object dat je wilde reserveren is niet meer beschikbaar");
+          throw Exception("Het object dat je wilde reserveren is niet beschikbaar");
         }
+
 
         QuerySnapshot<Reservation> reservations = await reservationsRef
             .where('object', isEqualTo: r.reservationObject)
@@ -240,11 +251,11 @@ void createReservation(Reservation r) async {
         }
         await reservationsRef
             .add(r)
-            .then((value) => log("Afschrijving Added"))
+            .then((value) => log("Afschrijving Added Succesfully to Firestore"))
             .catchError((error) => log(
                 "Firestore can't add the reservation at this moment: $error"));
       }, maxAttempts: 1) // only try once
-      .then((value) => log("Transaction completed: Added reservation"))
+      .then((value) => log("Transaction completed without errors"))
       .catchError((error) =>
           log("Transaction failed: Did not add reservation : $error"));
 }
