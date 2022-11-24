@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
@@ -7,15 +9,29 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class TrainingDayList extends StatelessWidget {
+class TrainingDayList extends StatefulWidget {
   final DateTime date;
   final QueryDocumentSnapshot<ReservationObject> boat;
-
   const TrainingDayList({
     Key? key,
     required this.date,
     required this.boat,
   }) : super(key: key);
+
+  @override
+  State<TrainingDayList> createState() => _TrainingDayList();
+}
+
+class _TrainingDayList extends State<TrainingDayList> {
+  late DateTime date;
+  late QueryDocumentSnapshot<ReservationObject> boat;
+
+  @override
+  void initState() {
+    super.initState();
+    date = widget.date;
+    boat = widget.boat;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,13 +96,14 @@ class TrainingDayList extends StatelessWidget {
                   .where('startTime',
                       isGreaterThanOrEqualTo: earliestDateTimeThatCanBeBooked)
                   .where('startTime',
-                      isLessThanOrEqualTo:
-                          latestDateTimeThatCanBeBooked)
-                  .get(),
+                      isLessThanOrEqualTo: latestDateTimeThatCanBeBooked)
+                  .get(const GetOptions(source: Source.serverAndCache)),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return const ErrorCardWidget(errorMessage: "Er is iets misgegaan bij het ophalen van de afschrijvingen");
+                  return const ErrorCardWidget(
+                      errorMessage:
+                          "Er is iets misgegaan bij het ophalen van de afschrijvingen");
                 }
 
                 List<DateTime> forbiddenSlots = [];
@@ -111,9 +128,18 @@ class TrainingDayList extends StatelessWidget {
                                           onPressed: () {
                                             navigator
                                                 .push('plan', queryParameters: {
-                                              'reservationObjectId': boat.id,
-                                              'startTime': timestamp.toIso8601String(),
-                                            });
+                                                  'reservationObjectId':
+                                                      boat.id,
+                                                  'startTime': timestamp
+                                                      .toIso8601String(),
+                                                })
+                                                .result
+                                                .then((success) {
+                                                  if (success == true) {
+                                                    setState(() =>
+                                                        {}); // refresh page
+                                                  }
+                                                });
                                           }))
                               .border(
                                   bottom: 1,

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
+import 'package:routemaster/routemaster.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
-import 'training_page.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,8 +60,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    var navigator = Routemaster.of(context);
+
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
+        log('Reservation object is not available');
         return const ErrorCardWidget(
             errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
       }
@@ -108,6 +112,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             if ((reservation.startTime.isBefore(_startTime) ||
                     reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
+              log('Time is not available');
               return const ErrorCardWidget(
                   errorMessage: "Deze tijd is al bezet");
             }
@@ -131,7 +136,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           // bepaal laatste eindtijd die voor de starttijd ligt
           // bepaal eerste starttijd die na de eindtijd ligt
           Duration range = latestPossibleTime.difference(earliestPossibleTime);
-          Reservation newReservation;
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -188,15 +192,15 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
             ),
             ElevatedButton(
-                    onPressed: () => {
-                          newReservation = Reservation(_startTime, _endTime,
-                              widget.reservationObject, 21203),
-                          newReservation.createdAt = DateTime.now(),
-                          createReservation(newReservation),
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  const TrainingPage())), // Training page is refreshed by not using RouteMaster
-                        },
+                    onPressed: () {
+                      Future<bool> res = createReservation(Reservation(
+                          _startTime,
+                          _endTime,
+                          widget.reservationObject,
+                          21203));
+                      navigator.pop(
+                          res); // let the parent know if reloading is needed because of a new reservation
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue),
                     child: <Widget>[
@@ -212,10 +216,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   }
 }
 
-void createReservation(Reservation r) async {
+Future<bool> createReservation(Reservation r) async {
   DateTime startDate =
       DateTime(r.startTime.year, r.startTime.month, r.startTime.day);
-  db
+  bool result = await db
       .runTransaction((transaction) async {
         // Get the document
 
@@ -230,9 +234,9 @@ void createReservation(Reservation r) async {
         // Check if object is available for bookings
         ReservationObject reservationObject = reservationObjectSnapshot.data()!;
         if (!reservationObject.available) {
-          throw Exception("Het object dat je wilde reserveren is niet beschikbaar");
+          throw Exception(
+              "Het object dat je wilde reserveren is niet beschikbaar");
         }
-
 
         QuerySnapshot<Reservation> reservations = await reservationsRef
             .where('object', isEqualTo: r.reservationObject)
@@ -249,13 +253,16 @@ void createReservation(Reservation r) async {
             throw Exception('Er is al een reservering op die tijd');
           }
         }
+        r.createdAt = DateTime.now();
         await reservationsRef
             .add(r)
             .then((value) => log("Afschrijving Added Succesfully to Firestore"))
-            .catchError((error) => log(
-                "Firestore can't add the reservation at this moment: $error"));
+            .catchError((error) {
+          throw Exception(
+              "Firestore can't add the reservation at this moment: $error");
+        });
       }, maxAttempts: 1) // only try once
-      .then((value) => log("Transaction completed without errors"))
-      .catchError((error) =>
-          log("Transaction failed: Did not add reservation : $error"));
+      .then((value) => true)
+      .catchError((error) => false);
+  return result;
 }
