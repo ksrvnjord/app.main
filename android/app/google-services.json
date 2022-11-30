@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "755032766973",
+    "project_id": "ksrv-njord",
+    "storage_bucket": "ksrv-njord.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755032766973:android:45155b9d8c89e6204e0194",
+        "android_client_info": {
+          "package_name": "com.ksrvnjord.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755032766973-f33k9gfrf9936ra9bnk8u9k74ibjh280.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH2rrRJ_eTcolF3bJIyEYSI66J-mbnBik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755032766973-f33k9gfrf9936ra9bnk8u9k74ibjh280.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ksrvnjord.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

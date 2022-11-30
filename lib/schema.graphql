@@ -1,0 +1,270 @@
+type Announcement {
+  author: String!
+  contents: String!
+  created_at: DateTime!
+  id: ID!
+  title: String!
+  updated_at: DateTime!
+}
+
+"""A paginated list of Announcement items."""
+type AnnouncementPaginator {
+  """A list of Announcement items."""
+  data: [Announcement!]!
+
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+}
+
+type Contact {
+  city: String
+  country: String
+  email: String
+  first_name: String
+  housenumber: String
+  housenumber_addition: String
+  initials: String
+  last_name: String
+  phone_primary: String
+  phone_secondary: String
+  street: String
+  zipcode: String
+}
+
+scalar Date
+
+scalar DateTime
+
+type Event {
+  description: String
+  end_time: String
+  id: ID!
+  link: String
+  start_time: String
+  title: String
+}
+
+input IBooleanContact {
+  initials: Boolean
+  first_name: Boolean
+  last_name: Boolean
+  zipcode: Boolean
+  street: Boolean
+  housenumber: Boolean
+  housenumber_addition: Boolean
+  city: Boolean
+  country: Boolean
+  email: Boolean
+  phone_primary: Boolean
+  phone_secondary: Boolean
+}
+
+input IContact {
+  initials: String
+  first_name: String
+  last_name: String
+  zipcode: String
+  street: String
+  housenumber: String
+  housenumber_addition: String
+  city: String
+  country: String
+  email: String
+  phone_primary: String
+  phone_secondary: String
+}
+
+type Mutation {
+  toggleListed(state: Boolean!): Boolean
+  updateContactDetails(contact: IContact!): Contact
+  updatePublicContact(contact: IBooleanContact!): Contact
+  uploadAvatar(avatar: Upload!): Boolean
+}
+
+"""Allows ordering a list of records."""
+input OrderByClause {
+  """The column that is used for ordering."""
+  column: String!
+
+  """The direction that is used for ordering."""
+  order: SortOrder!
+}
+
+"""
+Aggregate functions when ordering by a relation without specifying a column.
+"""
+enum OrderByRelationAggregateFunction {
+  """Amount of items."""
+  COUNT
+}
+
+"""
+Aggregate functions when ordering by a relation that may specify a column.
+"""
+enum OrderByRelationWithColumnAggregateFunction {
+  """Average."""
+  AVG
+
+  """Amount of items."""
+  COUNT
+
+  """Maximum."""
+  MAX
+
+  """Minimum."""
+  MIN
+
+  """Sum."""
+  SUM
+}
+
+"""Information about pagination using a Relay style cursor connection."""
+type PageInfo {
+  """Number of nodes in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """The cursor to continue paginating forwards."""
+  endCursor: String
+
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """Index of the last available page."""
+  lastPage: Int!
+
+  """The cursor to continue paginating backwards."""
+  startCursor: String
+
+  """Total number of nodes in the paginated connection."""
+  total: Int!
+}
+
+"""Information about pagination using a fully featured paginator."""
+type PaginatorInfo {
+  """Number of items in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """Index of the first item in the current page."""
+  firstItem: Int
+
+  """Are there more pages after this one?"""
+  hasMorePages: Boolean!
+
+  """Index of the last item in the current page."""
+  lastItem: Int
+
+  """Index of the last available page."""
+  lastPage: Int!
+
+  """Number of items per page."""
+  perPage: Int!
+
+  """Number of total available items."""
+  total: Int!
+}
+
+type Query {
+  announcement(id: ID): Announcement!
+  announcements(
+    """Limits number of fetched items."""
+    first: Int = 5
+
+    """The offset from which items are returned."""
+    page: Int
+    search: String
+  ): AnnouncementPaginator
+  events: [Event]!
+  me: User
+  user(id: ID): User!
+  users(
+    """Limits number of fetched items."""
+    first: Int = 10
+
+    """The offset from which items are returned."""
+    page: Int
+    search: String
+  ): UserPaginator
+}
+
+"""Information about pagination using a simple paginator."""
+type SimplePaginatorInfo {
+  """Number of items in the current page."""
+  count: Int!
+
+  """Index of the current page."""
+  currentPage: Int!
+
+  """Index of the first item in the current page."""
+  firstItem: Int
+
+  """Are there more pages after this one?"""
+  hasMorePages: Boolean!
+
+  """Index of the last item in the current page."""
+  lastItem: Int
+
+  """Number of items per page."""
+  perPage: Int!
+}
+
+"""Directions for ordering a list of records."""
+enum SortOrder {
+  """Sort records in ascending order."""
+  ASC
+
+  """Sort records in descending order."""
+  DESC
+}
+
+"""
+Specify if you want to include or exclude trashed results from a query.
+"""
+enum Trashed {
+  """Only return trashed results."""
+  ONLY
+
+  """Return both trashed and non-trashed results."""
+  WITH
+
+  """Only return non-trashed results."""
+  WITHOUT
+}
+
+scalar Upload
+
+type User {
+  avatar: String
+  contact: Contact! @deprecated(reason: "use fullContact instead")
+  email: String!
+  fullContact: UserContact!
+  groups: [String]!
+  id: ID!
+  identifier: ID!
+  listed: Boolean!
+  username: String!
+}
+
+type UserContact {
+  privacy: Contact
+  private: Contact
+  public: Contact!
+  update: Contact
+}
+
+"""A paginated list of User items."""
+type UserPaginator {
+  """A list of User items."""
+  data: [User!]!
+
+  """Pagination information about the list of items."""
+  paginatorInfo: PaginatorInfo!
+}
