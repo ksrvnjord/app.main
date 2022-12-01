@@ -11,7 +11,8 @@ import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:time_range_picker/time_range_picker.dart';
+
 
 // HELP: What to do with these 'constants'. Maybe make a separate file to store them?
 FirebaseFirestore db = FirebaseFirestore.instance;
@@ -50,12 +51,16 @@ class PlanTrainingPage extends StatefulWidget {
 class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late DateTime _startTime; // Selected start time of the slider
   late DateTime _endTime; // Selected end time of the slider
+  late TimeOfDay _startTimeOfDay; // Selected start time of the slider
+  late TimeOfDay _endTimeOfDay; // Selected end time of the slider
 
   @override
   void initState() {
     super.initState();
     _startTime = widget.startTime;
     _endTime = widget.startTime.add(const Duration(hours: 1));
+    _startTimeOfDay = TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);  
+    _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
   }
 
   @override
@@ -109,8 +114,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             // determine earliest/latest possible time for slider
 
             Reservation reservation = document.data();
-            if ((reservation.startTime.isBefore(_startTime) ||
-                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
+            if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
               return const ErrorCardWidget(
@@ -133,9 +137,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           if (_endTime.isAfter(latestPossibleTime)) {
             _endTime = latestPossibleTime;
           }
-          // bepaal laatste eindtijd die voor de starttijd ligt
-          // bepaal eerste starttijd die na de eindtijd ligt
-          Duration range = latestPossibleTime.difference(earliestPossibleTime);
+          _startTimeOfDay = TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
+          _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -155,42 +158,66 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               initialValue: DateFormat.yMMMMd().format(widget.date),
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
-            SingleChildScrollView(
-              controller: ScrollController(
-                initialScrollOffset: _startTime
-                        .difference(earliestPossibleTime)
-                        .inMinutes
-                        .toDouble() *
-                    3,
-              ),
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                width:
-                    MediaQuery.of(context).size.width * (range.inMinutes / 120),
-                height: 140,
-                child: SfRangeSlider(
-                  min: earliestPossibleTime,
-                  max: latestPossibleTime,
-                  values: SfRangeValues(_startTime, _endTime),
-                  dragMode: SliderDragMode.both,
-                  showTicks: true,
-                  showLabels: true,
-                  enableTooltip: true,
-                  shouldAlwaysShowTooltip: true,
-                  dateFormat: DateFormat.Hm(),
-                  stepDuration: const SliderStepDuration(minutes: 15),
-                  dateIntervalType: DateIntervalType.hours,
-                  interval: 1,
-                  minorTicksPerInterval: 3,
-                  onChanged: (SfRangeValues values) {
-                    setState(() {
-                      _startTime = values.start;
-                      _endTime = values.end;
-                    });
-                  },
+            // show text "Jouw trainingstijden" emphasize that this is the time
+            // the user selected
+            Text(
+              'Jouw afschrijftijden',
+              style: Theme.of(context).textTheme.headline6,
+            ).padding(all: 15),
+            // show selected start and end time
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  DateFormat.Hm().format(_startTime),
+                  style: const TextStyle(fontSize: 20),
                 ),
-              ),
-            ),
+                const Icon(Icons.arrow_forward),
+                Text(
+                  DateFormat.Hm().format(_endTime),
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
+            ).padding(all: 15),
+
+            // show button to let user change start and end time
+            ElevatedButton(
+              onPressed: () {
+                showTimeRangePicker(
+                  context: context,
+                  fromText: 'Starttijd',
+                  toText: 'Eindtijd',
+                  interval: const Duration(minutes: 5),
+                  start: _startTimeOfDay,
+                  end: _endTimeOfDay,
+                  disabledTime: TimeRange(startTime: TimeOfDay.fromDateTime(latestPossibleTime), endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
+                  disabledColor: Colors.grey,
+                  use24HourFormat: true,
+                  handlerRadius: 8,
+                  minDuration: const Duration(minutes: 15),
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      _endTimeOfDay = value.endTime;
+                      _startTimeOfDay = value.startTime;
+                      _endTime = DateTime(
+                          widget.date.year,
+                          widget.date.month,
+                          widget.date.day,
+                          _endTimeOfDay.hour,
+                          _endTimeOfDay.minute);
+                      _startTime = DateTime(
+                          widget.date.year,
+                          widget.date.month,
+                          widget.date.day,
+                          _startTimeOfDay.hour,
+                          _startTimeOfDay.minute);
+                    });
+                  }
+                });
+              },
+              child: const Text("Wijzig tijden"),
+            ).padding(all: 15),
             ElevatedButton(
                     onPressed: () {
                       Future<bool> res = createReservation(Reservation(
