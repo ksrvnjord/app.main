@@ -25,7 +25,7 @@ class AnnouncementWidget extends StatelessWidget {
         ? announcementText.add(Text(
             title,
             style: TextStyle(
-                fontSize: min(20, 1.5 * width / title.length),
+                fontSize: min(20, 1.4 * width / title.length),
                 fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ))
