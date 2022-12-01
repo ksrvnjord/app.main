@@ -187,14 +187,14 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   context: context,
                   fromText: 'Starttijd',
                   toText: 'Eindtijd',
-                  interval: const Duration(minutes: 5),
+                  interval: const Duration(minutes: 30),
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
                   disabledTime: TimeRange(startTime: TimeOfDay.fromDateTime(latestPossibleTime), endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
                   handlerRadius: 8,
-                  minDuration: const Duration(minutes: 15),
+                  minDuration: const Duration(minutes: 30),
                 ).then((value) {
                   if (value != null) {
                     setState(() {
