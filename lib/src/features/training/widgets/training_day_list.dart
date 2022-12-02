@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -34,7 +37,7 @@ class _TrainingDayList extends State<TrainingDayList> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     final DateTime earliestDateTimeThatCanBeBooked =
         DateTime(date.year, date.month, date.day, 6, 0); // 6:00
     final DateTime latestDateTimeThatCanBeBooked =
@@ -55,7 +58,6 @@ class _TrainingDayList extends State<TrainingDayList> {
     var navigator = Routemaster.of(context);
     CollectionReference reservationRef =
         FirebaseFirestore.instance.collection('reservations');
-    DateTime now = DateTime.now();
 
     List<DateTime> reservationsToReservedSlots(
         List<QueryDocumentSnapshot> reservations) {
@@ -66,7 +68,6 @@ class _TrainingDayList extends State<TrainingDayList> {
         DateTime endTime = reservations[i].get('endTime').toDate();
         //.subtract(const Duration(seconds: 1));
 
-        print(endTime);
         DateTime roundedStart = DateTime(
             startTime.year,
             startTime.month,
@@ -91,6 +92,42 @@ class _TrainingDayList extends State<TrainingDayList> {
         }
       }
       return forbiddenSlots;
+    }
+
+    Widget chooseStackFilling(boat, forbiddenSlots, timestamp,
+        AsyncSnapshot<IdTokenResult> snapshot) {
+      List<dynamic> boatPermissions = boat.get('permissions');
+      Map<String, dynamic> userPermissions = snapshot.data!.claims!;
+      print(userPermissions);
+
+      Widget CanReserveWidget = IconButton(
+          icon:
+              const Icon(LucideIcons.plusCircle, size: 12, color: Colors.grey),
+          onPressed: () {
+            navigator
+                .push('plan', queryParameters: {
+                  'reservationObjectId': boat.id,
+                  'startTime': timestamp.toIso8601String(),
+                })
+                .result
+                .then((success) {
+                  if (success == true) {
+                    setState(() => {}); // refresh page
+                  }
+                });
+          });
+      if (forbiddenSlots.contains(timestamp)) {
+        return Container(color: Colors.grey);
+      } else if (boatPermissions.isEmpty) {
+        return CanReserveWidget;
+      } else if (boatPermissions
+          .toSet()
+          .intersection(userPermissions['permissions'].toSet())
+          .isNotEmpty) {
+        return CanReserveWidget;
+      } else {
+        return Container(color: Colors.white);
+      }
     }
 
     return SizedBox(
@@ -124,29 +161,26 @@ class _TrainingDayList extends State<TrainingDayList> {
                           .map<Widget>((timestamp) => SizedBox(
                                   height: 32,
                                   width: 96,
-                                  child: forbiddenSlots.contains(timestamp)
-                                      ? Container(color: Colors.grey)
-                                      : IconButton(
-                                          icon: const Icon(
-                                              LucideIcons.plusCircle,
-                                              size: 12,
-                                              color: Colors.grey),
-                                          onPressed: () {
-                                            navigator
-                                                .push('plan', queryParameters: {
-                                                  'reservationObjectId':
-                                                      boat.id,
-                                                  'startTime': timestamp
-                                                      .toIso8601String(),
-                                                })
-                                                .result
-                                                .then((success) {
-                                                  if (success == true) {
-                                                    setState(() =>
-                                                        {}); // refresh page
-                                                  }
-                                                });
-                                          }))
+                                  child: FutureBuilder(
+                                    future: FirebaseAuth.instance.currentUser!
+                                        .getIdTokenResult(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<IdTokenResult> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return chooseStackFilling(
+                                            boat,
+                                            forbiddenSlots,
+                                            timestamp,
+                                            snapshot);
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Container();
+                                      }
+
+                                      return const CircularProgressIndicator();
+                                    },
+                                  ))
                               .border(
                                   bottom: 1,
                                   color:
