@@ -64,20 +64,18 @@ class _TrainingDayList extends State<TrainingDayList> {
       for (int i = 0; i < reservations.length; i++) {
         DateTime startTime = reservations[i].get('startTime').toDate();
         DateTime endTime = reservations[i].get('endTime').toDate();
-
         DateTime roundedStart = DateTime(
             startTime.year,
             startTime.month,
             startTime.day,
             startTime.hour,
-            [0, timeSlotSize][(endTime.minute / timeSlotSize).floor()]);
+            [0, timeSlotSize][(startTime.minute / timeSlotSize).floor()]);
         DateTime roundedEnd = DateTime(
             endTime.year,
             endTime.month,
             endTime.day,
             endTime.hour,
             [0, timeSlotSize][(endTime.minute / timeSlotSize).floor()]);
-
         DateTime current = roundedStart;
         while (current.isBefore(roundedEnd)) {
           forbiddenSlots.add(current);
