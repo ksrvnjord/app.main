@@ -14,17 +14,21 @@ class AnnouncementBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
+      // show title of announcement emphasized
+      Text(title).fontSize(20).fontWeight(FontWeight.bold).padding(bottom: 10),
       Expanded(
-          child: Markdown(
-        data: text,
-        onTapLink: (text, url, title) {
-          // Check if an URL is actually given
-          if (url?.isNotEmpty ?? false) {
-            // Launch the URL
-            launchUrlString(url!);
-          }
-        },
-      ))
+        child: Markdown(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          data: text,
+          onTapLink: (text, url, title) {
+        // Check if an URL is actually given
+        if (url?.isNotEmpty ?? false) {
+          // Launch the URL
+          launchUrlString(url!);
+        }
+          },
+        ),
+      )
     ].toColumn();
   }
 }
