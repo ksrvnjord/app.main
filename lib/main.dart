@@ -1,9 +1,9 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
@@ -21,7 +21,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  
   // AS Long as sentry is not working, we will not use it
   // "kReleaseMode" is true if the app is not being debugged
   // if (kReleaseMode) {
@@ -38,8 +37,9 @@ Future<void> main() async {
   //     },
   //   );
   // } else {
-    GetIt.I.registerSingleton(GlobalObserverService());
-    runApp(const Application());
+  GetIt.I.registerSingleton(GlobalObserverService());
+  GetIt.I.registerSingleton(GlobalConstants());
+  runApp(const Application());
   // }
 }
 
