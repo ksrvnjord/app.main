@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,33 +7,20 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_functions.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class TrainingDayList extends StatefulWidget {
+class TrainingDayList extends StatelessWidget {
   final DateTime date;
   final QueryDocumentSnapshot<ReservationObject> boat;
+
   const TrainingDayList({
     Key? key,
     required this.date,
     required this.boat,
   }) : super(key: key);
-
-  @override
-  State<TrainingDayList> createState() => _TrainingDayList();
-}
-
-class _TrainingDayList extends State<TrainingDayList> {
-  late DateTime date;
-  late QueryDocumentSnapshot<ReservationObject> boat;
-
-  @override
-  void initState() {
-    super.initState();
-    date = widget.date;
-    boat = widget.boat;
-  }
 
   @override
   build(BuildContext context) {
@@ -55,157 +41,75 @@ class _TrainingDayList extends State<TrainingDayList> {
         (i) => earliestDateTimeThatCanBeBooked
             .add(Duration(minutes: i * timeSlotSize)));
 
-    var navigator = Routemaster.of(context);
     CollectionReference reservationRef =
         FirebaseFirestore.instance.collection('reservations');
 
-    List<DateTime> reservationsToReservedSlots(
-        List<QueryDocumentSnapshot> reservations) {
-      List<DateTime> forbiddenSlots = [];
-      Duration interval = const Duration(minutes: timeSlotSize);
-      for (int i = 0; i < reservations.length; i++) {
-        DateTime startTime = reservations[i].get('startTime').toDate();
-        DateTime endTime = reservations[i].get('endTime').toDate();
-        //.subtract(const Duration(seconds: 1));
+    return (StreamBuilder(
+        stream: reservationRef
+            .where('object', isEqualTo: boat.reference)
+            .where('startTime',
+                isGreaterThanOrEqualTo: earliestDateTimeThatCanBeBooked)
+            .where('startTime',
+                isLessThanOrEqualTo: latestDateTimeThatCanBeBooked)
+            .snapshots(),
+        builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const ErrorCardWidget(
+                errorMessage:
+                    "Er is iets misgegaan bij het ophalen van de afschrijvingen");
+          } else {
+            List<QueryDocumentSnapshot>? reservations = snapshot.data?.docs;
+            List<DateTime> forbiddenSlots =
+                reservationsToReservedSlots(reservations ?? [], timeSlotSize);
+            return Stack(children: <Widget>[
+              SizedBox(
+                  width: 96,
+                  child: timestamps
+                      .map<Widget>((timestamp) => SizedBox(
+                              height: 32,
+                              width: 96,
+                              child: FutureBuilder(
+                                future: FirebaseAuth.instance.currentUser!
+                                    .getIdTokenResult(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<IdTokenResult> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return TrainingDayListGridCell(
+                                        boat: boat,
+                                        forbiddenSlots: forbiddenSlots,
+                                        timestamp: timestamp,
+                                        user: snapshot);
+                                  }
 
-        DateTime roundedStart = DateTime(
-            startTime.year,
-            startTime.month,
-            startTime.day,
-            startTime.hour,
-            [0, timeSlotSize][(startTime.minute / timeSlotSize).floor()]);
-        DateTime roundedEnd = DateTime(
-            endTime.year,
-            endTime.month,
-            endTime.day,
-            endTime.hour,
-            [
-              0,
-              30,
-              60,
-            ][(endTime.minute / timeSlotSize).ceil()]);
+                                  if (snapshot.hasError) {
+                                    return Container();
+                                  }
 
-        DateTime current = roundedStart;
-        while (current.isBefore(roundedEnd)) {
-          forbiddenSlots.add(current);
-          current = current.add(interval);
-        }
-      }
-      return forbiddenSlots;
-    }
-
-    Widget chooseStackFilling(boat, forbiddenSlots, timestamp,
-        AsyncSnapshot<IdTokenResult> snapshot) {
-      List<dynamic> boatPermissions = boat.get('permissions');
-      Map<String, dynamic> userPermissions = snapshot.data!.claims!;
-      print(userPermissions);
-
-      Widget CanReserveWidget = IconButton(
-          icon:
-              const Icon(LucideIcons.plusCircle, size: 12, color: Colors.grey),
-          onPressed: () {
-            navigator
-                .push('plan', queryParameters: {
-                  'reservationObjectId': boat.id,
-                  'startTime': timestamp.toIso8601String(),
-                })
-                .result
-                .then((success) {
-                  if (success == true) {
-                    setState(() => {}); // refresh page
-                  }
-                });
-          });
-      if (forbiddenSlots.contains(timestamp)) {
-        return Container(color: Colors.grey);
-      } else if (boatPermissions.isEmpty) {
-        return CanReserveWidget;
-      } else if (boatPermissions
-          .toSet()
-          .intersection(userPermissions['permissions'].toSet())
-          .isNotEmpty) {
-        return CanReserveWidget;
-      } else {
-        return Container(color: Colors.white);
-      }
-    }
-
-    return SizedBox(
-        width: 96,
-        child: <Widget>[
-          FutureBuilder(
-              future: reservationRef
-                  .where('object', isEqualTo: boat.reference)
-                  .where('startTime',
-                      isGreaterThanOrEqualTo: earliestDateTimeThatCanBeBooked)
-                  .where('startTime',
-                      isLessThanOrEqualTo: latestDateTimeThatCanBeBooked)
-                  .get(const GetOptions(source: Source.serverAndCache)),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return const ErrorCardWidget(
-                      errorMessage:
-                          "Er is iets misgegaan bij het ophalen van de afschrijvingen");
-                }
-
-                List<DateTime> forbiddenSlots = [];
-                if (snapshot.data?.docs != null) {
-                  forbiddenSlots =
-                      reservationsToReservedSlots(snapshot.data!.docs);
-                }
-                return Stack(children: <Widget>[
-                  SizedBox(
+                                  return const CircularProgressIndicator();
+                                },
+                              ))
+                          .border(
+                              bottom: 1,
+                              color: const Color.fromARGB(255, 245, 245, 245)))
+                      .toList()
+                      .toColumn(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center)),
+              ...[].map<Widget>((e) {
+                return Positioned(
+                    top: ((((e.from.hour - 6) * 60) + (e.from.minute)) / 30) *
+                        32,
+                    child: Container(
                       width: 96,
-                      child: timestamps
-                          .map<Widget>((timestamp) => SizedBox(
-                                  height: 32,
-                                  width: 96,
-                                  child: FutureBuilder(
-                                    future: FirebaseAuth.instance.currentUser!
-                                        .getIdTokenResult(),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<IdTokenResult> snapshot) {
-                                      if (snapshot.hasData) {
-                                        return chooseStackFilling(
-                                            boat,
-                                            forbiddenSlots,
-                                            timestamp,
-                                            snapshot);
-                                      }
-
-                                      if (snapshot.hasError) {
-                                        return Container();
-                                      }
-
-                                      return const CircularProgressIndicator();
-                                    },
-                                  ))
-                              .border(
-                                  bottom: 1,
-                                  color:
-                                      const Color.fromARGB(255, 245, 245, 245)))
-                          .toList()
-                          .toColumn(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center)),
-                  ...[].map<Widget>((e) {
-                    return Positioned(
-                        top: ((((e.from.hour - 6) * 60) + (e.from.minute)) /
-                                30) *
-                            32,
-                        child: Container(
-                          width: 96,
-                          height: (e.length.inMinutes / 30) * 32,
-                          decoration: BoxDecoration(
-                              color: Colors.blueAccent,
-                              border:
-                                  Border.all(width: 4, color: Colors.white)),
-                        ));
-                  }).toList()
-                ]).border(
-                    right: 1, color: const Color.fromARGB(255, 225, 225, 225));
-              })
-        ].toColumn());
+                      height: (e.length.inMinutes / 30) * 32,
+                      decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          border: Border.all(width: 4, color: Colors.white)),
+                    ));
+              }).toList()
+            ]).border(
+                right: 1, color: const Color.fromARGB(255, 225, 225, 225));
+          }
+        }));
   }
 }
