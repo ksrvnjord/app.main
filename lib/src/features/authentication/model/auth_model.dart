@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ksrvnjord_main_app/constants.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dio/dio.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _storage = FlutterSecureStorage();
@@ -15,6 +16,7 @@ class AuthModel extends ChangeNotifier {
   bool isBusy = false;
   String error = '';
   String storedUser = '';
+  GlobalConstants globalConstants = GetIt.I.get<GlobalConstants>();
 
   AuthModel() {
     isBusy = true;
@@ -42,14 +44,16 @@ class AuthModel extends ChangeNotifier {
     }
 
     isBusy = true;
+    globalConstants.switchEnvironment(username);
     notifyListeners();
 
     error = '';
 
     try {
       client = await oauth2.resourceOwnerPasswordGrant(
-          Endpoint.oauthEndpoint, username, password,
-          identifier: Endpoint.oauthId, secret: Endpoint.oauthSecret);
+          globalConstants.oauthEndpoint(), username, password,
+          identifier: globalConstants.oauthId,
+          secret: globalConstants.oauthSecret);
     } catch (e) {
       error = e.toString();
       isBusy = false;
@@ -93,7 +97,7 @@ class AuthModel extends ChangeNotifier {
 
     try {
       // Get the token for the configured (constant) endpoint JWT
-      var response = await Dio().get(Endpoint.jwtEndpoint.toString(),
+      var response = await Dio().get(globalConstants.jwtEndpoint().toString(),
           options: Options(headers: {
             'Authorization': 'Bearer ${client?.credentials.accessToken}'
           }));
