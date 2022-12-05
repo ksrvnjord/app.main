@@ -78,6 +78,13 @@ class AuthModel extends ChangeNotifier {
     String? storedCreds = await _storage.read(key: 'oauth2_credentials');
     dynamic credentials = jsonDecode(storedCreds ?? '{}');
 
+    if (credentials['tokenEndpoint'] ==
+        'https://heimdall-test.ksrv.nl/oauth/token') {
+      globalConstants.switchEnvironment('demo');
+    } else {
+      globalConstants.switchEnvironment('production.account');
+    }
+
     if (credentials['expiration'] != null) {
       DateTime expiration =
           DateTime.fromMillisecondsSinceEpoch(credentials['expiration']);
