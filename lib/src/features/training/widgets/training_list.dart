@@ -22,10 +22,13 @@ class TrainingListState extends State<TrainingList> {
                   Reservation.fromJson(snapshot.data()!),
               toFirestore: (reservation, _) => reservation.toJson(),
             );
-
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Container();
+    }
     return StreamBuilder(
         stream: reservationsRef
-            .where('creatorId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where('creatorId',
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .where('startTime',
                 isGreaterThanOrEqualTo:
                     DateTime.now().subtract(const Duration(days: 1)))
