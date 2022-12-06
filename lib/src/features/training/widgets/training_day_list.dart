@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
@@ -116,9 +117,15 @@ class _TrainingDayList extends State<TrainingDayList> {
                           .map<Widget>((timestamp) => SizedBox(
                                   height: 32,
                                   width: 96,
-                                  child: forbiddenSlots.contains(timestamp)
-                                      ? Container(color: Colors.grey)
-                                      : IconButton(
+                                  child: () {
+                                    if (forbiddenSlots.contains(timestamp)) {
+                                      return Container(color: Colors.grey);
+                                    } else if (FirebaseAuth
+                                            .instance.currentUser ==
+                                        null) {
+                                      return Container(color:const Color.fromARGB(255, 245, 245, 245));
+                                    } else {
+                                      return IconButton(
                                           icon: const Icon(
                                               LucideIcons.plusCircle,
                                               size: 12,
@@ -138,7 +145,9 @@ class _TrainingDayList extends State<TrainingDayList> {
                                                         {}); // refresh page
                                                   }
                                                 });
-                                          }))
+                                          });
+                                    }
+                                  }())
                               .border(
                                   bottom: 1,
                                   color:
