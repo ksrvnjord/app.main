@@ -128,6 +128,8 @@ class _TrainingDayList extends State<TrainingDayList> {
                                                 .push('plan', queryParameters: {
                                                   'reservationObjectId':
                                                       boat.id,
+                                                  'reservationObjectName':
+                                                      boat.get('name'),
                                                   'startTime': timestamp
                                                       .toIso8601String(),
                                                 })
