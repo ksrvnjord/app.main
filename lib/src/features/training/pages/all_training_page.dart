@@ -76,6 +76,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             ),
           ),
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: days
                 .map<Widget>(
                     (date) => TrainingShowAll(date: date, filters: filters))
