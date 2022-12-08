@@ -34,12 +34,14 @@ class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
   late final DateTime date;
+  late final String reservationObjectName;
 
   PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
       : reservationObject = db
             .collection('reservationObjects')
             .doc(queryParams['reservationObjectId']),
         startTime = DateTime.parse(queryParams['startTime']),
+        reservationObjectName = queryParams['reservationObjectName'],
         super(key: key) {
     date = DateTime(startTime.year, startTime.month, startTime.day);
   }
@@ -146,7 +148,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 labelText: 'Afschrijven',
                 border: OutlineInputBorder(),
               ),
-              initialValue: widget.reservationObject.id,
+              initialValue: widget.reservationObjectName,
               style: const TextStyle(color: Colors.black54),
             ).padding(all: 15),
             TextFormField(
@@ -187,14 +189,14 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   context: context,
                   fromText: 'Starttijd',
                   toText: 'Eindtijd',
-                  interval: const Duration(minutes: 5),
+                  interval: const Duration(minutes: 30),
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
                   disabledTime: TimeRange(startTime: TimeOfDay.fromDateTime(latestPossibleTime), endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
                   handlerRadius: 8,
-                  minDuration: const Duration(minutes: 15),
+                  minDuration: const Duration(minutes: 30),
                 ).then((value) {
                   if (value != null) {
                     setState(() {

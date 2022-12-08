@@ -28,17 +28,20 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         success: (Query$Announcement$announcement? data) {
           return Scaffold(
               appBar: AppBar(
-                title: Text((data != null) ? data.title : 'Bericht'),
+                title: const Text('Aankondiging'),
                 backgroundColor: Colors.lightBlue,
                 shadowColor: Colors.transparent,
                 systemOverlayStyle: const SystemUiOverlayStyle(
                     statusBarColor: Colors.lightBlue),
               ),
               body: (data != null)
-                  ? AnnouncementBodyWidget(
-                      title: data.title,
-                      text: data.contents,
-                    )
+                  ? Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: AnnouncementBodyWidget(
+                        title: data.title,
+                        text: data.contents,
+                      ),
+                  )
                   : Container());
         },
         loading: Scaffold(

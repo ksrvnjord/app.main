@@ -111,5 +111,6 @@ class TrainingDayList extends StatelessWidget {
                 right: 1, color: const Color.fromARGB(255, 225, 225, 225));
           }
         }));
+
   }
 }

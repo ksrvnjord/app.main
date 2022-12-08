@@ -16,6 +16,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: null,
       body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: tabPage.controller,
         children: [
           for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),

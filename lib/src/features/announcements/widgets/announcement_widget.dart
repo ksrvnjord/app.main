@@ -24,8 +24,9 @@ class AnnouncementWidget extends StatelessWidget {
     (title != '')
         ? announcementText.add(Text(
             title,
-            style: TextStyle(
-                fontSize: min(20, 1.4 * width / title.length),
+
+            style: const TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ))
@@ -51,8 +52,9 @@ class AnnouncementWidget extends StatelessWidget {
           const Icon(Icons.campaign).padding(left: 15),
           announcementText
               .toColumn(crossAxisAlignment: CrossAxisAlignment.start)
-              .padding(all: 15)
-        ].toRow().card(
+              .padding(all: 15).expanded()
+        ].toRow()
+        .card(
               elevation: 1,
             ));
   }
