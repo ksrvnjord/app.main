@@ -6,12 +6,14 @@ class Reservation {
   final DocumentReference reservationObject;
   final String creator;
   late DateTime createdAt;
+  late String objectName;
 
   Reservation(
     this.startTime,
     this.endTime,
     this.reservationObject,
     this.creator,
+    this.objectName
   );
 
   static Reservation fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Reservation {
       (json['endTime'] as Timestamp).toDate(),
       json['object']! as DocumentReference,
       json['creatorId'].toString(),
+      json['objectName'].toString(),
     );
   }
 
@@ -30,6 +33,7 @@ class Reservation {
       'object': reservationObject,
       'creatorId': creator,
       'createdTime': Timestamp.fromDate(createdAt),
+      'objectName': objectName,
     };
   }
 

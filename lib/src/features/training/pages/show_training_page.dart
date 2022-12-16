@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 
 class ShowTrainingPage extends StatelessWidget {
@@ -55,25 +56,54 @@ class ShowTrainingPage extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.done) {
                         Map<String, dynamic> user =
                             snapshot.data!.data() as Map<String, dynamic>;
-                        return ListView(children: [
+                        List<Widget> children = [
                           ListTile(
                             leading: const Icon(Icons.person),
                             title: Text(
                                 user['first_name'] + ' ' + user['last_name']),
                           ),
                           Divider(),
+                        ];
+
+                        if (reservation['objectName'] != null) {
+                          children.add(ListTile(
+                            leading: const Icon(Icons.label),
+                            title: Text(reservation['objectName']),
+                          ));
+                          children.add(Divider());
+                        }
+                        DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                            reservation['startTime'].millisecondsSinceEpoch);
+                        String formattedDate =
+                            DateFormat.yMMMMEEEEd().format(date);
+
+                        children.addAll([
+                          // add ListTile with the date
                           ListTile(
-                            leading: const Icon(Icons.start),
-                            title: Text(timestampToTimeOfDay(
-                                reservation['startTime']!, context)),
+                            leading: const Icon(Icons.calendar_today),
+                            title: Text(formattedDate),
                           ),
-                          Divider(),
-                          ListTile(
-                            leading: const Icon(Icons.stop),
-                            title: Text(timestampToTimeOfDay(
-                                reservation['endTime']!, context)),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ListTile(
+                                  leading: const Icon(Icons.start),
+                                  title: Text(timestampToTimeOfDay(
+                                      reservation['startTime']!, context)),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  leading: const Icon(Icons.timer_off_outlined),
+                                  title: Text(timestampToTimeOfDay(
+                                      reservation['endTime']!, context)),
+                                ),
+                              ),
+                            ],
                           ),
                         ]);
+
+                        return ListView(children: children);
                       }
                       return const CircularProgressIndicator();
                     });
