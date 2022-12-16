@@ -1,15 +1,10 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_functions.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_function.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_gridcell.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingDayList extends StatelessWidget {
@@ -111,6 +106,5 @@ class TrainingDayList extends StatelessWidget {
                 right: 1, color: const Color.fromARGB(255, 225, 225, 225));
           }
         }));
-
   }
 }

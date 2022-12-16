@@ -5,41 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 
-List<DateTime> reservationsToReservedSlots(
-    List<QueryDocumentSnapshot> reservations, int timeSlotSize) {
-  List<DateTime> forbiddenSlots = [];
-  Duration interval = Duration(minutes: timeSlotSize);
-  for (int i = 0; i < reservations.length; i++) {
-    DateTime startTime = reservations[i].get('startTime').toDate();
-    DateTime endTime = reservations[i].get('endTime').toDate();
-    //.subtract(const Duration(seconds: 1));
-
-    DateTime roundedStart = DateTime(
-        startTime.year,
-        startTime.month,
-        startTime.day,
-        startTime.hour,
-        [0, timeSlotSize][(startTime.minute / timeSlotSize).floor()]);
-    DateTime roundedEnd = DateTime(
-        endTime.year,
-        endTime.month,
-        endTime.day,
-        endTime.hour,
-        [
-          0,
-          30,
-          60,
-        ][(endTime.minute / timeSlotSize).ceil()]);
-
-    DateTime current = roundedStart;
-    while (current.isBefore(roundedEnd)) {
-      forbiddenSlots.add(current);
-      current = current.add(interval);
-    }
-  }
-  return forbiddenSlots;
-}
-
 class TrainingDayListGridCell extends StatelessWidget {
   final QueryDocumentSnapshot<ReservationObject> boat;
   final List<DateTime> forbiddenSlots;
@@ -62,7 +27,10 @@ class TrainingDayListGridCell extends StatelessWidget {
       return Container(color: Colors.grey);
     } else if (boatPermissions.isEmpty) {
       return TrainingDayListGridCellAllowed(boat: boat, timestamp: timestamp);
-    } else if (boatPermissions.contains(userClaims['permissions'])) {
+    } else if (boatPermissions
+        .toSet()
+        .intersection(userClaims['permissions'].toSet())
+        .isNotEmpty) {
       return TrainingDayListGridCellAllowed(boat: boat, timestamp: timestamp);
     } else {
       return Container();
@@ -88,6 +56,7 @@ class TrainingDayListGridCellAllowed extends StatelessWidget {
         onPressed: () {
           navigator.push('plan', queryParameters: {
             'reservationObjectId': boat.id,
+            'reservationObjectName': boat.get('name'),
             'startTime': timestamp.toIso8601String(),
           });
         });
