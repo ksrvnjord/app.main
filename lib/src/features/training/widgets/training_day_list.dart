@@ -58,9 +58,9 @@ class _TrainingDayList extends State<TrainingDayList> {
         FirebaseFirestore.instance.collection('reservations');
     DateTime now = DateTime.now();
 
-    List<DateTime> reservationsToReservedSlots(
+    List<Map<String, dynamic>> reservationsToReservedSlots(
         List<QueryDocumentSnapshot> reservations) {
-      List<DateTime> forbiddenSlots = [];
+      List<Map<String, dynamic>> forbiddenSlots = [];
       Duration interval = const Duration(minutes: timeSlotSize);
       for (int i = 0; i < reservations.length; i++) {
         DateTime startTime = reservations[i].get('startTime').toDate();
@@ -79,7 +79,8 @@ class _TrainingDayList extends State<TrainingDayList> {
             [0, timeSlotSize][(endTime.minute / timeSlotSize).floor()]);
         DateTime current = roundedStart;
         while (current.isBefore(roundedEnd)) {
-          forbiddenSlots.add(current);
+          forbiddenSlots
+              .add({'time': current, 'reservationId': reservations[i].id});
           current = current.add(interval);
         }
       }
@@ -105,7 +106,7 @@ class _TrainingDayList extends State<TrainingDayList> {
                           "Er is iets misgegaan bij het ophalen van de afschrijvingen");
                 }
 
-                List<DateTime> forbiddenSlots = [];
+                List<Map<String, dynamic>> forbiddenSlots = [];
                 if (snapshot.data?.docs != null) {
                   forbiddenSlots =
                       reservationsToReservedSlots(snapshot.data!.docs);
@@ -118,12 +119,30 @@ class _TrainingDayList extends State<TrainingDayList> {
                                   height: 32,
                                   width: 96,
                                   child: () {
-                                    if (forbiddenSlots.contains(timestamp)) {
-                                      return Container(color: Colors.grey);
+                                    // check if forbiddenslots contains timestamp
+                                    bool reserved = false;
+                                    for (Map<String, dynamic> forbiddenSlot
+                                        in forbiddenSlots) {
+                                      if (forbiddenSlot['time'] == timestamp) {
+                                        reserved = true;
+                                        return GestureDetector(
+                                            onTap: () {                                           
+                                              navigator.push(forbiddenSlot[
+                                                  'reservationId']);
+                                            },
+                                            child:
+                                                Container(color: Colors.grey));
+                                      }
+                                    }
+                                    if (reserved) {
+                                      // ignore: empty_statements
+                                      ;
                                     } else if (FirebaseAuth
                                             .instance.currentUser ==
                                         null) {
-                                      return Container(color:const Color.fromARGB(255, 245, 245, 245));
+                                      return Container(
+                                          color: const Color.fromARGB(
+                                              255, 245, 245, 245));
                                     } else {
                                       return IconButton(
                                           icon: const Icon(
