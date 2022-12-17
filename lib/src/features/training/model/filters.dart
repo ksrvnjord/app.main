@@ -45,10 +45,10 @@ Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
       type: 'C2+',
     ),
     AfschrijvingFilter(
-      description: 'D2+',
-      label: 'D2+',
+      description: 'C2x+',
+      label: 'C2x+',
       icon: '',
-      type: 'D2+',
+      type: 'C2x+',
     ),
     AfschrijvingFilter(
       description: 'C4+',
