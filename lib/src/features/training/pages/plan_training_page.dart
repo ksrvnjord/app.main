@@ -71,10 +71,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
 
-    var cur_user = GetIt.I.get<CurrentUser>();
-    var contact = cur_user.user!.fullContact.public;
-    String first_name = contact.first_name!;
-    String last_name = contact.last_name!;
+    var curUser = GetIt.I.get<CurrentUser>();
+    var contact = curUser.user!.fullContact.public;
+    String firstName = contact.first_name!;
+    String lastName = contact.last_name!;
 
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
@@ -235,7 +235,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           widget.reservationObject,
                           FirebaseAuth.instance.currentUser!.uid,
                           widget.objectName,
-                          creatorName: "$first_name $last_name",
+                          creatorName: "$firstName $lastName",
                           ));
                       navigator.pop(
                           res); // let the parent know if reloading is needed because of a new reservation
