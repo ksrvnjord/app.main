@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
 final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
@@ -24,10 +25,14 @@ class GraphQLModel extends ChangeNotifier {
         getToken: () async => 'Bearer ${auth.client!.credentials.accessToken}');
 
     final Link link = authLink.concat(httpLink);
-
-    return GraphQLClient(
+    final GraphQLClient client = GraphQLClient(
       link: link,
       cache: cache,
     );
+
+    // Fill contact details
+    GetIt.I.get<CurrentUser>().fillContact(client);
+
+    return client;
   }
 }
