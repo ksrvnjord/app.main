@@ -39,6 +39,7 @@ dependencies:
   permission_handler: ^10.2.0
   time_range_picker: ^2.2.0
   firebase_core: ^2.3.0
+  shared_preferences: ^2.0.15
 
 
 dev_dependencies:
