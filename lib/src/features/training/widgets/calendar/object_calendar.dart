@@ -69,6 +69,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                   if (reservations != null) {
                     return Text(reservations.docs.toList().toString());
                   }
+                  return Container();
                 })
           ],
         ));
