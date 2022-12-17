@@ -54,15 +54,22 @@ class ShowTrainingPage extends StatelessWidget {
                                 "We konden de afschrijver niet ophalen");
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
+                        String creatorName;
                         Map<String, dynamic> user =
                             snapshot.data!.data() as Map<String, dynamic>;
+                        if (reservation['creatorName'] != null) {
+                          creatorName = reservation['creatorName'];
+                        } else {
+                          creatorName = // added for compatibility with old reservations, this can be removed after a while
+                              user['first_name'] + ' ' + user['last_name'];
+                        }
+
                         List<Widget> children = [
                           ListTile(
                             leading: const Icon(Icons.person),
-                            title: Text(
-                                user['first_name'] + ' ' + user['last_name']),
+                            title: Text(creatorName),
                           ),
-                          Divider(),
+                          const Divider(),
                         ];
 
                         if (reservation['objectName'] != null) {
@@ -70,7 +77,7 @@ class ShowTrainingPage extends StatelessWidget {
                             leading: const Icon(Icons.label),
                             title: Text(reservation['objectName']),
                           ));
-                          children.add(Divider());
+                          children.add(const Divider());
                         }
                         DateTime date = DateTime.fromMillisecondsSinceEpoch(
                             reservation['startTime'].millisecondsSinceEpoch);
@@ -83,6 +90,7 @@ class ShowTrainingPage extends StatelessWidget {
                             leading: const Icon(Icons.calendar_today),
                             title: Text(formattedDate),
                           ),
+                          const Divider(),
                           Row(
                             children: [
                               Expanded(
