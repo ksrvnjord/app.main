@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'dart:math';
 
 class AnnouncementWidget extends StatelessWidget {
   const AnnouncementWidget(
@@ -18,7 +17,6 @@ class AnnouncementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     var announcementText = <Widget>[];
 
     (title != '')
