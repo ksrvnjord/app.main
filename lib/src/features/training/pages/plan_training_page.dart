@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
 import 'package:routemaster/routemaster.dart';
+import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -68,6 +70,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   @override
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
+
+    var cur_user = GetIt.I.get<CurrentUser>();
+    var contact = cur_user.user!.fullContact.public;
+    String first_name = contact.first_name!;
+    String last_name = contact.last_name!;
 
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
@@ -227,7 +234,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           _endTime,
                           widget.reservationObject,
                           FirebaseAuth.instance.currentUser!.uid,
-                          widget.objectName
+                          widget.objectName,
+                          creatorName: "$first_name $last_name",
                           ));
                       navigator.pop(
                           res); // let the parent know if reloading is needed because of a new reservation
