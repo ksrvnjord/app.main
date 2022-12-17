@@ -57,11 +57,11 @@ class ErrorCardWidget extends StatelessWidget {
                             ),
                             Expanded(
                                 child: Container(
+                              alignment: Alignment.center,
                               child: Text(
-                                "Melding: " + errorMessage,
+                                "Melding: $errorMessage",
                                 style: const TextStyle(fontSize: 14),
                               ),
-                              alignment: Alignment.center,
                             )),
                             // const Expanded(
                             //   flex: 1,
