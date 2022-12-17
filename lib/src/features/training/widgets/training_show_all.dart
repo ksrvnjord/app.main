@@ -78,6 +78,7 @@ class _TrainingShowAll extends State<TrainingShowAll> {
             }
             return Stack(children: <Widget>[
               SingleChildScrollView(
+                  key: UniqueKey(),
                   scrollDirection: Axis.horizontal,
                   child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,

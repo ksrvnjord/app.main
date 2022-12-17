@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_filters.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_show_all.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:styled_widget/styled_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AllTrainingPage extends StatefulWidget {
@@ -22,9 +24,6 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   // Load SharedPreferences
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  // Create an empty Modal function to refresh the modal
-  void Function(void Function()) setModalState = (f0) => {};
-
   static const int amountOfDaysUserCanBookInAdvance =
       4; // user can book x days in the advance
 
@@ -32,25 +31,29 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   List<DateTime> days = List.generate(amountOfDaysUserCanBookInAdvance,
       (index) => DateTime.now().add(Duration(days: index)));
 
-  Future<void> _toggleFilter(String filter) async {
-    final SharedPreferences prefs = await _prefs;
-    final List<String> filters =
-        (prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
+  Future<SharedPreferences> getPrefs() async {
+    return await _prefs;
+  }
 
-    if (filters.contains(filter)) {
-      filters.remove(filter);
-    } else {
-      filters.add(filter);
-    }
+  void toggleFilter(String filter) {
+    getPrefs().then((prefs) {
+      final List<String> filters =
+          (prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
 
-    setState(() {
-      _filters = prefs
-          .setStringList('afschrijf_filters', filters)
-          .then((bool success) {
-        return filters;
+      if (filters.contains(filter)) {
+        filters.remove(filter);
+      } else {
+        filters.add(filter);
+      }
+
+      setState(() {
+        _filters = prefs
+            .setStringList('afschrijf_filters', filters)
+            .then((bool success) {
+          return filters;
+        });
       });
     });
-    setModalState(() => {});
   }
 
   @override
@@ -71,21 +74,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             title: const Text('Afschrijven'),
             actions: <Widget>[
               IconButton(
-                  icon: const Icon(Icons.filter_alt),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) =>
-                            StatefulBuilder(builder: (context, setModalState) {
-                              this.setModalState = setModalState;
-                              return FutureWrapper(
-                                  future: _filters,
-                                  success: (filters) => TrainingFilters(
-                                        filters: filters ?? ['Ruimtes'],
-                                        toggleFilter: _toggleFilter,
-                                      ));
-                            }));
-                  }),
+                  icon: const Icon(Icons.filter_alt), onPressed: () => {}),
             ],
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
@@ -95,23 +84,26 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               isScrollable: true,
               indicatorColor: Colors.white,
               tabs: days
-                  .map<Widget>((e) => Tab(
-                      icon: const Icon(LucideIcons.chevronDown),
-                      text: DateFormat('E d MMM').format(e)))
+                  .map<Widget>((e) =>
+                      Tab(icon: null, text: DateFormat('E d MMM').format(e)))
                   .toList(),
             ),
           ),
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: days
-                .map<Widget>((date) => FutureWrapper(
-                    future: _filters,
-                    success: (filters) => TrainingShowAll(
-                        key: UniqueKey(),
-                        date: date,
-                        filters: filters ?? ['Ruimtes'])))
-                .toList(),
-          ),
+          body: [
+            TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: days
+                  .map<Widget>((date) => FutureWrapper(
+                      future: _filters,
+                      success: (filters) => TrainingShowAll(
+                          date: date, filters: filters ?? ['Ruimtes'])))
+                  .toList(),
+            ).expanded(),
+            CalendarFilterRow(
+              filters: _filters,
+              toggleFilter: toggleFilter,
+            )
+          ].toColumn(),
         ));
   }
 }
