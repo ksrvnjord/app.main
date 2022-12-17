@@ -1,27 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_left_view.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 // Shows all available objects for a given day and filters
-class TrainingShowAll extends StatefulWidget {
+class CalendarOverview extends StatefulWidget {
   final DateTime date;
   final List<String> filters;
 
-  const TrainingShowAll({
+  const CalendarOverview({
     Key? key,
     required this.date,
     required this.filters,
   }) : super(key: key);
 
   @override
-  createState() => _TrainingShowAll();
+  createState() => _CalendarOverview();
 }
 
-class _TrainingShowAll extends State<TrainingShowAll> {
+class _CalendarOverview extends State<CalendarOverview> {
   late final ScrollController boatsController;
   late final ScrollController timesController;
 
@@ -102,7 +102,7 @@ class _TrainingShowAll extends State<TrainingShowAll> {
                               ].toRow(),
                               content: snapshot.data!.docs
                                   .map<Widget>((e) {
-                                    return TrainingDayList(date: date, boat: e);
+                                    return ObjectCalendar(date: date, boat: e);
                                   })
                                   .toList()
                                   .toRow(
@@ -118,7 +118,7 @@ class _TrainingShowAll extends State<TrainingShowAll> {
                   controller: timesController,
                   child: Container(
                       color: Colors.grey[50],
-                      child: TrainingDayLeftView().padding(top: 64))),
+                      child: CalendarTime().padding(top: 64))),
               Container(
                 color: Colors.grey[50],
                 width: 64,

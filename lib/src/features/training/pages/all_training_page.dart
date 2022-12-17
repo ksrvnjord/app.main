@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_filters.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_show_all.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,7 +94,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               children: days
                   .map<Widget>((date) => FutureWrapper(
                       future: _filters,
-                      success: (filters) => TrainingShowAll(
+                      success: (filters) => CalendarOverview(
                           date: date, filters: filters ?? ['Ruimtes'])))
                   .toList(),
             ).expanded(),

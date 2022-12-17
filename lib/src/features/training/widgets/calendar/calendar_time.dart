@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class TrainingDayLeftView extends StatelessWidget {
-  TrainingDayLeftView({
+class CalendarTime extends StatelessWidget {
+  CalendarTime({
     Key? key,
   }) : super(key: key);
 
