@@ -14,25 +14,21 @@ class AllTrainingPage extends StatefulWidget {
 }
 
 class _AllTrainingPage extends State<AllTrainingPage> {
-  // List of filters to apply
-  List<String> filters = [];
+  String filter = 'Ruimtes'; // Default filter is 'Ruimtes'
 
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
 
-  static const int amountOfDaysUserCanBookInAdvance = 4; // user can book x days in the advance
+  static const int amountOfDaysUserCanBookInAdvance =
+      4; // user can book x days in the advance
 
   // Generate a list of the coming 14 days
-  List<DateTime> days =
-      List.generate(amountOfDaysUserCanBookInAdvance, (index) => DateTime.now().add(Duration(days: index)));
+  List<DateTime> days = List.generate(amountOfDaysUserCanBookInAdvance,
+      (index) => DateTime.now().add(Duration(days: index)));
 
-  void toggleFilter(String filter) {
-    if (filters.contains(filter)) {
-      filters.remove(filter);
-      setState(() {});
-      setModalState(() {});
-    } else {
-      filters.add(filter);
+  void toggleFilter(String flt) {
+    if (filter != flt) {
+      filter = flt;
       setState(() {});
       setModalState(() {});
     }
@@ -55,7 +51,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                             StatefulBuilder(builder: (context, setModalState) {
                               this.setModalState = setModalState;
                               return TrainingFilters(
-                                filters: filters,
+                                filters: [filter],
                                 toggleFilter: toggleFilter,
                               );
                             }));
@@ -79,7 +75,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             physics: const NeverScrollableScrollPhysics(),
             children: days
                 .map<Widget>(
-                    (date) => TrainingShowAll(date: date, filters: filters))
+                    (date) => TrainingShowAll(date: date, filters: [filter]))
                 .toList(),
           ),
         ));
