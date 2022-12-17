@@ -14,7 +14,8 @@ class AllTrainingPage extends StatefulWidget {
 }
 
 class _AllTrainingPage extends State<AllTrainingPage> {
-  String filter = 'Ruimtes'; // Default filter is 'Ruimtes'
+  // List of filters to apply
+  List<String> filters = [];
 
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
@@ -26,9 +27,13 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   List<DateTime> days = List.generate(amountOfDaysUserCanBookInAdvance,
       (index) => DateTime.now().add(Duration(days: index)));
 
-  void toggleFilter(String flt) {
-    if (filter != flt) {
-      filter = flt;
+  void toggleFilter(String filter) {
+    if (filters.contains(filter)) {
+      filters.remove(filter);
+      setState(() {});
+      setModalState(() {});
+    } else {
+      filters.add(filter);
       setState(() {});
       setModalState(() {});
     }
@@ -51,7 +56,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                             StatefulBuilder(builder: (context, setModalState) {
                               this.setModalState = setModalState;
                               return TrainingFilters(
-                                filters: [filter],
+                                filters: filters,
                                 toggleFilter: toggleFilter,
                               );
                             }));
@@ -74,8 +79,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: days
-                .map<Widget>(
-                    (date) => TrainingShowAll(date: date, filters: [filter]))
+                .map<Widget>((date) => TrainingShowAll(
+                    key: UniqueKey(), date: date, filters: filters))
                 .toList(),
           ),
         ));
