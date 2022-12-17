@@ -29,20 +29,22 @@ linter:
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
+  exclude:
+    - lib/**.graphql.dart
   plugins:
     - dart_code_metrics
 
-dart_code_metrics:
-  metrics:
-    cyclomatic-complexity: 20
+# dart_code_metrics:
+  # metrics:
+    # cyclomatic-complexity: 20
     # UNCOMMENT All this if we are brave enough
     # number-of-parameters: 4
     # maximum-nesting-level: 5
-  metrics-exclude:
-    - test/**
-  rules:
+  # metrics-exclude:
+    # - test/**
+  # rules:
     # - newline-before-return
-    - no-boolean-literal-compare
+    # - no-boolean-literal-compare
     # - no-empty-block
     # - prefer-trailing-comma
     # - prefer-conditional-expressions
