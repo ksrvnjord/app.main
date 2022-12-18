@@ -57,6 +57,5 @@ class TrainingListItem extends StatelessWidget {
             );
           }
         });
-    ;
   }
 }

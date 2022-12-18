@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import '../api/almanak.graphql.dart';
 
