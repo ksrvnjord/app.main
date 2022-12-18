@@ -13,6 +13,7 @@ class ShowTrainingPage extends StatelessWidget {
     CollectionReference users = FirebaseFirestore.instance.collection('people');
     CollectionReference reservations =
         FirebaseFirestore.instance.collection('reservations');
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Afschrijving'),
@@ -113,9 +114,11 @@ class ShowTrainingPage extends StatelessWidget {
 
                         return ListView(children: children);
                       }
+
                       return const CircularProgressIndicator();
                     });
               }
+
               return const CircularProgressIndicator();
             }));
   }
@@ -125,5 +128,6 @@ String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
   DateTime date =
       DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
   TimeOfDay time = TimeOfDay.fromDateTime(date);
+  
   return time.format(context);
 }

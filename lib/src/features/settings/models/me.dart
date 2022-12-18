@@ -7,6 +7,7 @@ Future<Query$Me$me?> me(GraphQLClient client) async {
       await client.query$Me(Options$Query$Me(fetchPolicy: FetchPolicy.noCache));
 
   final parsedData = result.parsedData;
+
   return parsedData?.me;
 }
 
@@ -16,6 +17,7 @@ Future<Mutation$Me$updateContactDetails?> updateMe(
       fetchPolicy: FetchPolicy.noCache,
       variables: Variables$Mutation$Me(contact: contact)));
   final parsedData = result.parsedData;
+
   return parsedData?.updateContactDetails;
 }
 
@@ -27,5 +29,6 @@ Future<Mutation$UpdateVisibility$updatePublicContact?> updatePublicContact(
           variables: Variables$Mutation$UpdateVisibility(
               listed: listed, contact: contact)));
   final parsedData = result.parsedData;
+  
   return parsedData?.updatePublicContact;
 }
