@@ -12,7 +12,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  tag:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +20,7 @@ jobs:
       
       - name: Flutter Auto Tag
         # You may pin to the exact commit or the version.
-        # uses: jacopocarlini/action-autotag@f2d25fbc9d589706c267e0620ed2b685d22d964e
         uses: jacopocarlini/action-autotag@stable
         with:
           # Required for permission to tag the repo.
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
