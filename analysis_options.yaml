@@ -31,18 +31,20 @@ linter:
 analyzer:
   exclude:
     - lib/**.graphql.dart
-#   plugins:
-#     - dart_code_metrics
+  plugins:
+    - dart_code_metrics
 
 # UNCOMMENT All this if we are brave enough
-# dart_code_metrics:
-#   metrics:
-#     cyclomatic-complexity: 20
-
-    # number-of-parameters: 4
-    # maximum-nesting-level: 5
-#   metrics-exclude:
-#     - test/**
+# To find the metrics use the following command:
+# $ flutter pub run dart_code_metrics:metrics analyze lib
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 6 # GOAL value = 5
+  metrics-exclude:
+    - test/**
+    - lib/**.graphql.dart
 #   rules:
     # - newline-before-return
 #     - no-boolean-literal-compare
@@ -50,6 +52,9 @@ analyzer:
     # - prefer-trailing-comma
     # - prefer-conditional-expressions
     # - no-equal-then-else
+  rules-exclude:
+    - test/**
+    - lib/**.graphql.dart
   # anti-patterns:
   #   - long-method
   #   - long-parameter-list
