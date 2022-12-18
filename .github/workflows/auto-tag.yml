@@ -8,8 +8,6 @@ name: Auto Tag from pubspec.yaml
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   tag:
