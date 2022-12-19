@@ -9,5 +9,6 @@ Future<Query$AlmanakProfile$user?> almanakProfile(
       fetchPolicy: FetchPolicy.noCache));
 
   final parsedData = result.parsedData;
+  
   return parsedData?.user;
 }

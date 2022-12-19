@@ -14,6 +14,7 @@ class ErrorCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color errorColor = Colors.red.shade800;
+    
     return GestureDetector(
         // onTap: () {
         //   const AlertDialog ad = AlertDialog(

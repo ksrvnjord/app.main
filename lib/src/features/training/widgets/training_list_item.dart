@@ -39,6 +39,7 @@ class TrainingListItem extends StatelessWidget {
           } else {
             Map<String, dynamic> boat =
                 snapshot.data!.data() as Map<String, dynamic>;
+                
             return ListTile(
               tileColor: Colors.white,
               title: Text(boat['name']),
