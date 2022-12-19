@@ -24,6 +24,7 @@ class TrainingFilters extends StatelessWidget {
               shrinkWrap: true,
                 children: data.map<Widget>((e) {
               bool selected = filters.contains(e.type);
+              
               return ListTile(
                   tileColor: selected ? Colors.blue : Colors.white,
                   textColor: selected ? Colors.white : Colors.black,

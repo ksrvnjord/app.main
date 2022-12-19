@@ -20,6 +20,7 @@ class GlobalConstants {
       baseURL = 'https://heimdall-test.ksrv.nl';
       oauthId = '2';
       oauthSecret = 'W2rE2hmgGYneR3TRp94JbSBvDcIDTf3KuaLZY39v';
+      
       return;
     }
 

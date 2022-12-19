@@ -79,10 +79,12 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
         log('Reservation object is not available');
+
         return const ErrorCardWidget(
             errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
       }
     });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -103,6 +105,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             log(snapshot.error.toString());
+
             return const ErrorCardWidget(
                 errorMessage:
                     "We konden de afschrijvingen niet ophalen van de server");
@@ -126,6 +129,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
+
               return const ErrorCardWidget(
                   errorMessage: "Deze tijd is al bezet");
             }
@@ -148,6 +152,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           }
           _startTimeOfDay = TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
           _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
+
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -303,5 +308,6 @@ Future<bool> createReservation(Reservation r) async {
       }, maxAttempts: 1) // only try once
       .then((value) => true)
       .catchError((error) => false);
+      
   return result;
 }

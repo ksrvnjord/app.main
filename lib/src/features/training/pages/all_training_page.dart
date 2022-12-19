@@ -57,6 +57,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     super.initState();
     _filters = _prefs.then((SharedPreferences prefs) {
       var fltrs = prefs.getStringList('afschrijf_filters') ?? ['Ruimtes'];
+
       return fltrs;
     });
   }
@@ -77,6 +78,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                         builder: (context) =>
                             StatefulBuilder(builder: (context, setModalState) {
                               this.setModalState = setModalState;
+                              
                               return FutureWrapper(
                                   future: _filters,
                                   success: (filters) => TrainingFilters(
