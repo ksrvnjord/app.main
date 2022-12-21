@@ -8,7 +8,8 @@ name: Flutter Analyze
 on:
   pull_request:
     branches: [ "main" ]
-
+  push: 
+    branches: [ "main" ]
 jobs:
   check:
     name: flutter-analyze-action
