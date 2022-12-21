@@ -81,6 +81,7 @@ class _TrainingDayList extends State<TrainingDayList> {
           current = current.add(interval);
         }
       }
+
       return forbiddenSlots;
     }
 
@@ -108,6 +109,7 @@ class _TrainingDayList extends State<TrainingDayList> {
                   forbiddenSlots =
                       reservationsToReservedSlots(snapshot.data!.docs);
                 }
+
                 return Stack(children: <Widget>[
                   SizedBox(
                       width: 96,
@@ -122,6 +124,7 @@ class _TrainingDayList extends State<TrainingDayList> {
                                         in forbiddenSlots) {
                                       if (forbiddenSlot['time'] == timestamp) {
                                         reserved = true;
+                                        
                                         return GestureDetector(
                                             onTap: () {                                           
                                               navigator.push(forbiddenSlot[
