@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -51,6 +51,7 @@ class TrainingDayListGridCellAllowed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
+
     return IconButton(
         icon: const Icon(LucideIcons.plusCircle, size: 12, color: Colors.grey),
         onPressed: () {

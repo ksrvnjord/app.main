@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_function.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list_gridcell.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -79,7 +79,7 @@ class TrainingDayList extends StatelessWidget {
                                   if (snapshot.hasError) {
                                     return Container();
                                   }
-                                  
+
                                   return const CircularProgressIndicator();
                                 },
                               ))
