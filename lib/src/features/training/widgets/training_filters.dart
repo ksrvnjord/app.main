@@ -15,28 +15,29 @@ class TrainingFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureWrapper(
         future: afschrijvingFilters(),
         success: (data) {
           if (data != null) {
             return ListView(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 children: data.map<Widget>((e) {
-              bool selected = filters.contains(e.type);
-              
-              return ListTile(
-                  tileColor: selected ? Colors.blue : Colors.white,
-                  textColor: selected ? Colors.white : Colors.black,
-                  iconColor: selected ? Colors.white : Colors.black,
-                  leading: selected
-                      ? const Icon(Icons.check_box_outlined)
-                      : const Icon(Icons.check_box_outline_blank),
-                  title: Text(e.description),
-                  onTap: () => toggleFilter(e.type));
-            }).toList());
+                  bool selected = filters.contains(e.type);
+
+                  return ListTile(
+                      tileColor: selected ? Colors.blue : Colors.white,
+                      textColor: selected ? Colors.white : Colors.black,
+                      iconColor: selected ? Colors.white : Colors.black,
+                      leading: selected
+                          ? const Icon(Icons.check_box_outlined)
+                          : const Icon(Icons.check_box_outline_blank),
+                      title: Text(e.description),
+                      onTap: () => toggleFilter(e.type));
+                }).toList());
           } else {
-            return const ErrorCardWidget(errorMessage: 'Er is iets misgegaan met het ophalen van de filters');
+            return const ErrorCardWidget(
+                errorMessage:
+                    'Er is iets misgegaan met het ophalen van de filters');
           }
         });
   }

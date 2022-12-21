@@ -76,7 +76,7 @@ class _TrainingShowAll extends State<TrainingShowAll> {
                     style: TextStyle(color: Colors.blueGrey))
               ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
             }
-            
+
             return Stack(children: <Widget>[
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

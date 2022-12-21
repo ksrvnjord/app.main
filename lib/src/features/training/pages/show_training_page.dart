@@ -128,6 +128,6 @@ String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
   DateTime date =
       DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
   TimeOfDay time = TimeOfDay.fromDateTime(date);
-  
+
   return time.format(context);
 }

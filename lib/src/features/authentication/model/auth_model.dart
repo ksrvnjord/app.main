@@ -127,7 +127,7 @@ class AuthModel extends ChangeNotifier {
       // the exception to Sentry for further research.
       Sentry.captureException(error, stackTrace: st);
     }
-    
+
     return true;
   }
 

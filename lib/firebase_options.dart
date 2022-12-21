@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '755032766973',
     projectId: 'ksrv-njord',
     storageBucket: 'ksrv-njord.appspot.com',
-    iosClientId: '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
+    iosClientId:
+        '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
     iosBundleId: 'com.ksrvnjord.app',
   );
 }

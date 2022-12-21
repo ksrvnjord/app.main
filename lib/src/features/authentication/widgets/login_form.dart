@@ -41,7 +41,7 @@ class _LoginFormState extends State<LoginForm> {
               return Text(auth.error, style: const TextStyle(color: Colors.red))
                   .padding(all: 10);
             }
-            
+
             return Container();
           }),
       Form(

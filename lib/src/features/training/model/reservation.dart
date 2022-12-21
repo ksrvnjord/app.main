@@ -14,11 +14,9 @@ class Reservation {
     this.endTime,
     this.reservationObject,
     this.creator,
-    this.objectName,
-    {
+    this.objectName, {
     this.creatorName,
-    }
-  );
+  });
 
   static Reservation fromJson(Map<String, dynamic> json) {
     return Reservation(
@@ -31,7 +29,7 @@ class Reservation {
     );
   }
 
-Map<String, Object> toJson() {
+  Map<String, Object> toJson() {
     Map<String, Object> map = {
       'startTime': Timestamp.fromDate(startTime),
       'endTime': Timestamp.fromDate(endTime),
@@ -47,7 +45,6 @@ Map<String, Object> toJson() {
 
     return map;
   }
-
 
   @override
   String toString() {

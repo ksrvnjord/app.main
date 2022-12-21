@@ -13,7 +13,7 @@ class EventsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
-    
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Agenda'),

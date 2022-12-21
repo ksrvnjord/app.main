@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -124,9 +123,9 @@ class _TrainingDayList extends State<TrainingDayList> {
                                         in forbiddenSlots) {
                                       if (forbiddenSlot['time'] == timestamp) {
                                         reserved = true;
-                                        
+
                                         return GestureDetector(
-                                            onTap: () {                                           
+                                            onTap: () {
                                               navigator.push(forbiddenSlot[
                                                   'reservationId']);
                                             },

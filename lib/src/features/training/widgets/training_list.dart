@@ -25,7 +25,7 @@ class TrainingListState extends State<TrainingList> {
     if (FirebaseAuth.instance.currentUser == null) {
       return Container();
     }
-    
+
     return StreamBuilder(
         stream: reservationsRef
             .where('creatorId',
@@ -50,7 +50,7 @@ class TrainingListState extends State<TrainingList> {
               itemBuilder: (BuildContext context, int index) {
                 QueryDocumentSnapshot<Object?> reservation =
                     snapshot.data!.docs[index];
-                    
+
                 return Center(
                     child: TrainingListItem(reservation: reservation));
               });

@@ -8,6 +8,6 @@ Future<Query$Almanak$users?> almanakUsers(
           page: page, first: first, search: search != '' ? search : null)));
 
   final parsedData = result.parsedData;
-  
+
   return parsedData?.users;
 }

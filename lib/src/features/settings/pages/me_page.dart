@@ -100,54 +100,47 @@ class _MeWidgetState extends State<MeWidget> {
             updatedValue: updated?.last_name),
       },
       {
-        'email': 
-            createInitialField(
-                width: 1,
-                label: 'E-mailadres',
-                initialValue: contact.email!,
-                updatedValue: updated?.email),
+        'email': createInitialField(
+            width: 1,
+            label: 'E-mailadres',
+            initialValue: contact.email!,
+            updatedValue: updated?.email),
       },
       {
-        'phone_primary': 
-            createInitialField(
-                width: 1,
-                label: 'Telefoonnummer',
-                initialValue: contact.phone_primary!,
-                updatedValue: updated?.phone_primary),
+        'phone_primary': createInitialField(
+            width: 1,
+            label: 'Telefoonnummer',
+            initialValue: contact.phone_primary!,
+            updatedValue: updated?.phone_primary),
       },
       {
-        'street': 
-            createInitialField(
-                width: 4/6,
-                label: 'Straat',
-                initialValue: contact.street!,
-                updatedValue: updated?.street),
-        'housenumber': 
-            createInitialField(
-                width: 1/6,
-                label: 'Huisnummer',
-                initialValue: contact.housenumber!,
-                updatedValue: updated?.housenumber),
-        'housenumber_addition': 
-            createInitialField(
-                width: 1/6,
-                label: 'Toevoeging',
-                initialValue: contact.housenumber_addition!,
-                updatedValue: updated?.housenumber_addition),
+        'street': createInitialField(
+            width: 4 / 6,
+            label: 'Straat',
+            initialValue: contact.street!,
+            updatedValue: updated?.street),
+        'housenumber': createInitialField(
+            width: 1 / 6,
+            label: 'Huisnummer',
+            initialValue: contact.housenumber!,
+            updatedValue: updated?.housenumber),
+        'housenumber_addition': createInitialField(
+            width: 1 / 6,
+            label: 'Toevoeging',
+            initialValue: contact.housenumber_addition!,
+            updatedValue: updated?.housenumber_addition),
       },
       {
-        'zipcode': 
-            createInitialField(
-                width: 1/3,
-                label: 'Postcode',
-                initialValue: contact.zipcode!,
-                updatedValue: updated?.zipcode),
-        'city': 
-            createInitialField(
-                width: 2/3,
-                label: 'Plaats',
-                initialValue: contact.city!,
-                updatedValue: updated?.city),
+        'zipcode': createInitialField(
+            width: 1 / 3,
+            label: 'Postcode',
+            initialValue: contact.zipcode!,
+            updatedValue: updated?.zipcode),
+        'city': createInitialField(
+            width: 2 / 3,
+            label: 'Plaats',
+            initialValue: contact.city!,
+            updatedValue: updated?.city),
       }
     ];
     super.initState();

@@ -11,7 +11,7 @@ class TrainingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
 
-return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Afschrijvingen'),
         automaticallyImplyLeading: false,
@@ -30,6 +30,5 @@ return Scaffold(
         label: const Text('Afschrijving toevoegen'),
       ),
     );
-
   }
 }

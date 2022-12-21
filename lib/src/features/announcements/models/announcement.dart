@@ -7,6 +7,6 @@ Future<Query$Announcement$announcement?> announcement(
       variables: Variables$Query$Announcement(announcementId: announcementId)));
 
   final parsedData = result.parsedData;
-  
+
   return parsedData?.announcement;
 }

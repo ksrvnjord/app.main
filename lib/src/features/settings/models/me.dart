@@ -29,6 +29,6 @@ Future<Mutation$UpdateVisibility$updatePublicContact?> updatePublicContact(
           variables: Variables$Mutation$UpdateVisibility(
               listed: listed, contact: contact)));
   final parsedData = result.parsedData;
-  
+
   return parsedData?.updatePublicContact;
 }
