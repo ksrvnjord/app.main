@@ -14,7 +14,6 @@ class VaarverbodWidget extends StatelessWidget {
     return FutureWrapper(
         future: vaarverbod,
         success: (data) {
-          if (data != null) {
             dynamic r = data.data;
             final Color bgColor =
                 r['status'] ? Colors.redAccent : Colors.lightBlue;
@@ -37,9 +36,6 @@ class VaarverbodWidget extends StatelessWidget {
                 .toRow()
                 .card(color: bgColor, elevation: 0)
                 .padding(all: 15, bottom: 0);
-          }
-
-          return Container();
         },
         loading: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
