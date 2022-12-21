@@ -82,7 +82,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                               return FutureWrapper(
                                   future: _filters,
                                   success: (filters) => TrainingFilters(
-                                        filters: filters ?? ['Ruimtes'],
+                                        filters: filters,
                                         toggleFilter: _toggleFilter,
                                       ));
                             }));
@@ -110,7 +110,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                     success: (filters) => TrainingShowAll(
                         key: UniqueKey(),
                         date: date,
-                        filters: filters ?? ['Ruimtes'])))
+                        filters: filters)))
                 .toList(),
           ),
         ));

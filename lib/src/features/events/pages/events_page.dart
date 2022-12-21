@@ -25,7 +25,7 @@ class EventsPage extends StatelessWidget {
         body: FutureWrapper(
           future: events(client),
           success: (data) {
-            return EventsWidget(data: data ?? []);
+            return EventsWidget(data: data);
           },
         ));
   }
