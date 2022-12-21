@@ -1,6 +1,7 @@
 # K.S.R.V. Njord App
 [![Dart Code Metrics](https://github.com/ksrvnjord/app.main/actions/workflows/dartcodemetrics.yml/badge.svg)](https://github.com/ksrvnjord/app.main/actions/workflows/dartcodemetrics.yml)
 [![Flutter Analyze](https://github.com/ksrvnjord/app.main/actions/workflows/flutter-analyze.yml/badge.svg)](https://github.com/ksrvnjord/app.main/actions/workflows/flutter-analyze.yml)
+[![Flutter Format](https://github.com/ksrvnjord/app.main/actions/workflows/flutter-format.yml/badge.svg)](https://github.com/ksrvnjord/app.main/actions/workflows/flutter-format.yml)
 [![Codemagic build status](https://api.codemagic.io/apps/639df4a27b07a355e8861df9/639df4a27b07a355e8861df8/status_badge.svg)](https://codemagic.io/apps/639df4a27b07a355e8861df9/639df4a27b07a355e8861df8/latest_build)
 
 De Flut-ter versie.
