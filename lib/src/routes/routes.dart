@@ -90,11 +90,11 @@ final routeMap = RouteMap(
         ),
     '/training/all/plan': (route) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
-          child: PlanTrainingPage(queryParams:route.queryParameters),
+          child: PlanTrainingPage(queryParams: route.queryParameters),
         ),
-    '/training/:id': (_) => const RoutedPageTransition(
+    '/training/all/:id': (info) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
-          child: ShowTrainingPage(),
+          child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
   },
 );

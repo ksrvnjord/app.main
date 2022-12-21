@@ -6,11 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 double betweenFields = 20;
 double marginContainer = 5;
@@ -62,6 +60,22 @@ class MeWidget extends StatefulWidget {
   createState() => _MeWidgetState();
 }
 
+Map<String, Object?> createInitialField({
+  required double width,
+  required String label,
+  required String initialValue,
+  required String? updatedValue,
+}) {
+  return {
+    'changed': false,
+    'width': width,
+    'controller': TextEditingController(text: initialValue),
+    'display': label,
+    'initial': initialValue,
+    'updated': updatedValue,
+  };
+}
+
 class _MeWidgetState extends State<MeWidget> {
   List<Map<String, Map<String, dynamic>>> fields = [];
   bool saving = false;
@@ -74,96 +88,60 @@ class _MeWidgetState extends State<MeWidget> {
 
     fields = [
       {
-        'first_name': {
-          'changed': false,
-          'width': 1 / 2,
-          'controller': TextEditingController(text: contact?.first_name),
-          'display': 'Voornaam',
-          'initial': contact?.first_name,
-          'updated': updated?.first_name,
-        },
-        'last_name': {
-          'changed': false,
-          'width': 1 / 2,
-          'controller': TextEditingController(text: contact?.last_name),
-          'backend': 'last_name',
-          'display': 'Achternaam',
-          'initial': contact?.last_name,
-          'updated': updated?.last_name,
-        }
+        'first_name': createInitialField(
+            width: 1 / 2,
+            label: 'Voornaam',
+            initialValue: contact!.first_name!,
+            updatedValue: updated?.first_name),
+        'last_name': createInitialField(
+            width: 1 / 2,
+            label: 'Achternaam',
+            initialValue: contact.last_name!,
+            updatedValue: updated?.last_name),
       },
       {
-        'email': {
-          'changed': false,
-          'width': 1,
-          'controller': TextEditingController(text: contact?.email),
-          'backend': 'email',
-          'display': 'E-mailadres',
-          'initial': contact?.email,
-          'updated': updated?.email,
-        }
+        'email': createInitialField(
+            width: 1,
+            label: 'E-mailadres',
+            initialValue: contact.email!,
+            updatedValue: updated?.email),
       },
       {
-        'phone_primary': {
-          'changed': false,
-          'width': 1,
-          'controller': TextEditingController(text: contact?.phone_primary),
-          'backend': 'phone_primary',
-          'display': 'Telefoonnummer',
-          'initial': contact?.phone_primary,
-          'updated': updated?.phone_primary,
-        }
+        'phone_primary': createInitialField(
+            width: 1,
+            label: 'Telefoonnummer',
+            initialValue: contact.phone_primary!,
+            updatedValue: updated?.phone_primary),
       },
       {
-        'street': {
-          'changed': false,
-          'width': 4 / 6,
-          'controller': TextEditingController(text: contact?.street),
-          'backend': 'street',
-          'display': 'Straatnaam',
-          'initial': contact?.street,
-          'updated': updated?.street,
-        },
-        'housenumber': {
-          'changed': false,
-          'width': 1 / 6,
-          'controller': TextEditingController(text: contact?.housenumber),
-          'backend': 'housenumber',
-          'display': 'Huisnr',
-          'initial': contact?.housenumber,
-          'updated': updated?.housenumber,
-        },
-        'housenumber_addition': {
-          'changed': false,
-          'width': 1 / 6,
-          'controller':
-              TextEditingController(text: contact?.housenumber_addition),
-          'backend': 'housenumber_addition',
-          'display': 'Toevoeging',
-          'initial': contact?.housenumber_addition,
-          'updated': updated?.housenumber_addition,
-        }
+        'street': createInitialField(
+            width: 4 / 6,
+            label: 'Straat',
+            initialValue: contact.street!,
+            updatedValue: updated?.street),
+        'housenumber': createInitialField(
+            width: 1 / 6,
+            label: 'Huisnummer',
+            initialValue: contact.housenumber!,
+            updatedValue: updated?.housenumber),
+        'housenumber_addition': createInitialField(
+            width: 1 / 6,
+            label: 'Toevoeging',
+            initialValue: contact.housenumber_addition!,
+            updatedValue: updated?.housenumber_addition),
       },
       {
-        'zipcode': {
-          'changed': false,
-          'width': 1 / 2,
-          'controller': TextEditingController(text: contact?.zipcode),
-          'backend': 'zipcode',
-          'display': 'Postcode',
-          'initial': contact?.zipcode,
-          'updated': updated?.zipcode,
-        },
-        'city': {
-          'changed': false,
-          'width': 1 / 2,
-          'controller': TextEditingController(text: contact?.city),
-          'backend': 'city',
-          'display': 'Stad',
-          'initial': contact?.city,
-          'updated': updated?.city,
-        }
-      },
+        'zipcode': createInitialField(
+            width: 1 / 3,
+            label: 'Postcode',
+            initialValue: contact.zipcode!,
+            updatedValue: updated?.zipcode),
+        'city': createInitialField(
+            width: 2 / 3,
+            label: 'Plaats',
+            initialValue: contact.city!,
+            updatedValue: updated?.city),
+      }
     ];
     super.initState();
   }

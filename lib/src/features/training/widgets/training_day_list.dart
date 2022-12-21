@@ -79,7 +79,7 @@ class TrainingDayList extends StatelessWidget {
                                   if (snapshot.hasError) {
                                     return Container();
                                   }
-
+                                  
                                   return const CircularProgressIndicator();
                                 },
                               ))

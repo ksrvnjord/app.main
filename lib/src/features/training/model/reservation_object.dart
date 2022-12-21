@@ -8,26 +8,19 @@ class ReservationObject {
   final bool available;
   final String? comment;
 
-  const ReservationObject(
-    this.reference,
-    this.name,
-    this.permissions,
-    this.type,
-    this.available,
-    this.comment
-  );
+  const ReservationObject(this.reference, this.name, this.permissions,
+      this.type, this.available, this.comment);
 
   ReservationObject.fromJson(Map<String, Object?> json)
       : this(
-          json['reference'] as DocumentReference?,
-          json['name']! as String,
-          (json['permissions'] as List)
-              .map(((item) => item as String))
-              .toList(),
-          json['type']! as String,
-          json['available']! as bool,
-          json['comment'] as String?
-        );
+            json['reference'] as DocumentReference?,
+            json['name']! as String,
+            (json['permissions'] as List)
+                .map(((item) => item as String))
+                .toList(),
+            json['type']! as String,
+            json['available']! as bool,
+            json['comment'] as String?);
 
   Map<String, Object?> toJson() {
     return {

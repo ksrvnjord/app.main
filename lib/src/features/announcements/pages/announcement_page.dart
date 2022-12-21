@@ -36,12 +36,12 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               ),
               body: (data != null)
                   ? Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: AnnouncementBodyWidget(
+                      padding: const EdgeInsets.all(15),
+                      child: AnnouncementBodyWidget(
                         title: data.title,
                         text: data.contents,
                       ),
-                  )
+                    )
                   : Container());
         },
         loading: Scaffold(

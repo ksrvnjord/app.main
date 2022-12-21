@@ -81,6 +81,8 @@ class AlmanakProfileWidget extends StatelessWidget {
                           }
                         })));
           }
+
+          return null;
         });
   }
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_left_view.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_day_list.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -76,6 +76,7 @@ class _TrainingShowAll extends State<TrainingShowAll> {
                     style: TextStyle(color: Colors.blueGrey))
               ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
             }
+
             return Stack(children: <Widget>[
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

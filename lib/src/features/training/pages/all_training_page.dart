@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_filters.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_show_all.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AllTrainingPage extends StatefulWidget {
   const AllTrainingPage({Key? key}) : super(key: key);
@@ -15,27 +16,50 @@ class AllTrainingPage extends StatefulWidget {
 
 class _AllTrainingPage extends State<AllTrainingPage> {
   // List of filters to apply
-  List<String> filters = [];
+  late Future<List<String>> _filters;
+
+  // Load SharedPreferences
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   // Create an empty Modal function to refresh the modal
   void Function(void Function()) setModalState = (f0) => {};
 
-  static const int amountOfDaysUserCanBookInAdvance = 4; // user can book x days in the advance
+  static const int amountOfDaysUserCanBookInAdvance =
+      4; // user can book x days in the advance
 
   // Generate a list of the coming 14 days
-  List<DateTime> days =
-      List.generate(amountOfDaysUserCanBookInAdvance, (index) => DateTime.now().add(Duration(days: index)));
+  List<DateTime> days = List.generate(amountOfDaysUserCanBookInAdvance,
+      (index) => DateTime.now().add(Duration(days: index)));
 
-  void toggleFilter(String filter) {
+  Future<void> _toggleFilter(String filter) async {
+    final SharedPreferences prefs = await _prefs;
+    final List<String> filters =
+        (prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
+
     if (filters.contains(filter)) {
       filters.remove(filter);
-      setState(() {});
-      setModalState(() {});
     } else {
       filters.add(filter);
-      setState(() {});
-      setModalState(() {});
     }
+
+    setState(() {
+      _filters = prefs
+          .setStringList('afschrijf_filters', filters)
+          .then((bool success) {
+        return filters;
+      });
+    });
+    setModalState(() => {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _filters = _prefs.then((SharedPreferences prefs) {
+      var fltrs = prefs.getStringList('afschrijf_filters') ?? ['Ruimtes'];
+
+      return fltrs;
+    });
   }
 
   @override
@@ -54,10 +78,13 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                         builder: (context) =>
                             StatefulBuilder(builder: (context, setModalState) {
                               this.setModalState = setModalState;
-                              return TrainingFilters(
-                                filters: filters,
-                                toggleFilter: toggleFilter,
-                              );
+
+                              return FutureWrapper(
+                                  future: _filters,
+                                  success: (filters) => TrainingFilters(
+                                        filters: filters,
+                                        toggleFilter: _toggleFilter,
+                                      ));
                             }));
                   }),
             ],
@@ -78,8 +105,10 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: days
-                .map<Widget>(
-                    (date) => TrainingShowAll(date: date, filters: filters))
+                .map<Widget>((date) => FutureWrapper(
+                    future: _filters,
+                    success: (filters) => TrainingShowAll(
+                        key: UniqueKey(), date: date, filters: filters)))
                 .toList(),
           ),
         ));
