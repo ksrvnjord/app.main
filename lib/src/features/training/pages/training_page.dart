@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_home_nav.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingPage extends StatelessWidget {
@@ -9,8 +9,9 @@ class TrainingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Routemaster navigator = Routemaster.of(context);
 
-    return Scaffold(
+return Scaffold(
       appBar: AppBar(
         title: const Text('Afschrijvingen'),
         automaticallyImplyLeading: false,
@@ -21,8 +22,14 @@ class TrainingPage extends StatelessWidget {
       ),
       body: <Widget>[
         const TrainingList().expanded(),
-        const TrainingHomeNav(),
       ].toColumn(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => navigator.push('all'),
+        backgroundColor: Colors.lightBlue,
+        icon: const Icon(Icons.add),
+        label: const Text('Afschrijving toevoegen'),
+      ),
     );
+
   }
 }
