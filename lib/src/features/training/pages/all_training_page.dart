@@ -108,9 +108,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                 .map<Widget>((date) => FutureWrapper(
                     future: _filters,
                     success: (filters) => TrainingShowAll(
-                        key: UniqueKey(),
-                        date: date,
-                        filters: filters)))
+                        key: UniqueKey(), date: date, filters: filters)))
                 .toList(),
           ),
         ));
