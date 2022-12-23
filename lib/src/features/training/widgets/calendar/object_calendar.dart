@@ -102,7 +102,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
       'reservationObjectId': boat.id,
       'reservationObjectName': boat.get('name'),
       'startTime': time.toIso8601String(),
-    });
+    }).result.then((value) => setState(()=>{}));
   }
 
   @override
