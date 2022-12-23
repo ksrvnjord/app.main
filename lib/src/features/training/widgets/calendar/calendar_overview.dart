@@ -100,10 +100,12 @@ class _CalendarOverview extends State<CalendarOverview> {
                                     .toRow()
                                     .padding(left: 64)
                               ].toRow(),
-                              content: snapshot.data!.docs
-                                  .map<Widget>((e) {
-                                    return ObjectCalendar(date: date, boat: e);
-                                  })
+                              content: (snapshot.data != null
+                                      ? snapshot.data!.docs.map<Widget>((e) {
+                                          return ObjectCalendar(
+                                              date: date, boat: e);
+                                        })
+                                      : [Container()])
                                   .toList()
                                   .toRow(
                                       mainAxisAlignment:
