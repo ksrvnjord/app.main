@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql/client.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/filters.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_tile.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarFilterRow extends StatelessWidget {

@@ -1,19 +1,14 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/slots.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/calendar_background.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/calendar_reservation.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ObjectCalendar extends StatefulWidget {

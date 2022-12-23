@@ -4,9 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class AllTrainingPage extends StatefulWidget {
   const AllTrainingPage({Key? key}) : super(key: key);
