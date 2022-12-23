@@ -71,10 +71,6 @@ class _AllTrainingPage extends State<AllTrainingPage> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Afschrijven'),
-            actions: <Widget>[
-              IconButton(
-                  icon: const Icon(Icons.filter_alt), onPressed: () => {}),
-            ],
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
             systemOverlayStyle:
