@@ -19,8 +19,8 @@ class AnnouncementsHomeWidget extends StatelessWidget {
     return FutureWrapper<Query$Announcements?>(
         future: announcements(0, client),
         success: (data) {
-            return AnnouncementListWidget(
-                announcements: data!.announcements!.data);
+          return AnnouncementListWidget(
+              announcements: data!.announcements!.data);
         },
         loading: [
           const ShimmerWidget(
