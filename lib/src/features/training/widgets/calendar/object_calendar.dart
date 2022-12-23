@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
   late DateTime date;
   // Boat is passed by parent
   late QueryDocumentSnapshot<ReservationObject> boat;
+  late DateTime? reservation;
 
   // Create reference for query
   CollectionReference reservationRef =
@@ -46,6 +48,66 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     super.initState();
     date = widget.date;
     boat = widget.boat;
+    reservation = null;
+  }
+
+  void handleTap(TapUpDetails details) {
+    final boatData = boat.data();
+
+    // Check if the boat is in-de-vaart
+    if (!boatData.available) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Dit object is uit de vaart.')));
+      return;
+    }
+
+    bool needToReturn = false;
+
+    // Check the permissions of the current user
+    // 1: Get the ID token that contains the permission claims
+    FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
+      // 2: Check if the boat permissions are empty
+      if (boatData.permissions.isNotEmpty &&
+          // If not, 3: convert permissions to a set,
+          // get the permissions from the token
+          // and see if there is any overlap
+          boatData.permissions
+              .toSet()
+              .intersection((token.claims?['permissions'] ?? []).toSet())
+              .isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Je hebt geen permissies voor dit object.')));
+        needToReturn = true;
+      }
+    });
+
+    if (needToReturn) {
+      return;
+    }
+
+    // Take the local position, starting at 6 and divide it into
+    // hour blocks of 64px
+    final double location = 6 + ((details.localPosition.dy - 16) / 64);
+    // Double the local position, round it, and divide it by two
+    // to get the half-hourly-precise start position
+    final double timeDouble = (2 * location).floor() / 2;
+    // Calculate startTime
+    final DateTime time = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        // Get the whole hour
+        min(21, max(6, (timeDouble).floor())),
+        // Get the decimal (12.5 -> .5),
+        // calculate the minute (.5 -> 30),
+        // and round to integer
+        ((timeDouble % 1) * 60).round());
+
+    Routemaster.of(context).push('plan', queryParameters: {
+      'reservationObjectId': boat.id,
+      'reservationObjectName': boat.get('name'),
+      'startTime': time.toIso8601String(),
+    });
   }
 
   @override
@@ -66,8 +128,15 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         // Stack the elements over eachother
         child: Stack(
           children: [
-            // Horizontal bars of 32h
-            const CalendarBackground(fragmentHeight: 32),
+            // Horizontal bars of 32h, that are tappable
+            // to make new reservations
+            GestureDetector(
+                // Handle the taps with a defined function
+                onTapUp: handleTap,
+                // Wrap the background in an AbsorbPointer, so that
+                // it does not pass gestures through to the background
+                child: const AbsorbPointer(
+                    child: CalendarBackground(fragmentHeight: 32))),
             // Wrap the reservations
             FutureWrapper(
                 future: reservations,
