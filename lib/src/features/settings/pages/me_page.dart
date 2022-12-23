@@ -20,7 +20,7 @@ class MePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
-    final result = me(client);
+    var result = me(client);
 
     return Scaffold(
         appBar: AppBar(
@@ -47,6 +47,10 @@ class MePage extends StatelessWidget {
         body: FutureWrapper(
             future: result,
             success: (me) {
+              if (me == null) {
+                return Container();
+              }
+
               return MeWidget(me);
             }));
   }
@@ -83,63 +87,66 @@ class _MeWidgetState extends State<MeWidget> {
 
   @override
   void initState() {
-    final contact = widget.user?.fullContact.private;
-    final updated = widget.user?.fullContact.update;
+    if (widget.user == null) {
+      return;
+    }
+    final contact = widget.user!.fullContact.private;
+    final updated = widget.user!.fullContact.update;
 
     fields = [
       {
         'first_name': createInitialField(
             width: 1 / 2,
             label: 'Voornaam',
-            initialValue: contact!.first_name!,
+            initialValue: contact!.first_name ?? '',
             updatedValue: updated?.first_name),
         'last_name': createInitialField(
             width: 1 / 2,
             label: 'Achternaam',
-            initialValue: contact.last_name!,
+            initialValue: contact.last_name ?? '',
             updatedValue: updated?.last_name),
       },
       {
         'email': createInitialField(
             width: 1,
             label: 'E-mailadres',
-            initialValue: contact.email!,
+            initialValue: contact.email ?? '',
             updatedValue: updated?.email),
       },
       {
         'phone_primary': createInitialField(
             width: 1,
             label: 'Telefoonnummer',
-            initialValue: contact.phone_primary!,
+            initialValue: contact.phone_primary ?? '',
             updatedValue: updated?.phone_primary),
       },
       {
         'street': createInitialField(
             width: 4 / 6,
             label: 'Straat',
-            initialValue: contact.street!,
+            initialValue: contact.street ?? '',
             updatedValue: updated?.street),
         'housenumber': createInitialField(
             width: 1 / 6,
             label: 'Huisnummer',
-            initialValue: contact.housenumber!,
+            initialValue: contact.housenumber ?? '',
             updatedValue: updated?.housenumber),
         'housenumber_addition': createInitialField(
             width: 1 / 6,
             label: 'Toevoeging',
-            initialValue: contact.housenumber_addition!,
+            initialValue: contact.housenumber_addition ?? '',
             updatedValue: updated?.housenumber_addition),
       },
       {
         'zipcode': createInitialField(
             width: 1 / 3,
             label: 'Postcode',
-            initialValue: contact.zipcode!,
+            initialValue: contact.zipcode ?? '',
             updatedValue: updated?.zipcode),
         'city': createInitialField(
             width: 2 / 3,
             label: 'Plaats',
-            initialValue: contact.city!,
+            initialValue: contact.city ?? '',
             updatedValue: updated?.city),
       }
     ];

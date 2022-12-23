@@ -14,6 +14,9 @@ class VaarverbodWidget extends StatelessWidget {
     return FutureWrapper(
         future: vaarverbod,
         success: (data) {
+          if (data == null) {
+            return Container();
+          }
           dynamic r = data.data;
           final Color bgColor =
               r['status'] ? Colors.redAccent : Colors.lightBlue;

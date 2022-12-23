@@ -1,7 +1,6 @@
 name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 
-publish_to: 'none'
 version: 0.0.13+13
 
 environment:
