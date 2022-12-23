@@ -47,7 +47,7 @@ class CalendarReservation extends StatelessWidget {
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     )).padding(all: 4)))
-      ].toColumn().padding(top: 16 + (offset.inHours * 32 * 2));
+      ].toColumn().padding(top: 16 + ((offset.inMinutes / 30) * 32));
     }
 
     return Container();
