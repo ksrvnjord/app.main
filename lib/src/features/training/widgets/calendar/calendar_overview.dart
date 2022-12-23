@@ -103,7 +103,11 @@ class _CalendarOverview extends State<CalendarOverview> {
                               content: (snapshot.data != null
                                       ? snapshot.data!.docs.map<Widget>((e) {
                                           return ObjectCalendar(
-                                              date: date, boat: e);
+                                                  date: date, boat: e)
+                                              .border(
+                                                  left: 1,
+                                                  color: const Color.fromARGB(
+                                                      255, 223, 223, 223));
                                         })
                                       : [Container()])
                                   .toList()

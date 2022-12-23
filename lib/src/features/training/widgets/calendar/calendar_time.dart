@@ -20,10 +20,24 @@ class CalendarTime extends StatelessWidget {
                 .map<Widget>((e) => SizedBox(
                     height: 32,
                     width: 64,
-                    child: Text(DateFormat('Hm').format(e),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )).center()))
+                    child: Stack(children: [
+                      const SizedBox(
+                          height: 32,
+                          width: 4,
+                          child: Divider(
+                            color: Colors.grey,
+                          )).padding(left: 60),
+                      const SizedBox(
+                          height: 32,
+                          width: 4,
+                          child: Divider(
+                            color: Colors.grey,
+                          )),
+                      Text(DateFormat('Hm').format(e),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )).center(),
+                    ])))
                 .toList()
                 .toColumn(
                     mainAxisAlignment: MainAxisAlignment.center,
