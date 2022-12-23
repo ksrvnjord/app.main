@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<DateTime> reservationsToReservedSlots(
+Map<DateTime, String> reservationsToReservedSlots(
     List<QueryDocumentSnapshot> reservations, int timeSlotSize) {
-  List<DateTime> forbiddenSlots = [];
+  Map<DateTime, String> forbiddenSlots =
+      {}; // String is id to track reservation
   Duration interval = Duration(minutes: timeSlotSize);
   for (int i = 0; i < reservations.length; i++) {
     DateTime startTime = reservations[i].get('startTime').toDate();
@@ -28,9 +29,10 @@ List<DateTime> reservationsToReservedSlots(
 
     DateTime current = roundedStart;
     while (current.isBefore(roundedEnd)) {
-      forbiddenSlots.add(current);
+      forbiddenSlots[current] = reservations[i].id;
       current = current.add(interval);
     }
   }
+
   return forbiddenSlots;
 }
