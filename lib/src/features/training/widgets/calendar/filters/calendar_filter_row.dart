@@ -21,8 +21,6 @@ class CalendarFilterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final client = Provider.of<GraphQLModel>(context).client;
-
     return SizedBox(
         height: 64,
         child: FutureWrapper(
@@ -45,6 +43,8 @@ class CalendarFilterRow extends StatelessWidget {
                                     ).padding(all: 8))
                                 .toList());
                       }
+
+                      return Container();
                     });
               } else {
                 return const ErrorCardWidget(
