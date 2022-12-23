@@ -39,6 +39,7 @@ dependencies:
   time_range_picker: ^2.2.0
   firebase_core: ^2.3.0
   shared_preferences: ^2.0.15
+  file_picker: ^5.2.4
 
 
 dev_dependencies:
