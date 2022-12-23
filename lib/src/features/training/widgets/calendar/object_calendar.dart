@@ -98,11 +98,14 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         // and round to integer
         ((timeDouble % 1) * 60).round());
 
-    Routemaster.of(context).push('plan', queryParameters: {
-      'reservationObjectId': boat.id,
-      'reservationObjectName': boat.get('name'),
-      'startTime': time.toIso8601String(),
-    }).result.then((value) => setState(()=>{}));
+    Routemaster.of(context)
+        .push('plan', queryParameters: {
+          'reservationObjectId': boat.id,
+          'reservationObjectName': boat.get('name'),
+          'startTime': time.toIso8601String(),
+        })
+        .result
+        .then((value) => setState(() => {}));
   }
 
   @override
