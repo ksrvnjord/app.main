@@ -5,7 +5,7 @@ class EditAlmanakProfilePage extends StatefulWidget {
   const EditAlmanakProfilePage({Key? key}) : super(key: key);
 
   @override
-  _EditAlmanakProfilePageState createState() => _EditAlmanakProfilePageState();
+  createState() => _EditAlmanakProfilePageState();
 }
 
 class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
