@@ -1,0 +1,23 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Auto Tag from pubspec.yaml
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Flutter Auto Tag
+        # You may pin to the exact commit or the version.
+        uses: jacopocarlini/action-autotag@3.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

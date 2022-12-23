@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -60,6 +59,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     super.initState();
     _filters = _prefs.then((SharedPreferences prefs) {
       var fltrs = prefs.getStringList('afschrijf_filters') ?? ['Ruimtes'];
+
       return fltrs;
     });
   }

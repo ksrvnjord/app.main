@@ -21,11 +21,11 @@ class AnnouncementBodyWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 5),
           data: text,
           onTapLink: (text, url, title) {
-        // Check if an URL is actually given
-        if (url?.isNotEmpty ?? false) {
-          // Launch the URL
-          launchUrlString(url!);
-        }
+            // Check if an URL is actually given
+            if (url?.isNotEmpty ?? false) {
+              // Launch the URL
+              launchUrlString(url!);
+            }
           },
         ),
       )

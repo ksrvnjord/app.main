@@ -39,6 +39,7 @@ class TrainingListItem extends StatelessWidget {
           } else {
             Map<String, dynamic> boat =
                 snapshot.data!.data() as Map<String, dynamic>;
+
             return ListTile(
               tileColor: Colors.white,
               title: Text(boat['name']),
@@ -46,17 +47,16 @@ class TrainingListItem extends StatelessWidget {
               leading: const Icon(
                 Icons.fitness_center,
                 color: Colors.blueGrey,
-                ),
+              ),
               trailing: IconButton(
                   onPressed: () =>
                       confirmDeleteReservation(context, reservation),
                   icon: const Icon(
                     Icons.cancel,
                     color: Color.fromARGB(255, 0xf8, 0x71, 0x71),
-                    )),
+                  )),
             );
           }
         });
-    ;
   }
 }

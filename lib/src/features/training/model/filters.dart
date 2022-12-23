@@ -1,7 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:graphql/client.dart';
-
 class AfschrijvingFilter {
   String label;
   String description;
@@ -16,8 +12,6 @@ class AfschrijvingFilter {
 }
 
 Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
-  CollectionReference reservationObjectTypesRef =
-      FirebaseFirestore.instance.collection('reservationObjectTypes');
   return [
     // TODO: Fetch all different reservationObject types from firestore dynamically?
     AfschrijvingFilter(
@@ -45,10 +39,10 @@ Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
       type: 'C2+',
     ),
     AfschrijvingFilter(
-      description: 'D2+',
-      label: 'D2+',
+      description: 'C2x+',
+      label: 'C2x+',
       icon: '',
-      type: 'D2+',
+      type: 'C2x+',
     ),
     AfschrijvingFilter(
       description: 'C4+',

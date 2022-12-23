@@ -3,16 +3,17 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservationObject.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
+import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_range_picker/time_range_picker.dart';
-
 
 // HELP: What to do with these 'constants'. Maybe make a separate file to store them?
 FirebaseFirestore db = FirebaseFirestore.instance;
@@ -61,7 +62,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
     super.initState();
     _startTime = widget.startTime;
     _endTime = widget.startTime.add(const Duration(hours: 1));
-    _startTimeOfDay = TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);  
+    _startTimeOfDay =
+        TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
     _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
   }
 
@@ -69,13 +71,20 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
 
+    var curUser = GetIt.I.get<CurrentUser>();
+    var contact = curUser.user!.fullContact.public;
+    String firstName = contact.first_name!;
+    String lastName = contact.last_name!;
+
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
         log('Reservation object is not available');
+
         return const ErrorCardWidget(
             errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
       }
     });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -96,6 +105,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             log(snapshot.error.toString());
+
             return const ErrorCardWidget(
                 errorMessage:
                     "We konden de afschrijvingen niet ophalen van de server");
@@ -116,9 +126,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             // determine earliest/latest possible time for slider
 
             Reservation reservation = document.data();
-            if ((reservation.startTime.isBefore(_startTime) || reservation.startTime.isAtSameMomentAs(_startTime)) &&
+            if ((reservation.startTime.isBefore(_startTime) ||
+                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
+
               return const ErrorCardWidget(
                   errorMessage: "Deze tijd is al bezet");
             }
@@ -139,8 +151,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           if (_endTime.isAfter(latestPossibleTime)) {
             _endTime = latestPossibleTime;
           }
-          _startTimeOfDay = TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
-          _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
+          _startTimeOfDay =
+              TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
+          _endTimeOfDay =
+              TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
+
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -192,7 +207,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   interval: const Duration(minutes: 30),
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
-                  disabledTime: TimeRange(startTime: TimeOfDay.fromDateTime(latestPossibleTime), endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
+                  disabledTime: TimeRange(
+                      startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                      endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
                   handlerRadius: 8,
@@ -223,12 +240,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             ElevatedButton(
                     onPressed: () {
                       Future<bool> res = createReservation(Reservation(
-                          _startTime,
-                          _endTime,
-                          widget.reservationObject,
-                          FirebaseAuth.instance.currentUser!.uid,
-                          widget.objectName
-                          ));
+                        _startTime,
+                        _endTime,
+                        widget.reservationObject,
+                        FirebaseAuth.instance.currentUser!.uid,
+                        widget.objectName,
+                        creatorName: "$firstName $lastName",
+                      ));
                       navigator.pop(
                           res); // let the parent know if reloading is needed because of a new reservation
                     },
@@ -295,5 +313,6 @@ Future<bool> createReservation(Reservation r) async {
       }, maxAttempts: 1) // only try once
       .then((value) => true)
       .catchError((error) => false);
+
   return result;
 }

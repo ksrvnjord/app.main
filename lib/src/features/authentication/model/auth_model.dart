@@ -34,12 +34,14 @@ class AuthModel extends ChangeNotifier {
     if (username == '') {
       error = 'Please enter a username';
       notifyListeners();
+
       return loginState;
     }
 
     if (password == '') {
       error = 'Please enter a password';
       notifyListeners();
+
       return loginState;
     }
 
@@ -58,6 +60,7 @@ class AuthModel extends ChangeNotifier {
       error = e.toString();
       isBusy = false;
       notifyListeners();
+
       return false;
     }
 
@@ -66,11 +69,13 @@ class AuthModel extends ChangeNotifier {
       await _storage.write(
           key: 'oauth2_credentials', value: client?.credentials.toJson());
       notifyListeners();
+
       return true;
     }
 
     isBusy = false;
     notifyListeners();
+
     return false;
   }
 
@@ -122,6 +127,7 @@ class AuthModel extends ChangeNotifier {
       // the exception to Sentry for further research.
       Sentry.captureException(error, stackTrace: st);
     }
+
     return true;
   }
 

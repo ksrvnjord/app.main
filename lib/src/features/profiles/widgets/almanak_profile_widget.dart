@@ -20,67 +20,65 @@ class AlmanakProfileWidget extends StatelessWidget {
     return FutureWrapper(
         future: userQuery,
         success: (user) {
-          if (user != null) {
-            final contact = user.fullContact.public;
+          final contact = user!.fullContact.public;
 
-            const List<String> labels = [
-              'Naam',
-              'Telefoonnummer',
-              'E-mailadres',
-              'Adres',
-              'Postcode',
-              'Woonplaats'
-            ];
+          const List<String> labels = [
+            'Naam',
+            'Telefoonnummer',
+            'E-mailadres',
+            'Adres',
+            'Postcode',
+            'Woonplaats'
+          ];
 
-            final List<String> values = [
-              '${contact.first_name} ${contact.last_name}',
-              contact.phone_primary ?? '',
-              contact.email ?? '',
-              contact.street != ''
-                  ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
-                  : '',
-              contact.zipcode ?? ' ',
-              contact.city ?? ' ',
-            ];
+          final List<String> values = [
+            '${contact.first_name} ${contact.last_name}',
+            contact.phone_primary ?? '',
+            contact.email ?? '',
+            contact.street != ''
+                ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
+                : '',
+            contact.zipcode ?? ' ',
+            contact.city ?? ' ',
+          ];
 
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(values[0]),
-                  backgroundColor: Colors.lightBlue,
-                  shadowColor: Colors.transparent,
-                  systemOverlayStyle: const SystemUiOverlayStyle(
-                      statusBarColor: Colors.lightBlue),
-                ),
-                body: SizedBox(
-                    child: ListView.builder(
-                        physics: const PageScrollPhysics(),
-                        itemCount: labels.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (values[index] != '') {
-                            return GestureDetector(
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  labelText: labels[index],
-                                  border: const OutlineInputBorder(),
-                                ),
-                                initialValue: values[index],
-                              ).padding(all: 15),
-                              onLongPress: () {
-                                HapticFeedback.vibrate();
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) =>
-                                        AlmanakProfileBottomsheetWidget(
-                                            label: labels[index],
-                                            value: values[index]));
-                              },
-                            );
-                          } else {
-                            return Container();
-                          }
-                        })));
-          }
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(values[0]),
+                backgroundColor: Colors.lightBlue,
+                shadowColor: Colors.transparent,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: Colors.lightBlue),
+              ),
+              body: SizedBox(
+                  child: ListView.builder(
+                      physics: const PageScrollPhysics(),
+                      itemCount: labels.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (values[index] != '') {
+                          return GestureDetector(
+                            child: TextFormField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                labelText: labels[index],
+                                border: const OutlineInputBorder(),
+                              ),
+                              initialValue: values[index],
+                            ).padding(all: 15),
+                            onLongPress: () {
+                              HapticFeedback.vibrate();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (_) =>
+                                      AlmanakProfileBottomsheetWidget(
+                                          label: labels[index],
+                                          value: values[index]));
+                            },
+                          );
+                        } else {
+                          return Container();
+                        }
+                      })));
         });
   }
 }

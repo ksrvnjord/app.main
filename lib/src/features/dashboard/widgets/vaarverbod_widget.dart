@@ -14,32 +14,31 @@ class VaarverbodWidget extends StatelessWidget {
     return FutureWrapper(
         future: vaarverbod,
         success: (data) {
-          if (data != null) {
-            dynamic r = data.data;
-            final Color bgColor =
-                r['status'] ? Colors.redAccent : Colors.lightBlue;
-            final Color fgColor = r['status'] ? Colors.black : Colors.white;
-
-            return <Widget>[
-              r['status']
-                  ? Icon(Icons.priority_high, color: fgColor).padding(all: 10)
-                  : Icon(Icons.favorite_outlined, color: fgColor)
-                      .padding(all: 10),
-              Text(r['message'],
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 15,
-                          color: fgColor))
-                  .padding(all: 10)
-                  .expanded()
-            ]
-                .toRow()
-                .card(color: bgColor, elevation: 0)
-                .padding(all: 15, bottom: 0);
+          if (data == null) {
+            return Container();
           }
+          dynamic r = data.data;
+          final Color bgColor =
+              r['status'] ? Colors.redAccent : Colors.lightBlue;
+          final Color fgColor = r['status'] ? Colors.black : Colors.white;
 
-          return Container();
+          return <Widget>[
+            r['status']
+                ? Icon(Icons.priority_high, color: fgColor).padding(all: 10)
+                : Icon(Icons.favorite_outlined, color: fgColor)
+                    .padding(all: 10),
+            Text(r['message'],
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                        color: fgColor))
+                .padding(all: 10)
+                .expanded()
+          ]
+              .toRow()
+              .card(color: bgColor, elevation: 0)
+              .padding(all: 15, bottom: 0);
         },
         loading: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,

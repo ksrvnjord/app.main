@@ -1,0 +1,6 @@
+[
+    {
+        "language": "en-US",
+        "text": "Hey everyone!\n\nWe just released an update for the mobile app that includes a fix for a bug on the My Profile page. Some of you may have noticed that the page was showing a grey screen when you tried to access it. This was caused by a change we made to the code, which accidentally removed some checks that made sure all the necessary information was being displayed on the page. \n\nWe apologize for the inconvenience this may have caused and want to assure you that our team worked hard to fix this issue as soon as possible. We hope this update will provide a better user experience for you on the My Profile page. \n\nThank you for your patience and support!"
+    }
+]

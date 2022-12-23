@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import '../api/almanak.graphql.dart';
 
@@ -9,5 +8,6 @@ Future<Query$Almanak$users?> almanakUsers(
           page: page, first: first, search: search != '' ? search : null)));
 
   final parsedData = result.parsedData;
+
   return parsedData?.users;
 }

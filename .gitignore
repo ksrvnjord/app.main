@@ -65,6 +65,9 @@ coverage/
 # See https://dart.dev/guides/libraries/private-files#pubspeclock
 #pubspec.lock
 
+# Static analysis related
+metrics/
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle

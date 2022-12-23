@@ -9,24 +9,24 @@ Future<void> confirmDeleteReservation(
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Annuleren'),
-        content: const Text('Weet je zeker dat je de afschrijving wil annuleren?'),
+        content:
+            const Text('Weet je zeker dat je de afschrijving wil annuleren?'),
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-
               child: const Text(
                 'Ga terug',
                 style: TextStyle(color: Colors.grey, fontSize: 16),
               )),
           TextButton(
-              onPressed: () async {
-                await FirebaseFirestore.instance
+              onPressed: () {
+                FirebaseFirestore.instance
                     .collection('reservations')
                     .doc(reservation.id)
-                    .delete();
-                Navigator.of(context).pop();
+                    .delete()
+                    .then((value) => Navigator.of(context).pop());
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red)),
