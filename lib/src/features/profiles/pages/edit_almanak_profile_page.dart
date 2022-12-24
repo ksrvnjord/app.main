@@ -26,16 +26,19 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: Center(
-        child: ImagePickerWidget(
-          diameter: 240,
-          initialImage: const AssetImage(Images.placeholderProfilePicture),
-          shape: ImagePickerWidgetShape
-              .circle, // ImagePickerWidgetShape.square
-          isEditable: true,
-          onChange: (File file) {
-            print("I changed the file to: ${file.path}");
-          },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: ImagePickerWidget(
+            diameter: 240,
+            initialImage: const AssetImage(Images.placeholderProfilePicture),
+            shape: ImagePickerWidgetShape
+                .circle, // ImagePickerWidgetShape.square
+            isEditable: true,
+            onChange: (File file) {
+              print("I changed the file to: ${file.path}");
+            },
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
