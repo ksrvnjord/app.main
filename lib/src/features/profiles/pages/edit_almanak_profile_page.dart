@@ -24,7 +24,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
   Widget build(BuildContext context) {
     final Reference userRef = storage.ref().child(userId);
     final Reference profilePictureRef = userRef.child('profile_picture.png');
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wijzig mijn almanak profiel'),
@@ -36,21 +36,42 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
-          child: ImagePickerWidget(
-            diameter: 240,
-            initialImage: const AssetImage(Images.placeholderProfilePicture),
-            shape:
-                ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
-            isEditable: true,
-            onChange: (File file) async {
-              try {
-                await profilePictureRef.putFile(file);
-                Fluttertoast.showToast(
-                    msg: "Your profile picture was updated successfully");
-              } on FirebaseException catch (e) {
-                Fluttertoast.showToast(
-                    msg: "Error updating your profile picture");
-                log(e.toString());
+          child: FutureBuilder(
+            future: getProfilePicture(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                    child: Text('An error occurred: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                Image initialImage;
+                if (snapshot.data == null) {
+                  initialImage = Image.asset(Images.placeholderProfilePicture);
+                } else {
+                  initialImage = Image.memory(snapshot.data as Uint8List);
+                }
+                // convert image to image provider for ImagePickerWidget
+                final ImageProvider imageProvider = initialImage.image;
+
+                return ImagePickerWidget(
+                  diameter: 240,
+                  initialImage: imageProvider,
+                  shape: ImagePickerWidgetShape
+                      .circle, // ImagePickerWidgetShape.square
+                  isEditable: true,
+                  onChange: (File file) async {
+                    try {
+                      await profilePictureRef.putFile(file);
+                      Fluttertoast.showToast(
+                          msg: "Your profile picture was updated successfully");
+                    } on FirebaseException catch (e) {
+                      Fluttertoast.showToast(
+                          msg: "Error updating your profile picture");
+                      log(e.toString());
+                    }
+                  },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),
@@ -58,4 +79,13 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
       ),
     );
   }
+}
+
+Future<Uint8List?> getProfilePicture() async {
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
+  final Reference userRef = storage.ref().child(userId);
+  final Reference profilePictureRef = userRef.child('profile_picture.png');
+  final Uint8List? data = await profilePictureRef.getData();
+
+  return data;
 }
