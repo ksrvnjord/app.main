@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^11.0.9
   fluttertoast: ^8.1.2
   cached_network_image: ^3.2.3
+  localstorage: ^4.0.0+1
 
 
 dev_dependencies:
