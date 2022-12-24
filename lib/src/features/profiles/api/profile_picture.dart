@@ -9,8 +9,15 @@ final auth = FirebaseAuth.instance;
 Future<Uint8List?> getProfilePicture(String userId) async {
   final Reference userRef = storage.ref().child(userId);
   final Reference profilePictureRef = userRef.child('profile_picture.png');
-  
+
   return await profilePictureRef.getData();
+}
+
+Future<String> getProfilePictureUrl(String userId) async {
+  final Reference userRef = storage.ref().child(userId);
+  final Reference profilePictureRef = userRef.child('profile_picture.png');
+
+  return await profilePictureRef.getDownloadURL();
 }
 
 // Make function to getMyProfilePicture

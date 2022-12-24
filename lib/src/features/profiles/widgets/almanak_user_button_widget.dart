@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
@@ -26,11 +27,19 @@ class AlmanakUserButtonWidget extends StatelessWidget {
             String userId = snapshot!.identifier;
             
             return FutureWrapper(
-              future: getProfilePicture(userId),
+              future: getProfilePictureUrl(userId),
               success: (snapshot) {
-                return CircleAvatar(
-                  backgroundImage: MemoryImage(snapshot as Uint8List),
+                return CachedNetworkImage(
+                  imageUrl: // random image url
+                      snapshot as String,
+                  imageBuilder: (context, imageProvider) => CircleAvatar(
+                    backgroundImage: imageProvider,
+                  ),
+                  placeholder: (_,x) => showDefaultProfilePicture(),
                 );
+                // return CircleAvatar(
+                //   backgroundImage: MemoryImage(snapshot as Uint8List),
+                // );
               },
               error: (_) => showDefaultProfilePicture(),
               loading: showDefaultProfilePicture(),
