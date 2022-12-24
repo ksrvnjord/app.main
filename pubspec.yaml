@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.0.15
   file_picker: ^5.2.4
   image_picker_widget: '>=2.0.0 <3.0.0'
+  firebase_storage: ^11.0.9
 
 
 dev_dependencies:
