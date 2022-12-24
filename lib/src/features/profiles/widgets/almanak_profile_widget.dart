@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_profile_bottomsheet_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -50,9 +51,21 @@ class AlmanakProfileWidget extends StatelessWidget {
                 systemOverlayStyle: const SystemUiOverlayStyle(
                     statusBarColor: Colors.lightBlue),
               ),
-              body: SizedBox(
-                  child: ListView.builder(
-                      physics: const PageScrollPhysics(),
+              body: ListView(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 100,
+                        backgroundImage:
+                            NetworkImage('https://picsum.photos/200'),
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: labels.length,
                       itemBuilder: (BuildContext context, int index) {
                         if (values[index] != '') {
@@ -78,7 +91,9 @@ class AlmanakProfileWidget extends StatelessWidget {
                         } else {
                           return Container();
                         }
-                      })));
+                      }),
+                ],
+              ));
         });
   }
 }
