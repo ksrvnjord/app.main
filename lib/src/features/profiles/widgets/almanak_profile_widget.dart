@@ -113,17 +113,15 @@ class ProfilePictureWidget extends StatelessWidget {
             radius: 100,
             backgroundImage: AssetImage(Images.placeholderProfilePicture),
           );
-        }
-        else if (snapshot.hasData) {
+        } else if (snapshot.hasData) {
           return CircleAvatar(
             radius: 100,
             backgroundImage: MemoryImage(snapshot.data),
           );
-        } else {
-          return const CircularProgressIndicator();
         }
+
+        return const CircularProgressIndicator();
       },
     );
   }
 }
-
