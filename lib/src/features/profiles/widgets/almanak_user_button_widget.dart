@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -19,47 +20,25 @@ class AlmanakUserButtonWidget extends StatelessWidget {
 
     return Card(
       child: ListTile(
-        leading: FutureBuilder(
-            future: almanakProfile(user.id, client),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
+        leading: FutureWrapper(
+          future: almanakProfile(user.id, client),
+          success: (snapshot) {
+            String userId = snapshot!.identifier;
+            
+            return FutureWrapper(
+              future: getProfilePicture(userId),
+              success: (snapshot) {
                 return CircleAvatar(
-                  backgroundImage:
-                      Image.asset(Images.placeholderProfilePicture).image,
+                  backgroundImage: MemoryImage(snapshot as Uint8List),
                 );
-              } else if (snapshot.hasData) {
-                String userId = snapshot.data!.identifier;
-
-                return FutureBuilder(
-                    future: getProfilePicture(userId),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return CircleAvatar(
-                          backgroundImage:
-                              Image.asset(Images.placeholderProfilePicture)
-                                  .image,
-                        );
-                      } else if (snapshot.hasData) {
-                        MemoryImage image =
-                            MemoryImage(snapshot.data as Uint8List);
-
-                        return CircleAvatar(
-                          backgroundImage: image,
-                        );
-                      }
-
-                      return CircleAvatar(
-                        backgroundImage:
-                            Image.asset(Images.placeholderProfilePicture).image,
-                      );
-                    });
-              } else {
-                return CircleAvatar(
-                  backgroundImage:
-                      Image.asset(Images.placeholderProfilePicture).image,
-                );
-              }
-            }),
+              },
+              error: (_) => showDefaultProfilePicture(),
+              loading: showDefaultProfilePicture(),
+            );
+          },
+          error: (_) => showDefaultProfilePicture(),
+          loading: showDefaultProfilePicture(),
+        ),
         title: Text(
             '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}'),
         onTap: () {
@@ -68,4 +47,10 @@ class AlmanakUserButtonWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+CircleAvatar showDefaultProfilePicture() {
+  return CircleAvatar(
+    backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
+  );
 }
