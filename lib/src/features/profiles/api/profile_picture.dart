@@ -14,6 +14,15 @@ Future<Uint8List?> getProfilePicture(String userId) async {
   return data;
 }
 
+// Make function to getMyProfilePicture
+Future<Uint8List?> getMyProfilePicture() async {
+  final String userId = auth.currentUser!.uid;
+  final Reference myProfilePictureRef = storage.ref("$userId/profile_picture.png");
+  final Uint8List? data = await myProfilePictureRef.getData();
+
+  return data;
+}
+
 UploadTask uploadMyProfilePicture(File file)  {
   final String userId = auth.currentUser!.uid;
   final Reference myProfilePictureRef = storage.ref("$userId/profile_picture.png");

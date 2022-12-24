@@ -35,7 +35,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: FutureBuilder(
-            future: getProfilePicture(FirebaseAuth.instance.currentUser!.uid),
+            future: getMyProfilePicture(),
             builder: (context, snapshot) {
               Image initialImage;
 
