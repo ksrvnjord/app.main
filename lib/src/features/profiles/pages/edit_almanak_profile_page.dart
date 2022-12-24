@@ -20,8 +20,6 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Reference userRef = storage.ref().child(userId);
-    final Reference profilePictureRef = userRef.child('profile_picture.png');
 
     return Scaffold(
       appBar: AppBar(

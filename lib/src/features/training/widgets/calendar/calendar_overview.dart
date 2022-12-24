@@ -76,6 +76,7 @@ class _CalendarOverview extends State<CalendarOverview> {
                     style: TextStyle(color: Colors.blueGrey))
               ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
             }
+            
             return Stack(children: <Widget>[
               SingleChildScrollView(
                   key: UniqueKey(),

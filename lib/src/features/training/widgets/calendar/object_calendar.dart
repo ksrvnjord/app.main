@@ -53,6 +53,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     if (!boatData.available) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dit object is uit de vaart.')));
+
       return;
     }
 
@@ -155,6 +156,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                         .toStack();
                   }
                   // Or just return an empty container if it fails
+                  
                   return Container();
                 })
           ],
