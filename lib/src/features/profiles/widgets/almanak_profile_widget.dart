@@ -56,11 +56,7 @@ class AlmanakProfileWidget extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Center(
-                      child: CircleAvatar(
-                        radius: 100,
-                        backgroundImage:
-                            NetworkImage('https://picsum.photos/200'),
-                      ),
+                      child: ProfilePictureWidget(),
                     ),
                   ),
                   ListView.builder(
@@ -95,5 +91,20 @@ class AlmanakProfileWidget extends StatelessWidget {
                 ],
               ));
         });
+  }
+}
+
+class ProfilePictureWidget extends StatelessWidget {
+  const ProfilePictureWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 100,
+      backgroundImage:
+          NetworkImage('https://picsum.photos/200'),
+    );
   }
 }

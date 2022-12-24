@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
 
-class ProfilePictureWidget extends StatelessWidget {
-  const ProfilePictureWidget({
+class EditProfilePictureWidget extends StatelessWidget {
+  const EditProfilePictureWidget({
     Key? key,
     required this.initialImage,
     required this.profilePictureRef,

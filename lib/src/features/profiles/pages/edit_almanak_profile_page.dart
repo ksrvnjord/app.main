@@ -41,13 +41,13 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
               if (snapshot.hasError) {
                 initialImage = Image.asset(Images.placeholderProfilePicture);
 
-                return ProfilePictureWidget(
+                return EditProfilePictureWidget(
                     initialImage: initialImage,
                     profilePictureRef: profilePictureRef);
               } else if (snapshot.hasData) {
                 initialImage = Image.memory(snapshot.data as Uint8List);
 
-                return ProfilePictureWidget(
+                return EditProfilePictureWidget(
                     initialImage: initialImage,
                     profilePictureRef: profilePictureRef);
               } else {
