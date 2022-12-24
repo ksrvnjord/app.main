@@ -43,14 +43,14 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
                 initialImage = Image.asset(Images.placeholderProfilePicture);
 
                 return EditProfilePictureWidget(
-                    initialImage: initialImage,
-                    profilePictureRef: profilePictureRef);
+                  initialImage: initialImage,
+                );
               } else if (snapshot.hasData) {
                 initialImage = Image.memory(snapshot.data as Uint8List);
 
                 return EditProfilePictureWidget(
-                    initialImage: initialImage,
-                    profilePictureRef: profilePictureRef);
+                  initialImage: initialImage,
+                );
               } else {
                 return const Center(child: CircularProgressIndicator());
               }

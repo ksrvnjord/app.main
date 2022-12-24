@@ -5,16 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 
 class EditProfilePictureWidget extends StatelessWidget {
   const EditProfilePictureWidget({
     Key? key,
     required this.initialImage,
-    required this.profilePictureRef,
   }) : super(key: key);
 
   final Image initialImage;
-  final Reference profilePictureRef;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class EditProfilePictureWidget extends StatelessWidget {
       isEditable: true,
       onChange: (File file) async {
         try {
-          await profilePictureRef.putFile(file);
+          await uploadMyProfilePicture(file);
           Fluttertoast.showToast(
               msg: "Your profile picture was updated successfully");
         } on FirebaseException catch (e) {
@@ -35,4 +34,5 @@ class EditProfilePictureWidget extends StatelessWidget {
       },
     );
   }
+
 }
