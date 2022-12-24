@@ -19,9 +19,7 @@ class AlmanakUserButtonWidget extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
           ),
-          title: Text((user.fullContact.public.first_name ?? '')+
-              ' ' +
-              (user.fullContact.public.last_name ?? '')),
+          title: Text('${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}'),
           onTap: () {
             Routemaster.of(context).push('/almanak/${user.id}');
           },
