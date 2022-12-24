@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_upload_widget.dart';
 
 final storage = FirebaseStorage.instance;
@@ -34,7 +35,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: FutureBuilder(
-            future: getProfilePicture(),
+            future: getProfilePicture(FirebaseAuth.instance.currentUser!.uid),
             builder: (context, snapshot) {
               Image initialImage;
 
@@ -59,15 +60,4 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
       ),
     );
   }
-}
-
-
-
-Future<Uint8List?> getProfilePicture() async {
-  final String userId = FirebaseAuth.instance.currentUser!.uid;
-  final Reference userRef = storage.ref().child(userId);
-  final Reference profilePictureRef = userRef.child('profile_picture.png');
-  final Uint8List? data = await profilePictureRef.getData();
-
-  return data;
 }
