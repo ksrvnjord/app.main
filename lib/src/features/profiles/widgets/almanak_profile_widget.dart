@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_profile_bottomsheet_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -50,9 +52,17 @@ class AlmanakProfileWidget extends StatelessWidget {
                 systemOverlayStyle: const SystemUiOverlayStyle(
                     statusBarColor: Colors.lightBlue),
               ),
-              body: SizedBox(
-                  child: ListView.builder(
-                      physics: const PageScrollPhysics(),
+              body: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: ProfilePictureWidget(userId: user.identifier),
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: labels.length,
                       itemBuilder: (BuildContext context, int index) {
                         if (values[index] != '') {
@@ -78,7 +88,40 @@ class AlmanakProfileWidget extends StatelessWidget {
                         } else {
                           return Container();
                         }
-                      })));
+                      }),
+                ],
+              ));
         });
+  }
+}
+
+class ProfilePictureWidget extends StatelessWidget {
+  const ProfilePictureWidget({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getProfilePicture(userId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return const CircleAvatar(
+            radius: 100,
+            backgroundImage: AssetImage(Images.placeholderProfilePicture),
+          );
+        } else if (snapshot.hasData) {
+          return CircleAvatar(
+            radius: 100,
+            backgroundImage: MemoryImage(snapshot.data),
+          );
+        }
+
+        return const CircularProgressIndicator();
+      },
+    );
   }
 }

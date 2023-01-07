@@ -39,6 +39,12 @@ dependencies:
   time_range_picker: ^2.2.0
   firebase_core: ^2.3.0
   shared_preferences: ^2.0.15
+  file_picker: ^5.2.4
+  image_picker_widget: '>=2.0.0 <3.0.0'
+  firebase_storage: ^11.0.9
+  fluttertoast: ^8.1.2
+  cached_network_image: ^3.2.3
+  localstorage: ^4.0.0+1
 
 
 dev_dependencies:
