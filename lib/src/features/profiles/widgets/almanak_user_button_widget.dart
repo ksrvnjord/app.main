@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 // shared preferences
@@ -32,7 +33,7 @@ class AlmanakUserButtonWidget extends StatelessWidget {
             String userId = snapshot!;
             
             return FutureWrapper(
-              future: getProfilePictureUrl(userId),
+              future: getProfilePictureUrl(userId), // TODO: use cache
               success: (snapshot) {
                 return CachedNetworkImage(
                   imageUrl: // random image url
@@ -47,11 +48,11 @@ class AlmanakUserButtonWidget extends StatelessWidget {
                 // );
               },
               error: (_) => showDefaultProfilePicture(),
-              loading: showDefaultProfilePicture(),
+              loading: ShimmerWidget(child: showDefaultProfilePicture()),
             );
           },
           error: (_) => showDefaultProfilePicture(),
-          loading: showDefaultProfilePicture(),
+          loading: ShimmerWidget(child: showDefaultProfilePicture()),
         ),
         title: Text(
             '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}'),
