@@ -34,5 +34,4 @@ class EditProfilePictureWidget extends StatelessWidget {
       },
     );
   }
-
 }

@@ -156,7 +156,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                         .toStack();
                   }
                   // Or just return an empty container if it fails
-                  
+
                   return Container();
                 })
           ],

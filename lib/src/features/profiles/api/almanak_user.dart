@@ -7,22 +7,24 @@ import 'package:provider/provider.dart';
 // shared preferences
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 // async update shared preferences
-Future<void> updateUserMapCacheAsync(String heimallId, GraphQLClient client) async {
+Future<void> updateUserMapCacheAsync(
+    String heimallId, GraphQLClient client) async {
   Query$AlmanakProfile$user? user = await almanakProfile(heimallId, client);
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString(heimallId, user!.identifier);
 }
 
 // Converts heimdall Id to user identifier
-Future<String?> getUserIdentifier(GraphQLClient client, String heimallId) async {
+Future<String?> getUserIdentifier(
+    GraphQLClient client, String heimallId) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? identifier = prefs.getString(heimallId);
 
   updateUserMapCacheAsync(heimallId, client); // update cache in background
 
-  if (identifier != null) { // use cached identifier
+  if (identifier != null) {
+    // use cached identifier
     return identifier;
   }
 

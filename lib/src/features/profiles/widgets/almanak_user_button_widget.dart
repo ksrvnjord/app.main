@@ -14,9 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 // shared preferences
 
-
-
-
 class AlmanakUserButtonWidget extends StatelessWidget {
   final Query$Almanak$users$data user;
 
@@ -31,7 +28,7 @@ class AlmanakUserButtonWidget extends StatelessWidget {
           future: getUserIdentifier(client, user.id),
           success: (snapshot) {
             String userId = snapshot!;
-            
+
             return FutureWrapper(
               future: getProfilePictureUrl(userId), // TODO: use cache
               success: (snapshot) {
@@ -41,7 +38,7 @@ class AlmanakUserButtonWidget extends StatelessWidget {
                   imageBuilder: (context, imageProvider) => CircleAvatar(
                     backgroundImage: imageProvider,
                   ),
-                  placeholder: (_,x) => showDefaultProfilePicture(),
+                  placeholder: (_, x) => showDefaultProfilePicture(),
                 );
                 // return CircleAvatar(
                 //   backgroundImage: MemoryImage(snapshot as Uint8List),

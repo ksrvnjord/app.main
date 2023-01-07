@@ -20,7 +20,6 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wijzig mijn almanak profiel'),

@@ -27,17 +27,16 @@ class AlmanakPage extends StatelessWidget {
             icon: FutureWrapper(
                 future: getMyProfilePicture(),
                 success: (snapshot) {
-                 if (snapshot != null) {
+                  if (snapshot != null) {
                     return CircleAvatar(
                       backgroundImage: MemoryImage(snapshot),
                     );
                   } else {
-                  return showDefaultProfilePicture();
+                    return showDefaultProfilePicture();
                   }
                 },
-                loading:  ShimmerWidget(child: showDefaultProfilePicture()),
-                error: (_) => showDefaultProfilePicture() 
-                ),
+                loading: ShimmerWidget(child: showDefaultProfilePicture()),
+                error: (_) => showDefaultProfilePicture()),
             onPressed: () {
               Routemaster.of(context).push('edit');
             },
