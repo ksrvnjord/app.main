@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
-import 'package:provider/provider.dart';
 // shared preferences
 import 'package:shared_preferences/shared_preferences.dart';
 
