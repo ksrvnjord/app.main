@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
