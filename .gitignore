@@ -117,3 +117,4 @@ metrics/
 # End of https://www.toptal.com/developers/gitignore/api/flutter
 
 /old_structure/**
+android/app/src/main/AndroidManifest.xml
