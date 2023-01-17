@@ -1,6 +1,10 @@
 [
     {
         "language": "en-US",
-        "text": "Added support for permissioned reservations"
+        "text": "We're excited to announce a major update to the reservations view in our mobile app! It now looks similar to Google Calendar, making it much easier to make reservations. Additionally, selecting filters is now even easier with the Filter bar on the bottom of the screen. The development team worked hard to make all these improvements happen, so we hope you enjoy the new and improved view."
+    },
+    {
+        "language": "nl-NL",
+        "text": "We hebben goed nieuws! De weergave van alle afschrijvingen in onze mobiele app is flink verbeterd. Het ziet er nu uit als Google Calendar, wat het maken van afschrijvingen veel makkelijker maakt. Bovendien is het nu nog gemakkelijker om filters te selecteren met de Filterbalk aan de onderkant van het scherm. Het ontwikkelteam heeft hard gewerkt om al deze verbeteringen te realiseren, dus we hopen dat je geniet van het verbeterde overzicht."
     }
 ]

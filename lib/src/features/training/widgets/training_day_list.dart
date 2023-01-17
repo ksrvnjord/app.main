@@ -54,8 +54,9 @@ class TrainingDayList extends StatelessWidget {
                     "Er is iets misgegaan bij het ophalen van de afschrijvingen");
           } else {
             List<QueryDocumentSnapshot>? reservations = snapshot.data?.docs;
-            List<DateTime> forbiddenSlots =
+            Map<DateTime, String> forbiddenSlots =
                 reservationsToReservedSlots(reservations ?? [], timeSlotSize);
+
             return Stack(children: <Widget>[
               SizedBox(
                   width: 96,
