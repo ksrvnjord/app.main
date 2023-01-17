@@ -7,7 +7,7 @@ import 'package:routemaster/routemaster.dart';
 
 class TrainingDayListGridCell extends StatelessWidget {
   final QueryDocumentSnapshot<ReservationObject> boat;
-  final List<DateTime> forbiddenSlots;
+  final Map<DateTime, String> forbiddenSlots;
   final DateTime timestamp;
   final AsyncSnapshot<IdTokenResult> user;
 
@@ -23,8 +23,14 @@ class TrainingDayListGridCell extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> boatPermissions = boat.get('permissions');
     Map<String, dynamic> userClaims = user.data!.claims!;
-    if (forbiddenSlots.contains(timestamp)) {
-      return Container(color: Colors.grey);
+    if (forbiddenSlots.keys.contains(timestamp)) {
+      String id = forbiddenSlots[timestamp]!;
+
+      return GestureDetector(
+          onTap: () => Routemaster.of(context).push("/training/all/$id"),
+          child: Container(
+            color: Colors.grey,
+          ));
     } else if (boatPermissions.isEmpty) {
       return TrainingDayListGridCellAllowed(boat: boat, timestamp: timestamp);
     } else if (boatPermissions

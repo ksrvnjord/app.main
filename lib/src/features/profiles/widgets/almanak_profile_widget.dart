@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_profile_bottomsheet_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -20,69 +22,106 @@ class AlmanakProfileWidget extends StatelessWidget {
     return FutureWrapper(
         future: userQuery,
         success: (user) {
-          if (user != null) {
-            final contact = user.fullContact.public;
+          final contact = user!.fullContact.public;
 
-            const List<String> labels = [
-              'Naam',
-              'Telefoonnummer',
-              'E-mailadres',
-              'Adres',
-              'Postcode',
-              'Woonplaats'
-            ];
+          const List<String> labels = [
+            'Naam',
+            'Telefoonnummer',
+            'E-mailadres',
+            'Adres',
+            'Postcode',
+            'Woonplaats'
+          ];
 
-            final List<String> values = [
-              '${contact.first_name} ${contact.last_name}',
-              contact.phone_primary ?? '',
-              contact.email ?? '',
-              contact.street != ''
-                  ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
-                  : '',
-              contact.zipcode ?? ' ',
-              contact.city ?? ' ',
-            ];
+          final List<String> values = [
+            '${contact.first_name} ${contact.last_name}',
+            contact.phone_primary ?? '',
+            contact.email ?? '',
+            contact.street != ''
+                ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
+                : '',
+            contact.zipcode ?? ' ',
+            contact.city ?? ' ',
+          ];
 
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(values[0]),
-                  backgroundColor: Colors.lightBlue,
-                  shadowColor: Colors.transparent,
-                  systemOverlayStyle: const SystemUiOverlayStyle(
-                      statusBarColor: Colors.lightBlue),
-                ),
-                body: SizedBox(
-                    child: ListView.builder(
-                        physics: const PageScrollPhysics(),
-                        itemCount: labels.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (values[index] != '') {
-                            return GestureDetector(
-                              child: TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  labelText: labels[index],
-                                  border: const OutlineInputBorder(),
-                                ),
-                                initialValue: values[index],
-                              ).padding(all: 15),
-                              onLongPress: () {
-                                HapticFeedback.vibrate();
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) =>
-                                        AlmanakProfileBottomsheetWidget(
-                                            label: labels[index],
-                                            value: values[index]));
-                              },
-                            );
-                          } else {
-                            return Container();
-                          }
-                        })));
-          }
-
-          return null;
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(values[0]),
+                backgroundColor: Colors.lightBlue,
+                shadowColor: Colors.transparent,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: Colors.lightBlue),
+              ),
+              body: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: ProfilePictureWidget(userId: user.identifier),
+                    ),
+                  ),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: labels.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (values[index] != '') {
+                          return GestureDetector(
+                            child: TextFormField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                labelText: labels[index],
+                                border: const OutlineInputBorder(),
+                              ),
+                              initialValue: values[index],
+                            ).padding(all: 15),
+                            onLongPress: () {
+                              HapticFeedback.vibrate();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (_) =>
+                                      AlmanakProfileBottomsheetWidget(
+                                          label: labels[index],
+                                          value: values[index]));
+                            },
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                ],
+              ));
         });
+  }
+}
+
+class ProfilePictureWidget extends StatelessWidget {
+  const ProfilePictureWidget({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getProfilePicture(userId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return const CircleAvatar(
+            radius: 100,
+            backgroundImage: AssetImage(Images.placeholderProfilePicture),
+          );
+        } else if (snapshot.hasData) {
+          return CircleAvatar(
+            radius: 100,
+            backgroundImage: MemoryImage(snapshot.data),
+          );
+        }
+
+        return const CircularProgressIndicator();
+      },
+    );
   }
 }
