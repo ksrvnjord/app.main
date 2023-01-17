@@ -10,7 +10,6 @@ void saveMessagingToken() async {
   if (userId == null || token == null) {
     return;
   }
-  print('Phase!');
   DocumentReference<Map<String, dynamic>> tokenRef = FirebaseFirestore.instance
       .collection('people')
       .doc(userId)
