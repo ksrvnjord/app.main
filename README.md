@@ -16,9 +16,7 @@ De Flut-ter versie.
 - Run de app: `flutter run`
 
 ## Architectuur
-
-Op dit moment nog niet heel veel boeiends, maar de verschillende schermen
-werken via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html).
+Via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html) kan je navigeren tussen de verschillende pages.
 
 State-management gaat niet via MobX worden voorlopig, tenzij iemand dit
 op een nette manier neer weet te kalken. Voorlopige keus is op RiverPod 
