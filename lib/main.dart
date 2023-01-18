@@ -10,7 +10,11 @@ import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +22,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseMessaging.instance.getInitialMessage();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // AS Long as sentry is not working, we will not use it
   // "kReleaseMode" is true if the app is not being debugged
@@ -38,6 +44,7 @@ Future<void> main() async {
   GetIt.I.registerSingleton(GlobalObserverService());
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
+
   runApp(const Application());
   // }
 }
