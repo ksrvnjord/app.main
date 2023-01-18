@@ -20,6 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
   await Firebase.initializeApp(
+    name: 'ksrv-njord',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseMessaging.instance.getInitialMessage();
