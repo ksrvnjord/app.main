@@ -1,14 +1,14 @@
 import * as firebaseFunctionsTest from "firebase-functions-test";
 import {assert} from "chai";
-import {alwaysSucces} from "./index";
+import {alwaysSucces} from "../src/index";
 
 const {wrap} = firebaseFunctionsTest();
 
 describe("alwaysSucces", () => {
   it("should return success", async () => {
     const wrapped = wrap(alwaysSucces);
-    wrapped({});
+    const output = wrapped({});
 
-    return assert.equal(wrapped({}), true);
+    return assert.equal(output.success, true);
   });
 });
