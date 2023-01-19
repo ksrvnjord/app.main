@@ -5,6 +5,6 @@ import * as functions from "firebase-functions";
 //
 const secureFunction = functions.region("europe-west1").https;
 
-export const alwaysSucces = secureFunction.onCall(() => {
+export const createReservation = secureFunction.onCall(() => {
   return {success: true};
 });
