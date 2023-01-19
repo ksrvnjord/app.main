@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
   const AlmanakPage({Key? key}) : super(key: key);
