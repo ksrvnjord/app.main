@@ -5,7 +5,6 @@ import * as functions from "firebase-functions";
 //
 const secureFunction = functions.region("europe-west1").https;
 
-export const test = secureFunction.onCall((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  return {message: "Hello from Firebase!"};
+export const alwaysSucces = secureFunction.onCall(() => {
+  return {success: true};
 });
