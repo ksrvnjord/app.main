@@ -9,7 +9,7 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "mocha --reporter spec --require ts-node/register 'test/**/*.spec.ts'"
+    "test": "npm run build && mocha --reporter spec --require ts-node/register 'test/**/*.spec.ts'"
   },
   "engines": {
     "node": "18"
