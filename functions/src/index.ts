@@ -9,8 +9,3 @@ export const test = secureFunction.onCall((request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});
   return {message: "Hello from Firebase!"};
 });
-
-export const test2 = secureFunction.onCall((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  return {message: "Hello from Firebase!"};
-});
