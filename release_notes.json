@@ -1,10 +1,10 @@
 [
     {
         "language": "en-US",
-        "text": "This is a minor update for test users only, testing the new notification feature."
+        "text": "We are laying the groundworks for push notifications. This is a small update to test the new notifications."
     },
     {
         "language": "nl-NL",
-        "text": "Dit is een kleine update om de nieuwe notificaties te testen."
+        "text": "We leggen de basis voor pushmeldingen. Dit is een kleine update om de nieuwe meldingen te testen."
     }
 ]
