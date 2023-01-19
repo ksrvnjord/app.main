@@ -87,16 +87,7 @@ class _CalendarOverview extends State<CalendarOverview> {
                           child: StickyHeader(
                               header: [
                                 snapshot.data!.docs
-                                    .map<Widget>((e) {
-                                      return Container(
-                                          color: Colors.grey[50],
-                                          width: 96,
-                                          height: 64,
-                                          child: Text(e.data().name)
-                                              .textStyle(const TextStyle(
-                                                  fontWeight: FontWeight.bold))
-                                              .center());
-                                    })
+                                    .map<Widget>(showReservationObjectName)
                                     .toList()
                                     .toRow()
                                     .padding(left: 64)
@@ -140,5 +131,15 @@ class _CalendarOverview extends State<CalendarOverview> {
             style: TextStyle(color: Colors.blueGrey))
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
     }
+  }
+
+  Widget showReservationObjectName(e) {
+    return Container(
+        color: Colors.grey[50],
+        width: 96,
+        height: 64,
+        child: Text(e.data().name)
+            .textStyle(const TextStyle(fontWeight: FontWeight.bold))
+            .center());
   }
 }
