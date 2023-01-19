@@ -23,9 +23,17 @@ class TrainingListState extends State<TrainingList> {
               toFirestore: (reservation, _) => reservation.toJson(),
             );
     if (FirebaseAuth.instance.currentUser == null) {
-      return Container();
+      // this should show to the user that there are no reservations
+      return const Center(
+        child: Text('Je hebt geen afschrijvingen'),
+      );
     }
 
+    return showReservationList(reservationsRef);
+  }
+
+  StreamBuilder<QuerySnapshot<Reservation>> showReservationList(
+      CollectionReference<Reservation> reservationsRef) {
     return StreamBuilder(
         stream: reservationsRef
             .where('creatorId',
@@ -39,6 +47,12 @@ class TrainingListState extends State<TrainingList> {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text('Je hebt geen afschrijvingen...'),
             );
           }
 
