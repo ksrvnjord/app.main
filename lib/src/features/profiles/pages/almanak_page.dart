@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
@@ -19,31 +20,10 @@ class AlmanakPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: [
-          const Text("Almanak"),
-          IconButton(
-            padding: const EdgeInsets.all(0),
-            iconSize: 40,
-            icon: FutureWrapper(
-                future: getMyProfilePicture(),
-                success: (snapshot) {
-                  if (snapshot != null) {
-                    return CircleAvatar(
-                      backgroundImage: MemoryImage(snapshot),
-                    );
-                  } else {
-                    return showDefaultProfilePicture();
-                  }
-                },
-                loading: ShimmerWidget(child: showDefaultProfilePicture()),
-                error: (_) => showDefaultProfilePicture()),
-            onPressed: () {
-              Routemaster.of(context).push('edit');
-            },
-          )
-        ].toRow(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center),
+        title: const Text("Almanak"),
+        actions: <Widget>[
+          showMyProfilePictureWidgetIfAuthenticatedByFirebase(context),
+        ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
@@ -52,4 +32,29 @@ class AlmanakPage extends StatelessWidget {
       body: AlmanakWidget(client: client),
     );
   }
+}
+
+Widget showMyProfilePictureWidgetIfAuthenticatedByFirebase(
+    BuildContext context) {
+  if (FirebaseAuth.instance.currentUser != null) {
+    return IconButton(
+      iconSize: 40,
+      icon: FutureWrapper(
+          future: getMyProfilePicture(),
+          success: (data) {
+            return data != null
+                ? CircleAvatar(
+                    backgroundImage: MemoryImage(data),
+                  )
+                : showDefaultProfilePicture();
+          },
+          loading: ShimmerWidget(child: showDefaultProfilePicture()),
+          error: (_) => showDefaultProfilePicture()),
+      onPressed: () {
+        Routemaster.of(context).push('edit');
+      },
+    );
+  }
+
+  return Container();
 }
