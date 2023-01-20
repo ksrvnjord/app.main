@@ -25,7 +25,7 @@ export const createReservation = clientFunction
       const startTime = DateTime.fromISO(data.startTime);
       const endTime = DateTime.fromISO(data.endTime);
       const uid = context.auth.uid;
-      logger.debug(`${uid} sent request`, data);
+      logger.debug(`${uid} sent reservation request`, data);
 
       const reservationObjectRef = db.doc(data.object);
       const reservationObject = (await reservationObjectRef.get()).data();
@@ -82,8 +82,6 @@ function checkPermissions({reservationObject, user}:
   }
   const userPermissions: Array<string> = user.permissions;
   const reservationObjectPermissions: Array<string> = reservationObject?.permissions;
-  console.log(`User permissions ${userPermissions}`);
-  console.log(`Reservation object permissions ${reservationObjectPermissions}`);
   const objectIsPermissioned = reservationObjectPermissions.length > 0;
   const userHasRequiredPermission = userPermissions
       .some((p) => reservationObjectPermissions.includes(p));
