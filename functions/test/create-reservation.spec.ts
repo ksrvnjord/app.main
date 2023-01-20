@@ -53,6 +53,9 @@ describe("createReservation", () => {
     );
   });
 
+  it("should only reserve if the reservation has a correct format");
+  it("should only reserve if the object exists");
+  it("should only reserve if the object is marked available");
   it("should only reserve if the timeslot is available for the object");
   it("should only reserve if the user has sufficient permissions");
 });
