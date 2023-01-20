@@ -18,7 +18,7 @@ Waiting for a function to deploy and then test it is a very slow process, the em
 To run your functions locally, you must have the Firebase CLI installed.
 You can run the Firebase emulator suite by running:
 ```bash
-firebase emulators:start --import=./dir
+firebase emulators:start --import=./firestore-test-data
 ```
 The `--import` flag is optional, it allows you to import data from a Firestore export, so you don't have to manually add data to the emulator.
 
