@@ -13,6 +13,6 @@
   "compileOnSave": true,
   "include": [
     "src",
-    "test/index.spec.ts"
+    "test/create-reservation.spec.ts"
   ]
 }

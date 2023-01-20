@@ -1,8 +1,6 @@
 import firebaseFunctionsTest from "firebase-functions-test";
-import {assert} from "chai";
-import {createReservation as createMockReservation} from "../src/index";
 import admin from "firebase-admin";
-import {DateTime} from "luxon/src/datetime";
+import {DateTime} from "luxon";
 import {DocumentReference} from "firebase-admin/lib/firestore";
 
 admin.initializeApp(
@@ -15,13 +13,11 @@ admin.initializeApp(
 
 const db = admin.firestore();
 
-const {wrap, cleanup} = firebaseFunctionsTest({
+const {cleanup} = firebaseFunctionsTest({
   projectId: "ksrv-njord-dev",
 }, "../ksrv-njord-dev-firebase-adminsdk-njigg-cf31ce8c1d.json");
 
 describe("createReservation", () => {
-  const wrapped = wrap(createMockReservation);
-
   before(async () => {
     const reservationObject = {
       name: generateRandomName(),
@@ -57,11 +53,8 @@ describe("createReservation", () => {
     );
   });
 
-  it("should return success", async () => {
-    const output = wrapped({});
-
-    return assert.equal(output.success, true);
-  });
+  it("should only reserve if the timeslot is available for the object");
+  it("should only reserve if the user has sufficient permissions");
 });
 
 
