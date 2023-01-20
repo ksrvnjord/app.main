@@ -7,7 +7,7 @@ class Reservation {
   final String creator;
   late DateTime createdAt;
   late String objectName;
-  late String? creatorName;
+  late String creatorName;
 
   Reservation(
     this.startTime,
@@ -15,7 +15,7 @@ class Reservation {
     this.reservationObject,
     this.creator,
     this.objectName, {
-    this.creatorName,
+    required this.creatorName,
   });
 
   static Reservation fromJson(Map<String, dynamic> json) {

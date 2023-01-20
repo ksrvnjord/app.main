@@ -14,9 +14,12 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_range_picker/time_range_picker.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 // HELP: What to do with these 'constants'. Maybe make a separate file to store them?
 FirebaseFirestore db = FirebaseFirestore.instance;
+FirebaseFunctions functions =
+    FirebaseFunctions.instanceFor(region: 'europe-west1');
 final CollectionReference<Reservation> reservationsRef = db
     .collection('reservations')
     .withConverter<Reservation>(
@@ -239,16 +242,29 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             ).padding(all: 15),
             ElevatedButton(
                     onPressed: () {
-                      Future<bool> res = createReservation(Reservation(
+                      createReservationCloud(Reservation(
                         _startTime,
                         _endTime,
                         widget.reservationObject,
                         FirebaseAuth.instance.currentUser!.uid,
                         widget.objectName,
                         creatorName: "$firstName $lastName",
-                      ));
-                      navigator.pop(
-                          res); // let the parent know if reloading is needed because of a new reservation
+                      )).then((success) {
+                        if (success) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Afschrijving gelukt!'),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Afschrijving mislukt!'),
+                            ),
+                          );
+                        }
+                        navigator.pop();
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlue),
@@ -262,6 +278,26 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         },
       ),
     );
+  }
+}
+
+Future<bool> createReservationCloud(Reservation r) async {
+  try {
+    final result = await functions
+        .httpsCallable('createReservation')
+        .call(<String, String>{
+      'startTime': r.startTime.toIso8601String(),
+      'endTime': r.endTime.toIso8601String(),
+      'object': r.reservationObject.path,
+      'objectName': r.objectName,
+      'creatorName': r.creatorName,
+    });
+
+    return result.data['success'];
+  } on FirebaseFunctionsException catch (error) {
+    print('${error.code} ${error.details} ${error.message}');
+
+    return false;
   }
 }
 

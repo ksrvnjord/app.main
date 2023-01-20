@@ -1,83 +1,39 @@
 import * as functions from "firebase-functions";
+import {DateTime} from "luxon";
+import admin from "firebase-admin";
 
 // // Start writing functions
 // // https://firebase.google.com/docs/functions/typescript
 const clientFunction = functions.region("europe-west1").https;
 const logger = functions.logger;
+admin.initializeApp();
+const db = admin.firestore();
 
-// Run this function if you want to test the client
-export const createReservation = clientFunction.onCall((data, context) => {
-  logger.debug(`${context.auth?.uid} sent request`, data);
-  const uid = context.auth?.uid;
+export const createReservation = clientFunction
+    .onCall(async (data, context) => {
+      const uid = context.auth?.uid;
+      logger.debug(`${uid} sent request`, data);
 
-  const validationResult = hasRequiredFields(data);
-  if (!validationResult.success) {
-    return validationResult.toObject();
-  }
+      // TODO: check if object is available at set times
+      // TODO: check if object has status available
+      // TODO: check if user has permission to reserve object
 
-  return {success: true, uid: uid};
-});
 
-/**
- * Class for validation results
- * @param {boolean} success - True if validation was successful
- * @param {string} error - The error message
- */
-class ValidationResult {
-  success: boolean;
-  error: string;
+      const reservation = {
+        createdTime: DateTime.now().toJSDate(),
+        creatorId: uid,
+        creatorName: data.creatorName,
+        endTime: DateTime.fromISO(data.endTime).toJSDate(),
+        object: db.doc(data.object),
+        objectName: data.objectName,
+        startTime: DateTime.fromISO(data.startTime).toJSDate(),
+      };
 
-  /**
-   * Constructor for ValidationResult
-   * @param {boolean} success
-   * @param {string} error
-   */
-  constructor(success: boolean, error?: string) {
-    this.success = success;
-    this.error = error ?? "";
-  }
-
-  /**
-   * Returns a positive validation result
-   * @return {ValidationResult} - A positive validation result
-   */
-  static positive(): ValidationResult {
-    return new ValidationResult(true);
-  }
-
-  /**
-   * Returns a negative validation result
-   * @param {string} error - The error message
-   * @return {ValidationResult} - A negative validation result
-   */
-  static negative(error: string): ValidationResult {
-    return new ValidationResult(false, error);
-  }
-
-  /**
-   * Returns the object representation of the validation result
-   * @return {object} - The object representation of the validation result
-   */
-  toObject(): object {
-    return {
-      success: this.success,
-      error: this.error,
-    };
-  }
-}
-
-/**
- * Checks if reservation has all required fields
- *
- * @param {object} reservation - The reservation to check
- * @return {boolean} - True if all required fields are present
- */
-function hasRequiredFields(reservation: object): ValidationResult {
-  const requiredFields = ["startTime", "endTime", "object"];
-  for (const field of requiredFields) {
-    if (!Object.prototype.hasOwnProperty.call(reservation, field)) {
-      return ValidationResult.negative("Missing field: " + field);
-    }
-  }
-  return ValidationResult.positive();
-}
+      try {
+        await db.collection("reservations").add(reservation);
+      } catch (e) {
+        logger.error(e);
+        return {success: false, error: e};
+      }
+      return {success: true};
+    });
