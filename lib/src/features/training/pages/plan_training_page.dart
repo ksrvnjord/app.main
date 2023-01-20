@@ -249,8 +249,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                         FirebaseAuth.instance.currentUser!.uid,
                         widget.objectName,
                         creatorName: "$firstName $lastName",
-                      )).then((success) {
-                        if (success) {
+                      )).then((res) {
+                        if (res['success'] == true) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Afschrijving gelukt!'),
@@ -258,8 +258,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Afschrijving mislukt!'),
+                            SnackBar(
+                              content:
+                                  Text("Afschrijving mislukt! ${res['error']}"),
                             ),
                           );
                         }
@@ -281,74 +282,21 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   }
 }
 
-Future<bool> createReservationCloud(Reservation r) async {
+Future<dynamic> createReservationCloud(Reservation r) async {
+  functions.useFunctionsEmulator("127.0.0.1", 5001);
   try {
     final result = await functions
         .httpsCallable('createReservation')
-        .call(<String, String>{
-      'startTime': r.startTime.toIso8601String(),
-      'endTime': r.endTime.toIso8601String(),
+        .call(<String, dynamic>{
+      'startTime': r.startTime.toUtc().toIso8601String(),
+      'endTime': r.endTime.toUtc().toIso8601String(),
       'object': r.reservationObject.path,
       'objectName': r.objectName,
       'creatorName': r.creatorName,
     });
 
-    return result.data['success'];
+    return result.data;
   } on FirebaseFunctionsException catch (error) {
-    print('${error.code} ${error.details} ${error.message}');
-
-    return false;
+    return {'success': false, 'error': error.message};
   }
-}
-
-Future<bool> createReservation(Reservation r) async {
-  DateTime startDate =
-      DateTime(r.startTime.year, r.startTime.month, r.startTime.day);
-  bool result = await db
-      .runTransaction((transaction) async {
-        // Get the document
-
-        DocumentSnapshot<ReservationObject> reservationObjectSnapshot = await r
-            .reservationObject
-            .withConverter<ReservationObject>(
-                fromFirestore: (snapshot, _) =>
-                    ReservationObject.fromJson(snapshot.data()!),
-                toFirestore: (obj, _) => obj.toJson())
-            .get();
-
-        // Check if object is available for bookings
-        ReservationObject reservationObject = reservationObjectSnapshot.data()!;
-        if (!reservationObject.available) {
-          throw Exception(
-              "Het object dat je wilde reserveren is niet beschikbaar");
-        }
-
-        QuerySnapshot<Reservation> reservations = await reservationsRef
-            .where('object', isEqualTo: r.reservationObject)
-            .where('startTime', isGreaterThanOrEqualTo: startDate)
-            .where('startTime',
-                isLessThanOrEqualTo: startDate.add(const Duration(days: 1)))
-            .get();
-
-        // check for overlap of current reservation with existing reservations
-        for (QueryDocumentSnapshot<Reservation> document in reservations.docs) {
-          Reservation reservation = document.data();
-          if (reservation.startTime.isBefore(r.endTime) &&
-              reservation.endTime.isAfter(r.startTime)) {
-            throw Exception('Er is al een reservering op die tijd');
-          }
-        }
-        r.createdAt = DateTime.now();
-        await reservationsRef
-            .add(r)
-            .then((value) => log("Afschrijving Added Succesfully to Firestore"))
-            .catchError((error) {
-          throw Exception(
-              "Firestore can't add the reservation at this moment: $error");
-        });
-      }, maxAttempts: 1) // only try once
-      .then((value) => true)
-      .catchError((error) => false);
-
-  return result;
 }
