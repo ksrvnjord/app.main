@@ -283,7 +283,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 }
 
 Future<dynamic> createReservationCloud(Reservation r) async {
-  functions.useFunctionsEmulator("127.0.0.1", 5001);
   try {
     final result = await functions
         .httpsCallable('createReservation')
