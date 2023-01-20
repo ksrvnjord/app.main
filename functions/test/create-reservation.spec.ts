@@ -1,7 +1,10 @@
 import firebaseFunctionsTest from "firebase-functions-test";
 import admin from "firebase-admin";
+import {assert} from "chai";
 import {DateTime} from "luxon";
 import {DocumentReference} from "firebase-admin/lib/firestore";
+import {alwaysSuccesful} from "../src";
+
 
 admin.initializeApp(
     {
@@ -13,9 +16,16 @@ admin.initializeApp(
 
 const db = admin.firestore();
 
-const {cleanup} = firebaseFunctionsTest({
+const {wrap, cleanup} = firebaseFunctionsTest({
   projectId: "ksrv-njord-dev",
 }, "../ksrv-njord-dev-firebase-adminsdk-njigg-cf31ce8c1d.json");
+
+// This test is run as a sanity check
+describe("alwaysSuccesful", () => {
+  it("should always return true", () => {
+    assert.equal(wrap(alwaysSuccesful)({}), true);
+  });
+});
 
 describe("createReservation", () => {
   before(async () => {
