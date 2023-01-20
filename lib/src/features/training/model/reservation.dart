@@ -37,11 +37,8 @@ class Reservation {
       'creatorId': creator,
       'createdTime': Timestamp.fromDate(createdAt),
       'objectName': objectName,
+      'creatorName': creatorName,
     };
-
-    if (creatorName != null) {
-      map['creatorName'] = creatorName!;
-    }
 
     return map;
   }
