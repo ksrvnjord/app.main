@@ -133,6 +133,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                     reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
+              if (reservation.creator == curUser.user!.identifier) {
+                return Container();
+              }
 
               return const ErrorCardWidget(
                   errorMessage: "Deze tijd is al bezet");
