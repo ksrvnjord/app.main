@@ -14,13 +14,13 @@ export const createReservation = clientFunction
     .onCall(async (data, context) => {
       // VALIDATION //
       if (!context.auth) {
-        return Reporter.fail({message: "User is not authenticated"});
+        return Reporter.fail({message: "Je bent niet ingelogd"});
       }
       const requiredFields = ["creatorName", "endTime", "object", "objectName", "startTime"];
       // check if all required fields are present
       const missingFields = requiredFields.filter((f) => !data[f]);
       if (missingFields.length > 0) {
-        return Reporter.fail({message: `Missing fields: ${missingFields.join(", ")}`});
+        return Reporter.fail({message: `Je verzoek heeft missende velden: ${missingFields.join(", ")}`});
       }
       const startTime = DateTime.fromISO(data.startTime);
       const endTime = DateTime.fromISO(data.endTime);
@@ -30,23 +30,24 @@ export const createReservation = clientFunction
       const reservationObjectRef = db.doc(data.object);
       const reservationObject = (await reservationObjectRef.get()).data();
       if (!reservationObject) {
-        return Reporter.fail({message: "ReservationObject does not exist in Firestore"});
+        return Reporter.fail({message: `We konden ${data.objectName} niet vinden`});
+      }
+
+
+      const user = (await db.collection("people").doc(uid).get()).data();
+      if (!user) {
+        return Reporter.fail({message: "We konden je gebruiker niet vinden"});
+      }
+
+      const permissionsReport = checkPermissions({reservationObject, user});
+      if (!permissionsReport.success) {
+        return permissionsReport;
       }
 
       const availabilityReport = await checkObjectAvailability(
           {ref: reservationObjectRef, object: reservationObject, startTime, endTime});
       if (!availabilityReport.success) {
         return availabilityReport;
-      }
-
-      const user = (await db.collection("people").doc(uid).get()).data();
-      if (!user) {
-        return Reporter.fail({message: "User does not exist in Firestore"});
-      }
-
-      const permissionsReport = checkPermissions({reservationObject, user});
-      if (!permissionsReport.success) {
-        return permissionsReport;
       }
 
       // Request is valid, create reservation
@@ -64,7 +65,7 @@ export const createReservation = clientFunction
         const ref = await db.collection("reservations").add(reservation);
         logger.log("Reservation created", ref.id);
       } catch (e) {
-        return Reporter.fail({message: "Failed to create reservation" + e});
+        return Reporter.fail({message: "Het is niet gelukt om een reservering te maken" + e});
       }
       return {success: true};
     });
@@ -77,7 +78,7 @@ export const createReservation = clientFunction
 function checkPermissions({reservationObject, user}:
   { reservationObject: DocumentData, user: DocumentData}): Report {
   if (!user.permissions) {
-    return Reporter.fail({message: "User does not have permissions set"});
+    return Reporter.fail({message: "We konnen je permissies niet vinden"});
   }
   const userPermissions: Array<string> = user.permissions;
   const reservationObjectPermissions: Array<string> = reservationObject?.permissions;
@@ -88,7 +89,7 @@ function checkPermissions({reservationObject, user}:
       .some((p) => reservationObjectPermissions.includes(p));
 
   if (objectIsPermissioned && !userHasRequiredPermission) {
-    return Reporter.fail({message: "User does not have permission to reserve this object"});
+    return Reporter.fail({message: `Je hebt niet de juiste permissies om ${reservationObject.name} te reserveren`});
   }
   return Reporter.success();
 }
@@ -101,11 +102,11 @@ async function checkObjectAvailability({ref, object, startTime, endTime}:
   { ref: DocumentReference, object: DocumentData, startTime: DateTime, endTime: DateTime }):
   Promise<Report> {
   if (!reservationObjectIsAvailable(object)) {
-    return Reporter.fail({message: "ReservationObject is marked as not available"});
+    return Reporter.fail({message: `${object.name} is gemarkeerd als onbeschikbaar`});
   }
 
   if (await hasOverlappingTimeslots({reservationObjectRef: ref, startTime, endTime})) {
-    return Reporter.fail({message: "ReservationObject is not available within your selected time"});
+    return Reporter.fail({message: `${object.name} is niet beschikbaar op je gekozen tijden`});
   }
   return Reporter.success();
 }
