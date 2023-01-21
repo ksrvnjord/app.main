@@ -121,18 +121,16 @@ class _CalendarOverview extends State<CalendarOverview> {
   Widget _buildVerticalScrollViewWithStickyHeader(
       AsyncSnapshot snapshot, DateTime date) {
     return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            controller: boatsController,
-            child: StickyHeader(
-                header: _buildReservationObjectName(snapshot)
-                    .toRow()
-                    .padding(left: 64),
-                content: _buildObjectCalendar(snapshot, date)
-                    .toRow(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start)
-                    .padding(left: 64)))
-        .constrained(minWidth: MediaQuery.of(context).size.width);
+        scrollDirection: Axis.vertical,
+        controller: boatsController,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 64),
+          child: StickyHeader(
+              header: _buildReservationObjectName(snapshot).toRow(),
+              content: _buildObjectCalendar(snapshot, date).toRow(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start)),
+        )).constrained(minWidth: MediaQuery.of(context).size.width);
   }
 
   List<Widget> _buildReservationObjectName(AsyncSnapshot snapshot) {
