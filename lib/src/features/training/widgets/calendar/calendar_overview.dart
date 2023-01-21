@@ -130,7 +130,7 @@ class _CalendarOverview extends State<CalendarOverview> {
               content: _buildObjectCalendar(snapshot, date).toRow(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start)),
-        )).constrained(minWidth: MediaQuery.of(context).size.width);
+        ));
   }
 
   List<Widget> _buildReservationObjectName(AsyncSnapshot snapshot) {
