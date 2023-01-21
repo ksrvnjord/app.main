@@ -81,6 +81,12 @@ class _CalendarOverview extends State<CalendarOverview> {
               children: <Widget>[
                 _buildHorizontalScrollView(snapshot, date),
                 _buildStickyTimeScrollView(context),
+                Container(
+                  // This is the top left corner, where the time and object name meet
+                  color: Colors.grey[50],
+                  width: 64,
+                  height: 64,
+                ),
               ],
             );
           });
