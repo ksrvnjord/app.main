@@ -153,15 +153,15 @@ class _CalendarOverview extends State<CalendarOverview> {
         width: 128,
         height: 64,
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
           child: TextButton(
               style: TextButton.styleFrom(
                   alignment: Alignment.center,
                   backgroundColor: Colors.blueAccent,
                   elevation: 4),
               onPressed: () {},
-              child: Text(e.data().name).textStyle(const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.white))),
+              child: Text(e.data().name)
+                  .textStyle(const TextStyle(color: Colors.white))),
         ));
   }
 }
