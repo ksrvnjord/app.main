@@ -154,8 +154,16 @@ class _CalendarOverview extends State<CalendarOverview> {
         color: Colors.grey[50],
         width: 96,
         height: 64,
-        child: Text(e.data().name)
-            .textStyle(const TextStyle(fontWeight: FontWeight.bold))
-            .center());
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                  alignment: Alignment.center,
+                  backgroundColor: Colors.blueAccent,
+                  elevation: 4),
+              onPressed: () {},
+              child: Text(e.data().name).textStyle(const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white))),
+        ));
   }
 }
