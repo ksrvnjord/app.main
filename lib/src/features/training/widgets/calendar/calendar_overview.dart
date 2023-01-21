@@ -80,8 +80,7 @@ class _CalendarOverview extends State<CalendarOverview> {
             return Stack(
               children: <Widget>[
                 _buildHorizontalScrollView(snapshot, date),
-                _buildVerticalScrollView(context),
-                _buildEmptyContainer()
+                _buildStickyTimeScrollView(context),
               ],
             );
           });
@@ -102,7 +101,8 @@ class _CalendarOverview extends State<CalendarOverview> {
         child: _buildVerticalScrollViewWithStickyHeader(snapshot, date));
   }
 
-  SingleChildScrollView _buildVerticalScrollView(BuildContext context) {
+  /// Builds the time column on the left side of the calendar
+  SingleChildScrollView _buildStickyTimeScrollView(BuildContext context) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: timesController,
