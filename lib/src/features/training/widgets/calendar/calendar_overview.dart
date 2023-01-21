@@ -110,14 +110,6 @@ class _CalendarOverview extends State<CalendarOverview> {
             color: Colors.grey[50], child: CalendarTime().padding(top: 64)));
   }
 
-  Container _buildEmptyContainer() {
-    return Container(
-      color: Colors.grey[50],
-      width: 64,
-      height: 64,
-    );
-  }
-
   Widget _buildVerticalScrollViewWithStickyHeader(
       AsyncSnapshot snapshot, DateTime date) {
     return SingleChildScrollView(
