@@ -136,5 +136,6 @@ class AuthModel extends ChangeNotifier {
       client = null;
       notifyListeners();
     });
+    FirebaseAuth.instance.signOut();
   }
 }

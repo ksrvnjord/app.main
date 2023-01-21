@@ -47,6 +47,7 @@ dependencies:
   fluttertoast: ^8.1.2
   cached_network_image: ^3.2.3
   localstorage: ^4.0.0+1
+  cloud_functions: ^4.0.7
 
 
 dev_dependencies:
