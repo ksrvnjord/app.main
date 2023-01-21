@@ -147,14 +147,29 @@ class _CalendarOverview extends State<CalendarOverview> {
         height: 64,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-          child: TextButton(
-              style: TextButton.styleFrom(
-                  alignment: Alignment.center,
-                  backgroundColor: Colors.white,
-                  elevation: 4),
-              onPressed: () {},
-              child: Text(e.data().name)
-                  .textStyle(const TextStyle(color: Colors.black))),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(
+                    alignment: Alignment.center,
+                    backgroundColor: Colors.white,
+                    elevation: 4),
+                onPressed: () {},
+                child: Text(e.data().name)
+                    .textStyle(const TextStyle(color: Colors.black)),
+              ),
+              // const Positioned( // Ideetje voor als je geen permissions hebt om de boot te reserveren of als commentaar
+              //   top: 4,
+              //   right: 4,
+              //   child: Icon(
+              //     Icons.close,
+              //     color: Colors.red,
+              //     size: 16,
+              //   ),
+              // ),
+            ],
+          ),
         ));
   }
 }
