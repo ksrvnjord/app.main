@@ -123,7 +123,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .get(const GetOptions(source: Source.serverAndCache));
 
     return SizedBox(
-        width: 96,
+        width: 128,
         // Stack the elements over eachother
         child: Stack(
           children: [

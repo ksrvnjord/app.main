@@ -150,7 +150,7 @@ class _CalendarOverview extends State<CalendarOverview> {
   Widget showReservationObjectName(e) {
     return Container(
         color: Colors.grey[50],
-        width: 96,
+        width: 128,
         height: 64,
         child: Padding(
           padding: const EdgeInsets.all(4.0),
