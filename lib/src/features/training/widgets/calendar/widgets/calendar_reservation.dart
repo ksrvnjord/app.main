@@ -36,7 +36,7 @@ class CalendarReservation extends StatelessWidget {
               id != null ? navigator.push(id!) : null;
             },
             child: Container(
-                width: 96,
+                width: 128,
                 height: duration * 32 * 2,
                 decoration: const BoxDecoration(
                     color: Colors.blueGrey,
