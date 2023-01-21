@@ -85,7 +85,7 @@ class _CalendarOverview extends State<CalendarOverview> {
                     context), // this builds the time column on the left side
                 Container(
                   // This is the top left corner, where the time and object name meet. So the time column doesn't overlap the object name column
-                  color: Colors.grey[50],
+                  color: Colors.grey,
                   width: 64,
                   height: 64,
                 ),
@@ -157,11 +157,11 @@ class _CalendarOverview extends State<CalendarOverview> {
           child: TextButton(
               style: TextButton.styleFrom(
                   alignment: Alignment.center,
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Colors.white,
                   elevation: 4),
               onPressed: () {},
               child: Text(e.data().name)
-                  .textStyle(const TextStyle(color: Colors.white))),
+                  .textStyle(const TextStyle(color: Colors.black))),
         ));
   }
 }
