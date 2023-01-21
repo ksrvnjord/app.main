@@ -79,10 +79,12 @@ class _CalendarOverview extends State<CalendarOverview> {
 
             return Stack(
               children: <Widget>[
-                _buildHorizontalScrollView(snapshot, date),
-                _buildStickyTimeScrollView(context),
+                _buildBoatAndReservationSlotsScrollView(snapshot,
+                    date), // this builds the columns with the boats and the slots
+                _buildStickyTimeScrollView(
+                    context), // this builds the time column on the left side
                 Container(
-                  // This is the top left corner, where the time and object name meet
+                  // This is the top left corner, where the time and object name meet. So the time column doesn't overlap the object name column
                   color: Colors.grey[50],
                   width: 64,
                   height: 64,
@@ -99,7 +101,7 @@ class _CalendarOverview extends State<CalendarOverview> {
     }
   }
 
-  SingleChildScrollView _buildHorizontalScrollView(
+  SingleChildScrollView _buildBoatAndReservationSlotsScrollView(
       AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
     return SingleChildScrollView(
         key: UniqueKey(),
