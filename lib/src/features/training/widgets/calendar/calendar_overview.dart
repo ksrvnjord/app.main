@@ -83,12 +83,6 @@ class _CalendarOverview extends State<CalendarOverview> {
                     date), // this builds the columns with the boats and the slots
                 _buildStickyTimeScrollView(
                     context), // this builds the time column on the left side
-                Container(
-                  // This is the top left corner, where the time and object name meet. So the time column doesn't overlap the object name column
-                  color: Colors.grey,
-                  width: 64,
-                  height: 64,
-                ),
               ],
             );
           });
@@ -148,8 +142,7 @@ class _CalendarOverview extends State<CalendarOverview> {
   }
 
   Widget showReservationObjectName(e) {
-    return Container(
-        color: Colors.grey[50],
+    return SizedBox(
         width: 128,
         height: 64,
         child: Padding(
