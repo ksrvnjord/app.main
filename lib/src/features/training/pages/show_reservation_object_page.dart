@@ -66,6 +66,12 @@ class ShowReservationObjectPage extends StatelessWidget {
                       ),
                     )
                   : Container(),
+              obj.year != null
+                  ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
+                  : Container(),
+              obj.brand != null
+                  ? DataTextListTile(name: "Merk", value: obj.brand!)
+                  : Container(),
             ]);
           },
         ));

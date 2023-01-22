@@ -8,18 +8,23 @@ class ReservationObject {
   final bool available;
   final String? comment;
   final String? kind;
+  final int? year;
+  final String? brand;
 
   // const ReservationObject(this.reference, this.name, this.permissions,
   //     this.type, this.available, this.comment,
   //     [this.kind]);
-  const ReservationObject(
-      {this.reference,
-      required this.name,
-      required this.permissions,
-      required this.type,
-      required this.available,
-      this.comment,
-      this.kind});
+  const ReservationObject({
+    this.reference,
+    required this.name,
+    required this.permissions,
+    required this.type,
+    required this.available,
+    this.comment,
+    this.kind,
+    this.year,
+    this.brand,
+  });
 
   ReservationObject.fromJson(Map<String, Object?> json)
       : reference = json['reference'] as DocumentReference?,
@@ -30,7 +35,9 @@ class ReservationObject {
         type = json['type']! as String,
         available = json['available']! as bool,
         comment = json['comment'] as String?,
-        kind = json['kind'] as String?;
+        kind = json['kind'] as String?,
+        year = json['year'] as int?,
+        brand = json['brand'] as String?;
 
   Map<String, Object?> toJson() {
     return {
@@ -41,6 +48,8 @@ class ReservationObject {
       'available': available,
       'comment': comment,
       'kind': kind,
+      'year': year,
+      'brand': brand,
     };
   }
 }
