@@ -42,6 +42,22 @@ class ShowReservationObjectPage extends StatelessWidget {
 
             // show the reservationObject data in a ListView
             return ListView(children: [
+              const Card(
+                margin: EdgeInsets.only(top: 0),
+                color: Colors.lightGreen,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                child: Text(
+                  "Beschikbaar",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 20),
+                ),
+              ),
               obj.comment != null
                   ? DataListTile(
                       icon: const Icon(Icons.comment), data: obj.comment!)
