@@ -43,63 +43,66 @@ class ShowReservationObjectPage extends StatelessWidget {
             // show the reservationObject data in a ListView
             return Column(
               children: [
-                Row(children: const [
-                  Expanded(
-                    child: Card(
-                      margin: EdgeInsets.only(top: 0),
-                      color: Colors.lightGreen,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20))),
-                      child: Text(
-                        "Beschikbaar",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ]),
-                ListView(shrinkWrap: true, children: [
-                  obj.comment != null
-                      ? DataListTile(
-                          icon: const Icon(Icons.comment), data: obj.comment!)
-                      : Container(),
-                  DataTextListTile(name: "Type", value: obj.type),
-                  obj.kind != null
-                      ? DataTextListTile(name: "Categorie", value: obj.kind!)
-                      : Container(),
-                  obj.permissions.isNotEmpty
-                      ? ListTile(
-                          title: const Text(
-                            'Permissies',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16),
-                          ),
-                          subtitle: Wrap(
-                            children: obj.permissions
-                                .map((e) => Chip(label: Text(e)))
-                                .toList(),
-                          ),
-                        )
-                      : Container(),
-                  obj.year != null
-                      ? DataTextListTile(
-                          name: "Jaar", value: obj.year!.toString())
-                      : Container(),
-                  obj.brand != null
-                      ? DataTextListTile(name: "Merk", value: obj.brand!)
-                      : Container(),
-                ]),
+                _buildAvailabilityHeader(),
+                ListView(shrinkWrap: true, children: _buildListData(obj)),
               ],
             );
           },
         ));
+  }
+
+  List<Widget> _buildListData(ReservationObject obj) {
+    return [
+      obj.comment != null
+          ? DataListTile(icon: const Icon(Icons.comment), data: obj.comment!)
+          : Container(),
+      DataTextListTile(name: "Type", value: obj.type),
+      obj.kind != null
+          ? DataTextListTile(name: "Categorie", value: obj.kind!)
+          : Container(),
+      obj.permissions.isNotEmpty
+          ? ListTile(
+              title: const Text(
+                'Permissies',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 16),
+              ),
+              subtitle: Wrap(
+                children:
+                    obj.permissions.map((e) => Chip(label: Text(e))).toList(),
+              ),
+            )
+          : Container(),
+      obj.year != null
+          ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
+          : Container(),
+      obj.brand != null
+          ? DataTextListTile(name: "Merk", value: obj.brand!)
+          : Container(),
+    ];
+  }
+
+  Row _buildAvailabilityHeader() {
+    return Row(children: const [
+      Expanded(
+        child: Card(
+          margin: EdgeInsets.only(top: 0),
+          color: Colors.lightGreen,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20))),
+          child: Text(
+            "Beschikbaar",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w300, fontSize: 20),
+          ),
+        ),
+      ),
+    ]);
   }
 
   Future<DocumentSnapshot<ReservationObject>> getReservationObject(
