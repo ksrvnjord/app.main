@@ -102,10 +102,12 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/reservationObject/:id': (info) => RoutedPageTransition(
+    '/training/all/reservationObject/:id': (route) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
-          child:
-              ShowReservationObjectPage(documentId: info.pathParameters['id']!),
+          child: ShowReservationObjectPage(
+            documentId: route.pathParameters['id']!,
+            name: route.queryParameters['name']!,
+          ),
         ),
   },
 );

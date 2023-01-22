@@ -145,6 +145,8 @@ class _CalendarOverview extends State<CalendarOverview> {
   }
 
   Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
+    ReservationObject reservationObject = e.data();
+
     return SizedBox(
         width: 128,
         height: 64,
@@ -158,8 +160,9 @@ class _CalendarOverview extends State<CalendarOverview> {
                     alignment: Alignment.center,
                     backgroundColor: Colors.white,
                     elevation: 4),
-                onPressed: () =>
-                    Routemaster.of(context).push('reservationObject/${e.id}'),
+                onPressed: () => Routemaster.of(context).push(
+                    'reservationObject/${e.id}',
+                    queryParameters: {'name': reservationObject.name}),
                 child: Text(e.data().name)
                     .textStyle(const TextStyle(color: Colors.black)),
               ),

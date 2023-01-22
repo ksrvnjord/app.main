@@ -15,15 +15,17 @@ final CollectionReference<ReservationObject>
 
 class ShowReservationObjectPage extends StatelessWidget {
   final String documentId;
+  final String name;
 
-  const ShowReservationObjectPage({Key? key, required this.documentId})
+  const ShowReservationObjectPage(
+      {Key? key, required this.documentId, required this.name})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(documentId),
+          title: Text(name),
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
           systemOverlayStyle:
@@ -40,10 +42,6 @@ class ShowReservationObjectPage extends StatelessWidget {
             // show the reservationObject data in a ListView
             return ListView(
               children: [
-                ListTile(
-                  title: Text('Name'),
-                  subtitle: Text(reservationObject.name),
-                ),
                 ListTile(
                   title: Text('Type'),
                   subtitle: Text(reservationObject.type),
