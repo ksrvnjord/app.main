@@ -43,8 +43,8 @@ class ShowReservationObjectPage extends StatelessWidget {
             // show the reservationObject data in a ListView
             return Column(
               children: [
-                _buildAvailabilityHeader(),
-                ListView(shrinkWrap: true, children: _buildListData(obj)),
+                _buildAvailabilityHeader(obj.available),
+                Expanded(child: ListView(children: _buildListData(obj))),
               ],
             );
           },
@@ -52,6 +52,15 @@ class ShowReservationObjectPage extends StatelessWidget {
   }
 
   List<Widget> _buildListData(ReservationObject obj) {
+    Map<String, Color> permissionColors = {
+      'Coachcatamaran': Colors.green,
+      'Speciaal': Colors.red,
+      '1e permissie': Colors.blue,
+      '2e permissie': Colors.orange,
+      'Top C4+': Colors.purple,
+      'Specifiek': Colors.pink,
+    };
+
     return [
       obj.comment != null
           ? DataListTile(icon: const Icon(Icons.comment), data: obj.comment!)
@@ -70,8 +79,25 @@ class ShowReservationObjectPage extends StatelessWidget {
                     fontSize: 16),
               ),
               subtitle: Wrap(
-                children:
-                    obj.permissions.map((e) => Chip(label: Text(e))).toList(),
+                spacing: 4,
+                children: obj.permissions
+                    .map((permission) => Chip(
+                          label: Text(
+                            permission,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16),
+                          ),
+                          backgroundColor: () {
+                            if (permissionColors.containsKey(permission)) {
+                              return permissionColors[permission];
+                            } else {
+                              return Colors.grey;
+                            }
+                          }(),
+                        ))
+                    .toList(),
               ),
             )
           : Container(),
@@ -84,20 +110,23 @@ class ShowReservationObjectPage extends StatelessWidget {
     ];
   }
 
-  Row _buildAvailabilityHeader() {
-    return Row(children: const [
+  Row _buildAvailabilityHeader(bool isAvailable) {
+    String text = isAvailable ? "Beschikbaar" : "Niet beschikbaar";
+    Color color = isAvailable ? Colors.lightGreen : Colors.red;
+
+    return Row(children: [
       Expanded(
         child: Card(
-          margin: EdgeInsets.only(top: 0),
-          color: Colors.lightGreen,
-          shape: RoundedRectangleBorder(
+          margin: const EdgeInsets.only(top: 0),
+          color: color,
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20))),
           child: Text(
-            "Beschikbaar",
+            text,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w300, fontSize: 20),
           ),
         ),
