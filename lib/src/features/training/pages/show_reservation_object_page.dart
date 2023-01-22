@@ -53,18 +53,34 @@ class ShowReservationObjectPage extends StatelessWidget {
 
   List<Widget> _buildListData(ReservationObject obj) {
     Map<String, Color> permissionColors = {
-      'Coachcatamaran': Colors.green,
-      'Speciaal': Colors.red,
-      '1e permissie': Colors.blue,
-      '2e permissie': Colors.orange,
-      'Top C4+': Colors.purple,
-      'Specifiek': Colors.pink,
+      'Coachcatamaran': Colors.greenAccent,
+      'Speciaal': Colors.redAccent,
+      '1e permissie': Colors.blueAccent,
+      '2e permissie': Colors.orangeAccent,
+      'Top C4+': Colors.purpleAccent,
+      'Specifiek': Colors.pinkAccent,
     };
 
     return [
-      obj.comment != null
-          ? DataListTile(icon: const Icon(Icons.comment), data: obj.comment!)
-          : Container(),
+      if (obj.comment != null)
+        Card(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40))),
+          elevation: 0,
+          color: Colors.amber.shade100,
+          child: ListTile(
+            leading: const Icon(Icons.comment),
+            title: Text(
+              obj.comment!,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20),
+            ),
+          ),
+        )
+      else
+        Container(),
       DataTextListTile(name: "Type", value: obj.type),
       obj.kind != null
           ? DataTextListTile(name: "Categorie", value: obj.kind!)
@@ -117,8 +133,9 @@ class ShowReservationObjectPage extends StatelessWidget {
     return Row(children: [
       Expanded(
         child: Card(
-          margin: const EdgeInsets.only(top: 0),
+          margin: const EdgeInsets.only(top: 0, bottom: 4),
           color: color,
+          elevation: 0,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
