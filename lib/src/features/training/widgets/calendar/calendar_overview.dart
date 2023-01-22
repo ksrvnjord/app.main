@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calend
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 // Shows all available objects for a given day and filters
 class CalendarOverview extends StatefulWidget {
@@ -113,7 +114,7 @@ class _CalendarOverview extends State<CalendarOverview> {
   }
 
   Widget _buildVerticalScrollViewWithStickyHeader(
-      AsyncSnapshot snapshot, DateTime date) {
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: boatsController,
@@ -127,11 +128,13 @@ class _CalendarOverview extends State<CalendarOverview> {
         ));
   }
 
-  List<Widget> _buildReservationObjectName(AsyncSnapshot snapshot) {
+  List<Widget> _buildReservationObjectName(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot) {
     return snapshot.data!.docs.map<Widget>(showReservationObjectName).toList();
   }
 
-  List<Widget> _buildObjectCalendar(AsyncSnapshot snapshot, DateTime date) {
+  List<Widget> _buildObjectCalendar(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
     return (snapshot.data != null
             ? snapshot.data!.docs.map<Widget>((e) {
                 return ObjectCalendar(date: date, boat: e).border(
@@ -141,7 +144,7 @@ class _CalendarOverview extends State<CalendarOverview> {
         .toList();
   }
 
-  Widget showReservationObjectName(e) {
+  Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
     return SizedBox(
         width: 128,
         height: 64,
@@ -155,7 +158,8 @@ class _CalendarOverview extends State<CalendarOverview> {
                     alignment: Alignment.center,
                     backgroundColor: Colors.white,
                     elevation: 4),
-                onPressed: () {},
+                onPressed: () =>
+                    Routemaster.of(context).push('reservationObject/${e.id}'),
                 child: Text(e.data().name)
                     .textStyle(const TextStyle(color: Colors.black)),
               ),
