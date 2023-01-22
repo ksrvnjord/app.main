@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 
 class ShowTrainingPage extends StatelessWidget {
@@ -66,14 +67,16 @@ class ShowTrainingPage extends StatelessWidget {
                         }
 
                         List<Widget> children = [
-                          dataListTile(const Icon(Icons.person), creatorName),
+                          DataListTile(
+                              icon: const Icon(Icons.person),
+                              data: creatorName),
                           const Divider(),
                         ];
 
                         if (reservation['objectName'] != null) {
-                          children.add(ListTile(
-                            leading: const Icon(Icons.label),
-                            title: Text(reservation['objectName']),
+                          children.add(DataListTile(
+                            icon: const Icon(Icons.label),
+                            data: reservation['objectName'],
                           ));
                           children.add(const Divider());
                         }
@@ -84,28 +87,22 @@ class ShowTrainingPage extends StatelessWidget {
 
                         children.addAll([
                           // add ListTile with the date
-                          ListTile(
-                            leading: const Icon(Icons.calendar_today),
-                            title: Text(formattedDate),
+                          DataListTile(
+                            icon: const Icon(Icons.calendar_today),
+                            data: formattedDate,
                           ),
                           const Divider(),
                           Row(
                             children: [
                               Expanded(
-                                  child: dataListTile(
-                                      const Icon(Icons.start),
-                                      timestampToTimeOfDay(
-                                          reservation['startTime']!, context))
-                                  // ListTile(
-                                  //   leading: const Icon(Icons.start),
-                                  //   title: Text(timestampToTimeOfDay(
-                                  //       reservation['startTime']!, context)),
-                                  // ),
-                                  ),
+                                  child: DataListTile(
+                                      icon: const Icon(Icons.start),
+                                      data: timestampToTimeOfDay(
+                                          reservation['startTime']!, context))),
                               Expanded(
-                                child: dataListTile(
-                                    const Icon(Icons.timer_off_outlined),
-                                    timestampToTimeOfDay(
+                                child: DataListTile(
+                                    icon: const Icon(Icons.timer_off_outlined),
+                                    data: timestampToTimeOfDay(
                                         reservation['endTime']!, context)),
                               ),
                             ],
@@ -121,13 +118,6 @@ class ShowTrainingPage extends StatelessWidget {
 
               return const CircularProgressIndicator();
             }));
-  }
-
-  ListTile dataListTile(Icon icon, String data) {
-    return ListTile(
-      leading: icon,
-      title: Text(data),
-    );
   }
 }
 
