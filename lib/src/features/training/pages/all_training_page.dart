@@ -76,7 +76,16 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
             bottom: TabBar(
               isScrollable: true,
-              indicatorColor: Colors.white,
+              labelColor: Colors.black,
+              labelStyle: const TextStyle(fontSize: 20),
+              unselectedLabelStyle: const TextStyle(fontSize: 16),
+              unselectedLabelColor: Colors.white60,
+              indicator: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+              ),
               tabs: days
                   .map<Widget>((e) =>
                       Tab(icon: null, text: DateFormat('E d MMM').format(e)))

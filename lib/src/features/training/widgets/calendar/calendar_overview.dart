@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calend
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 // Shows all available objects for a given day and filters
 class CalendarOverview extends StatefulWidget {
@@ -77,61 +78,14 @@ class _CalendarOverview extends State<CalendarOverview> {
               ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
             }
 
-            return Stack(children: <Widget>[
-              SingleChildScrollView(
-                  key: UniqueKey(),
-                  scrollDirection: Axis.horizontal,
-                  child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          controller: boatsController,
-                          child: StickyHeader(
-                              header: [
-                                snapshot.data!.docs
-                                    .map<Widget>((e) {
-                                      return Container(
-                                          color: Colors.grey[50],
-                                          width: 96,
-                                          height: 64,
-                                          child: Text(e.data().name)
-                                              .textStyle(const TextStyle(
-                                                  fontWeight: FontWeight.bold))
-                                              .center());
-                                    })
-                                    .toList()
-                                    .toRow()
-                                    .padding(left: 64)
-                              ].toRow(),
-                              content: (snapshot.data != null
-                                      ? snapshot.data!.docs.map<Widget>((e) {
-                                          return ObjectCalendar(
-                                                  date: date, boat: e)
-                                              .border(
-                                                  left: 1,
-                                                  color: const Color.fromARGB(
-                                                      255, 223, 223, 223));
-                                        })
-                                      : [Container()])
-                                  .toList()
-                                  .toRow(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start)
-                                  .padding(left: 64)))
-                      .constrained(
-                          minWidth: MediaQuery.of(context).size.width)),
-              SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  controller: timesController,
-                  child: Container(
-                      color: Colors.grey[50],
-                      child: CalendarTime().padding(top: 64))),
-              Container(
-                color: Colors.grey[50],
-                width: 64,
-                height: 64,
-              )
-            ]);
+            return Stack(
+              children: <Widget>[
+                _buildBoatAndReservationSlotsScrollView(snapshot,
+                    date), // this builds the columns with the boats and the slots
+                _buildStickyTimeScrollView(
+                    context), // this builds the time column on the left side
+              ],
+            );
           });
     } else {
       return <Widget>[
@@ -140,5 +94,89 @@ class _CalendarOverview extends State<CalendarOverview> {
             style: TextStyle(color: Colors.blueGrey))
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
     }
+  }
+
+  SingleChildScrollView _buildBoatAndReservationSlotsScrollView(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
+    return SingleChildScrollView(
+        key: UniqueKey(),
+        scrollDirection: Axis.horizontal,
+        child: _buildVerticalScrollViewWithStickyHeader(snapshot, date));
+  }
+
+  /// Builds the time column on the left side of the calendar
+  SingleChildScrollView _buildStickyTimeScrollView(BuildContext context) {
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: timesController,
+        child: Container(
+            color: Colors.grey[50], child: CalendarTime().padding(top: 64)));
+  }
+
+  Widget _buildVerticalScrollViewWithStickyHeader(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
+    return SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: boatsController,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 64),
+          child: StickyHeader(
+              header: _buildReservationObjectName(snapshot).toRow(),
+              content: _buildObjectCalendar(snapshot, date).toRow(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start)),
+        ));
+  }
+
+  List<Widget> _buildReservationObjectName(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot) {
+    return snapshot.data!.docs.map<Widget>(showReservationObjectName).toList();
+  }
+
+  List<Widget> _buildObjectCalendar(
+      AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot, DateTime date) {
+    return (snapshot.data != null
+            ? snapshot.data!.docs.map<Widget>((e) {
+                return ObjectCalendar(date: date, boat: e).border(
+                    left: 1, color: const Color.fromARGB(255, 223, 223, 223));
+              })
+            : [Container()])
+        .toList();
+  }
+
+  Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
+    ReservationObject reservationObject = e.data();
+
+    return SizedBox(
+        width: 128,
+        height: 64,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(
+                    alignment: Alignment.center,
+                    backgroundColor: Colors.white,
+                    elevation: 4),
+                onPressed: () => Routemaster.of(context).push(
+                    'reservationObject/${e.id}',
+                    queryParameters: {'name': reservationObject.name}),
+                child: Text(e.data().name)
+                    .textStyle(const TextStyle(color: Colors.black)),
+              ),
+              // const Positioned( // Ideetje voor als je geen permissions hebt om de boot te reserveren of als commentaar
+              //   top: 4,
+              //   right: 4,
+              //   child: Icon(
+              //     Icons.close,
+              //     color: Colors.red,
+              //     size: 16,
+              //   ),
+              // ),
+            ],
+          ),
+        ));
   }
 }

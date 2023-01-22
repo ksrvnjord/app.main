@@ -123,7 +123,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .get(const GetOptions(source: Source.serverAndCache));
 
     return SizedBox(
-        width: 96,
+        width: 128,
         // Stack the elements over eachother
         child: Stack(
           children: [
@@ -141,7 +141,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                 future: reservations,
                 // Shimmer entire screen on loading
                 loading: const ShimmerWidget(
-                    child: SizedBox(height: 32 * 32, width: 96)),
+                    child: SizedBox(height: 32 * 32, width: 128)),
                 // Create a stack of the resulting reservations
                 success: (reservations) {
                   if (reservations != null) {
