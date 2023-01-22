@@ -66,10 +66,7 @@ class ShowTrainingPage extends StatelessWidget {
                         }
 
                         List<Widget> children = [
-                          ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(creatorName),
-                          ),
+                          dataListTile(const Icon(Icons.person), creatorName),
                           const Divider(),
                         ];
 
@@ -95,18 +92,21 @@ class ShowTrainingPage extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: ListTile(
-                                  leading: const Icon(Icons.start),
-                                  title: Text(timestampToTimeOfDay(
-                                      reservation['startTime']!, context)),
-                                ),
-                              ),
+                                  child: dataListTile(
+                                      const Icon(Icons.start),
+                                      timestampToTimeOfDay(
+                                          reservation['startTime']!, context))
+                                  // ListTile(
+                                  //   leading: const Icon(Icons.start),
+                                  //   title: Text(timestampToTimeOfDay(
+                                  //       reservation['startTime']!, context)),
+                                  // ),
+                                  ),
                               Expanded(
-                                child: ListTile(
-                                  leading: const Icon(Icons.timer_off_outlined),
-                                  title: Text(timestampToTimeOfDay(
-                                      reservation['endTime']!, context)),
-                                ),
+                                child: dataListTile(
+                                    const Icon(Icons.timer_off_outlined),
+                                    timestampToTimeOfDay(
+                                        reservation['endTime']!, context)),
                               ),
                             ],
                           ),
@@ -121,6 +121,13 @@ class ShowTrainingPage extends StatelessWidget {
 
               return const CircularProgressIndicator();
             }));
+  }
+
+  ListTile dataListTile(Icon icon, String data) {
+    return ListTile(
+      leading: icon,
+      title: Text(data),
+    );
   }
 }
 
