@@ -1,11 +1,11 @@
 import * as functions from "firebase-functions";
+export {createReservation} from "./create-reservation";
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-const secureFunction = functions.region("europe-west1").https;
 
-export const test = secureFunction.onCall((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  return {message: "Hello from Firebase!"};
-});
+// Run this function if you want to test the client
+export const alwaysSuccesful = functions.region("europe-west1").https
+    .onCall(() => {
+      return true;
+    });
+
+
