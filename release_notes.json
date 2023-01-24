@@ -1,10 +1,10 @@
 [
     {
         "language": "en-US",
-        "text": "This update includes improvements to the overview of objects you can reserve. You can now view additional details of an object"
+        "text": "In this release, we've made improvements to the user feedback when making a reservation. You will now see a confirmation message when you make a reservation."
     },
     {
         "language": "nl-NL",
-        "text": "Deze update bevat verbeteringen voor de overzichtspagina van objecten die u kunt afschrijven. U kunt nu de details van een object bekijken."
+        "text": "In deze release hebben we verbeteringen aangebracht aan de gebruikersfeedback bij het maken van een reservering. U ziet nu een bevestigingsbericht wanneer u een reservering maakt."
     }
 ]
