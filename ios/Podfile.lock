@@ -1,5 +1,5 @@
 PODS:
-  - cloud_firestore (4.1.0):
+  - cloud_firestore (4.3.1):
     - Firebase/Firestore (= 10.3.0)
     - firebase_core
     - Flutter
@@ -62,7 +62,7 @@ PODS:
   - Firebase/Storage (10.3.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.3.0)
-  - firebase_auth (4.1.4):
+  - firebase_auth (4.2.5):
     - Firebase/Auth (= 10.3.0)
     - firebase_core
     - Flutter
@@ -77,20 +77,20 @@ PODS:
     - Firebase/Storage (= 10.3.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheckInterop (10.3.0)
+  - FirebaseAppCheckInterop (10.4.0)
   - FirebaseAuth (10.3.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
-  - FirebaseAuthInterop (10.3.0)
+  - FirebaseAuthInterop (10.4.0)
   - FirebaseCore (10.3.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreExtension (10.3.0):
+  - FirebaseCoreExtension (10.4.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseCoreInternal (10.3.0):
+  - FirebaseCoreInternal (10.4.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseFirestore (10.3.0):
     - FirebaseFirestore/AutodetectLeveldb (= 10.3.0)
@@ -141,7 +141,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GoogleDataTransport (9.2.0):
+  - GoogleDataTransport (9.2.1):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -175,26 +175,28 @@ PODS:
   - nanopb/encode (2.30909.0)
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - permission_handler_apple (9.0.4):
     - Flutter
   - PromisesObjC (2.1.1)
   - ReachabilitySwift (5.0.0)
-  - SDWebImage (5.14.3):
-    - SDWebImage/Core (= 5.14.3)
-  - SDWebImage/Core (5.14.3)
-  - Sentry/HybridSDK (7.31.2)
+  - SDWebImage (5.15.0):
+    - SDWebImage/Core (= 5.15.0)
+  - SDWebImage/Core (5.15.0)
+  - Sentry/HybridSDK (7.31.5)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 7.31.2)
-  - shared_preferences_ios (0.0.1):
+    - Sentry/HybridSDK (= 7.31.5)
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - SwiftyGif (5.4.3)
+  - SwiftyGif (5.4.4)
   - Toast (4.0.0)
   - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
@@ -219,10 +221,10 @@ DEPENDENCIES:
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
@@ -291,14 +293,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   sentry_flutter:
     :path: ".symlinks/plugins/sentry_flutter/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
@@ -312,23 +314,23 @@ CHECKOUT OPTIONS:
     :tag: 10.3.0
 
 SPEC CHECKSUMS:
-  cloud_firestore: 5109ab08f92a38a9aad45f3e3b4473910acabf13
+  cloud_firestore: 5e5bb98722f66e820bf1aa7b3c98ffc9b2450ffb
   cloud_functions: 6182195e30567bc6a081fb2b81c8563f548a4215
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
-  firebase_auth: cec01c685a008c96f8c3a7fd3b1817534fb2cf78
+  firebase_auth: 3bab991fe1df91c2f948156e9dee976e01a19ab9
   firebase_core: bf59c32d2e53814f558efa20840c1902fa2fe461
   firebase_messaging: ee597229fc260f8fa491fa8f2d4a32dfbfa406fa
   firebase_storage: 8b85bf19de50a1886f9387924fbddf066a718965
-  FirebaseAppCheckInterop: 9fc57dfa08f0abb737b185ea065422b55355c909
+  FirebaseAppCheckInterop: ef074633831a90cf6c10e8f2c1e1f8b7842a446a
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
-  FirebaseAuthInterop: 7a766bd56971347e0de4b7674aaa62ddc7820097
+  FirebaseAuthInterop: fef284922da3c350f846ff85cc0dfd5186448e49
   FirebaseCore: 988754646ab3bd4bdcb740f1bfe26b9f6c0d5f2a
-  FirebaseCoreExtension: 93d252fabdc9696bf14a73b04d84877ab9b3a832
-  FirebaseCoreInternal: 29b76f784d607df8b2a1259d73c3f04f1210137b
+  FirebaseCoreExtension: d209ada6f48bac53d149e996cf1b2dafa632a615
+  FirebaseCoreInternal: e301297f4c15a17489e48ed722d733b1578e0c02
   FirebaseFirestore: ef5e47e1489c03dc978f94e8b43ad5f67a77df8c
   FirebaseFunctions: d8415d2237cc807d05fa0a921d645f50a0d9d803
   FirebaseInstallations: 36b38c733fd37e50857e5e8d74138648f466f18c
@@ -341,26 +343,26 @@ SPEC CHECKSUMS:
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
+  GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   GTMSessionFetcher: c9e714f7eec91a55641e2bab9f45fd83a219b882
   image_cropper: 60c2789d1f1a78c873235d4319ca0c34a69f2d98
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDWebImage: 9c36e66c8ce4620b41a7407698dda44211a96764
-  Sentry: b15765d11769852fe78c9add942f7df60ed5dbf5
-  sentry_flutter: 8ef5e68ee2d301805279ed134b3b38dbe9e090f0
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  SDWebImage: 9bec4c5cdd9579e1f57104735ee0c37df274d593
+  Sentry: 4c9babff9034785067c896fd580b1f7de44da020
+  sentry_flutter: b10ae7a5ddcbc7f04648eeb2672b5747230172f1
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
+  SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: f6ad285e6bc63e0f432ac888f011e087bfaec9a4
