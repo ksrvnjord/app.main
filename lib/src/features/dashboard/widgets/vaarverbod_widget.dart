@@ -16,11 +16,6 @@ class VaarverbodWidget extends StatelessWidget {
     return FutureWrapper(
       future: vaarverbod,
       success: (data) {
-        if (data == null) {
-          return const ErrorCardWidget(
-              errorMessage:
-                  "Het is niet gelukt om het vaarverbod op te halen van de server.");
-        }
         Map<String, dynamic> r = data.data;
         final Color bgColor =
             r['status'] == true ? Colors.redAccent : Colors.lightBlue;

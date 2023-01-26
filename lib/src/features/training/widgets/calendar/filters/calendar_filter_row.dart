@@ -26,21 +26,16 @@ class CalendarFilterRow extends StatelessWidget {
                 return FutureWrapper(
                     future: filters,
                     success: (selectedFilters) {
-                      if (selectedFilters != null) {
-                        return ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: availableFilters
-                                .map<Widget>((e) => CalendarFilterTile(
-                                      label: e.description,
-                                      selected:
-                                          selectedFilters.contains(e.type),
-                                      icon: e.icon,
-                                      onPressed: () => toggleFilter(e.type),
-                                    ).padding(all: 8))
-                                .toList());
-                      }
-
-                      return Container();
+                      return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: availableFilters
+                              .map<Widget>((e) => CalendarFilterTile(
+                                    label: e.description,
+                                    selected: selectedFilters.contains(e.type),
+                                    icon: e.icon,
+                                    onPressed: () => toggleFilter(e.type),
+                                  ).padding(all: 8))
+                              .toList());
                     });
               } else {
                 return const ErrorCardWidget(

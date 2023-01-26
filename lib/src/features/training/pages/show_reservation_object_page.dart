@@ -34,7 +34,7 @@ class ShowReservationObjectPage extends StatelessWidget {
         body: FutureWrapper(
           future: getReservationObject(documentId),
           success: (snapshot) {
-            if (snapshot == null || !snapshot.exists) {
+            if (!snapshot.exists) {
               return const Center(child: Text('No data'));
             }
             ReservationObject obj = snapshot.data()!;

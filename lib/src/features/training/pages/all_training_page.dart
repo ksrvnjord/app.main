@@ -98,8 +98,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               children: days
                   .map<Widget>((date) => FutureWrapper(
                       future: _filters,
-                      success: (filters) => CalendarOverview(
-                          date: date, filters: filters ?? ['Ruimtes'])))
+                      success: (filters) =>
+                          CalendarOverview(date: date, filters: filters)))
                   .toList(),
             ).expanded(),
             CalendarFilterRow(
