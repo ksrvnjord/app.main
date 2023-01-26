@@ -7,9 +7,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 void saveMessagingToken() async {
   String? token = await FirebaseMessaging.instance.getToken();
   String? userId = FirebaseAuth.instance.currentUser?.uid;
+  
   if (userId == null || token == null) {
     return;
   }
+
   DocumentReference<Map<String, dynamic>> tokenRef = FirebaseFirestore.instance
       .collection('people')
       .doc(userId)
@@ -26,4 +28,10 @@ void saveMessagingToken() async {
           'device': Platform.operatingSystem,
           'lastUsed': DateTime.now()
         });
+
+  // TODO: HACKED THIS HERE ATM, BUT NEEDS BETTER LIFECYCLE
+  // ESPECIALLY WHEN WE'RE ADDING COMMITTEE-NOTIFICATIONS AND
+  // SOCIAL NETWORKING
+  await FirebaseMessaging.instance.subscribeToTopic(userId);
+  await FirebaseMessaging.instance.subscribeToTopic("all");
 }
