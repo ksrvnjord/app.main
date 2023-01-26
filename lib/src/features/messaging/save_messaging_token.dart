@@ -4,13 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 void saveMessagingToken() async {
-  String? token = await FirebaseMessaging.instance.getToken();
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  
-  if (userId == null || token == null) {
+  String? token = await messaging.getToken();
+  if (token == null) {
     return;
   }
+
+  User? user = auth.currentUser;
+  if (user == null) {
+    return;
+  }
+
+  String userId = user.uid;
 
   DocumentReference<Map<String, dynamic>> tokenRef = FirebaseFirestore.instance
       .collection('people')
