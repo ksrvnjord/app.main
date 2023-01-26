@@ -8,8 +8,8 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return <Widget>[
-      <Widget>[const CircularProgressIndicator().padding(all: 10)].toRow()
-    ].toColumn();
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }
