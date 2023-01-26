@@ -185,7 +185,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             // the user selected
             Text(
               'Jouw afschrijftijden',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ).padding(all: 15),
             // show selected start and end time
             Row(
