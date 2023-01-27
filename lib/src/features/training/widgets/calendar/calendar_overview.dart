@@ -108,6 +108,7 @@ class _CalendarOverview extends State<CalendarOverview> {
   SingleChildScrollView _buildStickyTimeScrollView(BuildContext context) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
+        physics: const ClampingScrollPhysics(),
         controller: timesController,
         child: Container(
             color: Colors.grey[50], child: CalendarTime().padding(top: 64)));
@@ -118,6 +119,7 @@ class _CalendarOverview extends State<CalendarOverview> {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: boatsController,
+        physics: const ClampingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.only(left: 64),
           child: StickyHeader(
