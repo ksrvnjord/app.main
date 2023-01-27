@@ -33,7 +33,6 @@ class CalendarFilterRow extends StatelessWidget {
 
                         return ListView(
                             scrollDirection: Axis.horizontal,
-                            physics: const ClampingScrollPhysics(),
                             children: availableFilters
                                 .map<Widget>((e) => CalendarFilterTile(
                                       label: e.description,
