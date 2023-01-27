@@ -27,6 +27,10 @@ class CalendarFilterRow extends StatelessWidget {
                     future: filters,
                     success: (selectedFilters) {
                       if (selectedFilters != null) {
+                        // If selected, sort first
+                        availableFilters.sort((a, b) =>
+                            selectedFilters.contains(a.type) ? 1 : -1);
+
                         return ListView(
                             scrollDirection: Axis.horizontal,
                             children: availableFilters
