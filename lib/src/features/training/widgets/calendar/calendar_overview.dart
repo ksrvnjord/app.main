@@ -35,13 +35,7 @@ class _CalendarOverview extends State<CalendarOverview> {
       if (boatsController.offset != timesController.offset) {
         timesController.jumpTo(boatsController.offset);
       }
-    });
-
-    timesController.addListener(() {
-      if (timesController.offset != boatsController.offset) {
-        boatsController.jumpTo(timesController.offset);
-      }
-    });
+    }); // this makes the time column scroll with the boats
 
     super.initState();
   }
@@ -51,7 +45,6 @@ class _CalendarOverview extends State<CalendarOverview> {
     List<String> filters = widget.filters;
     DateTime date = widget.date;
 
-    //GraphQLClient client = Provider.of<GraphQLModel>(context).client;
     CollectionReference<ReservationObject> reservationObjectsRef =
         FirebaseFirestore.instance
             .collection('reservationObjects')
@@ -108,6 +101,8 @@ class _CalendarOverview extends State<CalendarOverview> {
   SingleChildScrollView _buildStickyTimeScrollView(BuildContext context) {
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
+        physics:
+            const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
         controller: timesController,
         child: Container(
             color: Colors.grey[50], child: CalendarTime().padding(top: 64)));
