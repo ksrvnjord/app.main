@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/comparator_order.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/filters.dart';
@@ -26,6 +28,18 @@ class CalendarFilterRow extends StatelessWidget {
                 return FutureWrapper(
                     future: filters,
                     success: (selectedFilters) {
+                      Set<String> selectedFiltersSet = selectedFilters
+                          .toSet(); // O(1) lookup in set vs O(n) in list
+
+                      mergeSort(availableFilters, compare: (a, b) {
+                        bool aSelected = selectedFiltersSet.contains(a.type);
+                        bool bSelected = selectedFiltersSet.contains(b.type);
+
+                        return aSelected == bSelected
+                            ? Order.preserve // if both (un)selected
+                            : (aSelected ? Order.aFirst : Order.bFirst);
+                      });
+
                       return ListView(
                           scrollDirection: Axis.horizontal,
                           children: availableFilters

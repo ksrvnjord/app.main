@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,12 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
-Future<void> main() async {
+Future<void> appRunner() async {
   WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
   await Firebase.initializeApp(
@@ -26,28 +28,28 @@ Future<void> main() async {
   await FirebaseMessaging.instance.getInitialMessage();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // AS Long as sentry is not working, we will not use it
-  // "kReleaseMode" is true if the app is not being debugged
-  // if (kReleaseMode) {
-  //   // Run it inside of SentryFlutter, but log / except to the debug-app
-  //   await SentryFlutter.init(
-  //     (options) {
-  //       options.dsn =
-  //           'https://a752158d2c2d463086dde1f15e863aac@o1396616.ingest.sentry.io/6720336';
-  //       options.tracesSampleRate = 0.1;
-  //     },
-  //     appRunner: () => () {
-  //       GetIt.I.registerSingleton(GlobalObserverService());
-  //       return runApp(const Application());
-  //     },
-  //   );
-  // } else {
   GetIt.I.registerSingleton(GlobalObserverService());
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
 
   runApp(const Application());
-  // }
+}
+
+Future<void> main() async {
+  // "kReleaseMode" is true if the app is not being debugged
+  if (kReleaseMode) {
+    // Run it inside of SentryFlutter, but log / except to the debug-app
+    await SentryFlutter.init(
+      (options) {
+        options.dsn =
+            'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/3';
+        options.tracesSampleRate = 0.1;
+      },
+      appRunner: appRunner,
+    );
+  } else {
+    appRunner();
+  }
 }
 
 class Application extends StatelessWidget {
