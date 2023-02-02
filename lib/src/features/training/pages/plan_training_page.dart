@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
@@ -102,36 +103,25 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: StreamBuilder<QuerySnapshot<Reservation>>(
-        stream:
+      body: FutureWrapper(
+        future:
             reservationsRef // query all afschrijvingen van die dag van die boot
                 .where('object', isEqualTo: widget.reservationObject)
                 .where('startTime', isGreaterThanOrEqualTo: widget.date)
                 .where('startTime',
                     isLessThanOrEqualTo:
                         widget.date.add(const Duration(days: 1)))
-                .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            log(snapshot.error.toString());
-
-            return const ErrorCardWidget(
-                errorMessage:
-                    "We konden de afschrijvingen niet ophalen van de server");
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final data = snapshot.requireData;
+                .get(),
+        error: (error) => ErrorCardWidget(errorMessage: error.toString()),
+        success: (snapshot) {
+          List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
           DateTime earliestPossibleTime = widget.date.add(const Duration(
               hours: 6)); // people can reservate starting at 06:00
 
           DateTime latestPossibleTime =
               widget.date.add(const Duration(hours: 22));
-          for (QueryDocumentSnapshot<Reservation> document in data.docs) {
+          for (QueryDocumentSnapshot<Reservation> document in documents) {
             // determine earliest/latest possible time for slider
 
             Reservation reservation = document.data();
