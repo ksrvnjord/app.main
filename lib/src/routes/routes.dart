@@ -13,6 +13,7 @@ import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
@@ -101,6 +102,10 @@ final routeMap = RouteMap(
     '/training/all/:id': (info) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: ShowTrainingPage(id: info.pathParameters['id']!),
+        ),
+    '/training/all/filters': (route) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: ShowFiltersPage(),
         ),
     '/training/all/reservationObject/:id': (route) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,

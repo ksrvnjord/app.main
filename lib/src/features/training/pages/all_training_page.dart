@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -74,6 +76,12 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             shadowColor: Colors.transparent,
             systemOverlayStyle:
                 const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+            actions: [
+              // show filter icon button to toggle filters
+              IconButton(
+                  onPressed: () => Routemaster.of(context).push('filters'),
+                  icon: const Icon(Icons.filter_list_alt))
+            ],
             bottom: TabBar(
               isScrollable: true,
               labelColor: Colors.black,
