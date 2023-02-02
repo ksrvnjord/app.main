@@ -28,33 +28,28 @@ class CalendarFilterRow extends StatelessWidget {
                 return FutureWrapper(
                     future: filters,
                     success: (selectedFilters) {
-                      if (selectedFilters != null) {
-                        Set<String> selectedFiltersSet = selectedFilters
-                            .toSet(); // O(1) lookup in set vs O(n) in list
+                      Set<String> selectedFiltersSet = selectedFilters
+                          .toSet(); // O(1) lookup in set vs O(n) in list
 
-                        mergeSort(availableFilters, compare: (a, b) {
-                          bool aSelected = selectedFiltersSet.contains(a.type);
-                          bool bSelected = selectedFiltersSet.contains(b.type);
+                      mergeSort(availableFilters, compare: (a, b) {
+                        bool aSelected = selectedFiltersSet.contains(a.type);
+                        bool bSelected = selectedFiltersSet.contains(b.type);
 
-                          return aSelected == bSelected
-                              ? Order.preserve // if both (un)selected
-                              : (aSelected ? Order.aFirst : Order.bFirst);
-                        });
+                        return aSelected == bSelected
+                            ? Order.preserve // if both (un)selected
+                            : (aSelected ? Order.aFirst : Order.bFirst);
+                      });
 
-                        return ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: availableFilters
-                                .map<Widget>((e) => CalendarFilterTile(
-                                      label: e.description,
-                                      selected:
-                                          selectedFilters.contains(e.type),
-                                      icon: e.icon,
-                                      onPressed: () => toggleFilter(e.type),
-                                    ).padding(all: 8))
-                                .toList());
-                      }
-
-                      return Container();
+                      return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: availableFilters
+                              .map<Widget>((e) => CalendarFilterTile(
+                                    label: e.description,
+                                    selected: selectedFilters.contains(e.type),
+                                    icon: e.icon,
+                                    onPressed: () => toggleFilter(e.type),
+                                  ).padding(all: 8))
+                              .toList());
                     });
               } else {
                 return const ErrorCardWidget(

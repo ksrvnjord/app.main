@@ -31,7 +31,7 @@ class AlmanakUserButtonWidget extends StatelessWidget {
               success: (snapshot) {
                 return CachedNetworkImage(
                   imageUrl: // random image url
-                      snapshot as String,
+                      snapshot,
                   imageBuilder: (context, imageProvider) => CircleAvatar(
                     backgroundImage: imageProvider,
                   ),

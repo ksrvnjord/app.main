@@ -144,20 +144,15 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                     child: SizedBox(height: 32 * 32, width: 128)),
                 // Create a stack of the resulting reservations
                 success: (reservations) {
-                  if (reservations != null) {
-                    return reservations.docs
-                        .map((reservation) {
-                          return CalendarReservation(
-                              fragmentHeight: 32,
-                              data: reservation.data(),
-                              id: reservation.id);
-                        })
-                        .toList()
-                        .toStack();
-                  }
-                  // Or just return an empty container if it fails
-
-                  return Container();
+                  return reservations.docs
+                      .map((reservation) {
+                        return CalendarReservation(
+                            fragmentHeight: 32,
+                            data: reservation.data(),
+                            id: reservation.id);
+                      })
+                      .toList()
+                      .toStack();
                 })
           ],
         ));
