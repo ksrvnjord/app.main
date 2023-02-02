@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
+import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
@@ -74,10 +75,15 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
 
-    var curUser = GetIt.I.get<CurrentUser>();
-    var contact = curUser.user!.fullContact.public;
-    String firstName = contact.first_name!;
-    String lastName = contact.last_name!;
+    CurrentUser curUser = GetIt.I.get<CurrentUser>();
+    Query$Me$me? user = curUser.user;
+    String creatorName = 'Onbekend';
+    if (user != null) {
+      Query$Me$me$fullContact$public contact = user.fullContact.public;
+      if (contact.first_name != null && contact.last_name != null) {
+        creatorName = '${contact.first_name} ${contact.last_name}';
+      }
+    }
 
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
@@ -251,7 +257,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                         widget.reservationObject,
                         FirebaseAuth.instance.currentUser!.uid,
                         widget.objectName,
-                        creatorName: "$firstName $lastName",
+                        creatorName: creatorName,
                       )).then((res) {
                         if (res['success'] == true) {
                           ScaffoldMessenger.of(context).showSnackBar(
