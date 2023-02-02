@@ -36,6 +36,8 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 
+FirebaseAuth auth = FirebaseAuth.instance;
+
 class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
@@ -77,13 +79,18 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
     var navigator = Routemaster.of(context);
 
     CurrentUser curUser = GetIt.I.get<CurrentUser>();
-    Query$Me$me? user = curUser.user;
+    Query$Me$me? heimdallUser = curUser.user;
     String creatorName = 'Onbekend';
-    if (user != null) {
-      Query$Me$me$fullContact$public contact = user.fullContact.public;
+    if (heimdallUser != null) {
+      Query$Me$me$fullContact$public contact = heimdallUser.fullContact.public;
       if (contact.first_name != null && contact.last_name != null) {
         creatorName = '${contact.first_name} ${contact.last_name}';
       }
+    }
+    User? firebaseUser = auth.currentUser;
+    if (firebaseUser == null) {
+      return const ErrorCardWidget(
+          errorMessage: 'Er is iets misgegaan met het inloggen');
     }
 
     widget.reservationObject.get().then((obj) {
@@ -129,7 +136,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                     reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
-              if (reservation.creator == curUser.user!.identifier) {
+              if (reservation.creator == firebaseUser.uid) {
                 return Container();
               }
 
@@ -245,7 +252,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                         _startTime,
                         _endTime,
                         widget.reservationObject,
-                        FirebaseAuth.instance.currentUser!.uid,
+                        firebaseUser.uid,
                         widget.objectName,
                         creatorName: creatorName,
                       )).then((res) {
