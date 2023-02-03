@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
+import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error.dart';
 import '../model/reservation.dart';
@@ -33,6 +35,8 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
               ReservationObject.fromJson(snapshot.data()!),
           toFirestore: (reservation, _) => reservation.toJson(),
         );
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
@@ -74,10 +78,20 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   Widget build(BuildContext context) {
     var navigator = Routemaster.of(context);
 
-    var curUser = GetIt.I.get<CurrentUser>();
-    var contact = curUser.user!.fullContact.public;
-    String firstName = contact.first_name!;
-    String lastName = contact.last_name!;
+    CurrentUser curUser = GetIt.I.get<CurrentUser>();
+    Query$Me$me? heimdallUser = curUser.user;
+    String creatorName = 'Onbekend';
+    if (heimdallUser != null) {
+      Query$Me$me$fullContact$public contact = heimdallUser.fullContact.public;
+      if (contact.first_name != null && contact.last_name != null) {
+        creatorName = '${contact.first_name} ${contact.last_name}';
+      }
+    }
+    User? firebaseUser = auth.currentUser;
+    if (firebaseUser == null) {
+      return const ErrorCardWidget(
+          errorMessage: 'Er is iets misgegaan met het inloggen');
+    }
 
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
@@ -96,36 +110,25 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: StreamBuilder<QuerySnapshot<Reservation>>(
-        stream:
+      body: FutureWrapper(
+        future:
             reservationsRef // query all afschrijvingen van die dag van die boot
                 .where('object', isEqualTo: widget.reservationObject)
                 .where('startTime', isGreaterThanOrEqualTo: widget.date)
                 .where('startTime',
                     isLessThanOrEqualTo:
                         widget.date.add(const Duration(days: 1)))
-                .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            log(snapshot.error.toString());
-
-            return const ErrorCardWidget(
-                errorMessage:
-                    "We konden de afschrijvingen niet ophalen van de server");
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final data = snapshot.requireData;
+                .get(),
+        error: (error) => ErrorCardWidget(errorMessage: error.toString()),
+        success: (snapshot) {
+          List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
           DateTime earliestPossibleTime = widget.date.add(const Duration(
               hours: 6)); // people can reservate starting at 06:00
 
           DateTime latestPossibleTime =
               widget.date.add(const Duration(hours: 22));
-          for (QueryDocumentSnapshot<Reservation> document in data.docs) {
+          for (QueryDocumentSnapshot<Reservation> document in documents) {
             // determine earliest/latest possible time for slider
 
             Reservation reservation = document.data();
@@ -133,7 +136,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                     reservation.startTime.isAtSameMomentAs(_startTime)) &&
                 reservation.endTime.isAfter(_startTime)) {
               log('Time is not available');
-              if (reservation.creator == curUser.user!.identifier) {
+              if (reservation.creator == firebaseUser.uid) {
                 return Container();
               }
 
@@ -249,9 +252,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                         _startTime,
                         _endTime,
                         widget.reservationObject,
-                        FirebaseAuth.instance.currentUser!.uid,
+                        firebaseUser.uid,
                         widget.objectName,
-                        creatorName: "$firstName $lastName",
+                        creatorName: creatorName,
                       )).then((res) {
                         if (res['success'] == true) {
                           ScaffoldMessenger.of(context).showSnackBar(
