@@ -45,7 +45,7 @@ class _ForgotFormCard extends StatelessWidget {
 }
 
 // ignore: no-empty-block
-void dontCall(bool arg) {}
+void dontCall(bool _) {}
 
 class ForgotPage extends StatelessWidget {
   final void Function(bool) loginCallback;

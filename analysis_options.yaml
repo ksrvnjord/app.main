@@ -101,10 +101,10 @@ dart_code_metrics:
     - avoid-throw-in-catch-block
     - avoid-top-level-members-in-tests
     - avoid-unnecessary-conditionals
-    # - avoid-unnecessary-type-assertions
-    # - avoid-unnecessary-type-casts
-    # - avoid-unrelated-type-assertions
-    # - avoid-unused-parameters
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
     # - binary-expression-operand-order
     # - double-literal-format
     # - format-comment

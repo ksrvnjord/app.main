@@ -21,7 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void login(AuthModel auth, GraphQLModel graphql) {
+  void login(AuthModel auth, GraphQLModel _) {
     auth.login(_username.text, _password.text).then((result) {
       // Also login to firebase.
       auth.firebase().then((_) => widget.loginCallback(result));

@@ -1,5 +1,3 @@
-import 'package:graphql/client.dart';
-
 class Slot {
   final int id = 0;
   final DateTime from;
@@ -19,7 +17,6 @@ class Boot {
 
 Future<List<Boot>?> reservedSlots(
   List<String> filters,
-  GraphQLClient client,
 ) async {
   List<Boot> boats = [
     const Boot(name: 'Zephyr', label: 'vieren', slots: []),

@@ -23,7 +23,7 @@ class _ForgotFormState extends State<ForgotForm> {
   String message = '';
 
   // ignore: no-empty-block
-  void forgot(AuthModel auth, GraphQLModel graphql) {}
+  void forgot(AuthModel _, GraphQLModel __) {}
 
   @override
   Widget build(BuildContext context) {

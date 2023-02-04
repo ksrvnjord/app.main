@@ -81,9 +81,7 @@ class _CalendarOverview extends State<CalendarOverview> {
                 snapshot,
                 date,
               ), // this builds the columns with the boats and the slots
-              _buildStickyTimeScrollView(
-                context,
-              ), // this builds the time column on the left side
+              _buildStickyTimeScrollView(), // this builds the time column on the left side
             ],
           );
         },
@@ -111,7 +109,7 @@ class _CalendarOverview extends State<CalendarOverview> {
   }
 
   /// Builds the time column on the left side of the calendar
-  SingleChildScrollView _buildStickyTimeScrollView(BuildContext context) {
+  SingleChildScrollView _buildStickyTimeScrollView() {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       physics:
