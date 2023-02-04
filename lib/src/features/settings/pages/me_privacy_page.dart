@@ -8,9 +8,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-double betweenFields = 20;
-double marginContainer = 5;
-double paddingBody = 15;
+const double betweenFields = 20;
+const double marginContainer = 5;
+const double paddingBody = 15;
 
 class MePrivacyPage extends StatelessWidget {
   const MePrivacyPage({Key? key}) : super(key: key);

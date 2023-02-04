@@ -19,8 +19,8 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
 // HELP: What to do with these 'constants'. Maybe make a separate file to store them?
-FirebaseFirestore db = FirebaseFirestore.instance;
-FirebaseFunctions functions =
+final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'europe-west1');
 final CollectionReference<Reservation> reservationsRef = db
     .collection('reservations')
@@ -36,7 +36,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 
-FirebaseAuth auth = FirebaseAuth.instance;
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
