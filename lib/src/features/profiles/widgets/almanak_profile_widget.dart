@@ -60,6 +60,7 @@ class AlmanakProfileWidget extends StatelessWidget {
                   child: ProfilePictureWidget(userId: user.identifier),
                 ),
               ),
+              // ignore: avoid-shrink-wrap-in-lists
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

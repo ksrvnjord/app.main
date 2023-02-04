@@ -69,7 +69,7 @@ dart_code_metrics:
     - avoid-border-all
     - avoid-expanded-as-spacer
     # - avoid-returning-widgets
-    # - avoid-shrink-wrap-in-lists
+    - avoid-shrink-wrap-in-lists
     - avoid-unnecessary-setstate
     - avoid-wrapping-in-padding
     - check-for-equals-in-render-object-setters
@@ -79,8 +79,8 @@ dart_code_metrics:
     # - prefer-extracting-callbacks
     # - prefer-single-widget-per-file:
     #     ignore-private-widgets: true
-    # - prefer-using-list-view
-    # - use-setstate-synchronously
+    - prefer-using-list-view
+    - use-setstate-synchronously
   # COMMON dart rules
 
     # - arguments-ordering for another time
