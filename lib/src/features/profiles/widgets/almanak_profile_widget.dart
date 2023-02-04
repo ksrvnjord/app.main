@@ -6,7 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_profile_bottomsheet_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakProfileWidget extends StatelessWidget {
@@ -44,6 +46,8 @@ class AlmanakProfileWidget extends StatelessWidget {
           contact.city ?? ' ',
         ];
 
+        const double textFieldPadding = 16;
+
         return Scaffold(
           appBar: AppBar(
             title: Text(values[0]),
@@ -75,7 +79,7 @@ class AlmanakProfileWidget extends StatelessWidget {
                           border: const OutlineInputBorder(),
                         ),
                         initialValue: values[index],
-                      ).padding(all: 15),
+                      ).padding(all: textFieldPadding),
                       onLongPress: () {
                         HapticFeedback.vibrate();
                         showModalBottomSheet(
@@ -110,23 +114,45 @@ class ProfilePictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getProfilePicture(userId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return const CircleAvatar(
-            radius: 100,
-            backgroundImage: AssetImage(Images.placeholderProfilePicture),
-          );
-        } else if (snapshot.hasData) {
-          return CircleAvatar(
-            radius: 100,
-            backgroundImage: MemoryImage(snapshot.data),
-          );
-        }
+    const double profilePictureSize = 96;
 
-        return const CircularProgressIndicator();
+    return FutureWrapper(
+      future: getProfilePicture(userId),
+      success: (data) {
+        return CircleAvatar(
+          radius: profilePictureSize,
+          backgroundImage: MemoryImage(data!),
+        );
       },
+      error: (error) => const CircleAvatar(
+        radius: profilePictureSize,
+        backgroundImage: AssetImage(Images.placeholderProfilePicture),
+      ),
+      loading: const ShimmerWidget(
+        child: CircleAvatar(
+          radius: profilePictureSize,
+          backgroundImage: AssetImage(Images.placeholderProfilePicture),
+        ),
+      ),
     );
+
+    // return FutureBuilder(
+    //   future: getProfilePicture(userId),
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (snapshot.hasError) {
+    //       return const CircleAvatar(
+    //         radius: profilePictureSize,
+    //         backgroundImage: AssetImage(Images.placeholderProfilePicture),
+    //       );
+    //     } else if (snapshot.hasData) {
+    //       return CircleAvatar(
+    //         radius: profilePictureSize,
+    //         backgroundImage: MemoryImage(snapshot.data),
+    //       );
+    //     }
+
+    //     return const CircularProgressIndicator();
+    //   },
+    // );
   }
 }
