@@ -52,7 +52,8 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     // Check if the boat is in-de-vaart
     if (!boatData.available) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Dit object is uit de vaart.')));
+        const SnackBar(content: Text('Dit object is uit de vaart.')),
+      );
 
       return;
     }
@@ -72,7 +73,8 @@ class _ObjectCalendar extends State<ObjectCalendar> {
               .intersection((token.claims?['permissions'] ?? []).toSet())
               .isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Je hebt geen permissies voor dit object.')));
+          content: Text('Je hebt geen permissies voor dit object.'),
+        ));
         needToReturn = true;
       }
     });
@@ -89,15 +91,16 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     final double timeDouble = (2 * location).floor() / 2;
     // Calculate startTime
     final DateTime time = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        // Get the whole hour
-        min(21, max(6, (timeDouble).floor())),
-        // Get the decimal (12.5 -> .5),
-        // calculate the minute (.5 -> 30),
-        // and round to integer
-        ((timeDouble % 1) * 60).round());
+      date.year,
+      date.month,
+      date.day,
+      // Get the whole hour
+      min(21, max(6, (timeDouble).floor())),
+      // Get the decimal (12.5 -> .5),
+      // calculate the minute (.5 -> 30),
+      // and round to integer
+      ((timeDouble % 1) * 60).round(),
+    );
 
     Routemaster.of(context)
         .push('plan', queryParameters: {
@@ -123,38 +126,44 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .get(const GetOptions(source: Source.serverAndCache));
 
     return SizedBox(
-        width: 128,
-        // Stack the elements over eachother
-        child: Stack(
-          children: [
-            // Horizontal bars of 32h, that are tappable
-            // to make new reservations
-            GestureDetector(
-                // Handle the taps with a defined function
-                onTapUp: handleTap,
-                // Wrap the background in an AbsorbPointer, so that
-                // it does not pass gestures through to the background
-                child: const AbsorbPointer(
-                    child: CalendarBackground(fragmentHeight: 32))),
-            // Wrap the reservations
-            FutureWrapper(
-                future: reservations,
-                // Shimmer entire screen on loading
-                loading: const ShimmerWidget(
-                    child: SizedBox(height: 32 * 32, width: 128)),
-                // Create a stack of the resulting reservations
-                success: (reservations) {
-                  return reservations.docs
-                      .map((reservation) {
-                        return CalendarReservation(
-                            fragmentHeight: 32,
-                            data: reservation.data(),
-                            id: reservation.id);
-                      })
-                      .toList()
-                      .toStack();
-                })
-          ],
-        ));
+      width: 128,
+      // Stack the elements over eachother
+      child: Stack(
+        children: [
+          // Horizontal bars of 32h, that are tappable
+          // to make new reservations
+          GestureDetector(
+            // Handle the taps with a defined function
+            onTapUp: handleTap,
+            // Wrap the background in an AbsorbPointer, so that
+            // it does not pass gestures through to the background
+            child: const AbsorbPointer(
+              child: CalendarBackground(fragmentHeight: 32),
+            ),
+          ),
+          // Wrap the reservations
+          FutureWrapper(
+            future: reservations,
+            // Shimmer entire screen on loading
+            loading: const ShimmerWidget(
+              child: SizedBox(height: 32 * 32, width: 128),
+            ),
+            // Create a stack of the resulting reservations
+            success: (reservations) {
+              return reservations.docs
+                  .map((reservation) {
+                    return CalendarReservation(
+                      fragmentHeight: 32,
+                      data: reservation.data(),
+                      id: reservation.id,
+                    );
+                  })
+                  .toList()
+                  .toStack();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

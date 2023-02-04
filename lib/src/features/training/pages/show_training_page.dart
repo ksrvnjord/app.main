@@ -16,108 +16,124 @@ class ShowTrainingPage extends StatelessWidget {
         FirebaseFirestore.instance.collection('reservations');
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Afschrijving'),
-          // automaticallyImplyLeading: false,
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: FutureBuilder<DocumentSnapshot>(
-            future: reservations.doc(id).get(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return const ErrorCardWidget(
-                    errorMessage:
-                        "We konden geen verbinding maken met de database");
-              }
-              if (snapshot.hasData && !snapshot.data!.exists) {
-                return const ErrorCardWidget(
-                    errorMessage: "Er is geen afschrijving gevonden");
-              }
-              if (snapshot.connectionState == ConnectionState.done) {
-                Map<String, dynamic> reservation =
-                    snapshot.data!.data() as Map<String, dynamic>;
+      appBar: AppBar(
+        title: const Text('Afschrijving'),
+        // automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: reservations.doc(id).get(),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<DocumentSnapshot> snapshot,
+        ) {
+          if (snapshot.hasError) {
+            return const ErrorCardWidget(
+              errorMessage: "We konden geen verbinding maken met de database",
+            );
+          }
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const ErrorCardWidget(
+              errorMessage: "Er is geen afschrijving gevonden",
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> reservation =
+                snapshot.data!.data() as Map<String, dynamic>;
 
-                return FutureBuilder<DocumentSnapshot>(
-                    future: users.doc(reservation['creatorId']).get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return const ErrorCardWidget(
-                            errorMessage:
-                                "We konden de afschrijver niet ophalen");
-                      }
-                      if (snapshot.hasData && !snapshot.data!.exists) {
-                        return const ErrorCardWidget(
-                            errorMessage:
-                                "We konden de afschrijver niet ophalen");
-                      }
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        String creatorName;
-                        Map<String, dynamic> user =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        if (reservation['creatorName'] != null) {
-                          creatorName = reservation['creatorName'];
-                        } else {
-                          creatorName = // added for compatibility with old reservations, this can be removed after a while
-                              user['first_name'] + ' ' + user['last_name'];
-                        }
+            return FutureBuilder<DocumentSnapshot>(
+              future: users.doc(reservation['creatorId']).get(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot,
+              ) {
+                if (snapshot.hasError) {
+                  return const ErrorCardWidget(
+                    errorMessage: "We konden de afschrijver niet ophalen",
+                  );
+                }
+                if (snapshot.hasData && !snapshot.data!.exists) {
+                  return const ErrorCardWidget(
+                    errorMessage: "We konden de afschrijver niet ophalen",
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.done) {
+                  String creatorName;
+                  Map<String, dynamic> user =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                  if (reservation['creatorName'] != null) {
+                    creatorName = reservation['creatorName'];
+                  } else {
+                    creatorName = // added for compatibility with old reservations, this can be removed after a while
+                        user['first_name'] + ' ' + user['last_name'];
+                  }
 
-                        List<Widget> children = [
-                          DataListTile(
-                              icon: const Icon(Icons.person),
-                              data: creatorName),
-                          const Divider(),
-                        ];
+                  List<Widget> children = [
+                    DataListTile(
+                      icon: const Icon(Icons.person),
+                      data: creatorName,
+                    ),
+                    const Divider(),
+                  ];
 
-                        if (reservation['objectName'] != null) {
-                          children.add(DataListTile(
-                            icon: const Icon(Icons.label),
-                            data: reservation['objectName'],
-                          ));
-                          children.add(const Divider());
-                        }
-                        DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                            reservation['startTime'].millisecondsSinceEpoch);
-                        String formattedDate =
-                            DateFormat.yMMMMEEEEd().format(date);
+                  if (reservation['objectName'] != null) {
+                    children.add(DataListTile(
+                      icon: const Icon(Icons.label),
+                      data: reservation['objectName'],
+                    ));
+                    children.add(const Divider());
+                  }
+                  DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                    reservation['startTime'].millisecondsSinceEpoch,
+                  );
+                  String formattedDate = DateFormat.yMMMMEEEEd().format(date);
 
-                        children.addAll([
-                          // add ListTile with the date
-                          DataListTile(
-                            icon: const Icon(Icons.calendar_today),
-                            data: formattedDate,
+                  children.addAll([
+                    // add ListTile with the date
+                    DataListTile(
+                      icon: const Icon(Icons.calendar_today),
+                      data: formattedDate,
+                    ),
+                    const Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DataListTile(
+                            icon: const Icon(Icons.start),
+                            data: timestampToTimeOfDay(
+                              reservation['startTime']!,
+                              context,
+                            ),
                           ),
-                          const Divider(),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: DataListTile(
-                                      icon: const Icon(Icons.start),
-                                      data: timestampToTimeOfDay(
-                                          reservation['startTime']!, context))),
-                              Expanded(
-                                child: DataListTile(
-                                    icon: const Icon(Icons.timer_off_outlined),
-                                    data: timestampToTimeOfDay(
-                                        reservation['endTime']!, context)),
-                              ),
-                            ],
+                        ),
+                        Expanded(
+                          child: DataListTile(
+                            icon: const Icon(Icons.timer_off_outlined),
+                            data: timestampToTimeOfDay(
+                              reservation['endTime']!,
+                              context,
+                            ),
                           ),
-                        ]);
+                        ),
+                      ],
+                    ),
+                  ]);
 
-                        return ListView(children: children);
-                      }
+                  return ListView(children: children);
+                }
 
-                      return const CircularProgressIndicator();
-                    });
-              }
+                return const CircularProgressIndicator();
+              },
+            );
+          }
 
-              return const CircularProgressIndicator();
-            }));
+          return const CircularProgressIndicator();
+        },
+      ),
+    );
   }
 }
 

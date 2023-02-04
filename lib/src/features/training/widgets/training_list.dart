@@ -33,41 +33,49 @@ class TrainingListState extends State<TrainingList> {
   }
 
   StreamBuilder<QuerySnapshot<Reservation>> showReservationList(
-      CollectionReference<Reservation> reservationsRef) {
+    CollectionReference<Reservation> reservationsRef,
+  ) {
     return StreamBuilder(
-        stream: reservationsRef
-            .where('creatorId',
-                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-            .where('startTime',
-                isGreaterThanOrEqualTo:
-                    DateTime.now().subtract(const Duration(days: 1)))
-            .orderBy('startTime', descending: false)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
+      stream: reservationsRef
+          .where(
+            'creatorId',
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
+          )
+          .where(
+            'startTime',
+            isGreaterThanOrEqualTo:
+                DateTime.now().subtract(const Duration(days: 1)),
+          )
+          .orderBy('startTime', descending: false)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text('Je hebt geen afschrijvingen...'),
+          );
+        }
+
+        return ListView.separated(
+          itemCount: snapshot.data!.docs.length,
+          padding: const EdgeInsets.all(10),
+          separatorBuilder: (BuildContext context, int index) =>
+              const SizedBox(height: 10),
+          itemBuilder: (BuildContext context, int index) {
+            QueryDocumentSnapshot<Object?> reservation =
+                snapshot.data!.docs[index];
+
+            return Center(
+              child: TrainingListItem(reservation: reservation),
             );
-          }
-
-          if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text('Je hebt geen afschrijvingen...'),
-            );
-          }
-
-          return ListView.separated(
-              itemCount: snapshot.data!.docs.length,
-              padding: const EdgeInsets.all(10),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const SizedBox(height: 10),
-              itemBuilder: (BuildContext context, int index) {
-                QueryDocumentSnapshot<Object?> reservation =
-                    snapshot.data!.docs[index];
-
-                return Center(
-                    child: TrainingListItem(reservation: reservation));
-              });
-        });
+          },
+        );
+      },
+    );
   }
 }
