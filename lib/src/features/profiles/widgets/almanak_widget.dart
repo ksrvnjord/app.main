@@ -16,6 +16,8 @@ class _AlmanakWidgetState extends State<AlmanakWidget> {
 
   @override
   Widget build(BuildContext context) {
+    const double searchBarPadding = 8;
+
     return <Widget>[
       TextFormField(
         controller: _search,
@@ -27,7 +29,7 @@ class _AlmanakWidgetState extends State<AlmanakWidget> {
           border: OutlineInputBorder(),
           labelText: 'Zoeken',
         ),
-      ).padding(all: 10),
+      ).padding(all: searchBarPadding),
       AnimatedBuilder(
         animation: _search,
         builder: (_, __) => AlmanakScrollingWidget(
