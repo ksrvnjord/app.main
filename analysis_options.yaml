@@ -46,12 +46,15 @@ dart_code_metrics:
     - test/**
     - lib/**.graphql.dart
   rules:
+    - avoid-cascade-after-if-null
+    - avoid-collection-methods-with-unrelated-types
+    - avoid-double-slash-imports
+    - avoid-duplicate-exports
+    - avoid-dynamic
     - newline-before-return
     - no-boolean-literal-compare
-    - avoid-collection-methods-with-unrelated-types
     - no-empty-block
     - prefer-trailing-comma
-    - avoid-cascade-after-if-null
     # - prefer-conditional-expressions
     # - no-equal-then-else
   rules-exclude:
