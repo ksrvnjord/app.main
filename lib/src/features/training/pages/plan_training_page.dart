@@ -296,11 +296,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   }
 }
 
-Future<dynamic> createReservationCloud(Reservation r) async {
+Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {
   try {
-    final result = await functions
-        .httpsCallable('createReservation')
-        .call(<String, dynamic>{
+    final result = await functions.httpsCallable('createReservation').call({
       'startTime': r.startTime.toUtc().toIso8601String(),
       'endTime': r.endTime.toUtc().toIso8601String(),
       'object': r.reservationObject.path,
