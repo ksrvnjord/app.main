@@ -165,7 +165,7 @@ class ShowReservationObjectPage extends StatelessWidget {
 
   Future<DocumentSnapshot<ReservationObject>> getReservationObject(
     String documentId,
-  ) async {
+  ) {
     return reservationObjectsCollectionReference.doc(documentId).get();
   }
 }

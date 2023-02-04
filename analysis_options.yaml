@@ -97,7 +97,7 @@ dart_code_metrics:
     - avoid-non-ascii-symbols
     # - avoid-non-null-assertion
     - avoid-passing-async-when-sync-expected
-    # - avoid-redundant-async
+    - avoid-redundant-async
     # - avoid-throw-in-catch-block
     # - avoid-top-level-members-in-tests
     # - avoid-unnecessary-conditionals

@@ -21,7 +21,7 @@ Future<String> getProfilePictureUrl(String userId) async {
 }
 
 // Make function to getMyProfilePicture
-Future<Uint8List?> getMyProfilePicture() async {
+Future<Uint8List?> getMyProfilePicture() {
   return getProfilePicture(auth.currentUser!.uid);
 }
 
