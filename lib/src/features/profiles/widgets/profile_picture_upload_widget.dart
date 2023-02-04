@@ -22,9 +22,9 @@ class EditProfilePictureWidget extends StatelessWidget {
       initialImage: initialImage.image,
       shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
       isEditable: true,
-      onChange: (File file) async {
+      onChange: (File file) {
         try {
-          await uploadMyProfilePicture(file);
+          uploadMyProfilePicture(file);
           Fluttertoast.showToast(
             msg: "Your profile picture was updated successfully",
           );

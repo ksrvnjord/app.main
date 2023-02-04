@@ -31,7 +31,7 @@ class MePage extends StatelessWidget {
             itemBuilder: (BuildContext context) => <PopupMenuEntry>[
               PopupMenuItem(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                onTap: () async {
+                onTap: () {
                   Routemaster.of(context).push('/settings/privacy');
                 },
                 child: const Center(child: Text('Zichtbaarheid Almanak')),
