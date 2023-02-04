@@ -74,7 +74,7 @@ dart_code_metrics:
     - avoid-wrapping-in-padding
     # - check-for-equals-in-render-object-setters
     # - consistent-update-render-object
-    # - prefer-const-border-radius
+    - prefer-const-border-radius
     # - prefer-correct-edge-insets-constructor
     # - prefer-extracting-callbacks
     # - prefer-single-widget-per-file:

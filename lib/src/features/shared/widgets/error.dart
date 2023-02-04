@@ -30,7 +30,7 @@ class ErrorCardWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
           border: Border.all(width: 2.0, color: errorColor),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
 
         // semanticContainer: false,

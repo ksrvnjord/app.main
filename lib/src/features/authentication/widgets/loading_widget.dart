@@ -18,8 +18,8 @@ class LoginLoadingWidget extends StatelessWidget {
         .padding(all: 20)
         .card(
           elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         )
         .padding(all: 12)
