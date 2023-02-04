@@ -165,7 +165,7 @@ class _MeWidgetState extends State<MeWidget> {
     super.initState();
   }
 
-  TextStyle labelTextStyle(dynamic label) {
+  TextStyle labelTextStyle(Map<String, dynamic> label) {
     if (label['changed']) {
       return const TextStyle(color: Colors.blueAccent);
     }
@@ -198,11 +198,11 @@ class _MeWidgetState extends State<MeWidget> {
       ).padding(all: 5),
       ...fields.asMap().entries.map<Widget>((i) {
         int idx = i.key;
-        final row = i.value;
+        final Map<String, Map<String, dynamic>> row = i.value;
 
         return row.keys
             .map<Widget>((key) {
-              dynamic label = row[key];
+              Map<String, dynamic> label = row[key]!;
 
               return SizedBox(
                 width: label['width'] * rowWidth,
