@@ -13,33 +13,41 @@ class _ForgotFormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Implement in Heimdall
     // return const ForgotForm();
+    const double textPadding = 16;
+
+    const double buttonHeight = 54;
+    const double buttonPadding = 16;
+    const double cardElevation = 8;
+    const double cardOuterPadding = 16;
+    const double cardInnerPadding = 24;
+    const double textSize = 16;
 
     return [
       const Text(
         'Op dit moment kan een wachtwoord alleen gereset worden via de website',
         textAlign: TextAlign.center,
-      ).padding(all: 10),
+      ).fontSize(textSize).padding(vertical: textPadding),
       [
         ElevatedButton(
-          child: const Text('Ga naar de website'),
+          child: const Text('Ga naar de website').fontSize(textSize),
           onPressed: () => Routemaster.of(context).push('/forgot/webview'),
-        ).height(54).padding(all: 10).expanded(),
+        ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
           child: const Icon(Icons.arrow_back),
           onPressed: () => Routemaster.of(context).pop(),
-        ).height(54).padding(all: 10),
+        ).height(buttonHeight),
       ].toRow(),
     ]
         .toColumn()
-        .padding(all: 20)
+        .padding(all: cardInnerPadding)
         .card(
-          elevation: 10,
+          elevation: cardElevation,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         )
-        .padding(all: 12)
+        .padding(all: cardOuterPadding)
         .alignment(Alignment.center);
   }
 }
