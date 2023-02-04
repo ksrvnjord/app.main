@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -7,8 +9,11 @@ class LoginDoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid-non-ascii-symbols
+    const String swanEmoji = "\uD83E\uDDA2";
+
     return <Widget>[
-      <Widget>[const Text('\uD83E\uDDA2', style: TextStyle(fontSize: 40))]
+      <Widget>[const Text(swanEmoji, style: TextStyle(fontSize: 40))]
           .toRow(mainAxisAlignment: MainAxisAlignment.center),
       const Text('Je bent ingelogd.').padding(top: 20),
       <Widget>[
