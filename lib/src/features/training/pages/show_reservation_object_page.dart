@@ -146,6 +146,8 @@ class ShowReservationObjectPage extends StatelessWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
+              // In this case we can pass the same value to both
+              // ignore: no-equal-arguments
               bottomRight: Radius.circular(20),
             ),
           ),

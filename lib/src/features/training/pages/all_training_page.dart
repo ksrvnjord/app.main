@@ -86,6 +86,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               color: Colors.grey[50],
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
+                // In this case we can pass the same value to both
+                // ignore: no-equal-arguments
                 topRight: Radius.circular(10),
               ),
             ),

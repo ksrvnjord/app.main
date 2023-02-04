@@ -64,6 +64,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late TimeOfDay _startTimeOfDay; // Selected start time of the slider
   late TimeOfDay _endTimeOfDay; // Selected end time of the slider
 
+  static const intervalOfSelector = Duration(minutes: 30);
+  static const minimumReservationDuration = Duration(minutes: 30);
+
   @override
   void initState() {
     super.initState();
@@ -218,7 +221,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   context: context,
                   fromText: 'Starttijd',
                   toText: 'Eindtijd',
-                  interval: const Duration(minutes: 30),
+                  interval: intervalOfSelector,
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
                   disabledTime: TimeRange(
@@ -228,7 +231,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
                   handlerRadius: 8,
-                  minDuration: const Duration(minutes: 30),
+                  minDuration: minimumReservationDuration,
                 ).then((value) {
                   if (value != null) {
                     setState(() {
