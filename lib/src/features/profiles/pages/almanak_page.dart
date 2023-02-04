@@ -37,8 +37,10 @@ Widget showMyProfilePictureWidgetIfAuthenticatedByFirebase(
   BuildContext context,
 ) {
   if (FirebaseAuth.instance.currentUser != null) {
+    const profileIconSize = 48.0;
+
     return IconButton(
-      iconSize: 40,
+      iconSize: profileIconSize,
       icon: FutureWrapper(
         future: getMyProfilePicture(),
         success: (data) {
