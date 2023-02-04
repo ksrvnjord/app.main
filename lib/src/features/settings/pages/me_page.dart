@@ -179,7 +179,7 @@ class _MeWidgetState extends State<MeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final double rowWidth = MediaQuery.of(context).size.width - 2 * paddingBody;
+    final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
     final client = Provider.of<GraphQLModel>(context).client;
 
     return ListView(

@@ -105,7 +105,7 @@ dart_code_metrics:
     - avoid-unnecessary-type-casts
     - avoid-unrelated-type-assertions
     - avoid-unused-parameters
-    # - binary-expression-operand-order
+    - binary-expression-operand-order
     # - double-literal-format
     # - format-comment
     # - list-all-equatable-fields

@@ -94,7 +94,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     final double location = 6 + ((details.localPosition.dy - 16) / 64);
     // Double the local position, round it, and divide it by two
     // to get the half-hourly-precise start position
-    final double timeDouble = (2 * location).floor() / 2;
+    final double timeDouble = (location * 2).floor() / 2;
     // Calculate startTime
     final DateTime time = DateTime(
       date.year,
