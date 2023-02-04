@@ -16,9 +16,9 @@ class LogoWidget extends StatelessWidget {
     //calculating container width
     double imageSize;
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      imageSize = (size.width * 0.10);
+      imageSize = (size.width * 0.1);
     } else {
-      imageSize = (size.height * 0.20);
+      imageSize = (size.height * 0.2);
     }
 
     return Image.asset(
