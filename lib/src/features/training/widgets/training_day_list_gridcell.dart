@@ -21,7 +21,8 @@ class TrainingDayListGridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> boatPermissions = boat.get('permissions');
+    ReservationObject boatObj = boat.data();
+    List<String> boatPermissions = boatObj.permissions;
     Map<String, dynamic> userClaims = user.data!.claims!;
     if (forbiddenSlots.keys.contains(timestamp)) {
       String id = forbiddenSlots[timestamp]!;
