@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+// TODO: We should implement the forgot password page eventually
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
