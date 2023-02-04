@@ -124,6 +124,8 @@ final authenticationRoutes = RouteMap(
           child: ForgotPage(),
         ),
     '/forgot/webview': (info) => const RoutedPageTransition(
-        child: ForgotWebPage(), transition: pt.PageTransitionType.rightToLeft)
+          child: ForgotWebPage(),
+          transition: pt.PageTransitionType.rightToLeft,
+        ),
   },
 );

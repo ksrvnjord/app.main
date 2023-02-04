@@ -21,20 +21,21 @@ class AdValvasPage extends StatelessWidget {
       body: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.blue,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                color: Colors.white,
-                icon: const Icon(Icons.calendar_month),
-                onPressed: () {
-                  Routemaster.of(context).push('/ad-valvas/events');
-                },
-              )),
+            decoration: const ShapeDecoration(
+              color: Colors.blue,
+              shape: CircleBorder(),
+            ),
+            child: IconButton(
+              color: Colors.white,
+              icon: const Icon(Icons.calendar_month),
+              onPressed: () {
+                Routemaster.of(context).push('/ad-valvas/events');
+              },
+            ),
+          ),
         ]).padding(horizontal: 25, top: 25, bottom: 15),
         const Divider().padding(horizontal: 50),
-        const AnnouncementsPage()
+        const AnnouncementsPage(),
       ].toColumn(),
     );
   }

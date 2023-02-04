@@ -59,32 +59,35 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
-          ChangeNotifierProxyProvider<AuthModel, GraphQLModel>(
-              update: (context, auth, _) => GraphQLModel(auth),
-              create: (_) => GraphQLModel(null)),
-        ],
-        child: Builder(
-            builder: (context) => MaterialApp.router(
-                  title: 'K.S.R.V. Njord',
-                  theme: ThemeData(
-                    primarySwatch: Colors.blue,
-                    textTheme: GoogleFonts.ibmPlexSansTextTheme(
-                      Theme.of(context).textTheme,
-                    ),
-                  ),
-                  debugShowCheckedModeBanner: false,
-                  routeInformationParser: const RoutemasterParser(),
-                  routerDelegate: RoutemasterDelegate(
-                    observers: [GlobalObserver()],
-                    routesBuilder: (context) {
-                      final auth = Provider.of<AuthModel>(context);
-                      final loggedIn = auth.client != null;
+      providers: [
+        ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
+        ChangeNotifierProxyProvider<AuthModel, GraphQLModel>(
+          update: (context, auth, _) => GraphQLModel(auth),
+          create: (_) => GraphQLModel(null),
+        ),
+      ],
+      child: Builder(
+        builder: (context) => MaterialApp.router(
+          title: 'K.S.R.V. Njord',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            textTheme: GoogleFonts.ibmPlexSansTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          debugShowCheckedModeBanner: false,
+          routeInformationParser: const RoutemasterParser(),
+          routerDelegate: RoutemasterDelegate(
+            observers: [GlobalObserver()],
+            routesBuilder: (context) {
+              final auth = Provider.of<AuthModel>(context);
+              final loggedIn = auth.client != null;
 
-                      return loggedIn ? routeMap : authenticationRoutes;
-                    },
-                  ),
-                )));
+              return loggedIn ? routeMap : authenticationRoutes;
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

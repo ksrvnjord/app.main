@@ -49,7 +49,7 @@ dart_code_metrics:
     - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block
-    # - prefer-trailing-comma
+    - prefer-trailing-comma
     # - prefer-conditional-expressions
     # - no-equal-then-else
   rules-exclude:

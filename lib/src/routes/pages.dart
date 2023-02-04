@@ -31,6 +31,9 @@ class SlideLTRPage extends Page {
   @override
   Route createRoute(BuildContext context) {
     return PageTransition(
-        child: child, type: PageTransitionType.leftToRight, settings: this);
+      child: child,
+      type: PageTransitionType.leftToRight,
+      settings: this,
+    );
   }
 }
