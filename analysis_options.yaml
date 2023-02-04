@@ -72,10 +72,10 @@ dart_code_metrics:
     # - avoid-shrink-wrap-in-lists
     - avoid-unnecessary-setstate
     - avoid-wrapping-in-padding
-    # - check-for-equals-in-render-object-setters
-    # - consistent-update-render-object
+    - check-for-equals-in-render-object-setters
+    - consistent-update-render-object
     - prefer-const-border-radius
-    # - prefer-correct-edge-insets-constructor
+    - prefer-correct-edge-insets-constructor
     # - prefer-extracting-callbacks
     # - prefer-single-widget-per-file:
     #     ignore-private-widgets: true

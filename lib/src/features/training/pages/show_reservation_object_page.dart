@@ -140,7 +140,7 @@ class ShowReservationObjectPage extends StatelessWidget {
     return Row(children: [
       Expanded(
         child: Card(
-          margin: const EdgeInsets.only(top: 0, bottom: 4),
+          margin: const EdgeInsets.only(bottom: 4),
           color: color,
           elevation: 0,
           shape: const RoundedRectangleBorder(
