@@ -51,6 +51,7 @@ dart_code_metrics:
     - avoid-double-slash-imports
     - avoid-duplicate-exports
     - avoid-dynamic
+    - avoid-global-state
     - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block

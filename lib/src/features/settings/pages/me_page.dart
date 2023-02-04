@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-double betweenFields = 20;
-double marginContainer = 5;
-double paddingBody = 15;
+const double betweenFields = 20;
+const double marginContainer = 5;
+const double paddingBody = 15;
 
 class MePage extends StatelessWidget {
   const MePage({Key? key}) : super(key: key);
@@ -182,122 +182,125 @@ class _MeWidgetState extends State<MeWidget> {
     final double rowWidth = MediaQuery.of(context).size.width - 2 * paddingBody;
     final client = Provider.of<GraphQLModel>(context).client;
 
-    return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-      Center(child: Container()),
-      const SizedBox(height: 10),
-      const SizedBox(height: 20),
-      TextFormField(
-        decoration: const InputDecoration(labelText: 'Lidnummer'),
-        enabled: false,
-        initialValue: '${widget.user?.identifier}',
-      ).padding(all: 5),
-      TextFormField(
-        decoration: const InputDecoration(labelText: 'Njord-account'),
-        enabled: false,
-        initialValue: '${widget.user?.username}',
-      ).padding(all: 5),
-      ...fields.asMap().entries.map<Widget>((i) {
-        int idx = i.key;
-        final Map<String, Map<String, dynamic>> row = i.value;
+    return ListView(
+      padding: const EdgeInsets.all(paddingBody),
+      children: <Widget>[
+        Center(child: Container()),
+        const SizedBox(height: 10),
+        const SizedBox(height: 20),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Lidnummer'),
+          enabled: false,
+          initialValue: '${widget.user?.identifier}',
+        ).padding(all: 5),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Njord-account'),
+          enabled: false,
+          initialValue: '${widget.user?.username}',
+        ).padding(all: 5),
+        ...fields.asMap().entries.map<Widget>((i) {
+          int idx = i.key;
+          final Map<String, Map<String, dynamic>> row = i.value;
 
-        return row.keys
-            .map<Widget>((key) {
-              Map<String, dynamic> label = row[key]!;
+          return row.keys
+              .map<Widget>((key) {
+                Map<String, dynamic> label = row[key]!;
 
-              return SizedBox(
-                width: label['width'] * rowWidth,
-                child: Builder(builder: (_) {
-                  return TextFormField(
-                    style: labelTextStyle(label),
-                    decoration: InputDecoration(
-                      labelText: label['display'] ?? '',
-                      labelStyle: labelTextStyle(label),
-                    ),
-                    controller: label['controller'],
-                    onChanged: (value) {
-                      setState(() {
-                        fields[idx][key]?['changed'] =
-                            (label['initial'] != label['controller'].text);
-                      });
-                    },
-                  ).padding(all: 5);
-                }),
+                return SizedBox(
+                  width: label['width'] * rowWidth,
+                  child: Builder(builder: (_) {
+                    return TextFormField(
+                      style: labelTextStyle(label),
+                      decoration: InputDecoration(
+                        labelText: label['display'] ?? '',
+                        labelStyle: labelTextStyle(label),
+                      ),
+                      controller: label['controller'],
+                      onChanged: (value) {
+                        setState(() {
+                          fields[idx][key]?['changed'] =
+                              (label['initial'] != label['controller'].text);
+                        });
+                      },
+                    ).padding(all: 5);
+                  }),
+                );
+              })
+              .toList()
+              .toRow();
+        }).toList(),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          onPressed: () {
+            setState(() {
+              saving = true;
+              buttonColor = Colors.blueGrey;
+            });
+            updateMe(
+              client,
+              Input$IContact(
+                first_name: fields[0]['first_name']?['controller'].text,
+                last_name: fields[0]['last_name']?['controller'].text,
+                email: fields[1]['email']?['controller'].text,
+                phone_primary: fields[2]['phone_primary']?['controller'].text,
+                street: fields[3]['street']?['controller'].text,
+                housenumber: fields[3]['housenumber']?['controller'].text,
+                housenumber_addition:
+                    fields[3]['housenumber_addition']?['controller'].text,
+                zipcode: fields[3]['zipcode']?['controller'].text,
+                city: fields[3]['city']?['controller'].text,
+              ),
+            ).then((data) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Updateverzoek verstuurd')),
               );
-            })
-            .toList()
-            .toRow();
-      }).toList(),
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-        onPressed: () {
-          setState(() {
-            saving = true;
-            buttonColor = Colors.blueGrey;
-          });
-          updateMe(
-            client,
-            Input$IContact(
-              first_name: fields[0]['first_name']?['controller'].text,
-              last_name: fields[0]['last_name']?['controller'].text,
-              email: fields[1]['email']?['controller'].text,
-              phone_primary: fields[2]['phone_primary']?['controller'].text,
-              street: fields[3]['street']?['controller'].text,
-              housenumber: fields[3]['housenumber']?['controller'].text,
-              housenumber_addition:
-                  fields[3]['housenumber_addition']?['controller'].text,
-              zipcode: fields[3]['zipcode']?['controller'].text,
-              city: fields[3]['city']?['controller'].text,
-            ),
-          ).then((data) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Updateverzoek verstuurd')),
-            );
-            setState(() {
-              saving = false;
-              buttonColor = Colors.blue;
+              setState(() {
+                saving = false;
+                buttonColor = Colors.blue;
+              });
+            }).onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text('Updateverzoek mislukt, melding gemaakt.'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.red;
+              });
             });
-          }).onError((error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Updateverzoek mislukt, melding gemaakt.'),
-            ));
-            setState(() {
-              saving = false;
-              buttonColor = Colors.red;
-            });
-          });
-        },
-        child: saving
-            ? const SizedBox(
-                height: 10,
-                width: 10,
-                child: CircularProgressIndicator(color: Colors.white),
-              ).center().padding(all: 10)
-            : const Text('Opslaan'),
-      ).padding(all: 5),
-      const Text(
-        '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-        style: TextStyle(color: Colors.blueGrey, fontSize: 11),
-      ),
-      const Divider(
-        height: 32,
-      ),
-      GestureDetector(
-        onTap: () {
-          Provider.of<AuthModel>(context, listen: false).logout();
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
-            Text('Uitloggen', style: TextStyle(color: Colors.red)),
-          ],
+          },
+          child: saving
+              ? const SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ).center().padding(all: 10)
+              : const Text('Opslaan'),
+        ).padding(all: 5),
+        const Text(
+          '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
+          style: TextStyle(color: Colors.blueGrey, fontSize: 11),
         ),
-      ),
-    ]);
+        const Divider(
+          height: 32,
+        ),
+        GestureDetector(
+          onTap: () {
+            Provider.of<AuthModel>(context, listen: false).logout();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              Text('Uitloggen', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
