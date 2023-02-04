@@ -21,18 +21,15 @@ class _ForgotFormCard extends StatelessWidget {
       ).padding(all: 10),
       [
         ElevatedButton(
-                child: const Text('Ga naar de website'),
-                onPressed: () =>
-                    Routemaster.of(context).push('/forgot/webview'))
-            .height(54)
-            .padding(all: 10)
-            .expanded(),
+          child: const Text('Ga naar de website'),
+          onPressed: () => Routemaster.of(context).push('/forgot/webview'),
+        ).height(54).padding(all: 10).expanded(),
         ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-            child: const Icon(Icons.arrow_back),
-            onPressed: () =>
-                Routemaster.of(context).pop()).height(54).padding(all: 10)
-      ].toRow()
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+          child: const Icon(Icons.arrow_back),
+          onPressed: () => Routemaster.of(context).pop(),
+        ).height(54).padding(all: 10),
+      ].toRow(),
     ]
         .toColumn()
         .padding(all: 20)
@@ -58,13 +55,14 @@ class ForgotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: null,
-        backgroundColor: Colors.lightBlue,
-        body: <Widget>[
-          const LogoWidget(image: Images.appLogo).padding(bottom: 10),
-          _ForgotFormCard(
-            loginCallback: loginCallback,
-          )
-        ].toColumn(mainAxisAlignment: MainAxisAlignment.center));
+      appBar: null,
+      backgroundColor: Colors.lightBlue,
+      body: <Widget>[
+        const LogoWidget(image: Images.appLogo).padding(bottom: 10),
+        _ForgotFormCard(
+          loginCallback: loginCallback,
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+    );
   }
 }

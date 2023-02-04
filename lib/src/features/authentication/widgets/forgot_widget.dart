@@ -40,43 +40,40 @@ class _ForgotFormState extends State<ForgotForm> {
               .padding(all: 10)
           : Container(),
       Form(
-          key: _formKey,
-          child: <Widget>[
-            TextFormField(
-              controller: _username,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
-              ],
-              obscureText: false,
-              autocorrect: false,
-              enableSuggestions: false,
-              textCapitalization: TextCapitalization.none,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Njord-account',
-              ),
-            ).padding(all: 10),
-          ].toColumn(mainAxisSize: MainAxisSize.min)),
+        key: _formKey,
+        child: <Widget>[
+          TextFormField(
+            controller: _username,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
+            ],
+            obscureText: false,
+            autocorrect: false,
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.none,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Njord-account',
+            ),
+          ).padding(all: 10),
+        ].toColumn(mainAxisSize: MainAxisSize.min),
+      ),
       <Widget>[
         ElevatedButton(
-                onPressed: () => forgot(auth, graphql),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                child: const Text('Wachtwoord vergeten'))
-            .height(54)
-            .padding(all: 10)
-            .expanded(),
+          onPressed: () => forgot(auth, graphql),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+          ),
+          child: const Text('Wachtwoord vergeten'),
+        ).height(54).padding(all: 10).expanded(),
         ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-                onPressed: () {
-                  Routemaster.of(context).pop();
-                },
-                child: const Icon(Icons.arrow_back))
-            .height(54)
-            .padding(all: 10)
-      ].toRow()
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+          onPressed: () {
+            Routemaster.of(context).pop();
+          },
+          child: const Icon(Icons.arrow_back),
+        ).height(54).padding(all: 10),
+      ].toRow(),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: 20)

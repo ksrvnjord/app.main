@@ -4,9 +4,11 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AnnouncementBodyWidget extends StatelessWidget {
-  const AnnouncementBodyWidget(
-      {Key? key, required this.title, required this.text})
-      : super(key: key);
+  const AnnouncementBodyWidget({
+    Key? key,
+    required this.title,
+    required this.text,
+  }) : super(key: key);
 
   final String title;
   final String text;
@@ -28,7 +30,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
             }
           },
         ),
-      )
+      ),
     ].toColumn();
   }
 }

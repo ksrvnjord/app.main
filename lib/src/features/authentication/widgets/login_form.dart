@@ -35,64 +35,62 @@ class _LoginFormState extends State<LoginForm> {
 
     return <Widget>[
       AnimatedBuilder(
-          animation: auth,
-          builder: (_, __) {
-            if (auth.error != '') {
-              return Text(auth.error, style: const TextStyle(color: Colors.red))
-                  .padding(all: 10);
-            }
+        animation: auth,
+        builder: (_, __) {
+          if (auth.error != '') {
+            return Text(auth.error, style: const TextStyle(color: Colors.red))
+                .padding(all: 10);
+          }
 
-            return Container();
-          }),
+          return Container();
+        },
+      ),
       Form(
-          key: _formKey,
-          child: <Widget>[
-            TextFormField(
-              controller: _username,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
-              ],
-              obscureText: false,
-              autocorrect: false,
-              enableSuggestions: false,
-              textCapitalization: TextCapitalization.none,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Njord-account',
-              ),
-            ).padding(all: 10),
-            TextFormField(
-              controller: _password,
-              obscureText: true,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Wachtwoord',
-              ),
-            ).padding(all: 10)
-          ].toColumn(mainAxisSize: MainAxisSize.min)),
+        key: _formKey,
+        child: <Widget>[
+          TextFormField(
+            controller: _username,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
+            ],
+            obscureText: false,
+            autocorrect: false,
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.none,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Njord-account',
+            ),
+          ).padding(all: 10),
+          TextFormField(
+            controller: _password,
+            obscureText: true,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Wachtwoord',
+            ),
+          ).padding(all: 10),
+        ].toColumn(mainAxisSize: MainAxisSize.min),
+      ),
       <Widget>[
         ElevatedButton(
-                onPressed: () => login(auth, graphql),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                child: const Text('Inloggen'))
-            .height(54)
-            .padding(all: 10)
-            .expanded(),
+          onPressed: () => login(auth, graphql),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+          ),
+          child: const Text('Inloggen'),
+        ).height(54).padding(all: 10).expanded(),
         ElevatedButton(
-                onPressed: () {
-                  Routemaster.of(context).push('/forgot');
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueGrey)),
-                child: const Text('Vergeten'))
-            .height(54)
-            .padding(all: 10)
-            .expanded()
-      ].toRow()
+          onPressed: () {
+            Routemaster.of(context).push('/forgot');
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+          ),
+          child: const Text('Vergeten'),
+        ).height(54).padding(all: 10).expanded(),
+      ].toRow(),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: 20)

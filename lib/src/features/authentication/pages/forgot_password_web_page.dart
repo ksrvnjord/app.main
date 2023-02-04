@@ -23,14 +23,16 @@ class _ForgotWebPageState extends State<ForgotWebPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Wachtwoord vergeten'),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: const WebView(
-            initialUrl: 'https://heimdall.njord.nl/forgot-password'));
+      appBar: AppBar(
+        title: const Text('Wachtwoord vergeten'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: const WebView(
+        initialUrl: 'https://heimdall.njord.nl/forgot-password',
+      ),
+    );
   }
 }

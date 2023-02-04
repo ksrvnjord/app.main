@@ -17,7 +17,7 @@ class LoginDoneWidget extends StatelessWidget {
           onPressed: () {
             Routemaster.of(context).push('/');
           },
-        )
+        ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)

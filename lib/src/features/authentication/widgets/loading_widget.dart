@@ -10,9 +10,9 @@ class LoginLoadingWidget extends StatelessWidget {
       <Widget>[
         const CircularProgressIndicator(
           semanticsLabel: 'Trying to log in',
-        )
+        ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-      const Text('Zwanen aan het voeren...').padding(top: 20)
+      const Text('Zwanen aan het voeren...').padding(top: 20),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: 20)

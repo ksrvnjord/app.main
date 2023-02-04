@@ -25,14 +25,15 @@ class VaarverbodWidget extends StatelessWidget {
           r['status'] == true
               ? Icon(Icons.priority_high, color: fgColor).padding(all: 10)
               : Icon(Icons.favorite_outlined, color: fgColor).padding(all: 10),
-          Text(r['message'],
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                      color: fgColor))
-              .padding(all: 10)
-              .expanded()
+          Text(
+            r['message'],
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+              color: fgColor,
+            ),
+          ).padding(all: 10).expanded(),
         ]
             .toRow()
             .card(color: bgColor, elevation: 0)

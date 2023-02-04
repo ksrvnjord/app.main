@@ -24,9 +24,12 @@ class AnnouncementsPage extends StatelessWidget {
       loading: [
         const LinearProgressIndicator(),
         const ShimmerWidget(
-                child: AnnouncementWidget(
-                    title: 'Loading', subtitle: 'Loading', text: ''))
-            .padding(all: 10),
+          child: AnnouncementWidget(
+            title: 'Loading',
+            subtitle: 'Loading',
+            text: '',
+          ),
+        ).padding(all: 10),
       ].toColumn(),
     );
   }

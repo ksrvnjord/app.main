@@ -17,16 +17,21 @@ class AnnouncementsHomeWidget extends StatelessWidget {
     var client = Provider.of<GraphQLModel>(context).client;
 
     return FutureWrapper<Query$Announcements?>(
-        future: announcements(0, client),
-        success: (data) {
-          return AnnouncementListWidget(
-              announcements: data!.announcements!.data);
-        },
-        loading: [
-          const ShimmerWidget(
-                  child: AnnouncementWidget(
-                      title: 'Loading', subtitle: 'Loading', text: ''))
-              .padding(all: 15),
-        ].toColumn());
+      future: announcements(0, client),
+      success: (data) {
+        return AnnouncementListWidget(
+          announcements: data!.announcements!.data,
+        );
+      },
+      loading: [
+        const ShimmerWidget(
+          child: AnnouncementWidget(
+            title: 'Loading',
+            subtitle: 'Loading',
+            text: '',
+          ),
+        ).padding(all: 15),
+      ].toColumn(),
+    );
   }
 }

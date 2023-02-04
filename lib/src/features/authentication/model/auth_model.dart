@@ -53,9 +53,12 @@ class AuthModel extends ChangeNotifier {
 
     try {
       client = await oauth2.resourceOwnerPasswordGrant(
-          globalConstants.oauthEndpoint(), username, password,
-          identifier: globalConstants.oauthId,
-          secret: globalConstants.oauthSecret);
+        globalConstants.oauthEndpoint(),
+        username,
+        password,
+        identifier: globalConstants.oauthId,
+        secret: globalConstants.oauthSecret,
+      );
     } catch (e) {
       error = e.toString();
       isBusy = false;
@@ -67,7 +70,9 @@ class AuthModel extends ChangeNotifier {
     if (client != null && client?.credentials != null) {
       isBusy = false;
       await _storage.write(
-          key: 'oauth2_credentials', value: client?.credentials.toJson());
+        key: 'oauth2_credentials',
+        value: client?.credentials.toJson(),
+      );
       notifyListeners();
 
       return true;
@@ -109,10 +114,12 @@ class AuthModel extends ChangeNotifier {
 
     try {
       // Get the token for the configured (constant) endpoint JWT
-      var response = await Dio().get(globalConstants.jwtEndpoint().toString(),
-          options: Options(headers: {
-            'Authorization': 'Bearer ${client?.credentials.accessToken}'
-          }));
+      var response = await Dio().get(
+        globalConstants.jwtEndpoint().toString(),
+        options: Options(headers: {
+          'Authorization': 'Bearer ${client?.credentials.accessToken}',
+        }),
+      );
 
       // The token is returned as JSON, decode it
       var data = json.decode(response.data);

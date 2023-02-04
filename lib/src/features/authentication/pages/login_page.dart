@@ -40,13 +40,14 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: null,
-        backgroundColor: Colors.lightBlue,
-        body: <Widget>[
-          const LogoWidget(image: Images.appLogo).padding(bottom: 10),
-          _LoginFormCard(
-            loginCallback: loginCallback,
-          )
-        ].toColumn(mainAxisAlignment: MainAxisAlignment.center));
+      appBar: null,
+      backgroundColor: Colors.lightBlue,
+      body: <Widget>[
+        const LogoWidget(image: Images.appLogo).padding(bottom: 10),
+        _LoginFormCard(
+          loginCallback: loginCallback,
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+    );
   }
 }
