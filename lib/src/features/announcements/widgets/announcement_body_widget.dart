@@ -15,6 +15,8 @@ class AnnouncementBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double spacingBetweenTitleAndText = 8;
+
     return ListView(
       children: [
         // show title of announcement emphasized
@@ -24,7 +26,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
-        ).padding(bottom: 8),
+        ).padding(bottom: spacingBetweenTitleAndText),
         MarkdownBody(
           data: text,
           onTapLink: (text, url, title) {
