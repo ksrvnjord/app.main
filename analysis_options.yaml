@@ -115,8 +115,8 @@ dart_code_metrics:
     - no-boolean-literal-compare
     - no-empty-block
     - no-equal-arguments
-    # - no-equal-then-else
-    # - no-magic-number
+    - no-equal-then-else
+    - no-magic-number
     # - no-object-declaration
     # - prefer-async-await
     # - prefer-conditional-expressions

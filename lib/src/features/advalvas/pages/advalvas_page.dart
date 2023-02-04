@@ -9,6 +9,8 @@ class AdValvasPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double padding = 25;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ad Valvas'),
@@ -33,8 +35,11 @@ class AdValvasPage extends StatelessWidget {
               },
             ),
           ),
-        ]).padding(horizontal: 25, top: 25, bottom: 15),
-        const Divider().padding(horizontal: 50),
+        ]).padding(all: padding),
+        const Divider(
+          indent: 50,
+          endIndent: 50,
+        ),
         const AnnouncementsPage(),
       ].toColumn(),
     );

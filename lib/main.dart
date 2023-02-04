@@ -40,11 +40,12 @@ Future<void> main() async {
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {
     // Run it inside of SentryFlutter, but log / except to the debug-app
+    const sampleRate = 0.1;
     await SentryFlutter.init(
       (options) {
         options.dsn =
             'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/3';
-        options.tracesSampleRate = 0.1;
+        options.tracesSampleRate = sampleRate;
       },
       appRunner: appRunner,
     );
