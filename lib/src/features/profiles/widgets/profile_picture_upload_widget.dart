@@ -17,8 +17,10 @@ class EditProfilePictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double profilePictureSize = 320;
+
     return ImagePickerWidget(
-      diameter: 300,
+      diameter: profilePictureSize,
       initialImage: initialImage.image,
       shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
       isEditable: true,
