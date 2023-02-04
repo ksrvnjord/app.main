@@ -57,9 +57,12 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
   void initState() {
     super.initState();
     if (widget.user != null) {
-      var keys = widget.user!.fullContact.public.toJson().keys.toList();
-      keys.removeLast();
-      keys.removeRange(0, 2);
+      var keys = widget.user!.fullContact.public.toJson().keys.toSet();
+      // User can't change visibility of these fields
+      keys.remove('first_name');
+      keys.remove('last_name');
+      keys.remove('__typename');
+
       final public = widget.user!.fullContact.public.toJson();
 
       for (String key in keys) {
@@ -73,6 +76,8 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
+    const double saveButtonPadding = 8;
+    const double pagePadding = 8;
 
     return [
       [
@@ -142,10 +147,10 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
                   height: 10,
                   width: 10,
                   child: CircularProgressIndicator(color: Colors.white),
-                ).center().padding(all: 10)
+                ).center().padding(all: saveButtonPadding)
               : const Text('Opslaan'),
         ).expanded(),
       ].toRow(),
-    ].toColumn().padding(all: 5);
+    ].toColumn().padding(all: pagePadding);
   }
 }
