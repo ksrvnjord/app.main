@@ -96,15 +96,18 @@ class _MeWidgetState extends State<MeWidget> {
     final contact = widget.user!.fullContact.private;
     final updated = widget.user!.fullContact.update;
 
+    // TODO: Size the fields dynamically?
     fields = [
       {
         'first_name': createInitialField(
+          // ignore: no-magic-number
           width: 1 / 2,
           label: 'Voornaam',
           initialValue: contact!.first_name ?? '',
           updatedValue: updated?.first_name,
         ),
         'last_name': createInitialField(
+          // ignore: no-magic-number
           width: 1 / 2,
           label: 'Achternaam',
           initialValue: contact.last_name ?? '',
@@ -129,19 +132,22 @@ class _MeWidgetState extends State<MeWidget> {
       },
       {
         'street': createInitialField(
-          width: 4 / 6,
+          // ignore: no-magic-number
+          width: 2 / 4,
           label: 'Straat',
           initialValue: contact.street ?? '',
           updatedValue: updated?.street,
         ),
         'housenumber': createInitialField(
-          width: 1 / 6,
+          // ignore: no-magic-number
+          width: 1 / 4,
           label: 'Huisnummer',
           initialValue: contact.housenumber ?? '',
           updatedValue: updated?.housenumber,
         ),
         'housenumber_addition': createInitialField(
-          width: 1 / 6,
+          // ignore: no-magic-number
+          width: 1 / 4,
           label: 'Toevoeging',
           initialValue: contact.housenumber_addition ?? '',
           updatedValue: updated?.housenumber_addition,
@@ -149,12 +155,14 @@ class _MeWidgetState extends State<MeWidget> {
       },
       {
         'zipcode': createInitialField(
+          // ignore: no-magic-number
           width: 1 / 3,
           label: 'Postcode',
           initialValue: contact.zipcode ?? '',
           updatedValue: updated?.zipcode,
         ),
         'city': createInitialField(
+          // ignore: no-magic-number
           width: 2 / 3,
           label: 'Plaats',
           initialValue: contact.city ?? '',
@@ -182,6 +190,11 @@ class _MeWidgetState extends State<MeWidget> {
     final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
     final client = Provider.of<GraphQLModel>(context).client;
 
+    const double fieldPadding = 8;
+
+    const double saveButtonPadding = 8;
+    const double onSaveButtonPadding = 8;
+
     return ListView(
       padding: const EdgeInsets.all(paddingBody),
       children: <Widget>[
@@ -192,12 +205,12 @@ class _MeWidgetState extends State<MeWidget> {
           decoration: const InputDecoration(labelText: 'Lidnummer'),
           enabled: false,
           initialValue: '${widget.user?.identifier}',
-        ).padding(all: 5),
+        ).padding(all: fieldPadding),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Njord-account'),
           enabled: false,
           initialValue: '${widget.user?.username}',
-        ).padding(all: 5),
+        ).padding(all: fieldPadding),
         ...fields.asMap().entries.map<Widget>((i) {
           int idx = i.key;
           final Map<String, Map<String, dynamic>> row = i.value;
@@ -222,7 +235,7 @@ class _MeWidgetState extends State<MeWidget> {
                               (label['initial'] != label['controller'].text);
                         });
                       },
-                    ).padding(all: 5);
+                    ).padding(all: fieldPadding);
                   }),
                 );
               })
@@ -274,9 +287,9 @@ class _MeWidgetState extends State<MeWidget> {
                   height: 10,
                   width: 10,
                   child: CircularProgressIndicator(color: Colors.white),
-                ).center().padding(all: 10)
+                ).center().padding(all: onSaveButtonPadding)
               : const Text('Opslaan'),
-        ).padding(all: 5),
+        ).padding(all: saveButtonPadding),
         const Text(
           '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
           style: TextStyle(color: Colors.blueGrey, fontSize: 11),
