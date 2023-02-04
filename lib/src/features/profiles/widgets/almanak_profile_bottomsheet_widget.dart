@@ -14,11 +14,26 @@ class AlmanakProfileBottomsheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double textPadding = 8;
+
+    const double labelSize = 16;
+    const double valueSize = 20;
+
     return [
-      Text(label, style: const TextStyle(color: Colors.blueGrey))
-          .padding(vertical: 10, bottom: 0),
-      Text(value, style: const TextStyle(fontWeight: FontWeight.w600))
-          .padding(all: 10, bottom: 20),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: labelSize,
+          color: Colors.blueGrey,
+        ),
+      ).padding(all: textPadding, bottom: 0),
+      Text(
+        value,
+        style: const TextStyle(
+          fontSize: valueSize,
+          fontWeight: FontWeight.w600,
+        ),
+      ).padding(all: textPadding, top: 0),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -31,7 +46,10 @@ class AlmanakProfileBottomsheetWidget extends StatelessWidget {
         onPressed: () =>
             Clipboard.setData(ClipboardData(text: value)).then((_) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tekst gekopieerd')),
+            const SnackBar(
+              backgroundColor: Colors.green,
+              content: Text('Tekst gekopieerd'),
+            ),
           );
         }),
       ),
