@@ -50,6 +50,7 @@ dart_code_metrics:
     - no-boolean-literal-compare
     - no-empty-block
     - prefer-trailing-comma
+    - avoid-cascade-after-if-null
     # - prefer-conditional-expressions
     # - no-equal-then-else
   rules-exclude:
