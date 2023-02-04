@@ -86,7 +86,7 @@ class AuthModel extends ChangeNotifier {
 
   Future<oauth2.Client?> boot() async {
     String? storedCreds = await _storage.read(key: 'oauth2_credentials');
-    dynamic credentials = jsonDecode(storedCreds ?? '{}');
+    Map<String, dynamic> credentials = jsonDecode(storedCreds ?? '{}');
 
     if (credentials['tokenEndpoint'] ==
         'https://heimdall-test.ksrv.nl/oauth/token') {

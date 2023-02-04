@@ -10,13 +10,13 @@ class VaarverbodWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<Response<dynamic>> vaarverbod =
+    Future<Response<Map<String, dynamic>>> vaarverbod =
         Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
 
     return FutureWrapper(
       future: vaarverbod,
       success: (data) {
-        Map<String, dynamic> r = data.data;
+        Map<String, dynamic> r = data.data!;
         final Color bgColor =
             r['status'] == true ? Colors.redAccent : Colors.lightBlue;
         final Color fgColor = r['status'] == true ? Colors.black : Colors.white;
