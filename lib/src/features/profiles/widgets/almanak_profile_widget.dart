@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakProfileWidget extends StatelessWidget {
