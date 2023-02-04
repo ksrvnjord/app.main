@@ -49,7 +49,8 @@ class AlmanakUserButtonWidget extends StatelessWidget {
           loading: ShimmerWidget(child: showDefaultProfilePicture()),
         ),
         title: Text(
-            '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}'),
+          '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
+        ),
         onTap: () {
           Routemaster.of(context).push('/almanak/${user.id}');
         },

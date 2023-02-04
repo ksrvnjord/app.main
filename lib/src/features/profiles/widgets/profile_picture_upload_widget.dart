@@ -26,7 +26,8 @@ class EditProfilePictureWidget extends StatelessWidget {
         try {
           await uploadMyProfilePicture(file);
           Fluttertoast.showToast(
-              msg: "Your profile picture was updated successfully");
+            msg: "Your profile picture was updated successfully",
+          );
         } on FirebaseException catch (e) {
           Fluttertoast.showToast(msg: "Error updating your profile picture");
           log(e.toString());

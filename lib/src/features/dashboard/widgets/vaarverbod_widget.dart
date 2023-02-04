@@ -40,18 +40,20 @@ class VaarverbodWidget extends StatelessWidget {
             .padding(all: 15, bottom: 0);
       },
       loading: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: <Widget>[
-            const Icon(Icons.downloading, color: Colors.white).padding(all: 10),
-          ]
-              .toRow()
-              .card(color: Colors.grey, elevation: 0)
-              .padding(all: 15, bottom: 0)),
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: <Widget>[
+          const Icon(Icons.downloading, color: Colors.white).padding(all: 10),
+        ]
+            .toRow()
+            .card(color: Colors.grey, elevation: 0)
+            .padding(all: 15, bottom: 0),
+      ),
       error: (error) {
         return const ErrorCardWidget(
-            errorMessage:
-                "Het is niet gelukt om het vaarverbod op te halen van de server. Heb je internet?");
+          errorMessage:
+              "Het is niet gelukt om het vaarverbod op te halen van de server. Heb je internet?",
+        );
       },
     );
   }

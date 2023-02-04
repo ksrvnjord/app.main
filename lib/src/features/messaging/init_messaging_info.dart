@@ -21,17 +21,25 @@ void initMessagingInfo() {
       htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('dbfood', 'dbfood',
-            importance: Importance.high,
-            styleInformation: bigTextStyleInformation,
-            priority: Priority.high,
-            playSound: true);
+        AndroidNotificationDetails(
+      'dbfood',
+      'dbfood',
+      importance: Importance.high,
+      styleInformation: bigTextStyleInformation,
+      priority: Priority.high,
+      playSound: true,
+    );
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: const DarwinNotificationDetails());
-    await flutterLocalNotificationsPlugin.show(0, message.notification?.title,
-        message.notification?.body, platformChannelSpecifics,
-        payload: message.data['title']);
+      android: androidPlatformChannelSpecifics,
+      iOS: const DarwinNotificationDetails(),
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      message.notification?.title,
+      message.notification?.body,
+      platformChannelSpecifics,
+      payload: message.data['title'],
+    );
   });
 }

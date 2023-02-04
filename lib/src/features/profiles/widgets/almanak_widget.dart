@@ -29,10 +29,12 @@ class _AlmanakWidgetState extends State<AlmanakWidget> {
         ),
       ).padding(all: 10),
       AnimatedBuilder(
-          animation: _search,
-          builder: (_, __) => AlmanakScrollingWidget(
-                  client: widget.client, search: _search.text)
-              .expanded())
+        animation: _search,
+        builder: (_, __) => AlmanakScrollingWidget(
+          client: widget.client,
+          search: _search.text,
+        ).expanded(),
+      ),
     ].toColumn();
   }
 }

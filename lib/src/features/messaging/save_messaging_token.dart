@@ -34,7 +34,7 @@ void saveMessagingToken() async {
           'createdTime': DateTime.now(),
           'token': token,
           'device': Platform.operatingSystem,
-          'lastUsed': DateTime.now()
+          'lastUsed': DateTime.now(),
         });
 
   // TODO: HACKED THIS HERE ATM, BUT NEEDS BETTER LIFECYCLE
