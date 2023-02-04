@@ -6,23 +6,28 @@ class LoginLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double textPadding = 16;
+    const double columnPadding = 16;
+    const double cardElevation = 8;
+    const double cardPadding = 16;
+
     return <Widget>[
       <Widget>[
         const CircularProgressIndicator(
           semanticsLabel: 'Trying to log in',
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-      const Text('Zwanen aan het voeren...').padding(top: 20),
+      const Text('Zwanen aan het voeren...').padding(top: textPadding),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
-        .padding(all: 20)
+        .padding(all: columnPadding)
         .card(
-          elevation: 10,
+          elevation: cardElevation,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         )
-        .padding(all: 12)
+        .padding(all: cardPadding)
         .alignment(Alignment.center);
   }
 }
