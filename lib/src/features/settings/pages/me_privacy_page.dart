@@ -21,18 +21,21 @@ class MePrivacyPage extends StatelessWidget {
     final result = me(client);
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Zichtbaarheid aanpassen'),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            automaticallyImplyLeading: true,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
-        body: FutureWrapper(
-            future: result,
-            success: (me) {
-              return MePrivacyWidget(me);
-            }));
+      appBar: AppBar(
+        title: const Text('Zichtbaarheid aanpassen'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: FutureWrapper(
+        future: result,
+        success: (me) {
+          return MePrivacyWidget(me);
+        },
+      ),
+    );
   }
 }
 
@@ -74,13 +77,14 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
     return [
       [
         Switch(
-            value: listed,
-            onChanged: (bool? value) {
-              setState(() {
-                listed = value!;
-              });
-            }),
-        const Text('Vindbaar in Almanak')
+          value: listed,
+          onChanged: (bool? value) {
+            setState(() {
+              listed = value!;
+            });
+          },
+        ),
+        const Text('Vindbaar in Almanak'),
       ].toRow(),
       const Divider(),
       ...(listed
@@ -96,49 +100,51 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
                       });
                     },
                   ),
-                  Text(key)
+                  Text(key),
                 ].toRow();
               },
             ).toList()
           : <Widget>[]),
       [
         ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-                onPressed: () {
-                  setState(() {
-                    saving = true;
-                    buttonColor = Colors.blueGrey;
-                  });
+          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          onPressed: () {
+            setState(() {
+              saving = true;
+              buttonColor = Colors.blueGrey;
+            });
 
-                  updatePublicContact(client, listed,
-                          Input$IBooleanContact.fromJson(checkboxes))
-                      .then((data) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Vindbaarheid aangepast')));
-                    setState(() {
-                      saving = false;
-                      buttonColor = Colors.blue;
-                    });
-                  }).onError((error, stackTrace) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Aanpassen mislukt, melding gemaakt.')));
-                    setState(() {
-                      saving = false;
-                      buttonColor = Colors.red;
-                    });
-                  });
-                },
-                child: saving
-                    ? const SizedBox(
-                            height: 10,
-                            width: 10,
-                            child:
-                                CircularProgressIndicator(color: Colors.white))
-                        .center()
-                        .padding(all: 10)
-                    : const Text('Opslaan'))
-            .expanded()
+            updatePublicContact(
+              client,
+              listed,
+              Input$IBooleanContact.fromJson(checkboxes),
+            ).then((data) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Vindbaarheid aangepast'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.blue;
+              });
+            }).onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text('Aanpassen mislukt, melding gemaakt.'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.red;
+              });
+            });
+          },
+          child: saving
+              ? const SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ).center().padding(all: 10)
+              : const Text('Opslaan'),
+        ).expanded(),
       ].toRow(),
     ].toColumn().padding(all: 5);
   }

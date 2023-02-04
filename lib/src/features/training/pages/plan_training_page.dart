@@ -90,7 +90,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
     User? firebaseUser = auth.currentUser;
     if (firebaseUser == null) {
       return const ErrorCardWidget(
-          errorMessage: 'Er is iets misgegaan met het inloggen');
+        errorMessage: 'Er is iets misgegaan met het inloggen',
+      );
     }
 
     widget.reservationObject.get().then((obj) {
@@ -98,7 +99,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         log('Reservation object is not available');
 
         return const ErrorCardWidget(
-            errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
+          errorMessage: 'Dit object is gemarkeerd als niet beschikbaar',
+        );
       }
     });
 
@@ -115,16 +117,18 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             reservationsRef // query all afschrijvingen van die dag van die boot
                 .where('object', isEqualTo: widget.reservationObject)
                 .where('startTime', isGreaterThanOrEqualTo: widget.date)
-                .where('startTime',
-                    isLessThanOrEqualTo:
-                        widget.date.add(const Duration(days: 1)))
+                .where(
+                  'startTime',
+                  isLessThanOrEqualTo: widget.date.add(const Duration(days: 1)),
+                )
                 .get(),
         error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         success: (snapshot) {
           List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
           DateTime earliestPossibleTime = widget.date.add(const Duration(
-              hours: 6)); // people can reservate starting at 06:00
+            hours: 6,
+          )); // people can reservate starting at 06:00
 
           DateTime latestPossibleTime =
               widget.date.add(const Duration(hours: 22));
@@ -141,7 +145,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               }
 
               return const ErrorCardWidget(
-                  errorMessage: "Deze tijd is al bezet");
+                errorMessage: "Deze tijd is al bezet",
+              );
             }
 
             if ((reservation.endTime.isBefore(_startTime) ||
@@ -217,8 +222,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
                   disabledTime: TimeRange(
-                      startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                      endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
+                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                  ),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
                   handlerRadius: 8,
@@ -229,17 +235,19 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                       _endTimeOfDay = value.endTime;
                       _startTimeOfDay = value.startTime;
                       _endTime = DateTime(
-                          widget.date.year,
-                          widget.date.month,
-                          widget.date.day,
-                          _endTimeOfDay.hour,
-                          _endTimeOfDay.minute);
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _endTimeOfDay.hour,
+                        _endTimeOfDay.minute,
+                      );
                       _startTime = DateTime(
-                          widget.date.year,
-                          widget.date.month,
-                          widget.date.day,
-                          _startTimeOfDay.hour,
-                          _startTimeOfDay.minute);
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _startTimeOfDay.hour,
+                        _startTimeOfDay.minute,
+                      );
                     });
                   }
                 });
@@ -247,40 +255,40 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               child: const Text("Wijzig tijden"),
             ).padding(all: 15),
             ElevatedButton(
-                    onPressed: () {
-                      createReservationCloud(Reservation(
-                        _startTime,
-                        _endTime,
-                        widget.reservationObject,
-                        firebaseUser.uid,
-                        widget.objectName,
-                        creatorName: creatorName,
-                      )).then((res) {
-                        if (res['success'] == true) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Afschrijving gelukt!'),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text("Afschrijving mislukt! ${res['error']}"),
-                            ),
-                          );
-                        }
-                        navigator.pop();
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlue),
-                    child: <Widget>[
-                      const Icon(LucideIcons.check).padding(bottom: 1),
-                      const Text('Afschrijven', style: TextStyle(fontSize: 18))
-                          .padding(vertical: 16)
-                    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween))
-                .padding(all: 16)
+              onPressed: () {
+                createReservationCloud(Reservation(
+                  _startTime,
+                  _endTime,
+                  widget.reservationObject,
+                  firebaseUser.uid,
+                  widget.objectName,
+                  creatorName: creatorName,
+                )).then((res) {
+                  if (res['success'] == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Afschrijving gelukt!'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Afschrijving mislukt! ${res['error']}"),
+                      ),
+                    );
+                  }
+                  navigator.pop();
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+              ),
+              child: <Widget>[
+                const Icon(LucideIcons.check).padding(bottom: 1),
+                const Text('Afschrijven', style: TextStyle(fontSize: 18))
+                    .padding(vertical: 16),
+              ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+            ).padding(all: 16),
           ].toColumn().padding(all: 16);
         },
       ),

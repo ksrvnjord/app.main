@@ -4,11 +4,12 @@ class AfschrijvingFilter {
   String icon;
   String type;
 
-  AfschrijvingFilter(
-      {required this.label,
-      required this.description,
-      required this.icon,
-      required this.type});
+  AfschrijvingFilter({
+    required this.label,
+    required this.description,
+    required this.icon,
+    required this.type,
+  });
 }
 
 Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
@@ -55,6 +56,6 @@ Future<List<AfschrijvingFilter>?> afschrijvingFilters() async {
       label: 'ruimtes',
       icon: '',
       type: 'Ruimtes',
-    )
+    ),
   ];
 }

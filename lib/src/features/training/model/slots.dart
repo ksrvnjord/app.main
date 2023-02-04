@@ -18,15 +18,18 @@ class Boot {
 }
 
 Future<List<Boot>?> reservedSlots(
-    List<String> filters, GraphQLClient client) async {
+  List<String> filters,
+  GraphQLClient client,
+) async {
   List<Boot> boats = [
     const Boot(name: 'Zephyr', label: 'vieren', slots: []),
     const Boot(name: 'Prins Hendrik', label: 'vieren', slots: []),
     const Boot(name: 'Cor Hulskes', label: 'vieren', slots: []),
     Boot(name: 'Cas', label: 'tweeen', slots: [
       Slot(
-          from: DateTime.now().add(const Duration(hours: 1)),
-          length: const Duration(hours: 3))
+        from: DateTime.now().add(const Duration(hours: 1)),
+        length: const Duration(hours: 3),
+      ),
     ]),
     const Boot(name: 'Mat', label: 'landtraining', slots: []),
   ];

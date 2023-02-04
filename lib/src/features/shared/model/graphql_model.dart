@@ -22,7 +22,8 @@ class GraphQLModel extends ChangeNotifier {
     final HttpLink httpLink = HttpLink('${globalConstants.baseURL}/graphql/');
 
     final AuthLink authLink = AuthLink(
-        getToken: () async => 'Bearer ${auth.client!.credentials.accessToken}');
+      getToken: () async => 'Bearer ${auth.client!.credentials.accessToken}',
+    );
 
     final Link link = authLink.concat(httpLink);
     final GraphQLClient client = GraphQLClient(
