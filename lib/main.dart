@@ -16,6 +16,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
+// ignore: no-empty-block
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> appRunner() async {

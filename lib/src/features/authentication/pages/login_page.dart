@@ -29,6 +29,7 @@ class _LoginFormCard extends StatelessWidget {
   }
 }
 
+// ignore: no-empty-block
 void dontCall(bool arg) {}
 
 class LoginPage extends StatelessWidget {

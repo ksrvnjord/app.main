@@ -47,6 +47,7 @@ class _ForgotFormCard extends StatelessWidget {
   }
 }
 
+// ignore: no-empty-block
 void dontCall(bool arg) {}
 
 class ForgotPage extends StatelessWidget {

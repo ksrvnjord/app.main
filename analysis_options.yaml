@@ -47,8 +47,8 @@ dart_code_metrics:
     - lib/**.graphql.dart
   rules:
     - newline-before-return
-#     - no-boolean-literal-compare
-    # - no-empty-block
+    - no-boolean-literal-compare
+    - no-empty-block
     # - prefer-trailing-comma
     # - prefer-conditional-expressions
     # - no-equal-then-else

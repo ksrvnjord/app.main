@@ -22,11 +22,8 @@ class _ForgotFormState extends State<ForgotForm> {
   String error = '';
   String message = '';
 
-  void forgot(AuthModel auth, GraphQLModel graphql) {
-    // auth.forgot(_username.text).then((result) {
-    //   widget.loginCallback(result);
-    // });
-  }
+  // ignore: no-empty-block
+  void forgot(AuthModel auth, GraphQLModel graphql) {}
 
   @override
   Widget build(BuildContext context) {
