@@ -30,7 +30,7 @@ linter:
 
 analyzer:
   exclude:
-    - lib/**.graphql.dart
+    - lib/**.graphql.dart # exclude generated files
   plugins:
     - dart_code_metrics
 
@@ -61,8 +61,8 @@ dart_code_metrics:
     #   unit-type: "EUR"
     # weight-of-class: 0.33
   metrics-exclude:
-    - test/**
-    - lib/**.graphql.dart
+    - test/** # we don't have any tests yet
+    - lib/**.graphql.dart # exclude generated files
   rules:
   # FLUTTER rules
     # - always-remove-listener
@@ -141,8 +141,8 @@ dart_code_metrics:
     - prefer-trailing-comma
     # - tag-name
   rules-exclude:
-    - test/**
-    - lib/**.graphql.dart
+    - test/** # exclude test files because we don't have any tests
+    - lib/**.graphql.dart # exclude generated files
   # anti-patterns:
   #   - long-method
   #   - long-parameter-list
