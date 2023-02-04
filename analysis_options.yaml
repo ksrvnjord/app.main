@@ -98,9 +98,9 @@ dart_code_metrics:
     # - avoid-non-null-assertion
     - avoid-passing-async-when-sync-expected
     - avoid-redundant-async
-    # - avoid-throw-in-catch-block
-    # - avoid-top-level-members-in-tests
-    # - avoid-unnecessary-conditionals
+    - avoid-throw-in-catch-block
+    - avoid-top-level-members-in-tests
+    - avoid-unnecessary-conditionals
     # - avoid-unnecessary-type-assertions
     # - avoid-unnecessary-type-casts
     # - avoid-unrelated-type-assertions

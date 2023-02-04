@@ -63,7 +63,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
       final public = widget.user!.fullContact.public.toJson();
 
       for (String key in keys) {
-        checkboxes[key] = (public[key] == '') ? false : true;
+        checkboxes[key] = !(public[key] == '');
       }
 
       listed = widget.user!.listed;
