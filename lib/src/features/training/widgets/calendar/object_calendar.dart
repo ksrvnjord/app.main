@@ -11,6 +11,8 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widget
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+import '../../model/reservation.dart';
+
 class ObjectCalendar extends StatefulWidget {
   final DateTime date;
   final QueryDocumentSnapshot<ReservationObject> boat;
@@ -32,8 +34,12 @@ class _ObjectCalendar extends State<ObjectCalendar> {
   late DateTime? reservation;
 
   // Create reference for query
-  CollectionReference reservationRef =
-      FirebaseFirestore.instance.collection('reservations');
+  CollectionReference<Reservation> reservationRef = FirebaseFirestore.instance
+      .collection('reservations')
+      .withConverter<Reservation>(
+        fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
+        toFirestore: (reservation, _) => reservation.toJson(),
+      );
 
   // Get current time
   DateTime now = DateTime.now();
@@ -154,7 +160,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                   .map((reservation) {
                     return CalendarReservation(
                       fragmentHeight: 32,
-                      data: reservation.data(),
+                      data: reservation.data().toJson(),
                       id: reservation.id,
                     );
                   })

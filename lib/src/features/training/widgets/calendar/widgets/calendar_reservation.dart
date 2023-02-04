@@ -5,12 +5,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CalendarReservation extends StatelessWidget {
   final int fragmentHeight;
-  final dynamic data;
+  final Map<String, dynamic> data;
   final String? id;
 
   const CalendarReservation({
     Key? key,
-    this.data,
+    required this.data,
     this.id,
     this.fragmentHeight = 32,
   }) : super(key: key);
