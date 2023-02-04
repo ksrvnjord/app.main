@@ -110,9 +110,11 @@ class TrainingDayList extends StatelessWidget {
                 child: Container(
                   width: 96,
                   height: (e.length.inMinutes / 30) * 32,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.blueAccent,
-                    border: Border.all(width: 4, color: Colors.white),
+                    border: Border.fromBorderSide(
+                      BorderSide(width: 4, color: Colors.white),
+                    ),
                   ),
                 ),
               );
