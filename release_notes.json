@@ -1,10 +1,10 @@
 [
     {
-        "language": "en-US",
-        "text": "In this release, we've made improvements to the user feedback when making a reservation. You will now see a confirmation message when you make a reservation."
+        "language": "nl-NL",
+        "text": "Sommige gebruikers ervaarden problemen met het maken van een nieuwe afschrijving. Nu krijgt u een melding als er een fout optreedt"
     },
     {
-        "language": "nl-NL",
-        "text": "In deze release hebben we verbeteringen aangebracht aan de gebruikersfeedback bij het maken van een reservering. U ziet nu een bevestigingsbericht wanneer u een reservering maakt."
+        "language": "en-US",
+        "text": "Some users experienced problems creating a new reservation. Now you will get a notification if an error occurs"
     }
 ]
