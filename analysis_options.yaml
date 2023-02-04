@@ -48,6 +48,7 @@ dart_code_metrics:
   rules:
     - newline-before-return
     - no-boolean-literal-compare
+    - avoid-collection-methods-with-unrelated-types
     - no-empty-block
     - prefer-trailing-comma
     - avoid-cascade-after-if-null
