@@ -62,11 +62,13 @@ class ForgotPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double logoPadding = 8;
+
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.lightBlue,
       body: <Widget>[
-        const LogoWidget(image: Images.appLogo).padding(bottom: 10),
+        const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
         _ForgotFormCard(
           loginCallback: loginCallback,
         ),
