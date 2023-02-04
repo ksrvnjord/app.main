@@ -67,11 +67,11 @@ dart_code_metrics:
   # FLUTTER rules
     # - always-remove-listener
     - avoid-border-all
-    # - avoid-expanded-as-spacer
+    - avoid-expanded-as-spacer
     # - avoid-returning-widgets
     # - avoid-shrink-wrap-in-lists
-    # - avoid-unnecessary-setstate
-    # - avoid-wrapping-in-padding
+    - avoid-unnecessary-setstate
+    - avoid-wrapping-in-padding
     # - check-for-equals-in-render-object-setters
     # - consistent-update-render-object
     # - prefer-const-border-radius
