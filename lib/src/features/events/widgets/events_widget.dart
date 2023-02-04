@@ -73,7 +73,7 @@ class MeetingDataSource extends CalendarDataSource {
   }
 
   Meeting _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
+    final Meeting? meeting = appointments![index];
     late final Meeting meetingData;
     if (meeting is Meeting) {
       meetingData = meeting;
