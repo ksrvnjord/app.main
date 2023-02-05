@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 
-class AnnouncementsHomeWidget extends StatelessWidget {
-  const AnnouncementsHomeWidget({Key? key}) : super(key: key);
+class AnnouncementsWidget extends StatelessWidget {
+  const AnnouncementsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

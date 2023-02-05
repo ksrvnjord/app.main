@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
       ),
       body: <Widget>[
         const VaarverbodWidget(),
-        const AnnouncementsHomeWidget(),
+        const AnnouncementsWidget(),
       ].toColumn(),
     );
   }
