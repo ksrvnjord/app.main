@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
 
+// Maybe different file per class?
+// ignore: prefer-match-file-name
 class FadePage extends Page {
   final Widget child;
 
@@ -31,6 +33,9 @@ class SlideLTRPage extends Page {
   @override
   Route createRoute(BuildContext context) {
     return PageTransition(
-        child: child, type: PageTransitionType.leftToRight, settings: this);
+      child: child,
+      type: PageTransitionType.leftToRight,
+      settings: this,
+    );
   }
 }

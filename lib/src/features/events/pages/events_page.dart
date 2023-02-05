@@ -15,18 +15,19 @@ class EventsPage extends StatelessWidget {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Agenda'),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: FutureWrapper(
-          future: events(client),
-          success: (data) {
-            return EventsWidget(data: data);
-          },
-        ));
+      appBar: AppBar(
+        title: const Text('Agenda'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: FutureWrapper(
+        future: events(client),
+        success: (data) {
+          return EventsWidget(data: data);
+        },
+      ),
+    );
   }
 }

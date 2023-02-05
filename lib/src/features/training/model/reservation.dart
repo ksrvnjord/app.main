@@ -5,7 +5,7 @@ class Reservation {
   final DateTime endTime;
   final DocumentReference reservationObject;
   final String creator;
-  late DateTime createdAt;
+  late DateTime? createdAt;
   late String objectName;
   late String creatorName;
 
@@ -16,6 +16,7 @@ class Reservation {
     this.creator,
     this.objectName, {
     required this.creatorName,
+    this.createdAt,
   });
 
   static Reservation fromJson(Map<String, dynamic> json) {
@@ -26,22 +27,19 @@ class Reservation {
       json['creatorId'].toString(),
       json['objectName'].toString(),
       creatorName: json['creatorName'].toString(),
+      createdAt: (json['createdTime'] as Timestamp).toDate(),
     );
   }
 
-  Map<String, Object> toJson() {
-    Map<String, Object> map = {
-      'startTime': Timestamp.fromDate(startTime),
-      'endTime': Timestamp.fromDate(endTime),
-      'object': reservationObject,
-      'creatorId': creator,
-      'createdTime': Timestamp.fromDate(createdAt),
-      'objectName': objectName,
-      'creatorName': creatorName,
-    };
-
-    return map;
-  }
+  Map<String, Object> toJson() => {
+        'startTime': Timestamp.fromDate(startTime),
+        'endTime': Timestamp.fromDate(endTime),
+        'object': reservationObject,
+        'creatorId': creator,
+        if (createdAt != null) 'createdTime': Timestamp.fromDate(createdAt!),
+        'objectName': objectName,
+        'creatorName': creatorName,
+      };
 
   @override
   String toString() {

@@ -34,21 +34,25 @@ class AlmanakPage extends StatelessWidget {
 }
 
 Widget showMyProfilePictureWidgetIfAuthenticatedByFirebase(
-    BuildContext context) {
+  BuildContext context,
+) {
   if (FirebaseAuth.instance.currentUser != null) {
+    const profileIconSize = 48.0;
+
     return IconButton(
-      iconSize: 40,
+      iconSize: profileIconSize,
       icon: FutureWrapper(
-          future: getMyProfilePicture(),
-          success: (data) {
-            return data != null
-                ? CircleAvatar(
-                    backgroundImage: MemoryImage(data),
-                  )
-                : showDefaultProfilePicture();
-          },
-          loading: ShimmerWidget(child: showDefaultProfilePicture()),
-          error: (_) => showDefaultProfilePicture()),
+        future: getMyProfilePicture(),
+        success: (data) {
+          return data != null
+              ? CircleAvatar(
+                  backgroundImage: MemoryImage(data),
+                )
+              : showDefaultProfilePicture();
+        },
+        loading: ShimmerWidget(child: showDefaultProfilePicture()),
+        error: (_) => showDefaultProfilePicture(),
+      ),
       onPressed: () {
         Routemaster.of(context).push('edit');
       },

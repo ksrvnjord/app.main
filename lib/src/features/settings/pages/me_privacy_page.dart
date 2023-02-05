@@ -8,9 +8,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-double betweenFields = 20;
-double marginContainer = 5;
-double paddingBody = 15;
+const double betweenFields = 20;
+const double marginContainer = 5;
+const double paddingBody = 15;
 
 class MePrivacyPage extends StatelessWidget {
   const MePrivacyPage({Key? key}) : super(key: key);
@@ -21,18 +21,21 @@ class MePrivacyPage extends StatelessWidget {
     final result = me(client);
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Zichtbaarheid aanpassen'),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            automaticallyImplyLeading: true,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
-        body: FutureWrapper(
-            future: result,
-            success: (me) {
-              return MePrivacyWidget(me);
-            }));
+      appBar: AppBar(
+        title: const Text('Zichtbaarheid aanpassen'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: FutureWrapper(
+        future: result,
+        success: (me) {
+          return MePrivacyWidget(me);
+        },
+      ),
+    );
   }
 }
 
@@ -54,13 +57,16 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
   void initState() {
     super.initState();
     if (widget.user != null) {
-      var keys = widget.user!.fullContact.public.toJson().keys.toList();
-      keys.removeLast();
-      keys.removeRange(0, 2);
+      var keys = widget.user!.fullContact.public.toJson().keys.toSet();
+      // User can't change visibility of these fields
+      keys.remove('first_name');
+      keys.remove('last_name');
+      keys.remove('__typename');
+
       final public = widget.user!.fullContact.public.toJson();
 
       for (String key in keys) {
-        checkboxes[key] = (public[key] == '') ? false : true;
+        checkboxes[key] = !(public[key] == '');
       }
 
       listed = widget.user!.listed;
@@ -70,17 +76,20 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
+    const double saveButtonPadding = 8;
+    const double pagePadding = 8;
 
     return [
       [
         Switch(
-            value: listed,
-            onChanged: (bool? value) {
-              setState(() {
-                listed = value!;
-              });
-            }),
-        const Text('Vindbaar in Almanak')
+          value: listed,
+          onChanged: (bool? value) {
+            setState(() {
+              listed = value!;
+            });
+          },
+        ),
+        const Text('Vindbaar in Almanak'),
       ].toRow(),
       const Divider(),
       ...(listed
@@ -96,50 +105,52 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
                       });
                     },
                   ),
-                  Text(key)
+                  Text(key),
                 ].toRow();
               },
             ).toList()
           : <Widget>[]),
       [
         ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-                onPressed: () {
-                  setState(() {
-                    saving = true;
-                    buttonColor = Colors.blueGrey;
-                  });
+          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          onPressed: () {
+            setState(() {
+              saving = true;
+              buttonColor = Colors.blueGrey;
+            });
 
-                  updatePublicContact(client, listed,
-                          Input$IBooleanContact.fromJson(checkboxes))
-                      .then((data) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Vindbaarheid aangepast')));
-                    setState(() {
-                      saving = false;
-                      buttonColor = Colors.blue;
-                    });
-                  }).onError((error, stackTrace) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Aanpassen mislukt, melding gemaakt.')));
-                    setState(() {
-                      saving = false;
-                      buttonColor = Colors.red;
-                    });
-                  });
-                },
-                child: saving
-                    ? const SizedBox(
-                            height: 10,
-                            width: 10,
-                            child:
-                                CircularProgressIndicator(color: Colors.white))
-                        .center()
-                        .padding(all: 10)
-                    : const Text('Opslaan'))
-            .expanded()
+            updatePublicContact(
+              client,
+              listed,
+              Input$IBooleanContact.fromJson(checkboxes),
+            ).then((data) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Vindbaarheid aangepast'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.blue;
+              });
+            }).onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text('Aanpassen mislukt, melding gemaakt.'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.red;
+              });
+            });
+          },
+          child: saving
+              ? const SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ).center().padding(all: saveButtonPadding)
+              : const Text('Opslaan'),
+        ).expanded(),
       ].toRow(),
-    ].toColumn().padding(all: 5);
+    ].toColumn().padding(all: pagePadding);
   }
 }

@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
-import '../../shared/widgets/error.dart';
+import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -19,8 +19,8 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
 // HELP: What to do with these 'constants'. Maybe make a separate file to store them?
-FirebaseFirestore db = FirebaseFirestore.instance;
-FirebaseFunctions functions =
+final FirebaseFirestore db = FirebaseFirestore.instance;
+final FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'europe-west1');
 final CollectionReference<Reservation> reservationsRef = db
     .collection('reservations')
@@ -36,7 +36,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 
-FirebaseAuth auth = FirebaseAuth.instance;
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 class PlanTrainingPage extends StatefulWidget {
   final DocumentReference reservationObject;
@@ -64,6 +64,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late TimeOfDay _startTimeOfDay; // Selected start time of the slider
   late TimeOfDay _endTimeOfDay; // Selected end time of the slider
 
+  static const intervalOfSelector = Duration(minutes: 30);
+  static const minimumReservationDuration = Duration(minutes: 30);
+
   @override
   void initState() {
     super.initState();
@@ -90,7 +93,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
     User? firebaseUser = auth.currentUser;
     if (firebaseUser == null) {
       return const ErrorCardWidget(
-          errorMessage: 'Er is iets misgegaan met het inloggen');
+        errorMessage: 'Er is iets misgegaan met het inloggen',
+      );
     }
 
     widget.reservationObject.get().then((obj) {
@@ -98,7 +102,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         log('Reservation object is not available');
 
         return const ErrorCardWidget(
-            errorMessage: 'Dit object is gemarkeerd als niet beschikbaar');
+          errorMessage: 'Dit object is gemarkeerd als niet beschikbaar',
+        );
       }
     });
 
@@ -115,16 +120,18 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             reservationsRef // query all afschrijvingen van die dag van die boot
                 .where('object', isEqualTo: widget.reservationObject)
                 .where('startTime', isGreaterThanOrEqualTo: widget.date)
-                .where('startTime',
-                    isLessThanOrEqualTo:
-                        widget.date.add(const Duration(days: 1)))
+                .where(
+                  'startTime',
+                  isLessThanOrEqualTo: widget.date.add(const Duration(days: 1)),
+                )
                 .get(),
         error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         success: (snapshot) {
           List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
           DateTime earliestPossibleTime = widget.date.add(const Duration(
-              hours: 6)); // people can reservate starting at 06:00
+            hours: 6,
+          )); // people can reservate starting at 06:00
 
           DateTime latestPossibleTime =
               widget.date.add(const Duration(hours: 22));
@@ -141,7 +148,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               }
 
               return const ErrorCardWidget(
-                  errorMessage: "Deze tijd is al bezet");
+                errorMessage: "Deze tijd is al bezet",
+              );
             }
 
             if ((reservation.endTime.isBefore(_startTime) ||
@@ -165,6 +173,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           _endTimeOfDay =
               TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
 
+          const double fieldPadding = 16;
+          const double timeSelectorDialogHandlerRadius = 8;
+
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -174,7 +185,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
               initialValue: widget.objectName,
               style: const TextStyle(color: Colors.black54),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             TextFormField(
               enabled: false,
               decoration: const InputDecoration(
@@ -183,13 +194,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
               initialValue: DateFormat.yMMMMd().format(widget.date),
               style: const TextStyle(color: Colors.black54),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             // show text "Jouw trainingstijden" emphasize that this is the time
             // the user selected
             Text(
               'Jouw afschrijftijden',
               style: Theme.of(context).textTheme.titleLarge,
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             // show selected start and end time
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -204,95 +215,101 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   style: const TextStyle(fontSize: 20),
                 ),
               ],
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
 
             // show button to let user change start and end time
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+              ),
               onPressed: () {
                 showTimeRangePicker(
                   context: context,
                   fromText: 'Starttijd',
                   toText: 'Eindtijd',
-                  interval: const Duration(minutes: 30),
+                  interval: intervalOfSelector,
                   start: _startTimeOfDay,
                   end: _endTimeOfDay,
                   disabledTime: TimeRange(
-                      startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                      endTime: TimeOfDay.fromDateTime(earliestPossibleTime)),
+                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                  ),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
-                  handlerRadius: 8,
-                  minDuration: const Duration(minutes: 30),
+                  handlerRadius: timeSelectorDialogHandlerRadius,
+                  minDuration: minimumReservationDuration,
                 ).then((value) {
                   if (value != null) {
                     setState(() {
                       _endTimeOfDay = value.endTime;
                       _startTimeOfDay = value.startTime;
                       _endTime = DateTime(
-                          widget.date.year,
-                          widget.date.month,
-                          widget.date.day,
-                          _endTimeOfDay.hour,
-                          _endTimeOfDay.minute);
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _endTimeOfDay.hour,
+                        _endTimeOfDay.minute,
+                      );
                       _startTime = DateTime(
-                          widget.date.year,
-                          widget.date.month,
-                          widget.date.day,
-                          _startTimeOfDay.hour,
-                          _startTimeOfDay.minute);
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _startTimeOfDay.hour,
+                        _startTimeOfDay.minute,
+                      );
                     });
                   }
                 });
               },
               child: const Text("Wijzig tijden"),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             ElevatedButton(
-                    onPressed: () {
-                      createReservationCloud(Reservation(
-                        _startTime,
-                        _endTime,
-                        widget.reservationObject,
-                        firebaseUser.uid,
-                        widget.objectName,
-                        creatorName: creatorName,
-                      )).then((res) {
-                        if (res['success'] == true) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Afschrijving gelukt!'),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text("Afschrijving mislukt! ${res['error']}"),
-                            ),
-                          );
-                        }
-                        navigator.pop();
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlue),
-                    child: <Widget>[
-                      const Icon(LucideIcons.check).padding(bottom: 1),
-                      const Text('Afschrijven', style: TextStyle(fontSize: 18))
-                          .padding(vertical: 16)
-                    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween))
-                .padding(all: 16)
-          ].toColumn().padding(all: 16);
+              onPressed: () {
+                createReservationCloud(Reservation(
+                  _startTime,
+                  _endTime,
+                  widget.reservationObject,
+                  firebaseUser.uid,
+                  widget.objectName,
+                  creatorName: creatorName,
+                )).then((res) {
+                  if (res['success'] == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text('Afschrijving gelukt!'),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text("Afschrijving mislukt! ${res['error']}"),
+                      ),
+                    );
+                  }
+                  navigator.pop();
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+              ),
+              child: <Widget>[
+                const Icon(LucideIcons.check).padding(bottom: 1),
+                const Text('Afschrijven', style: TextStyle(fontSize: 18))
+                    .padding(vertical: fieldPadding),
+              ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+            ).padding(all: fieldPadding),
+          ].toColumn().padding(all: fieldPadding);
         },
       ),
     );
   }
 }
 
-Future<dynamic> createReservationCloud(Reservation r) async {
+Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {
   try {
-    final result = await functions
-        .httpsCallable('createReservation')
-        .call(<String, dynamic>{
+    final result = await functions.httpsCallable('createReservation').call({
       'startTime': r.startTime.toUtc().toIso8601String(),
       'endTime': r.endTime.toUtc().toIso8601String(),
       'object': r.reservationObject.path,

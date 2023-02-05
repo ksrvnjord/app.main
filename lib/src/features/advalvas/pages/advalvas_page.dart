@@ -9,6 +9,8 @@ class AdValvasPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double padding = 25;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ad Valvas'),
@@ -21,20 +23,24 @@ class AdValvasPage extends StatelessWidget {
       body: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.blue,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                color: Colors.white,
-                icon: const Icon(Icons.calendar_month),
-                onPressed: () {
-                  Routemaster.of(context).push('/ad-valvas/events');
-                },
-              )),
-        ]).padding(horizontal: 25, top: 25, bottom: 15),
-        const Divider().padding(horizontal: 50),
-        const AnnouncementsPage()
+            decoration: const ShapeDecoration(
+              color: Colors.blue,
+              shape: CircleBorder(),
+            ),
+            child: IconButton(
+              color: Colors.white,
+              icon: const Icon(Icons.calendar_month),
+              onPressed: () {
+                Routemaster.of(context).push('/ad-valvas/events');
+              },
+            ),
+          ),
+        ]).padding(all: padding),
+        const Divider(
+          indent: 50,
+          endIndent: 50,
+        ),
+        const AnnouncementsPage(),
       ].toColumn(),
     );
   }

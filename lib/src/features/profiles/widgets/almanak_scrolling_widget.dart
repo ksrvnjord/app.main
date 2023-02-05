@@ -10,9 +10,11 @@ class AlmanakScrollingWidget extends StatefulWidget {
   final GraphQLClient client;
   final String search;
 
-  const AlmanakScrollingWidget(
-      {Key? key, required this.client, this.search = ''})
-      : super(key: key);
+  const AlmanakScrollingWidget({
+    Key? key,
+    required this.client,
+    this.search = '',
+  }) : super(key: key);
 
   @override
   createState() => _AlmanakScrollingState();

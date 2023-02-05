@@ -20,6 +20,8 @@ import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
 
+// TODO: Use different file for this class?
+// ignore: prefer-match-file-name
 class RoutedPageTransition<T> extends Page {
   final Widget child;
   final pt.PageTransitionType transition;
@@ -121,9 +123,11 @@ final authenticationRoutes = RouteMap(
         ),
     '/forgot': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.fade,
-          child: ForgotPage(),
+          child: ForgotPasswordPage(),
         ),
     '/forgot/webview': (info) => const RoutedPageTransition(
-        child: ForgotWebPage(), transition: pt.PageTransitionType.rightToLeft)
+          child: ForgotPasswordWebPage(),
+          transition: pt.PageTransitionType.rightToLeft,
+        ),
   },
 );

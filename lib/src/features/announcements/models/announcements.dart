@@ -6,9 +6,10 @@ Future<Query$Announcements?> announcements(
   GraphQLClient client,
 ) async {
   final result = await client.query$Announcements(Options$Query$Announcements(
-      variables: Variables$Query$Announcements(
-    page: page ?? 0,
-  )));
+    variables: Variables$Query$Announcements(
+      page: page ?? 0,
+    ),
+  ));
 
   return result.parsedData;
 }

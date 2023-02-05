@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // async update shared preferences
 Future<void> updateUserMapCacheAsync(
-    String heimallId, GraphQLClient client) async {
+  String heimallId,
+  GraphQLClient client,
+) async {
   Query$AlmanakProfile$user? user = await almanakProfile(heimallId, client);
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString(heimallId, user!.identifier);
@@ -14,7 +16,9 @@ Future<void> updateUserMapCacheAsync(
 
 // Converts heimdall Id to user identifier
 Future<String?> getUserIdentifier(
-    GraphQLClient client, String heimallId) async {
+  GraphQLClient client,
+  String heimallId,
+) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? identifier = prefs.getString(heimallId);
 
