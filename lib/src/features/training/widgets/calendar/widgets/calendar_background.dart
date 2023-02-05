@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarBackground extends StatelessWidget {
-  final int fragmentHeight;
-
   const CalendarBackground({
     Key? key,
-    this.fragmentHeight = 32,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const int amountOfSlots = 33;
+    const double slotHeight = 32;
+
     return List.filled(
-      33,
+      amountOfSlots,
       const SizedBox(
-        height: 32,
+        height: slotHeight,
         child: Divider(
           color: Colors.grey,
         ),

@@ -146,7 +146,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             // Wrap the background in an AbsorbPointer, so that
             // it does not pass gestures through to the background
             child: const AbsorbPointer(
-              child: CalendarBackground(fragmentHeight: 32),
+              child: CalendarBackground(),
             ),
           ),
           // Wrap the reservations
