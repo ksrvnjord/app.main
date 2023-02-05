@@ -1,16 +1,16 @@
-class Slot {
+class Timeslot {
   final int id = 0;
   final DateTime from;
   final Duration length;
 
-  const Slot({required this.from, required this.length});
+  const Timeslot({required this.from, required this.length});
 }
 
 class Boot {
   final int id = 0;
   final String name;
   final String label;
-  final List<Slot> slots;
+  final List<Timeslot> slots;
 
   const Boot({required this.name, required this.label, required this.slots});
 }
@@ -23,7 +23,7 @@ Future<List<Boot>?> reservedSlots(
     const Boot(name: 'Prins Hendrik', label: 'vieren', slots: []),
     const Boot(name: 'Cor Hulskes', label: 'vieren', slots: []),
     Boot(name: 'Cas', label: 'tweeen', slots: [
-      Slot(
+      Timeslot(
         from: DateTime.now().add(const Duration(hours: 1)),
         length: const Duration(hours: 3),
       ),
