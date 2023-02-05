@@ -131,8 +131,10 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .where('startTime', isLessThanOrEqualTo: nowEnd)
         .get(const GetOptions(source: Source.serverAndCache));
 
+    const double calendarSlotWidth = 128;
+
     return SizedBox(
-      width: 128,
+      width: calendarSlotWidth,
       // Stack the elements over eachother
       child: Stack(
         children: [
@@ -159,7 +161,6 @@ class _ObjectCalendar extends State<ObjectCalendar> {
               return reservations.docs
                   .map((reservation) {
                     return CalendarReservation(
-                      fragmentHeight: 32,
                       data: reservation.data().toJson(),
                       id: reservation.id,
                     );

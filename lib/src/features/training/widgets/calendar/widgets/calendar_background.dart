@@ -12,7 +12,7 @@ class CalendarBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return List.filled(
-      32,
+      33,
       const SizedBox(
         height: 32,
         child: Divider(
