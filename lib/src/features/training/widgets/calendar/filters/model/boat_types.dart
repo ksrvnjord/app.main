@@ -1,4 +1,4 @@
-Map<String, List<String>> reservationObjectTypes = {
+const Map<String, List<String>> reservationObjectTypes = {
   'Binnen': [
     'Ruimtes', // In App
     'Ergometers', // Ecaptain
@@ -29,5 +29,5 @@ Map<String, List<String>> reservationObjectTypes = {
     'Scull riemen', // Ecaptain
     'Cox', // Ecaptain
     'Motorboot', // Ecaptain
-  ]
+  ],
 };

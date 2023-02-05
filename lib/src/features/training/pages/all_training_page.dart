@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
 import 'package:routemaster/routemaster.dart';
@@ -67,36 +66,40 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: days.length,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Afschrijven'),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-            actions: [
-              // show filter icon button to toggle filters
-              IconButton(
-                  onPressed: () => Routemaster.of(context).push('filters'),
-                  icon: const Icon(Icons.filter_list_alt))
-            ],
-            bottom: TabBar(
-              isScrollable: true,
-              labelColor: Colors.black,
-              labelStyle: const TextStyle(fontSize: 20),
-              unselectedLabelStyle: const TextStyle(fontSize: 16),
-              unselectedLabelColor: Colors.white60,
-              indicator: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
+      length: days.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Afschrijven'),
+          backgroundColor: Colors.lightBlue,
+          shadowColor: Colors.transparent,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+          actions: [
+            // show filter icon button to toggle filters
+            IconButton(
+              onPressed: () => Routemaster.of(context).push('filters'),
+              icon: const Icon(Icons.filter_list_alt),
+            ),
+          ],
+          bottom: TabBar(
+            isScrollable: true,
+            labelColor: Colors.black,
+            labelStyle: const TextStyle(fontSize: 20),
+            unselectedLabelStyle: const TextStyle(fontSize: 16),
+            unselectedLabelColor: Colors.white60,
+            indicator: BoxDecoration(
+              color: Colors.grey[50],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                // Valid case to have the same radius on both sides
+                // ignore: no-equal-arguments
+                topRight: Radius.circular(10),
               ),
             ),
             tabs: days
-                .map<Widget>((e) =>
-                    Tab(icon: null, text: DateFormat('E d MMM').format(e)))
+                .map<Widget>(
+                  (e) => Tab(icon: null, text: DateFormat('E d MMM').format(e)),
+                )
                 .toList(),
           ),
         ),
