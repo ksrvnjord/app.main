@@ -58,11 +58,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   @override
   void initState() {
     super.initState();
-    _filters = _prefs.then((SharedPreferences prefs) {
-      var fltrs = prefs.getStringList('afschrijf_filters') ?? ['Ruimtes'];
-
-      return fltrs;
-    });
+    _filters = _prefs.then((SharedPreferences prefs) =>
+        prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
   }
 
   @override

@@ -31,19 +31,15 @@ class Reservation {
     );
   }
 
-  Map<String, Object> toJson() {
-    Map<String, Object> map = {
-      'startTime': Timestamp.fromDate(startTime),
-      'endTime': Timestamp.fromDate(endTime),
-      'object': reservationObject,
-      'creatorId': creator,
-      if (createdAt != null) 'createdTime': Timestamp.fromDate(createdAt!),
-      'objectName': objectName,
-      'creatorName': creatorName,
-    };
-
-    return map;
-  }
+  Map<String, Object> toJson() => {
+        'startTime': Timestamp.fromDate(startTime),
+        'endTime': Timestamp.fromDate(endTime),
+        'object': reservationObject,
+        'creatorId': creator,
+        if (createdAt != null) 'createdTime': Timestamp.fromDate(createdAt!),
+        'objectName': objectName,
+        'creatorName': creatorName,
+      };
 
   @override
   String toString() {

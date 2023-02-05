@@ -252,8 +252,8 @@ class _MeWidgetState extends State<MeWidget> {
             updateMe(
               client,
               Input$IContact(
-                first_name: fields[0]['first_name']?['controller'].text,
-                last_name: fields[0]['last_name']?['controller'].text,
+                first_name: fields.first['first_name']?['controller'].text,
+                last_name: fields.first['last_name']?['controller'].text,
                 email: fields[1]['email']?['controller'].text,
                 phone_primary: fields[2]['phone_primary']?['controller'].text,
                 street: fields[3]['street']?['controller'].text,

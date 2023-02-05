@@ -130,10 +130,10 @@ dart_code_metrics:
     #     min-length: 3
     #     max-length: 40
     # - prefer-enums-by-name
-    # - prefer-first
-    # - prefer-immediate-return
-    # - prefer-iterable-of
-    # - prefer-last
+    - prefer-first
+    - prefer-immediate-return
+    - prefer-iterable-of
+    - prefer-last
     # - prefer-match-file-name
     # - prefer-moving-to-variable:
     #   - allowed-duplicated-chains: 3

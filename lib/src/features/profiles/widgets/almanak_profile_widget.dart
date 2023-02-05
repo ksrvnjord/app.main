@@ -49,7 +49,7 @@ class AlmanakProfileWidget extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(values[0]),
+            title: Text(values.first),
             backgroundColor: Colors.lightBlue,
             shadowColor: Colors.transparent,
             systemOverlayStyle:
