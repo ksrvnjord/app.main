@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:provider/provider.dart';

@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
-import '../../shared/widgets/error.dart';
+import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';

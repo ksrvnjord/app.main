@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/comparator_order.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/filters.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/afschrijving_filter.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -39,8 +39,10 @@ class CalendarFilterRow extends StatelessWidget {
                   bool bSelected = selectedFiltersSet.contains(b.type);
 
                   return aSelected == bSelected
-                      ? Order.preserve // if both (un)selected
-                      : (aSelected ? Order.aFirst : Order.bFirst);
+                      ? ComparatorOrder.preserve // if both (un)selected
+                      : (aSelected
+                          ? ComparatorOrder.aFirst
+                          : ComparatorOrder.bFirst);
                 });
 
                 return ListView(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_list_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class ShowTrainingPage extends StatelessWidget {
   final String id;

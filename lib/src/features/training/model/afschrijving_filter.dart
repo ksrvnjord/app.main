@@ -1,3 +1,5 @@
+
+
 class AfschrijvingFilter {
   String label;
   String description;
