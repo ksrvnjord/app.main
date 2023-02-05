@@ -10,20 +10,17 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //getting screen size
-    var size = MediaQuery.of(context).size;
+    const double landscapeImageHeightModifier = 0.05;
+    const double portraitImageHeightModifier = 0.1;
 
-    //calculating container width
-    double imageSize;
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      imageSize = (size.width * 0.1);
-    } else {
-      imageSize = (size.height * 0.2);
-    }
+    final double imageHeightModifier =
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? portraitImageHeightModifier
+            : landscapeImageHeightModifier;
 
     return Image.asset(
       image,
-      height: imageSize,
+      height: MediaQuery.of(context).size.width * imageHeightModifier,
     );
   }
 }
