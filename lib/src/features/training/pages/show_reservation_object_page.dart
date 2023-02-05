@@ -64,6 +64,8 @@ class ShowReservationObjectPage extends StatelessWidget {
       'Specifiek': Colors.pinkAccent,
     };
 
+    const double permissionChipSpacing = 4;
+
     return [
       if (obj.comment != null)
         Card(
@@ -101,7 +103,7 @@ class ShowReservationObjectPage extends StatelessWidget {
                 ),
               ),
               subtitle: Wrap(
-                spacing: 4,
+                spacing: permissionChipSpacing,
                 children: obj.permissions
                     .map((permission) => Chip(
                           label: Text(

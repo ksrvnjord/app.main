@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
@@ -43,8 +45,21 @@ class _CalendarOverview extends State<CalendarOverview> {
   @override
   Widget build(BuildContext context) {
     List<String> filters = widget.filters;
-    DateTime date = widget.date;
 
+    if (filters.isEmpty) {
+      const double iconPadding = 8;
+
+      return <Widget>[
+        const Icon(Icons.waves, color: Colors.blueGrey)
+            .padding(all: iconPadding),
+        const Text(
+          'Selecteer een categorie om te beginnen',
+          style: TextStyle(color: Colors.blueGrey),
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
+    }
+
+    DateTime date = widget.date;
     CollectionReference<ReservationObject> reservationObjectsRef =
         FirebaseFirestore.instance
             .collection('reservationObjects')
@@ -53,52 +68,35 @@ class _CalendarOverview extends State<CalendarOverview> {
                   ReservationObject.fromJson(snapshot.data()!),
               toFirestore: (reservation, _) => reservation.toJson(),
             );
-    if (filters.isNotEmpty) {
-      return FutureBuilder(
-        future: reservationObjectsRef
-            .where('type', whereIn: filters)
-            .where('available', isEqualTo: true)
-            .get(),
-        builder: (
-          BuildContext context,
-          AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot,
-        ) {
-          if (snapshot.hasError) {
-            return const Text('Laden ingeplande training niet mogelijk');
-          } else if (snapshot.data == null || snapshot.data?.docs == null) {
-            return <Widget>[
-              const Icon(Icons.waves, color: Colors.blueGrey).padding(all: 8),
-              const Text(
-                'Geen materiaal gevonden, breid filter uit',
-                style: TextStyle(color: Colors.blueGrey),
-              ),
-            ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
-          }
 
-          return Stack(
-            children: <Widget>[
-              _buildBoatAndReservationSlotsScrollView(
-                snapshot,
-                date,
-              ), // this builds the columns with the boats and the slots
-              _buildStickyTimeScrollView(), // this builds the time column on the left side
-            ],
-          );
-        },
-      );
-    } else {
-      return <Widget>[
-        const Icon(Icons.waves, color: Colors.blueGrey).padding(all: 8),
-        const Text(
-          'Geen materiaal gevonden, breid filter uit',
-          style: TextStyle(color: Colors.blueGrey),
-        ),
-      ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
-    }
+    return FutureWrapper(
+      future: reservationObjectsRef
+          .where('type', whereIn: filters)
+          .where('available', isEqualTo: true)
+          .get(),
+      success: (snapshot) {
+        return Stack(
+          children: <Widget>[
+            _buildBoatAndReservationSlotsScrollView(
+              snapshot,
+              date,
+            ), // this builds the columns with the boats and the slots
+            _buildStickyTimeScrollView(), // this builds the time column on the left side
+          ],
+        );
+      },
+      error: (error) {
+        return <Widget>[
+          const ErrorCardWidget(
+            errorMessage: "Er is iets misgegaan met het ophalen van de data",
+          ),
+        ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
+      },
+    );
   }
 
   SingleChildScrollView _buildBoatAndReservationSlotsScrollView(
-    AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot,
+    QuerySnapshot<ReservationObject> snapshot,
     DateTime date,
   ) {
     return SingleChildScrollView(
@@ -110,6 +108,9 @@ class _CalendarOverview extends State<CalendarOverview> {
 
   /// Builds the time column on the left side of the calendar
   SingleChildScrollView _buildStickyTimeScrollView() {
+    const double topLeftCornerHeight =
+        64; // so the time column doesn't overlap with the boat names
+
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       physics:
@@ -117,13 +118,13 @@ class _CalendarOverview extends State<CalendarOverview> {
       controller: timesController,
       child: Container(
         color: Colors.grey[50],
-        child: CalendarTime().padding(top: 64),
+        child: CalendarTime().padding(top: topLeftCornerHeight),
       ),
     );
   }
 
   Widget _buildVerticalScrollViewWithStickyHeader(
-    AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot,
+    QuerySnapshot<ReservationObject> snapshot,
     DateTime date,
   ) {
     return SingleChildScrollView(
@@ -143,32 +144,33 @@ class _CalendarOverview extends State<CalendarOverview> {
   }
 
   List<Widget> _buildReservationObjectName(
-    AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot,
+    QuerySnapshot<ReservationObject> snapshot,
   ) {
-    return snapshot.data!.docs.map<Widget>(showReservationObjectName).toList();
+    return snapshot.docs.map<Widget>(showReservationObjectName).toList();
   }
 
   List<Widget> _buildObjectCalendar(
-    AsyncSnapshot<QuerySnapshot<ReservationObject>> snapshot,
+    QuerySnapshot<ReservationObject> snapshot,
     DateTime date,
   ) {
-    return (snapshot.data != null
-            ? snapshot.data!.docs.map<Widget>((e) {
-                return ObjectCalendar(date: date, boat: e).border(
-                  left: 1,
-                  color: const Color.fromARGB(255, 223, 223, 223),
-                );
-              })
-            : [Container()])
-        .toList();
+    return snapshot.docs.map<Widget>((e) {
+      return ObjectCalendar(date: date, boat: e).border(
+        left: 1,
+        color: const Color.fromARGB(255, 223, 223, 223),
+      );
+    }).toList();
   }
 
   Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
     ReservationObject reservationObject = e.data();
 
+    const double boatButtonWidth = 128;
+    const double boatButtonHeight = 64;
+    const double boatButtonElevation = 4;
+
     return SizedBox(
-      width: 128,
-      height: 64,
+      width: boatButtonWidth,
+      height: boatButtonHeight,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Stack(
@@ -178,7 +180,7 @@ class _CalendarOverview extends State<CalendarOverview> {
               style: TextButton.styleFrom(
                 alignment: Alignment.center,
                 backgroundColor: Colors.white,
-                elevation: 4,
+                elevation: boatButtonElevation,
               ),
               onPressed: () => Routemaster.of(context).push(
                 'reservationObject/${e.id}',
