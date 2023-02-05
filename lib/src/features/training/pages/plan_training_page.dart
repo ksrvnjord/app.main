@@ -173,6 +173,9 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           _endTimeOfDay =
               TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
 
+          const double fieldPadding = 16;
+          const double timeSelectorDialogHandlerRadius = 8;
+
           return <Widget>[
             TextFormField(
               enabled: false,
@@ -182,7 +185,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
               initialValue: widget.objectName,
               style: const TextStyle(color: Colors.black54),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             TextFormField(
               enabled: false,
               decoration: const InputDecoration(
@@ -191,13 +194,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               ),
               initialValue: DateFormat.yMMMMd().format(widget.date),
               style: const TextStyle(color: Colors.black54),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             // show text "Jouw trainingstijden" emphasize that this is the time
             // the user selected
             Text(
               'Jouw afschrijftijden',
               style: Theme.of(context).textTheme.titleLarge,
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             // show selected start and end time
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -212,10 +215,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   style: const TextStyle(fontSize: 20),
                 ),
               ],
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
 
             // show button to let user change start and end time
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+              ),
               onPressed: () {
                 showTimeRangePicker(
                   context: context,
@@ -230,7 +236,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   ),
                   disabledColor: Colors.grey,
                   use24HourFormat: true,
-                  handlerRadius: 8,
+                  handlerRadius: timeSelectorDialogHandlerRadius,
                   minDuration: minimumReservationDuration,
                 ).then((value) {
                   if (value != null) {
@@ -256,7 +262,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 });
               },
               child: const Text("Wijzig tijden"),
-            ).padding(all: 15),
+            ).padding(all: fieldPadding),
             ElevatedButton(
               onPressed: () {
                 createReservationCloud(Reservation(
@@ -270,12 +276,14 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                   if (res['success'] == true) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
+                        backgroundColor: Colors.green,
                         content: Text('Afschrijving gelukt!'),
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        backgroundColor: Colors.red,
                         content: Text("Afschrijving mislukt! ${res['error']}"),
                       ),
                     );
@@ -289,10 +297,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               child: <Widget>[
                 const Icon(LucideIcons.check).padding(bottom: 1),
                 const Text('Afschrijven', style: TextStyle(fontSize: 18))
-                    .padding(vertical: 16),
+                    .padding(vertical: fieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-            ).padding(all: 16),
-          ].toColumn().padding(all: 16);
+            ).padding(all: fieldPadding),
+          ].toColumn().padding(all: fieldPadding);
         },
       ),
     );
