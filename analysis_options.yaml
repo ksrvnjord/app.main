@@ -134,7 +134,7 @@ dart_code_metrics:
     - prefer-immediate-return
     - prefer-iterable-of
     - prefer-last
-    # - prefer-match-file-name
+    - prefer-match-file-name
     # - prefer-moving-to-variable:
     #   - allowed-duplicated-chains: 3
     # - prefer-static-class

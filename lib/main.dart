@@ -54,6 +54,8 @@ Future<void> main() async {
   }
 }
 
+// Main is not a nice class name, but it is the main class of the app
+// ignore: prefer-match-file-name
 class Application extends StatelessWidget {
   const Application({Key? key}) : super(key: key);
 
