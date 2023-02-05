@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/widgets/done_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_done_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';

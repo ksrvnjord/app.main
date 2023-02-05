@@ -123,10 +123,10 @@ final authenticationRoutes = RouteMap(
         ),
     '/forgot': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.fade,
-          child: ForgotPage(),
+          child: ForgotPasswordPage(),
         ),
     '/forgot/webview': (info) => const RoutedPageTransition(
-          child: ForgotWebPage(),
+          child: ForgotPasswordWebPage(),
           transition: pt.PageTransitionType.rightToLeft,
         ),
   },

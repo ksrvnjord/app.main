@@ -55,10 +55,11 @@ class _ForgotFormCard extends StatelessWidget {
 // ignore: no-empty-block
 void dontCall(bool _) {}
 
-class ForgotPage extends StatelessWidget {
+class ForgotPasswordPage extends StatelessWidget {
   final void Function(bool) loginCallback;
 
-  const ForgotPage({Key? key, this.loginCallback = dontCall}) : super(key: key);
+  const ForgotPasswordPage({Key? key, this.loginCallback = dontCall})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

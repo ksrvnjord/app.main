@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class ForgotWebPage extends StatefulWidget {
-  const ForgotWebPage({super.key});
+class ForgotPasswordWebPage extends StatefulWidget {
+  const ForgotPasswordWebPage({super.key});
 
   @override
-  createState() => _ForgotWebPageState();
+  createState() => _ForgotPasswordWebPageState();
 }
 
-class _ForgotWebPageState extends State<ForgotWebPage> {
+class _ForgotPasswordWebPageState extends State<ForgotPasswordWebPage> {
   @override
   void initState() {
     super.initState();
