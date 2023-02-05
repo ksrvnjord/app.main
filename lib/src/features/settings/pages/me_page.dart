@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-double betweenFields = 20;
-double marginContainer = 5;
-double paddingBody = 15;
+const double betweenFields = 20;
+const double marginContainer = 5;
+const double paddingBody = 15;
 
 class MePage extends StatelessWidget {
   const MePage({Key? key}) : super(key: key);
@@ -23,36 +23,39 @@ class MePage extends StatelessWidget {
     var result = me(client);
 
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Jouw Njord-Account'),
-            actions: [
-              PopupMenuButton(
-                position: PopupMenuPosition.under,
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    onTap: () async {
-                      Routemaster.of(context).push('/settings/privacy');
-                    },
-                    child: const Center(child: Text('Zichtbaarheid Almanak')),
-                  )
-                ],
-              )
+      appBar: AppBar(
+        title: const Text('Jouw Njord-Account'),
+        actions: [
+          PopupMenuButton(
+            position: PopupMenuPosition.under,
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              PopupMenuItem(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                onTap: () {
+                  Routemaster.of(context).push('/settings/privacy');
+                },
+                child: const Center(child: Text('Zichtbaarheid Almanak')),
+              ),
             ],
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            automaticallyImplyLeading: true,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
-        body: FutureWrapper(
-            future: result,
-            success: (me) {
-              if (me == null) {
-                return Container();
-              }
+          ),
+        ],
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: FutureWrapper(
+        future: result,
+        success: (me) {
+          if (me == null) {
+            return Container();
+          }
 
-              return MeWidget(me);
-            }));
+          return MeWidget(me);
+        },
+      ),
+    );
   }
 }
 
@@ -93,67 +96,84 @@ class _MeWidgetState extends State<MeWidget> {
     final contact = widget.user!.fullContact.private;
     final updated = widget.user!.fullContact.update;
 
+    // TODO: Size the fields dynamically?
     fields = [
       {
         'first_name': createInitialField(
-            width: 1 / 2,
-            label: 'Voornaam',
-            initialValue: contact!.first_name ?? '',
-            updatedValue: updated?.first_name),
+          // ignore: no-magic-number
+          width: 1 / 2,
+          label: 'Voornaam',
+          initialValue: contact!.first_name ?? '',
+          updatedValue: updated?.first_name,
+        ),
         'last_name': createInitialField(
-            width: 1 / 2,
-            label: 'Achternaam',
-            initialValue: contact.last_name ?? '',
-            updatedValue: updated?.last_name),
+          // ignore: no-magic-number
+          width: 1 / 2,
+          label: 'Achternaam',
+          initialValue: contact.last_name ?? '',
+          updatedValue: updated?.last_name,
+        ),
       },
       {
         'email': createInitialField(
-            width: 1,
-            label: 'E-mailadres',
-            initialValue: contact.email ?? '',
-            updatedValue: updated?.email),
+          width: 1,
+          label: 'E-mailadres',
+          initialValue: contact.email ?? '',
+          updatedValue: updated?.email,
+        ),
       },
       {
         'phone_primary': createInitialField(
-            width: 1,
-            label: 'Telefoonnummer',
-            initialValue: contact.phone_primary ?? '',
-            updatedValue: updated?.phone_primary),
+          width: 1,
+          label: 'Telefoonnummer',
+          initialValue: contact.phone_primary ?? '',
+          updatedValue: updated?.phone_primary,
+        ),
       },
       {
         'street': createInitialField(
-            width: 4 / 6,
-            label: 'Straat',
-            initialValue: contact.street ?? '',
-            updatedValue: updated?.street),
+          // ignore: no-magic-number
+          width: 2 / 4,
+          label: 'Straat',
+          initialValue: contact.street ?? '',
+          updatedValue: updated?.street,
+        ),
         'housenumber': createInitialField(
-            width: 1 / 6,
-            label: 'Huisnummer',
-            initialValue: contact.housenumber ?? '',
-            updatedValue: updated?.housenumber),
+          // ignore: no-magic-number
+          width: 1 / 4,
+          label: 'Huisnummer',
+          initialValue: contact.housenumber ?? '',
+          updatedValue: updated?.housenumber,
+        ),
         'housenumber_addition': createInitialField(
-            width: 1 / 6,
-            label: 'Toevoeging',
-            initialValue: contact.housenumber_addition ?? '',
-            updatedValue: updated?.housenumber_addition),
+          // ignore: no-magic-number
+          width: 1 / 4,
+          label: 'Toevoeging',
+          initialValue: contact.housenumber_addition ?? '',
+          updatedValue: updated?.housenumber_addition,
+        ),
       },
       {
         'zipcode': createInitialField(
-            width: 1 / 3,
-            label: 'Postcode',
-            initialValue: contact.zipcode ?? '',
-            updatedValue: updated?.zipcode),
+          // ignore: no-magic-number
+          width: 1 / 3,
+          label: 'Postcode',
+          initialValue: contact.zipcode ?? '',
+          updatedValue: updated?.zipcode,
+        ),
         'city': createInitialField(
-            width: 2 / 3,
-            label: 'Plaats',
-            initialValue: contact.city ?? '',
-            updatedValue: updated?.city),
-      }
+          // ignore: no-magic-number
+          width: 2 / 3,
+          label: 'Plaats',
+          initialValue: contact.city ?? '',
+          updatedValue: updated?.city,
+        ),
+      },
     ];
     super.initState();
   }
 
-  TextStyle labelTextStyle(dynamic label) {
+  TextStyle labelTextStyle(Map<String, dynamic> label) {
     if (label['changed']) {
       return const TextStyle(color: Colors.blueAccent);
     }
@@ -167,120 +187,133 @@ class _MeWidgetState extends State<MeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final double rowWidth = MediaQuery.of(context).size.width - 2 * paddingBody;
+    final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
     final client = Provider.of<GraphQLModel>(context).client;
 
-    return ListView(padding: EdgeInsets.all(paddingBody), children: <Widget>[
-      Center(child: Container()),
-      const SizedBox(height: 10),
-      const SizedBox(height: 20),
-      TextFormField(
-              decoration: const InputDecoration(labelText: 'Lidnummer'),
-              enabled: false,
-              initialValue: '${widget.user?.identifier}')
-          .padding(all: 5),
-      TextFormField(
-              decoration: const InputDecoration(labelText: 'Njord-account'),
-              enabled: false,
-              initialValue: '${widget.user?.username}')
-          .padding(all: 5),
-      ...fields.asMap().entries.map<Widget>((i) {
-        int idx = i.key;
-        final row = i.value;
+    const double fieldPadding = 8;
 
-        return row.keys
-            .map<Widget>((key) {
-              dynamic label = row[key];
+    const double saveButtonPadding = 8;
+    const double onSaveButtonPadding = 8;
 
-              return SizedBox(
+    return ListView(
+      padding: const EdgeInsets.all(paddingBody),
+      children: <Widget>[
+        Center(child: Container()),
+        const SizedBox(height: 10),
+        const SizedBox(height: 20),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Lidnummer'),
+          enabled: false,
+          initialValue: '${widget.user?.identifier}',
+        ).padding(all: fieldPadding),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Njord-account'),
+          enabled: false,
+          initialValue: '${widget.user?.username}',
+        ).padding(all: fieldPadding),
+        ...fields.asMap().entries.map<Widget>((i) {
+          int idx = i.key;
+          final Map<String, Map<String, dynamic>> row = i.value;
+
+          return row.keys
+              .map<Widget>((key) {
+                Map<String, dynamic> label = row[key]!;
+
+                return SizedBox(
                   width: label['width'] * rowWidth,
                   child: Builder(builder: (_) {
                     return TextFormField(
-                        style: labelTextStyle(label),
-                        decoration: InputDecoration(
-                          labelText: label['display'] ?? '',
-                          labelStyle: labelTextStyle(label),
-                        ),
-                        controller: label['controller'],
-                        onChanged: (value) {
-                          setState(() {
-                            fields[idx][key]?['changed'] =
-                                (label['initial'] != label['controller'].text);
-                          });
-                        }).padding(all: 5);
-                  }));
-            })
-            .toList()
-            .toRow();
-      }).toList(),
-      ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-              onPressed: () {
-                setState(() {
-                  saving = true;
-                  buttonColor = Colors.blueGrey;
-                });
-                updateMe(
-                    client,
-                    Input$IContact(
-                      first_name: fields[0]['first_name']?['controller'].text,
-                      last_name: fields[0]['last_name']?['controller'].text,
-                      email: fields[1]['email']?['controller'].text,
-                      phone_primary:
-                          fields[2]['phone_primary']?['controller'].text,
-                      street: fields[3]['street']?['controller'].text,
-                      housenumber: fields[3]['housenumber']?['controller'].text,
-                      housenumber_addition:
-                          fields[3]['housenumber_addition']?['controller'].text,
-                      zipcode: fields[3]['zipcode']?['controller'].text,
-                      city: fields[3]['city']?['controller'].text,
-                    )).then((data) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Updateverzoek verstuurd')));
-                  setState(() {
-                    saving = false;
-                    buttonColor = Colors.blue;
-                  });
-                }).onError((error, stackTrace) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.red,
-                      content:
-                          Text('Updateverzoek mislukt, melding gemaakt.')));
-                  setState(() {
-                    saving = false;
-                    buttonColor = Colors.red;
-                  });
-                });
-              },
-              child: saving
-                  ? const SizedBox(
-                          height: 10,
-                          width: 10,
-                          child: CircularProgressIndicator(color: Colors.white))
-                      .center()
-                      .padding(all: 10)
-                  : const Text('Opslaan'))
-          .padding(all: 5),
-      const Text(
+                      style: labelTextStyle(label),
+                      decoration: InputDecoration(
+                        labelText: label['display'] ?? '',
+                        labelStyle: labelTextStyle(label),
+                      ),
+                      controller: label['controller'],
+                      onChanged: (value) {
+                        setState(() {
+                          fields[idx][key]?['changed'] =
+                              (label['initial'] != label['controller'].text);
+                        });
+                      },
+                    ).padding(all: fieldPadding);
+                  }),
+                );
+              })
+              .toList()
+              .toRow();
+        }).toList(),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          onPressed: () {
+            setState(() {
+              saving = true;
+              buttonColor = Colors.blueGrey;
+            });
+            updateMe(
+              client,
+              Input$IContact(
+                first_name: fields.first['first_name']?['controller'].text,
+                last_name: fields.first['last_name']?['controller'].text,
+                email: fields[1]['email']?['controller'].text,
+                phone_primary: fields[2]['phone_primary']?['controller'].text,
+                street: fields[3]['street']?['controller'].text,
+                housenumber: fields[3]['housenumber']?['controller'].text,
+                housenumber_addition:
+                    fields[3]['housenumber_addition']?['controller'].text,
+                zipcode: fields[3]['zipcode']?['controller'].text,
+                city: fields[3]['city']?['controller'].text,
+              ),
+            ).then((data) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Updateverzoek verstuurd')),
+              );
+              setState(() {
+                saving = false;
+                buttonColor = Colors.blue;
+              });
+            }).onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text('Updateverzoek mislukt, melding gemaakt.'),
+              ));
+              setState(() {
+                saving = false;
+                buttonColor = Colors.red;
+              });
+            });
+          },
+          child: saving
+              ? const SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ).center().padding(all: onSaveButtonPadding)
+              : const Text('Opslaan'),
+        ).padding(all: saveButtonPadding),
+        const Text(
           '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-          style: TextStyle(color: Colors.blueGrey, fontSize: 11)),
-      const Divider(
-        height: 32,
-      ),
-      GestureDetector(
+          style: TextStyle(color: Colors.blueGrey, fontSize: 11),
+        ),
+        const Divider(
+          height: 32,
+        ),
+        GestureDetector(
           onTap: () {
             Provider.of<AuthModel>(context, listen: false).logout();
           },
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                ),
-                Text('Uitloggen', style: TextStyle(color: Colors.red))
-              ])),
-    ]);
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.logout,
+                color: Colors.red,
+              ),
+              Text('Uitloggen', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

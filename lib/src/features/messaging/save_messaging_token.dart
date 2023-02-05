@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-FirebaseAuth auth = FirebaseAuth.instance;
-FirebaseMessaging messaging = FirebaseMessaging.instance;
+final FirebaseAuth auth = FirebaseAuth.instance;
+final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 void saveMessagingToken() async {
   String? token = await messaging.getToken();
@@ -34,7 +34,7 @@ void saveMessagingToken() async {
           'createdTime': DateTime.now(),
           'token': token,
           'device': Platform.operatingSystem,
-          'lastUsed': DateTime.now()
+          'lastUsed': DateTime.now(),
         });
 
   // TODO: HACKED THIS HERE ATM, BUT NEEDS BETTER LIFECYCLE

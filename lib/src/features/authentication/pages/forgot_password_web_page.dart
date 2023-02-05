@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class ForgotWebPage extends StatefulWidget {
-  const ForgotWebPage({super.key});
+class ForgotPasswordWebPage extends StatefulWidget {
+  const ForgotPasswordWebPage({super.key});
 
   @override
-  createState() => _ForgotWebPageState();
+  createState() => _ForgotPasswordWebPageState();
 }
 
-class _ForgotWebPageState extends State<ForgotWebPage> {
+class _ForgotPasswordWebPageState extends State<ForgotPasswordWebPage> {
   @override
   void initState() {
     super.initState();
@@ -23,14 +23,16 @@ class _ForgotWebPageState extends State<ForgotWebPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Wachtwoord vergeten'),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: const WebView(
-            initialUrl: 'https://heimdall.njord.nl/forgot-password'));
+      appBar: AppBar(
+        title: const Text('Wachtwoord vergeten'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: const WebView(
+        initialUrl: 'https://heimdall.njord.nl/forgot-password',
+      ),
+    );
   }
 }

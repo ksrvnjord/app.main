@@ -27,8 +27,10 @@ class _AllTrainingPage extends State<AllTrainingPage> {
       4; // user can book x days in the advance
 
   // Generate a list of the coming 14 days
-  List<DateTime> days = List.generate(amountOfDaysUserCanBookInAdvance,
-      (index) => DateTime.now().add(Duration(days: index)));
+  List<DateTime> days = List.generate(
+    amountOfDaysUserCanBookInAdvance,
+    (index) => DateTime.now().add(Duration(days: index)),
+  );
 
   Future<SharedPreferences> getPrefs() async {
     return await _prefs;
@@ -58,11 +60,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   @override
   void initState() {
     super.initState();
-    _filters = _prefs.then((SharedPreferences prefs) {
-      var fltrs = prefs.getStringList('afschrijf_filters') ?? ['Ruimtes'];
-
-      return fltrs;
-    });
+    _filters = _prefs.then((SharedPreferences prefs) =>
+        prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
   }
 
   @override
@@ -94,27 +93,30 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
               ),
-              tabs: days
-                  .map<Widget>((e) =>
-                      Tab(icon: null, text: DateFormat('E d MMM').format(e)))
-                  .toList(),
             ),
+            tabs: days
+                .map<Widget>((e) =>
+                    Tab(icon: null, text: DateFormat('E d MMM').format(e)))
+                .toList(),
           ),
-          body: [
-            TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: days
-                  .map<Widget>((date) => FutureWrapper(
+        ),
+        body: [
+          TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: days
+                .map<Widget>((date) => FutureWrapper(
                       future: _filters,
                       success: (filters) =>
-                          CalendarOverview(date: date, filters: filters)))
-                  .toList(),
-            ).expanded(),
-            CalendarFilterRow(
-              filters: _filters,
-              toggleFilter: toggleFilter,
-            )
-          ].toColumn(),
-        ));
+                          CalendarOverview(date: date, filters: filters),
+                    ))
+                .toList(),
+          ).expanded(),
+          CalendarFilterRow(
+            filters: _filters,
+            toggleFilter: toggleFilter,
+          ),
+        ].toColumn(),
+      ),
+    );
   }
 }

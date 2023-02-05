@@ -28,35 +28,36 @@ class TrainingListItem extends StatelessWidget {
     }
 
     return FutureBuilder<DocumentSnapshot>(
-        future: reservationObjectsRef.doc(reservation['object'].id).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Laden ingeplande training niet mogelijk');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container();
-          } else {
-            Map<String, dynamic> boat =
-                snapshot.data!.data() as Map<String, dynamic>;
+      future: reservationObjectsRef.doc(reservation['object'].id).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Laden ingeplande training niet mogelijk');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container();
+        } else {
+          Map<String, dynamic> boat =
+              snapshot.data!.data() as Map<String, dynamic>;
 
-            return ListTile(
-              tileColor: Colors.white,
-              title: Text(boat['name']),
-              subtitle: Text(trainingTimeFromTimestamps(reservation)),
-              leading: const Icon(
-                Icons.fitness_center,
-                color: Colors.blueGrey,
+          return ListTile(
+            tileColor: Colors.white,
+            title: Text(boat['name']),
+            subtitle: Text(trainingTimeFromTimestamps(reservation)),
+            leading: const Icon(
+              Icons.fitness_center,
+              color: Colors.blueGrey,
+            ),
+            trailing: IconButton(
+              onPressed: () => confirmDeleteReservation(context, reservation),
+              icon: const Icon(
+                Icons.cancel,
+                color: Color.fromARGB(255, 0xf8, 0x71, 0x71),
               ),
-              trailing: IconButton(
-                  onPressed: () =>
-                      confirmDeleteReservation(context, reservation),
-                  icon: const Icon(
-                    Icons.cancel,
-                    color: Color.fromARGB(255, 0xf8, 0x71, 0x71),
-                  )),
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 }

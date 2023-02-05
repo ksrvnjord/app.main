@@ -17,16 +17,19 @@ class EditProfilePictureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double profilePictureSize = 320;
+
     return ImagePickerWidget(
-      diameter: 300,
+      diameter: profilePictureSize,
       initialImage: initialImage.image,
       shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
       isEditable: true,
-      onChange: (File file) async {
+      onChange: (File file) {
         try {
-          await uploadMyProfilePicture(file);
+          uploadMyProfilePicture(file);
           Fluttertoast.showToast(
-              msg: "Your profile picture was updated successfully");
+            msg: "Your profile picture was updated successfully",
+          );
         } on FirebaseException catch (e) {
           Fluttertoast.showToast(msg: "Error updating your profile picture");
           log(e.toString());

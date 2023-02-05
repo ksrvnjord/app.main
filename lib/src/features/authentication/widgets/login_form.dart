@@ -21,7 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void login(AuthModel auth, GraphQLModel graphql) {
+  void login(AuthModel auth, GraphQLModel _) {
     auth.login(_username.text, _password.text).then((result) {
       // Also login to firebase.
       auth.firebase().then((_) => widget.loginCallback(result));
@@ -33,76 +33,84 @@ class _LoginFormState extends State<LoginForm> {
     final auth = Provider.of<AuthModel>(context);
     final graphql = Provider.of<GraphQLModel>(context);
 
+    const double errorTextPadding = 8;
+    const double textFormFieldPadding = 8;
+
+    const double buttonHeight = 54;
+    const double buttonPaddding = 8;
+
+    const double columnPadding = 16;
+    const double cardPadding = 16;
+    const double cardElevation = 8;
+
     return <Widget>[
       AnimatedBuilder(
-          animation: auth,
-          builder: (_, __) {
-            if (auth.error != '') {
-              return Text(auth.error, style: const TextStyle(color: Colors.red))
-                  .padding(all: 10);
-            }
+        animation: auth,
+        builder: (_, __) {
+          if (auth.error != '') {
+            return Text(auth.error, style: const TextStyle(color: Colors.red))
+                .padding(all: errorTextPadding);
+          }
 
-            return Container();
-          }),
+          return Container();
+        },
+      ),
       Form(
-          key: _formKey,
-          child: <Widget>[
-            TextFormField(
-              controller: _username,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
-              ],
-              obscureText: false,
-              autocorrect: false,
-              enableSuggestions: false,
-              textCapitalization: TextCapitalization.none,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Njord-account',
-              ),
-            ).padding(all: 10),
-            TextFormField(
-              controller: _password,
-              obscureText: true,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Wachtwoord',
-              ),
-            ).padding(all: 10)
-          ].toColumn(mainAxisSize: MainAxisSize.min)),
+        key: _formKey,
+        child: <Widget>[
+          TextFormField(
+            controller: _username,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
+            ],
+            obscureText: false,
+            autocorrect: false,
+            enableSuggestions: false,
+            textCapitalization: TextCapitalization.none,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Njord-account',
+            ),
+          ).padding(all: textFormFieldPadding),
+          TextFormField(
+            controller: _password,
+            obscureText: true,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Wachtwoord',
+            ),
+          ).padding(all: textFormFieldPadding),
+        ].toColumn(mainAxisSize: MainAxisSize.min),
+      ),
       <Widget>[
         ElevatedButton(
-                onPressed: () => login(auth, graphql),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                child: const Text('Inloggen'))
-            .height(54)
-            .padding(all: 10)
-            .expanded(),
+          onPressed: () => login(auth, graphql),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+          ),
+          child: const Text('Inloggen'),
+        ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         ElevatedButton(
-                onPressed: () {
-                  Routemaster.of(context).push('/forgot');
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueGrey)),
-                child: const Text('Vergeten'))
-            .height(54)
-            .padding(all: 10)
-            .expanded()
-      ].toRow()
+          onPressed: () {
+            Routemaster.of(context).push('/forgot');
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
+          ),
+          child: const Text('Vergeten'),
+        ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
+      ].toRow(),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
-        .padding(all: 20)
+        .padding(all: columnPadding)
         .card(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+          elevation: cardElevation,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         )
-        .padding(all: 12)
+        .padding(all: cardPadding)
         .alignment(Alignment.center);
   }
 }

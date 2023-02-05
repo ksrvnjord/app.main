@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_upload_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 
 final storage = FirebaseStorage.instance;
 

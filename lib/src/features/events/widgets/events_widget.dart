@@ -8,14 +8,16 @@ class EventsWidget extends StatelessWidget {
   final List<Query$CalendarItems$events?> data;
 
   static List<Meeting> mapResultToItems(
-      List<Query$CalendarItems$events?> events) {
+    List<Query$CalendarItems$events?> events,
+  ) {
     return events.map<Meeting>((e) {
       {
         return Meeting(
-            e!.toJson()['title'],
-            DateTime.parse(e.toJson()['start_time']),
-            DateTime.parse(e.toJson()['end_time']),
-            Colors.blue);
+          e!.toJson()['title'],
+          DateTime.parse(e.toJson()['start_time']),
+          DateTime.parse(e.toJson()['end_time']),
+          Colors.blue,
+        );
       }
     }).toList();
   }
@@ -23,21 +25,25 @@ class EventsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
-        view: CalendarView.schedule,
-        minDate: DateTime.now(),
-        maxDate: DateTime.now().add(const Duration(days: 365)),
-        dataSource: MeetingDataSource(mapResultToItems(data)),
-        scheduleViewSettings: const ScheduleViewSettings(
-            hideEmptyScheduleWeek: true,
-            monthHeaderSettings: MonthHeaderSettings(
-                monthFormat: 'MMM yyyy',
-                backgroundColor: Colors.transparent,
-                height: 60,
-                textAlign: TextAlign.center,
-                monthTextStyle: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold))));
+      view: CalendarView.schedule,
+      minDate: DateTime.now(),
+      maxDate: DateTime.now().add(const Duration(days: 365)),
+      dataSource: MeetingDataSource(mapResultToItems(data)),
+      scheduleViewSettings: const ScheduleViewSettings(
+        hideEmptyScheduleWeek: true,
+        monthHeaderSettings: MonthHeaderSettings(
+          monthFormat: 'MMM yyyy',
+          backgroundColor: Colors.transparent,
+          height: 60,
+          textAlign: TextAlign.center,
+          monthTextStyle: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -67,7 +73,7 @@ class MeetingDataSource extends CalendarDataSource {
   }
 
   Meeting _getMeetingData(int index) {
-    final dynamic meeting = appointments![index];
+    final Meeting? meeting = appointments![index];
     late final Meeting meetingData;
     if (meeting is Meeting) {
       meetingData = meeting;

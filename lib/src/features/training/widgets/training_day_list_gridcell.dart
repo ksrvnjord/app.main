@@ -21,16 +21,18 @@ class TrainingDayListGridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> boatPermissions = boat.get('permissions');
+    ReservationObject boatObj = boat.data();
+    List<String> boatPermissions = boatObj.permissions;
     Map<String, dynamic> userClaims = user.data!.claims!;
     if (forbiddenSlots.keys.contains(timestamp)) {
       String id = forbiddenSlots[timestamp]!;
 
       return GestureDetector(
-          onTap: () => Routemaster.of(context).push("/training/all/$id"),
-          child: Container(
-            color: Colors.grey,
-          ));
+        onTap: () => Routemaster.of(context).push("/training/all/$id"),
+        child: Container(
+          color: Colors.grey,
+        ),
+      );
     } else if (boatPermissions.isEmpty) {
       return TrainingDayListGridCellAllowed(boat: boat, timestamp: timestamp);
     } else if (boatPermissions
@@ -59,13 +61,14 @@ class TrainingDayListGridCellAllowed extends StatelessWidget {
     var navigator = Routemaster.of(context);
 
     return IconButton(
-        icon: const Icon(LucideIcons.plusCircle, size: 12, color: Colors.grey),
-        onPressed: () {
-          navigator.push('plan', queryParameters: {
-            'reservationObjectId': boat.id,
-            'reservationObjectName': boat.get('name'),
-            'startTime': timestamp.toIso8601String(),
-          });
+      icon: const Icon(LucideIcons.plusCircle, size: 12, color: Colors.grey),
+      onPressed: () {
+        navigator.push('plan', queryParameters: {
+          'reservationObjectId': boat.id,
+          'reservationObjectName': boat.get('name'),
+          'startTime': timestamp.toIso8601String(),
         });
+      },
+    );
   }
 }

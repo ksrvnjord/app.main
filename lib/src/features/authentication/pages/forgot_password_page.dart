@@ -13,57 +13,67 @@ class _ForgotFormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Implement in Heimdall
     // return const ForgotForm();
+    const double textPadding = 16;
+
+    const double buttonHeight = 54;
+    const double buttonPadding = 16;
+    const double cardElevation = 8;
+    const double cardOuterPadding = 16;
+    const double cardInnerPadding = 24;
+    const double textSize = 16;
 
     return [
       const Text(
         'Op dit moment kan een wachtwoord alleen gereset worden via de website',
         textAlign: TextAlign.center,
-      ).padding(all: 10),
+      ).fontSize(textSize).padding(vertical: textPadding),
       [
         ElevatedButton(
-                child: const Text('Ga naar de website'),
-                onPressed: () =>
-                    Routemaster.of(context).push('/forgot/webview'))
-            .height(54)
-            .padding(all: 10)
-            .expanded(),
+          child: const Text('Ga naar de website').fontSize(textSize),
+          onPressed: () => Routemaster.of(context).push('/forgot/webview'),
+        ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
-            child: const Icon(Icons.arrow_back),
-            onPressed: () =>
-                Routemaster.of(context).pop()).height(54).padding(all: 10)
-      ].toRow()
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+          child: const Icon(Icons.arrow_back),
+          onPressed: () => Routemaster.of(context).pop(),
+        ).height(buttonHeight),
+      ].toRow(),
     ]
         .toColumn()
-        .padding(all: 20)
+        .padding(all: cardInnerPadding)
         .card(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+          elevation: cardElevation,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
         )
-        .padding(all: 12)
+        .padding(all: cardOuterPadding)
         .alignment(Alignment.center);
   }
 }
 
-void dontCall(bool arg) {}
+// ignore: no-empty-block
+void dontCall(bool _) {}
 
-class ForgotPage extends StatelessWidget {
+class ForgotPasswordPage extends StatelessWidget {
   final void Function(bool) loginCallback;
 
-  const ForgotPage({Key? key, this.loginCallback = dontCall}) : super(key: key);
+  const ForgotPasswordPage({Key? key, this.loginCallback = dontCall})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const double logoPadding = 8;
+
     return Scaffold(
-        appBar: null,
-        backgroundColor: Colors.lightBlue,
-        body: <Widget>[
-          const LogoWidget(image: Images.appLogo).padding(bottom: 10),
-          _ForgotFormCard(
-            loginCallback: loginCallback,
-          )
-        ].toColumn(mainAxisAlignment: MainAxisAlignment.center));
+      appBar: null,
+      backgroundColor: Colors.lightBlue,
+      body: <Widget>[
+        const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
+        _ForgotFormCard(
+          loginCallback: loginCallback,
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+    );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/widgets/done_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/widgets/loading_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_done_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +29,8 @@ class _LoginFormCard extends StatelessWidget {
   }
 }
 
-void dontCall(bool arg) {}
+// ignore: no-empty-block
+void dontCall(bool _) {}
 
 class LoginPage extends StatelessWidget {
   final void Function(bool) loginCallback;
@@ -38,14 +39,17 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double logoPadding = 8;
+
     return Scaffold(
-        appBar: null,
-        backgroundColor: Colors.lightBlue,
-        body: <Widget>[
-          const LogoWidget(image: Images.appLogo).padding(bottom: 10),
-          _LoginFormCard(
-            loginCallback: loginCallback,
-          )
-        ].toColumn(mainAxisAlignment: MainAxisAlignment.center));
+      appBar: null,
+      backgroundColor: Colors.lightBlue,
+      body: <Widget>[
+        const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
+        _LoginFormCard(
+          loginCallback: loginCallback,
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+    );
   }
 }
