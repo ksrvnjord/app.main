@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
 
+// Maybe different file per class?
+// ignore: prefer-match-file-name
 class FadePage extends Page {
   final Widget child;
 
