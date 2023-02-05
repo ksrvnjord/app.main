@@ -14,29 +14,25 @@ class CalendarTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double timeWidth = 64;
+    const double timeHeight = 32;
+
     return SizedBox(
-      width: 64,
+      width: timeWidth,
       child: timestamps
-          .map<Widget>((e) => SizedBox(
-                height: 32,
-                width: 64,
+          .map<Widget>((timestamp) => SizedBox(
+                height: timeHeight,
+                width: timeWidth,
                 child: Stack(children: [
-                  const SizedBox(
-                    height: 32,
-                    width: 4,
-                    child: Divider(
-                      color: Colors.grey,
-                    ),
-                  ).padding(left: 60),
-                  const SizedBox(
-                    height: 32,
-                    width: 4,
-                    child: Divider(
+                  Container(
+                    padding: const EdgeInsets.only(left: 60),
+                    height: timeHeight,
+                    child: const Divider(
                       color: Colors.grey,
                     ),
                   ),
                   Text(
-                    DateFormat('Hm').format(e),
+                    DateFormat('Hm').format(timestamp),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -48,8 +44,6 @@ class CalendarTime extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-    )
-        //.border(right: 1)
-        ;
+    );
   }
 }
