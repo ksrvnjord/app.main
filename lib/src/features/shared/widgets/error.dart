@@ -14,30 +14,18 @@ class ErrorCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color errorColor = Colors.red.shade800;
+    const double errorCardHeight = 100;
+    const double errorTitleFontSize = 18;
+    const double cardBorderWidth = 2;
 
     return GestureDetector(
-      // onTap: () {
-      //   const AlertDialog ad = AlertDialog(
-      //     content: Text("Dingen vragen hiero")
-      //   );
-
-      //   showDialog(context: context, builder: (BuildContext context) {
-      //     return ad;
-      //   });
-      // },s
       child: Container(
-        height: 100.0,
+        height: errorCardHeight,
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
-          border: Border.all(width: 2.0, color: errorColor),
+          border: Border.all(width: cardBorderWidth, color: errorColor),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-
-        // semanticContainer: false,
-        // elevation: 0,
-        // shape: RoundedRectangleBorder(
-        //       side: BorderSide(color: errorColor, width: 2),
-        //       borderRadius: BorderRadius.circular(10)),
         clipBehavior: Clip.antiAlias,
         child: Row(children: [
           Expanded(
@@ -54,7 +42,10 @@ class ErrorCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     "Er is iets misgegaan",
-                    style: TextStyle(color: errorColor, fontSize: 18),
+                    style: TextStyle(
+                      color: errorColor,
+                      fontSize: errorTitleFontSize,
+                    ),
                   ),
                   Expanded(
                     child: Container(
