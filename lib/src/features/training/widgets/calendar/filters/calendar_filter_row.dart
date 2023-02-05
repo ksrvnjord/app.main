@@ -19,8 +19,11 @@ class CalendarFilterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double filterHeight = 56;
+    const double filterTilePadding = 8;
+
     return SizedBox(
-      height: 64,
+      height: filterHeight,
       child: FutureWrapper(
         future: afschrijvingFilters(),
         success: (availableFilters) {
@@ -43,12 +46,11 @@ class CalendarFilterRow extends StatelessWidget {
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: availableFilters
-                      .map<Widget>((e) => CalendarFilterTile(
-                            label: e.description,
-                            selected: selectedFilters.contains(e.type),
-                            icon: e.icon,
-                            onPressed: () => toggleFilter(e.type),
-                          ).padding(all: 8))
+                      .map<Widget>((filter) => CalendarFilterTile(
+                            label: filter.description,
+                            selected: selectedFilters.contains(filter.type),
+                            onPressed: () => toggleFilter(filter.type),
+                          ).padding(all: filterTilePadding))
                       .toList(),
                 );
               },
