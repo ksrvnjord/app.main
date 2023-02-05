@@ -117,7 +117,7 @@ dart_code_metrics:
     - no-equal-arguments
     - no-equal-then-else
     - no-magic-number
-    # - no-object-declaration
+    - no-object-declaration
     # - prefer-async-await
     # - prefer-conditional-expressions
     # - prefer-commenting-analyzer-ignores

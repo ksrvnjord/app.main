@@ -5,11 +5,9 @@ class ErrorCardWidget extends StatelessWidget {
   const ErrorCardWidget({
     Key? key,
     required this.errorMessage,
-    this.causingError,
   }) : super(key: key);
 
   final String errorMessage;
-  final Object? causingError;
 
   @override
   Widget build(BuildContext context) {
