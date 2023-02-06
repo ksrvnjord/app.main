@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/model/boat_types.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -21,6 +23,8 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
   // List of filters active
   List<String> _filters = [];
 
+  final Map<String, List<String>> _activeFiltersMap = {};
+
   Future<void> _getFiltersFromPrefs() async {
     // retrieve the filters from SharedPreferences
     _sharedPrefs = await _prefsFuture;
@@ -32,9 +36,9 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
     }
   }
 
-  void removeFilter(String filter) {
+  void updateFilters(String category, List<String> filters) {
     setState(() {
-      _filters.remove(filter);
+      _activeFiltersMap[category] = filters;
     });
   }
 
@@ -49,6 +53,31 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
     const double pagePadding = 8;
     const double headerFontSize = 16;
 
+    Map<String, List<MultiSelectItem<String?>>> availableFilters =
+        reservationObjectTypes.map((key, value) => MapEntry(
+              key,
+              value
+                  .map((filter) => MultiSelectItem<String?>(
+                        filter,
+                        // ignore: no-equal-arguments
+                        filter,
+                      ))
+                  .toList(),
+            ));
+
+    const double chipHeight = 64;
+    const double categoryPadding = 4;
+    const double selectedChipOpacity = 0.5;
+
+    Map<String, Color> categoryColors = {
+      'Binnen': Colors.blue,
+      '1 roeier': Colors.red,
+      '2 roeiers': Colors.orange,
+      '4 roeiers': Colors.green,
+      '8 roeiers': Colors.purple,
+      'Overig': Colors.grey,
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies filters'),
@@ -61,21 +90,33 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
         padding: const EdgeInsets.all(pagePadding),
         child: ListView(
           children: [
-            const Text("Actieve filters")
-                .fontSize(headerFontSize)
-                .fontWeight(FontWeight.w600),
-            Wrap(
-              children: _filters
-                  .map((filter) => Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Chip(
-                          label: Text(filter).textColor(Colors.white),
-                          backgroundColor: Colors.lightBlue,
-                          onDeleted: () => removeFilter(filter),
-                        ),
-                      ))
-                  .toList(),
-            ),
+            // Make a MultiSelectChipField for each category in availableFilters dynamically
+            ...availableFilters.keys
+                .map(
+                  (String key) => MultiSelectChipField<String?>(
+                    decoration: const BoxDecoration(),
+                    items: availableFilters[key]!,
+                    icon: const Icon(Icons.check),
+                    height: chipHeight,
+                    title: Text(key)
+                        .textColor(Colors.white)
+                        .fontSize(headerFontSize),
+                    headerColor: categoryColors[key],
+                    chipShape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    // ignore: no-equal-arguments
+                    chipColor: categoryColors[key],
+                    selectedChipColor:
+                        categoryColors[key]!.withOpacity(selectedChipOpacity),
+                    textStyle: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    onTap: (values) =>
+                        updateFilters(key, values.whereType<String>().toList()),
+                  ).padding(vertical: categoryPadding),
+                )
+                .toList(),
           ],
         ),
       ),
