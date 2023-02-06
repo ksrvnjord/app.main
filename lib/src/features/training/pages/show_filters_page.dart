@@ -93,28 +93,36 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
             // Make a MultiSelectChipField for each category in availableFilters dynamically
             ...availableFilters.keys
                 .map(
-                  (String key) => MultiSelectChipField<String?>(
-                    decoration: const BoxDecoration(),
-                    items: availableFilters[key]!,
-                    icon: const Icon(Icons.check),
-                    height: chipHeight,
-                    title: Text(key)
-                        .textColor(Colors.white)
-                        .fontSize(headerFontSize),
-                    headerColor: categoryColors[key],
-                    chipShape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    // ignore: no-equal-arguments
-                    chipColor: categoryColors[key],
-                    selectedChipColor:
-                        categoryColors[key]!.withOpacity(selectedChipOpacity),
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    onTap: (values) =>
-                        updateFilters(key, values.whereType<String>().toList()),
-                  ).padding(vertical: categoryPadding),
+                  (String key) => Column(
+                    children: [
+                      Text(key).fontSize(16).fontWeight(FontWeight.bold),
+                      MultiSelectChipField<String?>(
+                        decoration: const BoxDecoration(),
+                        items: availableFilters[key]!,
+                        icon: const Icon(Icons.check),
+                        height: chipHeight,
+                        title: Text(key)
+                            .textColor(Colors.white)
+                            .fontSize(headerFontSize),
+                        headerColor: categoryColors[key],
+                        chipShape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                        // ignore: no-equal-arguments
+                        chipColor: categoryColors[key],
+                        selectedChipColor: categoryColors[key]!
+                            .withOpacity(selectedChipOpacity),
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        showHeader: false,
+                        onTap: (values) => updateFilters(
+                          key,
+                          values.whereType<String>().toList(),
+                        ),
+                      ).padding(vertical: categoryPadding),
+                    ],
+                  ),
                 )
                 .toList(),
           ],
