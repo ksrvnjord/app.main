@@ -105,10 +105,6 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/filters': (route) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
-          child: ShowFiltersPage(),
-        ),
     '/training/all/reservationObject/:id': (route) => RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: ShowReservationObjectPage(

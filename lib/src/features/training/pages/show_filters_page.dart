@@ -8,8 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ShowFiltersPage extends StatefulWidget {
+  final Function parentUpdate;
+
   const ShowFiltersPage({
     Key? key,
+    required this.parentUpdate,
   }) : super(key: key);
 
   @override
@@ -21,6 +24,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
       SharedPreferences.getInstance();
   late SharedPreferences _sharedPrefs;
 
+  late List<String> _selectedFilters = [];
   final Map<String, List<String>> _activeFiltersMap = {};
 
   Future<void> _getFiltersFromPrefs() async {
@@ -31,7 +35,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
       setState(() {
         List<String> filters =
             _sharedPrefs.getStringList('afschrijf_filters') ?? [];
-
+        _selectedFilters = filters;
         // place the filters in the correct category
         for (final category in reservationObjectTypes.entries) {
           String key = category.key;
@@ -51,6 +55,8 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
   void updateFilters(String category, List<String> filters) {
     setState(() {
       _activeFiltersMap[category] = filters;
+      _selectedFilters = _activeFiltersMap.values.expand((e) => e).toList();
+      widget.parentUpdate(_selectedFilters);
     });
   }
 

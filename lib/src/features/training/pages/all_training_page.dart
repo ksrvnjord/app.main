@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
 import 'package:routemaster/routemaster.dart';
@@ -33,6 +34,18 @@ class _AllTrainingPage extends State<AllTrainingPage> {
 
   Future<SharedPreferences> getPrefs() async {
     return await _prefs;
+  }
+
+  void updateFilters(List<String> filters) {
+    getPrefs().then((prefs) {
+      setState(() {
+        _filters = prefs
+            .setStringList('afschrijf_filters', filters)
+            .then((bool success) {
+          return filters;
+        });
+      });
+    });
   }
 
   void toggleFilter(String filter) {
@@ -77,7 +90,11 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           actions: [
             // show filter icon button to toggle filters
             IconButton(
-              onPressed: () => Routemaster.of(context).push('filters'),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ShowFiltersPage(
+                  parentUpdate: updateFilters,
+                ),
+              )),
               icon: const Icon(Icons.filter_list_alt),
             ),
           ],
