@@ -80,11 +80,26 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     });
   }
 
+  void getAfschrijfFilters(Future<List<String>> filters) {
+    filters.then((value) {
+      setState(() {
+        _selectedFilters = value
+            .map((e) => AfschrijvingFilter(
+                  label: e,
+                  // ignore: no-equal-arguments
+                  type: e,
+                ))
+            .toList();
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _filters = _prefs.then((SharedPreferences prefs) =>
         prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
+    getAfschrijfFilters(_filters);
   }
 
   @override
@@ -157,10 +172,6 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                     ))
                 .toList(),
           ).expanded(),
-          // CalendarFilterRow(
-          //   filters: _filters,
-          //   toggleFilter: toggleFilter,
-          // ),
         ].toColumn(),
       ),
     );
