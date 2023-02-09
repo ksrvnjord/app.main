@@ -20,8 +20,6 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
   final Future<SharedPreferences> _prefsFuture =
       SharedPreferences.getInstance();
   late SharedPreferences _sharedPrefs;
-  // List of filters active
-  List<String> _filters = [];
 
   final Map<String, List<String>> _activeFiltersMap = {};
 
@@ -31,7 +29,21 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
 
     if (mounted) {
       setState(() {
-        _filters = _sharedPrefs.getStringList('afschrijf_filters') ?? [];
+        List<String> filters =
+            _sharedPrefs.getStringList('afschrijf_filters') ?? [];
+
+        // place the filters in the correct category
+        for (final category in reservationObjectTypes.entries) {
+          String key = category.key;
+          List<String> values = category.value;
+          _activeFiltersMap[key] = [];
+
+          for (final filter in filters) {
+            if (values.contains(filter)) {
+              _activeFiltersMap[key]?.add(filter);
+            }
+          }
+        }
       });
     }
   }
@@ -116,6 +128,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                           color: Colors.white,
                         ),
                         showHeader: false,
+                        initialValue: _activeFiltersMap[key]!,
                         onTap: (values) => updateFilters(
                           key,
                           values.whereType<String>().toList(),

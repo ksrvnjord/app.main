@@ -26,6 +26,7 @@ const Map<String, List<String>> reservationObjectTypes = {
     '8+', // Ecaptain
   ],
   'Overig': [
+    'Bak', // In APp
     'Scull riemen', // Ecaptain
     'Cox', // Ecaptain
     'Motorboot', // Ecaptain
