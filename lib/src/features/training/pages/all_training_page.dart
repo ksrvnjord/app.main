@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/afschrijving_filter.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
@@ -26,6 +27,8 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   static const int amountOfDaysUserCanBookInAdvance =
       4; // user can book x days in the advance
 
+  late List<AfschrijvingFilter> _selectedFilters = [];
+
   // Generate a list of the coming 14 days
   List<DateTime> days = List.generate(
     amountOfDaysUserCanBookInAdvance,
@@ -37,6 +40,14 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   }
 
   void updateFilters(List<String> filters) {
+    _selectedFilters = filters
+        .map((e) => AfschrijvingFilter(
+              label: e,
+              // ignore: no-equal-arguments
+              type: e,
+            ))
+        .toList();
+
     getPrefs().then((prefs) {
       setState(() {
         _filters = prefs
@@ -124,12 +135,12 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: days
+              children: _selectedFilters
                   .map<Widget>(
                     (e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
                       child: Chip(
-                        label: Text(DateFormat('E d MMM').format(e)),
+                        label: Text(e.type),
                       ),
                     ),
                   )
@@ -146,10 +157,10 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                     ))
                 .toList(),
           ).expanded(),
-          CalendarFilterRow(
-            filters: _filters,
-            toggleFilter: toggleFilter,
-          ),
+          // CalendarFilterRow(
+          //   filters: _filters,
+          //   toggleFilter: toggleFilter,
+          // ),
         ].toColumn(),
       ),
     );
