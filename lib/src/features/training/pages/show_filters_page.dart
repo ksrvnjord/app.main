@@ -110,7 +110,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                       Text(key).fontSize(16).fontWeight(FontWeight.bold),
                       MultiSelectChipField<String?>(
                         decoration: const BoxDecoration(),
-                        items: availableFilters[key]!,
+                        items: availableFilters[key] ?? [],
                         icon: const Icon(Icons.check),
                         height: chipHeight,
                         title: Text(key)
@@ -128,7 +128,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                           color: Colors.white,
                         ),
                         showHeader: false,
-                        initialValue: _activeFiltersMap[key]!,
+                        initialValue: _activeFiltersMap[key] ?? [],
                         onTap: (values) => updateFilters(
                           key,
                           values.whereType<String>().toList(),
