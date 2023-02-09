@@ -121,6 +121,21 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           ),
         ),
         body: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: days
+                  .map<Widget>(
+                    (e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: Chip(
+                        label: Text(DateFormat('E d MMM').format(e)),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
           TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: days
