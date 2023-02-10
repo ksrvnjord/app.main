@@ -98,13 +98,11 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             unselectedLabelColor: Colors.white60,
             indicator: BoxDecoration(
               color: Colors.grey[50],
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                // Valid case to have the same radius on both sides
-                // ignore: no-equal-arguments
-                topRight: Radius.circular(10),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(40)),
+              shape: BoxShape.rectangle,
             ),
+            indicatorPadding: const EdgeInsets.all(4),
+            indicatorWeight: 0,
             tabs: days
                 .map<Widget>(
                   (e) => Tab(icon: null, text: DateFormat('E d MMM').format(e)),
