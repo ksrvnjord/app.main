@@ -76,18 +76,17 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                   )),
                   icon: const Icon(Icons.filter_list_alt),
                 ),
-                _filters.isNotEmpty
-                    ? const Positioned(
-                        top: 10,
-                        right: 8,
-                        child: // show a white dot if there are filters applied
-                            Icon(
-                          Icons.circle,
-                          size: 14,
-                          color: Colors.blueGrey,
-                        ),
-                      )
-                    : Container(),
+                if (_filters.isNotEmpty)
+                  const Positioned(
+                    top: 10,
+                    right: 8,
+                    child: // show a white dot if there are filters applied
+                        Icon(
+                      Icons.circle,
+                      size: 14,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
               ],
             ),
           ],
