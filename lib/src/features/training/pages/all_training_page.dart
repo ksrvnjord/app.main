@@ -123,8 +123,9 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                       (filter) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2),
                         child: Chip(
-                          backgroundColor: Colors.lightBlueAccent,
-                          label: Text(filter).textColor(Colors.white70),
+                          backgroundColor: Colors.grey[300],
+                          label: Text(filter),
+                          labelStyle: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
                     )
