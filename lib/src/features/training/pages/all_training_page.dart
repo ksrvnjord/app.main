@@ -54,6 +54,9 @@ class _AllTrainingPage extends State<AllTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    const double yourFiltersLPadding = 8;
+    const double yourFiltersRPadding = 4;
+
     return DefaultTabController(
       length: days.length,
       child: Scaffold(
@@ -122,7 +125,10 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                   const Text(
                     'Je selectie:',
                     style: TextStyle(color: Colors.white, fontSize: 14),
-                  ).padding(right: 8, left: 8),
+                  ).padding(
+                    right: yourFiltersRPadding,
+                    left: yourFiltersLPadding,
+                  ),
                   ..._filters
                       .map<Widget>(
                         (filter) => Padding(
@@ -130,7 +136,13 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                           child: Chip(
                             backgroundColor: Colors.grey[300],
                             label: Text(filter),
-                            labelStyle: TextStyle(color: Colors.grey[700]),
+                            labelStyle: TextStyle(
+                              color: Colors.grey[700],
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // padding: const EdgeInsets.all(0),
+                            visualDensity: VisualDensity.compact,
                           ),
                         ),
                       )
