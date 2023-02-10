@@ -65,13 +65,30 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
           actions: [
             // show filter icon button to toggle filters
-            IconButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ShowFiltersPage(
-                  parentUpdate: updateFilters,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ShowFiltersPage(
+                      parentUpdate: updateFilters,
+                    ),
+                  )),
+                  icon: const Icon(Icons.filter_list_alt),
                 ),
-              )),
-              icon: const Icon(Icons.filter_list_alt),
+                _filters.isNotEmpty
+                    ? const Positioned(
+                        top: 10,
+                        right: 8,
+                        child: // show a white dot if there are filters applied
+                            Icon(
+                          Icons.circle,
+                          size: 14,
+                          color: Colors.blueGrey,
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
           ],
           bottom: TabBar(
