@@ -119,10 +119,10 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                           .fontSize(categoryFontSize)
                           .fontWeight(FontWeight.bold),
                       MultiSelectChipField<String?>(
+                        scroll: false,
                         decoration: const BoxDecoration(),
                         items: availableFilters[key] ?? [],
                         icon: const Icon(Icons.check),
-                        height: chipHeight,
                         title: Text(key)
                             .textColor(Colors.white)
                             .fontSize(headerFontSize),
