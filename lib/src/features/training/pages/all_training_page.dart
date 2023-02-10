@@ -46,9 +46,21 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     _sharedPrefs.setStringList('afschrijf_filters', filters);
   }
 
-  void _getFiltersFromSharedPreferences() async {
+  /// Get the filters from SharedPreferences and update the state
+  Future<void> _getFiltersFromSharedPreferences() async {
     _sharedPrefs = await SharedPreferences.getInstance();
-    _filters = _sharedPrefs.getStringList('afschrijf_filters') ?? [];
+    if (mounted) {
+      setState(() {
+        _filters = _sharedPrefs.getStringList('afschrijf_filters') ?? [];
+        _selectedFilters = _filters
+            .map((e) => AfschrijvingFilter(
+                  label: e,
+                  // ignore: no-equal-arguments
+                  type: e,
+                ))
+            .toList();
+      });
+    }
   }
 
   @override
