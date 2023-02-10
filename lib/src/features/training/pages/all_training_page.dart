@@ -113,19 +113,25 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           ),
         ),
         body: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: _filters
-                  .map<Widget>(
-                    (filter) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: Chip(
-                        label: Text(filter),
+          Container(
+            color: Colors.lightBlue,
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: _filters
+                    .map<Widget>(
+                      (filter) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: Chip(
+                          backgroundColor: Colors.lightBlueAccent,
+                          label: Text(filter).textColor(Colors.white70),
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
           ),
           TabBarView(
