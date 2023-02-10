@@ -96,6 +96,8 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
       'Overig': Colors.grey,
     };
 
+    const double categoryFontSize = 16;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies filters'),
@@ -113,7 +115,9 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                 .map(
                   (String key) => Column(
                     children: [
-                      Text(key).fontSize(16).fontWeight(FontWeight.bold),
+                      Text(key)
+                          .fontSize(categoryFontSize)
+                          .fontWeight(FontWeight.bold),
                       MultiSelectChipField<String?>(
                         decoration: const BoxDecoration(),
                         items: availableFilters[key] ?? [],

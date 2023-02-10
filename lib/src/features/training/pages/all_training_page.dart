@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/afschrijving_filter.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/calendar_filter_row.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -19,10 +16,9 @@ class AllTrainingPage extends StatefulWidget {
 
 class _AllTrainingPage extends State<AllTrainingPage> {
   // List of filters to apply
-  late Future<List<String>> _filters;
+  List<String> _filters = [];
 
-  // Load SharedPreferences
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late SharedPreferences _sharedPrefs;
 
   static const int amountOfDaysUserCanBookInAdvance =
       4; // user can book x days in the advance
@@ -35,71 +31,30 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     (index) => DateTime.now().add(Duration(days: index)),
   );
 
-  Future<SharedPreferences> getPrefs() async {
-    return await _prefs;
-  }
-
   void updateFilters(List<String> filters) {
-    _selectedFilters = filters
-        .map((e) => AfschrijvingFilter(
-              label: e,
-              // ignore: no-equal-arguments
-              type: e,
-            ))
-        .toList();
-
-    getPrefs().then((prefs) {
-      setState(() {
-        _filters = prefs
-            .setStringList('afschrijf_filters', filters)
-            .then((bool success) {
-          return filters;
-        });
-      });
+    setState(() {
+      _selectedFilters = filters
+          .map((e) => AfschrijvingFilter(
+                label: e,
+                // ignore: no-equal-arguments
+                type: e,
+              ))
+          .toList();
+      _filters = filters;
     });
+
+    _sharedPrefs.setStringList('afschrijf_filters', filters);
   }
 
-  void toggleFilter(String filter) {
-    getPrefs().then((prefs) {
-      final List<String> filters =
-          (prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
-
-      if (filters.contains(filter)) {
-        filters.remove(filter);
-      } else {
-        filters.add(filter);
-      }
-
-      setState(() {
-        _filters = prefs
-            .setStringList('afschrijf_filters', filters)
-            .then((bool success) {
-          return filters;
-        });
-      });
-    });
-  }
-
-  void getAfschrijfFilters(Future<List<String>> filters) {
-    filters.then((value) {
-      setState(() {
-        _selectedFilters = value
-            .map((e) => AfschrijvingFilter(
-                  label: e,
-                  // ignore: no-equal-arguments
-                  type: e,
-                ))
-            .toList();
-      });
-    });
+  void _getFiltersFromSharedPreferences() async {
+    _sharedPrefs = await SharedPreferences.getInstance();
+    _filters = _sharedPrefs.getStringList('afschrijf_filters') ?? [];
   }
 
   @override
   void initState() {
     super.initState();
-    _filters = _prefs.then((SharedPreferences prefs) =>
-        prefs.getStringList('afschrijf_filters') ?? ['Ruimtes']);
-    getAfschrijfFilters(_filters);
+    _getFiltersFromSharedPreferences();
   }
 
   @override
@@ -165,11 +120,9 @@ class _AllTrainingPage extends State<AllTrainingPage> {
           TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: days
-                .map<Widget>((date) => FutureWrapper(
-                      future: _filters,
-                      success: (filters) =>
-                          CalendarOverview(date: date, filters: filters),
-                    ))
+                .map<Widget>(
+                  (date) => CalendarOverview(date: date, filters: _filters),
+                )
                 .toList(),
           ).expanded(),
         ].toColumn(),
