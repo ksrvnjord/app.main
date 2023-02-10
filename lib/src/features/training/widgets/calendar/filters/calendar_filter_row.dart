@@ -49,7 +49,7 @@ class CalendarFilterRow extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: availableFilters
                       .map<Widget>((filter) => CalendarFilterTile(
-                            label: filter.description,
+                            label: filter.type,
                             selected: selectedFilters.contains(filter.type),
                             onPressed: () => toggleFilter(filter.type),
                           ).padding(all: filterTilePadding))

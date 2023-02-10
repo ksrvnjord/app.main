@@ -1,13 +1,13 @@
 class AfschrijvingFilter {
   String label;
-  String description;
-  String icon;
+  String? description;
+  String? icon;
   String type;
 
   AfschrijvingFilter({
     required this.label,
-    required this.description,
-    required this.icon,
+    this.description,
+    this.icon,
     required this.type,
   });
 }
