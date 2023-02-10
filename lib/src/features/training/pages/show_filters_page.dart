@@ -83,7 +83,6 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                   .toList(),
             ));
 
-    const double chipHeight = 64;
     const double categoryPadding = 4;
     const double selectedChipOpacity = 0.5;
 
