@@ -113,23 +113,29 @@ class _AllTrainingPage extends State<AllTrainingPage> {
         body: [
           Container(
             color: Colors.lightBlue,
-            width: double.infinity,
+            // width: double.infinity,
             alignment: Alignment.center,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: _filters
-                    .map<Widget>(
-                      (filter) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Chip(
-                          backgroundColor: Colors.grey[300],
-                          label: Text(filter),
-                          labelStyle: TextStyle(color: Colors.grey[700]),
+                children: [
+                  const Text(
+                    'Je selectie:',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ).padding(right: 8, left: 8),
+                  ..._filters
+                      .map<Widget>(
+                        (filter) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Chip(
+                            backgroundColor: Colors.grey[300],
+                            label: Text(filter),
+                            labelStyle: TextStyle(color: Colors.grey[700]),
+                          ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ],
               ),
             ),
           ),
