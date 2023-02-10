@@ -56,6 +56,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
   Widget build(BuildContext context) {
     const double yourFiltersLPadding = 8;
     const double yourFiltersRPadding = 4;
+    const double filterLabelSize = 12;
 
     return DefaultTabController(
       length: days.length,
@@ -138,7 +139,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                             label: Text(filter),
                             labelStyle: TextStyle(
                               color: Colors.grey[700],
-                              fontSize: 12,
+                              fontSize: filterLabelSize,
                               fontWeight: FontWeight.w400,
                             ),
                             // padding: const EdgeInsets.all(0),
