@@ -83,19 +83,19 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
     CurrentUser curUser = GetIt.I.get<CurrentUser>();
     Query$Me$me? heimdallUser = curUser.user;
-    String creatorName = 'Onbekend';
-    if (heimdallUser != null) {
-      Query$Me$me$fullContact$public contact = heimdallUser.fullContact.public;
-      if (contact.first_name != null && contact.last_name != null) {
-        creatorName = '${contact.first_name} ${contact.last_name}';
-      }
-    }
     User? firebaseUser = auth.currentUser;
-    if (firebaseUser == null) {
+    if (heimdallUser == null ||
+        heimdallUser.fullContact.private == null ||
+        firebaseUser == null) {
       return const ErrorCardWidget(
         errorMessage: 'Er is iets misgegaan met het inloggen',
       );
     }
+
+    Query$Me$me$fullContact$private privateContact =
+        heimdallUser.fullContact.private!;
+    String creatorName =
+        '${privateContact.first_name} ${privateContact.last_name}';
 
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
