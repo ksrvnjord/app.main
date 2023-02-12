@@ -25,10 +25,14 @@ class MorePage extends StatelessWidget {
         children: [
           ...optionMap.entries.map(
             // Make a list of options to display and navigate to
-            (entry) => MoreListTile(
-              label: entry.key,
-              routePath: entry.value,
-            ),
+            // Each option is a tile with a divider below it
+            (entry) => [
+              MoreListTile(
+                label: entry.key,
+                routePath: entry.value,
+              ),
+              const Divider(),
+            ].toColumn(),
           ),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
