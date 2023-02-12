@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_pa
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
@@ -118,6 +119,10 @@ final routeMap = RouteMap(
     '/more': (route) => const MaterialPage(
           name: 'More',
           child: MorePage(),
+        ),
+    '/contact': (route) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: ContactPage(),
         ),
   },
 );
