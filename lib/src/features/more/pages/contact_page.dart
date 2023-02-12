@@ -49,7 +49,7 @@ class ContactPage extends StatelessWidget {
           // create a DataTable, with two columns: function and email
           DataTable(
             columns: const [
-              DataColumn(label: Text("Functie")),
+              DataColumn(label: Text("Commissie")),
               DataColumn(label: Text("Email")),
             ],
             rows: [
