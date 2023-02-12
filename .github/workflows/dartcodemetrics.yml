@@ -35,7 +35,13 @@ jobs:
           fatal_infos: true
           fatal_performance: true
           fatal_style: true
-          check_unused_files: true
+
+      - name: Check unused files
+        run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
+      
+      - name: Check unnecessary nullable parameters
+        run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
+
 
 
 
