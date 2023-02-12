@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/bestuur.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -63,10 +64,22 @@ class ContactPage extends StatelessWidget {
           ),
         ]),
         const Divider(),
+        // Add instagram icon linking to our insta
+        const InstagramRowWidget(
+          url: "https://www.instagram.com/ksrvnjord/",
+          handle: "@ksrvnjord",
+        ).padding(all: padding),
+        const InstagramRowWidget(
+          url: "https://www.instagram.com/ksrvnjord_intern/",
+          handle: "@ksrvnjord_intern",
+        ).padding(all: padding),
+        const Divider(),
         Row(children: [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
-            onTap: () => _launchUrl,
+            onTap: () => launchUrl(
+              Uri.parse('mailto:app@njord.nl'),
+            ),
             child: const Text(
               "app@njord.nl",
               style: TextStyle(
@@ -80,10 +93,36 @@ class ContactPage extends StatelessWidget {
       ]),
     );
   }
+}
 
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(_appCommissieMail)) {
-      throw Exception('Could not launch $_appCommissieMail');
-    }
+class InstagramRowWidget extends StatelessWidget {
+  const InstagramRowWidget({
+    super.key,
+    required this.url,
+    required this.handle,
+  });
+  final String url; // the url of the instagram account
+  final String handle; // the handle of the instagram account @...
+
+  @override
+  Widget build(BuildContext context) {
+    const double horizontalPadding = 8;
+
+    return Row(children: [
+      const Icon(FontAwesomeIcons.instagram, color: Colors.lightBlue),
+      InkWell(
+        onTap: () => launchUrl(
+          Uri.parse(url),
+        ),
+        child: Text(
+          handle,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.lightBlue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ).padding(horizontal: horizontalPadding),
+    ]);
   }
 }
