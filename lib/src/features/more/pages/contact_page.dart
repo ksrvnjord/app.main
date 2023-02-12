@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/more/data/bestuur.dart';
+import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,18 +15,6 @@ class ContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> functionEmailMap = {
-      "Praeses": "praeses@njord.nl",
-      "Ab-actis": "abactis@njord.nl",
-      "Quaestor": "quaestor@njord.nl",
-      "Commissaris voor het Wedstrijdroeien": "wedstrijd@njord.nl",
-      "Commissaris van het Materieel": "materieel@njord.nl",
-      "Commissaris van de Gebouwen": "gebouw@njord.nl",
-      "Commissaris van het Buffet": "buffet@njord.nl",
-      "Commissaris voor het Competitie en Fuifroeien": "competitie@njord.nl",
-      "Commissaris voor Externe Betrekkingen": "extern@njord.nl",
-    };
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact'),
@@ -44,7 +34,7 @@ class ContactPage extends StatelessWidget {
                 DataColumn(label: Text("Email")),
               ],
               rows: [
-                ...functionEmailMap.entries.map(
+                ...bestuurEmailMap.entries.map(
                   (entry) => DataRow(cells: [
                     DataCell(Text(entry.key)),
                     DataCell(Text(entry.value)),
@@ -54,6 +44,23 @@ class ContactPage extends StatelessWidget {
             ),
           ],
         ),
+        ExpansionTile(title: const Text("Commissies"), children: [
+          // create a DataTable, with two columns: function and email
+          DataTable(
+            columns: const [
+              DataColumn(label: Text("Functie")),
+              DataColumn(label: Text("Email")),
+            ],
+            rows: [
+              ...commissieEmailMap.entries.map(
+                (entry) => DataRow(cells: [
+                  DataCell(Text(entry.key)),
+                  DataCell(Text(entry.value)),
+                ]),
+              ),
+            ],
+          ),
+        ]),
         Row(children: [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
