@@ -61,7 +61,7 @@ class MePage extends StatelessWidget {
 
 class MeWidget extends StatefulWidget {
   const MeWidget(this.user, {Key? key}) : super(key: key);
-  final Query$Me$me? user;
+  final Query$Me$me user;
 
   @override
   createState() => _MeWidgetState();
@@ -90,11 +90,8 @@ class _MeWidgetState extends State<MeWidget> {
 
   @override
   void initState() {
-    if (widget.user == null) {
-      return;
-    }
-    final contact = widget.user!.fullContact.private;
-    final updated = widget.user!.fullContact.update;
+    final contact = widget.user.fullContact.private;
+    final updated = widget.user.fullContact.update;
 
     // TODO: Size the fields dynamically?
     fields = [
@@ -204,12 +201,12 @@ class _MeWidgetState extends State<MeWidget> {
         TextFormField(
           decoration: const InputDecoration(labelText: 'Lidnummer'),
           enabled: false,
-          initialValue: '${widget.user?.identifier}',
+          initialValue: widget.user.identifier,
         ).padding(all: fieldPadding),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Njord-account'),
           enabled: false,
-          initialValue: '${widget.user?.username}',
+          initialValue: widget.user.username,
         ).padding(all: fieldPadding),
         ...fields.asMap().entries.map<Widget>((i) {
           int idx = i.key;
