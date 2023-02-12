@@ -4,7 +4,7 @@ import 'package:styled_widget/styled_widget.dart';
 class CalendarFilterTile extends StatelessWidget {
   final String label;
   final bool selected;
-  final void Function()? onPressed;
+  final void Function() onPressed;
 
   const CalendarFilterTile({
     Key? key,
