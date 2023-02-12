@@ -36,6 +36,8 @@ jobs:
           fatal_performance: true
           fatal_style: true
 
+      - uses: actions/checkout@v3 # previous step changes the working directory
+
       - name: Check unused files
         run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
       
