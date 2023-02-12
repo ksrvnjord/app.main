@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Check unused files
+        run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
+      
+      - name: Check unnecessary nullable parameters
+        run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
+
       - name: dart-code-metrics
         uses: dart-code-checker/dart-code-metrics-action@v3
         with:
@@ -36,13 +42,7 @@ jobs:
           fatal_performance: true
           fatal_style: true
 
-      - uses: actions/checkout@v3 # previous step changes the working directory
 
-      - name: Check unused files
-        run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
-      
-      - name: Check unnecessary nullable parameters
-        run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
 
 
 
