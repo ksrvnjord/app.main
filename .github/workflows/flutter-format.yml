@@ -23,9 +23,14 @@ jobs:
       - name: Flutter action
         # You may pin to the exact commit or the version.
         uses: subosito/flutter-action@v2.8.0
+
+      - name: Install Stable Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "stable"
         
       - name: Install Flutter dependencies
         run: flutter pub get
         
       - name: Format files
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
