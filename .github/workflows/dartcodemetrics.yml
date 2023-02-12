@@ -26,7 +26,7 @@ jobs:
           sdk: "stable"
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Analyze project
         run: dart analyze --fatal-warnings --fatal-infos .
@@ -40,6 +40,6 @@ jobs:
           fatal_performance: true
           fatal_style: true
           check_unused_files: true
-          
+
 
 
