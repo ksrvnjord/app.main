@@ -29,17 +29,11 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         actions: [
-          PopupMenuButton(
-            position: PopupMenuPosition.under,
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-              PopupMenuItem(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                onTap: () {
-                  Routemaster.of(context).push('visibility');
-                },
-                child: const Center(child: Text('Zichtbaarheid Almanak')),
-              ),
-            ],
+          IconButton(
+            icon: const Icon(Icons.visibility_outlined),
+            onPressed: () {
+              Routemaster.of(context).push('visibility');
+            },
           ),
         ],
       ),
