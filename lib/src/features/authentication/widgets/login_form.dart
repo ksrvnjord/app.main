@@ -72,6 +72,7 @@ class _LoginFormState extends State<LoginForm> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Njord-account',
+              hintText: "james.cohen.stuart",
             ),
           ).padding(all: textFormFieldPadding),
           TextFormField(
@@ -81,6 +82,7 @@ class _LoginFormState extends State<LoginForm> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Wachtwoord',
+              hintText: "Trekeenbak@17:26",
             ),
           ).padding(all: textFormFieldPadding),
         ].toColumn(mainAxisSize: MainAxisSize.min),
