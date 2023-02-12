@@ -5,12 +5,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CalendarReservation extends StatelessWidget {
   final Map<String, dynamic> data;
-  final String? id;
+  final String reservationDocumentId;
 
   const CalendarReservation({
     Key? key,
     required this.data,
-    this.id,
+    required this.reservationDocumentId,
   }) : super(key: key);
 
   @override
@@ -41,9 +41,7 @@ class CalendarReservation extends StatelessWidget {
 
     return [
       GestureDetector(
-        onTap: () {
-          id != null ? navigator.push(id!) : null;
-        },
+        onTap: () => navigator.push(reservationDocumentId),
         child: Container(
           width: reservationWidth,
           height: durationInHours * slotHeight * slotHeightModifier,

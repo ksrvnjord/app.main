@@ -162,7 +162,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
                   .map((reservation) {
                     return CalendarReservation(
                       data: reservation.data().toJson(),
-                      id: reservation.id,
+                      reservationDocumentId: reservation.id,
                     );
                   })
                   .toList()
