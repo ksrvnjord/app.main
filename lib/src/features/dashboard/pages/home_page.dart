@@ -12,20 +12,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double myAccountIconSize = 40;
-
     return Scaffold(
       appBar: AppBar(
         title: [
           const LogoWidget(image: Images.appLogo),
-          IconButton(
-            padding: const EdgeInsets.all(0),
-            iconSize: myAccountIconSize,
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              Routemaster.of(context).push('/settings');
-            },
-          ),
         ].toRow(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_pa
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_almanak_profile_page.dart';
@@ -46,6 +47,7 @@ final routeMap = RouteMap(
             '/ad-valvas',
             '/training',
             '/almanak',
+            '/more',
           ],
           backBehavior: TabBackBehavior.none,
         ),
@@ -112,6 +114,10 @@ final routeMap = RouteMap(
             documentId: route.pathParameters['id']!,
             name: route.queryParameters['name']!,
           ),
+        ),
+    '/more': (route) => const MaterialPage(
+          name: 'More',
+          child: MorePage(),
         ),
   },
 );

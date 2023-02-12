@@ -53,6 +53,10 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.book),
             label: 'Almanak',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz),
+            label: 'Meer',
+          ),
         ],
         onTap: (value) {
           tabPage.controller.animateTo(value);
