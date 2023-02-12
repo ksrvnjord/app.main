@@ -14,7 +14,7 @@ class AnnouncementsPage extends StatelessWidget {
     var client = Provider.of<GraphQLModel>(context).client;
 
     return FutureWrapper<Query$Announcements?>(
-      future: announcements(0, client),
+      future: announcements(client),
       success: (data) {
         return AnnouncementListWidget(announcements: data!.announcements!.data);
       },
