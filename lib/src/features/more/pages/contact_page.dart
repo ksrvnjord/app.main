@@ -44,6 +44,7 @@ class ContactPage extends StatelessWidget {
             ),
           ],
         ),
+        const Divider(),
         ExpansionTile(title: const Text("Commissies"), children: [
           // create a DataTable, with two columns: function and email
           DataTable(
@@ -61,6 +62,7 @@ class ContactPage extends StatelessWidget {
             ],
           ),
         ]),
+        const Divider(),
         Row(children: [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
