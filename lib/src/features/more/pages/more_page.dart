@@ -3,6 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
@@ -35,6 +36,14 @@ class MorePage extends StatelessWidget {
               const Divider(),
             ].toColumn(),
           ),
+          ListTile(
+            title: const Text('Webshop'),
+            trailing: // icon that shows external link
+                const Icon(Icons.open_in_new, color: Colors.lightBlue),
+            onTap: () =>
+                launchUrl(Uri.parse("https://k-s-r-v-njord.myshopify.com/")),
+          ),
+          const Divider(),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
