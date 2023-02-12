@@ -5,8 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final Uri _appCommissieMail = Uri.parse('mailto:app@njord.nl');
-
 class ContactPage extends StatelessWidget {
   const ContactPage({Key? key}) : super(key: key);
 
