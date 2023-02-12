@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
@@ -36,20 +36,14 @@ class MorePage extends StatelessWidget {
               const Divider(),
             ].toColumn(),
           ),
-          ListTile(
-            title: const Text('Webshop'),
-            trailing: // icon that shows external link
-                const Icon(Icons.open_in_new, color: Colors.lightBlue),
-            onTap: () =>
-                launchUrl(Uri.parse("https://k-s-r-v-njord.myshopify.com/")),
+          const MoreLinkTile(
+            label: "Webshop",
+            url: "https://k-s-r-v-njord.myshopify.com/",
           ),
           const Divider(),
-          ListTile(
-            title: const Text('Handige linkjes - Linktree'),
-            trailing: // icon that shows external link
-                const Icon(Icons.open_in_new, color: Colors.lightBlue),
-            onTap: () =>
-                launchUrl(Uri.parse("https://linktr.ee/ksrvnjord_intern")),
+          const MoreLinkTile(
+            label: 'Handige linkjes - Linktree',
+            url: 'https://linktr.ee/ksrvnjord_intern',
           ),
           const Divider(),
           ListTile(
