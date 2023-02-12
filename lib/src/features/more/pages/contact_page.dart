@@ -120,7 +120,7 @@ class InstagramRowWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ).padding(horizontal: horizontalPadding),
+      ).padding(left: horizontalPadding),
     ]);
   }
 }
