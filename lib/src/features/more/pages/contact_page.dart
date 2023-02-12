@@ -13,6 +13,18 @@ class ContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> functionEmailMap = {
+      "Praeses": "praeses@njord.nl",
+      "Ab-actis": "abactis@njord.nl",
+      "Quaestor": "quaestor@njord.nl",
+      "Commissaris voor het Wedstrijdroeien": "wedstrijd@njord.nl",
+      "Commissaris van het Materieel": "materieel@njord.nl",
+      "Commissaris van de Gebouwen": "gebouw@njord.nl",
+      "Commissaris van het Buffet": "buffet@njord.nl",
+      "Commissaris voor het Competitie en Fuifroeien": "competitie@njord.nl",
+      "Commissaris voor Externe Betrekkingen": "extern@njord.nl",
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact'),
@@ -20,9 +32,28 @@ class ContactPage extends StatelessWidget {
         shadowColor: Colors.transparent,
       ),
       body: ListView(children: [
-        // const ExpansionTile( // TODO: lijst maken van bestuur + commissies
-        //   title: Text("Bestuur"),
-        // ),
+        ExpansionTile(
+          initiallyExpanded: true,
+          // TODO: lijst maken van bestuur + commissies
+          title: const Text("Bestuur"),
+          children: [
+            // create a DataTable, with two columns: function and email
+            DataTable(
+              columns: const [
+                DataColumn(label: Text("Functie")),
+                DataColumn(label: Text("Email")),
+              ],
+              rows: [
+                ...functionEmailMap.entries.map(
+                  (entry) => DataRow(cells: [
+                    DataCell(Text(entry.key)),
+                    DataCell(Text(entry.value)),
+                  ]),
+                ),
+              ],
+            ),
+          ],
+        ),
         Row(children: [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
