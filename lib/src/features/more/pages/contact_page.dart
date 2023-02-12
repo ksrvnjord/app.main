@@ -22,9 +22,9 @@ class ContactPage extends StatelessWidget {
         shadowColor: Colors.transparent,
       ),
       body: ListView(children: [
+        // TODO: add linkje naar interne Njord Insta
         ExpansionTile(
           initiallyExpanded: true,
-          // TODO: lijst maken van bestuur + commissies
           title: const Text("Bestuur"),
           children: [
             // create a DataTable, with two columns: function and email
