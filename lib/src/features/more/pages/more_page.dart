@@ -13,7 +13,7 @@ class MorePage extends StatelessWidget {
       "Mijn Njord-account": "/settings",
       "Agenda": "events",
       "Contact": "/contact",
-      "Beleid": "beleid",
+      "Beleid van het bestuur": "beleid",
     };
 
     return Scaffold(
