@@ -29,6 +29,7 @@ class MorePage extends StatelessWidget {
           const Divider(),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
+            trailing: const Icon(Icons.logout, color: Colors.red),
             onTap: () {
               Provider.of<AuthModel>(context, listen: false).logout();
             },
