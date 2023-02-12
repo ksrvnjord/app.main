@@ -43,6 +43,8 @@ class _LoginFormState extends State<LoginForm> {
     const double cardPadding = 16;
     const double cardElevation = 8;
 
+    const double registerTextHPadding = 4;
+
     return <Widget>[
       AnimatedBuilder(
         animation: auth,
@@ -70,6 +72,7 @@ class _LoginFormState extends State<LoginForm> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Njord-account',
+              hintText: "james.cohen.stuart",
             ),
           ).padding(all: textFormFieldPadding),
           TextFormField(
@@ -79,6 +82,7 @@ class _LoginFormState extends State<LoginForm> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Wachtwoord',
+              hintText: "Trekeenbak@17:26",
             ),
           ).padding(all: textFormFieldPadding),
         ].toColumn(mainAxisSize: MainAxisSize.min),
@@ -101,6 +105,25 @@ class _LoginFormState extends State<LoginForm> {
           child: const Text('Vergeten'),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Nog geen account?"),
+          InkWell(
+            onTap: () {
+              Routemaster.of(context).push('/register');
+            },
+            child: const Text(
+              "Registreer",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ).padding(horizontal: registerTextHPadding),
+          ),
+        ],
+      ).padding(all: buttonPaddding),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: columnPadding)

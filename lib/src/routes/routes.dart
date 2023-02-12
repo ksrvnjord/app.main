@@ -4,6 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -127,6 +129,14 @@ final authenticationRoutes = RouteMap(
         ),
     '/forgot/webview': (info) => const RoutedPageTransition(
           child: ForgotPasswordWebPage(),
+          transition: pt.PageTransitionType.rightToLeft,
+        ),
+    '/register': (_) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.fade,
+          child: RegisterPage(),
+        ),
+    '/register/webview': (info) => const RoutedPageTransition(
+          child: RegisterWebPage(),
           transition: pt.PageTransitionType.rightToLeft,
         ),
   },
