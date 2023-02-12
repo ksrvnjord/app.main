@@ -45,6 +45,14 @@ class MorePage extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
+            title: const Text('Handige linkjes - Linktree'),
+            trailing: // icon that shows external link
+                const Icon(Icons.open_in_new, color: Colors.lightBlue),
+            onTap: () =>
+                launchUrl(Uri.parse("https://linktr.ee/ksrvnjord_intern")),
+          ),
+          const Divider(),
+          ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
             onTap: () {
