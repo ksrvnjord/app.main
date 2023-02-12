@@ -120,6 +120,10 @@ final routeMap = RouteMap(
           name: 'More',
           child: MorePage(),
         ),
+    '/more/events': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: EventsPage(),
+        ),
     '/contact': (route) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: ContactPage(),

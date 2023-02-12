@@ -9,6 +9,12 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> optionMap = {
+      "Mijn Njord-account": "/settings",
+      "Agenda": "events",
+      "Contact": "/contact",
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meer'),
@@ -17,13 +23,13 @@ class MorePage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const MoreListTile(
-            label: "Mijn Njord-account",
-            routePath: "/settings",
+          ...optionMap.entries.map(
+            // Make a list of options to display and navigate to
+            (entry) => MoreListTile(
+              label: entry.key,
+              routePath: entry.value,
+            ),
           ),
-          const Divider(),
-          const MoreListTile(label: "Contact", routePath: "/contact"),
-          const Divider(),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
