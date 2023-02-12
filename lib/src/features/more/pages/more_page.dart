@@ -24,6 +24,8 @@ class MorePage extends StatelessWidget {
             routePath: "/settings",
           ),
           const Divider(),
+          const MoreListTile(label: "Contact", routePath: "/contact"),
+          const Divider(),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
