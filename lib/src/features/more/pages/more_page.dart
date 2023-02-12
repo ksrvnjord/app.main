@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,13 +19,9 @@ class MorePage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: const Text('Mijn Njord-account'),
-            // add a trailing icon that indicates that the item is clickable
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Routemaster.of(context).push('/settings');
-            },
+          const MoreListTile(
+            label: "Mijn Njord-account",
+            routePath: "/settings",
           ),
           const Divider(),
           ListTile(
