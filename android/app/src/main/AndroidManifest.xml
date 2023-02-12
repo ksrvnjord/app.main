@@ -43,6 +43,14 @@
             </intent-filter>
 
         </activity>
+        <!-- Provide required visibility configuration for API level 30 and above -->
+        <queries>
+            <!-- If your app checks for mail support -->
+            <intent>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="mailto" />
+            </intent>
+        </queries>
         <activity android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
