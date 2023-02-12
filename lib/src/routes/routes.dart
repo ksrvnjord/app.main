@@ -81,6 +81,10 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: EditAlmanakProfilePage(),
         ),
+    '/almanak/edit/visibility': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: MePrivacyPage(),
+        ),
     '/almanak/:profileId': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: AlmanakProfilePage(),
@@ -88,10 +92,6 @@ final routeMap = RouteMap(
     '/settings': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: MePage(),
-        ),
-    '/settings/privacy': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
-          child: MePrivacyPage(),
         ),
     '/training': (_) => const MaterialPage(
           name: 'Training',

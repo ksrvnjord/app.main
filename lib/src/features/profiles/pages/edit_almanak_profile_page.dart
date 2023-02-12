@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 final storage = FirebaseStorage.instance;
 
@@ -27,6 +28,20 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          PopupMenuButton(
+            position: PopupMenuPosition.under,
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              PopupMenuItem(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                onTap: () {
+                  Routemaster.of(context).push('visibility');
+                },
+                child: const Center(child: Text('Zichtbaarheid Almanak')),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
