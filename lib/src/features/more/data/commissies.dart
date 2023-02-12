@@ -3,6 +3,7 @@ import 'dart:collection';
 final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
   "Afroeicommissie": "ac@njord.nl",
   "Almanakcommissie": "almanak@njord.nl",
+  "Appcommissie": "app@njord.nl",
   "Archiefcommissie": "archief@njord.nl",
   "Buffetcommissie": "buco@njord.nl",
   "Businesscommissie": "business@njord.nl",
