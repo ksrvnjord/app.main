@@ -6,6 +6,7 @@ class MoreListTile extends StatelessWidget {
   final String routePath;
 
   const MoreListTile({
+    super.key,
     required this.label,
     required this.routePath,
   });

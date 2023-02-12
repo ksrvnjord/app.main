@@ -4,7 +4,6 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends StatelessWidget {
