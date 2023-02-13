@@ -51,7 +51,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
   Map<String, bool> checkboxes = {};
   bool listed = false;
   bool saving = false;
-  Color buttonColor = Colors.blue;
+  Color buttonColor = Colors.lightBlue;
 
   @override
   void initState() {
@@ -112,7 +112,13 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
           : <Widget>[]),
       [
         ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: buttonColor,
+            // add rounding
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
           onPressed: () {
             setState(() {
               saving = true;
