@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
@@ -177,45 +178,19 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           const double timeSelectorDialogHandlerRadius = 8;
 
           return <Widget>[
-            TextFormField(
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Afschrijven',
-                border: OutlineInputBorder(),
-              ),
-              initialValue: widget.objectName,
-              style: const TextStyle(color: Colors.black54),
-            ).padding(all: fieldPadding),
-            TextFormField(
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Dag',
-                border: OutlineInputBorder(),
-              ),
-              initialValue: DateFormat.yMMMMd().format(widget.date),
-              style: const TextStyle(color: Colors.black54),
-            ).padding(all: fieldPadding),
-            // show text "Jouw trainingstijden" emphasize that this is the time
-            // the user selected
-            Text(
-              'Jouw afschrijftijden',
-              style: Theme.of(context).textTheme.titleLarge,
-            ).padding(all: fieldPadding),
-            // show selected start and end time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  DateFormat.Hm().format(_startTime),
-                  style: const TextStyle(fontSize: 20),
-                ),
-                const Icon(Icons.arrow_forward),
-                Text(
-                  DateFormat.Hm().format(_endTime),
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ],
-            ).padding(all: fieldPadding),
+            DataTextListTile(name: 'Boot', value: widget.objectName),
+            DataTextListTile(
+              name: "Datum",
+              value: DateFormat.yMMMMd().format(widget.date),
+            ),
+            DataTextListTile(
+              name: "Starttijd",
+              value: DateFormat.Hm().format(_startTime),
+            ),
+            DataTextListTile(
+              name: "Eindtijd",
+              value: DateFormat.Hm().format(_endTime),
+            ),
 
             // show button to let user change start and end time
             ElevatedButton(
