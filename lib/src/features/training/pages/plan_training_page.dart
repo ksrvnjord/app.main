@@ -108,6 +108,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       }
     });
 
+    const int timeRowItems = 3;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -186,14 +188,14 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 3,
+                  width: MediaQuery.of(context).size.width / timeRowItems,
                   child: DataTextListTile(
                     name: "Starttijd",
                     value: DateFormat.Hm().format(_startTime),
                   ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 3,
+                  width: MediaQuery.of(context).size.width / timeRowItems,
                   child: DataTextListTile(
                     name: "Eindtijd",
                     value: DateFormat.Hm().format(_endTime),
@@ -201,7 +203,11 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 ),
                 IconButton(
                   onPressed: () => {
+                    // TODO: make a nicer time selector
                     showTimeRangePicker(
+                      strokeColor: Colors.lightBlue,
+                      // ignore: no-equal-arguments
+                      handlerColor: Colors.lightBlue,
                       context: context,
                       fromText: 'Starttijd',
                       toText: 'Eindtijd',
