@@ -88,21 +88,14 @@ class _LoginFormState extends State<LoginForm> {
         ].toColumn(mainAxisSize: MainAxisSize.min),
       ),
       <Widget>[
-        ElevatedButton(
+        RoundedElevatedButton(
+          color: Colors.lightBlue,
           onPressed: () => login(auth, graphql),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-          ),
-          child: const Text('Inloggen'),
+          label: "Inloggen",
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
-        ElevatedButton(
-          onPressed: () {
-            Routemaster.of(context).push('/forgot');
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
-          ),
-          child: const Text('Vergeten'),
+        RoundedElevatedButton(
+          onPressed: () => Routemaster.of(context).push('/forgot'),
+          label: "Vergeten",
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),
       Row(
@@ -135,5 +128,34 @@ class _LoginFormState extends State<LoginForm> {
         )
         .padding(all: cardPadding)
         .alignment(Alignment.center);
+  }
+}
+
+class RoundedElevatedButton extends StatelessWidget {
+  const RoundedElevatedButton({
+    super.key,
+    required this.onPressed,
+    required this.label,
+    this.color = Colors.blueGrey,
+  });
+
+  final void Function() onPressed;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
+        ),
+      ),
+      child: Text(label),
+    );
   }
 }
