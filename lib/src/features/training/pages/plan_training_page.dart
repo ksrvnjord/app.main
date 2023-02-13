@@ -177,7 +177,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           const double fieldPadding = 16;
           const double timeSelectorDialogHandlerRadius = 8;
 
-          return <Widget>[
+          return ListView(children: <Widget>[
             DataTextListTile(name: 'Boot', value: widget.objectName),
             DataTextListTile(
               name: "Datum",
@@ -275,7 +275,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                     .padding(vertical: fieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
             ).padding(all: fieldPadding),
-          ].toColumn().padding(all: fieldPadding);
+          ]);
         },
       ),
     );
