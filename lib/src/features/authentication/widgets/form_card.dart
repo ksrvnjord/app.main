@@ -50,7 +50,7 @@ class FormCard extends StatelessWidget {
         .card(
           elevation: cardElevation,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
         )
         .padding(all: cardOuterPadding)
