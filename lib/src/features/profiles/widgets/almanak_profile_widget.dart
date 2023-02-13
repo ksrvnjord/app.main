@@ -75,7 +75,9 @@ class AlmanakProfileWidget extends StatelessWidget {
                         enabled: false,
                         decoration: InputDecoration(
                           labelText: labels[index],
-                          border: const OutlineInputBorder(),
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
                         ),
                         initialValue: values[index],
                       ).padding(all: textFieldPadding),
