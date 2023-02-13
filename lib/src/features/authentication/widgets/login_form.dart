@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -91,11 +92,11 @@ class _LoginFormState extends State<LoginForm> {
         RoundedElevatedButton(
           color: Colors.lightBlue,
           onPressed: () => login(auth, graphql),
-          label: "Inloggen",
+          child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(
           onPressed: () => Routemaster.of(context).push('/forgot'),
-          label: "Vergeten",
+          child: const Text("Vergeten"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),
       Row(
@@ -128,34 +129,5 @@ class _LoginFormState extends State<LoginForm> {
         )
         .padding(all: cardPadding)
         .alignment(Alignment.center);
-  }
-}
-
-class RoundedElevatedButton extends StatelessWidget {
-  const RoundedElevatedButton({
-    super.key,
-    required this.onPressed,
-    required this.label,
-    this.color = Colors.blueGrey,
-  });
-
-  final void Function() onPressed;
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(color),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-        ),
-      ),
-      child: Text(label),
-    );
   }
 }

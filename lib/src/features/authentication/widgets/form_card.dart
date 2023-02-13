@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -33,12 +34,12 @@ class FormCard extends StatelessWidget {
         textAlign: TextAlign.center,
       ).fontSize(textSize).padding(vertical: textPadding),
       [
-        ElevatedButton(
+        RoundedElevatedButton(
           onPressed: onPressed,
-          child: Text(buttonText).fontSize(textSize),
+          color: Colors.lightBlue,
+          child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+        RoundedElevatedButton(
           child: const Icon(Icons.arrow_back),
           onPressed: () => Routemaster.of(context).pop(),
         ).height(buttonHeight),
