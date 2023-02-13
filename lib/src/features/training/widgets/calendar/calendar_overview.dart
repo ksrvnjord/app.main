@@ -181,6 +181,9 @@ class _CalendarOverview extends State<CalendarOverview> {
                 alignment: Alignment.center,
                 backgroundColor: Colors.white,
                 elevation: boatButtonElevation,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
               ),
               onPressed: () => Routemaster.of(context).push(
                 'reservationObject/${e.id}',
