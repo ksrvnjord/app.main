@@ -40,11 +40,17 @@ class VaarverbodWidget extends StatelessWidget {
                 fontSize: textSize,
                 color: fgColor,
               ),
-            ),
+            ).padding(right: innerPadding),
           ],
         )
             .padding(all: innerPadding)
-            .card(color: bgColor, elevation: 0)
+            .card(
+              color: bgColor,
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            )
             .padding(all: cardPadding, bottom: 0);
       },
       loading: Shimmer.fromColors(
@@ -55,7 +61,13 @@ class VaarverbodWidget extends StatelessWidget {
               .padding(all: innerPadding),
         ]
             .toRow()
-            .card(color: Colors.grey, elevation: 0)
+            .card(
+              color: Colors.grey,
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+            )
             .padding(all: cardPadding, bottom: 0),
       ),
       error: (error) {
