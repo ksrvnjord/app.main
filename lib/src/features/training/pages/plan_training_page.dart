@@ -223,7 +223,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                       handlerRadius: timeSelectorDialogHandlerRadius,
                       minDuration: minimumReservationDuration,
                     ).then((value) {
-                      if (value != null) {
+                      if (value != null && mounted) {
                         setState(() {
                           _endTimeOfDay = value.endTime;
                           _startTimeOfDay = value.startTime;
