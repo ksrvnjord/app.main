@@ -47,7 +47,7 @@ class CalendarReservation extends StatelessWidget {
           height: durationInHours * slotHeight * slotHeightModifier,
           decoration: const BoxDecoration(
             color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: Text(
             data['creatorName'] ?? 'Afschrijving',
