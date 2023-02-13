@@ -12,6 +12,8 @@ class DataTextListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: dont use ListTile as it automatically expands to the full width
+    // of the screen, which is not what we want.
     return ListTile(
       title: Text(
         name,
