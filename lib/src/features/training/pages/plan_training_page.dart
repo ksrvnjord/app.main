@@ -239,7 +239,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                       }
                     }),
                   },
-                  icon: Icon(Icons.tune, size: 40),
+                  icon: const Icon(Icons.tune, size: 40),
                   color: Colors.blue,
                 ),
               ],
@@ -273,6 +273,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 });
               },
               style: ElevatedButton.styleFrom(
+                // add rounding
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 backgroundColor: Colors.lightBlue,
               ),
               child: <Widget>[
