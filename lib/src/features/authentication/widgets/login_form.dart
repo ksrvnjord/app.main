@@ -71,7 +71,11 @@ class _LoginFormState extends State<LoginForm> {
             enableSuggestions: false,
             textCapitalization: TextCapitalization.none,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              icon: Icon(Icons.person),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
               labelText: 'Njord-account',
               hintText: "james.cohen.stuart",
             ),
@@ -81,7 +85,11 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: true,
             autocorrect: false,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              icon: Icon(Icons.lock),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
               labelText: 'Wachtwoord',
               hintText: "Trekeenbak@17:26",
             ),
@@ -124,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
         .card(
           elevation: cardElevation,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
         )
         .padding(all: cardPadding)
