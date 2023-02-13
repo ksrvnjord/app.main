@@ -183,61 +183,67 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
               name: "Datum",
               value: DateFormat.yMMMMd().format(widget.date),
             ),
-            DataTextListTile(
-              name: "Starttijd",
-              value: DateFormat.Hm().format(_startTime),
-            ),
-            DataTextListTile(
-              name: "Eindtijd",
-              value: DateFormat.Hm().format(_endTime),
-            ),
-
-            // show button to let user change start and end time
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue,
-              ),
-              onPressed: () {
-                showTimeRangePicker(
-                  context: context,
-                  fromText: 'Starttijd',
-                  toText: 'Eindtijd',
-                  interval: intervalOfSelector,
-                  start: _startTimeOfDay,
-                  end: _endTimeOfDay,
-                  disabledTime: TimeRange(
-                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: DataTextListTile(
+                    name: "Starttijd",
+                    value: DateFormat.Hm().format(_startTime),
                   ),
-                  disabledColor: Colors.grey,
-                  use24HourFormat: true,
-                  handlerRadius: timeSelectorDialogHandlerRadius,
-                  minDuration: minimumReservationDuration,
-                ).then((value) {
-                  if (value != null) {
-                    setState(() {
-                      _endTimeOfDay = value.endTime;
-                      _startTimeOfDay = value.startTime;
-                      _endTime = DateTime(
-                        widget.date.year,
-                        widget.date.month,
-                        widget.date.day,
-                        _endTimeOfDay.hour,
-                        _endTimeOfDay.minute,
-                      );
-                      _startTime = DateTime(
-                        widget.date.year,
-                        widget.date.month,
-                        widget.date.day,
-                        _startTimeOfDay.hour,
-                        _startTimeOfDay.minute,
-                      );
-                    });
-                  }
-                });
-              },
-              child: const Text("Wijzig tijden"),
-            ).padding(all: fieldPadding),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: DataTextListTile(
+                    name: "Eindtijd",
+                    value: DateFormat.Hm().format(_endTime),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => {
+                    showTimeRangePicker(
+                      context: context,
+                      fromText: 'Starttijd',
+                      toText: 'Eindtijd',
+                      interval: intervalOfSelector,
+                      start: _startTimeOfDay,
+                      end: _endTimeOfDay,
+                      disabledTime: TimeRange(
+                        startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                        endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                      ),
+                      disabledColor: Colors.grey,
+                      use24HourFormat: true,
+                      handlerRadius: timeSelectorDialogHandlerRadius,
+                      minDuration: minimumReservationDuration,
+                    ).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          _endTimeOfDay = value.endTime;
+                          _startTimeOfDay = value.startTime;
+                          _endTime = DateTime(
+                            widget.date.year,
+                            widget.date.month,
+                            widget.date.day,
+                            _endTimeOfDay.hour,
+                            _endTimeOfDay.minute,
+                          );
+                          _startTime = DateTime(
+                            widget.date.year,
+                            widget.date.month,
+                            widget.date.day,
+                            _startTimeOfDay.hour,
+                            _startTimeOfDay.minute,
+                          );
+                        });
+                      }
+                    }),
+                  },
+                  icon: Icon(Icons.tune, size: 40),
+                  color: Colors.blue,
+                ),
+              ],
+            ),
             ElevatedButton(
               onPressed: () {
                 createReservationCloud(Reservation(
