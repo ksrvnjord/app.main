@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 final storage = FirebaseStorage.instance;
 
@@ -27,6 +28,14 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.visibility_outlined),
+            onPressed: () {
+              Routemaster.of(context).push('visibility');
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

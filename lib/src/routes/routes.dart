@@ -8,6 +8,9 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_pa
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_almanak_profile_page.dart';
@@ -46,6 +49,7 @@ final routeMap = RouteMap(
             '/ad-valvas',
             '/training',
             '/almanak',
+            '/more',
           ],
           backBehavior: TabBackBehavior.none,
         ),
@@ -78,6 +82,10 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: EditAlmanakProfilePage(),
         ),
+    '/almanak/edit/visibility': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: MePrivacyPage(),
+        ),
     '/almanak/:profileId': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: AlmanakProfilePage(),
@@ -85,10 +93,6 @@ final routeMap = RouteMap(
     '/settings': (info) => const RoutedPageTransition(
           transition: pt.PageTransitionType.rightToLeft,
           child: MePage(),
-        ),
-    '/settings/privacy': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
-          child: MePrivacyPage(),
         ),
     '/training': (_) => const MaterialPage(
           name: 'Training',
@@ -112,6 +116,22 @@ final routeMap = RouteMap(
             documentId: route.pathParameters['id']!,
             name: route.queryParameters['name']!,
           ),
+        ),
+    '/more': (route) => const MaterialPage(
+          name: 'More',
+          child: MorePage(),
+        ),
+    '/more/events': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: EventsPage(),
+        ),
+    '/more/beleid': (info) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: BeleidPage(),
+        ),
+    '/contact': (route) => const RoutedPageTransition(
+          transition: pt.PageTransitionType.rightToLeft,
+          child: ContactPage(),
         ),
   },
 );

@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 const double betweenFields = 20;
@@ -25,20 +24,6 @@ class MePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jouw Njord-Account'),
-        actions: [
-          PopupMenuButton(
-            position: PopupMenuPosition.under,
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-              PopupMenuItem(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                onTap: () {
-                  Routemaster.of(context).push('/settings/privacy');
-                },
-                child: const Center(child: Text('Zichtbaarheid Almanak')),
-              ),
-            ],
-          ),
-        ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         automaticallyImplyLeading: true,
