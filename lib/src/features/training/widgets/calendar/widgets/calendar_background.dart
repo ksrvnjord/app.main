@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarBackground extends StatelessWidget {
@@ -8,8 +9,8 @@ class CalendarBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int amountOfSlots = 33;
-    const double slotHeight = 32;
+    const int amountOfSlots = CalendarMeasurement.amountOfSlots;
+    const double slotHeight = CalendarMeasurement.slotHeight;
 
     return List.filled(
       amountOfSlots,
