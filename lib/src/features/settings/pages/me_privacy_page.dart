@@ -78,6 +78,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
     final client = Provider.of<GraphQLModel>(context).client;
     const double saveButtonPadding = 8;
     const double pagePadding = 8;
+    const double buttonRounding = 16;
 
     return [
       [
@@ -116,7 +117,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
             backgroundColor: buttonColor,
             // add rounding
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(buttonRounding),
             ),
           ),
           onPressed: () {
