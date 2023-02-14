@@ -3,4 +3,5 @@ class CalendarMeasurement {
   static const double slotWidth = 128;
   static const int amountOfSlots = 33;
   static const int minutesInSlot = 30;
+  static const double topOffsetFirstSlot = 20;
 }
