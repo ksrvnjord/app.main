@@ -42,8 +42,8 @@ class _MainPageState extends State<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.campaign),
-            label: 'Ad Valvas',
+            icon: Icon(Icons.calendar_month),
+            label: 'Kalender',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_calendar),

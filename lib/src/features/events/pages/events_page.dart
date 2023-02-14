@@ -16,7 +16,7 @@ class EventsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agenda'),
+        title: const Text('Kalender'),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:

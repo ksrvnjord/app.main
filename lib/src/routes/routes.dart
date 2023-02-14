@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/advalvas/pages/advalvas_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_web_page.dart';
@@ -46,7 +45,7 @@ final routeMap = RouteMap(
           child: MainPage(),
           paths: [
             '/home',
-            '/ad-valvas',
+            '/calendar',
             '/training',
             '/almanak',
             '/more',
@@ -61,17 +60,8 @@ final routeMap = RouteMap(
           transition: pt.PageTransitionType.rightToLeft,
           child: AnnouncementPage(),
         ),
-    '/ad-valvas': (_) => const MaterialPage(
-          name: 'Ad Valvas',
-          child: AdValvasPage(),
-        ),
-    '/ad-valvas/announcements/:announcementId': (info) =>
-        const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
-          child: AnnouncementPage(),
-        ),
-    '/ad-valvas/events': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/calendar': (info) => const MaterialPage(
+          name: "Kalender",
           child: EventsPage(),
         ),
     '/almanak': (_) => const MaterialPage(
