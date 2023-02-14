@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
@@ -168,37 +169,49 @@ class _CalendarOverview extends State<CalendarOverview> {
     const double boatButtonHeight = 64;
     const double boatButtonElevation = 4;
 
-    return SizedBox(
-      width: boatButtonWidth,
-      height: boatButtonHeight,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            TextButton(
-              style: TextButton.styleFrom(
-                alignment: Alignment.center,
-                backgroundColor: Colors.white,
-                elevation: boatButtonElevation,
+    Future<bool> _boatPermitted() async {
+      final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
+
+      if (token != null) {
+        if (reservationObject.permissions.isEmpty ||
+            reservationObject.permissions
+                .toSet()
+                .intersection((token.claims?['permissions'] ?? []).toSet())
+                .isNotEmpty) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    return FutureWrapper(
+      future: _boatPermitted(),
+      success: (isAvailable) => SizedBox(
+        width: boatButtonWidth,
+        height: boatButtonHeight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  alignment: Alignment.center,
+                  backgroundColor:
+                      isAvailable ? Colors.white : Colors.grey[100],
+                  elevation: boatButtonElevation,
+                ),
+                onPressed: () => Routemaster.of(context).push(
+                  'reservationObject/${e.id}',
+                  queryParameters: {'name': reservationObject.name},
+                ),
+                child: Text(e.data().name).textStyle(TextStyle(
+                  color: isAvailable ? Colors.black : Colors.grey[600],
+                )),
               ),
-              onPressed: () => Routemaster.of(context).push(
-                'reservationObject/${e.id}',
-                queryParameters: {'name': reservationObject.name},
-              ),
-              child: Text(e.data().name)
-                  .textStyle(const TextStyle(color: Colors.black)),
-            ),
-            // const Positioned( // Ideetje voor als je geen permissions hebt om de boot te reserveren of als commentaar
-            //   top: 4,
-            //   right: 4,
-            //   child: Icon(
-            //     Icons.close,
-            //     color: Colors.red,
-            //     size: 16,
-            //   ),
-            // ),
-          ],
+            ],
+          ),
         ),
       ),
     );
