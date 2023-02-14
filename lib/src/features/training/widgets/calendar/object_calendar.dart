@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +144,13 @@ class _ObjectCalendar extends State<ObjectCalendar> {
       0,
     );
     DateTime nowEnd = DateTime(
-        date.year, date.month, date.day, CalendarMeasurement.endHour, 0, 0);
+      date.year,
+      date.month,
+      date.day,
+      CalendarMeasurement.endHour,
+      0,
+      0,
+    );
 
     // Get all reservations within that time period
     final reservations = reservationRef
