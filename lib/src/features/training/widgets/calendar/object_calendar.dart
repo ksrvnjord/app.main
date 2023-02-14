@@ -101,24 +101,28 @@ class _ObjectCalendar extends State<ObjectCalendar> {
       return;
     }
 
-    // Take the local position, starting at 6 and divide it into
-    // hour blocks of 64px
-    final double location = 6 + ((details.localPosition.dy - 16) / 64);
-    // Double the local position, round it, and divide it by two
-    // to get the half-hourly-precise start position
-    final double timeDouble = (location * 2).floor() / 2;
-    // Calculate startTime
-    final DateTime time = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      // Get the whole hour
-      min(21, max(6, (timeDouble).floor())),
-      // Get the decimal (12.5 -> .5),
-      // calculate the minute (.5 -> 30),
-      // and round to integer
-      ((timeDouble % 1) * 60).round(),
-    );
+    /// ---- Calculate the time the user tapped ----
+
+    // This is the position relative to the RenderBox.
+    final double tapLocationAbsoluteY = details.localPosition.dy;
+
+    // This is the position relative to the top of the first slot.
+    final double tapLocationRelativeY =
+        tapLocationAbsoluteY - CalendarMeasurement.topOffsetFirstSlot;
+
+    // Now we need to calculate in which slot the user tapped.
+    // We do this by dividing the relative position by the slot height.
+    // This gives us the slot number (indexed from 0), but we need to round it to the nearest
+    // integer.
+    final int slotNumber =
+        tapLocationRelativeY ~/ CalendarMeasurement.slotHeight;
+
+    // Now we can calculate the offset in minutes from the start
+    final int offsetMinutes = slotNumber * 30;
+
+    // Add offsetMinutes to 6:00 to get the time the user tapped
+    DateTime time = DateTime(date.year, date.month, date.day, 6, 0, 0)
+        .add(Duration(minutes: offsetMinutes));
 
     Routemaster.of(context)
         .push('plan', queryParameters: {
