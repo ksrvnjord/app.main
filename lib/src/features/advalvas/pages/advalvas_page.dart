@@ -20,7 +20,7 @@ class AdValvasPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: ListView(children: [
+      body: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           Ink(
             decoration: const ShapeDecoration(
@@ -41,7 +41,7 @@ class AdValvasPage extends StatelessWidget {
           endIndent: 50,
         ),
         const AnnouncementsPage(),
-      ]),
+      ].toColumn(),
     );
   }
 }

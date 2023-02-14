@@ -66,9 +66,6 @@ class AnnouncementWidget extends StatelessWidget {
             .expanded(),
       ].toRow().card(
             elevation: 1,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
           ),
     );
   }

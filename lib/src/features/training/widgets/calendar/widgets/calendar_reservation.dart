@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -28,14 +27,14 @@ class CalendarReservation extends StatelessWidget {
 
     final navigator = Routemaster.of(context);
 
-    const double reservationWidth = CalendarMeasurement.slotWidth;
-    const double slotHeight = CalendarMeasurement.slotHeight;
+    const double reservationWidth = 128;
+    const double slotHeight = 32;
     const double slotHeightModifier = 2; // 2 slots per hour
 
     const double reservationPadding = 4;
 
     const double topOffset = 16; // the first time slot is 16px from the top
-    const int minutesInSlot = CalendarMeasurement.minutesInSlot;
+    const double minutesInSlot = 30;
     const double amountOfSlots = 32;
     final double reservationOffset =
         (differenceFromEarliestTime.inMinutes / minutesInSlot) * amountOfSlots;
@@ -48,7 +47,7 @@ class CalendarReservation extends StatelessWidget {
           height: durationInHours * slotHeight * slotHeightModifier,
           decoration: const BoxDecoration(
             color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.all(Radius.circular(6)),
           ),
           child: Text(
             data['creatorName'] ?? 'Afschrijving',

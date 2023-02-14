@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/calendar_background.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/calendar_reservation.dart';
 import 'package:routemaster/routemaster.dart';
@@ -143,8 +142,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .where('startTime', isLessThanOrEqualTo: nowEnd)
         .get(const GetOptions(source: Source.serverAndCache));
 
-    const double calendarSlotWidth = CalendarMeasurement.slotWidth;
-    const double calendarSlotHeight = CalendarMeasurement.slotHeight;
+    const double calendarSlotWidth = 128;
 
     return SizedBox(
       width: calendarSlotWidth,
@@ -169,7 +167,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             future: reservations,
             // Shimmer entire screen on loading
             loading: const ShimmerWidget(
-              child: SizedBox(height: calendarSlotHeight * 32, width: 128),
+              child: SizedBox(height: 32 * 32, width: 128),
             ),
             // Create a stack of the resulting reservations
             success: (reservations) {
