@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -70,7 +71,11 @@ class _LoginFormState extends State<LoginForm> {
             enableSuggestions: false,
             textCapitalization: TextCapitalization.none,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              icon: Icon(Icons.person),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
               labelText: 'Njord-account',
               hintText: "james.cohen.stuart",
             ),
@@ -80,7 +85,11 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: true,
             autocorrect: false,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              icon: Icon(Icons.lock),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
               labelText: 'Wachtwoord',
               hintText: "Trekeenbak@17:26",
             ),
@@ -88,21 +97,14 @@ class _LoginFormState extends State<LoginForm> {
         ].toColumn(mainAxisSize: MainAxisSize.min),
       ),
       <Widget>[
-        ElevatedButton(
+        RoundedElevatedButton(
+          color: Colors.lightBlue,
           onPressed: () => login(auth, graphql),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-          ),
-          child: const Text('Inloggen'),
+          child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
-        ElevatedButton(
-          onPressed: () {
-            Routemaster.of(context).push('/forgot');
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
-          ),
-          child: const Text('Vergeten'),
+        RoundedElevatedButton(
+          onPressed: () => Routemaster.of(context).push('/forgot'),
+          child: const Text("Vergeten"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),
       Row(
@@ -130,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
         .card(
           elevation: cardElevation,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
         )
         .padding(all: cardPadding)
