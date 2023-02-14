@@ -33,6 +33,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
   // Boat is passed by parent
   late QueryDocumentSnapshot<ReservationObject> boat;
   late DateTime? reservation;
+  bool hasPermission = false;
 
   // Create reference for query
   CollectionReference<Reservation> reservationRef = FirebaseFirestore.instance
@@ -51,6 +52,30 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     date = widget.date;
     boat = widget.boat;
     reservation = null;
+    checkPermission();
+  }
+
+  // Checks if the current user has permissions to
+  // reserve this boat, runs once in initState
+  void checkPermission() {
+    // 1: Get the ID token that contains the permission claims
+    FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
+      // 2: Check if the boat permissions are empty
+      if (boat.data().permissions.isEmpty ||
+          // If not, 3: convert permissions to a set,
+          // get the permissions from the token
+          // and see if there is any overlap
+          boat
+              .data()
+              .permissions
+              .toSet()
+              .intersection((token.claims?['permissions'] ?? []).toSet())
+              .isNotEmpty) {
+        setState(() {
+          hasPermission = true;
+        });
+      }
+    });
   }
 
   void handleTap(TapUpDetails details) {
@@ -65,28 +90,14 @@ class _ObjectCalendar extends State<ObjectCalendar> {
       return;
     }
 
-    bool needToReturn = false;
+    // Re-check the permission
+    checkPermission();
 
-    // Check the permissions of the current user
-    // 1: Get the ID token that contains the permission claims
-    FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
-      // 2: Check if the boat permissions are empty
-      if (boatData.permissions.isNotEmpty &&
-          // If not, 3: convert permissions to a set,
-          // get the permissions from the token
-          // and see if there is any overlap
-          boatData.permissions
-              .toSet()
-              .intersection((token.claims?['permissions'] ?? []).toSet())
-              .isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Je hebt geen permissies voor dit object.'),
-        ));
-        needToReturn = true;
-      }
-    });
+    if (!hasPermission) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Je hebt geen permissies voor dit object.'),
+      ));
 
-    if (needToReturn) {
       return;
     }
 
@@ -147,8 +158,10 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             onTapUp: handleTap,
             // Wrap the background in an AbsorbPointer, so that
             // it does not pass gestures through to the background
-            child: const AbsorbPointer(
-              child: CalendarBackground(),
+            child: AbsorbPointer(
+              child: CalendarBackground(
+                available: (hasPermission && boat.data().available),
+              ),
             ),
           ),
           // Wrap the reservations
