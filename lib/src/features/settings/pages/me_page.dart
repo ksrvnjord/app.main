@@ -225,7 +225,12 @@ class _MeWidgetState extends State<MeWidget> {
               .toRow();
         }).toList(),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: buttonColor,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
           onPressed: () {
             setState(() {
               saving = true;

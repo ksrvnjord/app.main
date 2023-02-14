@@ -24,10 +24,10 @@ class HomePage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: <Widget>[
-        const VaarverbodWidget(),
-        const AnnouncementsWidget(),
-      ].toColumn(),
+      body: ListView(children: const <Widget>[
+        VaarverbodWidget(),
+        AnnouncementsWidget(),
+      ]),
     );
   }
 }

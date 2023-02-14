@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
@@ -171,38 +172,5 @@ class ShowReservationObjectPage extends StatelessWidget {
     String documentId,
   ) {
     return reservationObjectsCollectionReference.doc(documentId).get();
-  }
-}
-
-class DataTextListTile extends StatelessWidget {
-  const DataTextListTile({
-    Key? key,
-    required this.name,
-    required this.value,
-  }) : super(key: key);
-
-  final String name;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        name,
-        style: const TextStyle(
-          color: Colors.grey,
-          fontWeight: FontWeight.w300,
-          fontSize: 16,
-        ),
-      ),
-      subtitle: Text(
-        value,
-        style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.normal,
-          fontSize: 20,
-        ),
-      ),
-    );
   }
 }

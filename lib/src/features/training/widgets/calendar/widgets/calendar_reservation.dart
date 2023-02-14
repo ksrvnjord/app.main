@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -15,39 +16,53 @@ class CalendarReservation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime timestamp = (data['startTime'] as Timestamp).toDate();
-    Duration differenceFromEarliestTime = timestamp.difference(
-      DateTime(timestamp.year, timestamp.month, timestamp.day, 6, 0, 0),
+    final DateTime startTime = (data['startTime'] as Timestamp).toDate();
+    final Duration diffFromEarliestTime = startTime.difference(
+      DateTime(
+        startTime.year,
+        startTime.month,
+        startTime.day,
+        6,
+        0,
+        0,
+      ), // reservations start from 6:00
     );
 
-    // Calculate the duration of the reservation
-    double durationInHours = ((data['endTime'] as Timestamp).seconds -
+    /// ----- HEIGHT CALCULATION OF THE RESERVATION BLOCK -----
+    // Calculate the duration of the reservation, so we can calculate the height
+    final double durationInMinutes = ((data['endTime'] as Timestamp).seconds -
             (data['startTime'] as Timestamp).seconds) /
-        3600;
+        60;
+    // Calculate height of reservation block in pixels
+    final double reservationHeight =
+        (durationInMinutes / CalendarMeasurement.minutesInSlot) *
+            CalendarMeasurement.slotHeight;
 
-    final navigator = Routemaster.of(context);
+    /// ----- Y-POSITION CALCULATION OF THE RESERVATION BLOCK -----
+    /// We need to calculate the offset from the top of the column
+    /// to the top of the reservation block.
 
-    const double reservationWidth = 128;
-    const double slotHeight = 32;
-    const double slotHeightModifier = 2; // 2 slots per hour
+    // offset of first block, because the column starts before 6:00
+    const double topOffset = CalendarMeasurement.topOffsetFirstSlot;
 
-    const double reservationPadding = 4;
-
-    const double topOffset = 16; // the first time slot is 16px from the top
-    const double minutesInSlot = 30;
-    const double amountOfSlots = 32;
+    // Calculate the height of the block in slots
+    final amountOfSlotsOffset =
+        diffFromEarliestTime.inMinutes / CalendarMeasurement.minutesInSlot;
     final double reservationOffset =
-        (differenceFromEarliestTime.inMinutes / minutesInSlot) * amountOfSlots;
+        topOffset + (amountOfSlotsOffset * CalendarMeasurement.slotHeight);
+
+    /// ----- OTHER STYLING -----
+    const double reservationPadding = 4;
 
     return [
       GestureDetector(
-        onTap: () => navigator.push(reservationDocumentId),
+        onTap: () => Routemaster.of(context).push(reservationDocumentId),
         child: Container(
-          width: reservationWidth,
-          height: durationInHours * slotHeight * slotHeightModifier,
+          width: CalendarMeasurement.slotWidth,
+          height: reservationHeight,
           decoration: const BoxDecoration(
             color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(6)),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: Text(
             data['creatorName'] ?? 'Afschrijving',
@@ -59,6 +74,6 @@ class CalendarReservation extends StatelessWidget {
           ).padding(all: reservationPadding),
         ),
       ),
-    ].toColumn().padding(top: topOffset + reservationOffset);
+    ].toColumn().padding(top: reservationOffset);
   }
 }

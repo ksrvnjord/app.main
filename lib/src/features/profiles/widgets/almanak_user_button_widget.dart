@@ -20,7 +20,12 @@ class AlmanakUserButtonWidget extends StatelessWidget {
     final client = Provider.of<GraphQLModel>(context).client;
 
     return Card(
+      // add rounding of 16
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
       child: ListTile(
+        // add rounding to list tile
         leading: FutureWrapper(
           future: getUserIdentifier(client, user.id),
           success: (snapshot) {
