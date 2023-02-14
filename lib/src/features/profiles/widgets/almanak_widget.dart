@@ -26,7 +26,9 @@ class _AlmanakWidgetState extends State<AlmanakWidget> {
         enableSuggestions: false,
         textCapitalization: TextCapitalization.none,
         decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
           labelText: 'Zoeken',
         ),
       ).padding(all: searchBarPadding),

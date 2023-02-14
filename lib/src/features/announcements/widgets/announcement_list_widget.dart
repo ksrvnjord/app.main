@@ -13,37 +13,35 @@ class AnnouncementListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: announcements
-            .map<Widget>(
-              (Query$Announcements$announcements$data announcement) {
-                var createdDate =
-                    DateFormat.yMMMd().format(announcement.created_at);
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: announcements
+          .map<Widget>(
+            (Query$Announcements$announcements$data announcement) {
+              var createdDate =
+                  DateFormat.yMMMd().format(announcement.created_at);
 
-                return GestureDetector(
-                  child: AnnouncementWidget(
-                    title: announcement.title,
-                    subtitle: "${announcement.author} - $createdDate",
-                    text: '',
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
-                    ),
+              return GestureDetector(
+                child: AnnouncementWidget(
+                  title: announcement.title,
+                  subtitle: "${announcement.author} - $createdDate",
+                  text: '',
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
                   ),
-                  onTap: () {
-                    var routemaster = Routemaster.of(context);
-                    routemaster.push(
-                      '${routemaster.currentRoute}/announcements/${announcement.id}',
-                    );
-                  },
-                );
-              },
-            )
-            .toList()
-            .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch),
-      ),
+                ),
+                onTap: () {
+                  var routemaster = Routemaster.of(context);
+                  routemaster.push(
+                    '${routemaster.currentRoute}/announcements/${announcement.id}',
+                  );
+                },
+              );
+            },
+          )
+          .toList()
+          .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch),
     );
   }
 }
