@@ -147,11 +147,8 @@ class _ObjectCalendar extends State<ObjectCalendar> {
         .where('startTime', isLessThanOrEqualTo: nowEnd)
         .get(const GetOptions(source: Source.serverAndCache));
 
-    const double calendarSlotWidth = CalendarMeasurement.slotWidth;
-    const double calendarSlotHeight = CalendarMeasurement.slotHeight;
-
     return SizedBox(
-      width: calendarSlotWidth,
+      width: CalendarMeasurement.slotWidth,
       // Stack the elements over eachother
       child: Stack(
         children: [
@@ -173,7 +170,11 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             future: reservations,
             // Shimmer entire screen on loading
             loading: const ShimmerWidget(
-              child: SizedBox(height: calendarSlotHeight * 32, width: 128),
+              child: SizedBox(
+                height: CalendarMeasurement.slotHeight *
+                    CalendarMeasurement.amountOfSlots,
+                width: CalendarMeasurement.slotWidth,
+              ),
             ),
             // Create a stack of the resulting reservations
             success: (reservations) {
