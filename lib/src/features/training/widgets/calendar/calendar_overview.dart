@@ -169,7 +169,7 @@ class _CalendarOverview extends State<CalendarOverview> {
     const double boatButtonHeight = 64;
     const double boatButtonElevation = 4;
 
-    Future<bool> _boatPermitted() async {
+    Future<bool> boatPermitted() async {
       final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
 
       if (token != null) {
@@ -186,7 +186,7 @@ class _CalendarOverview extends State<CalendarOverview> {
     }
 
     return FutureWrapper(
-      future: _boatPermitted(),
+      future: boatPermitted(),
       success: (isAvailable) => SizedBox(
         width: boatButtonWidth,
         height: boatButtonHeight,
