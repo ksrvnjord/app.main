@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarTime extends StatelessWidget {
@@ -16,7 +15,7 @@ class CalendarTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
-    const double timeHeight = CalendarMeasurement.slotHeight;
+    const double timeHeight = 32;
 
     return SizedBox(
       width: timeWidth,

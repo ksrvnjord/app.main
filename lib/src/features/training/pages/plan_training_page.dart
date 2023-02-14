@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
@@ -108,8 +107,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       }
     });
 
-    const int timeRowItems = 3;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -179,77 +176,93 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           const double fieldPadding = 16;
           const double timeSelectorDialogHandlerRadius = 8;
 
-          return ListView(children: <Widget>[
-            DataTextListTile(name: 'Boot', value: widget.objectName),
-            DataTextListTile(
-              name: "Datum",
-              value: DateFormat.yMMMMd().format(widget.date),
-            ),
+          return <Widget>[
+            TextFormField(
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Afschrijven',
+                border: OutlineInputBorder(),
+              ),
+              initialValue: widget.objectName,
+              style: const TextStyle(color: Colors.black54),
+            ).padding(all: fieldPadding),
+            TextFormField(
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Dag',
+                border: OutlineInputBorder(),
+              ),
+              initialValue: DateFormat.yMMMMd().format(widget.date),
+              style: const TextStyle(color: Colors.black54),
+            ).padding(all: fieldPadding),
+            // show text "Jouw trainingstijden" emphasize that this is the time
+            // the user selected
+            Text(
+              'Jouw afschrijftijden',
+              style: Theme.of(context).textTheme.titleLarge,
+            ).padding(all: fieldPadding),
+            // show selected start and end time
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / timeRowItems,
-                  child: DataTextListTile(
-                    name: "Starttijd",
-                    value: DateFormat.Hm().format(_startTime),
-                  ),
+                Text(
+                  DateFormat.Hm().format(_startTime),
+                  style: const TextStyle(fontSize: 20),
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / timeRowItems,
-                  child: DataTextListTile(
-                    name: "Eindtijd",
-                    value: DateFormat.Hm().format(_endTime),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => {
-                    // TODO: make a nicer time selector
-                    showTimeRangePicker(
-                      strokeColor: Colors.lightBlue,
-                      // ignore: no-equal-arguments
-                      handlerColor: Colors.lightBlue,
-                      context: context,
-                      fromText: 'Starttijd',
-                      toText: 'Eindtijd',
-                      interval: intervalOfSelector,
-                      start: _startTimeOfDay,
-                      end: _endTimeOfDay,
-                      disabledTime: TimeRange(
-                        startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                        endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
-                      ),
-                      disabledColor: Colors.grey,
-                      use24HourFormat: true,
-                      handlerRadius: timeSelectorDialogHandlerRadius,
-                      minDuration: minimumReservationDuration,
-                    ).then((value) {
-                      if (value != null && mounted) {
-                        setState(() {
-                          _endTimeOfDay = value.endTime;
-                          _startTimeOfDay = value.startTime;
-                          _endTime = DateTime(
-                            widget.date.year,
-                            widget.date.month,
-                            widget.date.day,
-                            _endTimeOfDay.hour,
-                            _endTimeOfDay.minute,
-                          );
-                          _startTime = DateTime(
-                            widget.date.year,
-                            widget.date.month,
-                            widget.date.day,
-                            _startTimeOfDay.hour,
-                            _startTimeOfDay.minute,
-                          );
-                        });
-                      }
-                    }),
-                  },
-                  icon: const Icon(Icons.tune, size: 40),
-                  color: Colors.blue,
+                const Icon(Icons.arrow_forward),
+                Text(
+                  DateFormat.Hm().format(_endTime),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ],
-            ),
+            ).padding(all: fieldPadding),
+
+            // show button to let user change start and end time
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+              ),
+              onPressed: () {
+                showTimeRangePicker(
+                  context: context,
+                  fromText: 'Starttijd',
+                  toText: 'Eindtijd',
+                  interval: intervalOfSelector,
+                  start: _startTimeOfDay,
+                  end: _endTimeOfDay,
+                  disabledTime: TimeRange(
+                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                  ),
+                  disabledColor: Colors.grey,
+                  use24HourFormat: true,
+                  handlerRadius: timeSelectorDialogHandlerRadius,
+                  minDuration: minimumReservationDuration,
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      _endTimeOfDay = value.endTime;
+                      _startTimeOfDay = value.startTime;
+                      _endTime = DateTime(
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _endTimeOfDay.hour,
+                        _endTimeOfDay.minute,
+                      );
+                      _startTime = DateTime(
+                        widget.date.year,
+                        widget.date.month,
+                        widget.date.day,
+                        _startTimeOfDay.hour,
+                        _startTimeOfDay.minute,
+                      );
+                    });
+                  }
+                });
+              },
+              child: const Text("Wijzig tijden"),
+            ).padding(all: fieldPadding),
             ElevatedButton(
               onPressed: () {
                 createReservationCloud(Reservation(
@@ -279,10 +292,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 });
               },
               style: ElevatedButton.styleFrom(
-                // add rounding
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
                 backgroundColor: Colors.lightBlue,
               ),
               child: <Widget>[
@@ -291,7 +300,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                     .padding(vertical: fieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
             ).padding(all: fieldPadding),
-          ]);
+          ].toColumn().padding(all: fieldPadding);
         },
       ),
     );
