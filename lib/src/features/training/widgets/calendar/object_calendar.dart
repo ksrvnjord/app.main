@@ -137,8 +137,16 @@ class _ObjectCalendar extends State<ObjectCalendar> {
   @override
   Widget build(BuildContext context) {
     // Calculate start and end of day
-    DateTime nowStart = DateTime(date.year, date.month, date.day, 6, 0, 0);
-    DateTime nowEnd = DateTime(date.year, date.month, date.day, 22, 0, 0);
+    DateTime nowStart = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      CalendarMeasurement.startHour,
+      0,
+      0,
+    );
+    DateTime nowEnd = DateTime(
+        date.year, date.month, date.day, CalendarMeasurement.endHour, 0, 0);
 
     // Get all reservations within that time period
     final reservations = reservationRef

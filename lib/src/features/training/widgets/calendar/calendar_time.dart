@@ -9,25 +9,25 @@ class CalendarTime extends StatelessWidget {
   }) : super(key: key);
 
   final List<DateTime> timestamps = List.generate(
-    33,
-    (index) => DateTime(2020, 01, 01, 6, 0).add(Duration(minutes: index * 30)),
+    CalendarMeasurement.amountOfSlots,
+    (index) => DateTime(2020, 01, 01, CalendarMeasurement.startHour, 0)
+        .add(Duration(minutes: index * CalendarMeasurement.minutesInSlot)),
   );
 
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
-    const double timeHeight = CalendarMeasurement.slotHeight;
 
     return SizedBox(
       width: timeWidth,
       child: timestamps
           .map<Widget>((timestamp) => SizedBox(
-                height: timeHeight,
+                height: CalendarMeasurement.slotHeight,
                 width: timeWidth,
                 child: Stack(children: [
                   Container(
-                    padding: const EdgeInsets.only(left: 60),
-                    height: timeHeight,
+                    padding: const EdgeInsets.only(left: 54),
+                    height: CalendarMeasurement.slotHeight,
                     child: const Divider(
                       color: Colors.grey,
                     ),
