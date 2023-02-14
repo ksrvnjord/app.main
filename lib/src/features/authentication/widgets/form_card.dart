@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class RegisterFormCard extends StatelessWidget {
-  const RegisterFormCard({Key? key}) : super(key: key);
+class FormCard extends StatelessWidget {
+  const FormCard({
+    Key? key,
+    required this.explanation,
+    required this.buttonText,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final String explanation;
+  final String buttonText;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Implement in Heimdall
+    // return const ForgotForm();
     const double textPadding = 16;
 
     const double buttonHeight = 54;
@@ -17,17 +29,17 @@ class RegisterFormCard extends StatelessWidget {
     const double textSize = 16;
 
     return [
-      const Text(
-        'Op dit moment kan een account alleen aangemaakt worden via de website',
+      Text(
+        explanation,
         textAlign: TextAlign.center,
       ).fontSize(textSize).padding(vertical: textPadding),
       [
-        ElevatedButton(
-          child: const Text('Ga naar de website').fontSize(textSize),
-          onPressed: () => Routemaster.of(context).push('/register/webview'),
+        RoundedElevatedButton(
+          onPressed: onPressed,
+          color: Colors.lightBlue,
+          child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+        RoundedElevatedButton(
           child: const Icon(Icons.arrow_back),
           onPressed: () => Routemaster.of(context).pop(),
         ).height(buttonHeight),
@@ -38,7 +50,7 @@ class RegisterFormCard extends StatelessWidget {
         .card(
           elevation: cardElevation,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
         )
         .padding(all: cardOuterPadding)

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/widgets/forgot_form_card.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
@@ -19,8 +20,11 @@ class ForgotPasswordPage extends StatelessWidget {
       backgroundColor: Colors.lightBlue,
       body: <Widget>[
         const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
-        ForgotFormCard(
-          loginCallback: loginCallback,
+        FormCard(
+          explanation:
+              'Op dit moment kan een wachtwoord alleen gereset worden via de website',
+          buttonText: 'Ga naar de website',
+          onPressed: () => Routemaster.of(context).push('/forgot/webview'),
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
     );
