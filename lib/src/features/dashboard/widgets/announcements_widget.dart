@@ -15,11 +15,13 @@ class AnnouncementsWidget extends StatelessWidget {
 
     return FutureWrapper<Query$Announcements?>(
       future: announcements(client),
-      success: (data) {
-        return AnnouncementListWidget(
-          announcements: data!.announcements!.data,
-        );
-      },
+      success: showAnnouncementsList,
+    );
+  }
+
+  Widget showAnnouncementsList(data) {
+    return AnnouncementListWidget(
+      announcements: data!.announcements!.data,
     );
   }
 }
