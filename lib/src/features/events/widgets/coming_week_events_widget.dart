@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -29,29 +30,29 @@ class ComingWeekEventsWidget extends StatelessWidget {
           child: FutureWrapper(
             future: eventsData,
             success: (events) {
-              // filter all events that are in the coming week
-              Iterable<Query$CalendarItems$events?> comingWeekEvents =
-                  events.where((event) {
-                if (event == null || event.start_time == null) {
-                  return false;
-                }
-                final DateTime start = DateTime.parse(event.start_time!);
+              // remove null values of events
+              events.removeWhere((event) => event == null);
 
-                return start.isBefore(
-                      DateTime.now().add(const Duration(days: 30)),
-                    ) &&
-                    start.isAfter(DateTime.now());
-              });
+              // convert events to a list of Event
+              final eventsIt = events.map<Event>((event) => Event(
+                    title: event!.title!,
+                    startTime: DateTime.parse(event.start_time!),
+                    endTime: DateTime.parse(event.end_time!),
+                  ));
+
+              Iterable<Event> comingWeekEvents = eventsIt.where((element) =>
+                  element.startTime.isAfter(DateTime.now()) &&
+                  element.startTime.isBefore(
+                    DateTime.now().add(const Duration(days: 30)),
+                  ));
 
               return Column(
                 children: [
                   ...comingWeekEvents.map((event) {
-                    return event != null
-                        ? ListTile(
-                            title: Text(event.title!),
-                            subtitle: Text(event.start_time!),
-                          )
-                        : Container();
+                    return ListTile(
+                      title: Text(event.title),
+                      subtitle: Text(event.startTime.toIso8601String()),
+                    );
                   }),
                 ],
               );
