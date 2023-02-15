@@ -30,6 +30,12 @@ class _CalendarOverview extends State<CalendarOverview> {
   late final ScrollController timesController;
 
   @override
+  void dispose() {
+    boatsController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     boatsController = ScrollController();
     timesController = ScrollController();
