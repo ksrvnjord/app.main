@@ -48,9 +48,14 @@ class ComingWeekEventsWidget extends StatelessWidget {
               return Column(
                 children: [
                   ...comingWeekEvents.map((event) {
-                    return ListTile(
-                      title: Text(event.title),
-                      subtitle: Text(event.startTime.toIso8601String()),
+                    DateTime start = event.startTime;
+
+                    return Row(
+                      children: [
+                        Text(start.day.toString()),
+                        Text(start.month.toString()),
+                        Text(event.title),
+                      ],
                     );
                   }),
                 ],
