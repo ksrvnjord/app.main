@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
@@ -223,44 +224,7 @@ class _MeWidgetState extends State<MeWidget> {
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
-          onPressed: () {
-            setState(() {
-              saving = true;
-              buttonColor = Colors.blueGrey;
-            });
-            updateMe(
-              client,
-              Input$IContact(
-                first_name: fields.first['first_name']?['controller'].text,
-                last_name: fields.first['last_name']?['controller'].text,
-                email: fields[1]['email']?['controller'].text,
-                phone_primary: fields[2]['phone_primary']?['controller'].text,
-                street: fields[3]['street']?['controller'].text,
-                housenumber: fields[3]['housenumber']?['controller'].text,
-                housenumber_addition:
-                    fields[3]['housenumber_addition']?['controller'].text,
-                zipcode: fields[3]['zipcode']?['controller'].text,
-                city: fields[3]['city']?['controller'].text,
-              ),
-            ).then((data) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Updateverzoek verstuurd')),
-              );
-              setState(() {
-                saving = false;
-                buttonColor = Colors.blue;
-              });
-            }).onError((error, stackTrace) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.red,
-                content: Text('Updateverzoek mislukt, melding gemaakt.'),
-              ));
-              setState(() {
-                saving = false;
-                buttonColor = Colors.red;
-              });
-            });
-          },
+          onPressed: () => save(context, client),
           child: saving
               ? const SizedBox(
                   height: 10,
@@ -294,5 +258,44 @@ class _MeWidgetState extends State<MeWidget> {
         ),
       ],
     );
+  }
+
+  void save(BuildContext context, GraphQLClient client) {
+    setState(() {
+      saving = true;
+      buttonColor = Colors.blueGrey;
+    });
+    updateMe(
+      client,
+      Input$IContact(
+        first_name: fields.first['first_name']?['controller'].text,
+        last_name: fields.first['last_name']?['controller'].text,
+        email: fields[1]['email']?['controller'].text,
+        phone_primary: fields[2]['phone_primary']?['controller'].text,
+        street: fields[3]['street']?['controller'].text,
+        housenumber: fields[3]['housenumber']?['controller'].text,
+        housenumber_addition:
+            fields[3]['housenumber_addition']?['controller'].text,
+        zipcode: fields[3]['zipcode']?['controller'].text,
+        city: fields[3]['city']?['controller'].text,
+      ),
+    ).then((data) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Updateverzoek verstuurd')),
+      );
+      setState(() {
+        saving = false;
+        buttonColor = Colors.blue;
+      });
+    }).onError((error, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Updateverzoek mislukt, melding gemaakt.'),
+      ));
+      setState(() {
+        saving = false;
+        buttonColor = Colors.red;
+      });
+    });
   }
 }
