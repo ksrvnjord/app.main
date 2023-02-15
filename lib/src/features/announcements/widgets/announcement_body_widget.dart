@@ -29,15 +29,17 @@ class AnnouncementBodyWidget extends StatelessWidget {
         ).padding(bottom: spacingBetweenTitleAndText),
         MarkdownBody(
           data: text,
-          onTapLink: (text, url, title) {
-            // Check if an URL is actually given
-            if (url?.isNotEmpty ?? false) {
-              // Launch the URL
-              launchUrlString(url!);
-            }
-          },
+          onTapLink: launchUrlIfPossible,
         ),
       ],
     );
+  }
+
+  void launchUrlIfPossible(_, url, __) {
+    // Check if an URL is actually given
+    if (url?.isNotEmpty ?? false) {
+      // Launch the URL
+      launchUrlString(url!);
+    }
   }
 }

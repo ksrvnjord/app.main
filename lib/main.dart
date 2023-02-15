@@ -59,6 +59,13 @@ Future<void> main() async {
 class Application extends StatelessWidget {
   const Application({Key? key}) : super(key: key);
 
+  RouteMap getRoutes(BuildContext context) {
+    final auth = Provider.of<AuthModel>(context);
+    final loggedIn = auth.client != null;
+
+    return loggedIn ? routeMap : authenticationRoutes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -82,12 +89,7 @@ class Application extends StatelessWidget {
           routeInformationParser: const RoutemasterParser(),
           routerDelegate: RoutemasterDelegate(
             observers: [GlobalObserver()],
-            routesBuilder: (context) {
-              final auth = Provider.of<AuthModel>(context);
-              final loggedIn = auth.client != null;
-
-              return loggedIn ? routeMap : authenticationRoutes;
-            },
+            routesBuilder: getRoutes,
           ),
         ),
       ),

@@ -25,27 +25,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
 
     return FutureWrapper<Query$Announcement$announcement?>(
       future: announcement(params['announcementId'] ?? '1', client),
-      success: (Query$Announcement$announcement? data) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Aankondiging'),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.lightBlue,
-            ),
-          ),
-          body: (data != null)
-              ? Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: AnnouncementBodyWidget(
-                    title: data.title,
-                    text: data.contents,
-                  ),
-                )
-              : Container(),
-        );
-      },
+      success: buildAnnouncementBody,
       loading: Scaffold(
         appBar: AppBar(
           title: const Text('Bericht'),
@@ -56,6 +36,28 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         ),
         body: const LinearProgressIndicator(),
       ),
+    );
+  }
+
+  Widget buildAnnouncementBody(Query$Announcement$announcement? data) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Aankondiging'),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.lightBlue,
+        ),
+      ),
+      body: (data != null)
+          ? Padding(
+              padding: const EdgeInsets.all(16),
+              child: AnnouncementBodyWidget(
+                title: data.title,
+                text: data.contents,
+              ),
+            )
+          : Container(),
     );
   }
 }
