@@ -7,8 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:intl/intl.dart';
-
 import 'upcoming_event_widget.dart';
 
 class ComingWeekEventsWidget extends StatelessWidget {
@@ -56,19 +54,44 @@ class ComingWeekEventsWidget extends StatelessWidget {
 
               return SizedBox(
                 height: cardHeight,
-                child: ListView.builder(
-                  itemCount: comingEvents.length >= maxComingEvents
-                      ? maxComingEvents
-                      : comingEvents.length,
-                  itemBuilder: (context, index) {
-                    Event event = comingEvents[index];
-                    const double elementPadding = 4;
+                child: Stack(
+                  children: [
+                    ListView.builder(
+                      itemCount: comingEvents.length >= maxComingEvents
+                          ? maxComingEvents
+                          : comingEvents.length,
+                      itemBuilder: (context, index) {
+                        Event event = comingEvents[index];
+                        const double elementPadding = 4;
 
-                    return UpcomingEventWidget(
-                      elementPadding: elementPadding,
-                      event: event,
-                    ).paddingDirectional(horizontal: elementPadding);
-                  },
+                        return UpcomingEventWidget(
+                          elementPadding: elementPadding,
+                          event: event,
+                        ).paddingDirectional(horizontal: elementPadding);
+                      },
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: cardHeight / 4,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(16),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.5),
+                              Colors.transparent
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
