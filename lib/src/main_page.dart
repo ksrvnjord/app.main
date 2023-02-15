@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
-            label: 'Kalender',
+            label: 'Agenda',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_calendar),
