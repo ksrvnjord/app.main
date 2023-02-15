@@ -22,85 +22,93 @@ class AlmanakProfileWidget extends StatelessWidget {
 
     return FutureWrapper(
       future: userQuery,
-      success: (user) {
-        final contact = user!.fullContact.public;
+      success: showUserProfile,
+    );
+  }
 
-        const List<String> labels = [
-          'Naam',
-          'Telefoonnummer',
-          'E-mailadres',
-          'Adres',
-          'Postcode',
-          'Woonplaats',
-        ];
+  Widget showUserProfile(user) {
+    final contact = user!.fullContact.public;
 
-        final List<String> values = [
-          '${contact.first_name} ${contact.last_name}',
-          contact.phone_primary ?? '',
-          contact.email ?? '',
-          contact.street != ''
-              ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
-              : '',
-          contact.zipcode ?? ' ',
-          contact.city ?? ' ',
-        ];
+    const List<String> labels = [
+      'Naam',
+      'Telefoonnummer',
+      'E-mailadres',
+      'Adres',
+      'Postcode',
+      'Woonplaats',
+    ];
 
-        const double textFieldPadding = 16;
+    final List<String> values = [
+      '${contact.first_name} ${contact.last_name}',
+      contact.phone_primary ?? '',
+      contact.email ?? '',
+      contact.street != ''
+          ? '${contact.street ?? ''} ${contact.housenumber ?? ''} ${contact.housenumber_addition ?? ''}'
+          : '',
+      contact.zipcode ?? ' ',
+      contact.city ?? ' ',
+    ];
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(values.first),
-            backgroundColor: Colors.lightBlue,
-            shadowColor: Colors.transparent,
-            systemOverlayStyle:
-                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+    const double textFieldPadding = 16;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(values.first),
+        backgroundColor: Colors.lightBlue,
+        shadowColor: Colors.transparent,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: ProfilePictureWidget(userId: user.identifier),
+            ),
           ),
-          body: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: ProfilePictureWidget(userId: user.identifier),
-                ),
-              ),
-              // ignore: avoid-shrink-wrap-in-lists
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: labels.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (values[index] != '') {
-                    return GestureDetector(
-                      child: TextFormField(
-                        enabled: false,
-                        decoration: InputDecoration(
-                          labelText: labels[index],
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                        ),
-                        initialValue: values[index],
-                      ).padding(all: textFieldPadding),
-                      onLongPress: () {
-                        HapticFeedback.vibrate();
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (_) => AlmanakProfileBottomsheetWidget(
-                            label: labels[index],
-                            value: values[index],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ],
+          // ignore: avoid-shrink-wrap-in-lists
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: labels.length,
+            itemBuilder: (BuildContext context, int index) {
+              if (values[index] != '') {
+                return GestureDetector(
+                  child: TextFormField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: labels[index],
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                    ),
+                    initialValue: values[index],
+                  ).padding(all: textFieldPadding),
+                  onLongPress: () => vibrateAndshowBottomSheet(
+                    context,
+                    labels[index],
+                    values[index],
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
           ),
-        );
-      },
+        ],
+      ),
+    );
+  }
+
+  void vibrateAndshowBottomSheet(context, label, value) {
+    HapticFeedback.vibrate();
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => AlmanakProfileBottomsheetWidget(
+        label: label,
+        value: value,
+      ),
     );
   }
 }
@@ -119,12 +127,10 @@ class ProfilePictureWidget extends StatelessWidget {
 
     return FutureWrapper(
       future: getProfilePicture(userId),
-      success: (data) {
-        return CircleAvatar(
-          radius: profilePictureSize,
-          backgroundImage: MemoryImage(data!),
-        );
-      },
+      success: (Uint8List? data) => CircleAvatar(
+        radius: profilePictureSize,
+        backgroundImage: MemoryImage(data!),
+      ),
       error: (error) => const CircleAvatar(
         radius: profilePictureSize,
         backgroundImage: AssetImage(Images.placeholderProfilePicture),

@@ -31,9 +31,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.visibility_outlined),
-            onPressed: () {
-              Routemaster.of(context).push('visibility');
-            },
+            onPressed: () => Routemaster.of(context).push('visibility'),
           ),
         ],
       ),
