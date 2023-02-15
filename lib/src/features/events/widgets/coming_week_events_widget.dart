@@ -44,11 +44,16 @@ class ComingWeekEventsWidget extends StatelessWidget {
                 events.removeWhere((event) => event == null);
 
                 // convert events to a list of Event
-                Iterable<Event> eventsIt = events.map<Event>((event) => Event(
-                      title: event!.title!,
-                      startTime: DateTime.parse(event.start_time!),
-                      endTime: DateTime.parse(event.end_time!),
-                    ));
+                List<Event> eventsIt = events
+                    .map<Event>((event) => Event(
+                          title: event!.title!,
+                          startTime: DateTime.parse(event.start_time!),
+                          endTime: DateTime.parse(event.end_time!),
+                        ))
+                    .toList();
+
+                // sort events by start time
+                eventsIt.sort((a, b) => a.startTime.compareTo(b.startTime));
 
                 List<Event> comingEvents = eventsIt
                     .where(
