@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:intl/intl.dart';
 
 class ComingWeekEventsWidget extends StatelessWidget {
   const ComingWeekEventsWidget({super.key});
@@ -14,6 +16,8 @@ class ComingWeekEventsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
     final eventsData = events(client);
+
+    initializeDateFormatting('nl_NL');
 
     const double titleFontSize = 16;
 
@@ -49,14 +53,30 @@ class ComingWeekEventsWidget extends StatelessWidget {
                 children: [
                   ...comingWeekEvents.map((event) {
                     DateTime start = event.startTime;
+                    DateFormat monthFormat = DateFormat('MMM EE', 'nl_NL');
+                    DateFormat timeFormat = DateFormat('HH:mm');
+
+                    const double dayNumberFontSize = 24;
+                    const double elementPadding = 4;
+                    const double dateFontSize = 12;
+                    const double eventFontSize = 16;
 
                     return Row(
                       children: [
-                        Text(start.day.toString()),
-                        Text(start.month.toString()),
-                        Text(event.title),
+                        Text(start.day.toString())
+                            .fontSize(dayNumberFontSize)
+                            .paddingDirectional(horizontal: elementPadding),
+                        Text(monthFormat.format(start))
+                            .fontSize(dateFontSize)
+                            .textColor(Colors.blueGrey),
+                        Text(timeFormat.format(start))
+                            .fontSize(dateFontSize)
+                            .padding(horizontal: elementPadding),
+                        Text(event.title)
+                            .fontSize(eventFontSize)
+                            .paddingDirectional(horizontal: elementPadding),
                       ],
-                    );
+                    ).paddingDirectional(horizontal: elementPadding);
                   }),
                 ],
               );
