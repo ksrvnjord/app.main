@@ -30,8 +30,8 @@ class HomePage extends StatelessWidget {
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
         const VaarverbodWidget().padding(
-            vertical:
-                firstElementPadding), // TODO: this widget looks a bit awkward
+          vertical: firstElementPadding,
+        ), // TODO: this widget looks a bit awkward
         const ComingWeekEventsWidget().padding(vertical: elementPadding),
         const AnnouncementsWidget(),
       ]),
