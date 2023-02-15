@@ -24,14 +24,12 @@ class BeleidPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: loadAsset("assets/documents/beleid-149e-bestuur.pdf", context),
-        success: (data) {
-          return PDFView(
-            pdfData: data,
-            onError: (error) => ErrorCardWidget(errorMessage: error.toString()),
-            onPageError: (page, error) =>
-                ErrorCardWidget(errorMessage: error.toString()),
-          );
-        },
+        success: (Uint8List data) => PDFView(
+          pdfData: data,
+          onError: (error) => ErrorCardWidget(errorMessage: error.toString()),
+          onPageError: (page, error) =>
+              ErrorCardWidget(errorMessage: error.toString()),
+        ),
         error: (error) => ErrorCardWidget(errorMessage: error.toString()),
       ),
     );
