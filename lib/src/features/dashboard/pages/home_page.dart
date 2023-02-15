@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -11,6 +12,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double firstElementPadding = 4;
+    const double elementPadding = 8;
+
     return Scaffold(
       appBar: AppBar(
         title: [
@@ -24,9 +28,12 @@ class HomePage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: ListView(children: const <Widget>[
-        VaarverbodWidget(),
-        AnnouncementsWidget(),
+      body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
+        const VaarverbodWidget().padding(
+          vertical: firstElementPadding,
+        ), // TODO: this widget looks a bit awkward
+        const ComingWeekEventsWidget().padding(vertical: elementPadding),
+        const AnnouncementsWidget(),
       ]),
     );
   }
