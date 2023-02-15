@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
-import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -34,7 +33,7 @@ class ComingWeekEventsWidget extends StatelessWidget {
               events.removeWhere((event) => event == null);
 
               // convert events to a list of Event
-              final eventsIt = events.map<Event>((event) => Event(
+              Iterable<Event> eventsIt = events.map<Event>((event) => Event(
                     title: event!.title!,
                     startTime: DateTime.parse(event.start_time!),
                     endTime: DateTime.parse(event.end_time!),
