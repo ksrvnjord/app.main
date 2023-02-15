@@ -24,7 +24,7 @@ class ComingWeekEventsWidget extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "Evenementen komende week",
+          "Opkomende evenementen",
         ).fontSize(titleFontSize).fontWeight(FontWeight.w600),
         Card(
           shape: const RoundedRectangleBorder(
@@ -43,23 +43,32 @@ class ComingWeekEventsWidget extends StatelessWidget {
                     endTime: DateTime.parse(event.end_time!),
                   ));
 
-              Iterable<Event> comingWeekEvents = eventsIt.where((element) =>
-                  element.startTime.isAfter(DateTime.now()) &&
-                  element.startTime.isBefore(
-                    DateTime.now().add(const Duration(days: 30)),
-                  ));
+              List<Event> comingEvents = eventsIt
+                  .where(
+                    (element) => element.startTime.isAfter(DateTime.now()),
+                  )
+                  .toList();
 
-              return Column(
-                children: [
-                  ...comingWeekEvents.map((event) {
+              const int maxComingEvents = 10;
+              const double cardHeight = 104;
+
+              return SizedBox(
+                height: cardHeight,
+                child: ListView.builder(
+                  itemCount: comingEvents.length >= maxComingEvents
+                      ? maxComingEvents
+                      : comingEvents.length,
+                  itemBuilder: (context, index) {
+                    Event event = comingEvents[index];
                     DateTime start = event.startTime;
-                    DateFormat monthFormat = DateFormat('MMM EE', 'nl_NL');
+                    DateFormat monthFormat = DateFormat('MMM EEE', 'nl_NL');
                     DateFormat timeFormat = DateFormat('HH:mm');
 
                     const double dayNumberFontSize = 24;
                     const double elementPadding = 4;
                     const double dateFontSize = 12;
                     const double eventFontSize = 16;
+                    const int maxLines = 2;
 
                     return Row(
                       children: [
@@ -74,14 +83,21 @@ class ComingWeekEventsWidget extends StatelessWidget {
                             .padding(top: 8),
                         Text(timeFormat.format(start))
                             .fontSize(dateFontSize)
+                            .textColor(Colors.blueGrey)
                             .padding(horizontal: elementPadding, top: 8),
-                        Text(event.title)
-                            .fontSize(eventFontSize)
-                            .paddingDirectional(horizontal: elementPadding),
+                        Expanded(
+                          child: Text(
+                            event.title,
+                            maxLines: maxLines,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                              .fontSize(eventFontSize)
+                              .paddingDirectional(horizontal: elementPadding),
+                        ),
                       ],
                     ).paddingDirectional(horizontal: elementPadding);
-                  }),
-                ],
+                  },
+                ),
               );
             },
           ),
