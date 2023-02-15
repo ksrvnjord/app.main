@@ -32,13 +32,7 @@ class MePage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: result,
-        success: (me) {
-          if (me == null) {
-            return Container();
-          }
-
-          return MeWidget(me);
-        },
+        success: (me) => me != null ? MeWidget(me) : Container(),
       ),
     );
   }
@@ -211,12 +205,10 @@ class _MeWidgetState extends State<MeWidget> {
                         labelStyle: labelTextStyle(label),
                       ),
                       controller: label['controller'],
-                      onChanged: (value) {
-                        setState(() {
-                          fields[idx][key]?['changed'] =
-                              (label['initial'] != label['controller'].text);
-                        });
-                      },
+                      onChanged: (value) => setState(() {
+                        fields[idx][key]?['changed'] =
+                            (label['initial'] != label['controller'].text);
+                      }),
                     ).padding(all: fieldPadding);
                   }),
                 );
