@@ -61,7 +61,7 @@ final routeMap = RouteMap(
           child: AnnouncementPage(),
         ),
     '/calendar': (info) => const MaterialPage(
-          name: "Kalender",
+          name: "Agenda",
           child: EventsPage(),
         ),
     '/almanak': (_) => const MaterialPage(
