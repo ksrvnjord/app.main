@@ -4,6 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/fading_effect_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -54,44 +55,22 @@ class ComingWeekEventsWidget extends StatelessWidget {
 
               return SizedBox(
                 height: cardHeight,
-                child: Stack(
-                  children: [
-                    ListView.builder(
-                      itemCount: comingEvents.length >= maxComingEvents
-                          ? maxComingEvents
-                          : comingEvents.length,
-                      itemBuilder: (context, index) {
-                        Event event = comingEvents[index];
-                        const double elementPadding = 4;
+                child: FadingEffectWidget(
+                  parentHeight: cardHeight,
+                  child: ListView.builder(
+                    itemCount: comingEvents.length >= maxComingEvents
+                        ? maxComingEvents
+                        : comingEvents.length,
+                    itemBuilder: (context, index) {
+                      Event event = comingEvents[index];
+                      const double elementPadding = 4;
 
-                        return UpcomingEventWidget(
-                          elementPadding: elementPadding,
-                          event: event,
-                        ).paddingDirectional(horizontal: elementPadding);
-                      },
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: cardHeight / 4,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(16),
-                          ),
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.24),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                      return UpcomingEventWidget(
+                        elementPadding: elementPadding,
+                        event: event,
+                      ).paddingDirectional(horizontal: elementPadding);
+                    },
+                  ),
                 ),
               );
             },
