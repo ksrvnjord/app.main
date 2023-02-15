@@ -18,14 +18,10 @@ class ComingWeekEventsWidget extends StatelessWidget {
     const double titleFontSize = 16;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: const Text(
-            "Evenementen komende week",
-          ).fontSize(titleFontSize).fontWeight(FontWeight.w600),
-        ),
+        const Text(
+          "Evenementen komende week",
+        ).fontSize(titleFontSize).fontWeight(FontWeight.w600),
         Card(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
