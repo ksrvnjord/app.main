@@ -24,17 +24,19 @@ class EditProfilePictureWidget extends StatelessWidget {
       initialImage: initialImage.image,
       shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
       isEditable: true,
-      onChange: (File file) {
-        try {
-          uploadMyProfilePicture(file);
-          Fluttertoast.showToast(
-            msg: "Your profile picture was updated successfully",
-          );
-        } on FirebaseException catch (e) {
-          Fluttertoast.showToast(msg: "Error updating your profile picture");
-          log(e.toString());
-        }
-      },
+      onChange: tryUploadProfilePicture,
     );
+  }
+
+  void tryUploadProfilePicture(File file) {
+    try {
+      uploadMyProfilePicture(file);
+      Fluttertoast.showToast(
+        msg: "Your profile picture was updated successfully",
+      );
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: "Error updating your profile picture");
+      log(e.toString());
+    }
   }
 }
