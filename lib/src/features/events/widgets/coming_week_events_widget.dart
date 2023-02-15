@@ -50,7 +50,7 @@ class ComingWeekEventsWidget extends StatelessWidget {
                   .toList();
 
               const int maxComingEvents = 10;
-              const double cardHeight = 104;
+              const double cardHeight = 96;
 
               return SizedBox(
                 height: cardHeight,
@@ -84,8 +84,8 @@ class ComingWeekEventsWidget extends StatelessWidget {
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                             colors: [
-                              Colors.black.withOpacity(0.5),
-                              Colors.transparent
+                              Colors.black.withOpacity(0.24),
+                              Colors.transparent,
                             ],
                           ),
                         ),
