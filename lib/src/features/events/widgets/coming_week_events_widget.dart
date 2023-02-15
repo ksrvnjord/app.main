@@ -66,12 +66,15 @@ class ComingWeekEventsWidget extends StatelessWidget {
                         Text(start.day.toString())
                             .fontSize(dayNumberFontSize)
                             .paddingDirectional(horizontal: elementPadding),
-                        Text(monthFormat.format(start))
+                        Text(
+                          monthFormat.format(start),
+                        )
                             .fontSize(dateFontSize)
-                            .textColor(Colors.blueGrey),
+                            .textColor(Colors.blueGrey)
+                            .padding(top: 8),
                         Text(timeFormat.format(start))
                             .fontSize(dateFontSize)
-                            .padding(horizontal: elementPadding),
+                            .padding(horizontal: elementPadding, top: 8),
                         Text(event.title)
                             .fontSize(eventFontSize)
                             .paddingDirectional(horizontal: elementPadding),
