@@ -12,6 +12,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double firstElementPadding = 4;
+    const double elementPadding = 8;
+
     return Scaffold(
       appBar: AppBar(
         title: [
@@ -26,8 +29,8 @@ class HomePage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
-        const VaarverbodWidget().padding(vertical: 4),
-        const ComingWeekEventsWidget().padding(vertical: 8),
+        const VaarverbodWidget().padding(vertical: firstElementPadding),
+        const ComingWeekEventsWidget().padding(vertical: elementPadding),
         const AnnouncementsWidget(),
       ]),
     );
