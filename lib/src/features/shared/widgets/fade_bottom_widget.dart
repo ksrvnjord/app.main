@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FadingEffectWidget extends StatelessWidget {
-  const FadingEffectWidget({
+class FadeBottomWidget extends StatelessWidget {
+  const FadeBottomWidget({
     Key? key,
     required this.child,
     required this.parentHeight,
