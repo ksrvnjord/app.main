@@ -27,7 +27,10 @@ class ComingWeekEventsWidget extends StatelessWidget {
       children: [
         const Text(
           "Opkomende evenementen",
-        ).fontSize(titleFontSize).fontWeight(FontWeight.w600),
+        )
+            .fontSize(titleFontSize)
+            .fontWeight(FontWeight.w300)
+            .textColor(Colors.blueGrey),
         SizedBox(
           height: cardHeight,
           child: Card(

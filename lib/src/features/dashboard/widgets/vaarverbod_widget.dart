@@ -59,7 +59,7 @@ class VaarverbodWidget extends StatelessWidget {
               color: Colors.grey,
               elevation: 0,
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
             ),
       ),

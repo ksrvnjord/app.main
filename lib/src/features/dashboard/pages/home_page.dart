@@ -26,8 +26,8 @@ class HomePage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
-        const VaarverbodWidget(),
-        const ComingWeekEventsWidget().padding(top: 8),
+        const VaarverbodWidget().padding(vertical: 4),
+        const ComingWeekEventsWidget().padding(vertical: 8),
         const AnnouncementsWidget(),
       ]),
     );
