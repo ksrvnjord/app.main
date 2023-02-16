@@ -80,24 +80,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
-    var navigator = Routemaster.of(context);
-
-    CurrentUser curUser = GetIt.I.get<CurrentUser>();
-    Query$Me$me? heimdallUser = curUser.user;
-    User? firebaseUser = auth.currentUser;
-    if (heimdallUser == null ||
-        heimdallUser.fullContact.private == null ||
-        firebaseUser == null) {
-      return const ErrorCardWidget(
-        errorMessage: 'Er is iets misgegaan met het inloggen',
-      );
-    }
-
-    Query$Me$me$fullContact$private privateContact =
-        heimdallUser.fullContact.private!;
-    String creatorName =
-        '${privateContact.first_name} ${privateContact.last_name}';
-
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
         log('Reservation object is not available');
@@ -107,8 +89,6 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         );
       }
     });
-
-    const int timeRowItems = 3;
 
     return Scaffold(
       appBar: AppBar(
@@ -129,172 +109,190 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
                 )
                 .get(),
         error: (error) => ErrorCardWidget(errorMessage: error.toString()),
-        success: (snapshot) {
-          List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
-
-          DateTime earliestPossibleTime = widget.date.add(const Duration(
-            hours: 6,
-          )); // people can reservate starting at 06:00
-
-          DateTime latestPossibleTime =
-              widget.date.add(const Duration(hours: 22));
-          for (QueryDocumentSnapshot<Reservation> document in documents) {
-            // determine earliest/latest possible time for slider
-
-            Reservation reservation = document.data();
-            if ((reservation.startTime.isBefore(_startTime) ||
-                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
-                reservation.endTime.isAfter(_startTime)) {
-              log('Time is not available');
-              if (reservation.creator == firebaseUser.uid) {
-                return Container();
-              }
-
-              return const ErrorCardWidget(
-                errorMessage: "Deze tijd is al bezet",
-              );
-            }
-
-            if ((reservation.endTime.isBefore(_startTime) ||
-                    reservation.endTime.isAtSameMomentAs(_startTime)) &&
-                reservation.endTime.isAfter(earliestPossibleTime)) {
-              earliestPossibleTime = reservation.endTime;
-            }
-
-            if ((reservation.startTime.isAfter(_startTime) ||
-                    reservation.startTime.isAtSameMomentAs(_startTime)) &&
-                reservation.startTime.isBefore(latestPossibleTime)) {
-              latestPossibleTime = reservation.startTime;
-            }
-          }
-
-          if (_endTime.isAfter(latestPossibleTime)) {
-            _endTime = latestPossibleTime;
-          }
-          _startTimeOfDay =
-              TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
-          _endTimeOfDay =
-              TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
-
-          const double fieldPadding = 16;
-          const double timeSelectorDialogHandlerRadius = 8;
-
-          return ListView(children: <Widget>[
-            DataTextListTile(name: 'Boot', value: widget.objectName),
-            DataTextListTile(
-              name: "Datum",
-              value: DateFormat.yMMMMd().format(widget.date),
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / timeRowItems,
-                  child: DataTextListTile(
-                    name: "Starttijd",
-                    value: DateFormat.Hm().format(_startTime),
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / timeRowItems,
-                  child: DataTextListTile(
-                    name: "Eindtijd",
-                    value: DateFormat.Hm().format(_endTime),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => {
-                    // TODO: make a nicer time selector
-                    showTimeRangePicker(
-                      strokeColor: Colors.lightBlue,
-                      // ignore: no-equal-arguments
-                      handlerColor: Colors.lightBlue,
-                      context: context,
-                      fromText: 'Starttijd',
-                      toText: 'Eindtijd',
-                      interval: intervalOfSelector,
-                      start: _startTimeOfDay,
-                      end: _endTimeOfDay,
-                      disabledTime: TimeRange(
-                        startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                        endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
-                      ),
-                      disabledColor: Colors.grey,
-                      use24HourFormat: true,
-                      handlerRadius: timeSelectorDialogHandlerRadius,
-                      minDuration: minimumReservationDuration,
-                    ).then((value) {
-                      if (value != null && mounted) {
-                        setState(() {
-                          _endTimeOfDay = value.endTime;
-                          _startTimeOfDay = value.startTime;
-                          _endTime = DateTime(
-                            widget.date.year,
-                            widget.date.month,
-                            widget.date.day,
-                            _endTimeOfDay.hour,
-                            _endTimeOfDay.minute,
-                          );
-                          _startTime = DateTime(
-                            widget.date.year,
-                            widget.date.month,
-                            widget.date.day,
-                            _startTimeOfDay.hour,
-                            _startTimeOfDay.minute,
-                          );
-                        });
-                      }
-                    }),
-                  },
-                  icon: const Icon(Icons.tune, size: 40),
-                  color: Colors.blue,
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                createReservationCloud(Reservation(
-                  _startTime,
-                  _endTime,
-                  widget.reservationObject,
-                  firebaseUser.uid,
-                  widget.objectName,
-                  creatorName: creatorName,
-                )).then((res) {
-                  if (res['success'] == true) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text('Afschrijving gelukt!'),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text("Afschrijving mislukt! ${res['error']}"),
-                      ),
-                    );
-                  }
-                  navigator.pop();
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                // add rounding
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                backgroundColor: Colors.lightBlue,
-              ),
-              child: <Widget>[
-                const Icon(LucideIcons.check).padding(bottom: 1),
-                const Text('Afschrijven', style: TextStyle(fontSize: 18))
-                    .padding(vertical: fieldPadding),
-              ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-            ).padding(all: fieldPadding),
-          ]);
-        },
+        success: (snapshot) => renderPage(snapshot),
       ),
     );
+  }
+
+  Widget renderPage(
+    QuerySnapshot<Reservation> snapshot,
+  ) {
+    CurrentUser curUser = GetIt.I.get<CurrentUser>();
+    Query$Me$me? heimdallUser = curUser.user;
+    User? firebaseUser = auth.currentUser;
+    if (heimdallUser == null ||
+        heimdallUser.fullContact.private == null ||
+        firebaseUser == null) {
+      return const ErrorCardWidget(
+        errorMessage: 'Er is iets misgegaan met het inloggen',
+      );
+    }
+
+    Query$Me$me$fullContact$private privateContact =
+        heimdallUser.fullContact.private!;
+    String creatorName =
+        '${privateContact.first_name} ${privateContact.last_name}';
+    const int timeRowItems = 3;
+    List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
+
+    DateTime earliestPossibleTime = widget.date.add(const Duration(
+      hours: 6,
+    )); // people can reservate starting at 06:00
+
+    DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
+    for (QueryDocumentSnapshot<Reservation> document in documents) {
+      // determine earliest/latest possible time for slider
+
+      Reservation reservation = document.data();
+      if ((reservation.startTime.isBefore(_startTime) ||
+              reservation.startTime.isAtSameMomentAs(_startTime)) &&
+          reservation.endTime.isAfter(_startTime)) {
+        log('Time is not available');
+        if (reservation.creator == firebaseUser.uid) {
+          return Container();
+        }
+
+        return const ErrorCardWidget(
+          errorMessage: "Deze tijd is al bezet",
+        );
+      }
+
+      if ((reservation.endTime.isBefore(_startTime) ||
+              reservation.endTime.isAtSameMomentAs(_startTime)) &&
+          reservation.endTime.isAfter(earliestPossibleTime)) {
+        earliestPossibleTime = reservation.endTime;
+      }
+
+      if ((reservation.startTime.isAfter(_startTime) ||
+              reservation.startTime.isAtSameMomentAs(_startTime)) &&
+          reservation.startTime.isBefore(latestPossibleTime)) {
+        latestPossibleTime = reservation.startTime;
+      }
+    }
+
+    if (_endTime.isAfter(latestPossibleTime)) {
+      _endTime = latestPossibleTime;
+    }
+    _startTimeOfDay =
+        TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
+    _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
+
+    const double fieldPadding = 16;
+    const double timeSelectorDialogHandlerRadius = 8;
+
+    return ListView(children: <Widget>[
+      DataTextListTile(name: 'Boot', value: widget.objectName),
+      DataTextListTile(
+        name: "Datum",
+        value: DateFormat.yMMMMd().format(widget.date),
+      ),
+      Row(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / timeRowItems,
+            child: DataTextListTile(
+              name: "Starttijd",
+              value: DateFormat.Hm().format(_startTime),
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / timeRowItems,
+            child: DataTextListTile(
+              name: "Eindtijd",
+              value: DateFormat.Hm().format(_endTime),
+            ),
+          ),
+          IconButton(
+            onPressed: () => {
+              // TODO: make a nicer time selector
+              showTimeRangePicker(
+                strokeColor: Colors.lightBlue,
+                // ignore: no-equal-arguments
+                handlerColor: Colors.lightBlue,
+                context: context,
+                fromText: 'Starttijd',
+                toText: 'Eindtijd',
+                interval: intervalOfSelector,
+                start: _startTimeOfDay,
+                end: _endTimeOfDay,
+                disabledTime: TimeRange(
+                  startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                  endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                ),
+                disabledColor: Colors.grey,
+                use24HourFormat: true,
+                handlerRadius: timeSelectorDialogHandlerRadius,
+                minDuration: minimumReservationDuration,
+              ).then((value) {
+                if (value != null && mounted) {
+                  setState(() {
+                    _endTimeOfDay = value.endTime;
+                    _startTimeOfDay = value.startTime;
+                    _endTime = DateTime(
+                      widget.date.year,
+                      widget.date.month,
+                      widget.date.day,
+                      _endTimeOfDay.hour,
+                      _endTimeOfDay.minute,
+                    );
+                    _startTime = DateTime(
+                      widget.date.year,
+                      widget.date.month,
+                      widget.date.day,
+                      _startTimeOfDay.hour,
+                      _startTimeOfDay.minute,
+                    );
+                  });
+                }
+              }),
+            },
+            icon: const Icon(Icons.tune, size: 40),
+            color: Colors.blue,
+          ),
+        ],
+      ),
+      ElevatedButton(
+        onPressed: () {
+          createReservationCloud(Reservation(
+            _startTime,
+            _endTime,
+            widget.reservationObject,
+            firebaseUser.uid,
+            widget.objectName,
+            creatorName: creatorName,
+          )).then((res) {
+            if (res['success'] == true) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text('Afschrijving gelukt!'),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text("Afschrijving mislukt! ${res['error']}"),
+                ),
+              );
+            }
+            Routemaster.of(context).pop();
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          // add rounding
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          backgroundColor: Colors.lightBlue,
+        ),
+        child: <Widget>[
+          const Icon(LucideIcons.check).padding(bottom: 1),
+          const Text('Afschrijven', style: TextStyle(fontSize: 18))
+              .padding(vertical: fieldPadding),
+        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+      ).padding(all: fieldPadding),
+    ]);
   }
 }
 
