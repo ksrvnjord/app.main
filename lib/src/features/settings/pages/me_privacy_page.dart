@@ -31,9 +31,7 @@ class MePrivacyPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: result,
-        success: (me) {
-          return MePrivacyWidget(me);
-        },
+        success: (me) => MePrivacyWidget(me),
       ),
     );
   }

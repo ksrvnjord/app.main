@@ -241,9 +241,7 @@ class _MeWidgetState extends State<MeWidget> {
           height: 32,
         ),
         GestureDetector(
-          onTap: () {
-            Provider.of<AuthModel>(context, listen: false).logout();
-          },
+          onTap: () => Provider.of<AuthModel>(context, listen: false).logout(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
