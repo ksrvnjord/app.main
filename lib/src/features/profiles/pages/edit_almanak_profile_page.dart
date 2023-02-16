@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_almanak_form.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -46,6 +47,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         child: ListView(
           children: const [
             Center(child: EditProfilePictureWidget()),
+            EditAlmanakForm(),
           ],
         ),
       ),
