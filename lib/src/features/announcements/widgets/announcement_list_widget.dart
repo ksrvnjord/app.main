@@ -11,6 +11,11 @@ class AnnouncementListWidget extends StatelessWidget {
 
   final List<Query$Announcements$announcements$data> announcements;
 
+  void goToAnnouncementPage(BuildContext context, String id) {
+    var routemaster = Routemaster.of(context);
+    routemaster.push('${routemaster.currentRoute}/announcements/$id');
+  }
+
   @override
   Widget build(BuildContext context) {
     const double titleFontSize = 16;
@@ -36,13 +41,12 @@ class AnnouncementListWidget extends StatelessWidget {
                       title: announcement.title,
                       subtitle: "${announcement.author} - $createdDate",
                       text: '',
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 16,
+                      ),
                     ),
-                    onTap: () {
-                      var routemaster = Routemaster.of(context);
-                      routemaster.push(
-                        '${routemaster.currentRoute}/announcements/${announcement.id}',
-                      );
-                    },
+                    onTap: () => goToAnnouncementPage(context, announcement.id),
                   );
                 },
               )

@@ -28,38 +28,37 @@ class AlmanakUserButtonWidget extends StatelessWidget {
         // add rounding to list tile
         leading: FutureWrapper(
           future: getUserIdentifier(client, user.id),
-          success: (snapshot) {
-            String userId = snapshot!;
-
-            return FutureWrapper(
-              future: getProfilePictureUrl(userId), // TODO: use cache
-              success: (snapshot) {
-                return CachedNetworkImage(
-                  imageUrl: // random image url
-                      snapshot,
-                  imageBuilder: (context, imageProvider) => CircleAvatar(
-                    backgroundImage: imageProvider,
-                  ),
-                  placeholder: (_, x) => showDefaultProfilePicture(),
-                );
-                // return CircleAvatar(
-                //   backgroundImage: MemoryImage(snapshot as Uint8List),
-                // );
-              },
-              error: (_) => showDefaultProfilePicture(),
-              loading: ShimmerWidget(child: showDefaultProfilePicture()),
-            );
-          },
+          success: showProfilePicture,
           error: (_) => showDefaultProfilePicture(),
           loading: ShimmerWidget(child: showDefaultProfilePicture()),
         ),
         title: Text(
           '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
         ),
-        onTap: () {
-          Routemaster.of(context).push('/almanak/${user.id}');
-        },
+        onTap: () => Routemaster.of(context).push('/almanak/${user.id}'),
       ),
+    );
+  }
+
+  Widget showProfilePicture(snapshot) {
+    String userId = snapshot!;
+
+    return FutureWrapper(
+      future: getProfilePictureUrl(userId), // TODO: use cache
+      success: (snapshot) => CachedNetworkImage(
+        imageUrl: // random image url
+            snapshot,
+        imageBuilder: (context, imageProvider) => CircleAvatar(
+          backgroundImage: imageProvider,
+        ),
+        placeholder: (_, x) => showDefaultProfilePicture(),
+      )
+      // return CircleAvatar(
+      //   backgroundImage: MemoryImage(snapshot as Uint8List),
+      // );
+      ,
+      error: (_) => showDefaultProfilePicture(),
+      loading: ShimmerWidget(child: showDefaultProfilePicture()),
     );
   }
 }

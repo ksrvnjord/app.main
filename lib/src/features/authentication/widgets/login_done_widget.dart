@@ -15,16 +15,18 @@ class LoginDoneWidget extends StatelessWidget {
     const double cardElevation = 8;
     const double cardOuterPadding = 16;
 
+    void navigateToHomePage() {
+      Routemaster.of(context).push('/');
+    }
+
     return <Widget>[
       <Widget>[const Text(swanEmoji, style: TextStyle(fontSize: 40))]
           .toRow(mainAxisAlignment: MainAxisAlignment.center),
       const Text('Je bent ingelogd.').padding(top: textPadding),
       <Widget>[
         ElevatedButton(
+          onPressed: navigateToHomePage,
           child: const Text('Doorgaan'),
-          onPressed: () {
-            Routemaster.of(context).push('/');
-          },
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
     ]

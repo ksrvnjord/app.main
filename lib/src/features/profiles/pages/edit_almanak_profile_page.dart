@@ -19,6 +19,10 @@ class EditAlmanakProfilePage extends StatefulWidget {
 class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
 
+  void goToVisibilityPage(BuildContext context) {
+    Routemaster.of(context).push('visibility');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +35,7 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.visibility_outlined),
-            onPressed: () {
-              Routemaster.of(context).push('visibility');
-            },
+            onPressed: () => goToVisibilityPage(context),
           ),
         ],
       ),

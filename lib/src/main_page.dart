@@ -58,10 +58,12 @@ class _MainPageState extends State<MainPage> {
             label: 'Meer',
           ),
         ],
-        onTap: (value) {
-          tabPage.controller.animateTo(value);
-        },
+        onTap: (value) => animateTo(value, tabPage),
       ),
     );
+  }
+
+  void animateTo(int index, TabPageState tabPage) {
+    tabPage.controller.animateTo(index);
   }
 }

@@ -37,21 +37,23 @@ class ShowReservationObjectPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: getReservationObject(documentId),
-        success: (snapshot) {
-          if (!snapshot.exists) {
-            return const Center(child: Text('No data'));
-          }
-          ReservationObject obj = snapshot.data()!;
-
-          // show the reservationObject data in a ListView
-          return Column(
-            children: [
-              _buildAvailabilityHeader(obj.available),
-              Expanded(child: ListView(children: _buildListData(obj))),
-            ],
-          );
-        },
+        success: showObjectDetails,
       ),
+    );
+  }
+
+  Widget showObjectDetails(snapshot) {
+    if (!snapshot.exists) {
+      return const Center(child: Text('No data'));
+    }
+    ReservationObject obj = snapshot.data()!;
+
+    // show the reservationObject data in a ListView
+    return Column(
+      children: [
+        _buildAvailabilityHeader(obj.available),
+        Expanded(child: ListView(children: _buildListData(obj))),
+      ],
     );
   }
 

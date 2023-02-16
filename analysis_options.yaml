@@ -55,7 +55,7 @@ dart_code_metrics:
     - lib/**.graphql.dart # exclude generated files
   rules:
   # FLUTTER rules
-    # - always-remove-listener
+    - always-remove-listener
     - avoid-border-all
     - avoid-expanded-as-spacer
     # - avoid-returning-widgets
@@ -66,7 +66,7 @@ dart_code_metrics:
     - consistent-update-render-object
     - prefer-const-border-radius
     - prefer-correct-edge-insets-constructor
-    # - prefer-extracting-callbacks
+    - prefer-extracting-callbacks
     # - prefer-single-widget-per-file:
     #     ignore-private-widgets: true
     - prefer-using-list-view
