@@ -71,6 +71,12 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
     }
   }
 
+  void toggleCheckBoxes(String key, bool value) {
+    setState(() {
+      checkboxes[key] = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
@@ -82,11 +88,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
       [
         Switch(
           value: listed,
-          onChanged: (bool? value) {
-            setState(() {
-              listed = value!;
-            });
-          },
+          onChanged: toggleCheckBox,
         ),
         const Text('Vindbaar in Almanak'),
       ].toRow(),
@@ -98,11 +100,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
                   Checkbox(
                     checkColor: Colors.white,
                     value: checkboxes[key],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        checkboxes[key] = value!;
-                      });
-                    },
+                    onChanged: (value) => toggleCheckBoxes(key, value!),
                   ),
                   Text(key),
                 ].toRow();
@@ -157,5 +155,11 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
         ).expanded(),
       ].toRow(),
     ].toColumn().padding(all: pagePadding);
+  }
+
+  void toggleCheckBox(bool? value) {
+    setState(() {
+      listed = value!;
+    });
   }
 }
