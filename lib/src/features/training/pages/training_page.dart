@@ -24,19 +24,15 @@ class TrainingPage extends StatelessWidget {
       body: <Widget>[
         const TrainingList().expanded(),
       ].toColumn(),
-      floatingActionButton:
-          showAfschrijfButtonWhenFirebaseAuthenticated(navigator),
+      floatingActionButton: FirebaseAuth.instance.currentUser !=
+              null // only show button if user is logged in
+          ? FloatingActionButton.extended(
+              onPressed: () => navigator.push('all'),
+              backgroundColor: Colors.lightBlue,
+              icon: const Icon(Icons.add),
+              label: const Text('Afschrijving toevoegen'),
+            )
+          : null,
     );
   }
-}
-
-Widget? showAfschrijfButtonWhenFirebaseAuthenticated(Routemaster navigator) {
-  return FirebaseAuth.instance.currentUser != null
-      ? FloatingActionButton.extended(
-          onPressed: () => navigator.push('all'),
-          backgroundColor: Colors.lightBlue,
-          icon: const Icon(Icons.add),
-          label: const Text('Afschrijving toevoegen'),
-        )
-      : null;
 }
