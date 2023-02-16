@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 import '../widgets/availability_header.dart';
 import '../widgets/calendar/widgets/permissions_widget.dart';
@@ -52,50 +53,48 @@ class ShowReservationObjectPage extends StatelessWidget {
     ReservationObject obj = snapshot.data()!;
 
     // show the reservationObject data in a ListView
-    return Column(
-      children: [
-        AvailabilityHeader(isAvailable: obj.available),
-        Expanded(
-          child: ListView(children: [
-            obj.comment != null
-                ? Card(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                    ),
-                    elevation: 0,
-                    color: Colors.amber.shade100,
-                    child: ListTile(
-                      leading: const Icon(Icons.comment),
-                      title: Text(
-                        obj.comment!,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 20,
-                        ),
+    return [
+      AvailabilityHeader(isAvailable: obj.available),
+      Expanded(
+        child: ListView(children: [
+          obj.comment != null
+              ? Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                  ),
+                  elevation: 0,
+                  color: Colors.amber.shade100,
+                  child: ListTile(
+                    leading: const Icon(Icons.comment),
+                    title: Text(
+                      obj.comment!,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20,
                       ),
                     ),
-                  )
-                : Container(),
-            DataTextListTile(name: "Type", value: obj.type),
-            obj.kind != null
-                ? DataTextListTile(name: "Categorie", value: obj.kind!)
-                : Container(),
-            obj.permissions.isNotEmpty
-                ? PermissionsWidget(
-                    permissions: obj.permissions,
-                  )
-                : Container(),
-            obj.year != null
-                ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
-                : Container(),
-            obj.brand != null
-                ? DataTextListTile(name: "Merk", value: obj.brand!)
-                : Container(),
-          ]),
-        ),
-      ],
-    );
+                  ),
+                )
+              : Container(),
+          DataTextListTile(name: "Type", value: obj.type),
+          obj.kind != null
+              ? DataTextListTile(name: "Categorie", value: obj.kind!)
+              : Container(),
+          obj.permissions.isNotEmpty
+              ? PermissionsWidget(
+                  permissions: obj.permissions,
+                )
+              : Container(),
+          obj.year != null
+              ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
+              : Container(),
+          obj.brand != null
+              ? DataTextListTile(name: "Merk", value: obj.brand!)
+              : Container(),
+        ]),
+      ),
+    ].toColumn();
   }
 
   Future<DocumentSnapshot<ReservationObject>> getReservationObject(
