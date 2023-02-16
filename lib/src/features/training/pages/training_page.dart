@@ -21,9 +21,7 @@ class TrainingPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: <Widget>[
-        const TrainingList().expanded(),
-      ].toColumn(),
+      body: const TrainingList(),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(
