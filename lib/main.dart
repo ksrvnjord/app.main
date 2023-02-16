@@ -1,3 +1,4 @@
+import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -33,7 +34,10 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
 
-  runApp(const Application());
+  runApp(const BetterFeedback(
+    localeOverride: Locale('nl', 'NL'),
+    child: Application(),
+  ));
 }
 
 Future<void> main() async {
