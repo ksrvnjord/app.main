@@ -29,12 +29,6 @@ class TrainingListState extends State<TrainingList> {
       );
     }
 
-    return showReservationList(reservationsRef);
-  }
-
-  StreamBuilder<QuerySnapshot<Reservation>> showReservationList(
-    CollectionReference<Reservation> reservationsRef,
-  ) {
     return StreamBuilder(
       stream: reservationsRef
           .where(
