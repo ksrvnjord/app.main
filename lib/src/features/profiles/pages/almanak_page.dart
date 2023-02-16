@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_button_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
@@ -31,33 +32,29 @@ class AlmanakPage extends StatelessWidget {
       body: AlmanakWidget(client: client),
     );
   }
-}
 
-Widget showMyProfilePictureWidgetIfAuthenticatedByFirebase(
-  BuildContext context,
-) {
-  if (FirebaseAuth.instance.currentUser != null) {
-    const profileIconSize = 48.0;
+  Widget showMyProfilePictureWidgetIfAuthenticatedByFirebase(
+    BuildContext context,
+  ) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      const profileIconSize = 48.0;
 
-    return IconButton(
-      iconSize: profileIconSize,
-      icon: FutureWrapper(
-        future: getMyProfilePicture(),
-        success: (data) {
-          return data != null
+      return IconButton(
+        iconSize: profileIconSize,
+        icon: FutureWrapper(
+          future: getMyProfilePicture(),
+          success: (data) => data != null
               ? CircleAvatar(
                   backgroundImage: MemoryImage(data),
                 )
-              : showDefaultProfilePicture();
-        },
-        loading: ShimmerWidget(child: showDefaultProfilePicture()),
-        error: (_) => showDefaultProfilePicture(),
-      ),
-      onPressed: () {
-        Routemaster.of(context).push('edit');
-      },
-    );
-  }
+              : const DefaultProfilePicture(),
+          loading: const ShimmerWidget(child: DefaultProfilePicture()),
+          error: (_) => const DefaultProfilePicture(),
+        ),
+        onPressed: () => Routemaster.of(context).push('edit'),
+      );
+    }
 
-  return Container();
+    return Container();
+  }
 }
