@@ -252,33 +252,10 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         ],
       ),
       ElevatedButton(
-        onPressed: () {
-          createReservationCloud(Reservation(
-            _startTime,
-            _endTime,
-            widget.reservationObject,
-            firebaseUser.uid,
-            widget.objectName,
-            creatorName: creatorName,
-          )).then((res) {
-            if (res['success'] == true) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: Colors.green,
-                  content: Text('Afschrijving gelukt!'),
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.red,
-                  content: Text("Afschrijving mislukt! ${res['error']}"),
-                ),
-              );
-            }
-            Routemaster.of(context).pop();
-          });
-        },
+        onPressed: () => createReservation(
+          firebaseUser.uid,
+          creatorName,
+        ),
         style: ElevatedButton.styleFrom(
           // add rounding
           shape: const RoundedRectangleBorder(
@@ -293,6 +270,37 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
         ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
       ).padding(all: fieldPadding),
     ]);
+  }
+
+  void createReservation(
+    String uid,
+    String creatorName,
+  ) {
+    createReservationCloud(Reservation(
+      _startTime,
+      _endTime,
+      widget.reservationObject,
+      uid,
+      widget.objectName,
+      creatorName: creatorName,
+    )).then((res) {
+      if (res['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Afschrijving gelukt!'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Afschrijving mislukt! ${res['error']}"),
+          ),
+        );
+      }
+      Routemaster.of(context).pop();
+    });
   }
 }
 
