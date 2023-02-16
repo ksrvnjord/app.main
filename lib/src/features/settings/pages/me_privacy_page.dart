@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
@@ -77,6 +78,36 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
     });
   }
 
+  void save(GraphQLClient client) {
+    setState(() {
+      saving = true;
+      buttonColor = Colors.blueGrey;
+    });
+
+    updatePublicContact(
+      client,
+      listed,
+      Input$IBooleanContact.fromJson(checkboxes),
+    ).then((data) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Vindbaarheid aangepast'),
+      ));
+      setState(() {
+        saving = false;
+        buttonColor = Colors.blue;
+      });
+    }).onError((error, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Aanpassen mislukt, melding gemaakt.'),
+      ));
+      setState(() {
+        saving = false;
+        buttonColor = Colors.red;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
@@ -116,35 +147,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
               borderRadius: BorderRadius.circular(buttonRounding),
             ),
           ),
-          onPressed: () {
-            setState(() {
-              saving = true;
-              buttonColor = Colors.blueGrey;
-            });
-
-            updatePublicContact(
-              client,
-              listed,
-              Input$IBooleanContact.fromJson(checkboxes),
-            ).then((data) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Vindbaarheid aangepast'),
-              ));
-              setState(() {
-                saving = false;
-                buttonColor = Colors.blue;
-              });
-            }).onError((error, stackTrace) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.red,
-                content: Text('Aanpassen mislukt, melding gemaakt.'),
-              ));
-              setState(() {
-                saving = false;
-                buttonColor = Colors.red;
-              });
-            });
-          },
+          onPressed: () => save(client),
           child: saving
               ? const SizedBox(
                   height: 10,
