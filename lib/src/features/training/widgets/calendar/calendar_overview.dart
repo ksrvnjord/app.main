@@ -111,32 +111,25 @@ class _CalendarOverview extends State<CalendarOverview> {
       child: Padding(
         padding: const EdgeInsets.only(left: 64),
         child: StickyHeader(
-          header: _buildReservationObjectName(snapshot).toRow(),
-          content: _buildObjectCalendar(snapshot, date).toRow(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          ),
+          header: snapshot.docs // this builds the header with the boat names
+              .map<Widget>(showReservationObjectName)
+              .toList()
+              .toRow(),
+          content: snapshot.docs // this builds the content with the slots
+              .map<Widget>((e) {
+                return ObjectCalendar(date: date, boat: e).border(
+                  left: 1,
+                  color: const Color.fromARGB(255, 223, 223, 223),
+                );
+              })
+              .toList()
+              .toRow(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
         ),
       ),
     );
-  }
-
-  List<Widget> _buildReservationObjectName(
-    QuerySnapshot<ReservationObject> snapshot,
-  ) {
-    return snapshot.docs.map<Widget>(showReservationObjectName).toList();
-  }
-
-  List<Widget> _buildObjectCalendar(
-    QuerySnapshot<ReservationObject> snapshot,
-    DateTime date,
-  ) {
-    return snapshot.docs.map<Widget>((e) {
-      return ObjectCalendar(date: date, boat: e).border(
-        left: 1,
-        color: const Color.fromARGB(255, 223, 223, 223),
-      );
-    }).toList();
   }
 
   Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
