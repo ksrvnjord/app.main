@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
-import 'package:sticky_headers/sticky_headers.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_sticky_header.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 // Shows all available objects for a given day and filters
 class CalendarOverview extends StatefulWidget {
@@ -77,16 +74,17 @@ class _CalendarOverview extends State<CalendarOverview> {
             );
 
     return FutureWrapper(
-      future: reservationObjectsRef
-          .where('type', whereIn: filters)
-          .where('available', isEqualTo: true)
-          .get(),
+      future: getAvailableReservationObjects(reservationObjectsRef, filters),
       success: (snapshot) => Stack(
         children: <Widget>[
           SingleChildScrollView(
             key: UniqueKey(),
             scrollDirection: Axis.horizontal,
-            child: _buildVerticalScrollViewWithStickyHeader(snapshot, date),
+            child: VerticalReservationScrollViewWithStickyHeader(
+              boatsController: boatsController,
+              date: date,
+              snapshot: snapshot,
+            ),
           ), // this builds the columns with the boats and the slots
           TimeScrollView(
             timesController: timesController,
@@ -101,117 +99,13 @@ class _CalendarOverview extends State<CalendarOverview> {
     );
   }
 
-  Widget _buildVerticalScrollViewWithStickyHeader(
-    QuerySnapshot<ReservationObject> snapshot,
-    DateTime date,
+  Future<QuerySnapshot<ReservationObject>> getAvailableReservationObjects(
+    CollectionReference<ReservationObject> reservationObjectsRef,
+    List<String> filters,
   ) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      controller: boatsController,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 64),
-        child: StickyHeader(
-          header: snapshot.docs // this builds the header with the boat names
-              .map<Widget>(showReservationObjectName)
-              .toList()
-              .toRow(),
-          content: snapshot.docs // this builds the content with the slots
-              .map<Widget>((e) {
-                return ObjectCalendar(date: date, boat: e).border(
-                  left: 1,
-                  color: const Color.fromARGB(255, 223, 223, 223),
-                );
-              })
-              .toList()
-              .toRow(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-        ),
-      ),
-    );
-  }
-
-  Widget showReservationObjectName(QueryDocumentSnapshot<ReservationObject> e) {
-    ReservationObject reservationObject = e.data();
-
-    const double boatButtonWidth = 128;
-    const double boatButtonHeight = 64;
-    const double boatButtonElevation = 4;
-
-    Future<bool> boatPermitted() async {
-      final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
-
-      if (token != null) {
-        if (reservationObject.permissions.isEmpty ||
-            reservationObject.permissions
-                .toSet()
-                .intersection((token.claims?['permissions'] ?? []).toSet())
-                .isNotEmpty) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    return FutureWrapper(
-      future: boatPermitted(),
-      success: (isAvailable) => SizedBox(
-        width: boatButtonWidth,
-        height: boatButtonHeight,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  alignment: Alignment.center,
-                  backgroundColor:
-                      isAvailable ? Colors.white : Colors.grey[100],
-                  elevation: boatButtonElevation,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
-                onPressed: () => Routemaster.of(context).push(
-                  'reservationObject/${e.id}',
-                  queryParameters: {'name': reservationObject.name},
-                ),
-                child: Text(e.data().name).textStyle(TextStyle(
-                  color: isAvailable ? Colors.black : Colors.grey[600],
-                )),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TimeScrollView extends StatelessWidget {
-  const TimeScrollView({
-    super.key,
-    required this.timesController,
-  });
-
-  final ScrollController timesController;
-
-  @override
-  Widget build(BuildContext context) {
-    const double topLeftCornerHeight = 64;
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      physics:
-          const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
-      controller: timesController,
-      child: Container(
-        color: Colors.grey[50],
-        child: CalendarTime().padding(top: topLeftCornerHeight),
-      ),
-    );
+    return reservationObjectsRef
+        .where('type', whereIn: filters)
+        .where('available', isEqualTo: true)
+        .get();
   }
 }
