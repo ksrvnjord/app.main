@@ -5,6 +5,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_ti
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
+import '../widgets/availability_header.dart';
+import '../widgets/calendar/widgets/permissions_widget.dart';
+
 // get reference to reservationObjects collection
 final CollectionReference<ReservationObject>
     reservationObjectsCollectionReference = FirebaseFirestore.instance
@@ -52,137 +55,52 @@ class ShowReservationObjectPage extends StatelessWidget {
     return Column(
       children: [
         AvailabilityHeader(isAvailable: obj.available),
-        Expanded(child: ListView(children: _buildListData(obj))),
+        Expanded(
+          child: ListView(children: [
+            obj.comment != null
+                ? Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                    ),
+                    elevation: 0,
+                    color: Colors.amber.shade100,
+                    child: ListTile(
+                      leading: const Icon(Icons.comment),
+                      title: Text(
+                        obj.comment!,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+            DataTextListTile(name: "Type", value: obj.type),
+            obj.kind != null
+                ? DataTextListTile(name: "Categorie", value: obj.kind!)
+                : Container(),
+            obj.permissions.isNotEmpty
+                ? PermissionsWidget(
+                    permissions: obj.permissions,
+                  )
+                : Container(),
+            obj.year != null
+                ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
+                : Container(),
+            obj.brand != null
+                ? DataTextListTile(name: "Merk", value: obj.brand!)
+                : Container(),
+          ]),
+        ),
       ],
     );
-  }
-
-  List<Widget> _buildListData(ReservationObject obj) {
-    Map<String, Color> permissionColors = {
-      'Coachcatamaran': Colors.greenAccent,
-      'Speciaal': Colors.redAccent,
-      '1e permissie': Colors.blueAccent,
-      '2e permissie': Colors.orangeAccent,
-      'Top C4+': Colors.purpleAccent,
-      'Specifiek': Colors.pinkAccent,
-    };
-
-    const double permissionChipSpacing = 4;
-
-    return [
-      if (obj.comment != null)
-        Card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-          elevation: 0,
-          color: Colors.amber.shade100,
-          child: ListTile(
-            leading: const Icon(Icons.comment),
-            title: Text(
-              obj.comment!,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        )
-      else
-        Container(),
-      DataTextListTile(name: "Type", value: obj.type),
-      obj.kind != null
-          ? DataTextListTile(name: "Categorie", value: obj.kind!)
-          : Container(),
-      obj.permissions.isNotEmpty
-          ? ListTile(
-              title: const Text(
-                'Permissies',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 16,
-                ),
-              ),
-              subtitle: Wrap(
-                spacing: permissionChipSpacing,
-                children: obj.permissions
-                    .map((permission) => Chip(
-                          label: Text(
-                            permission,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 16,
-                            ),
-                          ),
-                          backgroundColor: () {
-                            if (permissionColors.containsKey(permission)) {
-                              return permissionColors[permission];
-                            } else {
-                              return Colors.grey;
-                            }
-                          }(),
-                        ))
-                    .toList(),
-              ),
-            )
-          : Container(),
-      obj.year != null
-          ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
-          : Container(),
-      obj.brand != null
-          ? DataTextListTile(name: "Merk", value: obj.brand!)
-          : Container(),
-    ];
   }
 
   Future<DocumentSnapshot<ReservationObject>> getReservationObject(
     String documentId,
   ) {
     return reservationObjectsCollectionReference.doc(documentId).get();
-  }
-}
-
-class AvailabilityHeader extends StatelessWidget {
-  const AvailabilityHeader({
-    super.key,
-    required this.isAvailable,
-  });
-
-  final bool isAvailable;
-
-  @override
-  Widget build(BuildContext context) {
-    String text = isAvailable ? "Beschikbaar" : "Niet beschikbaar";
-    Color color = isAvailable ? Colors.lightGreen : Colors.red;
-
-    return Row(children: [
-      Expanded(
-        child: Card(
-          margin: const EdgeInsets.only(bottom: 4),
-          color: color,
-          elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              // In this case we can pass the same value to both
-              // ignore: no-equal-arguments
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w300,
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ),
-    ]);
   }
 }
