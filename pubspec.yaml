@@ -53,6 +53,8 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   feedback: ^2.5.0
   feedback_sentry: ^2.3.0
+  flutter_localizations:
+    sdk: flutter
 
 
 dev_dependencies:
