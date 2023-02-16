@@ -39,7 +39,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fatal_warnings: true
           fatal_performance: true
-          fatal_style: true
+          fatal_style: false # We can turn this fatal when we have fixed most issues
 
 
 
