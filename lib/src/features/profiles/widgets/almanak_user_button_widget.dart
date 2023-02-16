@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
