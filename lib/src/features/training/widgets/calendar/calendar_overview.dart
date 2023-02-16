@@ -83,11 +83,14 @@ class _CalendarOverview extends State<CalendarOverview> {
           .get(),
       success: (snapshot) => Stack(
         children: <Widget>[
-          _buildBoatAndReservationSlotsScrollView(
-            snapshot,
-            date,
+          SingleChildScrollView(
+            key: UniqueKey(),
+            scrollDirection: Axis.horizontal,
+            child: _buildVerticalScrollViewWithStickyHeader(snapshot, date),
           ), // this builds the columns with the boats and the slots
-          _buildStickyTimeScrollView(), // this builds the time column on the left side
+          TimeScrollView(
+            timesController: timesController,
+          ), // this builds the time column on the left side
         ],
       ),
       error: (error) => <Widget>[
@@ -95,34 +98,6 @@ class _CalendarOverview extends State<CalendarOverview> {
           errorMessage: "Er is iets misgegaan met het ophalen van de data",
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-    );
-  }
-
-  SingleChildScrollView _buildBoatAndReservationSlotsScrollView(
-    QuerySnapshot<ReservationObject> snapshot,
-    DateTime date,
-  ) {
-    return SingleChildScrollView(
-      key: UniqueKey(),
-      scrollDirection: Axis.horizontal,
-      child: _buildVerticalScrollViewWithStickyHeader(snapshot, date),
-    );
-  }
-
-  /// Builds the time column on the left side of the calendar
-  SingleChildScrollView _buildStickyTimeScrollView() {
-    const double topLeftCornerHeight =
-        64; // so the time column doesn't overlap with the boat names
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      physics:
-          const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
-      controller: timesController,
-      child: Container(
-        color: Colors.grey[50],
-        child: CalendarTime().padding(top: topLeftCornerHeight),
-      ),
     );
   }
 
@@ -218,6 +193,31 @@ class _CalendarOverview extends State<CalendarOverview> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class TimeScrollView extends StatelessWidget {
+  const TimeScrollView({
+    super.key,
+    required this.timesController,
+  });
+
+  final ScrollController timesController;
+
+  @override
+  Widget build(BuildContext context) {
+    const double topLeftCornerHeight = 64;
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      physics:
+          const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
+      controller: timesController,
+      child: Container(
+        color: Colors.grey[50],
+        child: CalendarTime().padding(top: topLeftCornerHeight),
       ),
     );
   }
