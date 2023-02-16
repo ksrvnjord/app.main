@@ -51,7 +51,7 @@ class ShowReservationObjectPage extends StatelessWidget {
     // show the reservationObject data in a ListView
     return Column(
       children: [
-        _buildAvailabilityHeader(obj.available),
+        AvailabilityHeader(isAvailable: obj.available),
         Expanded(child: ListView(children: _buildListData(obj))),
       ],
     );
@@ -138,7 +138,23 @@ class ShowReservationObjectPage extends StatelessWidget {
     ];
   }
 
-  Row _buildAvailabilityHeader(bool isAvailable) {
+  Future<DocumentSnapshot<ReservationObject>> getReservationObject(
+    String documentId,
+  ) {
+    return reservationObjectsCollectionReference.doc(documentId).get();
+  }
+}
+
+class AvailabilityHeader extends StatelessWidget {
+  const AvailabilityHeader({
+    super.key,
+    required this.isAvailable,
+  });
+
+  final bool isAvailable;
+
+  @override
+  Widget build(BuildContext context) {
     String text = isAvailable ? "Beschikbaar" : "Niet beschikbaar";
     Color color = isAvailable ? Colors.lightGreen : Colors.red;
 
@@ -168,11 +184,5 @@ class ShowReservationObjectPage extends StatelessWidget {
         ),
       ),
     ]);
-  }
-
-  Future<DocumentSnapshot<ReservationObject>> getReservationObject(
-    String documentId,
-  ) {
-    return reservationObjectsCollectionReference.doc(documentId).get();
   }
 }
