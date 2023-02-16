@@ -81,24 +81,20 @@ class _CalendarOverview extends State<CalendarOverview> {
           .where('type', whereIn: filters)
           .where('available', isEqualTo: true)
           .get(),
-      success: (snapshot) {
-        return Stack(
-          children: <Widget>[
-            _buildBoatAndReservationSlotsScrollView(
-              snapshot,
-              date,
-            ), // this builds the columns with the boats and the slots
-            _buildStickyTimeScrollView(), // this builds the time column on the left side
-          ],
-        );
-      },
-      error: (error) {
-        return <Widget>[
-          const ErrorCardWidget(
-            errorMessage: "Er is iets misgegaan met het ophalen van de data",
-          ),
-        ].toColumn(mainAxisAlignment: MainAxisAlignment.center);
-      },
+      success: (snapshot) => Stack(
+        children: <Widget>[
+          _buildBoatAndReservationSlotsScrollView(
+            snapshot,
+            date,
+          ), // this builds the columns with the boats and the slots
+          _buildStickyTimeScrollView(), // this builds the time column on the left side
+        ],
+      ),
+      error: (error) => <Widget>[
+        const ErrorCardWidget(
+          errorMessage: "Er is iets misgegaan met het ophalen van de data",
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
     );
   }
 
