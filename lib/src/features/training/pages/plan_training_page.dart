@@ -128,8 +128,14 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       );
     }
 
-    Query$Me$me$fullContact$private privateContact =
-        heimdallUser.fullContact.private!;
+    final fullContact = heimdallUser.fullContact;
+    if (fullContact.private == null) {
+      return const ErrorCardWidget(
+        errorMessage: 'Er is iets misgegaan met het inloggen',
+      );
+    }
+    Query$Me$me$fullContact$private privateContact = fullContact.private!;
+
     String creatorName =
         '${privateContact.first_name} ${privateContact.last_name}';
     const int timeRowItems = 3;
