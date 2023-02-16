@@ -58,7 +58,7 @@ dart_code_metrics:
     - always-remove-listener
     - avoid-border-all
     - avoid-expanded-as-spacer
-    # - avoid-returning-widgets
+    - avoid-returning-widgets
     - avoid-shrink-wrap-in-lists
     - avoid-unnecessary-setstate
     - avoid-wrapping-in-padding

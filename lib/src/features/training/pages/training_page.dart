@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class TrainingPage extends StatelessWidget {
   const TrainingPage({Key? key}) : super(key: key);
@@ -21,22 +20,16 @@ class TrainingPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: <Widget>[
-        const TrainingList().expanded(),
-      ].toColumn(),
-      floatingActionButton:
-          showAfschrijfButtonWhenFirebaseAuthenticated(navigator),
+      body: const TrainingList(),
+      floatingActionButton: FirebaseAuth.instance.currentUser !=
+              null // only show button if user is logged in
+          ? FloatingActionButton.extended(
+              onPressed: () => navigator.push('all'),
+              backgroundColor: Colors.lightBlue,
+              icon: const Icon(Icons.add),
+              label: const Text('Afschrijving toevoegen'),
+            )
+          : null,
     );
   }
-}
-
-Widget? showAfschrijfButtonWhenFirebaseAuthenticated(Routemaster navigator) {
-  return FirebaseAuth.instance.currentUser != null
-      ? FloatingActionButton.extended(
-          onPressed: () => navigator.push('all'),
-          backgroundColor: Colors.lightBlue,
-          icon: const Icon(Icons.add),
-          label: const Text('Afschrijving toevoegen'),
-        )
-      : null;
 }

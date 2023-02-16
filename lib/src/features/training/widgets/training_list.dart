@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
@@ -29,13 +30,7 @@ class TrainingListState extends State<TrainingList> {
       );
     }
 
-    return showReservationList(reservationsRef);
-  }
-
-  StreamBuilder<QuerySnapshot<Reservation>> showReservationList(
-    CollectionReference<Reservation> reservationsRef,
-  ) {
-    return StreamBuilder(
+    return StreamWrapper(
       stream: reservationsRef
           .where(
             'creatorId',
@@ -48,34 +43,25 @@ class TrainingListState extends State<TrainingList> {
           )
           .orderBy('startTime', descending: false)
           .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+      success: showMyReservations,
+    );
+  }
 
-        if (snapshot.data!.docs.isEmpty) {
-          return const Center(
-            child: Text('Je hebt geen afschrijvingen...'),
-          );
-        }
+  Widget showMyReservations(QuerySnapshot<Reservation> snapshot) {
+    if (snapshot.docs.isEmpty) {
+      return const Center(
+        child: Text('Je hebt geen afschrijvingen...'),
+      );
+    }
 
-        return ListView.separated(
-          itemCount: snapshot.data!.docs.length,
-          padding: const EdgeInsets.all(10),
-          separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(height: 10),
-          itemBuilder: (BuildContext context, int index) {
-            QueryDocumentSnapshot<Object?> reservation =
-                snapshot.data!.docs[index];
-
-            return Center(
-              child: TrainingListItem(reservation: reservation),
-            );
-          },
-        );
-      },
+    return ListView.separated(
+      itemCount: snapshot.docs.length,
+      padding: const EdgeInsets.all(10),
+      separatorBuilder: (BuildContext context, int index) =>
+          const SizedBox(height: 10),
+      itemBuilder: (BuildContext context, int index) => Center(
+        child: TrainingListItem(reservation: snapshot.docs[index]),
+      ),
     );
   }
 }

@@ -7,16 +7,16 @@ Widget onEmpty<T>(T arg) {
   return Text(arg.toString());
 }
 
-class FutureWrapper<T> extends StatelessWidget {
-  final Future<T> future;
+class StreamWrapper<T> extends StatelessWidget {
+  final Stream<T> stream;
   final Widget loading;
   final Widget Function(Object error) error;
   final Widget Function(T data) success;
   final T? initialData;
 
-  const FutureWrapper({
+  const StreamWrapper({
     Key? key,
-    required this.future,
+    required this.stream,
     required this.success,
     this.loading = const LoadingWidget(),
     this.error = onEmpty,
@@ -25,8 +25,8 @@ class FutureWrapper<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<T>(
-      future: future,
+    return StreamBuilder<T>(
+      stream: stream,
       builder: (context, AsyncSnapshot<T> snapshot) {
         if (snapshot.hasData) {
           // data can't be null, but the type system doesn't know that
