@@ -189,17 +189,15 @@ class _ObjectCalendar extends State<ObjectCalendar> {
               ),
             ),
             // Create a stack of the resulting reservations
-            success: (reservations) {
-              return reservations.docs
-                  .map((reservation) {
-                    return CalendarReservation(
-                      data: reservation.data().toJson(),
-                      reservationDocumentId: reservation.id,
-                    );
-                  })
-                  .toList()
-                  .toStack();
-            },
+            success: (reservations) => reservations.docs
+                .map((reservation) {
+                  return CalendarReservation(
+                    data: reservation.data().toJson(),
+                    reservationDocumentId: reservation.id,
+                  );
+                })
+                .toList()
+                .toStack(),
           ),
         ],
       ),
