@@ -13,6 +13,8 @@ import 'upcoming_event_widget.dart';
 class ComingWeekEventsWidget extends StatelessWidget {
   const ComingWeekEventsWidget({super.key});
 
+  final double cardHeight = 104;
+
   @override
   Widget build(BuildContext context) {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
@@ -21,7 +23,6 @@ class ComingWeekEventsWidget extends StatelessWidget {
     initializeDateFormatting('nl_NL');
 
     const double titleFontSize = 16;
-    const double cardHeight = 104;
 
     return Column(
       children: [
@@ -39,52 +40,54 @@ class ComingWeekEventsWidget extends StatelessWidget {
             ),
             child: FutureWrapper(
               future: eventsData,
-              success: (events) {
-                // remove null values of events
-                events.removeWhere((event) => event == null);
-
-                // convert events to a list of Event
-                List<Event> eventsIt = events
-                    .map<Event>((event) => Event(
-                          title: event!.title!,
-                          startTime: DateTime.parse(event.start_time!),
-                          endTime: DateTime.parse(event.end_time!),
-                        ))
-                    .toList();
-
-                // sort events by start time
-                eventsIt.sort((a, b) => a.startTime.compareTo(b.startTime));
-
-                List<Event> comingEvents = eventsIt
-                    .where(
-                      (element) => element.startTime.isAfter(DateTime.now()),
-                    )
-                    .toList();
-
-                const int maxComingEvents = 10;
-
-                return FadeBottomWidget(
-                  parentHeight: cardHeight,
-                  child: ListView.builder(
-                    itemCount: comingEvents.length >= maxComingEvents
-                        ? maxComingEvents
-                        : comingEvents.length,
-                    itemBuilder: (context, index) {
-                      Event event = comingEvents[index];
-                      const double elementPadding = 4;
-
-                      return UpcomingEventWidget(
-                        elementPadding: elementPadding,
-                        event: event,
-                      ).paddingDirectional(horizontal: elementPadding);
-                    },
-                  ),
-                );
-              },
+              success: buildUpcomingEvents,
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildUpcomingEvents(events) {
+    // remove null values of events
+    events.removeWhere((event) => event == null);
+
+    // convert events to a list of Event
+    List<Event> eventsIt = events
+        .map<Event>((event) => Event(
+              title: event!.title!,
+              startTime: DateTime.parse(event.start_time!),
+              endTime: DateTime.parse(event.end_time!),
+            ))
+        .toList();
+
+    // sort events by start time
+    eventsIt.sort((a, b) => a.startTime.compareTo(b.startTime));
+
+    List<Event> comingEvents = eventsIt
+        .where(
+          (element) => element.startTime.isAfter(DateTime.now()),
+        )
+        .toList();
+
+    const int maxComingEvents = 10;
+
+    return FadeBottomWidget(
+      parentHeight: cardHeight,
+      child: ListView.builder(
+        itemCount: comingEvents.length >= maxComingEvents
+            ? maxComingEvents
+            : comingEvents.length,
+        itemBuilder: (context, index) {
+          Event event = comingEvents[index];
+          const double elementPadding = 4;
+
+          return UpcomingEventWidget(
+            elementPadding: elementPadding,
+            event: event,
+          ).paddingDirectional(horizontal: elementPadding);
+        },
+      ),
     );
   }
 }
