@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/copyable_form_field.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
@@ -39,6 +40,44 @@ class AlmanakUserData extends StatelessWidget {
       if (user.commissies != null) // map commissies to chips
         ChipWidget(title: "Commissies", values: user.commissies!),
       if (user.huis != null) DataTextListTile(name: "Huis", value: user.huis!),
+      if (user.substructuren != null) // map substructuren to chips
+        ChipWidget(title: "Substructuren", values: user.substructuren!),
+      if (user.dubbellid != null)
+        DataTextListTile(
+          name: "Dubbellid",
+          value: user.dubbellid! ? "Ja" : "Nee",
+        ),
+      UserAddressWidget(address: user.address!),
     ].toColumn();
+  }
+}
+
+class UserAddressWidget extends StatelessWidget {
+  const UserAddressWidget({
+    Key? key,
+    required this.address,
+  }) : super(key: key);
+
+  final Address address;
+
+  @override
+  Widget build(BuildContext context) {
+    const double formFieldPadding = 8;
+
+    return Row(
+      children: [
+        if (address.street != null && address.street!.isNotEmpty)
+          Text(address.street!),
+        if (address.houseNumber != null && address.houseNumber!.isNotEmpty)
+          Text(address.houseNumber!),
+        if (address.houseNumberAddition != null &&
+            address.houseNumberAddition!.isNotEmpty)
+          Text(address.houseNumberAddition!),
+        if (address.postalCode != null && address.postalCode!.isNotEmpty)
+          Text(address.postalCode!),
+        if (address.city != null && address.city!.isNotEmpty)
+          Text(address.city!),
+      ],
+    );
   }
 }

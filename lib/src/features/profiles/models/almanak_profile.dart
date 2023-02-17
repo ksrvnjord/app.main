@@ -1,5 +1,6 @@
 // TODO: maybe start looking a bit more into the json_serializable package
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 class AlmanakProfile {
   // --- FIRESTORE FIELDS ---
@@ -10,9 +11,11 @@ class AlmanakProfile {
   String? otherAssociation;
   List<String>? commissies;
   String? huis;
+  List<String>? substructuren;
 
   // --- HEIMDALL FIELDS ---
   String? email;
+  Address? address;
   String? phonePrimary;
   String? city;
   String? zipCode;
@@ -28,25 +31,24 @@ class AlmanakProfile {
     this.otherAssociation,
     this.commissies,
     this.huis,
-    this.city,
-    this.zipCode,
-    this.street,
-    this.houseNumber,
-    this.houseNumberAddition,
+    this.address,
     this.email,
     this.phonePrimary,
+    this.substructuren,
   });
 
   void mergeWithHeimdallProfile(
-    Query$AlmanakProfile$user$fullContact$public heimdallProfile,
+    Query$AlmanakProfile$user$fullContact$public u,
   ) {
-    email = heimdallProfile.email;
-    phonePrimary = heimdallProfile.phone_primary;
-    city = heimdallProfile.city;
-    zipCode = heimdallProfile.zipcode;
-    street = heimdallProfile.street;
-    houseNumber = heimdallProfile.housenumber;
-    houseNumberAddition = heimdallProfile.housenumber_addition;
+    email = u.email;
+    phonePrimary = u.phone_primary;
+    address = Address(
+      city: u.city,
+      postalCode: u.zipcode,
+      street: u.street,
+      houseNumber: u.housenumber,
+      houseNumberAddition: u.housenumber_addition,
+    );
   }
 
   // Add a factory constructor that takes a Map<String, dynamic> and returns an AlmanakProfile
@@ -61,6 +63,9 @@ class AlmanakProfile {
           ? List<String>.from(json['commissies'])
           : null,
       huis: json['huis'] as String?,
+      substructuren: json.containsKey('substructuren')
+          ? List<String>.from(json['substructuren'])
+          : null,
     );
   }
 
@@ -74,6 +79,7 @@ class AlmanakProfile {
       'other_association': otherAssociation,
       'commissies': commissies,
       'huis': huis,
+      'substructuren': substructuren,
     };
   }
 }
