@@ -6,6 +6,7 @@ class AlmanakProfile {
   bool? dubbellid;
   String? otherAssociation;
   List<String>? commissies;
+  String? huis;
 
   AlmanakProfile({
     this.study,
@@ -14,6 +15,7 @@ class AlmanakProfile {
     this.dubbellid,
     this.otherAssociation,
     this.commissies,
+    this.huis,
   });
 
   // Add a factory constructor that takes a Map<String, dynamic> and returns an AlmanakProfile
@@ -27,6 +29,7 @@ class AlmanakProfile {
       commissies: json.containsKey('commissies')
           ? List<String>.from(json['commissies'])
           : null,
+      huis: json['huis'] as String?,
     );
   }
 
@@ -39,6 +42,7 @@ class AlmanakProfile {
       'dubbellid': dubbellid,
       'other_association': otherAssociation,
       'commissies': commissies,
+      'huis': huis,
     };
   }
 }

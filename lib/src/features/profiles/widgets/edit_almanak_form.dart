@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -98,6 +100,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             buttonText: const Text('Welke commissies doe je?'),
             searchHint: "Appcommissie, etc.",
             searchable: true,
+            separateSelectedItems: true,
             initialValue: user.commissies ?? [],
             onSaved: (items) => _formData.commissies = items,
             items: commissieEmailMap.keys
@@ -106,6 +109,39 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
                     commissie,
                     // ignore: no-equal-arguments
                     commissie,
+                  ),
+                )
+                .toList(),
+            onConfirm: (_) => {},
+          ).padding(vertical: fieldPadding),
+          DropdownButtonFormField<String?>(
+            value: user.huis,
+            onSaved: (value) => _formData.huis = value,
+            hint: const Text('In welk Njord-huis zit je?'),
+            decoration: const InputDecoration(
+              labelText: 'Njord-huis',
+            ),
+            items: ['Geen', ...houseNames]
+                .map(
+                  (house) => DropdownMenuItem<String>(
+                    value: house,
+                    child: Text(house),
+                  ),
+                )
+                .toList(),
+            onChanged: (_) => {},
+          ).padding(vertical: fieldPadding),
+          MultiSelectDialogField<String>(
+            title: const Text('Substructuren'),
+            buttonText: const Text('Bij welke substructuren zit je?'),
+            initialValue: user.commissies ?? [],
+            onSaved: (items) => _formData.commissies = items,
+            items: substructures
+                .map(
+                  (structure) => MultiSelectItem<String>(
+                    structure,
+                    // ignore: no-equal-arguments
+                    structure,
                   ),
                 )
                 .toList(),
