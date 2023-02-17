@@ -142,24 +142,5 @@ class ProfilePictureWidget extends StatelessWidget {
         ),
       ),
     );
-
-    // return FutureBuilder(
-    //   future: getProfilePicture(userId),
-    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //     if (snapshot.hasError) {
-    //       return const CircleAvatar(
-    //         radius: profilePictureSize,
-    //         backgroundImage: AssetImage(Images.placeholderProfilePicture),
-    //       );
-    //     } else if (snapshot.hasData) {
-    //       return CircleAvatar(
-    //         radius: profilePictureSize,
-    //         backgroundImage: MemoryImage(snapshot.data),
-    //       );
-    //     }
-
-    //     return const CircularProgressIndicator();
-    //   },
-    // );
   }
 }

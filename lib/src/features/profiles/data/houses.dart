@@ -33,5 +33,5 @@ const List<String> houseNames = [
   'The Lighthouse',
   'Villa Boerheaven',
   'Villa Phoenix',
-  'Ygglo'
+  'Ygglo',
 ];

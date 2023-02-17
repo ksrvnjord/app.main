@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
