@@ -3,15 +3,17 @@ import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_scrolling_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakWidget extends StatefulWidget {
+class AlmanakSearchableListWidget extends StatefulWidget {
   final GraphQLClient client;
-  const AlmanakWidget({Key? key, required this.client}) : super(key: key);
+  const AlmanakSearchableListWidget({Key? key, required this.client})
+      : super(key: key);
 
   @override
-  createState() => _AlmanakWidgetState();
+  createState() => _AlmanakSearchableListWidgetState();
 }
 
-class _AlmanakWidgetState extends State<AlmanakWidget> {
+class _AlmanakSearchableListWidgetState
+    extends State<AlmanakSearchableListWidget> {
   final _search = TextEditingController();
 
   @override
