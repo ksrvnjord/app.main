@@ -15,7 +15,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.da
 class EditProfilePictureWidget extends StatelessWidget {
   const EditProfilePictureWidget({
     Key? key,
+    this.onChanged,
   }) : super(key: key);
+
+  final void Function(File)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +31,12 @@ class EditProfilePictureWidget extends StatelessWidget {
         initialImage: Image.memory(snapshot as Uint8List).image,
         shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
         isEditable: true,
-        onChange: tryUploadProfilePicture,
+        onChange: onChanged,
       ),
       error: (error) => ErrorCardWidget(errorMessage: error.toString()),
       loading: const ShimmerWidget(
         child: DefaultProfilePicture(radius: profilePictureSize / 2),
       ),
     );
-  }
-
-  void tryUploadProfilePicture(File file) {
-    try {
-      uploadMyProfilePicture(file);
-      Fluttertoast.showToast(
-        msg: "Your profile picture was updated successfully",
-      );
-    } on FirebaseException catch (e) {
-      Fluttertoast.showToast(msg: "Error updating your profile picture");
-      log(e.toString());
-    }
   }
 }

@@ -42,7 +42,6 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: const [
-            Center(child: EditProfilePictureWidget()),
             EditAlmanakForm(),
           ],
         ),

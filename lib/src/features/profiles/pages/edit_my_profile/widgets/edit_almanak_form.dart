@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -28,6 +33,11 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
   final AlmanakProfile _formData = AlmanakProfile();
+  File? newprofilePicture;
+
+  void changeProfilePicture(File file) {
+    newprofilePicture = file;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +49,11 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
         key: _formKey,
         child: <Widget>[
           // create a field to enter Field of Study
+          Center(
+            child: EditProfilePictureWidget(
+              onChanged: changeProfilePicture,
+            ),
+          ),
           TextFormField(
             initialValue: user.study,
             onSaved: (value) => _formData.study = value,
@@ -184,7 +199,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
       return;
     }
-
+    bool success = false;
+    Object? error;
     // Get user id from FirebaseAuth
     final String userId = getCurrentUserId();
 
@@ -192,14 +208,12 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
     final QuerySnapshot<AlmanakProfile> querySnapshot = await people
         .where('identifier', isEqualTo: userId)
         .get()
-        .catchError((error) {
-      // show snackbar with error message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Er ging iets mis: $error'),
-      ));
+        .catchError((err) {
+      // show snackbar with error messag
+      error = err;
+      success = false;
 
-      return error;
+      return err;
     });
 
     // retrieve document reference from query snapshot
@@ -208,15 +222,32 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     _formKey.currentState?.save();
 
-    await documentReference.update(_formData.toJson()).catchError((error) {
+    await documentReference.update(_formData.toJson()).catchError((err) {
       // show snackbar with error message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Er ging iets mis: $error'),
-      ));
+      success = false;
+      error = err;
     });
     if (!mounted) return;
 
+    if (newprofilePicture != null) {
+      try {
+        uploadMyProfilePicture(newprofilePicture!);
+      } on FirebaseException catch (err) {
+        error = err;
+        success = false;
+      }
+    }
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          'Er ging iets mis bij het wijzigen van je profiel: ${error.toString()}',
+        ),
+      ));
+
+      return;
+    }
     // show snackbar with success message
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
