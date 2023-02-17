@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
@@ -51,12 +52,12 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     return FutureWrapper(
       future: getMyFirestoreProfileData(),
-      success: (data) => Form(
+      success: (user) => Form(
         key: _formKey,
         child: <Widget>[
           // create a field to enter Field of Study
           TextFormField(
-            initialValue: data.study,
+            initialValue: user.study,
             onSaved: (value) => _formData.study = value,
             decoration: const InputDecoration(
               labelText: 'Wat studeer je?',
@@ -64,7 +65,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             ),
           ).padding(bottom: fieldPadding),
           DropdownButtonFormField<String?>(
-            value: data.board,
+            value: user.board,
             onSaved: (value) => _formData.board = value,
             hint: const Text('Welk boord?'),
             decoration: const InputDecoration(
@@ -81,14 +82,27 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ).padding(vertical: fieldPadding),
           // Add a TextFormField for the team the user is in
           TextFormField(
-            initialValue: data.ploeg,
+            initialValue: user.ploeg,
             onSaved: (value) => _formData.ploeg = value,
             decoration: const InputDecoration(
               labelText: 'In welke ploeg zit je?',
             ),
           ).padding(vertical: fieldPadding),
+          MultiSelectDialogField<String>(
+            title: const Text('Commissies'),
+            buttonText: const Text('Welke commissies doe je?'),
+            searchHint: "Appcommissie, etc.",
+            searchable: true,
+            initialValue: user.commissies ?? [],
+            onSaved: (items) => _formData.commissies = items,
+            items: [
+              MultiSelectItem('Appcommissie', 'Appcommissie'),
+              MultiSelectItem('Almanakcommissie', 'Almanakcommissie'),
+            ],
+            onConfirm: (_) => {},
+          ).padding(vertical: fieldPadding),
           DropdownButtonFormField<bool?>(
-            value: data.dubbellid,
+            value: user.dubbellid,
             onSaved: (value) => _formData.dubbellid = value,
             hint: const Text('Ben je dubbellid?'),
             decoration: const InputDecoration(
@@ -104,7 +118,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
           TextFormField(
-            initialValue: data.otherAssociation,
+            initialValue: user.otherAssociation,
             onSaved: (value) => _formData.otherAssociation = value,
             decoration: const InputDecoration(
               labelText: 'Zit je bij een andere vereniging?',
@@ -138,16 +152,12 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
       return;
     }
-    // Use Firestore to save the data
-    // create reference to 'people' collection
-    final CollectionReference people =
-        FirebaseFirestore.instance.collection('people');
 
     // Get user id from FirebaseAuth
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final String userId = getCurrentUserId();
 
     // query people collection for user with id
-    final QuerySnapshot querySnapshot = await people
+    final QuerySnapshot<AlmanakProfile> querySnapshot = await people
         .where('identifier', isEqualTo: userId)
         .get()
         .catchError((error) {
@@ -161,7 +171,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
     });
 
     // retrieve document reference from query snapshot
-    final DocumentReference documentReference =
+    final DocumentReference<AlmanakProfile> documentReference =
         querySnapshot.docs.first.reference;
 
     _formKey.currentState?.save();
