@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/widgets/edit_almanak_form.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 final storage = FirebaseStorage.instance;
