@@ -3,7 +3,12 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
+
+final CollectionReference people =
+    FirebaseFirestore.instance.collection('people');
 
 class EditAlmanakForm extends StatefulWidget {
   const EditAlmanakForm({Key? key}) : super(key: key);
@@ -15,51 +20,106 @@ class EditAlmanakForm extends StatefulWidget {
 class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final Map<String, String> _formData =
+  final Map<String, dynamic> _formData =
       {}; // we will use this to store the form data
+
+  Future<Map<String, dynamic>> getMyFirestoreProfileData() async {
+    String userId = getCurrentUserId();
+    final QuerySnapshot querySnapshot = await people
+        .where('identifier', isEqualTo: userId)
+        .get()
+        .catchError((error) {
+      // show snackbar with error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Er ging iets mis: $error'),
+      ));
+
+      return error;
+    });
+    Object? data = querySnapshot.docs.first.data();
+
+    return data != null ? data as Map<String, dynamic> : {};
+  }
 
   @override
   Widget build(BuildContext context) {
     const double fieldPadding = 8;
 
-    return Form(
-      key: _formKey,
-      child: <Widget>[
-        // create a field to enter Field of Study
-        TextFormField(
-          onSaved: (value) => _formData['study'] = value!,
-          decoration: const InputDecoration(
-            labelText: 'Wat studeer je?',
-            hintText: 'Rechten, Geneeskunde, etc.',
-          ),
-        ),
-        DropdownButtonFormField(
-          onSaved: (value) => _formData['board'] = value!,
-          hint: const Text('Welk boord?'),
-          decoration: const InputDecoration(
-            labelText: 'Boord',
-            hintText: 'Welk boord?',
-          ),
-          items: const [
-            DropdownMenuItem(value: 'Bakboord', child: Text('Bakboord')),
-            DropdownMenuItem(value: 'Stuurboord', child: Text('Stuurboord')),
-            DropdownMenuItem(value: 'Scull', child: Text('Scull')),
-            DropdownMenuItem(value: 'Multiboord', child: Text('Multiboord')),
-          ],
-          onChanged: (_) => {},
-        ).padding(vertical: fieldPadding),
-        // Add button to submit form
-        ElevatedButton(
-          onPressed: submitForm,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.lightBlue,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+    return FutureWrapper(
+      future: getMyFirestoreProfileData(),
+      success: (data) => Form(
+        key: _formKey,
+        child: <Widget>[
+          // create a field to enter Field of Study
+          TextFormField(
+            initialValue: data['study'],
+            onSaved: (value) => _formData['study'] = value,
+            decoration: const InputDecoration(
+              labelText: 'Wat studeer je?',
+              hintText: 'Rechten, Geneeskunde, etc.',
             ),
+          ).padding(bottom: fieldPadding),
+          DropdownButtonFormField<String?>(
+            value: data['board'],
+            onSaved: (value) => _formData['board'] = value,
+            hint: const Text('Welk boord?'),
+            decoration: const InputDecoration(
+              labelText: 'Boord',
+              hintText: 'Welk boord?',
+            ),
+            items: const [
+              DropdownMenuItem(value: 'Bakboord', child: Text('Bakboord')),
+              DropdownMenuItem(value: 'Stuurboord', child: Text('Stuurboord')),
+              DropdownMenuItem(value: 'Scull', child: Text('Scull')),
+              DropdownMenuItem(value: 'Multiboord', child: Text('Multiboord')),
+            ],
+            onChanged: (_) => {},
+          ).padding(vertical: fieldPadding),
+          // Add a TextFormField for the team the user is in
+          TextFormField(
+            initialValue: data['ploeg'],
+            onSaved: (value) => _formData['ploeg'] = value,
+            decoration: const InputDecoration(
+              labelText: 'In welke ploeg zit je?',
+            ),
+          ).padding(vertical: fieldPadding),
+          DropdownButtonFormField<bool?>(
+            value: data['dubbellid'],
+            onSaved: (value) => _formData['dubbellid'] = value,
+            hint: const Text('Ben je dubbellid?'),
+            decoration: const InputDecoration(
+              labelText: 'Dubbellid',
+            ),
+            items: const [
+              DropdownMenuItem(
+                value: true,
+                child: Text('Ja, bij L.S.V. Minerva'),
+              ),
+              DropdownMenuItem(value: false, child: Text('Nee')),
+            ],
+            onChanged: (_) => {},
+          ).padding(vertical: fieldPadding),
+          TextFormField(
+            initialValue: data['other_association'],
+            onSaved: (value) => _formData['other_association'] = value,
+            decoration: const InputDecoration(
+              labelText: 'Zit je bij een andere vereniging?',
+              hintText: 'L.V.V.S. Augustinus, etc.',
+            ),
+          ).padding(vertical: fieldPadding),
+          ElevatedButton(
+            onPressed: submitForm,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            ),
+            child: const Text('Opslaan'),
           ),
-          child: const Text('Opslaan'),
-        ),
-      ].toColumn(),
+        ].toColumn(),
+      ),
     );
   }
 
