@@ -12,10 +12,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.da
 class EditProfilePictureWidget extends StatefulWidget {
   const EditProfilePictureWidget({
     Key? key,
-    this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
 
-  final void Function(File)? onChanged;
+  final void Function(File) onChanged;
 
   @override
   createState() => _EditProfilePictureWidgetState();
@@ -28,7 +28,7 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
     setState(() {
       imageProvider = Image.file(file).image;
     });
-    widget.onChanged?.call(file);
+    widget.onChanged.call(file);
   }
 
   @override
