@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/widgets/edit_almanak_form.dart';
 import 'package:routemaster/routemaster.dart';
 
 final storage = FirebaseStorage.instance;
@@ -41,29 +39,10 @@ class _EditAlmanakProfilePageState extends State<EditAlmanakProfilePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: FutureBuilder(
-            future: getMyProfilePicture(),
-            builder: (context, snapshot) {
-              Image initialImage;
-
-              if (snapshot.hasError) {
-                initialImage = Image.asset(Images.placeholderProfilePicture);
-
-                return EditProfilePictureWidget(
-                  initialImage: initialImage,
-                );
-              } else if (snapshot.hasData) {
-                initialImage = Image.memory(snapshot.data as Uint8List);
-
-                return EditProfilePictureWidget(
-                  initialImage: initialImage,
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
+        child: ListView(
+          children: const [
+            EditAlmanakForm(),
+          ],
         ),
       ),
     );
