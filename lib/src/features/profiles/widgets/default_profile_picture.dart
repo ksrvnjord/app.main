@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 
 class DefaultProfilePicture extends StatelessWidget {
-  const DefaultProfilePicture({Key? key}) : super(key: key);
+  const DefaultProfilePicture({
+    Key? key,
+    this.size,
+  }) : super(key: key);
+
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
+      radius: size,
       backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
     );
   }

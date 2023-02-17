@@ -8,22 +8,32 @@ import 'package:styled_widget/styled_widget.dart';
 class AlmanakUserProfileView extends StatelessWidget {
   const AlmanakUserProfileView({
     super.key,
-    required this.user,
+    required this.heimdallUser,
   });
 
-  final Query$AlmanakProfile$user user;
+  final Query$AlmanakProfile$user heimdallUser;
 
   @override
   Widget build(BuildContext context) {
+    Query$AlmanakProfile$user$fullContact$public contact =
+        heimdallUser.fullContact.public;
+
     const double profilePictureSize = 96;
-    const double profilePicturePadding = 8;
+    const double elementPadding = 8;
+
+    const double nameFontSize = 20;
 
     return ListView(
       children: [
         ProfilePictureWidget(
-          userId: user.identifier,
+          userId: heimdallUser.identifier,
           size: profilePictureSize,
-        ).padding(all: profilePicturePadding).center(),
+        ).padding(all: elementPadding).center(),
+        Text('${contact.first_name} ${contact.last_name}')
+            .fontSize(nameFontSize)
+            .fontWeight(FontWeight.bold)
+            .padding(all: elementPadding)
+            .center(),
       ],
     );
   }

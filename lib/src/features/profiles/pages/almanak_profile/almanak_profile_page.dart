@@ -32,7 +32,7 @@ class AlmanakProfilePage extends StatelessWidget {
       body: FutureWrapper(
         // we first need to query the user to get the userId
         future: userQuery,
-        success: (user) => AlmanakUserProfileView(user: user!),
+        success: (user) => AlmanakUserProfileView(heimdallUser: user!),
         error: (error) => ErrorCardWidget(errorMessage: error.toString()),
       ),
     );

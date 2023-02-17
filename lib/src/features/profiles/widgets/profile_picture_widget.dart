@@ -23,12 +23,13 @@ class ProfilePictureWidget extends StatelessWidget {
         imageUrl: // random image url
             snapshot,
         imageBuilder: (context, imageProvider) => CircleAvatar(
+          radius: size,
           backgroundImage: imageProvider,
         ),
-        placeholder: (_, x) => const DefaultProfilePicture(),
+        placeholder: (_, x) => DefaultProfilePicture(size: size),
       ),
-      error: (_) => const DefaultProfilePicture(),
-      loading: const ShimmerWidget(child: DefaultProfilePicture()),
+      error: (_) => DefaultProfilePicture(size: size),
+      loading: ShimmerWidget(child: DefaultProfilePicture(size: size)),
     );
   }
 }
