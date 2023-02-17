@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
@@ -29,6 +30,9 @@ class AlmanakUserProfileView extends StatelessWidget {
         heimdallUser.fullContact.public;
     String userId = heimdallUser.identifier;
 
+    // check if authenticated by Firebase
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+
     const double profilePictureSize = 96;
     const double elementPadding = 8;
 
@@ -45,11 +49,12 @@ class AlmanakUserProfileView extends StatelessWidget {
             .fontWeight(FontWeight.bold)
             .padding(top: elementPadding)
             .center(),
-        FutureWrapper(
-          future: getFirestoreProfileData(userId),
-          success: (AlmanakProfile profile) =>
-              AlmanakUserData(u: profile, heimdallContact: contact),
-        ),
+        if (firebaseUser != null) // only show if authenticated by Firebase
+          FutureWrapper(
+            future: getFirestoreProfileData(userId),
+            success: (AlmanakProfile profile) =>
+                AlmanakUserData(u: profile, heimdallContact: contact),
+          ),
       ],
     );
   }
