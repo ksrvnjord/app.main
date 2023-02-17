@@ -15,8 +15,8 @@ class EditAlmanakForm extends StatefulWidget {
 class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String study = '';
-  String board = '';
+  final Map<String, String> _formData =
+      {}; // we will use this to store the form data
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +27,14 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
       child: <Widget>[
         // create a field to enter Field of Study
         TextFormField(
-          onSaved: (value) => study = value!,
+          onSaved: (value) => _formData['study'] = value!,
           decoration: const InputDecoration(
             labelText: 'Wat studeer je?',
             hintText: 'Rechten, Geneeskunde, etc.',
           ),
         ),
         DropdownButtonFormField(
-          onSaved: (value) => board = value!,
+          onSaved: (value) => _formData['board'] = value!,
           hint: const Text('Welk boord?'),
           decoration: const InputDecoration(
             labelText: 'Boord',
@@ -103,10 +103,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     _formKey.currentState?.save();
 
-    await documentReference.update({
-      'study': study,
-      'board': board,
-    }).catchError((error) {
+    await documentReference.update(_formData).catchError((error) {
       // show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
