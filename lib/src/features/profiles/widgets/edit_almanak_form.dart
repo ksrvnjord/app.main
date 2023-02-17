@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -72,12 +73,16 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
               labelText: 'Boord',
               hintText: 'Welk boord?',
             ),
-            items: const [
-              DropdownMenuItem(value: 'Bakboord', child: Text('Bakboord')),
-              DropdownMenuItem(value: 'Stuurboord', child: Text('Stuurboord')),
-              DropdownMenuItem(value: 'Scull', child: Text('Scull')),
-              DropdownMenuItem(value: 'Multiboord', child: Text('Multiboord')),
-            ],
+            items:
+                // The boards are Bakboord, Stuurboord, etc.
+                ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
+                    .map(
+                      (board) => DropdownMenuItem<String>(
+                        value: board,
+                        child: Text(board),
+                      ),
+                    )
+                    .toList(),
             onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
           // Add a TextFormField for the team the user is in
@@ -95,10 +100,15 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             searchable: true,
             initialValue: user.commissies ?? [],
             onSaved: (items) => _formData.commissies = items,
-            items: [
-              MultiSelectItem('Appcommissie', 'Appcommissie'),
-              MultiSelectItem('Almanakcommissie', 'Almanakcommissie'),
-            ],
+            items: commissieEmailMap.keys
+                .map(
+                  (commissie) => MultiSelectItem<String>(
+                    commissie,
+                    // ignore: no-equal-arguments
+                    commissie,
+                  ),
+                )
+                .toList(),
             onConfirm: (_) => {},
           ).padding(vertical: fieldPadding),
           DropdownButtonFormField<bool?>(
