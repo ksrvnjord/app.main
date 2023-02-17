@@ -171,16 +171,18 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
               hintText: 'L.V.V.S. Augustinus, etc.',
             ),
           ).padding(vertical: fieldPadding),
-          ElevatedButton(
-            onPressed: submitForm,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.lightBlue,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+          [
+            ElevatedButton(
+              onPressed: submitForm,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
               ),
-            ),
-            child: const Text('Opslaan'),
-          ),
+              child: const Text('Opslaan'),
+            ).expanded(),
+          ].toRow(),
         ].toColumn(),
       ),
       loading: Container(),
@@ -199,7 +201,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
       return;
     }
-    bool success = false;
+    bool success = true; // on errors set to false
     Object? error;
     // Get user id from FirebaseAuth
     final String userId = getCurrentUserId();
