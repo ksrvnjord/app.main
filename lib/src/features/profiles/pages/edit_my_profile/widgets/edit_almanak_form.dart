@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
@@ -29,24 +30,6 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
   final AlmanakProfile _formData = AlmanakProfile();
-
-  Future<AlmanakProfile> getMyFirestoreProfileData() async {
-    String userId = getCurrentUserId();
-    QuerySnapshot<AlmanakProfile> profile = await people
-        .where('identifier', isEqualTo: userId)
-        .get()
-        .catchError((error) {
-      // show snackbar with error message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Er ging iets mis: $error'),
-      ));
-
-      return error;
-    });
-
-    return profile.docs.first.data();
-  }
 
   @override
   Widget build(BuildContext context) {
