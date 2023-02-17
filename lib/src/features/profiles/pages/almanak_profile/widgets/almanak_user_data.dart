@@ -51,33 +51,3 @@ class AlmanakUserData extends StatelessWidget {
     ].toColumn();
   }
 }
-
-class UserAddressWidget extends StatelessWidget {
-  const UserAddressWidget({
-    Key? key,
-    required this.address,
-  }) : super(key: key);
-
-  final Address address;
-
-  @override
-  Widget build(BuildContext context) {
-    const double formFieldPadding = 8;
-
-    return Row(
-      children: [
-        if (address.street != null && address.street!.isNotEmpty)
-          Text(address.street!),
-        if (address.houseNumber != null && address.houseNumber!.isNotEmpty)
-          Text(address.houseNumber!),
-        if (address.houseNumberAddition != null &&
-            address.houseNumberAddition!.isNotEmpty)
-          Text(address.houseNumberAddition!),
-        if (address.postalCode != null && address.postalCode!.isNotEmpty)
-          Text(address.postalCode!),
-        if (address.city != null && address.city!.isNotEmpty)
-          Text(address.city!),
-      ],
-    );
-  }
-}
