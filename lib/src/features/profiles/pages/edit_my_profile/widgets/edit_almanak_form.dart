@@ -96,7 +96,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ).padding(vertical: fieldPadding),
           DropdownButtonFormField<String?>(
             value: user.huis,
-            onSaved: (value) => _formData.huis = value,
+            onSaved: (value) => _formData.huis =
+                value != 'Geen' ? value : null, // allow user to 'deselect' huis
             hint: const Text('In welk Njord-huis zit je?'),
             decoration: const InputDecoration(
               labelText: 'Njord-huis',
@@ -114,8 +115,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           MultiSelectDialogField<String>(
             title: const Text('Substructuren'),
             buttonText: const Text('Bij welke substructuren zit je?'),
-            initialValue: user.commissies ?? [],
-            onSaved: (items) => _formData.commissies = items,
+            initialValue: user.substructuren ?? [],
+            onSaved: (items) => _formData.substructuren = items,
             items: substructures
                 .map(
                   (structure) => MultiSelectItem<String>(
@@ -145,7 +146,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ).padding(vertical: fieldPadding),
           TextFormField(
             initialValue: user.otherAssociation,
-            onSaved: (value) => _formData.otherAssociation = value,
+            onSaved: (value) =>
+                _formData.otherAssociation = value == '' ? null : value,
             decoration: const InputDecoration(
               labelText: 'Zit je bij een andere vereniging?',
               hintText: 'L.V.V.S. Augustinus, etc.',
