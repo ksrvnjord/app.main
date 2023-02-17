@@ -43,6 +43,7 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
             imageProvider ?? Image.memory(snapshot as Uint8List).image,
         shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
         isEditable: true,
+        shouldCrop: true,
         onChange: widget.onChanged,
       ),
       error: (error) => ErrorCardWidget(errorMessage: error.toString()),
