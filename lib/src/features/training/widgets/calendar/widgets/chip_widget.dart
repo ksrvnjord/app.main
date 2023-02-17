@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
 
-class PermissionsWidget extends StatelessWidget {
-  const PermissionsWidget({
+class ChipWidget extends StatelessWidget {
+  const ChipWidget({
     super.key,
-    required this.permissions,
+    required this.title,
+    required this.values,
+    this.colors,
   });
 
-  final List<String> permissions;
+  final Map<String, Color>? colors;
+
+  final String title;
+  final List<String> values;
 
   @override
   Widget build(BuildContext context) {
     const double permissionChipSpacing = 4;
 
-    Map<String, Color> permissionColors = {
-      'Coachcatamaran': Colors.greenAccent,
-      'Speciaal': Colors.redAccent,
-      '1e permissie': Colors.blueAccent,
-      '2e permissie': Colors.orangeAccent,
-      'Top C4+': Colors.purpleAccent,
-      'Specifiek': Colors.pinkAccent,
-    };
-
     return ListTile(
-      title: const Text(
-        'Permissies',
-        style: TextStyle(
+      title: Text(
+        title,
+        style: const TextStyle(
           color: Colors.grey,
           fontWeight: FontWeight.w300,
           fontSize: 16,
@@ -32,7 +28,7 @@ class PermissionsWidget extends StatelessWidget {
       ),
       subtitle: Wrap(
         spacing: permissionChipSpacing,
-        children: permissions
+        children: values
             .map((permission) => Chip(
                   label: Text(
                     permission,
@@ -43,8 +39,8 @@ class PermissionsWidget extends StatelessWidget {
                     ),
                   ),
                   backgroundColor: () {
-                    if (permissionColors.containsKey(permission)) {
-                      return permissionColors[permission];
+                    if (colors != null && colors!.containsKey(permission)) {
+                      return colors![permission];
                     } else {
                       return Colors.grey;
                     }

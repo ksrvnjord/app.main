@@ -3,6 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/copyable_form_field.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakUserData extends StatelessWidget {
@@ -25,16 +26,19 @@ class AlmanakUserData extends StatelessWidget {
 
     return <Widget>[
       if (user.study != null) Text(user.study!).textColor(Colors.blueGrey),
-      if (user.phonePrimary != null)
+      if (user.phonePrimary != null && user.phonePrimary!.isNotEmpty)
         CopyableFormField(label: "Telefoonnummer", value: user.phonePrimary!)
             .padding(all: formFieldPadding),
-      if (user.email != null)
+      if (user.email != null && user.email!.isNotEmpty)
         CopyableFormField(label: "Email", value: user.email!)
             .padding(all: formFieldPadding),
       if (user.ploeg != null)
         DataTextListTile(name: "Ploeg", value: user.ploeg!),
       if (user.board != null)
-        DataTextListTile(name: "Boord", value: user.board!),
+        DataTextListTile(name: "Voorkeurs boord", value: user.board!),
+      if (user.commissies != null) // map commissies to chips
+        ChipWidget(title: "Commissies", values: user.commissies!),
+      if (user.huis != null) DataTextListTile(name: "Huis", value: user.huis!),
     ].toColumn();
   }
 }

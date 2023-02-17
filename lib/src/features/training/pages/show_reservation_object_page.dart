@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 import 'package:styled_widget/styled_widget.dart';
 
 import '../widgets/availability_header.dart';
-import '../widgets/calendar/widgets/permissions_widget.dart';
+import '../widgets/calendar/widgets/chip_widget.dart';
 
 // get reference to reservationObjects collection
 final CollectionReference<ReservationObject>
@@ -82,8 +82,17 @@ class ShowReservationObjectPage extends StatelessWidget {
               ? DataTextListTile(name: "Categorie", value: obj.kind!)
               : Container(),
           obj.permissions.isNotEmpty
-              ? PermissionsWidget(
-                  permissions: obj.permissions,
+              ? ChipWidget(
+                  title: "Permissies",
+                  values: obj.permissions,
+                  colors: const {
+                    'Coachcatamaran': Colors.greenAccent,
+                    'Speciaal': Colors.redAccent,
+                    '1e permissie': Colors.blueAccent,
+                    '2e permissie': Colors.orangeAccent,
+                    'Top C4+': Colors.purpleAccent,
+                    'Specifiek': Colors.pinkAccent,
+                  },
                 )
               : Container(),
           obj.year != null
