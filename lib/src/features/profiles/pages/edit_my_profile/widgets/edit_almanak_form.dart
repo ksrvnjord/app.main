@@ -43,17 +43,26 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             initialValue: user.study,
             onSaved: (value) => _formData.study = value,
             decoration: const InputDecoration(
-              labelText: 'Wat studeer je?',
+              labelText: 'Studie',
               hintText: 'Rechten, Geneeskunde, etc.',
             ),
           ).padding(bottom: fieldPadding),
+
+          // Add a TextFormField for the team the user is in
+          TextFormField(
+            initialValue: user.ploeg,
+            onSaved: (value) => _formData.ploeg = value,
+            decoration: const InputDecoration(
+              labelText: 'Ploeg',
+            ),
+          ).padding(vertical: fieldPadding),
           DropdownButtonFormField<String?>(
             value: user.board,
             onSaved: (value) => _formData.board = value,
             hint: const Text('Welk boord?'),
             decoration: const InputDecoration(
               labelText: 'Boord',
-              hintText: 'Welk boord?',
+              hintText: 'Welk boord roei je?',
             ),
             items:
                 // The boards are Bakboord, Stuurboord, etc.
@@ -67,17 +76,28 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
                     .toList(),
             onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
-          // Add a TextFormField for the team the user is in
-          TextFormField(
-            initialValue: user.ploeg,
-            onSaved: (value) => _formData.ploeg = value,
+          DropdownButtonFormField<String?>(
+            value: user.huis,
+            onSaved: (value) => _formData.huis =
+                value != 'Geen' ? value : null, // allow user to 'deselect' huis
+            hint: const Text('Njord-Huis'),
             decoration: const InputDecoration(
-              labelText: 'In welke ploeg zit je?',
+              labelText: 'Njord-huis',
             ),
+            items: ['Geen', ...houseNames]
+                .map(
+                  (house) => DropdownMenuItem<String>(
+                    value: house,
+                    child: Text(house),
+                  ),
+                )
+                .toList(),
+            onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
           MultiSelectDialogField<String>(
             title: const Text('Commissies'),
-            buttonText: const Text('Welke commissies doe je?'),
+            // ignore: no-equal-arguments
+            buttonText: const Text('Commissies'),
             searchHint: "Appcommissie, etc.",
             searchable: true,
             separateSelectedItems: true,
@@ -94,27 +114,10 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
                 .toList(),
             onConfirm: (_) => {},
           ).padding(vertical: fieldPadding),
-          DropdownButtonFormField<String?>(
-            value: user.huis,
-            onSaved: (value) => _formData.huis =
-                value != 'Geen' ? value : null, // allow user to 'deselect' huis
-            hint: const Text('In welk Njord-huis zit je?'),
-            decoration: const InputDecoration(
-              labelText: 'Njord-huis',
-            ),
-            items: ['Geen', ...houseNames]
-                .map(
-                  (house) => DropdownMenuItem<String>(
-                    value: house,
-                    child: Text(house),
-                  ),
-                )
-                .toList(),
-            onChanged: (_) => {},
-          ).padding(vertical: fieldPadding),
           MultiSelectDialogField<String>(
             title: const Text('Substructuren'),
-            buttonText: const Text('Bij welke substructuren zit je?'),
+            // ignore: no-equal-arguments
+            buttonText: const Text('Substructuren'),
             initialValue: user.substructuren ?? [],
             onSaved: (items) => _formData.substructuren = items,
             items: substructures
@@ -165,6 +168,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ),
         ].toColumn(),
       ),
+      loading: Container(),
     );
   }
 

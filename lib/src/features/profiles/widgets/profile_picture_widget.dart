@@ -26,10 +26,10 @@ class ProfilePictureWidget extends StatelessWidget {
           radius: size,
           backgroundImage: imageProvider,
         ),
-        placeholder: (_, x) => DefaultProfilePicture(size: size),
+        placeholder: (_, x) => DefaultProfilePicture(radius: size),
       ),
-      error: (_) => DefaultProfilePicture(size: size),
-      loading: ShimmerWidget(child: DefaultProfilePicture(size: size)),
+      error: (_) => DefaultProfilePicture(radius: size),
+      loading: ShimmerWidget(child: DefaultProfilePicture(radius: size)),
     );
   }
 }

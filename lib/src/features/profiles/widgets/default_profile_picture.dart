@@ -5,15 +5,15 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 class DefaultProfilePicture extends StatelessWidget {
   const DefaultProfilePicture({
     Key? key,
-    this.size,
+    this.radius,
   }) : super(key: key);
 
-  final double? size;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: size,
+      radius: radius,
       backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
     );
   }
