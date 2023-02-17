@@ -16,18 +16,14 @@ class AlmanakUserProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double profilePictureSize = 96;
+    const double profilePicturePadding = 8;
 
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: ProfilePictureWidget(
-              userId: user.identifier,
-              size: profilePictureSize,
-            ),
-          ),
-        ),
+        ProfilePictureWidget(
+          userId: user.identifier,
+          size: profilePictureSize,
+        ).padding(all: profilePicturePadding).center(),
       ],
     );
   }
