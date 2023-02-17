@@ -50,7 +50,7 @@ class AlmanakUserProfileView extends StatelessWidget {
         FutureWrapper(
           future: getFirestoreProfileData(userId),
           success: (AlmanakProfile profile) =>
-              AlmanakUserData(user: profile, heimdallContact: contact),
+              AlmanakUserData(u: profile, heimdallContact: contact),
         ),
       ],
     );
