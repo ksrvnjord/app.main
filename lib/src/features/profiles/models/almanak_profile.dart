@@ -12,6 +12,7 @@ class AlmanakProfile {
   List<String>? commissies;
   String? huis;
   List<String>? substructuren;
+  String? bestuursFunctie;
 
   // --- HEIMDALL FIELDS ---
   String? email;
@@ -35,6 +36,7 @@ class AlmanakProfile {
     this.email,
     this.phonePrimary,
     this.substructuren,
+    this.bestuursFunctie,
   });
 
   void mergeWithHeimdallProfile(
@@ -66,6 +68,7 @@ class AlmanakProfile {
       substructuren: json.containsKey('substructuren')
           ? List<String>.from(json['substructuren'])
           : null,
+      bestuursFunctie: json['bestuurs_functie'] as String?,
     );
   }
 
@@ -80,6 +83,7 @@ class AlmanakProfile {
       'commissies': commissies,
       'huis': huis,
       'substructuren': substructuren,
+      'bestuurs_functie': bestuursFunctie,
     };
   }
 }

@@ -3,6 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/copyable_form_field.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/user_address_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -24,9 +25,25 @@ class AlmanakUserData extends StatelessWidget {
     u.mergeWithHeimdallProfile(heimdallContact);
 
     const double formFieldPadding = 8;
+    const double bestuurFontSize = 20;
 
     return <Widget>[
       if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
+      if (u.bestuursFunctie != null)
+        // make list tile with lightblue background and white text
+        Center(
+          child: Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+            ),
+            color: Colors.lightBlue,
+            child: Text(u.bestuursFunctie!)
+                .textColor(Colors.white)
+                .fontSize(bestuurFontSize)
+                .fontWeight(FontWeight.bold)
+                .padding(all: formFieldPadding),
+          ),
+        ),
       if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
         CopyableFormField(label: "Telefoonnummer", value: u.phonePrimary!)
             .padding(all: formFieldPadding),
