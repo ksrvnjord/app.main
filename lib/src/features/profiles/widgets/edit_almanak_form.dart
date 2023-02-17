@@ -3,12 +3,17 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-final CollectionReference people =
-    FirebaseFirestore.instance.collection('people');
+final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
+    .collection('people')
+    .withConverter<AlmanakProfile>(
+      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
+      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
+    );
 
 class EditAlmanakForm extends StatefulWidget {
   const EditAlmanakForm({Key? key}) : super(key: key);
@@ -20,12 +25,11 @@ class EditAlmanakForm extends StatefulWidget {
 class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final Map<String, dynamic> _formData =
-      {}; // we will use this to store the form data
+  final AlmanakProfile _formData = AlmanakProfile();
 
-  Future<Map<String, dynamic>> getMyFirestoreProfileData() async {
+  Future<AlmanakProfile> getMyFirestoreProfileData() async {
     String userId = getCurrentUserId();
-    final QuerySnapshot querySnapshot = await people
+    QuerySnapshot<AlmanakProfile> profile = await people
         .where('identifier', isEqualTo: userId)
         .get()
         .catchError((error) {
@@ -37,9 +41,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
       return error;
     });
-    Object? data = querySnapshot.docs.first.data();
 
-    return data != null ? data as Map<String, dynamic> : {};
+    return profile.docs.first.data();
   }
 
   @override
@@ -53,16 +56,16 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
         child: <Widget>[
           // create a field to enter Field of Study
           TextFormField(
-            initialValue: data['study'],
-            onSaved: (value) => _formData['study'] = value,
+            initialValue: data.study,
+            onSaved: (value) => _formData.study = value,
             decoration: const InputDecoration(
               labelText: 'Wat studeer je?',
               hintText: 'Rechten, Geneeskunde, etc.',
             ),
           ).padding(bottom: fieldPadding),
           DropdownButtonFormField<String?>(
-            value: data['board'],
-            onSaved: (value) => _formData['board'] = value,
+            value: data.board,
+            onSaved: (value) => _formData.board = value,
             hint: const Text('Welk boord?'),
             decoration: const InputDecoration(
               labelText: 'Boord',
@@ -78,15 +81,15 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ).padding(vertical: fieldPadding),
           // Add a TextFormField for the team the user is in
           TextFormField(
-            initialValue: data['ploeg'],
-            onSaved: (value) => _formData['ploeg'] = value,
+            initialValue: data.ploeg,
+            onSaved: (value) => _formData.ploeg = value,
             decoration: const InputDecoration(
               labelText: 'In welke ploeg zit je?',
             ),
           ).padding(vertical: fieldPadding),
           DropdownButtonFormField<bool?>(
-            value: data['dubbellid'],
-            onSaved: (value) => _formData['dubbellid'] = value,
+            value: data.dubbellid,
+            onSaved: (value) => _formData.dubbellid = value,
             hint: const Text('Ben je dubbellid?'),
             decoration: const InputDecoration(
               labelText: 'Dubbellid',
@@ -101,8 +104,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
             onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
           TextFormField(
-            initialValue: data['other_association'],
-            onSaved: (value) => _formData['other_association'] = value,
+            initialValue: data.otherAssociation,
+            onSaved: (value) => _formData.otherAssociation = value,
             decoration: const InputDecoration(
               labelText: 'Zit je bij een andere vereniging?',
               hintText: 'L.V.V.S. Augustinus, etc.',
@@ -163,7 +166,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     _formKey.currentState?.save();
 
-    await documentReference.update(_formData).catchError((error) {
+    await documentReference.update(_formData.toJson()).catchError((error) {
       // show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,

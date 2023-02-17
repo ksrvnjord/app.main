@@ -21,7 +21,7 @@ class AlmanakProfile {
       board: json['board'] as String?,
       ploeg: json['ploeg'] as String?,
       dubbellid: json['dubbellid'] as bool?,
-      otherAssociation: json['otherAssociation'] as String?,
+      otherAssociation: json['other_association'] as String?,
     );
   }
 
@@ -32,7 +32,7 @@ class AlmanakProfile {
       'board': board,
       'ploeg': ploeg,
       'dubbellid': dubbellid,
-      'otherAssociation': otherAssociation,
+      'other_association': otherAssociation,
     };
   }
 }
