@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/copyable_form_field.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/user_address_widget.dart';
