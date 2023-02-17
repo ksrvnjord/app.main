@@ -10,28 +10,28 @@ class ProfilePictureWidget extends StatelessWidget {
   const ProfilePictureWidget({
     Key? key,
     required this.userId,
+    required this.size,
   }) : super(key: key);
 
   final String userId;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    const double profilePictureSize = 96;
-
     return FutureWrapper(
       future: getProfilePicture(userId),
       success: (Uint8List? data) => CircleAvatar(
-        radius: profilePictureSize,
+        radius: size,
         backgroundImage: MemoryImage(data!),
       ),
-      error: (error) => const CircleAvatar(
-        radius: profilePictureSize,
-        backgroundImage: AssetImage(Images.placeholderProfilePicture),
+      error: (error) => CircleAvatar(
+        radius: size,
+        backgroundImage: const AssetImage(Images.placeholderProfilePicture),
       ),
-      loading: const ShimmerWidget(
+      loading: ShimmerWidget(
         child: CircleAvatar(
-          radius: profilePictureSize,
-          backgroundImage: AssetImage(Images.placeholderProfilePicture),
+          radius: size,
+          backgroundImage: const AssetImage(Images.placeholderProfilePicture),
         ),
       ),
     );
