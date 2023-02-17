@@ -24,7 +24,7 @@ class AlmanakUserData extends StatelessWidget {
     u.mergeWithHeimdallProfile(heimdallContact);
 
     const double formFieldPadding = 8;
-    const double bestuurFontSize = 20;
+    const double bestuurFontSize = 16;
 
     return <Widget>[
       if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
@@ -32,6 +32,7 @@ class AlmanakUserData extends StatelessWidget {
         // make list tile with lightblue background and white text
         Center(
           child: Card(
+            elevation: 0,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(40)),
             ),
