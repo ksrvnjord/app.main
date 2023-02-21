@@ -50,7 +50,6 @@ class VaarverbodWidget extends StatelessWidget {
         Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
 
     const double innerPadding = 8;
-    const double cardPadding = 16;
 
     return FutureWrapper(
       future: vaarverbod,
