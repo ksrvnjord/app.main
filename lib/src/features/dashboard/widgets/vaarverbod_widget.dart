@@ -11,7 +11,6 @@ class VaarverbodWidget extends StatelessWidget {
   Widget showVaarverbod(
     Response<Map<String, dynamic>> data,
     double innerPadding,
-    double cardPadding,
   ) {
     Map<String, dynamic> r = data.data!;
     final Color bgColor =
@@ -36,16 +35,13 @@ class VaarverbodWidget extends StatelessWidget {
           ),
         ).padding(right: innerPadding),
       ],
-    )
-        .padding(all: innerPadding)
-        .card(
+    ).padding(all: innerPadding).card(
           color: bgColor,
           elevation: 0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-        )
-        .padding(all: cardPadding, bottom: 0);
+        );
   }
 
   @override
@@ -58,7 +54,7 @@ class VaarverbodWidget extends StatelessWidget {
 
     return FutureWrapper(
       future: vaarverbod,
-      success: (data) => showVaarverbod(data, innerPadding, cardPadding),
+      success: (data) => showVaarverbod(data, innerPadding),
       loading: Shimmer.fromColors(
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.grey[100]!,
