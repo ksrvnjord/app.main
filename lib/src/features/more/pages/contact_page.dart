@@ -43,7 +43,6 @@ class ContactPage extends StatelessWidget {
             ),
           ],
         ),
-        const Divider(),
         ExpansionTile(title: const Text("Commissies"), children: [
           // create a DataTable, with two columns: function and email
           DataTable(
@@ -61,7 +60,6 @@ class ContactPage extends StatelessWidget {
             ],
           ),
         ]),
-        const Divider(),
         // Add instagram icon linking to our insta
         const InstagramRowWidget(
           url: "https://www.instagram.com/ksrvnjord/",
@@ -71,7 +69,6 @@ class ContactPage extends StatelessWidget {
           url: "https://www.instagram.com/ksrvnjord_intern/",
           handle: "@ksrvnjord_intern",
         ).padding(all: padding),
-        const Divider(),
         Row(children: [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
