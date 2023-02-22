@@ -36,7 +36,21 @@ class ContactPage extends StatelessWidget {
                 ...bestuurEmailMap.entries.map(
                   (entry) => DataRow(cells: [
                     DataCell(Text(entry.key)),
-                    DataCell(Text(entry.value)),
+                    DataCell(
+                      // create a link to the email
+                      InkWell(
+                        onTap: () => launchUrl(
+                          Uri.parse('mailto:${entry.value}'),
+                        ),
+                        child: Text(
+                          entry.value,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                   ]),
                 ),
               ],
@@ -54,7 +68,21 @@ class ContactPage extends StatelessWidget {
               ...commissieEmailMap.entries.map(
                 (entry) => DataRow(cells: [
                   DataCell(Text(entry.key)),
-                  DataCell(Text(entry.value)),
+                  DataCell(
+                    // create a link to the email
+                    InkWell(
+                      onTap: () => launchUrl(
+                        Uri.parse('mailto:${entry.value}'),
+                      ),
+                      child: Text(
+                        entry.value,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ]),
               ),
             ],
