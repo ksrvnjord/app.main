@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/almanak_user_data.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -38,7 +37,6 @@ class AlmanakUserProfileView extends StatelessWidget {
     const double elementPadding = 8;
 
     const double nameFontSize = 20;
-    print(userId);
 
     return ListView(
       children: [
