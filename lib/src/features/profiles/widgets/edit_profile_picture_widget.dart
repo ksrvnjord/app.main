@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
@@ -46,9 +45,18 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
         shouldCrop: true,
         onChange: widget.onChanged,
       ),
-      error: (error) => ErrorCardWidget(errorMessage: error.toString()),
+      error: (error) => ImagePickerWidget(
+        // error means that the user has no profle picture set
+        diameter: profilePictureSize,
+        shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
+        isEditable: true,
+        shouldCrop: true,
+        onChange: widget.onChanged,
+      ),
       loading: const ShimmerWidget(
-        child: DefaultProfilePicture(radius: profilePictureSize / 2),
+        child: DefaultProfilePicture(
+          radius: profilePictureSize / 2,
+        ), // profilepicture size is the diameter
       ),
     );
   }
