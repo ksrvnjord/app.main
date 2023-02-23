@@ -42,8 +42,7 @@ class AnnouncementListWidget extends StatelessWidget {
                       subtitle: "${announcement.author} - $createdDate",
                       text: '',
                       padding: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 16,
+                        vertical: 2,
                       ),
                     ),
                     onTap: () => goToAnnouncementPage(context, announcement.id),
