@@ -52,8 +52,12 @@ class AlmanakUserProfileView extends StatelessWidget {
         if (firebaseUser != null) // only show if authenticated by Firebase
           FutureWrapper(
             future: getFirestoreProfileData(userId),
-            success: (AlmanakProfile profile) =>
-                AlmanakUserData(u: profile, heimdallContact: contact),
+            success: (AlmanakProfile profile) => AlmanakUserData(
+              u: profile,
+              heimdallContact: contact,
+            ),
+            error: (error) =>
+                Container(), // the shown user might have no data in Firestore, in that case show nothing
           ),
       ],
     );
