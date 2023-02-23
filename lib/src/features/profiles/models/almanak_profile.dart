@@ -75,14 +75,14 @@ class AlmanakProfile {
   // This method contains the fields that are sent to Firestore
   Map<String, dynamic> toJson() {
     return {
-      'study': study,
-      'board': board,
-      'ploeg': ploeg,
-      'dubbellid': dubbellid,
-      'other_association': otherAssociation,
-      'commissies': commissies,
-      'huis': huis,
-      'substructuren': substructuren,
+      if (study != null) 'study': study,
+      if (board != null) 'board': board,
+      if (ploeg != null) 'ploeg': ploeg,
+      if (dubbellid != null) 'dubbellid': dubbellid,
+      if (otherAssociation != null) 'other_association': otherAssociation,
+      if (commissies != null) 'commissies': commissies,
+      if (huis != null) 'huis': huis,
+      if (substructuren != null) 'substructuren': substructuren,
     };
   }
 }
