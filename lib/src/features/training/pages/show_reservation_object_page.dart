@@ -57,50 +57,45 @@ class ShowReservationObjectPage extends StatelessWidget {
       AvailabilityHeader(isAvailable: obj.available),
       Expanded(
         child: ListView(children: [
-          obj.comment != null && obj.comment!.isNotEmpty
-              ? Card(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40)),
+          if (obj.comment != null && obj.comment!.isNotEmpty)
+            Card(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              elevation: 0,
+              color: Colors.amber.shade100,
+              child: ListTile(
+                leading: const Icon(Icons.comment),
+                title: Text(
+                  obj.comment!,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20,
                   ),
-                  elevation: 0,
-                  color: Colors.amber.shade100,
-                  child: ListTile(
-                    leading: const Icon(Icons.comment),
-                    title: Text(
-                      obj.comment!,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
+                ),
+              ),
+            ),
           DataTextListTile(name: "Type", value: obj.type),
-          obj.kind != null
-              ? DataTextListTile(name: "Categorie", value: obj.kind!)
-              : Container(),
-          obj.permissions.isNotEmpty
-              ? ChipWidget(
-                  title: "Permissies",
-                  values: obj.permissions,
-                  colors: const {
-                    'Coachcatamaran': Colors.greenAccent,
-                    'Speciaal': Colors.redAccent,
-                    '1e permissie': Colors.blueAccent,
-                    '2e permissie': Colors.orangeAccent,
-                    'Top C4+': Colors.purpleAccent,
-                    'Specifiek': Colors.pinkAccent,
-                  },
-                )
-              : Container(),
-          obj.year != null
-              ? DataTextListTile(name: "Jaar", value: obj.year!.toString())
-              : Container(),
-          obj.brand != null
-              ? DataTextListTile(name: "Merk", value: obj.brand!)
-              : Container(),
+          if (obj.kind != null)
+            DataTextListTile(name: "Categorie", value: obj.kind!),
+          if (obj.permissions.isNotEmpty)
+            ChipWidget(
+              title: "Permissies",
+              values: obj.permissions,
+              colors: const {
+                'Coachcatamaran': Colors.greenAccent,
+                'Speciaal': Colors.redAccent,
+                '1e permissie': Colors.blueAccent,
+                '2e permissie': Colors.orangeAccent,
+                'Top C4+': Colors.purpleAccent,
+                'Specifiek': Colors.pinkAccent,
+              },
+            ),
+          if (obj.year != null)
+            DataTextListTile(name: "Jaar", value: obj.year!.toString()),
+          if (obj.brand != null)
+            DataTextListTile(name: "Merk", value: obj.brand!),
         ]),
       ),
     ].toColumn();
