@@ -16,6 +16,8 @@ class ContactPage extends StatelessWidget {
   final double cardElevation = 2;
   final double cardRadius = 16;
 
+  final double expansionTileFontSize = 20;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,9 @@ class ContactPage extends StatelessWidget {
         // TODO: add linkje naar interne Njord Insta
         ExpansionTile(
           initiallyExpanded: true,
-          title: const Text("Bestuur"),
+          title: const Text("Bestuur")
+              .fontSize(expansionTileFontSize)
+              .fontWeight(FontWeight.w500),
           children: [
             // create a DataTable, with two columns: function and email
             DataTable(
@@ -57,34 +61,38 @@ class ContactPage extends StatelessWidget {
             ),
           ],
         ),
-        ExpansionTile(title: const Text("Commissies"), children: [
-          // create a DataTable, with two columns: function and email
-          DataTable(
-            columns: const [
-              DataColumn(label: Text("Commissie")),
-              DataColumn(label: Text("Email")),
-            ],
-            rows: [
-              ...commissieEmailMap.entries.map(
-                (entry) => DataRow(cells: [
-                  DataCell(Text(entry.key)),
-                  DataCell(
-                    // create a link to the email
-                    InkWell(
-                      onTap: () => launchUrl(
-                        Uri.parse('mailto:${entry.value}'),
+        ExpansionTile(
+          title: const Text("Commissies")
+              .fontSize(expansionTileFontSize)
+              .fontWeight(FontWeight.w500),
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text("Commissie")),
+                DataColumn(label: Text("Email")),
+              ],
+              rows: [
+                ...commissieEmailMap.entries.map(
+                  (entry) => DataRow(cells: [
+                    DataCell(Text(entry.key)),
+                    DataCell(
+                      // create a link to the email
+                      InkWell(
+                        onTap: () => launchUrl(
+                          Uri.parse('mailto:${entry.value}'),
+                        ),
+                        child: const FaIcon(
+                          FontAwesomeIcons.envelope,
+                          color: Colors.blue,
+                        ).padding(all: emailIconPadding),
                       ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.envelope,
-                        color: Colors.blue,
-                      ).padding(all: emailIconPadding),
                     ),
-                  ),
-                ]),
-              ),
-            ],
-          ),
-        ]),
+                  ]),
+                ),
+              ],
+            ),
+          ],
+        ),
         [
           const Text("Volg je ons al op Instagram?")
               .fontSize(fontSizeSingleText)
