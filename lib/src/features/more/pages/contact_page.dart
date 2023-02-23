@@ -11,6 +11,7 @@ class ContactPage extends StatelessWidget {
   final double padding = 16;
   final double fontSizeSingleText = 16;
   final double horizontalPadding = 8;
+  final double emailIconPadding = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +38,14 @@ class ContactPage extends StatelessWidget {
                   (entry) => DataRow(cells: [
                     DataCell(Text(entry.key)),
                     DataCell(
-                      // create a link to the email
                       InkWell(
                         onTap: () => launchUrl(
                           Uri.parse('mailto:${entry.value}'),
                         ),
-                        child: Text(
-                          entry.value,
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: const FaIcon(
+                          FontAwesomeIcons.envelope,
+                          color: Colors.blue,
+                        ).padding(all: emailIconPadding),
                       ),
                     ),
                   ]),
@@ -74,13 +71,10 @@ class ContactPage extends StatelessWidget {
                       onTap: () => launchUrl(
                         Uri.parse('mailto:${entry.value}'),
                       ),
-                      child: Text(
-                        entry.value,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: const FaIcon(
+                        FontAwesomeIcons.envelope,
+                        color: Colors.blue,
+                      ).padding(all: emailIconPadding),
                     ),
                   ),
                 ]),
