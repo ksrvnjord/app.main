@@ -72,7 +72,7 @@ class AlmanakProfile {
     );
   }
 
-  // Add a toJson method that returns a Map<String, dynamic>
+  // This method contains the fields that are sent to Firestore
   Map<String, dynamic> toJson() {
     return {
       'study': study,
@@ -83,7 +83,6 @@ class AlmanakProfile {
       'commissies': commissies,
       'huis': huis,
       'substructuren': substructuren,
-      'bestuurs_functie': bestuursFunctie,
     };
   }
 }
