@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
@@ -21,22 +22,10 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
-import 'package:page_transition/page_transition.dart' as pt;
 import 'package:routemaster/routemaster.dart';
 
 // TODO: Use different file for this class?
 // ignore: prefer-match-file-name
-class RoutedPageTransition<T> extends Page {
-  final Widget child;
-  final pt.PageTransitionType transition;
-
-  const RoutedPageTransition({required this.child, required this.transition});
-
-  @override
-  Route createRoute(BuildContext context) {
-    return pt.PageTransition(child: child, type: transition, settings: this);
-  }
-}
 
 final routeMap = RouteMap(
   onUnknownRoute: (route) => const Redirect('/'),
@@ -52,75 +41,64 @@ final routeMap = RouteMap(
           ],
           backBehavior: TabBackBehavior.none,
         ),
-    '/home': (_) => const MaterialPage(
+    '/home': (_) => const CupertinoPage(
           name: 'Home',
           child: HomePage(),
         ),
-    '/home/announcements/:announcementId': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/home/announcements/:announcementId': (_) => const CupertinoPage(
           child: AnnouncementPage(),
+          name: "Aankondiging",
         ),
-    '/calendar': (info) => const MaterialPage(
+    '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
           child: EventsPage(),
         ),
-    '/almanak': (_) => const MaterialPage(
+    '/almanak': (_) => const CupertinoPage(
           name: 'Almanak',
           child: AlmanakPage(),
         ),
-    '/almanak/edit': (_) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/almanak/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
         ),
-    '/almanak/edit/visibility': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/almanak/edit/visibility': (info) => const CupertinoPage(
           child: MePrivacyPage(),
         ),
-    '/almanak/:profileId': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/almanak/:profileId': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
-    '/settings': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/settings': (info) => const CupertinoPage(
           child: MePage(),
         ),
-    '/training': (_) => const MaterialPage(
+    '/training': (_) => const CupertinoPage(
           name: 'Training',
           child: TrainingPage(),
         ),
-    '/training/all': (_) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/training/all': (_) => const CupertinoPage(
           child: AllTrainingPage(),
         ),
-    '/training/all/plan': (route) => RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/training/all/plan': (route) => CupertinoPage(
           child: PlanTrainingPage(queryParams: route.queryParameters),
         ),
-    '/training/all/:id': (info) => RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/training/all/:id': (info) => CupertinoPage(
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/reservationObject/:id': (route) => RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/training/all/reservationObject/:id': (route) => CupertinoPage(
           child: ShowReservationObjectPage(
             documentId: route.pathParameters['id']!,
             name: route.queryParameters['name']!,
           ),
         ),
-    '/more': (route) => const MaterialPage(
+    '/more': (route) => const CupertinoPage(
           name: 'More',
           child: MorePage(),
         ),
-    '/more/events': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/more/events': (info) => const CupertinoPage(
           child: EventsPage(),
         ),
-    '/more/beleid': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/more/beleid': (info) => const CupertinoPage(
           child: BeleidPage(),
         ),
-    '/contact': (route) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.rightToLeft,
+    '/contact': (route) => const CupertinoPage(
           child: ContactPage(),
         ),
   },
@@ -133,21 +111,17 @@ final authenticationRoutes = RouteMap(
           name: 'Login',
           child: LoginPage(),
         ),
-    '/forgot': (info) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.fade,
+    '/forgot': (info) => const CupertinoPage(
           child: ForgotPasswordPage(),
         ),
-    '/forgot/webview': (info) => const RoutedPageTransition(
+    '/forgot/webview': (info) => const CupertinoPage(
           child: ForgotPasswordWebPage(),
-          transition: pt.PageTransitionType.rightToLeft,
         ),
-    '/register': (_) => const RoutedPageTransition(
-          transition: pt.PageTransitionType.fade,
+    '/register': (_) => const CupertinoPage(
           child: RegisterPage(),
         ),
-    '/register/webview': (info) => const RoutedPageTransition(
+    '/register/webview': (info) => const CupertinoPage(
           child: RegisterWebPage(),
-          transition: pt.PageTransitionType.rightToLeft,
         ),
   },
 );
