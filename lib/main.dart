@@ -1,5 +1,7 @@
+import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -33,7 +35,10 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
 
-  runApp(const Application());
+  runApp(const BetterFeedback(
+    localeOverride: Locale('nl', 'NL'),
+    child: Application(),
+  ));
 }
 
 Future<void> main() async {
@@ -85,6 +90,14 @@ class Application extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('nl', 'NL'),
+          ],
           debugShowCheckedModeBanner: false,
           routeInformationParser: const RoutemasterParser(),
           routerDelegate: RoutemasterDelegate(

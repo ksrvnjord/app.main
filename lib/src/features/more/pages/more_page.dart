@@ -1,7 +1,10 @@
+import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -10,6 +13,8 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String username = GetIt.I<CurrentUser>().user!.username;
+
     final Map<String, String> optionMap = {
       "Mijn Njord-account": "/settings",
       "Agenda": "events",
@@ -36,6 +41,15 @@ class MorePage extends StatelessWidget {
               const Divider(),
             ].toColumn(),
           ),
+          ListTile(
+            title: const Text("Feedback geven"),
+            trailing:
+                const Icon(Icons.feedback_outlined, color: Colors.lightBlue),
+            onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
+              name: username,
+            ),
+          ),
+          const Divider(),
           const MoreLinkTile(
             label: "Webshop",
             url: "https://k-s-r-v-njord.myshopify.com/",
