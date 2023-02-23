@@ -12,6 +12,9 @@ class ContactPage extends StatelessWidget {
   final double fontSizeSingleText = 16;
   final double horizontalPadding = 8;
   final double emailIconPadding = 8;
+  final double widgetPadding = 8;
+  final double cardElevation = 2;
+  final double cardRadius = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +85,37 @@ class ContactPage extends StatelessWidget {
             ],
           ),
         ]),
-        // Add instagram icon linking to our insta
-        const InstagramRowWidget(
-          url: "https://www.instagram.com/ksrvnjord/",
-          handle: "@ksrvnjord",
-        ).padding(all: padding),
-        const InstagramRowWidget(
-          url: "https://www.instagram.com/ksrvnjord_intern/",
-          handle: "@ksrvnjord_intern",
-        ).padding(all: padding),
-        Row(children: [
+        [
+          const Text("Volg je ons al op Instagram?")
+              .fontSize(fontSizeSingleText)
+              .fontWeight(FontWeight.bold)
+              .textColor(Colors.white)
+              .padding(all: widgetPadding),
+          [
+            [
+              const InstagramRowWidget(
+                url: "https://www.instagram.com/ksrvnjord/",
+                handle: "@ksrvnjord",
+              ).padding(all: padding),
+            ].toColumn(),
+            [
+              const InstagramRowWidget(
+                url: "https://www.instagram.com/ksrvnjord_intern/",
+                handle: "@ksrvnjord_intern",
+              ).padding(all: padding),
+            ].toColumn(),
+          ].toRow(),
+        ]
+            .toColumn()
+            .card(
+              color: Colors.lightBlue,
+              elevation: cardElevation,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(cardRadius),
+              ),
+            )
+            .padding(all: widgetPadding),
+        [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
             onTap: () => launchUrl(
@@ -106,7 +130,7 @@ class ContactPage extends StatelessWidget {
               ),
             ),
           ).padding(horizontal: horizontalPadding),
-        ]).padding(all: padding),
+        ].toRow().padding(vertical: widgetPadding, horizontal: padding),
       ]),
     );
   }
@@ -126,7 +150,7 @@ class InstagramRowWidget extends StatelessWidget {
     const double horizontalPadding = 8;
 
     return Row(children: [
-      const Icon(FontAwesomeIcons.instagram, color: Colors.lightBlue),
+      const Icon(FontAwesomeIcons.instagram, color: Colors.white),
       InkWell(
         onTap: () => launchUrl(
           Uri.parse(url),
@@ -135,7 +159,7 @@ class InstagramRowWidget extends StatelessWidget {
           handle,
           style: const TextStyle(
             fontSize: 16,
-            color: Colors.lightBlue,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
