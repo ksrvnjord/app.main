@@ -89,6 +89,15 @@ class Application extends StatelessWidget {
             textTheme: GoogleFonts.ibmPlexSansTextTheme(
               Theme.of(context).textTheme,
             ),
+            pageTransitionsTheme: const PageTransitionsTheme(builders: {
+              // this is to use swipe transitions on iOS
+              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+            }),
           ),
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
