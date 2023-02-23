@@ -57,7 +57,7 @@ class ShowReservationObjectPage extends StatelessWidget {
       AvailabilityHeader(isAvailable: obj.available),
       Expanded(
         child: ListView(children: [
-          obj.comment != null
+          obj.comment != null && obj.comment!.isNotEmpty
               ? Card(
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
