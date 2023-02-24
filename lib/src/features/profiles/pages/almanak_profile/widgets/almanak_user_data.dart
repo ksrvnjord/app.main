@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/w
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AlmanakUserData extends StatelessWidget {
   const AlmanakUserData({
@@ -25,6 +26,8 @@ class AlmanakUserData extends StatelessWidget {
 
     const double formFieldPadding = 8;
     const double bestuurFontSize = 16;
+    const double actionIconSize = 20;
+    const double actionButtonSize = 56;
 
     return <Widget>[
       if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
@@ -44,9 +47,29 @@ class AlmanakUserData extends StatelessWidget {
                 .padding(all: formFieldPadding),
           ),
         ),
+      // Elevatedbutton with option to call the user
       if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
-        CopyableFormField(label: "Telefoonnummer", value: u.phonePrimary!)
-            .padding(all: formFieldPadding),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+            ),
+          ),
+          onPressed: () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
+          child: SizedBox(
+            width: actionButtonSize,
+            child: Row(
+              children: [
+                const Text("Bel"),
+                // phone icon
+                const Icon(Icons.phone)
+                    .iconSize(actionIconSize)
+                    .padding(left: formFieldPadding),
+              ],
+            ),
+          ),
+        ),
       if (u.email != null && u.email!.isNotEmpty)
         CopyableFormField(label: "Email", value: u.email!)
             .padding(all: formFieldPadding),
