@@ -56,6 +56,12 @@ class MorePage extends StatelessWidget {
           ),
           const Divider(),
           const MoreLinkTile(
+            label: 'Declareren',
+            url:
+                'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
+          ),
+          const Divider(),
+          const MoreLinkTile(
             label: 'Handige linkjes - Linktree',
             url: 'https://linktr.ee/ksrvnjord_intern',
           ),
