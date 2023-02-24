@@ -53,13 +53,18 @@
         <meta-data android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    
+
     <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
         <!-- If your app checks for mail support -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="mailto" />
+        </intent>
+        <!--Add intent for call with the tel scheme-->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
         </intent>
     </queries>
 </manifest>
