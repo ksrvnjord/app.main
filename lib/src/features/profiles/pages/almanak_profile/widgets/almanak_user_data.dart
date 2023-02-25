@@ -60,9 +60,10 @@ class AlmanakUserData extends StatelessWidget {
             child: SizedBox(
               width: actionButtonSize,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   // mail icon
+                  Text("Mail"),
                   Icon(
                     Icons.mail_outline_outlined,
                     color: Colors.white,
@@ -105,9 +106,14 @@ class AlmanakUserData extends StatelessWidget {
             child: SizedBox(
               width: actionButtonSize,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
+                  // phone icon
                   Text("Telefoon"),
+                  Icon(
+                    Icons.phone_iphone,
+                    color: Colors.white,
+                  ),
                 ],
               ),
             ),
