@@ -1,4 +1,6 @@
+import 'package:action_sheet/action_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/copyable_form_field.dart';
@@ -26,8 +28,7 @@ class AlmanakUserData extends StatelessWidget {
 
     const double formFieldPadding = 8;
     const double bestuurFontSize = 16;
-    const double actionIconSize = 20;
-    const double actionButtonSize = 56;
+    const double actionButtonSize = 96;
 
     return <Widget>[
       if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
@@ -47,32 +48,72 @@ class AlmanakUserData extends StatelessWidget {
                 .padding(all: formFieldPadding),
           ),
         ),
-      // Elevatedbutton with option to call the user
-      if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(40)),
+      [
+        if (u.email != null && u.email!.isNotEmpty)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlue,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
             ),
-          ),
-          onPressed: () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
-          child: SizedBox(
-            width: actionButtonSize,
-            child: Row(
-              children: [
+            onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
+            child: SizedBox(
+              width: actionButtonSize,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // mail icon
+                  Icon(
+                    Icons.mail_outline_outlined,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ).padding(all: formFieldPadding),
+        if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+            ),
+            onPressed: () => showBottomActionSheet(
+              context: context,
+              widgetPositioning: WidgetPositioning.mainAxis,
+              children: const [
+                Icon(
+                  Icons.phone,
+                  color: Colors.black,
+                ),
+                FaIcon(
+                  FontAwesomeIcons.whatsapp,
+                  color: Colors.black,
+                ),
+              ],
+              descriptions: [
                 const Text("Bel"),
-                // phone icon
-                const Icon(Icons.phone)
-                    .iconSize(actionIconSize)
-                    .padding(left: formFieldPadding),
+                const Text("Whatsapp"),
+              ],
+              actions: [
+                () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
+                () =>
+                    launchUrl(Uri.parse("https://wa.me/0031${u.phonePrimary}")),
               ],
             ),
-          ),
-        ),
-      if (u.email != null && u.email!.isNotEmpty)
-        CopyableFormField(label: "Email", value: u.email!)
-            .padding(all: formFieldPadding),
+            child: SizedBox(
+              width: actionButtonSize,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Telefoon"),
+                ],
+              ),
+            ),
+          ).padding(all: formFieldPadding),
+      ].toRow(mainAxisAlignment: MainAxisAlignment.center),
       UserAddressWidget(address: u.address!),
       if (u.ploeg != null) DataTextListTile(name: "Ploeg", value: u.ploeg!),
       if (u.board != null)

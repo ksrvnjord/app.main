@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.12"
+  action_sheet:
+    dependency: "direct main"
+    description:
+      name: action_sheet
+      sha256: aba8dfa9b25f4663fcbc147c08ad4d3a65f0b9f42a56426177d31d11c12159e8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   analyzer:
     dependency: transitive
     description:
