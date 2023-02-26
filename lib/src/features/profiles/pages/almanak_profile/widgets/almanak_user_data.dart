@@ -99,8 +99,9 @@ class AlmanakUserData extends StatelessWidget {
               ],
               actions: [
                 () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
-                () =>
-                    launchUrl(Uri.parse("https://wa.me/0031${u.phonePrimary}")),
+                () => launchUrl(Uri.parse(
+                      "https://wa.me/31${u.phonePrimary?.substring(1)}", // 0612345678 -> 31612345678
+                    )),
               ],
             ),
             child: SizedBox(
