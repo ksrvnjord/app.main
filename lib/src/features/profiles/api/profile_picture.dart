@@ -13,40 +13,11 @@ Reference getProfilePictureRef(String userId) {
 }
 
 Future<Uint8List?> getProfilePicture(String userId) async {
-  // Define the variable before populating it
-  Uint8List? picture;
-
-  // Get the profile picture using the reference
-  try {
-    picture = await getProfilePictureRef(userId).getData();
-  } on FirebaseException catch (e) {
-    // Check if the issue is a 404, if not, do throw.
-    if (e.code != 'object-not-found') {
-      rethrow;
-    }
-  }
-
-  return picture;
+  return await getProfilePictureRef(userId).getData();
 }
 
 Future<String?> getProfilePictureUrl(String userId) async {
-  // Define the variable before populating it
-  String? picture;
-
-  // Get the profile picture using the reference
-  try {
-    picture = await getProfilePictureRef(userId).getDownloadURL();
-  } on FirebaseException catch (e) {
-    // Check if the issue is a 404, if not, do throw.
-    if (e.code == 'object-not-found') {
-      picture = null;
-    }
-
-    // Likely a legit issue, so rethrow to raise the exception to Sentry
-    rethrow;
-  }
-
-  return picture;
+  return await getProfilePictureRef(userId).getDownloadURL();
 }
 
 // Make function to getMyProfilePicture
