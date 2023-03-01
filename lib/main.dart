@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
@@ -42,6 +43,9 @@ Future<void> appRunner() async {
 }
 
 Future<void> main() async {
+  // Initialize the Hive Cache (Generic K/V cache, relevant for image caching)
+  await Hive.initFlutter();
+
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {
     // Run it inside of SentryFlutter, but log / except to the debug-app
