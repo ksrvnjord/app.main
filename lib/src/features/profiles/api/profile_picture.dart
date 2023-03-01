@@ -39,7 +39,7 @@ Future<String?> getProfilePictureUrl(String userId) async {
   } on FirebaseException catch (e) {
     // Check if the issue is a 404, if not, do throw.
     if (e.code == 'object-not-found') {
-      return null;
+      picture = null;
     }
 
     // Likely a legit issue, so rethrow to raise the exception to Sentry
