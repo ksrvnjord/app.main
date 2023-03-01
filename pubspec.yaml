@@ -56,6 +56,7 @@ dependencies:
   action_sheet: ^1.0.4
   flutter_localizations:
     sdk: flutter
+  hive: ^2.2.3
 
 
 dev_dependencies:
