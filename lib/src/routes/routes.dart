@@ -69,8 +69,10 @@ final routeMap = RouteMap(
     '/almanak/edit/commissies/select': (info) => const CupertinoPage(
           child: SelectCommissiePage(),
         ),
-    '/almanak/edit/commissies/select/fill-info': (info) => const CupertinoPage(
-          child: FillCommissieInfoPage(),
+    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          child: FillCommissieInfoPage(
+            commissie: info.queryParameters['commissie']!,
+          ),
         ),
     '/almanak/edit/visibility': (info) => const CupertinoPage(
           child: MePrivacyPage(),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FillCommissieInfoPage extends StatefulWidget {
-  const FillCommissieInfoPage({Key? key}) : super(key: key);
+  const FillCommissieInfoPage({Key? key, required this.commissie})
+      : super(key: key);
+
+  final String commissie;
 
   @override
   FillCommissieInfoPageState createState() => FillCommissieInfoPageState();
@@ -35,6 +39,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         key: _formKey,
         child: ListView(
           children: [
+            DataTextListTile(name: "Commissie", value: widget.commissie),
             // create a year picker field that lets user select a year
             DropdownButtonFormField(
               // make this field required

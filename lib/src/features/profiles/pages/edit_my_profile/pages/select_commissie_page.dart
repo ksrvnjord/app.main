@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class SelectCommissiePage extends StatelessWidget {
   const SelectCommissiePage({Key? key}) : super(key: key);
@@ -21,7 +20,10 @@ class SelectCommissiePage extends StatelessWidget {
           ListTile(
             title: const Text('App Commissie'),
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => Routemaster.of(context).push('fill-info'),
+            onTap: () =>
+                Routemaster.of(context).push('fill-info', queryParameters: {
+              'commissie': 'App Commissie',
+            }),
           ),
           const ListTile(
             title: Text('App Commissie'),
