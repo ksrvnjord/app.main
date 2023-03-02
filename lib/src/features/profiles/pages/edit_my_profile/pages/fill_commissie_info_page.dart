@@ -20,6 +20,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         List.generate(DateTime.now().year - 1726, (index) => index + 1726)
             .toList();
 
+    const double saveButtonVerticalPadding = 8;
+    const double formPadding = 8;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vul commissie info in'),
@@ -32,10 +35,13 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         key: _formKey,
         child: ListView(
           children: [
-            const Text('Wanneer ben je begonnen?').fontSize(16),
             // create a year picker field that lets user select a year
             DropdownButtonFormField(
               // make this field required
+              decoration: const InputDecoration(
+                labelText: "Wanneer ben je begonnen?\*",
+                hintText: 'Selecteer je beginjaar',
+              ),
               validator: (value) =>
                   value == null ? 'Dit veld is verplicht' : null,
               items: years
@@ -46,8 +52,12 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                   .toList(),
               onChanged: (_) => {},
             ),
-            const Text('Wanneer ben je gestopt?'),
             DropdownButtonFormField(
+              decoration: const InputDecoration(
+                labelText: "Wanneer ben je gestopt?",
+                hintText: 'Selecteer je eindjaar',
+                helperText: "Laat leeg als je nog steeds in de commissie zit",
+              ),
               items: years
                   .map((e) => DropdownMenuItem(
                         value: e,
@@ -56,19 +66,26 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                   .toList(),
               onChanged: (_) => {},
             ),
-            const Text('Had je een bepaalde functie binnen de commissie?'),
             TextFormField(
               decoration: const InputDecoration(
+                labelText: 'Vervulde je een functie binnen de commissie?',
                 hintText: 'Praeses, Abactis, etc.',
+                helperText: "Kan je ook leeg laten",
               ),
             ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+              ),
               onPressed: () => submitForm(),
               child: const Text('Opslaan'),
-            ),
+            ).padding(vertical: saveButtonVerticalPadding),
           ],
         ),
-      ).padding(all: 8),
+      ).padding(all: formPadding),
     );
   }
 
