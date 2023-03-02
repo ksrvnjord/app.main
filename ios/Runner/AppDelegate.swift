@@ -19,15 +19,17 @@ class FireBaseAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?  ) -> Bool {
     
-    #if DEBUG
-    AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
+    #if DEBUG // this should configure FireBase AppCheck
+    let providerFactory = AppCheckDebugProviderFactory()
+    AppCheck.setAppCheckProviderFactory(providerFactory)
     #else
-    AppCheck.setAppCheckProviderFactory(FireBaseAppCheckProviderFactory())
+    let providerFactory = FireBaseAppCheckProviderFactory()
+    AppCheck.setAppCheckProviderFactory(providerFactory)
     #endif
 
     FirebaseApp.configure()
     Messaging.messaging().delegate = self
-    GeneratedPluginRegistrant.register(with: self)
+    
     if #available(iOS 10.0, *) {
         // For iOS 10 display notification (sent via APNS)
         UNUserNotificationCenter.current().delegate = self
@@ -45,6 +47,8 @@ class FireBaseAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
 
 
     application.registerForRemoteNotifications()
+
+    GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
