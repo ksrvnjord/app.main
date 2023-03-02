@@ -3,11 +3,28 @@ import Flutter
 import Firebase // Add this import
 import FirebaseMessaging // Add this import
 
+class FireBaseAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
+  func createProvider(with app: FirebaseApp) -> AppCheckProvider? {
+    if #available(iOS 14.0, *) {
+      return AppAttestProvider(app: app)
+    } else {
+      return DeviceCheckProvider(app: app)
+    }
+  }
+}
+
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate  {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?  ) -> Bool {
+    
+    #if DEBUG
+    AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
+    #else
+    AppCheck.setAppCheckProviderFactory(FireBaseAppCheckProviderFactory())
+    #endif
+
     FirebaseApp.configure()
     Messaging.messaging().delegate = self
     GeneratedPluginRegistrant.register(with: self)
@@ -24,10 +41,7 @@ import FirebaseMessaging // Add this import
         application.registerUserNotificationSettings(settings)
     }
 
-    #if DEBUG // for AppCheck
-    let providerFactory = AppCheckDebugProviderFactory()
-    AppCheck.setAppCheckProviderFactory(providerFactory)
-    #endif
+
 
 
     application.registerForRemoteNotifications()
