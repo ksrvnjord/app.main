@@ -23,6 +23,13 @@ import FirebaseMessaging // Add this import
         UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
         application.registerUserNotificationSettings(settings)
     }
+
+    #if DEBUG // for AppCheck
+    let providerFactory = AppCheckDebugProviderFactory()
+    AppCheck.setAppCheckProviderFactory(providerFactory)
+    #endif
+
+
     application.registerForRemoteNotifications()
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
