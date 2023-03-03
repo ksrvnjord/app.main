@@ -68,23 +68,28 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
     docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
 
     return Column(
-      children: docs
-          .map((doc) => ListTile(
-                leading: [
-                  Text(
-                    "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
-                  ),
-                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                title: Text(doc.data().name),
-                subtitle: doc.data().function != null
-                    ? Text(doc.data().function!)
-                    : null,
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => doc.reference.delete(),
-                ),
-              ))
-          .toList(),
+      children: docs.isNotEmpty
+          ? docs
+              .map((doc) => ListTile(
+                    leading: [
+                      Text(
+                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                      ),
+                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                    title: Text(doc.data().name),
+                    subtitle: doc.data().function != null
+                        ? Text(doc.data().function!)
+                        : null,
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => doc.reference.delete(),
+                    ),
+                  ))
+              .toList()
+          : [
+              const Text('Geen commissies gevonden, voeg een commissie toe.')
+                  .padding(all: fieldPadding),
+            ],
     );
   }
 }
