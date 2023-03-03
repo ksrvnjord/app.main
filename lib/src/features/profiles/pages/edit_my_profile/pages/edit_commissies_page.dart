@@ -28,10 +28,15 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
   static const double fieldPadding = 8;
   static const double titleFontSize = 20;
 
-  Future<List<QueryDocumentSnapshot<CommissieEntry>>> getCommissies() async {
+  Future<List<QueryDocumentSnapshot<CommissieEntry>>>
+      getSortedCommissies() async {
     QuerySnapshot<CommissieEntry> snapshot = await userCommissiesRef.get();
+    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
+    docs.sort((a, b) =>
+        -1 * // reverse order
+        a.data().startYear.compareTo(b.data().startYear)); // sort on startYear
 
-    return snapshot.docs;
+    return docs;
   }
 
   @override
@@ -50,11 +55,13 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
             .fontSize(titleFontSize)
             .padding(all: fieldPadding),
         FutureWrapper(
-          future: getCommissies(),
+          future: getSortedCommissies(),
           success: (commissies) => commissies
               .map((doc) => ListTile(
                     leading: [
-                      Text("${doc.data().startYear}-${doc.data().endYear}"),
+                      Text(
+                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                      ),
                     ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
                     title: Text(doc.data().name),
                     subtitle: doc.data().function != null
