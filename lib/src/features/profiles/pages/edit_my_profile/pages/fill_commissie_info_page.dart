@@ -44,6 +44,8 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
             DropdownButtonFormField(
               // make this field required
               decoration: const InputDecoration(
+                // The asterisk is a hint to the user that this field is required
+                // ignore: unnecessary_string_escapes
                 labelText: "Wanneer ben je begonnen?\*",
                 hintText: 'Selecteer je beginjaar',
               ),

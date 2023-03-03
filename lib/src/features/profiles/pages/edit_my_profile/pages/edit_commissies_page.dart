@@ -32,25 +32,25 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
               .padding(all: fieldPadding),
           // TODO: ophalen van commissies subcollection in firestore
           ListTile(
-            leading: [Text("2022-2023")]
+            leading: const [Text("2022-2023")]
                 .toColumn(mainAxisAlignment: MainAxisAlignment.center),
-            title: Text('App Commissie'),
-            subtitle: Text("Ab-actis"),
-            trailing: Icon(Icons.delete),
+            title: const Text('App Commissie'),
+            subtitle: const Text("Ab-actis"),
+            trailing: const Icon(Icons.delete),
           ),
           // another list tile with the same structure
           ListTile(
-            leading: [Text("2022-2023")]
+            leading: [const Text("2022-2023")]
                 .toColumn(mainAxisAlignment: MainAxisAlignment.center),
-            title: Text('App Commissie'),
-            subtitle: Text("Ab-actis"),
-            trailing: Icon(Icons.delete),
+            title: const Text('App Commissie'),
+            subtitle: const Text("Ab-actis"),
+            trailing: const Icon(Icons.delete),
           ),
           ListTile(
-            leading: [Text("2022-2023")]
+            leading: const [Text("2022-2023")]
                 .toColumn(mainAxisAlignment: MainAxisAlignment.center),
-            title: Text('App Commissie'),
-            trailing: Icon(Icons.delete),
+            title: const Text('App Commissie'),
+            trailing: const Icon(Icons.delete),
           ),
         ],
       ),
