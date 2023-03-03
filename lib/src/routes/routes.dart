@@ -6,6 +6,10 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
@@ -88,6 +92,49 @@ final routeMap = RouteMap(
             name: route.queryParameters['name']!,
           ),
         ),
+    '/training/damages': (route) =>
+        const CupertinoPage(child: DamagesListPage()),
+    '/training/damages/:id': (route) => CupertinoPage(
+          child: DamagesShowPage(
+            id: route.pathParameters['id']!,
+          ),
+        ),
+    '/training/damages/:id/edit': (route) => CupertinoPage(
+          child: DamagesEditPage(
+            id: route.pathParameters['id']!,
+          ),
+        ),
+    '/training/damages/create': (route) =>
+        const CupertinoPage(child: DamagesCreatePage()),
+    '/training/all/reservationObject/:reservationObjectId/damages': (route) =>
+        CupertinoPage(
+          child: DamagesListPage(
+            reservationObjectId: route.pathParameters['reservationObjectId']!,
+          ),
+        ),
+    '/training/all/reservationObject/:reservationObjectId/damages/:id':
+        (route) => CupertinoPage(
+              child: DamagesShowPage(
+                id: route.pathParameters['id']!,
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
+    '/training/all/reservationObject/:reservationObjectId/damages/:id/edit':
+        (route) => CupertinoPage(
+              child: DamagesEditPage(
+                id: route.pathParameters['id']!,
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
+    '/training/all/reservationObject/:reservationObjectId/damages/create':
+        (route) => CupertinoPage(
+              child: DamagesCreatePage(
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
     '/more': (route) => const CupertinoPage(
           name: 'More',
           child: MorePage(),
