@@ -17,6 +17,7 @@ class SelectCommissiePage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // TODO: use commissies from list
           ListTile(
             title: const Text('App Commissie'),
             trailing: const Icon(Icons.arrow_forward_ios),

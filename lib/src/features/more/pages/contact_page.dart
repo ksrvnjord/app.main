@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ksrvnjord_main_app/src/features/more/data/bestuur.dart';
-import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/bestuur.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
