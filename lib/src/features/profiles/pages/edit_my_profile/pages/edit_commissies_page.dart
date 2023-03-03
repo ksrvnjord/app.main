@@ -67,7 +67,10 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
                     subtitle: doc.data().function != null
                         ? Text(doc.data().function!)
                         : null,
-                    trailing: const Icon(Icons.delete),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => doc.reference.delete(),
+                    ),
                   ))
               .toList()
               .toColumn(),
