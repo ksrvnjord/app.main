@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
 import 'package:routemaster/routemaster.dart';
 
 class SelectCommissiePage extends StatelessWidget {
@@ -16,25 +17,18 @@ class SelectCommissiePage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        children: <Widget>[
-          // TODO: use commissies from list
-          ListTile(
-            title: const Text('App Commissie'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () =>
-                Routemaster.of(context).push('fill-info', queryParameters: {
-              'commissie': 'App Commissie',
-            }),
-          ),
-          const ListTile(
-            title: Text('App Commissie'),
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          const ListTile(
-            title: Text('App Commissie'),
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-        ],
+        children: commissieEmailMap.keys
+            .map(
+              (commissie) => ListTile(
+                title: Text(commissie),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () => Routemaster.of(context).push(
+                  'fill-info',
+                  queryParameters: {'commissie': commissie},
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }
