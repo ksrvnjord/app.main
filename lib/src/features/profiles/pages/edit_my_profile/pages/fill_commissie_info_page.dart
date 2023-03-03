@@ -19,10 +19,12 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // generate a list of years from 1726 to now
-    final List<int> years =
-        List.generate(DateTime.now().year - 1726, (index) => index + 1726)
-            .toList();
+    const int startYear = 1874;
+    final List<int> years = List.generate(
+      // create a list from current year to startYear
+      DateTime.now().year - startYear + 1,
+      (index) => DateTime.now().year - index,
+    ).toList();
 
     const double saveButtonVerticalPadding = 8;
     const double formPadding = 8;
