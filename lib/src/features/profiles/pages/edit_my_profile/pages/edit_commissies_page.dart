@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -28,15 +28,8 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
   static const double fieldPadding = 8;
   static const double titleFontSize = 20;
 
-  Future<List<QueryDocumentSnapshot<CommissieEntry>>>
-      getSortedCommissies() async {
-    QuerySnapshot<CommissieEntry> snapshot = await userCommissiesRef.get();
-    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
-    docs.sort((a, b) =>
-        -1 * // reverse order
-        a.data().startYear.compareTo(b.data().startYear)); // sort on startYear
-
-    return docs;
+  Stream<QuerySnapshot<CommissieEntry>> getCommissies() {
+    return userCommissiesRef.snapshots();
   }
 
   @override
@@ -54,26 +47,10 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
             .textColor(Colors.blueGrey)
             .fontSize(titleFontSize)
             .padding(all: fieldPadding),
-        FutureWrapper(
-          future: getSortedCommissies(),
-          success: (commissies) => commissies
-              .map((doc) => ListTile(
-                    leading: [
-                      Text(
-                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
-                      ),
-                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                    title: Text(doc.data().name),
-                    subtitle: doc.data().function != null
-                        ? Text(doc.data().function!)
-                        : null,
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => doc.reference.delete(),
-                    ),
-                  ))
-              .toList()
-              .toColumn(),
+        StreamWrapper(
+          // use stream to show updates in real time
+          stream: getCommissies(),
+          success: (commissies) => buildCommissieList(commissies),
         ),
       ]),
       floatingActionButton: // button with a plus icon and the text "Commissie"
@@ -83,6 +60,31 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
         icon: const Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
       ),
+    );
+  }
+
+  Column buildCommissieList(QuerySnapshot<CommissieEntry> snapshot) {
+    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
+    docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
+
+    return Column(
+      children: docs
+          .map((doc) => ListTile(
+                leading: [
+                  Text(
+                    "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                  ),
+                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                title: Text(doc.data().name),
+                subtitle: doc.data().function != null
+                    ? Text(doc.data().function!)
+                    : null,
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => doc.reference.delete(),
+                ),
+              ))
+          .toList(),
     );
   }
 }
