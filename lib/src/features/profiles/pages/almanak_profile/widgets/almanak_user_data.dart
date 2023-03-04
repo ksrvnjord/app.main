@@ -177,6 +177,7 @@ class CommissiesListWidget extends StatelessWidget {
     const double fieldTitlePadding = 16;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: docs.isNotEmpty
           ? [
               const Text("Commissies")
