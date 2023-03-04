@@ -176,6 +176,12 @@ class CommissiesListWidget extends StatelessWidget {
     const double fieldTitleFontSize = 16;
     const double fieldTitlePadding = 16;
 
+    Map<String, Color> functionMap = {
+      "Praeses": Colors.lightBlue[300]!,
+      "Ab-actis": Colors.red[300]!,
+      "Quaestor": Colors.lightGreen[300]!,
+    };
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: docs.isNotEmpty
@@ -204,7 +210,7 @@ class CommissiesListWidget extends StatelessWidget {
                               color: Colors.white,
                               size: 16,
                             ),
-                            backgroundColor: Colors.lightBlue,
+                            backgroundColor: Colors.blueGrey[200],
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
@@ -213,7 +219,15 @@ class CommissiesListWidget extends StatelessWidget {
                               doc.data().function!.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
-                              child: Chip(label: Text(doc.data().function!)),
+                              child: Chip(
+                                label: Text(doc.data().function!),
+                                labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                backgroundColor:
+                                    functionMap[doc.data().function!] ??
+                                        Colors.blueGrey[300],
+                              ),
                             ),
                         ].toRow(),
                       ),
