@@ -126,7 +126,7 @@ class AlmanakUserData extends StatelessWidget {
         DataTextListTile(name: "Voorkeurs boord", value: u.board!),
       if (u.commissies != null)
         ChipWidget(title: "Commissies", values: u.commissies!),
-      if (u.substructuren != null)
+      if (u.substructuren != null && u.substructuren!.isNotEmpty)
         ChipWidget(title: "Substructuren", values: u.substructuren!),
       if (u.huis != null) DataTextListTile(name: "Huis", value: u.huis!),
       if (u.dubbellid != null)
