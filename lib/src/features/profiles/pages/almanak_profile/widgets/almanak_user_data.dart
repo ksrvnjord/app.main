@@ -195,12 +195,26 @@ class CommissiesListWidget extends StatelessWidget {
                         tileColor: Colors.white,
                         title: Text(doc.data().name),
                         subtitle: <Widget>[
-                          Text(
-                            "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
-                          ).padding(right: 8),
-                          doc.data().function != null
-                              ? Text(doc.data().function!)
-                              : Container(),
+                          Chip(
+                            label: Text(
+                              "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                            ),
+                            avatar: const Icon(
+                              Icons.calendar_today,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          if (doc.data().function != null &&
+                              doc.data().function!.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Chip(label: Text(doc.data().function!)),
+                            ),
                         ].toRow(),
                       ),
                       const Divider(
