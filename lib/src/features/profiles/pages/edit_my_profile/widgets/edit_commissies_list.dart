@@ -14,7 +14,7 @@ class EditCommissiesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
-    docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
+    docs.sort((a, b) => -1 * a.data().startYear.compareTo(b.data().startYear));
 
     const double fieldPadding = 8;
 

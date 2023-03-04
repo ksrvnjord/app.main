@@ -171,7 +171,7 @@ class CommissiesListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
-    docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
+    docs.sort((a, b) => -1 * a.data().startYear.compareTo(b.data().startYear));
 
     const double fieldTitleFontSize = 16;
     const double fieldTitlePadding = 16;
