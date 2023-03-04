@@ -40,8 +40,6 @@ class AlmanakBestuurPage extends StatelessWidget {
                   title:
                       Text("${doc.data().firstName!} ${doc.data().lastName!}"),
                   subtitle: Text(doc.data().bestuursFunctie!),
-                  trailing:
-                      const Icon(Icons.chevron_right, color: Colors.lightBlue),
                 ),
               ),
             ].toColumn(),
