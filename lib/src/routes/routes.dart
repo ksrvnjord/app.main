@@ -11,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
@@ -64,6 +65,10 @@ final routeMap = RouteMap(
     '/almanak/leeden': (_) => const CupertinoPage(
           name: 'Leeden',
           child: AlmanakLeedenPage(),
+        ),
+    '/almanak/bestuur': (_) => const CupertinoPage(
+          name: 'Bestuur',
+          child: AlmanakBestuurPage(),
         ),
     '/almanak/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
