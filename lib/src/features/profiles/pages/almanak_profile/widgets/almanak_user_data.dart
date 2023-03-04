@@ -132,8 +132,6 @@ class AlmanakUserData extends StatelessWidget {
       if (u.ploeg != null) DataTextListTile(name: "Ploeg", value: u.ploeg!),
       if (u.board != null)
         DataTextListTile(name: "Voorkeurs boord", value: u.board!),
-      if (u.commissies != null)
-        ChipWidget(title: "Commissies", values: u.commissies!),
       if (u.substructuren != null && u.substructuren!.isNotEmpty)
         ChipWidget(title: "Substructuren", values: u.substructuren!),
       if (u.huis != null) DataTextListTile(name: "Huis", value: u.huis!),
@@ -151,7 +149,10 @@ class AlmanakUserData extends StatelessWidget {
         future: getCommissiesForUser<Future<QuerySnapshot<CommissieEntry>>>(
           u.lidnummer,
         ),
-        success: (snapshot) => CommissiesListWidget(snapshot: snapshot),
+        success: (snapshot) => CommissiesListWidget(
+          snapshot: snapshot,
+          legacyCommissies: u.commissies,
+        ),
       ),
     ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
   }
@@ -161,9 +162,11 @@ class CommissiesListWidget extends StatelessWidget {
   const CommissiesListWidget({
     Key? key,
     required this.snapshot,
+    required this.legacyCommissies, // TODO: remove this after 1 june 2023, this is to support old way to enter commissies
   }) : super(key: key);
 
   final QuerySnapshot<CommissieEntry> snapshot;
+  final List<String>? legacyCommissies;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +196,9 @@ class CommissiesListWidget extends StatelessWidget {
                   )),
             ]
           : [
-              Container(),
+              legacyCommissies != null && legacyCommissies!.isNotEmpty
+                  ? ChipWidget(title: "Commissies", values: legacyCommissies!)
+                  : Container(),
             ],
     );
   }
