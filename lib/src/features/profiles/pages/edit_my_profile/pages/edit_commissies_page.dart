@@ -18,10 +18,6 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
   static const double fieldPadding = 8;
   static const double titleFontSize = 20;
 
-  Stream<QuerySnapshot<CommissieEntry>> getCommissies() {
-    return userCommissiesRef.snapshots();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +35,7 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
             .padding(all: fieldPadding),
         StreamWrapper(
           // use stream to show updates in real time
-          stream: getCommissies(),
+          stream: getMyCommissies<Stream<QuerySnapshot<CommissieEntry>>>(),
           success: (commissies) => buildCommissieList(commissies),
         ),
       ]),

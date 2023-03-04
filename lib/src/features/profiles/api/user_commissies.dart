@@ -11,3 +11,18 @@ final CollectionReference<CommissieEntry> userCommissiesRef = userRef
       fromFirestore: (snapshot, _) => CommissieEntry.fromJson(snapshot.data()!),
       toFirestore: (commissie, _) => commissie.toJson(),
     );
+
+Future<void> addCommissie(CommissieEntry commissie) {
+  return userCommissiesRef.add(commissie);
+}
+
+// make templated function to getCommissies
+T getMyCommissies<T>() {
+  if (T == Stream<QuerySnapshot<CommissieEntry>>) {
+    return userCommissiesRef.snapshots() as T;
+  } else if (T == Future<QuerySnapshot<CommissieEntry>>) {
+    return userCommissiesRef.get() as T;
+  }
+
+  throw Exception("T must be either Stream or Future");
+}

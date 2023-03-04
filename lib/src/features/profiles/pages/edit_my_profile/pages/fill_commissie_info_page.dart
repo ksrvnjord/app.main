@@ -1,21 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-final peopleRef = FirebaseFirestore.instance.collection("people");
-final DocumentReference<Map<String, dynamic>> user =
-    peopleRef.doc(FirebaseAuth.instance.currentUser!.uid);
-final CollectionReference<CommissieEntry> userCommissiesRef = user
-    .collection("commissies")
-    .withConverter<CommissieEntry>(
-      fromFirestore: (snapshot, _) => CommissieEntry.fromJson(snapshot.data()!),
-      toFirestore: (commissie, _) => commissie.toJson(),
-    );
 
 class FillCommissieInfoPage extends StatefulWidget {
   const FillCommissieInfoPage({Key? key, required this.commissie})
@@ -136,7 +125,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     _formKey.currentState?.save();
 
     try {
-      await userCommissiesRef.add(_formData);
+      await addCommissie(_formData);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
