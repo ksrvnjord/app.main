@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/more/data/commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
@@ -12,6 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_pi
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
@@ -31,7 +32,8 @@ class EditAlmanakForm extends StatefulWidget {
 class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final AlmanakProfile _formData = AlmanakProfile();
+  final AlmanakProfile _formData =
+      AlmanakProfile(lidnummer: FirebaseAuth.instance.currentUser!.uid);
   File? newprofilePicture;
 
   void changeProfilePicture(File file) {
@@ -108,26 +110,12 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
                 .toList(),
             onChanged: (_) => {},
           ).padding(vertical: fieldPadding),
-          MultiSelectDialogField<String>(
-            title: const Text('Commissies'),
-            // ignore: no-equal-arguments
-            buttonText: const Text('Commissies'),
-            searchHint: "Appcommissie, etc.",
-            searchable: true,
-            separateSelectedItems: true,
-            initialValue: user.commissies ?? [],
-            onSaved: (items) => _formData.commissies = items,
-            items: commissieEmailMap.keys
-                .map(
-                  (commissie) => MultiSelectItem<String>(
-                    commissie,
-                    // ignore: no-equal-arguments
-                    commissie,
-                  ),
-                )
-                .toList(),
-            onConfirm: (_) => {},
-          ).padding(vertical: fieldPadding),
+          ListTile(
+            title: const Text('Wijzig commissies'),
+            trailing:
+                const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
+            onTap: () => Routemaster.of(context).push('commissies'),
+          ),
           MultiSelectDialogField<String>(
             title: const Text('Substructuren'),
             // ignore: no-equal-arguments

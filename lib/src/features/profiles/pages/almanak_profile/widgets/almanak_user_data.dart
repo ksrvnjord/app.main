@@ -1,10 +1,15 @@
 import 'package:action_sheet/action_sheet.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/commissies_list_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/user_address_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,7 +35,8 @@ class AlmanakUserData extends StatelessWidget {
     const double actionButtonSize = 96;
 
     return <Widget>[
-      if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
+      if (u.study != null)
+        Text(u.study!).textColor(Colors.blueGrey).alignment(Alignment.center),
       if (u.bestuursFunctie != null)
         // make list tile with lightblue background and white text
         Center(
@@ -124,9 +130,7 @@ class AlmanakUserData extends StatelessWidget {
       if (u.ploeg != null) DataTextListTile(name: "Ploeg", value: u.ploeg!),
       if (u.board != null)
         DataTextListTile(name: "Voorkeurs boord", value: u.board!),
-      if (u.commissies != null)
-        ChipWidget(title: "Commissies", values: u.commissies!),
-      if (u.substructuren != null)
+      if (u.substructuren != null && u.substructuren!.isNotEmpty)
         ChipWidget(title: "Substructuren", values: u.substructuren!),
       if (u.huis != null) DataTextListTile(name: "Huis", value: u.huis!),
       if (u.dubbellid != null)
@@ -139,6 +143,15 @@ class AlmanakUserData extends StatelessWidget {
           name: "Andere vereniging(en)",
           value: u.otherAssociation!,
         ),
-    ].toColumn();
+      FutureWrapper(
+        future: getCommissiesForUser<Future<QuerySnapshot<CommissieEntry>>>(
+          u.lidnummer,
+        ),
+        success: (snapshot) => CommissiesListWidget(
+          snapshot: snapshot,
+          legacyCommissies: u.commissies,
+        ),
+      ),
+    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
   }
 }

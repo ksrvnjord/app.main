@@ -13,7 +13,10 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/select_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
@@ -59,6 +62,17 @@ final routeMap = RouteMap(
         ),
     '/almanak/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
+        ),
+    '/almanak/edit/commissies': (info) => const CupertinoPage(
+          child: EditCommissiesPage(),
+        ),
+    '/almanak/edit/commissies/select': (info) => const CupertinoPage(
+          child: SelectCommissiePage(),
+        ),
+    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          child: FillCommissieInfoPage(
+            commissie: info.queryParameters['commissie']!,
+          ),
         ),
     '/almanak/edit/visibility': (info) => const CupertinoPage(
           child: MePrivacyPage(),
