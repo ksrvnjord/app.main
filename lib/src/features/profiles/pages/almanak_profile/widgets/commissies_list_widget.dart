@@ -30,6 +30,7 @@ class CommissiesListWidget extends StatelessWidget {
     };
 
     const double commissieNameFontSize = 20;
+    const double headerBottomPadding = 8;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +39,10 @@ class CommissiesListWidget extends StatelessWidget {
               const Text("Commissies")
                   .fontSize(fieldTitleFontSize)
                   .textColor(Colors.grey)
-                  .padding(horizontal: fieldTitlePadding, bottom: 8),
+                  .padding(
+                    horizontal: fieldTitlePadding,
+                    bottom: headerBottomPadding,
+                  ),
               const Divider(
                 height: 1,
                 thickness: 1,
