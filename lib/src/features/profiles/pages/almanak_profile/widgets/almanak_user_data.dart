@@ -33,9 +33,6 @@ class AlmanakUserData extends StatelessWidget {
     const double bestuurFontSize = 16;
     const double actionButtonSize = 96;
 
-    const double fieldTitleFontSize = 16;
-    const double fieldTitlePadding = 16;
-
     return <Widget>[
       if (u.study != null)
         Text(u.study!).textColor(Colors.blueGrey).alignment(Alignment.center),
