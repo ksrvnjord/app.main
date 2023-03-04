@@ -48,7 +48,12 @@ class AlmanakBestuurPage extends StatelessWidget {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(user: doc.data()),
+        (doc) => AlmanakUserTile(
+          firstName: doc.data().firstName!,
+          lastName: doc.data().lastName!,
+          subtitle: doc.data().bestuursFunctie!,
+          lidnummer: doc.data().lidnummer,
+        ),
       ),
     ].toColumn();
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 final peopleRef = FirebaseFirestore.instance.collection("people").withConverter(
@@ -26,13 +27,17 @@ class AlmanakCommissiesPage extends StatelessWidget {
       body: ListView(
         children: commissieEmailMap.keys
             .map(
-              (e) => [
+              (commmissieName) => [
                 ListTile(
-                  title: Text(e),
+                  title: Text(commmissieName),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                     color: Colors.lightBlue,
                   ),
+                  onTap: () =>
+                      Routemaster.of(context).push('leeden', queryParameters: {
+                    'commissie': commmissieName,
+                  }),
                 ),
                 const Divider(
                   thickness: 1,

@@ -28,22 +28,22 @@ class AlmanakPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          AlmanakStructureChoiceWidget(
+          const AlmanakStructureChoiceWidget(
             title: "Leeden",
             pushRoute: "leeden",
             imagePath: 'assets/images/leeden.png',
           ).padding(all: choiceWidgetPadding),
-          AlmanakStructureChoiceWidget(
+          const AlmanakStructureChoiceWidget(
             title: "Bestuur",
             pushRoute: "bestuur",
             imagePath: 'assets/images/bestuur.jpeg',
           ).padding(all: choiceWidgetPadding),
-          AlmanakStructureChoiceWidget(
+          const AlmanakStructureChoiceWidget(
             title: "Commissies",
             pushRoute: "commissies",
             imagePath: 'assets/images/commissies.png',
           ).padding(all: choiceWidgetPadding),
-          AlmanakStructureChoiceWidget(
+          const AlmanakStructureChoiceWidget(
             title: "Substructuren",
             pushRoute: "substructures",
             imagePath: 'assets/images/substructures.jpeg',
