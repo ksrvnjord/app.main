@@ -1,5 +1,8 @@
 class CommissieEntry {
   String name;
+  String firstName;
+  String lastName;
+  String lidnummer;
   int startYear;
   int? endYear;
   String? function;
@@ -7,6 +10,9 @@ class CommissieEntry {
   CommissieEntry({
     required this.name,
     required this.startYear,
+    required this.firstName,
+    required this.lastName,
+    required this.lidnummer,
     this.endYear,
     this.function,
   });
@@ -17,6 +23,9 @@ class CommissieEntry {
       'startYear': startYear,
       'endYear': endYear,
       'function': function,
+      'first_name': firstName,
+      'last_name': lastName,
+      'lidnummer': lidnummer,
     };
   }
 
@@ -26,6 +35,9 @@ class CommissieEntry {
       startYear: json['startYear'],
       endYear: json['endYear'],
       function: json['function'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      lidnummer: json['lidnummer'],
     );
   }
 }
