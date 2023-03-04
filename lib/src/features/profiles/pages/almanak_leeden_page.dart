@@ -1,20 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_searchable_list_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
-import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:provider/provider.dart';
 
-class AlmanakPage extends StatelessWidget {
-  const AlmanakPage({Key? key}) : super(key: key);
+class AlmanakLeedenPage extends StatelessWidget {
+  const AlmanakLeedenPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const double cardTitleFontSize = 24;
+    final client = Provider.of<GraphQLModel>(context).client;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Almanak"),
+        title: const Text("Leeden"),
         actions: <Widget>[
           FirebaseAuth.instance.currentUser != null
               ? const MyProfilePicture(profileIconSize: 48.0)
@@ -25,19 +26,7 @@ class AlmanakPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          InkWell(
-            onTap: () => Routemaster.of(context).push('leeden'),
-            child: [
-              const Text("Leeden")
-                  .fontSize(cardTitleFontSize)
-                  .alignment(Alignment.center),
-            ].toColumn().card(),
-          ),
-        ],
-      ),
+      body: AlmanakSearchableListWidget(client: client),
     );
   }
 }
