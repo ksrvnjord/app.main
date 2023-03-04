@@ -86,9 +86,10 @@ final routeMap = RouteMap(
     '/training/all/:id': (info) => CupertinoPage(
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/reservationObject/:id': (route) => CupertinoPage(
+    '/training/all/reservationObject/:reservationObjectId': (route) =>
+        CupertinoPage(
           child: ShowReservationObjectPage(
-            documentId: route.pathParameters['id']!,
+            documentId: route.pathParameters['reservationObjectId']!,
             name: route.queryParameters['name']!,
           ),
         ),
