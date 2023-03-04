@@ -125,7 +125,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     _formKey.currentState?.save();
 
     try {
-      await addCommissie(_formData);
+      await addMyCommissie(_formData);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
