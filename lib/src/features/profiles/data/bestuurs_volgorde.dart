@@ -8,4 +8,5 @@ const List<String> bestuurVolgorde = [
   "Commissaris van het Buffet",
   "Commissaris voor het Competitie- en Fuifroeien",
   "Commissaris voor Externe Betrekkingen",
+  "Oprichter der K.S.R.V. \"Njord\"",
 ];

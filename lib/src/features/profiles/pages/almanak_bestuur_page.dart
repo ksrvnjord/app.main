@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -33,19 +34,32 @@ class AlmanakBestuurPage extends StatelessWidget {
         children: [
           FutureWrapper(
             future: getBestuur(),
-            success: (snapshot) => <Widget>[
-              ...snapshot.docs.map(
-                (doc) => ListTile(
-                  leading: ProfilePictureWidget(userId: doc.id),
-                  title:
-                      Text("${doc.data().firstName!} ${doc.data().lastName!}"),
-                  subtitle: Text(doc.data().bestuursFunctie!),
-                ),
-              ),
-            ].toColumn(),
+            success: (snapshot) => buildBestuurList(snapshot),
           ),
         ],
       ),
     );
   }
+
+  Widget buildBestuurList(QuerySnapshot<AlmanakProfile> snapshot) {
+    List<QueryDocumentSnapshot<AlmanakProfile>> docs = snapshot.docs;
+    // we want to sort baseed on the bestuurs_volgorde
+    docs.sort((a, b) => compareBestuursFunctie(a.data(), b.data()));
+
+    return <Widget>[
+      ...docs.map(
+        (doc) => ListTile(
+          leading: ProfilePictureWidget(userId: doc.id),
+          title: Text("${doc.data().firstName!} ${doc.data().lastName!}"),
+          subtitle: Text(doc.data().bestuursFunctie!),
+        ),
+      ),
+    ].toColumn();
+  }
+
+  /// Compare the bestuursfuncties op basis van constitutie
+  int compareBestuursFunctie(AlmanakProfile a, AlmanakProfile b) =>
+      bestuurVolgorde
+          .indexOf(a.bestuursFunctie!)
+          .compareTo(bestuurVolgorde.indexOf(b.bestuursFunctie!));
 }
