@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 class AlmanakProfile {
   // --- FIRESTORE FIELDS ---
+  String lidnummer;
   String? study;
   String? board;
   String? ploeg;
@@ -25,6 +26,7 @@ class AlmanakProfile {
   String? houseNumberAddition;
 
   AlmanakProfile({
+    required this.lidnummer,
     this.study,
     this.board,
     this.ploeg,
@@ -56,6 +58,7 @@ class AlmanakProfile {
   // Add a factory constructor that takes a Map<String, dynamic> and returns an AlmanakProfile
   factory AlmanakProfile.fromJson(Map<String, dynamic> json) {
     return AlmanakProfile(
+      lidnummer: json['identifier'] as String,
       study: json['study'] as String?,
       board: json['board'] as String?,
       ploeg: json['ploeg'] as String?,

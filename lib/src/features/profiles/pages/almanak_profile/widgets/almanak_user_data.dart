@@ -29,8 +29,12 @@ class AlmanakUserData extends StatelessWidget {
     const double bestuurFontSize = 16;
     const double actionButtonSize = 96;
 
+    const double fieldTitleFontSize = 16;
+    const double fieldTitlePadding = 16;
+
     return <Widget>[
-      if (u.study != null) Text(u.study!).textColor(Colors.blueGrey),
+      if (u.study != null)
+        Text(u.study!).textColor(Colors.blueGrey).alignment(Alignment.center),
       if (u.bestuursFunctie != null)
         // make list tile with lightblue background and white text
         Center(
@@ -139,6 +143,10 @@ class AlmanakUserData extends StatelessWidget {
           name: "Andere vereniging(en)",
           value: u.otherAssociation!,
         ),
-    ].toColumn();
+      const Text("Commissies")
+          .fontSize(fieldTitleFontSize)
+          .textColor(Colors.grey)
+          .padding(all: fieldTitlePadding),
+    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
   }
 }

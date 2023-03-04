@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
@@ -31,7 +32,8 @@ class EditAlmanakForm extends StatefulWidget {
 class _EditAlmanakFormState extends State<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final AlmanakProfile _formData = AlmanakProfile();
+  final AlmanakProfile _formData =
+      AlmanakProfile(lidnummer: FirebaseAuth.instance.currentUser!.uid);
   File? newprofilePicture;
 
   void changeProfilePicture(File file) {
