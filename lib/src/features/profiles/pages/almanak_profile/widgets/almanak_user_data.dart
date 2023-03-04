@@ -184,17 +184,33 @@ class CommissiesListWidget extends StatelessWidget {
                   .fontSize(fieldTitleFontSize)
                   .textColor(Colors.grey)
                   .padding(horizontal: fieldTitlePadding),
-              ...docs.map((doc) => ListTile(
-                    leading: [
-                      Text(
-                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+              const Divider(
+                height: 1,
+                thickness: 1,
+              ),
+              docs
+                  .map(
+                    (doc) => [
+                      ListTile(
+                        tileColor: Colors.white,
+                        title: Text(doc.data().name),
+                        subtitle: <Widget>[
+                          Text(
+                            "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                          ).padding(right: 8),
+                          doc.data().function != null
+                              ? Text(doc.data().function!)
+                              : Container(),
+                        ].toRow(),
                       ),
-                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                    title: Text(doc.data().name),
-                    subtitle: doc.data().function != null
-                        ? Text(doc.data().function!)
-                        : null,
-                  )),
+                      const Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    ].toColumn(),
+                  )
+                  .toList()
+                  .toColumn(),
             ]
           : [
               legacyCommissies != null && legacyCommissies!.isNotEmpty
