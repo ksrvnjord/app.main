@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
   const AlmanakPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    const double choiceWidgetPadding = 4;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
@@ -24,12 +27,27 @@ class AlmanakPage extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
-        children: const [
+        children: [
           AlmanakStructureChoiceWidget(
-            pushRoute: "leeden",
             title: "Leeden",
+            pushRoute: "leeden",
             imagePath: 'assets/images/leeden.png',
-          ),
+          ).padding(all: choiceWidgetPadding),
+          AlmanakStructureChoiceWidget(
+            title: "Bestuur",
+            pushRoute: "bestuur",
+            imagePath: 'assets/images/bestuur.jpeg',
+          ).padding(all: choiceWidgetPadding),
+          AlmanakStructureChoiceWidget(
+            title: "Commissies",
+            pushRoute: "commissies",
+            imagePath: 'assets/images/commissies.png',
+          ).padding(all: choiceWidgetPadding),
+          AlmanakStructureChoiceWidget(
+            title: "Substructuren",
+            pushRoute: "substructures",
+            imagePath: 'assets/images/substructures.jpeg',
+          ).padding(all: choiceWidgetPadding),
         ],
       ),
     );

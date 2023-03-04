@@ -17,20 +17,34 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double cardTitleFontSize = 24;
-    const double imageHeight = 160;
+    const double imageHeight = 128;
 
     return InkWell(
       onTap: () => Routemaster.of(context).push(pushRoute),
       child: [
         // load image from assets
-        Image(
-          image: AssetImage(imagePath),
-          width: double.infinity,
-          height: imageHeight,
-          fit: BoxFit.cover,
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            // ignore: no-equal-arguments
+            topRight: Radius.circular(16),
+          ),
+          child: Image(
+            image: AssetImage(imagePath),
+            width: double.infinity,
+            height: imageHeight,
+            fit: BoxFit.cover,
+            isAntiAlias: true,
+          ),
         ),
         Text(title).fontSize(cardTitleFontSize).alignment(Alignment.center),
-      ].toColumn().card(),
+      ].toColumn().card(
+            color: Colors.blueGrey[100],
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
     );
   }
 }
