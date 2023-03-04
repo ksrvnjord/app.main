@@ -38,7 +38,7 @@ class CommissiesListWidget extends StatelessWidget {
               const Text("Commissies")
                   .fontSize(fieldTitleFontSize)
                   .textColor(Colors.grey)
-                  .padding(horizontal: fieldTitlePadding),
+                  .padding(horizontal: fieldTitlePadding, bottom: 8),
               const Divider(
                 height: 1,
                 thickness: 1,
