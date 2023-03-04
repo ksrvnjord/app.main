@@ -4,16 +4,21 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/m
 
 final peopleRef = FirebaseFirestore.instance.collection("people");
 
-Future<void> addMyCommissie(CommissieEntry commissie) {
-  return peopleRef
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection("commissies")
-      .withConverter<CommissieEntry>(
+// convenience method to get a reference to the commissies collection using the converter
+CollectionReference<CommissieEntry> getCommissieCollectionRefWithConverter(
+  DocumentReference<Map<String, dynamic>> ref,
+) {
+  return ref.collection('commissies').withConverter<CommissieEntry>(
         fromFirestore: (snapshot, _) =>
             CommissieEntry.fromJson(snapshot.data()!),
         toFirestore: (commissie, _) => commissie.toJson(),
-      )
-      .add(commissie);
+      );
+}
+
+Future<void> addMyCommissie(CommissieEntry commissie) {
+  return getCommissieCollectionRefWithConverter(
+    peopleRef.doc(FirebaseAuth.instance.currentUser!.uid),
+  ).add(commissie);
 }
 
 T getMyCommissies<T>() {
@@ -22,25 +27,13 @@ T getMyCommissies<T>() {
 
 T getCommissiesForUser<T>(String userId) {
   if (T == Stream<QuerySnapshot<CommissieEntry>>) {
-    return peopleRef
-        .doc(userId)
-        .collection("commissies")
-        .withConverter<CommissieEntry>(
-          fromFirestore: (snapshot, _) =>
-              CommissieEntry.fromJson(snapshot.data()!),
-          toFirestore: (commissie, _) => commissie.toJson(),
-        )
-        .snapshots() as T;
+    return getCommissieCollectionRefWithConverter(
+      peopleRef.doc(userId),
+    ).snapshots() as T;
   } else if (T == Future<QuerySnapshot<CommissieEntry>>) {
-    return peopleRef
-        .doc(userId)
-        .collection("commissies")
-        .withConverter<CommissieEntry>(
-          fromFirestore: (snapshot, _) =>
-              CommissieEntry.fromJson(snapshot.data()!),
-          toFirestore: (commissie, _) => commissie.toJson(),
-        )
-        .get() as T;
+    return getCommissieCollectionRefWithConverter(
+      peopleRef.doc(userId),
+    ).get() as T;
   }
 
   throw Exception("T must be either Stream or Future");
