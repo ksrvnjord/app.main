@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/widgets/edit_commissies_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -36,7 +37,7 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
         StreamWrapper(
           // use stream to show updates in real time
           stream: getMyCommissies<Stream<QuerySnapshot<CommissieEntry>>>(),
-          success: (commissies) => buildCommissieList(commissies),
+          success: (commissies) => EditCommissiesList(snapshot: commissies),
         ),
       ]),
       floatingActionButton: // button with a plus icon and the text "Commissie"
@@ -46,36 +47,6 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
         icon: const Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
       ),
-    );
-  }
-
-  Column buildCommissieList(QuerySnapshot<CommissieEntry> snapshot) {
-    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
-    docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
-
-    return Column(
-      children: docs.isNotEmpty
-          ? docs
-              .map((doc) => ListTile(
-                    leading: [
-                      Text(
-                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
-                      ),
-                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                    title: Text(doc.data().name),
-                    subtitle: doc.data().function != null
-                        ? Text(doc.data().function!)
-                        : null,
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => doc.reference.delete(),
-                    ),
-                  ))
-              .toList()
-          : [
-              const Text('Geen commissies gevonden, voeg een commissie toe.')
-                  .padding(all: fieldPadding),
-            ],
     );
   }
 }

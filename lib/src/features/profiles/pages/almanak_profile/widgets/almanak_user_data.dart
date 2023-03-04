@@ -1,10 +1,14 @@
 import 'package:action_sheet/action_sheet.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/user_address_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -143,10 +147,54 @@ class AlmanakUserData extends StatelessWidget {
           name: "Andere vereniging(en)",
           value: u.otherAssociation!,
         ),
-      const Text("Commissies")
-          .fontSize(fieldTitleFontSize)
-          .textColor(Colors.grey)
-          .padding(all: fieldTitlePadding),
+      FutureWrapper(
+        future: getCommissiesForUser<Future<QuerySnapshot<CommissieEntry>>>(
+          u.lidnummer,
+        ),
+        success: (snapshot) => CommissiesListWidget(snapshot: snapshot),
+      ),
     ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
+  }
+}
+
+class CommissiesListWidget extends StatelessWidget {
+  const CommissiesListWidget({
+    Key? key,
+    required this.snapshot,
+  }) : super(key: key);
+
+  final QuerySnapshot<CommissieEntry> snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
+    docs.sort((a, b) => a.data().startYear.compareTo(b.data().startYear));
+
+    const double fieldTitleFontSize = 16;
+    const double fieldTitlePadding = 16;
+
+    return Column(
+      children: docs.isNotEmpty
+          ? [
+              const Text("Commissies")
+                  .fontSize(fieldTitleFontSize)
+                  .textColor(Colors.grey)
+                  .padding(horizontal: fieldTitlePadding),
+              ...docs.map((doc) => ListTile(
+                    leading: [
+                      Text(
+                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                      ),
+                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                    title: Text(doc.data().name),
+                    subtitle: doc.data().function != null
+                        ? Text(doc.data().function!)
+                        : null,
+                  )),
+            ]
+          : [
+              Container(),
+            ],
+    );
   }
 }
