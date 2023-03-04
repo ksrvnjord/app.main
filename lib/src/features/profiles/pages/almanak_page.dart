@@ -31,6 +31,13 @@ class AlmanakPage extends StatelessWidget {
           InkWell(
             onTap: () => Routemaster.of(context).push('leeden'),
             child: [
+              // load image from assets
+              const Image(
+                image: AssetImage('assets/images/leeden.png'),
+                width: double.infinity,
+                height: 160,
+                fit: BoxFit.cover,
+              ),
               const Text("Leeden")
                   .fontSize(cardTitleFontSize)
                   .alignment(Alignment.center),
