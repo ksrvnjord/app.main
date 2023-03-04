@@ -182,6 +182,8 @@ class CommissiesListWidget extends StatelessWidget {
       "Quaestor": Colors.lightGreen[300]!,
     };
 
+    const double commissieNameFontSize = 20;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: docs.isNotEmpty
@@ -199,18 +201,21 @@ class CommissiesListWidget extends StatelessWidget {
                     (doc) => [
                       ListTile(
                         tileColor: Colors.white,
-                        title: Text(doc.data().name),
+                        title: Text(doc.data().name)
+                            .fontSize(commissieNameFontSize),
                         subtitle: <Widget>[
                           Chip(
                             label: Text(
                               "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
                             ),
                             avatar: const Icon(
-                              Icons.calendar_today,
+                              Icons.date_range,
                               color: Colors.white,
                               size: 16,
                             ),
                             backgroundColor: Colors.blueGrey[200],
+                            labelPadding:
+                                const EdgeInsets.only(left: 2, right: 8),
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
@@ -224,6 +229,14 @@ class CommissiesListWidget extends StatelessWidget {
                                 labelStyle: const TextStyle(
                                   color: Colors.white,
                                 ),
+                                // show avatar
+                                avatar: const Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                                labelPadding:
+                                    const EdgeInsets.only(left: 2, right: 8),
                                 backgroundColor:
                                     functionMap[doc.data().function!] ??
                                         Colors.blueGrey[300],
