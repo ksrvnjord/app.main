@@ -44,7 +44,6 @@ dependencies:
   file_picker: ^5.2.4
   image_picker_widget: '>=2.0.0 <3.0.0'
   firebase_storage: ^11.0.9
-  fluttertoast: ^8.1.2
   cached_network_image: ^3.2.3
   localstorage: ^4.0.0+1
   cloud_functions: ^4.0.7
@@ -56,6 +55,7 @@ dependencies:
   action_sheet: ^1.0.4
   flutter_localizations:
     sdk: flutter
+  firebase_app_check: ^0.1.1+12
 
 
 dev_dependencies:
