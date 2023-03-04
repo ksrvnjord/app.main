@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -48,11 +48,7 @@ class AlmanakBestuurPage extends StatelessWidget {
 
     return <Widget>[
       ...docs.map(
-        (doc) => ListTile(
-          leading: ProfilePictureWidget(userId: doc.id),
-          title: Text("${doc.data().firstName!} ${doc.data().lastName!}"),
-          subtitle: Text(doc.data().bestuursFunctie!),
-        ),
+        (doc) => AlmanakUserTile(user: doc.data()),
       ),
     ].toColumn();
   }
