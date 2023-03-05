@@ -77,7 +77,11 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
           subtitle: doc.data().function ?? "",
         ),
       ),
-      Container(),
+      if (docs.isEmpty)
+        const Text(
+          "Er zijn geen leden gevonden",
+          textAlign: TextAlign.center,
+        ),
     ].toColumn();
   }
 }
