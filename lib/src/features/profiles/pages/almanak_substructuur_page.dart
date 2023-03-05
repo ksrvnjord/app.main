@@ -49,6 +49,7 @@ class AlmanakSubstructuurPage extends StatelessWidget {
 
   Widget buildSubstructuurList(QuerySnapshot<AlmanakProfile> snapshot) {
     List<QueryDocumentSnapshot<AlmanakProfile>> docs = snapshot.docs;
+    const double notFoundPadding = 16;
 
     return <Widget>[
       ...docs.map(
@@ -58,6 +59,11 @@ class AlmanakSubstructuurPage extends StatelessWidget {
           lidnummer: doc.data().lidnummer,
         ),
       ),
+      if (docs.isEmpty)
+        const Text("Geen Leeden gevonden voor deze substructuur")
+            .textColor(Colors.grey)
+            .center()
+            .padding(all: notFoundPadding),
     ].toColumn();
   }
 }

@@ -106,6 +106,7 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
   Widget buildCommissieList(QuerySnapshot<CommissieEntry> snapshot) {
     List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
     docs.sort((a, b) => compareCommissieFunctie(a.data(), b.data()));
+    const double notFoundPadding = 16;
 
     return <Widget>[
       ...docs.map(
@@ -117,10 +118,10 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
         ),
       ),
       if (docs.isEmpty)
-        const Text(
-          "Er zijn geen Leeden gevonden voor dit jaar",
-          textAlign: TextAlign.center,
-        ),
+        const Text("Geen Leeden gevonden voor deze commissie in dit jaar")
+            .textColor(Colors.grey)
+            .center()
+            .padding(all: notFoundPadding),
     ].toColumn();
   }
 

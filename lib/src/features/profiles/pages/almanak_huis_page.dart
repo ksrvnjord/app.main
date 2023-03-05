@@ -47,6 +47,7 @@ class AlmanakHuisPage extends StatelessWidget {
 
   Widget buildHuisList(QuerySnapshot<AlmanakProfile> snapshot) {
     List<QueryDocumentSnapshot<AlmanakProfile>> docs = snapshot.docs;
+    const double notFoundPadding = 16;
 
     return <Widget>[
       ...docs.map(
@@ -56,6 +57,11 @@ class AlmanakHuisPage extends StatelessWidget {
           lidnummer: doc.data().lidnummer,
         ),
       ),
+      if (docs.isEmpty)
+        const Text("Geen Leeden gevonden voor dit huis")
+            .textColor(Colors.grey)
+            .center()
+            .padding(all: notFoundPadding),
     ].toColumn();
   }
 }

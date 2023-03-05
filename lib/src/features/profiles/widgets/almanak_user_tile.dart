@@ -10,7 +10,7 @@ import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakUserTile extends StatelessWidget {
-  AlmanakUserTile({
+  const AlmanakUserTile({
     Key? key,
     required this.firstName,
     required this.lastName,
