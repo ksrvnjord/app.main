@@ -1,8 +1,12 @@
 #!/bin/bash
-
+# Run this in the root of the project to run the static analysis tools.
 # Can't run the script? Try `chmod +x run_static_analysis.sh` to make it executable.
 
-# This script runs the static analysis tools on the codebase.
+# Assumes that you have the following installed:
+# - dart
+# - flutter
+
+
 
 # create an array containing the commands
 commands=(
@@ -25,5 +29,6 @@ for command in "${commands[@]}"; do
     fi
     echo "✅ Static analysis passed for '$command'"
 done
+
 echo ""
 echo "✅ Static analysis completed successfully, good job!"
