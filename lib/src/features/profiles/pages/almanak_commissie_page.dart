@@ -14,7 +14,7 @@ final commissiesRef = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class AlmanakCommissiePage extends StatelessWidget {
+class AlmanakCommissiePage extends StatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
     required this.commissieName,
@@ -22,6 +22,11 @@ class AlmanakCommissiePage extends StatelessWidget {
 
   final String commissieName;
 
+  @override
+  AlmanakCommissiePageState createState() => AlmanakCommissiePageState();
+}
+
+class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
   @override
   Widget build(BuildContext context) {
     Future<QuerySnapshot<CommissieEntry>> getCommissieLeedenFromYear(
@@ -41,7 +46,7 @@ class AlmanakCommissiePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(commissieName),
+        title: Text(widget.commissieName),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
@@ -51,7 +56,7 @@ class AlmanakCommissiePage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: [
           FutureWrapper(
-            future: getCommissieLeedenFromYear(commissieName, njordYear),
+            future: getCommissieLeedenFromYear(widget.commissieName, njordYear),
             success: (snapshot) => buildCommissieList(snapshot),
             error: (error) => ErrorCardWidget(errorMessage: error.toString()),
           ),
