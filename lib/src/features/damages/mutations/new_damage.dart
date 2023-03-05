@@ -35,8 +35,11 @@ Future<void> newDamage(DamageForm damageForm) async {
     'parent': object,
     'description': damageForm.description,
     'critical': damageForm.critical,
+    'active': true,
     'createdTime': DateTime.now(),
     'creatorId': uid,
+    'type': damageForm.type,
+    'name': damageForm.name,
   });
 
   // Check if there's an image, if so, upload it
