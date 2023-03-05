@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select.dart';
 
-class DamagesCreatePage extends StatefulWidget {
+class DamagesCreatePage extends StatelessWidget {
   final String? reservationObjectId;
 
   const DamagesCreatePage({
@@ -11,11 +14,6 @@ class DamagesCreatePage extends StatefulWidget {
     this.reservationObjectId,
   }) : super(key: key);
 
-  @override
-  State<DamagesCreatePage> createState() => _DamagesCreatePageState();
-}
-
-class _DamagesCreatePageState extends State<DamagesCreatePage> {
   @override
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
@@ -29,16 +27,9 @@ class _DamagesCreatePageState extends State<DamagesCreatePage> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: Container(),
-      floatingActionButton: FirebaseAuth.instance.currentUser !=
-              null // only show button if user is logged in
-          ? FloatingActionButton.extended(
-              onPressed: () => navigator.push('new'),
-              backgroundColor: Colors.blue,
-              icon: const Icon(Icons.report),
-              label: const Text('Schade melden'),
-            )
-          : null,
+      body: Column(children: [
+        DamageSelect(),
+      ]),
     );
   }
 }
