@@ -11,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_commissies_page.dart';
@@ -21,6 +22,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_substructuren_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
@@ -86,7 +88,12 @@ final routeMap = RouteMap(
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
           name: 'Huizen',
-          child: AlmanakHuizenPage(),
+          child: ChoicePage(
+            title: "Huizen",
+            choices: houseNames,
+            pushRoute: 'leeden',
+            queryParameterName: 'huis',
+          ),
         ),
     '/almanak/huizen/leeden': (route) => CupertinoPage(
           name: 'Huizen',
