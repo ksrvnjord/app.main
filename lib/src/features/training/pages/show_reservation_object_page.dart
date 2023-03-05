@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../widgets/availability_header.dart';
@@ -38,6 +39,12 @@ class ShowReservationObjectPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.report),
+            onPressed: () => Routemaster.of(context).push('damages'),
+          ),
+        ],
       ),
       body: FutureWrapper(
         future: getReservationObject(documentId),
