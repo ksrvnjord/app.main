@@ -73,6 +73,9 @@ final routeMap = RouteMap(
           name: 'Leeden',
           child: AlmanakLeedenPage(),
         ),
+    '/almanak/leeden/edit': (_) => const CupertinoPage(
+          child: EditAlmanakProfilePage(),
+        ),
     '/almanak/bestuur': (_) => const CupertinoPage(
           name: 'Bestuur',
           child: AlmanakBestuurPage(),
@@ -151,7 +154,7 @@ final routeMap = RouteMap(
     '/almanak/edit/visibility': (info) => const CupertinoPage(
           child: MePrivacyPage(),
         ),
-    '/almanak/:profileId': (info) => const CupertinoPage(
+    '/almanak/leeden/:profileId': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/settings': (info) => const CupertinoPage(
