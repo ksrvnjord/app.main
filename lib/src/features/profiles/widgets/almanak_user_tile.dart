@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakUserTile extends StatefulWidget {
-  const AlmanakUserTile({
+class AlmanakUserTile extends StatelessWidget {
+  AlmanakUserTile({
     Key? key,
     required this.firstName,
     required this.lastName,
@@ -23,18 +23,6 @@ class AlmanakUserTile extends StatefulWidget {
   final String lidnummer;
 
   @override
-  AlmanakUserTileState createState() => AlmanakUserTileState();
-}
-
-class AlmanakUserTileState extends State<AlmanakUserTile> {
-  String? heimdallUserId = "";
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
 
@@ -44,13 +32,13 @@ class AlmanakUserTileState extends State<AlmanakUserTile> {
     const double subtitleShimmerPadding = 64;
 
     return FutureWrapper(
-      future: almanakProfileByIdentifier(widget.lidnummer, client),
-      success: (_) => ListTile(
-        leading: ProfilePictureWidget(userId: widget.lidnummer),
-        title: Text("${widget.firstName} ${widget.lastName}"),
-        subtitle: widget.subtitle != null ? Text(widget.subtitle!) : null,
+      future: almanakProfileByIdentifier(lidnummer, client),
+      success: (user) => ListTile(
+        leading: ProfilePictureWidget(userId: lidnummer),
+        title: Text("$firstName $lastName"),
+        subtitle: subtitle != null ? Text(subtitle!) : null,
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
-        onTap: () => Routemaster.of(context).push(heimdallUserId!),
+        onTap: () => Routemaster.of(context).push(user!.id),
       ),
       loading: ListTile(
         leading: const ShimmerWidget(child: DefaultProfilePicture()),
