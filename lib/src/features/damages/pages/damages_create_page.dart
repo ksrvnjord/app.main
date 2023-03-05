@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_wi
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:routemaster/routemaster.dart';
 
 class _DamagesCreateForm extends StatelessWidget {
   final String? reservationObjectId;
@@ -22,6 +23,7 @@ class _DamagesCreateForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final formData = context.watch<DamageForm>();
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Routemaster.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,6 +42,7 @@ class _DamagesCreateForm extends StatelessWidget {
                         backgroundColor: Colors.green[900],
                         content: const Text('Schademelding aangemaakt'),
                       ));
+                      navigator.pop();
                     },
                     onError: (e) {
                       messenger.showSnackBar(SnackBar(
