@@ -26,7 +26,7 @@ class DamagesEditPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: Container(),
+      body: Text('EDIT!'),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(
