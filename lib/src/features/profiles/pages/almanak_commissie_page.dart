@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -48,15 +49,18 @@ class AlmanakCommissiePage extends StatelessWidget {
     );
   }
 
-  Widget buildCommissieList(QuerySnapshot<CommissieEntry> _) {
-    // List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
+  Widget buildCommissieList(QuerySnapshot<CommissieEntry> snapshot) {
+    List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
 
     return <Widget>[
-      // ...docs.map(
-      //   (doc) => AlmanakUserTile(
-      //     firstName: doc.data(),
-      //   ),
-      // ),
+      ...docs.map(
+        (doc) => AlmanakUserTile(
+          firstName: doc.data().firstName,
+          lastName: doc.data().lastName,
+          lidnummer: doc.data().lidnummer,
+          subtitle: doc.data().function ?? "",
+        ),
+      ),
       Container(),
     ].toColumn();
   }
