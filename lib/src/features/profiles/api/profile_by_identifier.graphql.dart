@@ -272,6 +272,13 @@ const documentNodeQueryAlmanakProfileByIdentifier = DocumentNode(definitions: [
         directives: [],
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: 'identifier'),
             alias: null,
             arguments: [],
@@ -543,6 +550,7 @@ class Query$AlmanakProfileByIdentifier$Widget
 
 class Query$AlmanakProfileByIdentifier$userByIdentifier {
   Query$AlmanakProfileByIdentifier$userByIdentifier({
+    required this.id,
     required this.identifier,
     required this.email,
     required this.username,
@@ -552,12 +560,14 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
 
   factory Query$AlmanakProfileByIdentifier$userByIdentifier.fromJson(
       Map<String, dynamic> json) {
+    final l$id = json['id'];
     final l$identifier = json['identifier'];
     final l$email = json['email'];
     final l$username = json['username'];
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
     return Query$AlmanakProfileByIdentifier$userByIdentifier(
+      id: (l$id as String),
       identifier: (l$identifier as String),
       email: (l$email as String),
       username: (l$username as String),
@@ -566,6 +576,8 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
       $__typename: (l$$__typename as String),
     );
   }
+
+  final String id;
 
   final String identifier;
 
@@ -580,6 +592,8 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
     final l$identifier = identifier;
     _resultData['identifier'] = l$identifier;
     final l$email = email;
@@ -595,12 +609,14 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$identifier = identifier;
     final l$email = email;
     final l$username = username;
     final l$fullContact = fullContact;
     final l$$__typename = $__typename;
     return Object.hashAll([
+      l$id,
       l$identifier,
       l$email,
       l$username,
@@ -616,6 +632,11 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
     }
     if (!(other is Query$AlmanakProfileByIdentifier$userByIdentifier) ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$identifier = identifier;
@@ -670,6 +691,7 @@ abstract class CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<
       _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier;
 
   TRes call({
+    String? id,
     String? identifier,
     String? email,
     String? username,
@@ -695,6 +717,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
   static const _undefined = {};
 
   TRes call({
+    Object? id = _undefined,
     Object? identifier = _undefined,
     Object? email = _undefined,
     Object? username = _undefined,
@@ -702,6 +725,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
     Object? $__typename = _undefined,
   }) =>
       _then(Query$AlmanakProfileByIdentifier$userByIdentifier(
+        id: id == _undefined || id == null ? _instance.id : (id as String),
         identifier: identifier == _undefined || identifier == null
             ? _instance.identifier
             : (identifier as String),
@@ -736,6 +760,7 @@ class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
   TRes _res;
 
   call({
+    String? id,
     String? identifier,
     String? email,
     String? username,

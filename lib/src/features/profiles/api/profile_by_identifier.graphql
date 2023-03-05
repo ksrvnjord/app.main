@@ -1,5 +1,6 @@
 query AlmanakProfileByIdentifier ($profileId: String!) {
     userByIdentifier (identifier: $profileId) {
+        id,
         identifier,
         email,
         username,
