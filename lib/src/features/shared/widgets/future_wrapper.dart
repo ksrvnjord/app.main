@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
@@ -33,6 +35,8 @@ class FutureWrapper<T> extends StatelessWidget {
           // ignore: null_check_on_nullable_type_parameter
           return success(snapshot.data!);
         } else if (snapshot.hasError) {
+          log(snapshot.error.toString()); // show error in console aswell
+
           return error(snapshot.error!);
         }
 
