@@ -1,22 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
-import 'package:routemaster/routemaster.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/mutations/new_damage.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:provider/provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
-class DamagesCreatePage extends StatelessWidget {
+class _DamagesCreateForm extends StatelessWidget {
   final String? reservationObjectId;
+  final double padding = 16;
 
-  const DamagesCreatePage({
+  const _DamagesCreateForm({
     Key? key,
     this.reservationObjectId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Routemaster navigator = Routemaster.of(context);
+    final formData = context.watch<DamageForm>();
+    final messenger = ScaffoldMessenger.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -26,10 +31,71 @@ class DamagesCreatePage extends StatelessWidget {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          formData.complete
+              ? IconButton(
+                  onPressed: () => newDamage(formData).then(
+                    (e) {
+                      messenger.showSnackBar(SnackBar(
+                        backgroundColor: Colors.green[900],
+                        content: const Text('Schademelding aangemaakt'),
+                      ));
+                    },
+                    onError: (e) {
+                      messenger.showSnackBar(SnackBar(
+                        backgroundColor: Colors.red[900],
+                        content: const Text(
+                          'Schademelding kon niet aangemaakt worden',
+                        ),
+                      ));
+                    },
+                  ),
+                  icon: const Icon(Icons.send),
+                )
+              : IconButton(
+                  onPressed: () => messenger.showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red[900],
+                      content: const Text('Nog niet alle velden zijn ingevuld'),
+                    ),
+                  ),
+                  icon: Icon(Icons.send, color: Colors.blue[900]),
+                ),
+        ],
       ),
-      body: Column(children: [
-        DamageSelect(),
-      ]),
+      body: <Widget>[
+        const DamageSelectWidget(),
+        (formData.type != null && formData.name != null)
+            ? FutureWrapper(
+                future: objectByTypeAndName(
+                  formData.type!,
+                  formData.name!,
+                ),
+                success: (data) =>
+                    data.isNotEmpty ? const DamageFormWidget() : Container(),
+              )
+            : const Text('Selecteer een object...'),
+      ].toWrap(runSpacing: padding).padding(all: padding),
+    );
+  }
+}
+
+class DamagesCreatePage extends StatelessWidget {
+  final String? reservationObjectId;
+  final double padding = 16;
+
+  const DamagesCreatePage({
+    Key? key,
+    this.reservationObjectId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => DamageForm(),
+      child: _DamagesCreateForm(
+        reservationObjectId: reservationObjectId,
+      ),
     );
   }
 }
