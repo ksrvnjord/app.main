@@ -3,19 +3,28 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<List<QueryDocumentSnapshot<Damage>>> allDamages(
+Future<List<DocumentSnapshot<Damage>>> allDamages(
   String? reservationObjectId,
 ) async {
-  var damagesQuery = db.collectionGroup("damages").withConverter<Damage>(
-        fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
-        toFirestore: (reservation, _) => reservation.toJson(),
-      );
-
   if (reservationObjectId != null) {
-    damagesQuery = damagesQuery.where('parent', isEqualTo: reservationObjectId);
+    return (await db
+            .collection("reservationObjects")
+            .doc(reservationObjectId)
+            .collection("damages")
+            .withConverter<Damage>(
+              fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
+              toFirestore: (reservation, _) => reservation.toJson(),
+            )
+            .get())
+        .docs;
   }
 
-  final damages = await damagesQuery.get();
-
-  return damages.docs;
+  return (await db
+          .collectionGroup("damages")
+          .withConverter<Damage>(
+            fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
+            toFirestore: (reservation, _) => reservation.toJson(),
+          )
+          .get())
+      .docs;
 }
