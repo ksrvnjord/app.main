@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -104,6 +105,7 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
 
   Widget buildCommissieList(QuerySnapshot<CommissieEntry> snapshot) {
     List<QueryDocumentSnapshot<CommissieEntry>> docs = snapshot.docs;
+    docs.sort((a, b) => compareCommissieFunctie(a.data(), b.data()));
 
     return <Widget>[
       ...docs.map(
@@ -120,5 +122,16 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
           textAlign: TextAlign.center,
         ),
     ].toColumn();
+  }
+
+  /// Compare the bestuursfuncties op basis van constitutie
+  int compareCommissieFunctie(CommissieEntry a, CommissieEntry b) {
+    int aPos = substructuurVolgorde.indexOf(a.function ?? "");
+    int bPos = substructuurVolgorde.indexOf(b.function ?? "");
+    // Order the ones that are not in the list at the end
+    if (aPos == -1) aPos = substructuurVolgorde.length;
+    if (bPos == -1) bPos = substructuurVolgorde.length;
+
+    return aPos.compareTo(bPos);
   }
 }
