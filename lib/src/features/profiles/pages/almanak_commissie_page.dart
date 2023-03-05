@@ -24,9 +24,20 @@ class AlmanakCommissiePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<QuerySnapshot<CommissieEntry>> getCommissieLeeden(String commissie) {
-      return commissiesRef.where('name', isEqualTo: commissie).get();
+    Future<QuerySnapshot<CommissieEntry>> getCommissieLeedenFromYear(
+      String commissie,
+      int year,
+    ) {
+      return commissiesRef
+          .where('name', isEqualTo: commissie)
+          .where('startYear', isEqualTo: year)
+          .get();
     }
+
+    final DateTime now = DateTime.now();
+    final int njordYear = now.month >= 9 // njord year starts in september
+        ? now.year
+        : now.year - 1;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +51,7 @@ class AlmanakCommissiePage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: [
           FutureWrapper(
-            future: getCommissieLeeden(commissieName),
+            future: getCommissieLeedenFromYear(commissieName, njordYear),
             success: (snapshot) => buildCommissieList(snapshot),
             error: (error) => ErrorCardWidget(errorMessage: error.toString()),
           ),
