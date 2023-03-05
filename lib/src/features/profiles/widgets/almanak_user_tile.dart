@@ -6,12 +6,12 @@ class AlmanakUserTile extends StatelessWidget {
     super.key,
     required this.firstName,
     required this.lastName,
-    required this.subtitle,
+    this.subtitle,
     required this.lidnummer,
   });
   final String firstName;
   final String lastName;
-  final String subtitle;
+  final String? subtitle;
   final String lidnummer;
 
   @override
@@ -19,7 +19,7 @@ class AlmanakUserTile extends StatelessWidget {
     return ListTile(
       leading: ProfilePictureWidget(userId: lidnummer),
       title: Text("$firstName $lastName"),
-      subtitle: Text(subtitle),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
     );
   }
 }

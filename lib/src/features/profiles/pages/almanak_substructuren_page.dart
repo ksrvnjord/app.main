@@ -34,8 +34,8 @@ class AlmanakSubstructurenPage extends StatelessWidget {
                     Icons.arrow_forward_ios,
                     color: Colors.lightBlue,
                   ),
-                  onTap: () => Routemaster.of(context)
-                      .push('substructuur', queryParameters: {
+                  onTap: () =>
+                      Routemaster.of(context).push('leeden', queryParameters: {
                     'substructuur': substructuurName,
                   }),
                 ),

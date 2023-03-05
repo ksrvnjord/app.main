@@ -18,6 +18,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_leeden_pa
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_substructuren_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
@@ -80,6 +81,12 @@ final routeMap = RouteMap(
     '/almanak/substructuren': (_) => const CupertinoPage(
           name: 'Substructuren',
           child: AlmanakSubstructurenPage(),
+        ),
+    '/almanak/substructuren/leeden': (route) => CupertinoPage(
+          name: 'Substructuren',
+          child: AlmanakSubstructuurPage(
+            substructuurName: route.queryParameters['substructuur']!,
+          ),
         ),
     '/almanak/commissies/leeden': (route) => CupertinoPage(
           name: 'Commissie',
