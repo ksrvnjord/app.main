@@ -46,11 +46,6 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
           .get();
     }
 
-    final DateTime now = DateTime.now();
-    final int njordYear = now.month >= 9 // njord year starts in september
-        ? now.year
-        : now.year - 1;
-
     const int startYear = 1874;
     final List<Tuple2<int, int>> years = List.generate(
       DateTime.now().year - startYear,
@@ -61,7 +56,7 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
       ),
     ).toList();
 
-    const double menuMaxHeight = 240;
+    const double menuMaxHeight = 256;
 
     return Scaffold(
       appBar: AppBar(
@@ -74,22 +69,26 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          DropdownButton<Tuple2<int, int>>(
-            value: selectedYear,
-            icon: const Icon(Icons.arrow_drop_down),
-            menuMaxHeight: menuMaxHeight,
-            items: years
-                .map(
-                  (year) => DropdownMenuItem<Tuple2<int, int>>(
-                    value: year,
-                    child: Text("${year.item1}-${year.item2}"),
-                  ),
-                )
-                .toList(),
-            onChanged: (tuple) => setState(() {
-              selectedYear = tuple!;
-            }),
-          ),
+          [
+            const Text('Kies een jaar: ').textColor(Colors.blueGrey),
+            DropdownButton<Tuple2<int, int>>(
+              value: selectedYear,
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+              menuMaxHeight: menuMaxHeight,
+              items: years
+                  .map(
+                    (year) => DropdownMenuItem<Tuple2<int, int>>(
+                      value: year,
+                      child: Text("${year.item1}-${year.item2}")
+                          .textColor(Colors.blueGrey),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (tuple) => setState(() {
+                selectedYear = tuple!;
+              }),
+            ),
+          ].toRow(),
           FutureWrapper(
             future: getCommissieLeedenFromYear(
               widget.commissieName,
