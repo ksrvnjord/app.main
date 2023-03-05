@@ -41,9 +41,13 @@ class AlmanakPage extends StatelessWidget {
           const AlmanakStructureChoiceWidget(
             title: "Commissies",
             pushRoute: "commissies",
-            imagePath: 'assets/images/commissies.png',
+            imagePath: 'assets/images/commissies.jpeg',
           ).padding(all: choiceWidgetPadding),
-          // TODO: Add huizen
+          const AlmanakStructureChoiceWidget(
+            pushRoute: "huizen",
+            title: "Huizen",
+            imagePath: 'assets/images/huizen.jpeg',
+          ).padding(all: choiceWidgetPadding),
           // TODO: Add ploegen
           const AlmanakStructureChoiceWidget(
             title: "Substructuren",
