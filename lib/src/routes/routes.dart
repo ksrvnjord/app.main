@@ -86,34 +86,21 @@ final routeMap = RouteMap(
     '/training/all/:id': (info) => CupertinoPage(
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/reservationObject/:reservationObjectId': (route) =>
-        CupertinoPage(
-          child: ShowReservationObjectPage(
-            documentId: route.pathParameters['reservationObjectId']!,
-            name: route.queryParameters['name']!,
-          ),
-        ),
-    '/training/damages': (route) =>
+    '/training/all/damages': (route) =>
         const CupertinoPage(child: DamagesListPage()),
-    '/training/damages/create': (route) =>
+    '/training/all/damages/create': (route) =>
         const CupertinoPage(child: DamagesCreatePage()),
-    '/training/all/reservationObject/:reservationObjectId/damages': (route) =>
-        CupertinoPage(
-          child: DamagesListPage(
-            reservationObjectId: route.pathParameters['reservationObjectId']!,
-          ),
-        ),
-    '/training/all/reservationObject/:reservationObjectId/damages/:id':
+    '/training/all/reservationObject/:reservationObjectId/damages/:id/edit':
         (route) => CupertinoPage(
-              child: DamagesShowPage(
+              child: DamagesEditPage(
                 id: route.pathParameters['id']!,
                 reservationObjectId:
                     route.pathParameters['reservationObjectId']!,
               ),
             ),
-    '/training/all/reservationObject/:reservationObjectId/damages/:id/edit':
+    '/training/all/reservationObject/:reservationObjectId/damages/:id':
         (route) => CupertinoPage(
-              child: DamagesEditPage(
+              child: DamagesShowPage(
                 id: route.pathParameters['id']!,
                 reservationObjectId:
                     route.pathParameters['reservationObjectId']!,
@@ -126,6 +113,19 @@ final routeMap = RouteMap(
                     route.pathParameters['reservationObjectId']!,
               ),
             ),
+    '/training/all/reservationObject/:reservationObjectId/damages': (route) =>
+        CupertinoPage(
+          child: DamagesListPage(
+            reservationObjectId: route.pathParameters['reservationObjectId']!,
+          ),
+        ),
+    '/training/all/reservationObject/:reservationObjectId': (route) =>
+        CupertinoPage(
+          child: ShowReservationObjectPage(
+            documentId: route.pathParameters['reservationObjectId']!,
+            name: route.queryParameters['name']!,
+          ),
+        ),
     '/more': (route) => const CupertinoPage(
           name: 'More',
           child: MorePage(),
