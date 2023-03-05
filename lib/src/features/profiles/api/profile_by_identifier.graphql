@@ -1,4 +1,4 @@
-query AlmanakProfile ($profileId: String!) {
+query AlmanakProfileByIdentifier ($profileId: String!) {
     userByIdentifier (identifier: $profileId) {
         identifier,
         email,

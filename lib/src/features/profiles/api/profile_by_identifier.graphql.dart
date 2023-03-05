@@ -4,19 +4,21 @@ import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 
-class Variables$Query$AlmanakProfile {
-  factory Variables$Query$AlmanakProfile({required String profileId}) =>
-      Variables$Query$AlmanakProfile._({
+class Variables$Query$AlmanakProfileByIdentifier {
+  factory Variables$Query$AlmanakProfileByIdentifier(
+          {required String profileId}) =>
+      Variables$Query$AlmanakProfileByIdentifier._({
         r'profileId': profileId,
       });
 
-  Variables$Query$AlmanakProfile._(this._$data);
+  Variables$Query$AlmanakProfileByIdentifier._(this._$data);
 
-  factory Variables$Query$AlmanakProfile.fromJson(Map<String, dynamic> data) {
+  factory Variables$Query$AlmanakProfileByIdentifier.fromJson(
+      Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
     final l$profileId = data['profileId'];
     result$data['profileId'] = (l$profileId as String);
-    return Variables$Query$AlmanakProfile._(result$data);
+    return Variables$Query$AlmanakProfileByIdentifier._(result$data);
   }
 
   Map<String, dynamic> _$data;
@@ -29,8 +31,9 @@ class Variables$Query$AlmanakProfile {
     return result$data;
   }
 
-  CopyWith$Variables$Query$AlmanakProfile<Variables$Query$AlmanakProfile>
-      get copyWith => CopyWith$Variables$Query$AlmanakProfile(
+  CopyWith$Variables$Query$AlmanakProfileByIdentifier<
+          Variables$Query$AlmanakProfileByIdentifier>
+      get copyWith => CopyWith$Variables$Query$AlmanakProfileByIdentifier(
             this,
             (i) => i,
           );
@@ -39,7 +42,7 @@ class Variables$Query$AlmanakProfile {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Variables$Query$AlmanakProfile) ||
+    if (!(other is Variables$Query$AlmanakProfileByIdentifier) ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -58,65 +61,66 @@ class Variables$Query$AlmanakProfile {
   }
 }
 
-abstract class CopyWith$Variables$Query$AlmanakProfile<TRes> {
-  factory CopyWith$Variables$Query$AlmanakProfile(
-    Variables$Query$AlmanakProfile instance,
-    TRes Function(Variables$Query$AlmanakProfile) then,
-  ) = _CopyWithImpl$Variables$Query$AlmanakProfile;
+abstract class CopyWith$Variables$Query$AlmanakProfileByIdentifier<TRes> {
+  factory CopyWith$Variables$Query$AlmanakProfileByIdentifier(
+    Variables$Query$AlmanakProfileByIdentifier instance,
+    TRes Function(Variables$Query$AlmanakProfileByIdentifier) then,
+  ) = _CopyWithImpl$Variables$Query$AlmanakProfileByIdentifier;
 
-  factory CopyWith$Variables$Query$AlmanakProfile.stub(TRes res) =
-      _CopyWithStubImpl$Variables$Query$AlmanakProfile;
+  factory CopyWith$Variables$Query$AlmanakProfileByIdentifier.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Query$AlmanakProfileByIdentifier;
 
   TRes call({String? profileId});
 }
 
-class _CopyWithImpl$Variables$Query$AlmanakProfile<TRes>
-    implements CopyWith$Variables$Query$AlmanakProfile<TRes> {
-  _CopyWithImpl$Variables$Query$AlmanakProfile(
+class _CopyWithImpl$Variables$Query$AlmanakProfileByIdentifier<TRes>
+    implements CopyWith$Variables$Query$AlmanakProfileByIdentifier<TRes> {
+  _CopyWithImpl$Variables$Query$AlmanakProfileByIdentifier(
     this._instance,
     this._then,
   );
 
-  final Variables$Query$AlmanakProfile _instance;
+  final Variables$Query$AlmanakProfileByIdentifier _instance;
 
-  final TRes Function(Variables$Query$AlmanakProfile) _then;
+  final TRes Function(Variables$Query$AlmanakProfileByIdentifier) _then;
 
   static const _undefined = {};
 
   TRes call({Object? profileId = _undefined}) =>
-      _then(Variables$Query$AlmanakProfile._({
+      _then(Variables$Query$AlmanakProfileByIdentifier._({
         ..._instance._$data,
         if (profileId != _undefined && profileId != null)
           'profileId': (profileId as String),
       }));
 }
 
-class _CopyWithStubImpl$Variables$Query$AlmanakProfile<TRes>
-    implements CopyWith$Variables$Query$AlmanakProfile<TRes> {
-  _CopyWithStubImpl$Variables$Query$AlmanakProfile(this._res);
+class _CopyWithStubImpl$Variables$Query$AlmanakProfileByIdentifier<TRes>
+    implements CopyWith$Variables$Query$AlmanakProfileByIdentifier<TRes> {
+  _CopyWithStubImpl$Variables$Query$AlmanakProfileByIdentifier(this._res);
 
   TRes _res;
 
   call({String? profileId}) => _res;
 }
 
-class Query$AlmanakProfile {
-  Query$AlmanakProfile({
+class Query$AlmanakProfileByIdentifier {
+  Query$AlmanakProfileByIdentifier({
     required this.userByIdentifier,
     required this.$__typename,
   });
 
-  factory Query$AlmanakProfile.fromJson(Map<String, dynamic> json) {
+  factory Query$AlmanakProfileByIdentifier.fromJson(Map<String, dynamic> json) {
     final l$userByIdentifier = json['userByIdentifier'];
     final l$$__typename = json['__typename'];
-    return Query$AlmanakProfile(
-      userByIdentifier: Query$AlmanakProfile$userByIdentifier.fromJson(
-          (l$userByIdentifier as Map<String, dynamic>)),
+    return Query$AlmanakProfileByIdentifier(
+      userByIdentifier:
+          Query$AlmanakProfileByIdentifier$userByIdentifier.fromJson(
+              (l$userByIdentifier as Map<String, dynamic>)),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$AlmanakProfile$userByIdentifier userByIdentifier;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier userByIdentifier;
 
   final String $__typename;
 
@@ -144,7 +148,8 @@ class Query$AlmanakProfile {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$AlmanakProfile) || runtimeType != other.runtimeType) {
+    if (!(other is Query$AlmanakProfileByIdentifier) ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$userByIdentifier = userByIdentifier;
@@ -161,40 +166,42 @@ class Query$AlmanakProfile {
   }
 }
 
-extension UtilityExtension$Query$AlmanakProfile on Query$AlmanakProfile {
-  CopyWith$Query$AlmanakProfile<Query$AlmanakProfile> get copyWith =>
-      CopyWith$Query$AlmanakProfile(
-        this,
-        (i) => i,
-      );
+extension UtilityExtension$Query$AlmanakProfileByIdentifier
+    on Query$AlmanakProfileByIdentifier {
+  CopyWith$Query$AlmanakProfileByIdentifier<Query$AlmanakProfileByIdentifier>
+      get copyWith => CopyWith$Query$AlmanakProfileByIdentifier(
+            this,
+            (i) => i,
+          );
 }
 
-abstract class CopyWith$Query$AlmanakProfile<TRes> {
-  factory CopyWith$Query$AlmanakProfile(
-    Query$AlmanakProfile instance,
-    TRes Function(Query$AlmanakProfile) then,
-  ) = _CopyWithImpl$Query$AlmanakProfile;
+abstract class CopyWith$Query$AlmanakProfileByIdentifier<TRes> {
+  factory CopyWith$Query$AlmanakProfileByIdentifier(
+    Query$AlmanakProfileByIdentifier instance,
+    TRes Function(Query$AlmanakProfileByIdentifier) then,
+  ) = _CopyWithImpl$Query$AlmanakProfileByIdentifier;
 
-  factory CopyWith$Query$AlmanakProfile.stub(TRes res) =
-      _CopyWithStubImpl$Query$AlmanakProfile;
+  factory CopyWith$Query$AlmanakProfileByIdentifier.stub(TRes res) =
+      _CopyWithStubImpl$Query$AlmanakProfileByIdentifier;
 
   TRes call({
-    Query$AlmanakProfile$userByIdentifier? userByIdentifier,
+    Query$AlmanakProfileByIdentifier$userByIdentifier? userByIdentifier,
     String? $__typename,
   });
-  CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> get userByIdentifier;
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
+      get userByIdentifier;
 }
 
-class _CopyWithImpl$Query$AlmanakProfile<TRes>
-    implements CopyWith$Query$AlmanakProfile<TRes> {
-  _CopyWithImpl$Query$AlmanakProfile(
+class _CopyWithImpl$Query$AlmanakProfileByIdentifier<TRes>
+    implements CopyWith$Query$AlmanakProfileByIdentifier<TRes> {
+  _CopyWithImpl$Query$AlmanakProfileByIdentifier(
     this._instance,
     this._then,
   );
 
-  final Query$AlmanakProfile _instance;
+  final Query$AlmanakProfileByIdentifier _instance;
 
-  final TRes Function(Query$AlmanakProfile) _then;
+  final TRes Function(Query$AlmanakProfileByIdentifier) _then;
 
   static const _undefined = {};
 
@@ -202,41 +209,44 @@ class _CopyWithImpl$Query$AlmanakProfile<TRes>
     Object? userByIdentifier = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$AlmanakProfile(
+      _then(Query$AlmanakProfileByIdentifier(
         userByIdentifier:
             userByIdentifier == _undefined || userByIdentifier == null
                 ? _instance.userByIdentifier
-                : (userByIdentifier as Query$AlmanakProfile$userByIdentifier),
+                : (userByIdentifier
+                    as Query$AlmanakProfileByIdentifier$userByIdentifier),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
       ));
-  CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> get userByIdentifier {
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
+      get userByIdentifier {
     final local$userByIdentifier = _instance.userByIdentifier;
-    return CopyWith$Query$AlmanakProfile$userByIdentifier(
+    return CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier(
         local$userByIdentifier, (e) => call(userByIdentifier: e));
   }
 }
 
-class _CopyWithStubImpl$Query$AlmanakProfile<TRes>
-    implements CopyWith$Query$AlmanakProfile<TRes> {
-  _CopyWithStubImpl$Query$AlmanakProfile(this._res);
+class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier<TRes>
+    implements CopyWith$Query$AlmanakProfileByIdentifier<TRes> {
+  _CopyWithStubImpl$Query$AlmanakProfileByIdentifier(this._res);
 
   TRes _res;
 
   call({
-    Query$AlmanakProfile$userByIdentifier? userByIdentifier,
+    Query$AlmanakProfileByIdentifier$userByIdentifier? userByIdentifier,
     String? $__typename,
   }) =>
       _res;
-  CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> get userByIdentifier =>
-      CopyWith$Query$AlmanakProfile$userByIdentifier.stub(_res);
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
+      get userByIdentifier =>
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier.stub(_res);
 }
 
-const documentNodeQueryAlmanakProfile = DocumentNode(definitions: [
+const documentNodeQueryAlmanakProfileByIdentifier = DocumentNode(definitions: [
   OperationDefinitionNode(
     type: OperationType.query,
-    name: NameNode(value: 'AlmanakProfile'),
+    name: NameNode(value: 'AlmanakProfileByIdentifier'),
     variableDefinitions: [
       VariableDefinitionNode(
         variable: VariableNode(name: NameNode(value: 'profileId')),
@@ -394,15 +404,15 @@ const documentNodeQueryAlmanakProfile = DocumentNode(definitions: [
     ]),
   ),
 ]);
-Query$AlmanakProfile _parserFn$Query$AlmanakProfile(
+Query$AlmanakProfileByIdentifier _parserFn$Query$AlmanakProfileByIdentifier(
         Map<String, dynamic> data) =>
-    Query$AlmanakProfile.fromJson(data);
+    Query$AlmanakProfileByIdentifier.fromJson(data);
 
-class Options$Query$AlmanakProfile
-    extends graphql.QueryOptions<Query$AlmanakProfile> {
-  Options$Query$AlmanakProfile({
+class Options$Query$AlmanakProfileByIdentifier
+    extends graphql.QueryOptions<Query$AlmanakProfileByIdentifier> {
+  Options$Query$AlmanakProfileByIdentifier({
     String? operationName,
-    required Variables$Query$AlmanakProfile variables,
+    required Variables$Query$AlmanakProfileByIdentifier variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -418,16 +428,16 @@ class Options$Query$AlmanakProfile
           optimisticResult: optimisticResult,
           pollInterval: pollInterval,
           context: context,
-          document: documentNodeQueryAlmanakProfile,
-          parserFn: _parserFn$Query$AlmanakProfile,
+          document: documentNodeQueryAlmanakProfileByIdentifier,
+          parserFn: _parserFn$Query$AlmanakProfileByIdentifier,
         );
 }
 
-class WatchOptions$Query$AlmanakProfile
-    extends graphql.WatchQueryOptions<Query$AlmanakProfile> {
-  WatchOptions$Query$AlmanakProfile({
+class WatchOptions$Query$AlmanakProfileByIdentifier
+    extends graphql.WatchQueryOptions<Query$AlmanakProfileByIdentifier> {
+  WatchOptions$Query$AlmanakProfileByIdentifier({
     String? operationName,
-    required Variables$Query$AlmanakProfile variables,
+    required Variables$Query$AlmanakProfileByIdentifier variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -445,75 +455,85 @@ class WatchOptions$Query$AlmanakProfile
           cacheRereadPolicy: cacheRereadPolicy,
           optimisticResult: optimisticResult,
           context: context,
-          document: documentNodeQueryAlmanakProfile,
+          document: documentNodeQueryAlmanakProfileByIdentifier,
           pollInterval: pollInterval,
           eagerlyFetchResults: eagerlyFetchResults,
           carryForwardDataOnException: carryForwardDataOnException,
           fetchResults: fetchResults,
-          parserFn: _parserFn$Query$AlmanakProfile,
+          parserFn: _parserFn$Query$AlmanakProfileByIdentifier,
         );
 }
 
-class FetchMoreOptions$Query$AlmanakProfile extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$AlmanakProfile({
+class FetchMoreOptions$Query$AlmanakProfileByIdentifier
+    extends graphql.FetchMoreOptions {
+  FetchMoreOptions$Query$AlmanakProfileByIdentifier({
     required graphql.UpdateQuery updateQuery,
-    required Variables$Query$AlmanakProfile variables,
+    required Variables$Query$AlmanakProfileByIdentifier variables,
   }) : super(
           updateQuery: updateQuery,
           variables: variables.toJson(),
-          document: documentNodeQueryAlmanakProfile,
+          document: documentNodeQueryAlmanakProfileByIdentifier,
         );
 }
 
-extension ClientExtension$Query$AlmanakProfile on graphql.GraphQLClient {
-  Future<graphql.QueryResult<Query$AlmanakProfile>> query$AlmanakProfile(
-          Options$Query$AlmanakProfile options) async =>
-      await this.query(options);
-  graphql.ObservableQuery<Query$AlmanakProfile> watchQuery$AlmanakProfile(
-          WatchOptions$Query$AlmanakProfile options) =>
-      this.watchQuery(options);
-  void writeQuery$AlmanakProfile({
-    required Query$AlmanakProfile data,
-    required Variables$Query$AlmanakProfile variables,
+extension ClientExtension$Query$AlmanakProfileByIdentifier
+    on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Query$AlmanakProfileByIdentifier>>
+      query$AlmanakProfileByIdentifier(
+              Options$Query$AlmanakProfileByIdentifier options) async =>
+          await this.query(options);
+  graphql.ObservableQuery<Query$AlmanakProfileByIdentifier>
+      watchQuery$AlmanakProfileByIdentifier(
+              WatchOptions$Query$AlmanakProfileByIdentifier options) =>
+          this.watchQuery(options);
+  void writeQuery$AlmanakProfileByIdentifier({
+    required Query$AlmanakProfileByIdentifier data,
+    required Variables$Query$AlmanakProfileByIdentifier variables,
     bool broadcast = true,
   }) =>
       this.writeQuery(
         graphql.Request(
-          operation:
-              graphql.Operation(document: documentNodeQueryAlmanakProfile),
+          operation: graphql.Operation(
+              document: documentNodeQueryAlmanakProfileByIdentifier),
           variables: variables.toJson(),
         ),
         data: data.toJson(),
         broadcast: broadcast,
       );
-  Query$AlmanakProfile? readQuery$AlmanakProfile({
-    required Variables$Query$AlmanakProfile variables,
+  Query$AlmanakProfileByIdentifier? readQuery$AlmanakProfileByIdentifier({
+    required Variables$Query$AlmanakProfileByIdentifier variables,
     bool optimistic = true,
   }) {
     final result = this.readQuery(
       graphql.Request(
-        operation: graphql.Operation(document: documentNodeQueryAlmanakProfile),
+        operation: graphql.Operation(
+            document: documentNodeQueryAlmanakProfileByIdentifier),
         variables: variables.toJson(),
       ),
       optimistic: optimistic,
     );
-    return result == null ? null : Query$AlmanakProfile.fromJson(result);
+    return result == null
+        ? null
+        : Query$AlmanakProfileByIdentifier.fromJson(result);
   }
 }
 
-graphql_flutter.QueryHookResult<Query$AlmanakProfile> useQuery$AlmanakProfile(
-        Options$Query$AlmanakProfile options) =>
-    graphql_flutter.useQuery(options);
-graphql.ObservableQuery<Query$AlmanakProfile> useWatchQuery$AlmanakProfile(
-        WatchOptions$Query$AlmanakProfile options) =>
-    graphql_flutter.useWatchQuery(options);
+graphql_flutter.QueryHookResult<Query$AlmanakProfileByIdentifier>
+    useQuery$AlmanakProfileByIdentifier(
+            Options$Query$AlmanakProfileByIdentifier options) =>
+        graphql_flutter.useQuery(options);
+graphql.ObservableQuery<Query$AlmanakProfileByIdentifier>
+    useWatchQuery$AlmanakProfileByIdentifier(
+            WatchOptions$Query$AlmanakProfileByIdentifier options) =>
+        graphql_flutter.useWatchQuery(options);
 
-class Query$AlmanakProfile$Widget
-    extends graphql_flutter.Query<Query$AlmanakProfile> {
-  Query$AlmanakProfile$Widget({
+class Query$AlmanakProfileByIdentifier$Widget
+    extends graphql_flutter.Query<Query$AlmanakProfileByIdentifier> {
+  Query$AlmanakProfileByIdentifier$Widget({
     widgets.Key? key,
-    required Options$Query$AlmanakProfile options,
-    required graphql_flutter.QueryBuilder<Query$AlmanakProfile> builder,
+    required Options$Query$AlmanakProfileByIdentifier options,
+    required graphql_flutter.QueryBuilder<Query$AlmanakProfileByIdentifier>
+        builder,
   }) : super(
           key: key,
           options: options,
@@ -521,8 +541,8 @@ class Query$AlmanakProfile$Widget
         );
 }
 
-class Query$AlmanakProfile$userByIdentifier {
-  Query$AlmanakProfile$userByIdentifier({
+class Query$AlmanakProfileByIdentifier$userByIdentifier {
+  Query$AlmanakProfileByIdentifier$userByIdentifier({
     required this.identifier,
     required this.email,
     required this.username,
@@ -530,19 +550,19 @@ class Query$AlmanakProfile$userByIdentifier {
     required this.$__typename,
   });
 
-  factory Query$AlmanakProfile$userByIdentifier.fromJson(
+  factory Query$AlmanakProfileByIdentifier$userByIdentifier.fromJson(
       Map<String, dynamic> json) {
     final l$identifier = json['identifier'];
     final l$email = json['email'];
     final l$username = json['username'];
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
-    return Query$AlmanakProfile$userByIdentifier(
+    return Query$AlmanakProfileByIdentifier$userByIdentifier(
       identifier: (l$identifier as String),
       email: (l$email as String),
       username: (l$username as String),
-      fullContact: Query$AlmanakProfile$userByIdentifier$fullContact.fromJson(
-          (l$fullContact as Map<String, dynamic>)),
+      fullContact: Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact
+          .fromJson((l$fullContact as Map<String, dynamic>)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -553,7 +573,8 @@ class Query$AlmanakProfile$userByIdentifier {
 
   final String username;
 
-  final Query$AlmanakProfile$userByIdentifier$fullContact fullContact;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact
+      fullContact;
 
   final String $__typename;
 
@@ -593,7 +614,7 @@ class Query$AlmanakProfile$userByIdentifier {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$AlmanakProfile$userByIdentifier) ||
+    if (!(other is Query$AlmanakProfileByIdentifier$userByIdentifier) ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -626,46 +647,50 @@ class Query$AlmanakProfile$userByIdentifier {
   }
 }
 
-extension UtilityExtension$Query$AlmanakProfile$userByIdentifier
-    on Query$AlmanakProfile$userByIdentifier {
-  CopyWith$Query$AlmanakProfile$userByIdentifier<
-          Query$AlmanakProfile$userByIdentifier>
-      get copyWith => CopyWith$Query$AlmanakProfile$userByIdentifier(
+extension UtilityExtension$Query$AlmanakProfileByIdentifier$userByIdentifier
+    on Query$AlmanakProfileByIdentifier$userByIdentifier {
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<
+          Query$AlmanakProfileByIdentifier$userByIdentifier>
+      get copyWith =>
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier(
             this,
             (i) => i,
           );
 }
 
-abstract class CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> {
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier(
-    Query$AlmanakProfile$userByIdentifier instance,
-    TRes Function(Query$AlmanakProfile$userByIdentifier) then,
-  ) = _CopyWithImpl$Query$AlmanakProfile$userByIdentifier;
+abstract class CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<
+    TRes> {
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier(
+    Query$AlmanakProfileByIdentifier$userByIdentifier instance,
+    TRes Function(Query$AlmanakProfileByIdentifier$userByIdentifier) then,
+  ) = _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier;
 
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier.stub(TRes res) =
-      _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier;
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier.stub(
+          TRes res) =
+      _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier;
 
   TRes call({
     String? identifier,
     String? email,
     String? username,
-    Query$AlmanakProfile$userByIdentifier$fullContact? fullContact,
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact? fullContact,
     String? $__typename,
   });
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<TRes>
       get fullContact;
 }
 
-class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier<TRes>
-    implements CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> {
-  _CopyWithImpl$Query$AlmanakProfile$userByIdentifier(
+class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
+    implements
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes> {
+  _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier(
     this._instance,
     this._then,
   );
 
-  final Query$AlmanakProfile$userByIdentifier _instance;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier _instance;
 
-  final TRes Function(Query$AlmanakProfile$userByIdentifier) _then;
+  final TRes Function(Query$AlmanakProfileByIdentifier$userByIdentifier) _then;
 
   static const _undefined = {};
 
@@ -676,7 +701,7 @@ class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier<TRes>
     Object? fullContact = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$AlmanakProfile$userByIdentifier(
+      _then(Query$AlmanakProfileByIdentifier$userByIdentifier(
         identifier: identifier == _undefined || identifier == null
             ? _instance.identifier
             : (identifier as String),
@@ -689,22 +714,24 @@ class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier<TRes>
         fullContact: fullContact == _undefined || fullContact == null
             ? _instance.fullContact
             : (fullContact
-                as Query$AlmanakProfile$userByIdentifier$fullContact),
+                as Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
       ));
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<TRes>
       get fullContact {
     final local$fullContact = _instance.fullContact;
-    return CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact(
+    return CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
         local$fullContact, (e) => call(fullContact: e));
   }
 }
 
-class _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier<TRes>
-    implements CopyWith$Query$AlmanakProfile$userByIdentifier<TRes> {
-  _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier(this._res);
+class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
+    implements
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes> {
+  _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier(
+      this._res);
 
   TRes _res;
 
@@ -712,33 +739,36 @@ class _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier<TRes>
     String? identifier,
     String? email,
     String? username,
-    Query$AlmanakProfile$userByIdentifier$fullContact? fullContact,
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact? fullContact,
     String? $__typename,
   }) =>
       _res;
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<TRes>
       get fullContact =>
-          CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact.stub(_res);
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact
+              .stub(_res);
 }
 
-class Query$AlmanakProfile$userByIdentifier$fullContact {
-  Query$AlmanakProfile$userByIdentifier$fullContact({
+class Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact {
+  Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact({
     required this.public,
     required this.$__typename,
   });
 
-  factory Query$AlmanakProfile$userByIdentifier$fullContact.fromJson(
+  factory Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact.fromJson(
       Map<String, dynamic> json) {
     final l$public = json['public'];
     final l$$__typename = json['__typename'];
-    return Query$AlmanakProfile$userByIdentifier$fullContact(
-      public: Query$AlmanakProfile$userByIdentifier$fullContact$public.fromJson(
-          (l$public as Map<String, dynamic>)),
+    return Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
+      public:
+          Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+              .fromJson((l$public as Map<String, dynamic>)),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$AlmanakProfile$userByIdentifier$fullContact$public public;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+      public;
 
   final String $__typename;
 
@@ -766,7 +796,8 @@ class Query$AlmanakProfile$userByIdentifier$fullContact {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$AlmanakProfile$userByIdentifier$fullContact) ||
+    if (!(other
+            is Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact) ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -784,47 +815,52 @@ class Query$AlmanakProfile$userByIdentifier$fullContact {
   }
 }
 
-extension UtilityExtension$Query$AlmanakProfile$userByIdentifier$fullContact
-    on Query$AlmanakProfile$userByIdentifier$fullContact {
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<
-          Query$AlmanakProfile$userByIdentifier$fullContact>
+extension UtilityExtension$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact
+    on Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact {
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
+          Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact>
       get copyWith =>
-          CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact(
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
             this,
             (i) => i,
           );
 }
 
-abstract class CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<
+abstract class CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
     TRes> {
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact(
-    Query$AlmanakProfile$userByIdentifier$fullContact instance,
-    TRes Function(Query$AlmanakProfile$userByIdentifier$fullContact) then,
-  ) = _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact;
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact instance,
+    TRes Function(Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact)
+        then,
+  ) = _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact;
 
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact.stub(
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact.stub(
           TRes res) =
-      _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact;
+      _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact;
 
   TRes call({
-    Query$AlmanakProfile$userByIdentifier$fullContact$public? public,
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public?
+        public,
     String? $__typename,
   });
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<TRes>
-      get public;
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
+      TRes> get public;
 }
 
-class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
+class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
+        TRes>
     implements
-        CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<TRes> {
-  _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact(
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
+            TRes> {
+  _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
     this._instance,
     this._then,
   );
 
-  final Query$AlmanakProfile$userByIdentifier$fullContact _instance;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact _instance;
 
-  final TRes Function(Query$AlmanakProfile$userByIdentifier$fullContact) _then;
+  final TRes Function(
+      Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact) _then;
 
   static const _undefined = {};
 
@@ -832,44 +868,48 @@ class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
     Object? public = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$AlmanakProfile$userByIdentifier$fullContact(
+      _then(Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
         public: public == _undefined || public == null
             ? _instance.public
             : (public
-                as Query$AlmanakProfile$userByIdentifier$fullContact$public),
+                as Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public),
         $__typename: $__typename == _undefined || $__typename == null
             ? _instance.$__typename
             : ($__typename as String),
       ));
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<TRes>
-      get public {
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
+      TRes> get public {
     final local$public = _instance.public;
-    return CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public(
+    return CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
         local$public, (e) => call(public: e));
   }
 }
 
-class _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact<TRes>
+class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
+        TRes>
     implements
-        CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact<TRes> {
-  _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact(
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact<
+            TRes> {
+  _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact(
       this._res);
 
   TRes _res;
 
   call({
-    Query$AlmanakProfile$userByIdentifier$fullContact$public? public,
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public?
+        public,
     String? $__typename,
   }) =>
       _res;
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<TRes>
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
+          TRes>
       get public =>
-          CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
               .stub(_res);
 }
 
-class Query$AlmanakProfile$userByIdentifier$fullContact$public {
-  Query$AlmanakProfile$userByIdentifier$fullContact$public({
+class Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public {
+  Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public({
     this.first_name,
     this.last_name,
     this.email,
@@ -882,7 +922,7 @@ class Query$AlmanakProfile$userByIdentifier$fullContact$public {
     required this.$__typename,
   });
 
-  factory Query$AlmanakProfile$userByIdentifier$fullContact$public.fromJson(
+  factory Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public.fromJson(
       Map<String, dynamic> json) {
     final l$first_name = json['first_name'];
     final l$last_name = json['last_name'];
@@ -894,7 +934,7 @@ class Query$AlmanakProfile$userByIdentifier$fullContact$public {
     final l$zipcode = json['zipcode'];
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
-    return Query$AlmanakProfile$userByIdentifier$fullContact$public(
+    return Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
       first_name: (l$first_name as String?),
       last_name: (l$last_name as String?),
       email: (l$email as String?),
@@ -984,7 +1024,8 @@ class Query$AlmanakProfile$userByIdentifier$fullContact$public {
     if (identical(this, other)) {
       return true;
     }
-    if (!(other is Query$AlmanakProfile$userByIdentifier$fullContact$public) ||
+    if (!(other
+            is Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public) ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1042,28 +1083,30 @@ class Query$AlmanakProfile$userByIdentifier$fullContact$public {
   }
 }
 
-extension UtilityExtension$Query$AlmanakProfile$userByIdentifier$fullContact$public
-    on Query$AlmanakProfile$userByIdentifier$fullContact$public {
-  CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<
-          Query$AlmanakProfile$userByIdentifier$fullContact$public>
+extension UtilityExtension$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+    on Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public {
+  CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
+          Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public>
       get copyWith =>
-          CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public(
+          CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
             this,
             (i) => i,
           );
 }
 
-abstract class CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<
+abstract class CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
     TRes> {
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public(
-    Query$AlmanakProfile$userByIdentifier$fullContact$public instance,
-    TRes Function(Query$AlmanakProfile$userByIdentifier$fullContact$public)
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+        instance,
+    TRes Function(
+            Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public)
         then,
-  ) = _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public;
+  ) = _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public;
 
-  factory CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public.stub(
+  factory CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public.stub(
           TRes res) =
-      _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public;
+      _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public;
 
   TRes call({
     String? first_name,
@@ -1079,19 +1122,21 @@ abstract class CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public
   });
 }
 
-class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public<
+class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
         TRes>
     implements
-        CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
             TRes> {
-  _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public(
+  _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
     this._instance,
     this._then,
   );
 
-  final Query$AlmanakProfile$userByIdentifier$fullContact$public _instance;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+      _instance;
 
-  final TRes Function(Query$AlmanakProfile$userByIdentifier$fullContact$public)
+  final TRes Function(
+          Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public)
       _then;
 
   static const _undefined = {};
@@ -1108,7 +1153,8 @@ class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public<
     Object? phone_primary = _undefined,
     Object? $__typename = _undefined,
   }) =>
-      _then(Query$AlmanakProfile$userByIdentifier$fullContact$public(
+      _then(
+          Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
         first_name: first_name == _undefined
             ? _instance.first_name
             : (first_name as String?),
@@ -1135,12 +1181,12 @@ class _CopyWithImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public<
       ));
 }
 
-class _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public<
+class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
         TRes>
     implements
-        CopyWith$Query$AlmanakProfile$userByIdentifier$fullContact$public<
+        CopyWith$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public<
             TRes> {
-  _CopyWithStubImpl$Query$AlmanakProfile$userByIdentifier$fullContact$public(
+  _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public(
       this._res);
 
   TRes _res;
