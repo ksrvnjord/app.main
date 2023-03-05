@@ -23,9 +23,9 @@ class CommissieEntry {
       'startYear': startYear,
       'endYear': endYear,
       'function': function,
-      'first_name': firstName,
-      'last_name': lastName,
-      'lidnummer': lidnummer,
+      'user_first_name': firstName,
+      'user_last_name': lastName,
+      'user_identifier': lidnummer,
     };
   }
 
@@ -35,9 +35,9 @@ class CommissieEntry {
       startYear: json['startYear'],
       endYear: json['endYear'],
       function: json['function'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      lidnummer: json['lidnummer'],
+      firstName: json['user_first_name'],
+      lastName: json['user_last_name'],
+      lidnummer: json['user_identifier'],
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/widgets/edit_commissies_list.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -38,6 +39,7 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
           // use stream to show updates in real time
           stream: getMyCommissies<Stream<QuerySnapshot<CommissieEntry>>>(),
           success: (commissies) => EditCommissiesList(snapshot: commissies),
+          error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         ),
       ]),
       floatingActionButton: // button with a plus icon and the text "Commissie"
