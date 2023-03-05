@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
