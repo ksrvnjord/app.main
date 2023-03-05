@@ -1,10 +1,10 @@
 class CommissieEntry {
   String name;
-  String firstName;
-  String lastName;
-  String lidnummer;
+  String firstName; // user first name
+  String lastName; // user last name
+  String lidnummer; // user identifier
   int startYear;
-  int? endYear;
+  int endYear;
   String? function;
 
   CommissieEntry({
@@ -13,7 +13,7 @@ class CommissieEntry {
     required this.firstName,
     required this.lastName,
     required this.lidnummer,
-    this.endYear,
+    required this.endYear,
     this.function,
   });
 
