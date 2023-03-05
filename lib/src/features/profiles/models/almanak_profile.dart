@@ -4,6 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 class AlmanakProfile {
   // --- FIRESTORE FIELDS ---
+  String? firstName;
+  String? lastName;
   String lidnummer;
   String? study;
   String? board;
@@ -27,6 +29,8 @@ class AlmanakProfile {
 
   AlmanakProfile({
     required this.lidnummer,
+    this.firstName,
+    this.lastName,
     this.study,
     this.board,
     this.ploeg,
@@ -72,6 +76,8 @@ class AlmanakProfile {
           ? List<String>.from(json['substructuren'])
           : null,
       bestuursFunctie: json['bestuurs_functie'] as String?,
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
     );
   }
 

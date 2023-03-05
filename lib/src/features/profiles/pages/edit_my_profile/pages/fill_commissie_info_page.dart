@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class FillCommissieInfoPage extends StatefulWidget {
   const FillCommissieInfoPage({Key? key, required this.commissie})
@@ -20,8 +24,14 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   // create a form key to identify the form
   final _formKey = GlobalKey<FormState>();
 
-  final CommissieEntry _formData =
-      CommissieEntry(name: "", startYear: DateTime.now().year);
+  final CommissieEntry _formData = CommissieEntry(
+    name: "",
+    startYear: DateTime.now().year - 1,
+    endYear: DateTime.now().year,
+    lidnummer: FirebaseAuth.instance.currentUser!.uid,
+    firstName: GetIt.I<CurrentUser>().user!.fullContact.private!.first_name!,
+    lastName: GetIt.I<CurrentUser>().user!.fullContact.private!.last_name!,
+  );
 
   @override
   void initState() {
@@ -32,10 +42,13 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   @override
   Widget build(BuildContext context) {
     const int startYear = 1874;
-    final List<int> years = List.generate(
-      // create a list from current year to startYear
-      DateTime.now().year - startYear + 1,
-      (index) => DateTime.now().year - index,
+    final List<Tuple2<int, int>> years = List.generate(
+      DateTime.now().year - startYear,
+      (index) => Tuple2<int, int>(
+        // '2022-2023', '2021-2022', ...
+        DateTime.now().year - index - 1,
+        DateTime.now().year - index,
+      ),
     ).toList();
 
     const double saveButtonVerticalPadding = 8;
@@ -60,36 +73,25 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
               decoration: const InputDecoration(
                 // The asterisk is a hint to the user that this field is required
                 // ignore: unnecessary_string_escapes
-                labelText: "Wanneer ben je begonnen?\*",
-                hintText: 'Selecteer je beginjaar',
+                labelText: "Welk jaar?\*",
+                hintText: 'Selecteer je commissiejaar',
               ),
               validator: (value) =>
                   value == null ? 'Dit veld is verplicht' : null,
-              onSaved: (newValue) =>
-                  newValue != null ? _formData.startYear = newValue : null,
+              onSaved: (newValue) => {
+                if (newValue != null)
+                  {
+                    _formData.startYear = newValue.item1,
+                    _formData.endYear = newValue.item2,
+                  },
+              },
               items: years
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.toString()),
+                  .map((tuple) => DropdownMenuItem(
+                        value: tuple,
+                        child: Text("${tuple.item1}-${tuple.item2}"),
                       ))
                   .toList(),
               onChanged: (_) => {},
-            ),
-            DropdownButtonFormField(
-              decoration: const InputDecoration(
-                labelText: "Wanneer ben je gestopt?",
-                hintText: 'Selecteer je eindjaar',
-                helperText: "Laat leeg als je nog steeds in de commissie zit",
-              ),
-              items: years
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.toString()),
-                      ))
-                  .toList(),
-              onChanged: (_) => {},
-              onSaved: (newValue) =>
-                  newValue != null ? _formData.endYear = newValue : null,
             ),
             TextFormField(
               decoration: const InputDecoration(
