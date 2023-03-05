@@ -37,9 +37,12 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
             isAntiAlias: true,
           ),
         ),
-        Text(title).fontSize(cardTitleFontSize).alignment(Alignment.center),
+        Text(title)
+            .fontSize(cardTitleFontSize)
+            .textColor(Colors.white)
+            .alignment(Alignment.center),
       ].toColumn().card(
-            color: Colors.blueGrey[100],
+            color: Colors.lightBlue,
             elevation: 0,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
