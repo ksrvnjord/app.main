@@ -82,17 +82,14 @@ final routeMap = RouteMap(
           child: ChoicePage(
             title: "Commissies",
             choices: commissieEmailMap.keys.toList(),
-            pushRoute: 'commissie',
+            pushRoute: 'leeden',
             queryParameterName: 'commissie',
           ),
         ),
-    '/almanak/substructuren': (_) => const CupertinoPage(
-          name: 'Substructuren',
-          child: ChoicePage(
-            title: "Substructuren",
-            choices: substructures,
-            pushRoute: 'leeden',
-            queryParameterName: 'substructuur',
+    '/almanak/commissies/leeden': (route) => CupertinoPage(
+          name: 'Commissie',
+          child: AlmanakCommissiePage(
+            commissieName: route.queryParameters['commissie']!,
           ),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
@@ -110,16 +107,19 @@ final routeMap = RouteMap(
             houseName: route.queryParameters['huis']!,
           ),
         ),
+    '/almanak/substructuren': (_) => const CupertinoPage(
+          name: 'Substructuren',
+          child: ChoicePage(
+            title: "Substructuren",
+            choices: substructures,
+            pushRoute: 'leeden',
+            queryParameterName: 'substructuur',
+          ),
+        ),
     '/almanak/substructuren/leeden': (route) => CupertinoPage(
           name: 'Substructuren',
           child: AlmanakSubstructuurPage(
             substructuurName: route.queryParameters['substructuur']!,
-          ),
-        ),
-    '/almanak/commissies/leeden': (route) => CupertinoPage(
-          name: 'Commissie',
-          child: AlmanakCommissiePage(
-            commissieName: route.queryParameters['commissie']!,
           ),
         ),
     '/almanak/edit': (_) => const CupertinoPage(
