@@ -49,6 +49,7 @@ class AlmanakUserTileState extends State<AlmanakUserTile> {
         leading: ProfilePictureWidget(userId: widget.lidnummer),
         title: Text("${widget.firstName} ${widget.lastName}"),
         subtitle: widget.subtitle != null ? Text(widget.subtitle!) : null,
+        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
         onTap: () => Routemaster.of(context).push(heimdallUserId!),
       ),
       loading: ListTile(
