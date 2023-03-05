@@ -116,7 +116,7 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
       ),
       if (docs.isEmpty)
         const Text(
-          "Er zijn geen leden gevonden",
+          "Er zijn geen Leeden gevonden voor dit jaar",
           textAlign: TextAlign.center,
         ),
     ].toColumn();
