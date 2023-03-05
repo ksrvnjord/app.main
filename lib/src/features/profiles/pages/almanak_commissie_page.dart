@@ -61,6 +61,8 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
       ),
     ).toList();
 
+    const double menuMaxHeight = 240;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.commissieName),
@@ -75,6 +77,7 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
           DropdownButton<Tuple2<int, int>>(
             value: selectedYear,
             icon: const Icon(Icons.arrow_drop_down),
+            menuMaxHeight: menuMaxHeight,
             items: years
                 .map(
                   (year) => DropdownMenuItem<Tuple2<int, int>>(
