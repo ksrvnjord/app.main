@@ -33,27 +33,31 @@ class AlmanakPage extends StatelessWidget {
             pushRoute: "leeden",
             imagePath: 'assets/images/leeden.png',
           ).padding(all: choiceWidgetPadding),
-          const AlmanakStructureChoiceWidget(
-            title: "Bestuur",
-            pushRoute: "bestuur",
-            imagePath: 'assets/images/bestuur.jpeg',
-          ).padding(all: choiceWidgetPadding),
-          const AlmanakStructureChoiceWidget(
-            title: "Commissies",
-            pushRoute: "commissies",
-            imagePath: 'assets/images/commissies.jpeg',
-          ).padding(all: choiceWidgetPadding),
-          const AlmanakStructureChoiceWidget(
-            pushRoute: "huizen",
-            title: "Huizen",
-            imagePath: 'assets/images/huizen.jpeg',
-          ).padding(all: choiceWidgetPadding),
-          // TODO: Add ploegen
-          const AlmanakStructureChoiceWidget(
-            title: "Substructuren",
-            pushRoute: "substructuren",
-            imagePath: 'assets/images/substructures.jpeg',
-          ).padding(all: choiceWidgetPadding),
+          if (FirebaseAuth.instance.currentUser !=
+              null) // this is all Firebase stuff, so demo users can't see it
+            [
+              const AlmanakStructureChoiceWidget(
+                title: "Bestuur",
+                pushRoute: "bestuur",
+                imagePath: 'assets/images/bestuur.jpeg',
+              ).padding(all: choiceWidgetPadding),
+              const AlmanakStructureChoiceWidget(
+                title: "Commissies",
+                pushRoute: "commissies",
+                imagePath: 'assets/images/commissies.jpeg',
+              ).padding(all: choiceWidgetPadding),
+              const AlmanakStructureChoiceWidget(
+                pushRoute: "huizen",
+                title: "Huizen",
+                imagePath: 'assets/images/huizen.jpeg',
+              ).padding(all: choiceWidgetPadding),
+              // TODO: Add ploegen
+              const AlmanakStructureChoiceWidget(
+                title: "Substructuren",
+                pushRoute: "substructuren",
+                imagePath: 'assets/images/substructures.jpeg',
+              ).padding(all: choiceWidgetPadding),
+            ].toColumn(),
         ],
       ),
     );
