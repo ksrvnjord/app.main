@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
@@ -7,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakUserTile extends StatefulWidget {
   const AlmanakUserTile({
@@ -37,6 +39,11 @@ class AlmanakUserTileState extends State<AlmanakUserTile> {
   Widget build(BuildContext context) {
     final client = Provider.of<GraphQLModel>(context).client;
 
+    const double titleShimmerHeight = 18;
+    const double subtitleShimmerHeight = 12;
+    const double titleShimmerPadding = 128;
+    const double subtitleShimmerPadding = 64;
+
     return FutureWrapper(
       future: almanakProfileByIdentifier(widget.lidnummer, client),
       success: (_) => ListTile(
@@ -45,11 +52,26 @@ class AlmanakUserTileState extends State<AlmanakUserTile> {
         subtitle: widget.subtitle != null ? Text(widget.subtitle!) : null,
         onTap: () => Routemaster.of(context).push(heimdallUserId!),
       ),
-      loading: const ShimmerWidget(
-        child: ListTile(
-          leading: ShimmerWidget(child: DefaultProfilePicture()),
-          title: ShimmerWidget(child: SizedBox(height: 20, width: 100)),
-        ),
+      loading: ListTile(
+        leading: const ShimmerWidget(child: DefaultProfilePicture()),
+        title: ShimmerWidget(
+          child: Container(
+            height: titleShimmerHeight,
+            decoration: ShapeDecoration(
+              shape: const RoundedRectangleBorder(),
+              color: Colors.grey[300],
+            ),
+          ),
+        ).padding(right: titleShimmerPadding),
+        subtitle: ShimmerWidget(
+          child: Container(
+            height: subtitleShimmerHeight,
+            decoration: ShapeDecoration(
+              shape: const RoundedRectangleBorder(),
+              color: Colors.grey[300],
+            ),
+          ),
+        ).padding(right: subtitleShimmerPadding),
       ),
     ); // show nothing if no heimdall user is found
   }
