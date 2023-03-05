@@ -57,7 +57,7 @@ class CommissiesListWidget extends StatelessWidget {
                         subtitle: <Widget>[
                           Chip(
                             label: Text(
-                              "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                              "${doc.data().startYear}-${doc.data().endYear}",
                             ),
                             avatar: const Icon(
                               Icons.date_range,

@@ -24,7 +24,7 @@ class EditCommissiesList extends StatelessWidget {
               .map((doc) => ListTile(
                     leading: [
                       Text(
-                        "${doc.data().startYear}-${doc.data().endYear ?? "heden"}",
+                        "${doc.data().startYear}-${doc.data().endYear}",
                       ),
                     ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
                     title: Text(doc.data().name),
