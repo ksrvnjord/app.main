@@ -14,6 +14,8 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_commissies_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_huis_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_huizen_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
@@ -81,6 +83,16 @@ final routeMap = RouteMap(
     '/almanak/substructuren': (_) => const CupertinoPage(
           name: 'Substructuren',
           child: AlmanakSubstructurenPage(),
+        ),
+    '/almanak/huizen': (_) => const CupertinoPage(
+          name: 'Huizen',
+          child: AlmanakHuizenPage(),
+        ),
+    '/almanak/huizen/leeden': (route) => CupertinoPage(
+          name: 'Huizen',
+          child: AlmanakHuisPage(
+            houseName: route.queryParameters['huis']!,
+          ),
         ),
     '/almanak/substructuren/leeden': (route) => CupertinoPage(
           name: 'Substructuren',
