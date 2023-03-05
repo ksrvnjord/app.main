@@ -37,7 +37,7 @@ class DamagesListPage extends StatelessWidget {
           scrollDirection: Axis.vertical,
           child: data
               .map<Widget>((e) {
-                return DamageTileWidget(damage: e.data());
+                return DamageTileWidget(damageSnapshot: e);
               })
               .toList()
               .toWrap(
