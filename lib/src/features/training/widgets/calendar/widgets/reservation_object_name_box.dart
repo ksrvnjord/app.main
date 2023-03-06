@@ -51,8 +51,11 @@ class ReservationObjectNameBox extends StatelessWidget {
               TextButton(
                 style: TextButton.styleFrom(
                   alignment: Alignment.center,
-                  backgroundColor:
-                      isAvailable ? Colors.white : Colors.grey[100],
+                  backgroundColor: reservationObject.critical
+                      ? Colors.orange[100]
+                      : isAvailable
+                          ? Colors.white
+                          : Colors.grey[100],
                   elevation: boatButtonElevation,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -63,7 +66,11 @@ class ReservationObjectNameBox extends StatelessWidget {
                   queryParameters: {'name': reservationObject.name},
                 ),
                 child: Text(reservationObj.data().name).textStyle(TextStyle(
-                  color: isAvailable ? Colors.black : Colors.grey[600],
+                  color: reservationObject.critical
+                      ? Colors.orange[900]
+                      : isAvailable
+                          ? Colors.black
+                          : Colors.grey[600],
                 )),
               ),
             ],
