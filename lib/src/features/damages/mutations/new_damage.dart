@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
 
@@ -31,16 +32,16 @@ Future<void> newDamage(DamageForm damageForm) async {
   final object = objects.first.reference;
 
   // First create the damages item, so we have an ID
-  final addedDamage = await object.collection('damages').add({
-    'parent': object,
-    'description': damageForm.description,
-    'critical': damageForm.critical,
-    'active': true,
-    'createdTime': DateTime.now(),
-    'creatorId': uid,
-    'type': damageForm.type,
-    'name': damageForm.name,
-  });
+  final addedDamage = await object.collection('damages').add(Damage.fromJson({
+        'parent': object,
+        'description': damageForm.description,
+        'critical': damageForm.critical,
+        'active': true,
+        'createdTime': DateTime.now(),
+        'creatorId': uid,
+        'type': damageForm.type,
+        'name': damageForm.name,
+      }).toJson());
 
   // Check if there's an image, if so, upload it
   if (damageForm.image != null) {

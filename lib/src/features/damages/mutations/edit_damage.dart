@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
 
@@ -26,14 +27,14 @@ Future<void> editDamage(
   // Get the objects with the given type and name
   final damage = await getDamage(reservationObjectId, id);
 
-  // First create the damages item, so we have an ID
-  await damage.reference.update({
+  // Update the damage item, using the Damage object / class.
+  await damage.reference.update(Damage.fromJson({
     'description': damageForm.description,
     'critical': damageForm.critical,
     'active': true,
     'type': damageForm.type,
     'name': damageForm.name,
-  });
+  }).toJson());
 
   // Check if there's an image, if so, upload it
   if (damageForm.image != null) {
