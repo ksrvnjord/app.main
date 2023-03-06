@@ -62,7 +62,7 @@ class ShowReservationObjectPage extends StatelessWidget {
 
     // show the reservationObject data in a ListView
     return [
-      AvailabilityHeader(isAvailable: obj.available),
+      AvailabilityHeader(isAvailable: obj.available && !obj.critical),
       Expanded(
         child: ListView(children: [
           if (obj.comment != null && obj.comment!.isNotEmpty)
