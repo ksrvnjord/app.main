@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_searchable_list_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:provider/provider.dart';
 
