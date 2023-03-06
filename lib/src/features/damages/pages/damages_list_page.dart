@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/all_damages.dart';
+import 'package:ksrvnjord_main_app/src/features/training/queries/get_reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:routemaster/routemaster.dart';
@@ -22,9 +23,19 @@ class DamagesListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
 
+    final title = reservationObjectId != null
+        ? FutureWrapper(
+            future: getReservationObject(reservationObjectId!),
+            loading: const Text('Schademeldingen ...'),
+            success: (data) => Text(
+              'Schademeldingen - ${data.data()?.name ?? ''}',
+            ),
+          )
+        : const Text('Schademeldingen');
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schademeldingen'),
+        title: title,
         automaticallyImplyLeading: true,
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
