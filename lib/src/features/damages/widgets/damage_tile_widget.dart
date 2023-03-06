@@ -6,13 +6,13 @@ import 'package:styled_widget/styled_widget.dart';
 
 class DamageTileWidget extends StatelessWidget {
   final DocumentSnapshot<Damage> damageSnapshot;
-  final void Function()? showDamage;
-  final void Function()? editDamage;
+  final void Function() showDamage;
+  final void Function() editDamage;
 
   const DamageTileWidget({
     Key? key,
-    this.showDamage,
-    this.editDamage,
+    required this.showDamage,
+    required this.editDamage,
     required this.damageSnapshot,
   }) : super(key: key);
 
