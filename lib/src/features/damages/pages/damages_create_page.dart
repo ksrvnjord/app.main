@@ -85,7 +85,6 @@ class _DamagesCreateForm extends StatelessWidget {
 
 class DamagesCreatePage extends StatelessWidget {
   final String? reservationObjectId;
-  final double padding = 16;
 
   const DamagesCreatePage({
     Key? key,
