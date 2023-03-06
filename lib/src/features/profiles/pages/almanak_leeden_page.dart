@@ -16,11 +16,6 @@ class AlmanakLeedenPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Leeden"),
-        actions: <Widget>[
-          FirebaseAuth.instance.currentUser != null
-              ? const MyProfilePicture(profileIconSize: 48.0)
-              : Container(),
-        ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:

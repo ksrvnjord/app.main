@@ -69,12 +69,26 @@ final routeMap = RouteMap(
           name: 'Almanak',
           child: AlmanakPage(),
         ),
+    '/almanak/edit': (_) => const CupertinoPage(
+          child: EditAlmanakProfilePage(),
+        ),
+    '/almanak/edit/commissies': (info) => const CupertinoPage(
+          child: EditCommissiesPage(),
+        ),
+    '/almanak/edit/commissies/select': (info) => const CupertinoPage(
+          child: SelectCommissiePage(),
+        ),
+    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          child: FillCommissieInfoPage(
+            commissie: info.queryParameters['commissie']!,
+          ),
+        ),
+    '/almanak/edit/visibility': (info) => const CupertinoPage(
+          child: MePrivacyPage(),
+        ),
     '/almanak/leeden': (_) => const CupertinoPage(
           name: 'Leeden',
           child: AlmanakLeedenPage(),
-        ),
-    '/almanak/leeden/edit': (_) => const CupertinoPage(
-          child: EditAlmanakProfilePage(),
         ),
     '/almanak/bestuur': (_) => const CupertinoPage(
           name: 'Bestuur',
@@ -136,23 +150,6 @@ final routeMap = RouteMap(
         ),
     '/almanak/substructuren/leeden/:profileId': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
-        ),
-    '/almanak/edit': (_) => const CupertinoPage(
-          child: EditAlmanakProfilePage(),
-        ),
-    '/almanak/edit/commissies': (info) => const CupertinoPage(
-          child: EditCommissiesPage(),
-        ),
-    '/almanak/edit/commissies/select': (info) => const CupertinoPage(
-          child: SelectCommissiePage(),
-        ),
-    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
-          child: FillCommissieInfoPage(
-            commissie: info.queryParameters['commissie']!,
-          ),
-        ),
-    '/almanak/edit/visibility': (info) => const CupertinoPage(
-          child: MePrivacyPage(),
         ),
     '/almanak/leeden/:profileId': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
