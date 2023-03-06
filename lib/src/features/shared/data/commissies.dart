@@ -17,7 +17,7 @@ final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
   "Introductiecommissie": "ic@njord.nl",
   "Kalendercommissie": "kalender@njord.nl",
   "Kookcommissie": "koco@njord.nl",
-  "Leidsch Studenten Fuifroeigezelschap": "lsfg@njord.nl",
+  "Fuifroeicommissie": "lsfg@njord.nl",
   "Magazinecommissie": "magazine@njord.nl",
   "Meerderejaarscommissie": "meerderejaars@njord.nl",
   "Merchandisecommissie": "merchandise@njord.nl",
