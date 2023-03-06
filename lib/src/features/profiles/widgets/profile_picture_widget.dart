@@ -21,7 +21,7 @@ class ProfilePictureWidget extends StatelessWidget {
       future: getProfilePictureUrl(userId),
       success: (snapshot) => snapshot != null
           ? FutureWrapper(
-              future: cachedHttpImage(snapshot),
+              future: cachedHttpImage(snapshot, key: 'profile-avatar-$userId'),
               success: (data) => data != null
                   ? CircleAvatar(
                       backgroundImage: Image.memory(data).image,
