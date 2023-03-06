@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/confire_delete_reservation.dart';
+import 'package:routemaster/routemaster.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class TrainingListItem extends StatelessWidget {
   final QueryDocumentSnapshot<Object?> reservation;
@@ -13,6 +15,8 @@ class TrainingListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Routemaster.of(context);
+
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final DateFormat dateFormat = DateFormat('MMM d, HH:mm');
     final CollectionReference reservationObjectsRef =
@@ -48,12 +52,24 @@ class TrainingListItem extends StatelessWidget {
               Icons.fitness_center,
               color: Colors.blueGrey,
             ),
-            trailing: IconButton(
-              onPressed: () => confirmDeleteReservation(context, reservation),
-              icon: const Icon(
-                Icons.cancel,
-                color: Color.fromARGB(255, 0xf8, 0x71, 0x71),
+            trailing: <Widget>[
+              IconButton(
+                onPressed: () => navigator
+                    .push('/training/all/damages/${snapshot.data!.id}/create'),
+                icon: const Icon(
+                  Icons.report,
+                  color: Colors.orange,
+                ),
               ),
+              IconButton(
+                onPressed: () => confirmDeleteReservation(context, reservation),
+                icon: const Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+              ),
+            ].toWrap(
+              direction: Axis.horizontal,
             ),
           );
         }
