@@ -6,17 +6,17 @@ import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_a
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/queries/get_reservation_object.dart';
 import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class _DamagesCreateForm extends StatelessWidget {
-  final String? reservationObjectId;
   final double padding = 16;
 
   const _DamagesCreateForm({
     Key? key,
-    this.reservationObjectId,
   }) : super(key: key);
 
   @override
@@ -96,11 +96,26 @@ class DamagesCreatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (reservationObjectId == null) {
+      return Scaffold(
+        body: ChangeNotifierProvider(
+          create: (_) => DamageForm(),
+          child: const _DamagesCreateForm(),
+        ),
+      );
+    }
+
     return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (_) => DamageForm(),
-        child: _DamagesCreateForm(
-          reservationObjectId: reservationObjectId,
+      body: FutureWrapper(
+        future: getReservationObject(reservationObjectId!),
+        success: (data) => ChangeNotifierProvider(
+          create: (_) => data.exists
+              ? DamageForm(
+                  type: data.data()!.type,
+                  name: data.data()!.name,
+                )
+              : DamageForm(),
+          child: const _DamagesCreateForm(),
         ),
       ),
     );
