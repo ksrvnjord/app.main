@@ -79,7 +79,7 @@ class _DamagesCreateForm extends StatelessWidget {
               )
             : const Text('Selecteer een object...'),
       ].toWrap(runSpacing: padding).padding(all: padding),
-    );
+    ).scrollable(scrollDirection: Axis.vertical);
   }
 }
 

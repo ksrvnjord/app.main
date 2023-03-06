@@ -44,19 +44,16 @@ class DamagesListPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: allDamages(reservationObjectId),
-        success: (data) => SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: data
-              .map<Widget>((e) {
-                return DamageTileWidget(damageSnapshot: e);
-              })
-              .toList()
-              .toWrap(
-                runSpacing: gapY,
-              )
-              .padding(horizontal: paddingX, vertical: paddingY),
-        ),
-      ),
+        success: (data) => data
+            .map<Widget>((e) {
+              return DamageTileWidget(damageSnapshot: e);
+            })
+            .toList()
+            .toWrap(
+              runSpacing: gapY,
+            )
+            .padding(horizontal: paddingX, vertical: paddingY),
+      ).scrollable(scrollDirection: Axis.vertical),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(
