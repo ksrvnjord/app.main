@@ -1,4 +1,5 @@
 import 'package:feedback_sentry/feedback_sentry.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -13,8 +14,6 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String username = GetIt.I<CurrentUser>().user!.username;
-
     final Map<String, String> optionMap = {
       "Mijn Njord-account": "/settings",
       "Agenda": "events",
@@ -46,7 +45,11 @@ class MorePage extends StatelessWidget {
             trailing:
                 const Icon(Icons.feedback_outlined, color: Colors.lightBlue),
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
-              name: username,
+              name: GetIt.I<CurrentUser>()
+                      .user
+                      ?.username ?? // CurrentUser might not be filled yet
+                  FirebaseAuth.instance.currentUser?.uid ??
+                  "Anoniem",
             ),
           ),
           const Divider(),

@@ -11,11 +11,23 @@ import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_huis_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/choice_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/select_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -60,10 +72,86 @@ final routeMap = RouteMap(
     '/almanak/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
         ),
+    '/almanak/edit/commissies': (info) => const CupertinoPage(
+          child: EditCommissiesPage(),
+        ),
+    '/almanak/edit/commissies/select': (info) => const CupertinoPage(
+          child: SelectCommissiePage(),
+        ),
+    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          child: FillCommissieInfoPage(
+            commissie: info.queryParameters['commissie']!,
+          ),
+        ),
     '/almanak/edit/visibility': (info) => const CupertinoPage(
           child: MePrivacyPage(),
         ),
-    '/almanak/:profileId': (info) => const CupertinoPage(
+    '/almanak/leeden': (_) => const CupertinoPage(
+          name: 'Leeden',
+          child: AlmanakLeedenPage(),
+        ),
+    '/almanak/bestuur': (_) => const CupertinoPage(
+          name: 'Bestuur',
+          child: AlmanakBestuurPage(),
+        ),
+    '/almanak/bestuur/:profileId': (info) => const CupertinoPage(
+          child: AlmanakProfilePage(),
+        ),
+    '/almanak/commissies': (_) => CupertinoPage(
+          name: 'Commissies',
+          child: ChoicePage(
+            title: "Commissies",
+            choices: commissieEmailMap.keys.toList(),
+            pushRoute: 'leeden',
+            queryParameterName: 'commissie',
+          ),
+        ),
+    '/almanak/commissies/leeden': (route) => CupertinoPage(
+          name: 'Commissie',
+          child: AlmanakCommissiePage(
+            commissieName: route.queryParameters['commissie']!,
+          ),
+        ),
+    '/almanak/commissies/leeden/:profileId': (info) => const CupertinoPage(
+          child: AlmanakProfilePage(),
+        ),
+    '/almanak/huizen': (_) => const CupertinoPage(
+          name: 'Huizen',
+          child: ChoicePage(
+            title: "Huizen",
+            choices: houseNames,
+            pushRoute: 'leeden',
+            queryParameterName: 'huis',
+          ),
+        ),
+    '/almanak/huizen/leeden': (route) => CupertinoPage(
+          name: 'Huizen',
+          child: AlmanakHuisPage(
+            houseName: route.queryParameters['huis']!,
+          ),
+        ),
+    '/almanak/huizen/leeden/:profileId': (info) => const CupertinoPage(
+          child: AlmanakProfilePage(),
+        ),
+    '/almanak/substructuren': (_) => const CupertinoPage(
+          name: 'Substructuren',
+          child: ChoicePage(
+            title: "Substructuren",
+            choices: substructures,
+            pushRoute: 'leeden',
+            queryParameterName: 'substructuur',
+          ),
+        ),
+    '/almanak/substructuren/leeden': (route) => CupertinoPage(
+          name: 'Substructuren',
+          child: AlmanakSubstructuurPage(
+            substructuurName: route.queryParameters['substructuur']!,
+          ),
+        ),
+    '/almanak/substructuren/leeden/:profileId': (info) => const CupertinoPage(
+          child: AlmanakProfilePage(),
+        ),
+    '/almanak/leeden/:profileId': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/settings': (info) => const CupertinoPage(

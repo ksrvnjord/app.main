@@ -1,0 +1,21 @@
+query AlmanakProfileByIdentifier ($profileId: String!) {
+    userByIdentifier (identifier: $profileId) {
+        id,
+        identifier,
+        email,
+        username,
+        fullContact {
+            public {
+              first_name,
+              last_name
+              email,
+              street,
+              housenumber,
+              housenumber_addition,
+              city,
+              zipcode,
+              phone_primary,
+            }
+        }
+    }
+}
