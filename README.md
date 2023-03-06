@@ -15,6 +15,12 @@ De Flut-ter versie.
 - Start een emulator of sluit je telefoon aan
 - Run de app: `flutter run`
 
+### Automatisch static analysis runnen
+- Run het volgende command in de root van dit project om de pre-push hook te installeren:
+```bash
+chmod +x run_static_analysis.sh; cp run_static_analysis.sh .git/hooks/pre-push; chmod 700 .git/hooks/pre-push
+```
+
 ## Architectuur
 Via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html) kan je navigeren tussen de verschillende pages.
 
