@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/queries/all_damages.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -57,9 +58,11 @@ class ShowReservationObjectPage extends StatelessWidget {
 
   Widget showObjectDetails(
     DocumentSnapshot<ReservationObject> snapshot,
-    BuildContext context,
+    BuildContext _,
   ) {
-    const double padding = 16;
+    const double verticalPadding = 16;
+    const double horizontalPadding = 16;
+    const double gap = 8;
 
     if (!snapshot.exists) {
       return const Center(child: Text('No data'));
@@ -111,11 +114,33 @@ class ShowReservationObjectPage extends StatelessWidget {
           if (obj.brand != null)
             DataTextListTile(name: "Merk", value: obj.brand!),
           if (obj.critical)
-            RoundedElevatedButton(
-              onPressed: () => Routemaster.of(context)
-                  .push('/training/all/damages/$documentId'),
-              child: const Text('Bekijk Schades'),
-            ).padding(all: padding),
+            const Text(
+              'Schades',
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w300,
+                fontSize: 16,
+              ),
+            ).padding(
+              horizontal: horizontalPadding,
+              top: verticalPadding,
+              bottom: gap,
+            ),
+          FutureWrapper(
+            future: allDamages(snapshot.id),
+            success: (data) => data
+                .map<Widget>((e) {
+                  return DamageTileWidget(damageSnapshot: e);
+                })
+                .toList()
+                .toWrap(
+                  runSpacing: gap,
+                )
+                .padding(
+                  horizontal: horizontalPadding,
+                  bottom: verticalPadding,
+                ),
+          ),
         ]),
       ),
     ].toColumn();
