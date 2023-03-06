@@ -99,6 +99,14 @@ class _ObjectCalendar extends State<ObjectCalendar> {
       return;
     }
 
+    if (boatData.critical) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Dit object is uit de vaart.'),
+      ));
+
+      return;
+    }
+
     /// ---- Calculate the time the user tapped ----
 
     // This is the position relative to the RenderBox.
@@ -173,7 +181,8 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             // it does not pass gestures through to the background
             child: AbsorbPointer(
               child: CalendarBackground(
-                available: (hasPermission && boat.data().available),
+                available: (hasPermission && boat.data().available) &&
+                    !boat.data().critical,
               ),
             ),
           ),
