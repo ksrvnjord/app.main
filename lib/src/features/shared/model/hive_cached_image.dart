@@ -13,12 +13,12 @@ const defaultExpiry = 1;
 // SO.
 Future<Uint8List?> cachedHttpImage(
   String url, {
-  String? key,
+  String key = '',
   Duration expire = const Duration(hours: defaultExpiry),
 }) async {
   // If the URL is empty, we don't need to do anything
   // at all.
-  if (url == '' && key == null) {
+  if (url == '') {
     return null;
   }
 
@@ -32,7 +32,7 @@ Future<Uint8List?> cachedHttpImage(
   // Normalize the URL to a SHA512 hash to avoid
   // key length issues, or normalize the key.
   Digest hashedKey =
-      sha512.convert(key != null ? utf8.encode(key) : utf8.encode(url));
+      sha512.convert(key != '' ? utf8.encode(key) : utf8.encode(url));
 
   // Initialize variable to store the output in
   // from the try-catch block
