@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
 
