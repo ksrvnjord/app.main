@@ -42,7 +42,8 @@ class ShowReservationObjectPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.report),
-            onPressed: () => Routemaster.of(context).push('damages'),
+            onPressed: () => Routemaster.of(context)
+                .push('/training/all/damages/$documentId'),
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/mutations/edit_damage.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/mutations/delete_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -68,7 +69,7 @@ class _DamagesEditPage extends StatelessWidget {
                   icon: Icon(Icons.save, color: Colors.blue[900]),
                 ),
           IconButton(
-            onPressed: () => editDamage(id, reservationObjectId, damage).then(
+            onPressed: () => deleteDamage(id, reservationObjectId).then(
               (e) {
                 messenger.showSnackBar(SnackBar(
                   backgroundColor: Colors.green[900],

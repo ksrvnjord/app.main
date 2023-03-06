@@ -16,11 +16,11 @@ class DamageForm with ChangeNotifier {
     String? description,
     bool critical = false,
   }) {
-    this.type = type;
-    this.name = name;
-    this.image = image;
-    this.description = description;
-    this.critical = critical;
+    _type = type;
+    _name = name;
+    _image = image;
+    _description = description;
+    _critical = critical;
   }
 
   String? get type => _type;

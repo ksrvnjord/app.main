@@ -78,8 +78,11 @@ class _DamagesCreateForm extends StatelessWidget {
                     data.isNotEmpty ? const DamageFormWidget() : Container(),
               )
             : const Text('Selecteer een object...'),
-      ].toWrap(runSpacing: padding).padding(all: padding),
-    ).scrollable(scrollDirection: Axis.vertical);
+      ]
+          .toWrap(runSpacing: padding)
+          .scrollable(scrollDirection: Axis.vertical)
+          .padding(all: padding),
+    );
   }
 }
 
@@ -93,10 +96,12 @@ class DamagesCreatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DamageForm(),
-      child: _DamagesCreateForm(
-        reservationObjectId: reservationObjectId,
+    return Scaffold(
+      body: ChangeNotifierProvider(
+        create: (_) => DamageForm(),
+        child: _DamagesCreateForm(
+          reservationObjectId: reservationObjectId,
+        ),
       ),
     );
   }
