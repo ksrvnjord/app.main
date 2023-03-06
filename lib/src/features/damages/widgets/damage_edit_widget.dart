@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/mutations/edit_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/mutations/delete_damage.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/mutations/edit_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
