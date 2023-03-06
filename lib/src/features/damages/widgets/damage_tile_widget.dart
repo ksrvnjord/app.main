@@ -48,7 +48,7 @@ class DamageTileWidget extends StatelessWidget {
                 color: Colors.grey,
               ),
             )
-          : Container(),
+          : const SizedBox.shrink(),
     ).border(all: 1, color: Colors.red[100] ?? Colors.white);
   }
 }
