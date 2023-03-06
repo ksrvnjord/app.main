@@ -9,6 +9,8 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 
+// TODO: Find an offline-first approach for this as soon as we have a fairly
+// steady state on the materiaal.
 Future<Map<String, List<ReservationObject>>> reservationObjectsByType() async {
   // Initialize the map for the objects by type
   Map<String, List<ReservationObject>> objects = {};
