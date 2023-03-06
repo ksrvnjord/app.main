@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -49,12 +50,17 @@ class ShowReservationObjectPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: getReservationObject(documentId),
-        success: showObjectDetails,
+        success: (snapshot) => showObjectDetails(snapshot, context),
       ),
     );
   }
 
-  Widget showObjectDetails(snapshot) {
+  Widget showObjectDetails(
+    DocumentSnapshot<ReservationObject> snapshot,
+    BuildContext context,
+  ) {
+    const double padding = 16;
+
     if (!snapshot.exists) {
       return const Center(child: Text('No data'));
     }
@@ -104,6 +110,12 @@ class ShowReservationObjectPage extends StatelessWidget {
             DataTextListTile(name: "Jaar", value: obj.year!.toString()),
           if (obj.brand != null)
             DataTextListTile(name: "Merk", value: obj.brand!),
+          if (obj.critical)
+            RoundedElevatedButton(
+              onPressed: () => Routemaster.of(context)
+                  .push('/training/all/damages/$documentId'),
+              child: const Text('Bekijk Schades'),
+            ).padding(all: padding),
         ]),
       ),
     ].toColumn();
