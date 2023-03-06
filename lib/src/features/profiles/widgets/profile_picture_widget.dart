@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
@@ -18,16 +18,22 @@ class ProfilePictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureWrapper(
-      future: getProfilePictureUrl(userId), // TODO: use cache
-      success: (snapshot) => CachedNetworkImage(
-        imageUrl: // random image url
-            snapshot,
-        imageBuilder: (context, imageProvider) => CircleAvatar(
-          radius: size,
-          backgroundImage: imageProvider,
-        ),
-        placeholder: (_, x) => DefaultProfilePicture(radius: size),
-      ),
+      future: getProfilePictureUrl(userId),
+      success: (snapshot) => snapshot != null
+          ? FutureWrapper(
+              future: cachedHttpImage(snapshot, key: 'profile-avatar-$userId'),
+              success: (data) => data != null
+                  ? CircleAvatar(
+                      backgroundImage: Image.memory(data).image,
+                      backgroundColor: Colors.transparent,
+                      radius: size,
+                    )
+                  : DefaultProfilePicture(radius: size),
+              loading:
+                  ShimmerWidget(child: DefaultProfilePicture(radius: size)),
+              error: (_) => DefaultProfilePicture(radius: size),
+            )
+          : DefaultProfilePicture(radius: size),
       error: (_) => DefaultProfilePicture(radius: size),
       loading: ShimmerWidget(child: DefaultProfilePicture(radius: size)),
     );

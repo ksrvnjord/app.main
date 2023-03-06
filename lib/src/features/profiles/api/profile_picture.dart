@@ -6,18 +6,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 final storage = FirebaseStorage.instance;
 final auth = FirebaseAuth.instance;
 
-Future<Uint8List?> getProfilePicture(String userId) async {
-  final Reference userRef = storage.ref().child(userId);
-  final Reference profilePictureRef = userRef.child('profile_picture.png');
-
-  return await profilePictureRef.getData();
+Reference getProfilePictureRef(String userId) {
+  // Get the profile picture from a user's folder, all avatars are
+  // with this filename.
+  return storage.ref().child('$userId/profile_picture.png');
 }
 
-Future<String> getProfilePictureUrl(String userId) async {
-  final Reference userRef = storage.ref().child(userId);
-  final Reference profilePictureRef = userRef.child('profile_picture.png');
+Future<Uint8List?> getProfilePicture(String userId) async {
+  return await getProfilePictureRef(userId).getData();
+}
 
-  return await profilePictureRef.getDownloadURL();
+Future<String?> getProfilePictureUrl(String userId) async {
+  return await getProfilePictureRef(userId).getDownloadURL();
 }
 
 // Make function to getMyProfilePicture
@@ -26,9 +26,5 @@ Future<Uint8List?> getMyProfilePicture() {
 }
 
 UploadTask uploadMyProfilePicture(File file) {
-  final String userId = auth.currentUser!.uid;
-  final Reference myProfilePictureRef =
-      storage.ref("$userId/profile_picture.png");
-
-  return myProfilePictureRef.putFile(file);
+  return getProfilePictureRef(auth.currentUser!.uid).putFile(file);
 }

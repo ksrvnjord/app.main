@@ -55,6 +55,9 @@ dependencies:
   action_sheet: ^1.0.4
   flutter_localizations:
     sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  crypto: ^3.0.2
   firebase_app_check: ^0.1.1+12
   tuple: ^2.0.1
 
