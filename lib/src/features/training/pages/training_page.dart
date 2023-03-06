@@ -22,7 +22,7 @@ class TrainingPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.report),
-            onPressed: () => navigator.push('all/damages'),
+            onPressed: () => navigator.push('damages'),
           ),
         ],
       ),

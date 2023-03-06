@@ -54,8 +54,14 @@ class TrainingListItem extends StatelessWidget {
             ),
             trailing: <Widget>[
               IconButton(
-                onPressed: () => navigator
-                    .push('/training/all/damages/${snapshot.data!.id}/create'),
+                onPressed: () => navigator.push(
+                  '/training/createdamage',
+                  queryParameters: snapshot.data?.id != null
+                      ? {
+                          'reservationObjectId': snapshot.data!.id,
+                        }
+                      : {},
+                ),
                 icon: const Icon(
                   Icons.report,
                   color: Colors.orange,

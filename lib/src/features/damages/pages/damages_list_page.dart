@@ -33,7 +33,21 @@ class DamagesListPage extends StatelessWidget {
         future: allDamages(),
         success: (data) => data
             .map<Widget>((e) {
-              return DamageTileWidget(damageSnapshot: e);
+              return e.data() != null
+                  ? DamageTileWidget(
+                      damageSnapshot: e,
+                      showDamage: () =>
+                          navigator.push('show', queryParameters: {
+                        'id': e.id,
+                        'reservationObjectId': e.data()!.parent.id,
+                      }),
+                      editDamage: () =>
+                          navigator.push('edit', queryParameters: {
+                        'id': e.id,
+                        'reservationObjectId': e.data()!.parent.id,
+                      }),
+                    )
+                  : Container();
             })
             .toList()
             .toWrap(

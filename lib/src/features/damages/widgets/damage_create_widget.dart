@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_a
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/queries/get_reservation_object.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';

@@ -44,8 +44,7 @@ class ShowReservationObjectPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.report),
-            onPressed: () => Routemaster.of(context)
-                .push('/training/all/damages/$documentId'),
+            onPressed: () => Routemaster.of(context).push('damage/create'),
           ),
         ],
       ),
@@ -58,11 +57,12 @@ class ShowReservationObjectPage extends StatelessWidget {
 
   Widget showObjectDetails(
     DocumentSnapshot<ReservationObject> snapshot,
-    BuildContext _,
+    BuildContext context,
   ) {
     const double verticalPadding = 16;
     const double horizontalPadding = 16;
     const double gap = 8;
+    final navigator = Routemaster.of(context);
 
     if (!snapshot.exists) {
       return const Center(child: Text('No data'));
@@ -130,7 +130,19 @@ class ShowReservationObjectPage extends StatelessWidget {
             future: allObjectDamages(snapshot.id),
             success: (data) => data
                 .map<Widget>((e) {
-                  return DamageTileWidget(damageSnapshot: e);
+                  return e.data() != null
+                      ? DamageTileWidget(
+                          damageSnapshot: e,
+                          showDamage: () =>
+                              navigator.push('damage/show', queryParameters: {
+                            'id': e.id,
+                          }),
+                          editDamage: () =>
+                              navigator.push('damage/edit', queryParameters: {
+                            'id': e.id,
+                          }),
+                        )
+                      : Container();
                 })
                 .toList()
                 .toWrap(
