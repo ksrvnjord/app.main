@@ -13,11 +13,12 @@ const defaultExpiry = 1;
 // SO.
 Future<Uint8List?> cachedHttpImage(
   String url, {
+  String? key,
   Duration expire = const Duration(hours: defaultExpiry),
 }) async {
   // If the URL is empty, we don't need to do anything
   // at all.
-  if (url == '') {
+  if (url == '' && key == null) {
     return null;
   }
 
@@ -28,9 +29,10 @@ Future<Uint8List?> cachedHttpImage(
   // as we don't want to load all the images right away
   LazyBox cache = await Hive.openLazyBox('imageCache');
 
-  // Normalize the URL to a SHA224 hash to avoid
-  // key length issues
-  Digest key = sha512.convert(utf8.encode(url));
+  // Normalize the URL to a SHA512 hash to avoid
+  // key length issues, or normalize the key.
+  Digest hashedKey =
+      sha512.convert(key != null ? utf8.encode(key) : utf8.encode(url));
 
   // Initialize variable to store the output in
   // from the try-catch block
@@ -38,7 +40,7 @@ Future<Uint8List?> cachedHttpImage(
 
   // Check if we have an item in our cache,
   // and then check if we should use it
-  var item = await cache.get(key.toString());
+  var item = await cache.get(hashedKey.toString());
 
   // We have it, so return it.
   if (item != null &&
@@ -54,7 +56,7 @@ Future<Uint8List?> cachedHttpImage(
       options: Options(responseType: ResponseType.bytes),
     );
     output = response.data;
-    cache.put(key.toString(), {
+    cache.put(hashedKey.toString(), {
       'expire': expireDate,
       'data': output,
     });
