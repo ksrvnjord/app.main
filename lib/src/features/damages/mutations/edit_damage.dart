@@ -28,13 +28,13 @@ Future<void> editDamage(
   final damage = await getDamage(reservationObjectId, id);
 
   // Update the damage item, using the Damage object / class.
-  await damage.reference.update(Damage.fromJson({
+  await damage.reference.update({
     'description': damageForm.description,
     'critical': damageForm.critical,
     'active': true,
     'type': damageForm.type,
     'name': damageForm.name,
-  }).toJson());
+  });
 
   // Check if there's an image, if so, upload it
   if (damageForm.image != null) {
