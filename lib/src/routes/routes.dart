@@ -90,11 +90,6 @@ final routeMap = RouteMap(
         const CupertinoPage(child: DamagesListPage()),
     '/training/all/damages/create': (route) =>
         const CupertinoPage(child: DamagesCreatePage()),
-    '/training/all/damages/:reservationObjectId': (route) => CupertinoPage(
-          child: DamagesListPage(
-            reservationObjectId: route.pathParameters['reservationObjectId']!,
-          ),
-        ),
     '/training/all/damages/:reservationObjectId/edit': (route) => CupertinoPage(
           child: DamagesEditPage(
             id: route.queryParameters['id']!,

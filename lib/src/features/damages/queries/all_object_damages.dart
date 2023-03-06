@@ -3,9 +3,13 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<List<DocumentSnapshot<Damage>>> allDamages() async {
+Future<List<DocumentSnapshot<Damage>>> allObjectDamages(
+  String reservationObjectId,
+) async {
   return (await db
-          .collectionGroup("damages")
+          .collection("reservationObjects")
+          .doc(reservationObjectId)
+          .collection("damages")
           .withConverter<Damage>(
             fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
             toFirestore: (reservation, _) => reservation.toJson(),

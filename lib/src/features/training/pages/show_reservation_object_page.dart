@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/queries/all_damages.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/queries/all_object_damages.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
@@ -127,7 +127,7 @@ class ShowReservationObjectPage extends StatelessWidget {
               bottom: gap,
             ),
           FutureWrapper(
-            future: allDamages(snapshot.id),
+            future: allObjectDamages(snapshot.id),
             success: (data) => data
                 .map<Widget>((e) {
                   return DamageTileWidget(damageSnapshot: e);
