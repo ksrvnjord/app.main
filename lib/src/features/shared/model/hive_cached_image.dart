@@ -3,63 +3,58 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-// Default expiry is one hour
-const defaultExpiry = 1;
+import 'image_cache_item.dart';
+
+// Default expiry is one day
+const defaultExpiry = 24;
 
 // TODO: NEEDS TO BE REWRITTEN INTO AN OBJECT-ORIENTED CLASS,
 // USE CASE FOR THAT WILL PROBABLY SURFACE IN A COUPLE WEEKS OR
 // SO.
-Future<Uint8List?> cachedHttpImage(
-  String url, {
-  String key = '',
-  Duration expire = const Duration(hours: defaultExpiry),
+
+// This function is used to get an image from the cache
+// If the image is not cached, it will return null
+// If there is no data in the cache, it will return the imageOnCacheHitWithNoData
+Future<ImageProvider<Object>?> getHiveCachedImage(
+  String key, {
+  required ImageProvider<Object> imageOnCacheHitWithNoData,
 }) async {
-  // If the URL is empty, we don't need to do anything
-  // at all.
-  if (url == '') {
-    return null;
+  if (key == '') {
+    throw Exception('Key cannot be empty');
   }
-
-  // Create the expiry DateTime
-  DateTime expireDate = DateTime.now().add(expire);
-
-  // Initialize a Hive-cache to store the images, do it lazily
-  // as we don't want to load all the images right away
-  LazyBox cache = await Hive.openLazyBox('imageCache');
-
-  // Normalize the URL to a SHA512 hash to avoid
-  // key length issues, or normalize the key.
-  Digest hashedKey =
-      sha512.convert(key != '' ? utf8.encode(key) : utf8.encode(url));
-
-  // Initialize variable to store the output in
-  // from the try-catch block
-  Uint8List? output;
 
   // Check if we have an item in our cache,
   // and then check if we should use it
-  var item = await cache.get(hashedKey.toString());
+  ImageCacheItem? item = await getFromHiveCache(key);
 
   // We have it, so return it.
-  if (item != null &&
-      item['expire'] != null &&
-      DateTime.now().isBefore(item['expire'])) {
-    return item['data'];
+  if (item != null && DateTime.now().isBefore(item.expire)) {
+    return item.data == null
+        ? imageOnCacheHitWithNoData
+        : MemoryImage(item.data!);
   }
 
-  // We don't have it, so gather it, store it, and return it.
+  return null; // no cached image found
+}
+
+// This function is used to get an image from the internet and cache it
+// Only use this function if you know the image is not already cached
+Future<Uint8List?> getHttpImageAndCache(
+  String url, {
+  required String key,
+}) async {
   try {
     Response response = await Dio().get<Uint8List>(
       url,
       options: Options(responseType: ResponseType.bytes),
     );
-    output = response.data;
-    cache.put(hashedKey.toString(), {
-      'expire': expireDate,
-      'data': output,
-    });
+    Uint8List? output = response.data;
+    putInHiveCache(key, output);
+
+    return output;
   } on DioError catch (e) {
     // Something awful happened, check if it's 404 and if so, just
     // return null.
@@ -71,6 +66,25 @@ Future<Uint8List?> cachedHttpImage(
     // The error is different than 404, raise!
     rethrow;
   }
-
-  return output;
 }
+
+//// This sets the cache to empty for a key
+void setEmptyImageCacheForKey(String key) => putInHiveCache(key, null);
+
+/// This puts an image in the cache for a key
+void putInHiveCache(String key, Uint8List? data) =>
+    Hive.box<ImageCacheItem>('imageCache').put(
+      hashKeytoString(key),
+      ImageCacheItem(
+        expire: DateTime.now().add(const Duration(hours: defaultExpiry)),
+        data: data,
+      ),
+    );
+
+/// This gets an image from the cache for a key
+Future<ImageCacheItem?> getFromHiveCache(String key) async =>
+    Hive.box<ImageCacheItem>('imageCache').get(hashKeytoString(key));
+
+// Hashes a key to a string
+String hashKeytoString(String key) =>
+    sha512.convert(utf8.encode(key)).toString();
