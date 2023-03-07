@@ -31,30 +31,28 @@ class DamagesListPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: allDamages(),
-        success: (data) => data
-            .map<Widget>((e) {
-              return e.data() != null
-                  ? DamageTileWidget(
-                      damageSnapshot: e,
-                      showDamage: () =>
-                          navigator.push('show', queryParameters: {
-                        'id': e.id,
-                        'reservationObjectId': e.data()!.parent.id,
-                      }),
-                      editDamage: () =>
-                          navigator.push('edit', queryParameters: {
-                        'id': e.id,
-                        'reservationObjectId': e.data()!.parent.id,
-                      }),
-                    )
-                  : Container();
-            })
-            .toList()
-            .toWrap(
-              runSpacing: gapY,
-            )
-            .padding(horizontal: paddingX, vertical: paddingY),
-      ).scrollable(scrollDirection: Axis.vertical),
+        success: (data) => ListView.separated(
+          padding: EdgeInsets.symmetric(
+            vertical: paddingY,
+            horizontal: paddingX,
+          ),
+          itemCount: data.length,
+          separatorBuilder: (context, index) => SizedBox(height: gapY),
+          itemBuilder: (context, index) => data[index].data() != null
+              ? DamageTileWidget(
+                  damageSnapshot: data[index],
+                  showDamage: () => navigator.push('show', queryParameters: {
+                    'id': data[index].id,
+                    'reservationObjectId': data[index].data()!.parent.id,
+                  }),
+                  editDamage: () => navigator.push('edit', queryParameters: {
+                    'id': data[index].id,
+                    'reservationObjectId': data[index].data()!.parent.id,
+                  }),
+                )
+              : Container(),
+        ),
+      ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(
