@@ -3,11 +3,8 @@ import {DateTime} from "luxon";
 import admin from "firebase-admin";
 import {DocumentData, DocumentReference, Timestamp} from "firebase-admin/firestore";
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
 const clientFunction = functions.region("europe-west1").https;
 const logger = functions.logger;
-admin.initializeApp();
 const db = admin.firestore();
 
 export const createReservation = clientFunction

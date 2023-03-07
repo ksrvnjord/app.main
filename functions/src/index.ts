@@ -1,4 +1,8 @@
 import * as functions from "firebase-functions";
+import admin from "firebase-admin";
+
+admin.initializeApp();
+
 export {createReservation} from "./create-reservation";
 export {monitorDamages} from "./monitor-damages";
 

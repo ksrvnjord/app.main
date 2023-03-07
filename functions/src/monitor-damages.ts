@@ -1,13 +1,10 @@
-import functions, {logger} from "firebase-functions";
+import {logger, firestore} from "firebase-functions";
 import admin from "firebase-admin";
 import {DateTime} from "luxon";
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
-admin.initializeApp();
 const db = admin.firestore();
 
-export const monitorDamages = functions.firestore
+export const monitorDamages = firestore
     .document("/reservationObjects/{objectId}/damages/{damageId}")
     .onWrite(async (change, context) => {
       // Relevant Document
