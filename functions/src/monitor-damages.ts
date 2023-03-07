@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 admin.initializeApp();
 const db = admin.firestore();
 
-exports.monitorDamages = functions.firestore
+export const monitorDamages = functions.firestore
     .document('/reservationObjects/{objectId}/damages/{damageId}')
     .onWrite(async (change, context) => {
         // Relevant Document
