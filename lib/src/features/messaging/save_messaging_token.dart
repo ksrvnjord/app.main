@@ -44,7 +44,7 @@ void saveMessagingToken() async {
   await FirebaseMessaging.instance.subscribeToTopic("all");
 
   // Store the subscribed topics in a local cache
-  Box cache = await Hive.openBox('topics');
+  Box cache = await Hive.openBox<bool>('topics');
   cache.put(userId, true);
   cache.put('all', true);
 }

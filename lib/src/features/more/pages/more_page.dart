@@ -19,6 +19,7 @@ class MorePage extends StatelessWidget {
       "Agenda": "events",
       "Contact": "/contact",
       "Beleid van het bestuur": "beleid",
+      "Notificatie-instellingen": "notifications",
     };
 
     return Scaffold(
