@@ -37,7 +37,7 @@ Future<void> newDamage(DamageForm damageForm) async {
         'description': damageForm.description,
         'critical': damageForm.critical,
         'active': true,
-        'createdTime': DateTime.now(),
+        'createdTime': Timestamp.now(),
         'creatorId': uid,
         'type': damageForm.type,
         'name': damageForm.name,
