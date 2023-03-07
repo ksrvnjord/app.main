@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
-// Default expiry is one hour
-const defaultExpiry = 1;
+// Default expiry is one day
+const defaultExpiry = 24;
 
 // TODO: NEEDS TO BE REWRITTEN INTO AN OBJECT-ORIENTED CLASS,
 // USE CASE FOR THAT WILL PROBABLY SURFACE IN A COUPLE WEEKS OR
@@ -25,18 +25,13 @@ Future<Uint8List?> cachedHttpImage(
   // Create the expiry DateTime
   DateTime expireDate = DateTime.now().add(expire);
 
-  // Initialize a Hive-cache to store the images, do it lazily
-  // as we don't want to load all the images right away
-  LazyBox cache = await Hive.openLazyBox('imageCache');
+  // Get reference to the cache box to get the image from
+  Box cache = Hive.box('imageCache');
 
   // Normalize the URL to a SHA512 hash to avoid
   // key length issues, or normalize the key.
   Digest hashedKey =
       sha512.convert(key != '' ? utf8.encode(key) : utf8.encode(url));
-
-  // Initialize variable to store the output in
-  // from the try-catch block
-  Uint8List? output;
 
   // Check if we have an item in our cache,
   // and then check if we should use it
@@ -48,6 +43,10 @@ Future<Uint8List?> cachedHttpImage(
       DateTime.now().isBefore(item['expire'])) {
     return item['data'];
   }
+
+  // Initialize variable to store the output in
+  // from the try-catch block
+  Uint8List? output;
 
   // We don't have it, so gather it, store it, and return it.
   try {
