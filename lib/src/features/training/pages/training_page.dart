@@ -19,6 +19,12 @@ class TrainingPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.report),
+            onPressed: () => navigator.push('damages'),
+          ),
+        ],
       ),
       body: const TrainingList(),
       floatingActionButton: FirebaseAuth.instance.currentUser !=

@@ -6,6 +6,10 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
@@ -161,6 +165,30 @@ final routeMap = RouteMap(
           name: 'Training',
           child: TrainingPage(),
         ),
+    '/training/createdamage': (route) => CupertinoPage(
+          child: DamagesCreatePage(
+            reservationObjectId: route.queryParameters['reservationObjectId'],
+          ),
+        ),
+    '/training/damages': (route) =>
+        const CupertinoPage(child: DamagesListPage()),
+    '/training/damages/create': (route) => CupertinoPage(
+          child: DamagesCreatePage(
+            reservationObjectId: route.queryParameters['reservationObjectId'],
+          ),
+        ),
+    '/training/damages/edit': (route) => CupertinoPage(
+          child: DamagesEditPage(
+            id: route.queryParameters['id']!,
+            reservationObjectId: route.queryParameters['reservationObjectId']!,
+          ),
+        ),
+    '/training/damages/show': (route) => CupertinoPage(
+          child: DamagesShowPage(
+            id: route.queryParameters['id']!,
+            reservationObjectId: route.queryParameters['reservationObjectId']!,
+          ),
+        ),
     '/training/all': (_) => const CupertinoPage(
           child: AllTrainingPage(),
         ),
@@ -170,12 +198,36 @@ final routeMap = RouteMap(
     '/training/all/:id': (info) => CupertinoPage(
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
-    '/training/all/reservationObject/:id': (route) => CupertinoPage(
+    '/training/all/reservationObject/:reservationObjectId': (route) =>
+        CupertinoPage(
           child: ShowReservationObjectPage(
-            documentId: route.pathParameters['id']!,
+            documentId: route.pathParameters['reservationObjectId']!,
             name: route.queryParameters['name']!,
           ),
         ),
+    '/training/all/reservationObject/:reservationObjectId/damage/edit':
+        (route) => CupertinoPage(
+              child: DamagesEditPage(
+                id: route.queryParameters['id']!,
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
+    '/training/all/reservationObject/:reservationObjectId/damage/show':
+        (route) => CupertinoPage(
+              child: DamagesShowPage(
+                id: route.queryParameters['id']!,
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
+    '/training/all/reservationObject/:reservationObjectId/damage/create':
+        (route) => CupertinoPage(
+              child: DamagesCreatePage(
+                reservationObjectId:
+                    route.pathParameters['reservationObjectId']!,
+              ),
+            ),
     '/more': (route) => const CupertinoPage(
           name: 'More',
           child: MorePage(),

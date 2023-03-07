@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/queries/all_object_damages.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../widgets/availability_header.dart';
@@ -38,15 +41,29 @@ class ShowReservationObjectPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.report),
+            onPressed: () => Routemaster.of(context).push('damage/create'),
+          ),
+        ],
       ),
       body: FutureWrapper(
         future: getReservationObject(documentId),
-        success: showObjectDetails,
+        success: (snapshot) => showObjectDetails(snapshot, context),
       ),
     );
   }
 
-  Widget showObjectDetails(snapshot) {
+  Widget showObjectDetails(
+    DocumentSnapshot<ReservationObject> snapshot,
+    BuildContext context,
+  ) {
+    const double verticalPadding = 16;
+    const double horizontalPadding = 16;
+    const double gap = 8;
+    final navigator = Routemaster.of(context);
+
     if (!snapshot.exists) {
       return const Center(child: Text('No data'));
     }
@@ -54,7 +71,7 @@ class ShowReservationObjectPage extends StatelessWidget {
 
     // show the reservationObject data in a ListView
     return [
-      AvailabilityHeader(isAvailable: obj.available),
+      AvailabilityHeader(isAvailable: obj.available && !obj.critical),
       Expanded(
         child: ListView(children: [
           if (obj.comment != null && obj.comment!.isNotEmpty)
@@ -96,6 +113,46 @@ class ShowReservationObjectPage extends StatelessWidget {
             DataTextListTile(name: "Jaar", value: obj.year!.toString()),
           if (obj.brand != null)
             DataTextListTile(name: "Merk", value: obj.brand!),
+          if (obj.critical)
+            const Text(
+              'Schades',
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w300,
+                fontSize: 16,
+              ),
+            ).padding(
+              horizontal: horizontalPadding,
+              top: verticalPadding,
+              bottom: gap,
+            ),
+          FutureWrapper(
+            future: allObjectDamages(snapshot.id),
+            success: (data) => data
+                .map<Widget>((e) {
+                  return e.data() != null
+                      ? DamageTileWidget(
+                          damageSnapshot: e,
+                          showDamage: () =>
+                              navigator.push('damage/show', queryParameters: {
+                            'id': e.id,
+                          }),
+                          editDamage: () =>
+                              navigator.push('damage/edit', queryParameters: {
+                            'id': e.id,
+                          }),
+                        )
+                      : Container();
+                })
+                .toList()
+                .toWrap(
+                  runSpacing: gap,
+                )
+                .padding(
+                  horizontal: horizontalPadding,
+                  bottom: verticalPadding,
+                ),
+          ),
         ]),
       ),
     ].toColumn();
