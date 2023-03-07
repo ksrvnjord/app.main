@@ -1,10 +1,13 @@
-import {logger, firestore} from "firebase-functions";
+import {logger} from "firebase-functions";
+import * as functions from "firebase-functions";
 import admin from "firebase-admin";
 import {DateTime} from "luxon";
 
 const db = admin.firestore();
 
-export const monitorDamages = firestore
+export const monitorDamages = functions
+    .region('europe-west1')
+    .firestore
     .document("/reservationObjects/{objectId}/damages/{damageId}")
     .onWrite(async (change, context) => {
       // Relevant Document
