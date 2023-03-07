@@ -6,7 +6,7 @@ import {DateTime} from "luxon";
 const db = admin.firestore();
 
 export const monitorDamages = functions
-    .region('europe-west1')
+    .region("europe-west1")
     .firestore
     .document("/reservationObjects/{objectId}/damages/{damageId}")
     .onWrite(async (change, context) => {
