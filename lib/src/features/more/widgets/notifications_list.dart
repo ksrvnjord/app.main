@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/more/mutations/toggle_topic_fcm.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class NotificationsList extends StatefulWidget {
   final Box topics;
