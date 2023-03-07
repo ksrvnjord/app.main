@@ -91,8 +91,10 @@ export const monitorDamages = functions
         // Send out a push notification to those who this is interesting to
         reservations.docs.forEach((e) => {
           if (e.data().creatorId != null) {
+            logger.debug(`Notifying: ${e.data().creatorId}`);
+
             admin.messaging().send({
-              topic: e.data().creatorId,
+              topic: `${e.data().creatorId}`,
               notification: {
                 title: `Afschrijving ${
                   document.name
@@ -110,6 +112,7 @@ export const monitorDamages = functions
         });
       }
 
+      logger.debug("Notifying: schade");
       // Send a push notification to the 'schade' topic
       admin.messaging().send({
         topic: "schade",
