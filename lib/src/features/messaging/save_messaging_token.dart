@@ -45,6 +45,6 @@ void saveMessagingToken() async {
 
   // Store the subscribed topics in a local cache
   Box cache = await Hive.openBox<bool>('topics');
-  cache.put(userId, true);
-  cache.put('all', true);
+  await cache.put(userId, true);
+  await cache.put('all', true);
 }

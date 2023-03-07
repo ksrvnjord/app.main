@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -26,6 +29,25 @@ class AuthModel extends ChangeNotifier {
       isBusy = false;
       notifyListeners();
     });
+  }
+
+  Future<void> unsubscribeAllTopics() async {
+    final box = await Hive.openBox<bool>('topics');
+    for (String key in box.keys) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+    }
+    await box.clear();
+  }
+
+  Future<void> subscribeDefaultTopics(String userId) async {
+    // Required topics to subscribe to
+    await FirebaseMessaging.instance.subscribeToTopic(userId);
+    await FirebaseMessaging.instance.subscribeToTopic("all");
+
+    // Store the subscribed topics in a local cache
+    Box cache = await Hive.openBox<bool>('topics');
+    await cache.put(userId, true);
+    await cache.put('all', true);
   }
 
   Future<bool> login(String username, String password) async {
@@ -128,6 +150,12 @@ class AuthModel extends ChangeNotifier {
       // to login
       if (data != null && data['token'] != null) {
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
+
+        // Subscribe the user to FirebaseMessaging as well
+        String? uid = FirebaseAuth.instance.currentUser?.uid;
+        if (uid != null) {
+          subscribeDefaultTopics(uid);
+        }
       }
     } catch (e, st) {
       // If it fails, we don't want to die just yet - but do send
@@ -139,10 +167,13 @@ class AuthModel extends ChangeNotifier {
   }
 
   void logout() {
+    unsubscribeAllTopics().whenComplete(() => null);
+
     _storage.delete(key: 'oauth2_credentials').then((value) {
       client = null;
       notifyListeners();
     });
+
     FirebaseAuth.instance.signOut();
   }
 }
