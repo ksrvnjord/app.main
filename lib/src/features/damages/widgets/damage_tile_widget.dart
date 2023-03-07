@@ -26,23 +26,48 @@ class DamageTileWidget extends StatelessWidget {
     }
 
     return ListTile(
-      tileColor: Colors.white,
       title: Text(damage.name),
       subtitle: Text(damage.type),
       onTap: showDamage,
-      leading: Icon(
-        Icons.report,
-        color: Colors.red[900] ?? Colors.red,
-      ),
-      trailing: damage.creatorId == uid
-          ? IconButton(
-              onPressed: editDamage,
-              icon: const Icon(
-                Icons.edit,
-                color: Colors.grey,
+      leading: // report icon if critical else warning icon
+          damage.critical
+              ? Icon(
+                  Icons.report,
+                  color: Colors.red[900] ?? Colors.red,
+                )
+              : Icon(
+                  Icons.warning,
+                  color: Colors.orange[900] ?? Colors.orange,
+                ),
+      trailing: SizedBox(
+        width: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (damage.creatorId == uid)
+              IconButton(
+                onPressed: editDamage,
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.grey,
+                ),
               ),
-            )
-          : const SizedBox.shrink(),
-    ).border(all: 1, color: Colors.red[100] ?? Colors.white);
+
+            // show arrow forward icon to navigate to damage details
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    ).card(
+      color: // if damage is critical show light red, else orange
+          damage.critical ? Colors.red[100] : Colors.orange[100],
+      elevation: 0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+    );
   }
 }
