@@ -49,7 +49,8 @@ export const monitorDamages = functions
 
       // Get the relevant object, as we need to decide if we need to update it
       // and which message to send to any users that have reserved it
-      const object = await db.doc(`/reservationObjects/${context.params.objectId}`).get();
+      const objectRef = db.doc(`/reservationObjects/${context.params.objectId}`);
+      const object = await objectRef.get();
 
       logger.debug("Damaged Object: ", object);
 
@@ -66,21 +67,29 @@ export const monitorDamages = functions
         });
 
         // Send a push notification of the change to all users
-        // that reserved the boat today or tomorrow
-        const today = DateTime.now();
-        const tomorrow = today.plus({days: 3});
+        // that reserved the boat today or in the next 3 days
+        const startAt = DateTime.now();
+        const endAt = startAt.plus({days: 3});
 
-        // Get the relevant reservations
-        const reservations = (await db.collection("/reservations")
-            .where("object", "==", context.params.objectId)
-            .where("startTime", ">=", today.toJSDate())
-            .where("endTime", "<=", tomorrow.toJSDate())
-            .get()).docs;
+        // Build the query for the relevant reservations
+        const reservationsQuery = db.collection("/reservations")
+            .where("object", "==", objectRef)
+            .where("startTime", ">=", startAt.toJSDate())
+            .where("startTime", "<=", endAt.toJSDate());
 
+        logger.debug("Querying for: ", {
+          object: objectRef,
+          startTime_after: startAt.toJSDate(),
+          startTime_before: endAt.toJSDate(),
+        });
+
+        // Run the query and store the result
+        const reservations = await reservationsQuery.get();
         logger.debug("Reservations: ", reservations);
+        logger.debug("Reservation Documents: ", reservations.docs);
 
         // Send out a push notification to those who this is interesting to
-        reservations.forEach((e) => {
+        reservations.docs.forEach((e) => {
           if (e.data().creatorId != null) {
             admin.messaging().send({
               topic: e.data().creatorId,
