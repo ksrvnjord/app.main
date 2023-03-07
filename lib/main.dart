@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
@@ -53,6 +54,7 @@ Future<void> appRunner() async {
 Future<void> main() async {
   // Initialize the Hive Cache (Generic K/V cache, relevant for image caching)
   await Hive.initFlutter();
+  Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
 
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {

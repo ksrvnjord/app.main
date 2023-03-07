@@ -14,7 +14,7 @@ class FutureWrapper<T> extends StatelessWidget {
   final Widget loading;
   final Widget Function(Object error) error;
   final Widget Function(T data) success;
-  final Widget onNoData;
+  final Widget Function() onNoData;
   final T? initialData;
 
   const FutureWrapper({
@@ -23,9 +23,11 @@ class FutureWrapper<T> extends StatelessWidget {
     required this.success,
     this.loading = const LoadingWidget(),
     this.error = onEmpty,
-    this.onNoData = const SizedBox(height: 0, width: 0),
+    this.onNoData = empty,
     this.initialData,
   }) : super(key: key);
+
+  static Widget empty() => const SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class FutureWrapper<T> extends StatelessWidget {
           return error(snapshot.error!);
         } else if (snapshot.data == null &&
             snapshot.connectionState == ConnectionState.done) {
-          return onNoData;
+          return onNoData();
         }
 
         return loading;
