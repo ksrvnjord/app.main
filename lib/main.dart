@@ -55,6 +55,9 @@ Future<void> main() async {
   // Initialize the Hive Cache (Generic K/V cache, relevant for image caching)
   await Hive.initFlutter();
   Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
+  Hive.openBox<ImageCacheItem>(
+    'imageCache',
+  ); // open the image cache box, we don't have to do this lazily because it won't contain that much data and everyone has plenty of RAM
 
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {

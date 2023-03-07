@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
@@ -13,10 +11,6 @@ class AlmanakPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double choiceWidgetPadding = 4;
-
-    Hive.openBox<ImageCacheItem>(
-      'imageCache',
-    ); // open the image cache box, we don't have to do this lazily because it won't contain that much data and everyone has plenty of RAM
 
     return Scaffold(
       appBar: AppBar(
