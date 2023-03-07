@@ -32,15 +32,17 @@ class DamageTileWidget extends StatelessWidget {
       subtitle: Text(damage.type),
       onTap: showDamage,
       leading: // report icon if critical else warning icon
-          damage.critical
-              ? Icon(
-                  Icons.report,
-                  color: Colors.red[900] ?? Colors.red,
-                )
-              : Icon(
-                  Icons.warning,
-                  color: Colors.orange[900] ?? Colors.orange,
-                ),
+          [
+        damage.critical
+            ? Icon(
+                Icons.report,
+                color: Colors.red[900] ?? Colors.red,
+              )
+            : Icon(
+                Icons.warning,
+                color: Colors.orange[900] ?? Colors.orange,
+              ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
       trailing: SizedBox(
         width: trailingWidgetWidth,
         child: Row(
