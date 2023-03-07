@@ -21,12 +21,13 @@ class _NotificationsListState extends State<NotificationsList> {
     String topic,
     bool value,
     ScaffoldMessengerState messenger,
+    String title,
   ) {
     toggleTopicFCM(topic: topic, value: value).then((_) {
       messenger.showSnackBar(SnackBar(
         backgroundColor: Colors.green[900],
         content: Text(
-          '${value ? 'Aangemeld' : 'Afgemeld'} voor notificaties',
+          '${value ? 'Aangemeld' : 'Afgemeld'} voor $title',
         ),
       ));
 
@@ -75,6 +76,7 @@ class _NotificationsListState extends State<NotificationsList> {
                   e['topic']!,
                   value,
                   messenger,
+                  e['title']!,
                 ),
               ))
           .toList(),
