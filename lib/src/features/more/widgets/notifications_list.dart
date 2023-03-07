@@ -56,7 +56,7 @@ class _NotificationsListState extends State<NotificationsList> {
   Widget build(BuildContext context) {
     final messenger = ScaffoldMessenger.of(context);
 
-    return <Widget>[
+    return ListView(children: <Widget>[
       const SwitchListTile(
         title: Text('Bestuursnotificaties'),
         value: true,
@@ -80,6 +80,6 @@ class _NotificationsListState extends State<NotificationsList> {
                 ),
               ))
           .toList(),
-    ].toWrap();
+    ]);
   }
 }
