@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/queries/all_damages.dart
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class DamagesListPage extends StatelessWidget {
   final double paddingY = 16;
