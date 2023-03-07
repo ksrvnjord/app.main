@@ -20,8 +20,13 @@ export const monitorDamages = functions
         return;
       }
 
+      logger.debug("Amended damage:", document);
+      logger.debug("Action: ", context.eventType);
+
       // Get all the documents that currently exist for the reservation object
       let docs = (await db.collection(`/reservationObjects/${context.params.objectId}/damages`).get()).docs;
+
+      logger.debug("All damages: ", docs);
 
       // Remove the document that triggers this function
       docs = docs.filter((e) => e.id != (change.after.exists ? change.after.id : change.before.id));
@@ -34,16 +39,27 @@ export const monitorDamages = functions
         data.push(document);
       }
 
+      logger.debug("Final damages: ", data);
+
       // Check if for any critical && active, meaning if the object
       // needs to be set to critical
       const critical = data.filter((e) => e.critical && e.active).length > 0;
+
+      logger.debug("Damage Critical: ", critical);
 
       // Get the relevant object, as we need to decide if we need to update it
       // and which message to send to any users that have reserved it
       const object = await db.doc(`/reservationObjects/${context.params.objectId}`).get();
 
+      logger.debug("Damaged Object: ", object);
+
+      const shouldSetCritical = object.exists &&
+        (object.data()?.critical ?? false) != critical;
+
+      logger.debug("Should set critical: ", shouldSetCritical);
+
       // Check if we need to update the value
-      if (object.exists && (document.critical ?? false) != critical) {
+      if (shouldSetCritical) {
         // Update the object
         await object.ref.update({
           critical: critical,
@@ -60,6 +76,8 @@ export const monitorDamages = functions
             .where("startTime", ">=", today.toJSDate())
             .where("startTime", "<=", tomorrow.toJSDate())
             .get()).docs;
+
+        logger.debug("Reservations: ", reservations);
 
         // Send out a push notification to those who this is interesting to
         reservations.forEach((e) => {
