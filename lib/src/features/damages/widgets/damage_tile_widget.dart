@@ -25,6 +25,8 @@ class DamageTileWidget extends StatelessWidget {
       return Container();
     }
 
+    const double trailingWidgetWidth = 80;
+
     return ListTile(
       title: Text(damage.name),
       subtitle: Text(damage.type),
@@ -40,7 +42,7 @@ class DamageTileWidget extends StatelessWidget {
                   color: Colors.orange[900] ?? Colors.orange,
                 ),
       trailing: SizedBox(
-        width: 100,
+        width: trailingWidgetWidth,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
