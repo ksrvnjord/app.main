@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -37,9 +39,12 @@ void saveMessagingToken() async {
           'lastUsed': DateTime.now(),
         });
 
-  // TODO: HACKED THIS HERE ATM, BUT NEEDS BETTER LIFECYCLE
-  // ESPECIALLY WHEN WE'RE ADDING COMMITTEE-NOTIFICATIONS AND
-  // SOCIAL NETWORKING
+  // Required topics to subscribe to
   await FirebaseMessaging.instance.subscribeToTopic(userId);
   await FirebaseMessaging.instance.subscribeToTopic("all");
+
+  // Store the subscribed topics in a local cache
+  Box cache = await Hive.openBox<bool>('topics');
+  await cache.put(userId, true);
+  await cache.put('all', true);
 }

@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/queries/all_damages.dart
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class DamagesListPage extends StatelessWidget {
   final double paddingY = 16;
@@ -31,30 +30,28 @@ class DamagesListPage extends StatelessWidget {
       ),
       body: FutureWrapper(
         future: allDamages(),
-        success: (data) => data
-            .map<Widget>((e) {
-              return e.data() != null
-                  ? DamageTileWidget(
-                      damageSnapshot: e,
-                      showDamage: () =>
-                          navigator.push('show', queryParameters: {
-                        'id': e.id,
-                        'reservationObjectId': e.data()!.parent.id,
-                      }),
-                      editDamage: () =>
-                          navigator.push('edit', queryParameters: {
-                        'id': e.id,
-                        'reservationObjectId': e.data()!.parent.id,
-                      }),
-                    )
-                  : Container();
-            })
-            .toList()
-            .toWrap(
-              runSpacing: gapY,
-            )
-            .padding(horizontal: paddingX, vertical: paddingY),
-      ).scrollable(scrollDirection: Axis.vertical),
+        success: (data) => ListView.separated(
+          padding: EdgeInsets.symmetric(
+            vertical: paddingY,
+            horizontal: paddingX,
+          ),
+          itemCount: data.length,
+          separatorBuilder: (context, index) => SizedBox(height: gapY),
+          itemBuilder: (context, index) => data[index].data() != null
+              ? DamageTileWidget(
+                  damageSnapshot: data[index],
+                  showDamage: () => navigator.push('show', queryParameters: {
+                    'id': data[index].id,
+                    'reservationObjectId': data[index].data()!.parent.id,
+                  }),
+                  editDamage: () => navigator.push('edit', queryParameters: {
+                    'id': data[index].id,
+                    'reservationObjectId': data[index].data()!.parent.id,
+                  }),
+                )
+              : Container(),
+        ),
+      ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(

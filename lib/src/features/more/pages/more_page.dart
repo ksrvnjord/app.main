@@ -19,6 +19,8 @@ class MorePage extends StatelessWidget {
       "Agenda": "events",
       "Contact": "/contact",
       "Beleid van het bestuur": "beleid",
+      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
+        "Notificatie-instellingen": "notifications",
     };
 
     return Scaffold(

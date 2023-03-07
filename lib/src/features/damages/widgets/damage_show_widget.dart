@@ -25,7 +25,7 @@ class DamageShowWidget extends StatelessWidget {
         ? FirebaseStorage.instance.ref().child(damage!.image!).getDownloadURL
         : null;
 
-    return Wrap(children: <Widget>[
+    return ListView(children: <Widget>[
       DataTextListTile(name: 'Type', value: damage?.type ?? ''),
       DataTextListTile(name: 'Object', value: damage?.name ?? ''),
       DataTextListTile(name: 'Description', value: damage?.description ?? ''),
@@ -59,6 +59,6 @@ class DamageShowWidget extends StatelessWidget {
               ).padding(vertical: padding),
             )
           : Container(),
-    ]).scrollable(scrollDirection: Axis.vertical);
+    ]);
   }
 }

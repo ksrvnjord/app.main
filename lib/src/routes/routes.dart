@@ -15,6 +15,7 @@ import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
@@ -237,6 +238,9 @@ final routeMap = RouteMap(
         ),
     '/more/beleid': (info) => const CupertinoPage(
           child: BeleidPage(),
+        ),
+    '/more/notifications': (info) => const CupertinoPage(
+          child: NotificationsPage(),
         ),
     '/contact': (route) => const CupertinoPage(
           child: ContactPage(),
