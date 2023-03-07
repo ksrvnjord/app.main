@@ -74,7 +74,7 @@ export const monitorDamages = functions
         const reservations = (await db.collection("/reservations")
             .where("object", "==", context.params.objectId)
             .where("startTime", ">=", today.toJSDate())
-            .where("startTime", "<=", tomorrow.toJSDate())
+            .where("endTime", "<=", tomorrow.toJSDate())
             .get()).docs;
 
         logger.debug("Reservations: ", reservations);
