@@ -21,6 +21,7 @@ class MorePage extends StatelessWidget {
       "Beleid van het bestuur": "beleid",
       if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
         "Notificatie-instellingen": "notifications",
+      'Geavanceerde instellingen': 'advanced-settings',
     };
 
     return Scaffold(
