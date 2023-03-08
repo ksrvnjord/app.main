@@ -60,6 +60,7 @@ dependencies:
   crypto: ^3.0.2
   firebase_app_check: ^0.1.1+12
   tuple: ^2.0.1
+  path_provider: ^2.0.2
 
 
 dev_dependencies:

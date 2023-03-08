@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
+import 'hive_cache.dart';
 import 'image_cache_item.dart';
 
 // Default expiry is one day
@@ -88,3 +91,11 @@ Future<ImageCacheItem?> getFromHiveCache(String key) async =>
 // Hashes a key to a string
 String hashKeytoString(String key) =>
     sha512.convert(utf8.encode(key)).toString();
+
+/// Deletes
+Future<void> deleteAllCache() async {
+  await Hive.close(); // close all open boxes
+  Directory appDir = await getApplicationDocumentsDirectory();
+  Directory hiveDir = Directory('${appDir.path}/${HiveCache.cachePath}');
+  hiveDir.delete(recursive: true);
+}

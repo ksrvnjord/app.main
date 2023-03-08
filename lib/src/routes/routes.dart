@@ -12,6 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/advanced_settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
@@ -241,6 +242,9 @@ final routeMap = RouteMap(
         ),
     '/more/notifications': (info) => const CupertinoPage(
           child: NotificationsPage(),
+        ),
+    '/more/advanced-settings': (_) => const CupertinoPage(
+          child: AdvancedSettingsPage(),
         ),
     '/contact': (route) => const CupertinoPage(
           child: ContactPage(),
