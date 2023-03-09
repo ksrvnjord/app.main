@@ -127,18 +127,19 @@ class AlmanakUserData extends StatelessWidget {
           ).padding(all: formFieldPadding),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
       UserAddressWidget(address: u.address!),
-      if (u.ploeg != null) DataTextListTile(name: "Ploeg", value: u.ploeg!),
-      if (u.board != null)
+      if (u.ploeg != null && u.ploeg!.isNotEmpty)
+        DataTextListTile(name: "Ploeg", value: u.ploeg!),
+      if (u.board != null && u.board!.isNotEmpty)
         DataTextListTile(name: "Voorkeurs boord", value: u.board!),
       if (u.substructuren != null && u.substructuren!.isNotEmpty)
         ChipWidget(title: "Substructuren", values: u.substructuren!),
       if (u.huis != null) DataTextListTile(name: "Huis", value: u.huis!),
-      if (u.dubbellid != null)
+      if (u.dubbellid != null && u.dubbellid!) // only show if true
         DataTextListTile(
           name: "Dubbellid",
           value: u.dubbellid! ? "Ja" : "Nee",
         ),
-      if (u.otherAssociation != null)
+      if (u.otherAssociation != null && u.otherAssociation!.isNotEmpty)
         DataTextListTile(
           name: "Andere vereniging(en)",
           value: u.otherAssociation!,
