@@ -12,20 +12,30 @@ class UserAddressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: // icon for address
-          const [
-        Icon(
-          Icons.location_on_outlined,
-          color: Colors.lightBlue,
-        ),
-      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-      title: Text(
-        "${address.street != null ? "${address.street} " : ""}${address.houseNumber != null ? "${address.houseNumber}" : ""}${address.houseNumberAddition != null ? "${address.houseNumberAddition}" : ""}",
-      ),
-      subtitle: Text(
-        "${address.postalCode != null ? "${address.postalCode} " : ""}${address.city != null ? "${address.city}" : ""}",
-      ),
-    );
+    return address.street != null &&
+            address.street!
+                .isNotEmpty // it makes no sense to show an address without a street
+        ? ListTile(
+            leading: const [
+              Icon(
+                Icons.location_on_outlined,
+                color: Colors.lightBlue,
+                size: 32,
+              ),
+            ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+            title: Text(
+              "${address.street != null ? "${address.street} " : ""}${address.houseNumber != null ? "${address.houseNumber}" : ""}${address.houseNumberAddition != null ? "${address.houseNumberAddition}" : ""}",
+            ),
+            subtitle:
+                // if postalcode and city are null, don't show anything
+                address.postalCode != null &&
+                        address.city != null &&
+                        address.city!.isNotEmpty
+                    ? Text(
+                        "${address.postalCode != null ? "${address.postalCode} " : ""}${address.city != null ? "${address.city}" : ""}",
+                      )
+                    : null,
+          )
+        : const SizedBox.shrink();
   }
 }
