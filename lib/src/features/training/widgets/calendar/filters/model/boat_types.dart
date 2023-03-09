@@ -1,34 +1,35 @@
 const Map<String, List<String>> reservationObjectTypes = {
   'Binnen': [
-    'Ruimtes', // In App
-    'Ergometers', // Ecaptain
-    'Fietsen', // Ecaptain
-    'Mat', // Ecaptain
+    'Ruimtes',
+    'Ergometers',
+    'Fietsen',
+    'Mat',
   ],
   '1 roeier': [
-    'C1x', // In App
-    '1x', // Ecaptain
+    'C1x',
+    '1x',
   ],
   '2 roeiers': [
-    'C2x', // In App
-    'C2+', // In App
-    'C2x+', // In App
-    '2-', // Ecaptain
-    '2x', // Ecaptain
-    '2+', // Ecaptain
+    'C2x',
+    'C2+',
+    'C2x+',
+    '2-',
+    '2x',
+    '2+',
   ],
   '4 roeiers': [
-    'C4+', // In App
-    '4+', // Ecaptain
-    '4x', // Ecaptain
+    'C4+',
+    '4+',
+    '4x',
+    "4-",
   ],
   '8 roeiers': [
-    '8+', // Ecaptain
+    '8+',
   ],
   'Overig': [
-    'Bak', // In APp
-    'Scull riemen', // Ecaptain
-    'Cox', // Ecaptain
-    'Motorboot', // Ecaptain
+    'Bak',
+    'Scull riemen',
+    'Cox',
+    'Motorboot',
   ],
 };
