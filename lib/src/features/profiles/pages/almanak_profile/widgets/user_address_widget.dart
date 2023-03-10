@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class UserAddressWidget extends StatelessWidget {
   const UserAddressWidget({
@@ -12,19 +12,30 @@ class UserAddressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (address.street != null && address.street!.isNotEmpty)
-          DataTextListTile(
-            name: "Adres",
-            value: // Showing house number(addition) only makes sense if street is not empty
-                """${address.street!} ${address.houseNumber != null && address.houseNumber!.isNotEmpty ? address.houseNumber! : ""} ${address.houseNumberAddition != null && address.houseNumberAddition!.isNotEmpty ? address.houseNumberAddition! : ""}""",
-          ),
-        if (address.postalCode != null && address.postalCode!.isNotEmpty)
-          DataTextListTile(name: "Postcode", value: address.postalCode!),
-        if (address.city != null && address.city!.isNotEmpty)
-          DataTextListTile(name: "Stad", value: address.city!),
-      ],
-    );
+    return address.street != null &&
+            address.street!
+                .isNotEmpty // it makes no sense to show an address without a street
+        ? ListTile(
+            leading: const [
+              Icon(
+                Icons.location_on_outlined,
+                color: Colors.lightBlue,
+                size: 32,
+              ),
+            ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+            title: Text(
+              "${address.street != null ? "${address.street} " : ""}${address.houseNumber != null ? "${address.houseNumber}" : ""}${address.houseNumberAddition != null ? "${address.houseNumberAddition}" : ""}",
+            ),
+            subtitle:
+                // if postalcode and city are null, don't show anything
+                address.postalCode != null &&
+                        address.city != null &&
+                        address.city!.isNotEmpty
+                    ? Text(
+                        "${address.postalCode != null ? "${address.postalCode} " : ""}${address.city != null ? "${address.city}" : ""}",
+                      )
+                    : null,
+          )
+        : const SizedBox.shrink();
   }
 }
