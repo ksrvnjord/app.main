@@ -390,6 +390,13 @@ const documentNodeQueryAlmanak = DocumentNode(definitions: [
                 selectionSet: null,
               ),
               FieldNode(
+                name: NameNode(value: 'identifier'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
                 name: NameNode(value: 'fullContact'),
                 alias: null,
                 arguments: [],
@@ -895,6 +902,7 @@ class Query$Almanak$users$data {
     required this.id,
     required this.email,
     required this.username,
+    required this.identifier,
     required this.fullContact,
     required this.$__typename,
   });
@@ -903,12 +911,14 @@ class Query$Almanak$users$data {
     final l$id = json['id'];
     final l$email = json['email'];
     final l$username = json['username'];
+    final l$identifier = json['identifier'];
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users$data(
       id: (l$id as String),
       email: (l$email as String),
       username: (l$username as String),
+      identifier: (l$identifier as String),
       fullContact: Query$Almanak$users$data$fullContact.fromJson(
           (l$fullContact as Map<String, dynamic>)),
       $__typename: (l$$__typename as String),
@@ -920,6 +930,8 @@ class Query$Almanak$users$data {
   final String email;
 
   final String username;
+
+  final String identifier;
 
   final Query$Almanak$users$data$fullContact fullContact;
 
@@ -933,6 +945,8 @@ class Query$Almanak$users$data {
     _resultData['email'] = l$email;
     final l$username = username;
     _resultData['username'] = l$username;
+    final l$identifier = identifier;
+    _resultData['identifier'] = l$identifier;
     final l$fullContact = fullContact;
     _resultData['fullContact'] = l$fullContact.toJson();
     final l$$__typename = $__typename;
@@ -945,12 +959,14 @@ class Query$Almanak$users$data {
     final l$id = id;
     final l$email = email;
     final l$username = username;
+    final l$identifier = identifier;
     final l$fullContact = fullContact;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$email,
       l$username,
+      l$identifier,
       l$fullContact,
       l$$__typename,
     ]);
@@ -978,6 +994,11 @@ class Query$Almanak$users$data {
     final l$username = username;
     final lOther$username = other.username;
     if (l$username != lOther$username) {
+      return false;
+    }
+    final l$identifier = identifier;
+    final lOther$identifier = other.identifier;
+    if (l$identifier != lOther$identifier) {
       return false;
     }
     final l$fullContact = fullContact;
@@ -1016,6 +1037,7 @@ abstract class CopyWith$Query$Almanak$users$data<TRes> {
     String? id,
     String? email,
     String? username,
+    String? identifier,
     Query$Almanak$users$data$fullContact? fullContact,
     String? $__typename,
   });
@@ -1039,6 +1061,7 @@ class _CopyWithImpl$Query$Almanak$users$data<TRes>
     Object? id = _undefined,
     Object? email = _undefined,
     Object? username = _undefined,
+    Object? identifier = _undefined,
     Object? fullContact = _undefined,
     Object? $__typename = _undefined,
   }) =>
@@ -1050,6 +1073,9 @@ class _CopyWithImpl$Query$Almanak$users$data<TRes>
         username: username == _undefined || username == null
             ? _instance.username
             : (username as String),
+        identifier: identifier == _undefined || identifier == null
+            ? _instance.identifier
+            : (identifier as String),
         fullContact: fullContact == _undefined || fullContact == null
             ? _instance.fullContact
             : (fullContact as Query$Almanak$users$data$fullContact),
@@ -1074,6 +1100,7 @@ class _CopyWithStubImpl$Query$Almanak$users$data<TRes>
     String? id,
     String? email,
     String? username,
+    String? identifier,
     Query$Almanak$users$data$fullContact? fullContact,
     String? $__typename,
   }) =>
