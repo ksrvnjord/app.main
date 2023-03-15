@@ -1,3 +1,4 @@
+// ignore_for_file: type=lint
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -33,7 +34,10 @@ class Variables$Query$Announcements {
   }
 
   CopyWith$Variables$Query$Announcements<Variables$Query$Announcements>
-      get copyWith => CopyWith$Variables$Query$Announcements(this, (i) => i);
+      get copyWith => CopyWith$Variables$Query$Announcements(
+            this,
+            (i) => i,
+          );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -63,9 +67,9 @@ class Variables$Query$Announcements {
 
 abstract class CopyWith$Variables$Query$Announcements<TRes> {
   factory CopyWith$Variables$Query$Announcements(
-          Variables$Query$Announcements instance,
-          TRes Function(Variables$Query$Announcements) then) =
-      _CopyWithImpl$Variables$Query$Announcements;
+    Variables$Query$Announcements instance,
+    TRes Function(Variables$Query$Announcements) then,
+  ) = _CopyWithImpl$Variables$Query$Announcements;
 
   factory CopyWith$Variables$Query$Announcements.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$Announcements;
@@ -75,7 +79,10 @@ abstract class CopyWith$Variables$Query$Announcements<TRes> {
 
 class _CopyWithImpl$Variables$Query$Announcements<TRes>
     implements CopyWith$Variables$Query$Announcements<TRes> {
-  _CopyWithImpl$Variables$Query$Announcements(this._instance, this._then);
+  _CopyWithImpl$Variables$Query$Announcements(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Query$Announcements _instance;
 
@@ -100,17 +107,21 @@ class _CopyWithStubImpl$Variables$Query$Announcements<TRes>
 }
 
 class Query$Announcements {
-  Query$Announcements({this.announcements, required this.$__typename});
+  Query$Announcements({
+    this.announcements,
+    required this.$__typename,
+  });
 
   factory Query$Announcements.fromJson(Map<String, dynamic> json) {
     final l$announcements = json['announcements'];
     final l$$__typename = json['__typename'];
     return Query$Announcements(
-        announcements: l$announcements == null
-            ? null
-            : Query$Announcements$announcements.fromJson(
-                (l$announcements as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      announcements: l$announcements == null
+          ? null
+          : Query$Announcements$announcements.fromJson(
+              (l$announcements as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Announcements$announcements? announcements;
@@ -130,7 +141,10 @@ class Query$Announcements {
   int get hashCode {
     final l$announcements = announcements;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$announcements, l$$__typename]);
+    return Object.hashAll([
+      l$announcements,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -157,25 +171,34 @@ class Query$Announcements {
 
 extension UtilityExtension$Query$Announcements on Query$Announcements {
   CopyWith$Query$Announcements<Query$Announcements> get copyWith =>
-      CopyWith$Query$Announcements(this, (i) => i);
+      CopyWith$Query$Announcements(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Announcements<TRes> {
-  factory CopyWith$Query$Announcements(Query$Announcements instance,
-          TRes Function(Query$Announcements) then) =
-      _CopyWithImpl$Query$Announcements;
+  factory CopyWith$Query$Announcements(
+    Query$Announcements instance,
+    TRes Function(Query$Announcements) then,
+  ) = _CopyWithImpl$Query$Announcements;
 
   factory CopyWith$Query$Announcements.stub(TRes res) =
       _CopyWithStubImpl$Query$Announcements;
 
-  TRes call(
-      {Query$Announcements$announcements? announcements, String? $__typename});
+  TRes call({
+    Query$Announcements$announcements? announcements,
+    String? $__typename,
+  });
   CopyWith$Query$Announcements$announcements<TRes> get announcements;
 }
 
 class _CopyWithImpl$Query$Announcements<TRes>
     implements CopyWith$Query$Announcements<TRes> {
-  _CopyWithImpl$Query$Announcements(this._instance, this._then);
+  _CopyWithImpl$Query$Announcements(
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcements _instance;
 
@@ -183,16 +206,18 @@ class _CopyWithImpl$Query$Announcements<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? announcements = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? announcements = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcements(
-          announcements: announcements == _undefined
-              ? _instance.announcements
-              : (announcements as Query$Announcements$announcements?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        announcements: announcements == _undefined
+            ? _instance.announcements
+            : (announcements as Query$Announcements$announcements?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Announcements$announcements<TRes> get announcements {
     final local$announcements = _instance.announcements;
     return local$announcements == null
@@ -208,9 +233,10 @@ class _CopyWithStubImpl$Query$Announcements<TRes>
 
   TRes _res;
 
-  call(
-          {Query$Announcements$announcements? announcements,
-          String? $__typename}) =>
+  call({
+    Query$Announcements$announcements? announcements,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Announcements$announcements<TRes> get announcements =>
       CopyWith$Query$Announcements$announcements.stub(_res);
@@ -218,169 +244,191 @@ class _CopyWithStubImpl$Query$Announcements<TRes>
 
 const documentNodeQueryAnnouncements = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.query,
-      name: NameNode(value: 'Announcements'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'page')),
-            type: NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: false),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'announcements'),
+    type: OperationType.query,
+    name: NameNode(value: 'Announcements'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'page')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'Int'),
+          isNonNull: false,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'announcements'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'page'),
+            value: VariableNode(name: NameNode(value: 'page')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'data'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'page'),
-                  value: VariableNode(name: NameNode(value: 'page')))
-            ],
+            arguments: [],
             directives: [],
             selectionSet: SelectionSetNode(selections: [
               FieldNode(
-                  name: NameNode(value: 'data'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'author'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'created_at'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'id'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'title'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
+                name: NameNode(value: 'author'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
               FieldNode(
-                  name: NameNode(value: 'paginatorInfo'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'lastPage'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'currentPage'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
+                name: NameNode(value: 'created_at'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
               FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+                name: NameNode(value: 'id'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'title'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: 'paginatorInfo'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'lastPage'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'currentPage'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Query$Announcements _parserFn$Query$Announcements(Map<String, dynamic> data) =>
     Query$Announcements.fromJson(data);
 
 class Options$Query$Announcements
     extends graphql.QueryOptions<Query$Announcements> {
-  Options$Query$Announcements(
-      {String? operationName,
-      Variables$Query$Announcements? variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      Duration? pollInterval,
-      graphql.Context? context})
-      : super(
-            variables: variables?.toJson() ?? {},
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            pollInterval: pollInterval,
-            context: context,
-            document: documentNodeQueryAnnouncements,
-            parserFn: _parserFn$Query$Announcements);
+  Options$Query$Announcements({
+    String? operationName,
+    Variables$Query$Announcements? variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Duration? pollInterval,
+    graphql.Context? context,
+  }) : super(
+          variables: variables?.toJson() ?? {},
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          pollInterval: pollInterval,
+          context: context,
+          document: documentNodeQueryAnnouncements,
+          parserFn: _parserFn$Query$Announcements,
+        );
 }
 
 class WatchOptions$Query$Announcements
     extends graphql.WatchQueryOptions<Query$Announcements> {
-  WatchOptions$Query$Announcements(
-      {String? operationName,
-      Variables$Query$Announcements? variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables?.toJson() ?? {},
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeQueryAnnouncements,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Query$Announcements);
+  WatchOptions$Query$Announcements({
+    String? operationName,
+    Variables$Query$Announcements? variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables?.toJson() ?? {},
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeQueryAnnouncements,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Query$Announcements,
+        );
 }
 
 class FetchMoreOptions$Query$Announcements extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$Announcements(
-      {required graphql.UpdateQuery updateQuery,
-      Variables$Query$Announcements? variables})
-      : super(
-            updateQuery: updateQuery,
-            variables: variables?.toJson() ?? {},
-            document: documentNodeQueryAnnouncements);
+  FetchMoreOptions$Query$Announcements({
+    required graphql.UpdateQuery updateQuery,
+    Variables$Query$Announcements? variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables?.toJson() ?? {},
+          document: documentNodeQueryAnnouncements,
+        );
 }
 
 extension ClientExtension$Query$Announcements on graphql.GraphQLClient {
@@ -390,25 +438,31 @@ extension ClientExtension$Query$Announcements on graphql.GraphQLClient {
   graphql.ObservableQuery<Query$Announcements> watchQuery$Announcements(
           [WatchOptions$Query$Announcements? options]) =>
       this.watchQuery(options ?? WatchOptions$Query$Announcements());
-  void writeQuery$Announcements(
-          {required Query$Announcements data,
-          Variables$Query$Announcements? variables,
-          bool broadcast = true}) =>
+  void writeQuery$Announcements({
+    required Query$Announcements data,
+    Variables$Query$Announcements? variables,
+    bool broadcast = true,
+  }) =>
       this.writeQuery(
-          graphql.Request(
-              operation:
-                  graphql.Operation(document: documentNodeQueryAnnouncements),
-              variables: variables?.toJson() ?? const {}),
-          data: data.toJson(),
-          broadcast: broadcast);
-  Query$Announcements? readQuery$Announcements(
-      {Variables$Query$Announcements? variables, bool optimistic = true}) {
-    final result = this.readQuery(
         graphql.Request(
-            operation:
-                graphql.Operation(document: documentNodeQueryAnnouncements),
-            variables: variables?.toJson() ?? const {}),
-        optimistic: optimistic);
+          operation:
+              graphql.Operation(document: documentNodeQueryAnnouncements),
+          variables: variables?.toJson() ?? const {},
+        ),
+        data: data.toJson(),
+        broadcast: broadcast,
+      );
+  Query$Announcements? readQuery$Announcements({
+    Variables$Query$Announcements? variables,
+    bool optimistic = true,
+  }) {
+    final result = this.readQuery(
+      graphql.Request(
+        operation: graphql.Operation(document: documentNodeQueryAnnouncements),
+        variables: variables?.toJson() ?? const {},
+      ),
+      optimistic: optimistic,
+    );
     return result == null ? null : Query$Announcements.fromJson(result);
   }
 }
@@ -423,21 +477,23 @@ graphql.ObservableQuery<Query$Announcements> useWatchQuery$Announcements(
 
 class Query$Announcements$Widget
     extends graphql_flutter.Query<Query$Announcements> {
-  Query$Announcements$Widget(
-      {widgets.Key? key,
-      Options$Query$Announcements? options,
-      required graphql_flutter.QueryBuilder<Query$Announcements> builder})
-      : super(
-            key: key,
-            options: options ?? Options$Query$Announcements(),
-            builder: builder);
+  Query$Announcements$Widget({
+    widgets.Key? key,
+    Options$Query$Announcements? options,
+    required graphql_flutter.QueryBuilder<Query$Announcements> builder,
+  }) : super(
+          key: key,
+          options: options ?? Options$Query$Announcements(),
+          builder: builder,
+        );
 }
 
 class Query$Announcements$announcements {
-  Query$Announcements$announcements(
-      {required this.data,
-      required this.paginatorInfo,
-      required this.$__typename});
+  Query$Announcements$announcements({
+    required this.data,
+    required this.paginatorInfo,
+    required this.$__typename,
+  });
 
   factory Query$Announcements$announcements.fromJson(
       Map<String, dynamic> json) {
@@ -445,13 +501,14 @@ class Query$Announcements$announcements {
     final l$paginatorInfo = json['paginatorInfo'];
     final l$$__typename = json['__typename'];
     return Query$Announcements$announcements(
-        data: (l$data as List<dynamic>)
-            .map((e) => Query$Announcements$announcements$data.fromJson(
-                (e as Map<String, dynamic>)))
-            .toList(),
-        paginatorInfo: Query$Announcements$announcements$paginatorInfo.fromJson(
-            (l$paginatorInfo as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      data: (l$data as List<dynamic>)
+          .map((e) => Query$Announcements$announcements$data.fromJson(
+              (e as Map<String, dynamic>)))
+          .toList(),
+      paginatorInfo: Query$Announcements$announcements$paginatorInfo.fromJson(
+          (l$paginatorInfo as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final List<Query$Announcements$announcements$data> data;
@@ -476,8 +533,11 @@ class Query$Announcements$announcements {
     final l$data = data;
     final l$paginatorInfo = paginatorInfo;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [Object.hashAll(l$data.map((v) => v)), l$paginatorInfo, l$$__typename]);
+    return Object.hashAll([
+      Object.hashAll(l$data.map((v) => v)),
+      l$paginatorInfo,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -518,23 +578,26 @@ class Query$Announcements$announcements {
 extension UtilityExtension$Query$Announcements$announcements
     on Query$Announcements$announcements {
   CopyWith$Query$Announcements$announcements<Query$Announcements$announcements>
-      get copyWith =>
-          CopyWith$Query$Announcements$announcements(this, (i) => i);
+      get copyWith => CopyWith$Query$Announcements$announcements(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Announcements$announcements<TRes> {
   factory CopyWith$Query$Announcements$announcements(
-          Query$Announcements$announcements instance,
-          TRes Function(Query$Announcements$announcements) then) =
-      _CopyWithImpl$Query$Announcements$announcements;
+    Query$Announcements$announcements instance,
+    TRes Function(Query$Announcements$announcements) then,
+  ) = _CopyWithImpl$Query$Announcements$announcements;
 
   factory CopyWith$Query$Announcements$announcements.stub(TRes res) =
       _CopyWithStubImpl$Query$Announcements$announcements;
 
-  TRes call(
-      {List<Query$Announcements$announcements$data>? data,
-      Query$Announcements$announcements$paginatorInfo? paginatorInfo,
-      String? $__typename});
+  TRes call({
+    List<Query$Announcements$announcements$data>? data,
+    Query$Announcements$announcements$paginatorInfo? paginatorInfo,
+    String? $__typename,
+  });
   TRes data(
       Iterable<Query$Announcements$announcements$data> Function(
               Iterable<
@@ -547,7 +610,10 @@ abstract class CopyWith$Query$Announcements$announcements<TRes> {
 
 class _CopyWithImpl$Query$Announcements$announcements<TRes>
     implements CopyWith$Query$Announcements$announcements<TRes> {
-  _CopyWithImpl$Query$Announcements$announcements(this._instance, this._then);
+  _CopyWithImpl$Query$Announcements$announcements(
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcements$announcements _instance;
 
@@ -555,21 +621,23 @@ class _CopyWithImpl$Query$Announcements$announcements<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? data = _undefined,
-          Object? paginatorInfo = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? data = _undefined,
+    Object? paginatorInfo = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcements$announcements(
-          data: data == _undefined || data == null
-              ? _instance.data
-              : (data as List<Query$Announcements$announcements$data>),
-          paginatorInfo: paginatorInfo == _undefined || paginatorInfo == null
-              ? _instance.paginatorInfo
-              : (paginatorInfo
-                  as Query$Announcements$announcements$paginatorInfo),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        data: data == _undefined || data == null
+            ? _instance.data
+            : (data as List<Query$Announcements$announcements$data>),
+        paginatorInfo: paginatorInfo == _undefined || paginatorInfo == null
+            ? _instance.paginatorInfo
+            : (paginatorInfo
+                as Query$Announcements$announcements$paginatorInfo),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   TRes data(
           Iterable<Query$Announcements$announcements$data> Function(
                   Iterable<
@@ -577,9 +645,11 @@ class _CopyWithImpl$Query$Announcements$announcements<TRes>
                           Query$Announcements$announcements$data>>)
               _fn) =>
       call(
-          data: _fn(_instance.data.map((e) =>
-                  CopyWith$Query$Announcements$announcements$data(e, (i) => i)))
-              .toList());
+          data: _fn(_instance.data
+              .map((e) => CopyWith$Query$Announcements$announcements$data(
+                    e,
+                    (i) => i,
+                  ))).toList());
   CopyWith$Query$Announcements$announcements$paginatorInfo<TRes>
       get paginatorInfo {
     final local$paginatorInfo = _instance.paginatorInfo;
@@ -594,10 +664,11 @@ class _CopyWithStubImpl$Query$Announcements$announcements<TRes>
 
   TRes _res;
 
-  call(
-          {List<Query$Announcements$announcements$data>? data,
-          Query$Announcements$announcements$paginatorInfo? paginatorInfo,
-          String? $__typename}) =>
+  call({
+    List<Query$Announcements$announcements$data>? data,
+    Query$Announcements$announcements$paginatorInfo? paginatorInfo,
+    String? $__typename,
+  }) =>
       _res;
   data(_fn) => _res;
   CopyWith$Query$Announcements$announcements$paginatorInfo<TRes>
@@ -606,12 +677,13 @@ class _CopyWithStubImpl$Query$Announcements$announcements<TRes>
 }
 
 class Query$Announcements$announcements$data {
-  Query$Announcements$announcements$data(
-      {required this.author,
-      required this.created_at,
-      required this.id,
-      required this.title,
-      required this.$__typename});
+  Query$Announcements$announcements$data({
+    required this.author,
+    required this.created_at,
+    required this.id,
+    required this.title,
+    required this.$__typename,
+  });
 
   factory Query$Announcements$announcements$data.fromJson(
       Map<String, dynamic> json) {
@@ -621,11 +693,12 @@ class Query$Announcements$announcements$data {
     final l$title = json['title'];
     final l$$__typename = json['__typename'];
     return Query$Announcements$announcements$data(
-        author: (l$author as String),
-        created_at: DateTime.parse((l$created_at as String)),
-        id: (l$id as String),
-        title: (l$title as String),
-        $__typename: (l$$__typename as String));
+      author: (l$author as String),
+      created_at: DateTime.parse((l$created_at as String)),
+      id: (l$id as String),
+      title: (l$title as String),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String author;
@@ -660,8 +733,13 @@ class Query$Announcements$announcements$data {
     final l$id = id;
     final l$title = title;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [l$author, l$created_at, l$id, l$title, l$$__typename]);
+    return Object.hashAll([
+      l$author,
+      l$created_at,
+      l$id,
+      l$title,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -706,31 +784,36 @@ extension UtilityExtension$Query$Announcements$announcements$data
     on Query$Announcements$announcements$data {
   CopyWith$Query$Announcements$announcements$data<
           Query$Announcements$announcements$data>
-      get copyWith =>
-          CopyWith$Query$Announcements$announcements$data(this, (i) => i);
+      get copyWith => CopyWith$Query$Announcements$announcements$data(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Announcements$announcements$data<TRes> {
   factory CopyWith$Query$Announcements$announcements$data(
-          Query$Announcements$announcements$data instance,
-          TRes Function(Query$Announcements$announcements$data) then) =
-      _CopyWithImpl$Query$Announcements$announcements$data;
+    Query$Announcements$announcements$data instance,
+    TRes Function(Query$Announcements$announcements$data) then,
+  ) = _CopyWithImpl$Query$Announcements$announcements$data;
 
   factory CopyWith$Query$Announcements$announcements$data.stub(TRes res) =
       _CopyWithStubImpl$Query$Announcements$announcements$data;
 
-  TRes call(
-      {String? author,
-      DateTime? created_at,
-      String? id,
-      String? title,
-      String? $__typename});
+  TRes call({
+    String? author,
+    DateTime? created_at,
+    String? id,
+    String? title,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Announcements$announcements$data<TRes>
     implements CopyWith$Query$Announcements$announcements$data<TRes> {
   _CopyWithImpl$Query$Announcements$announcements$data(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcements$announcements$data _instance;
 
@@ -738,26 +821,28 @@ class _CopyWithImpl$Query$Announcements$announcements$data<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? author = _undefined,
-          Object? created_at = _undefined,
-          Object? id = _undefined,
-          Object? title = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? author = _undefined,
+    Object? created_at = _undefined,
+    Object? id = _undefined,
+    Object? title = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcements$announcements$data(
-          author: author == _undefined || author == null
-              ? _instance.author
-              : (author as String),
-          created_at: created_at == _undefined || created_at == null
-              ? _instance.created_at
-              : (created_at as DateTime),
-          id: id == _undefined || id == null ? _instance.id : (id as String),
-          title: title == _undefined || title == null
-              ? _instance.title
-              : (title as String),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        author: author == _undefined || author == null
+            ? _instance.author
+            : (author as String),
+        created_at: created_at == _undefined || created_at == null
+            ? _instance.created_at
+            : (created_at as DateTime),
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        title: title == _undefined || title == null
+            ? _instance.title
+            : (title as String),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Announcements$announcements$data<TRes>
@@ -766,20 +851,22 @@ class _CopyWithStubImpl$Query$Announcements$announcements$data<TRes>
 
   TRes _res;
 
-  call(
-          {String? author,
-          DateTime? created_at,
-          String? id,
-          String? title,
-          String? $__typename}) =>
+  call({
+    String? author,
+    DateTime? created_at,
+    String? id,
+    String? title,
+    String? $__typename,
+  }) =>
       _res;
 }
 
 class Query$Announcements$announcements$paginatorInfo {
-  Query$Announcements$announcements$paginatorInfo(
-      {required this.lastPage,
-      required this.currentPage,
-      required this.$__typename});
+  Query$Announcements$announcements$paginatorInfo({
+    required this.lastPage,
+    required this.currentPage,
+    required this.$__typename,
+  });
 
   factory Query$Announcements$announcements$paginatorInfo.fromJson(
       Map<String, dynamic> json) {
@@ -787,9 +874,10 @@ class Query$Announcements$announcements$paginatorInfo {
     final l$currentPage = json['currentPage'];
     final l$$__typename = json['__typename'];
     return Query$Announcements$announcements$paginatorInfo(
-        lastPage: (l$lastPage as int),
-        currentPage: (l$currentPage as int),
-        $__typename: (l$$__typename as String));
+      lastPage: (l$lastPage as int),
+      currentPage: (l$currentPage as int),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final int lastPage;
@@ -814,7 +902,11 @@ class Query$Announcements$announcements$paginatorInfo {
     final l$lastPage = lastPage;
     final l$currentPage = currentPage;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$lastPage, l$currentPage, l$$__typename]);
+    return Object.hashAll([
+      l$lastPage,
+      l$currentPage,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -850,26 +942,34 @@ extension UtilityExtension$Query$Announcements$announcements$paginatorInfo
   CopyWith$Query$Announcements$announcements$paginatorInfo<
           Query$Announcements$announcements$paginatorInfo>
       get copyWith => CopyWith$Query$Announcements$announcements$paginatorInfo(
-          this, (i) => i);
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Announcements$announcements$paginatorInfo<TRes> {
   factory CopyWith$Query$Announcements$announcements$paginatorInfo(
-          Query$Announcements$announcements$paginatorInfo instance,
-          TRes Function(Query$Announcements$announcements$paginatorInfo) then) =
-      _CopyWithImpl$Query$Announcements$announcements$paginatorInfo;
+    Query$Announcements$announcements$paginatorInfo instance,
+    TRes Function(Query$Announcements$announcements$paginatorInfo) then,
+  ) = _CopyWithImpl$Query$Announcements$announcements$paginatorInfo;
 
   factory CopyWith$Query$Announcements$announcements$paginatorInfo.stub(
           TRes res) =
       _CopyWithStubImpl$Query$Announcements$announcements$paginatorInfo;
 
-  TRes call({int? lastPage, int? currentPage, String? $__typename});
+  TRes call({
+    int? lastPage,
+    int? currentPage,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Announcements$announcements$paginatorInfo<TRes>
     implements CopyWith$Query$Announcements$announcements$paginatorInfo<TRes> {
   _CopyWithImpl$Query$Announcements$announcements$paginatorInfo(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcements$announcements$paginatorInfo _instance;
 
@@ -877,20 +977,22 @@ class _CopyWithImpl$Query$Announcements$announcements$paginatorInfo<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? lastPage = _undefined,
-          Object? currentPage = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? lastPage = _undefined,
+    Object? currentPage = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcements$announcements$paginatorInfo(
-          lastPage: lastPage == _undefined || lastPage == null
-              ? _instance.lastPage
-              : (lastPage as int),
-          currentPage: currentPage == _undefined || currentPage == null
-              ? _instance.currentPage
-              : (currentPage as int),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        lastPage: lastPage == _undefined || lastPage == null
+            ? _instance.lastPage
+            : (lastPage as int),
+        currentPage: currentPage == _undefined || currentPage == null
+            ? _instance.currentPage
+            : (currentPage as int),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Announcements$announcements$paginatorInfo<TRes>
@@ -899,5 +1001,10 @@ class _CopyWithStubImpl$Query$Announcements$announcements$paginatorInfo<TRes>
 
   TRes _res;
 
-  call({int? lastPage, int? currentPage, String? $__typename}) => _res;
+  call({
+    int? lastPage,
+    int? currentPage,
+    String? $__typename,
+  }) =>
+      _res;
 }

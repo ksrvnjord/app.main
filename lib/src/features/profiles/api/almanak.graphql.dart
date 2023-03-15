@@ -1,11 +1,15 @@
+// ignore_for_file: type=lint
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 
 class Variables$Query$Almanak {
-  factory Variables$Query$Almanak(
-          {String? search, required int first, required int page}) =>
+  factory Variables$Query$Almanak({
+    String? search,
+    required int first,
+    required int page,
+  }) =>
       Variables$Query$Almanak._({
         if (search != null) r'search': search,
         r'first': first,
@@ -46,7 +50,10 @@ class Variables$Query$Almanak {
   }
 
   CopyWith$Variables$Query$Almanak<Variables$Query$Almanak> get copyWith =>
-      CopyWith$Variables$Query$Almanak(this, (i) => i);
+      CopyWith$Variables$Query$Almanak(
+        this,
+        (i) => i,
+      );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -82,25 +89,36 @@ class Variables$Query$Almanak {
     final l$search = search;
     final l$first = first;
     final l$page = page;
-    return Object.hashAll(
-        [_$data.containsKey('search') ? l$search : const {}, l$first, l$page]);
+    return Object.hashAll([
+      _$data.containsKey('search') ? l$search : const {},
+      l$first,
+      l$page,
+    ]);
   }
 }
 
 abstract class CopyWith$Variables$Query$Almanak<TRes> {
-  factory CopyWith$Variables$Query$Almanak(Variables$Query$Almanak instance,
-          TRes Function(Variables$Query$Almanak) then) =
-      _CopyWithImpl$Variables$Query$Almanak;
+  factory CopyWith$Variables$Query$Almanak(
+    Variables$Query$Almanak instance,
+    TRes Function(Variables$Query$Almanak) then,
+  ) = _CopyWithImpl$Variables$Query$Almanak;
 
   factory CopyWith$Variables$Query$Almanak.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$Almanak;
 
-  TRes call({String? search, int? first, int? page});
+  TRes call({
+    String? search,
+    int? first,
+    int? page,
+  });
 }
 
 class _CopyWithImpl$Variables$Query$Almanak<TRes>
     implements CopyWith$Variables$Query$Almanak<TRes> {
-  _CopyWithImpl$Variables$Query$Almanak(this._instance, this._then);
+  _CopyWithImpl$Variables$Query$Almanak(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Query$Almanak _instance;
 
@@ -108,10 +126,11 @@ class _CopyWithImpl$Variables$Query$Almanak<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? search = _undefined,
-          Object? first = _undefined,
-          Object? page = _undefined}) =>
+  TRes call({
+    Object? search = _undefined,
+    Object? first = _undefined,
+    Object? page = _undefined,
+  }) =>
       _then(Variables$Query$Almanak._({
         ..._instance._$data,
         if (search != _undefined) 'search': (search as String?),
@@ -126,20 +145,29 @@ class _CopyWithStubImpl$Variables$Query$Almanak<TRes>
 
   TRes _res;
 
-  call({String? search, int? first, int? page}) => _res;
+  call({
+    String? search,
+    int? first,
+    int? page,
+  }) =>
+      _res;
 }
 
 class Query$Almanak {
-  Query$Almanak({this.users, required this.$__typename});
+  Query$Almanak({
+    this.users,
+    required this.$__typename,
+  });
 
   factory Query$Almanak.fromJson(Map<String, dynamic> json) {
     final l$users = json['users'];
     final l$$__typename = json['__typename'];
     return Query$Almanak(
-        users: l$users == null
-            ? null
-            : Query$Almanak$users.fromJson((l$users as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      users: l$users == null
+          ? null
+          : Query$Almanak$users.fromJson((l$users as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Almanak$users? users;
@@ -159,7 +187,10 @@ class Query$Almanak {
   int get hashCode {
     final l$users = users;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$users, l$$__typename]);
+    return Object.hashAll([
+      l$users,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -185,25 +216,34 @@ class Query$Almanak {
 }
 
 extension UtilityExtension$Query$Almanak on Query$Almanak {
-  CopyWith$Query$Almanak<Query$Almanak> get copyWith =>
-      CopyWith$Query$Almanak(this, (i) => i);
+  CopyWith$Query$Almanak<Query$Almanak> get copyWith => CopyWith$Query$Almanak(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Almanak<TRes> {
   factory CopyWith$Query$Almanak(
-          Query$Almanak instance, TRes Function(Query$Almanak) then) =
-      _CopyWithImpl$Query$Almanak;
+    Query$Almanak instance,
+    TRes Function(Query$Almanak) then,
+  ) = _CopyWithImpl$Query$Almanak;
 
   factory CopyWith$Query$Almanak.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak;
 
-  TRes call({Query$Almanak$users? users, String? $__typename});
+  TRes call({
+    Query$Almanak$users? users,
+    String? $__typename,
+  });
   CopyWith$Query$Almanak$users<TRes> get users;
 }
 
 class _CopyWithImpl$Query$Almanak<TRes>
     implements CopyWith$Query$Almanak<TRes> {
-  _CopyWithImpl$Query$Almanak(this._instance, this._then);
+  _CopyWithImpl$Query$Almanak(
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak _instance;
 
@@ -211,14 +251,18 @@ class _CopyWithImpl$Query$Almanak<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? users = _undefined, Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? users = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak(
-          users: users == _undefined
-              ? _instance.users
-              : (users as Query$Almanak$users?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        users: users == _undefined
+            ? _instance.users
+            : (users as Query$Almanak$users?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Almanak$users<TRes> get users {
     final local$users = _instance.users;
     return local$users == null
@@ -233,218 +277,257 @@ class _CopyWithStubImpl$Query$Almanak<TRes>
 
   TRes _res;
 
-  call({Query$Almanak$users? users, String? $__typename}) => _res;
+  call({
+    Query$Almanak$users? users,
+    String? $__typename,
+  }) =>
+      _res;
   CopyWith$Query$Almanak$users<TRes> get users =>
       CopyWith$Query$Almanak$users.stub(_res);
 }
 
 const documentNodeQueryAlmanak = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.query,
-      name: NameNode(value: 'Almanak'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'search')),
-            type: NamedTypeNode(
-                name: NameNode(value: 'String'), isNonNull: false),
-            defaultValue: DefaultValueNode(value: null),
-            directives: []),
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'first')),
-            type: NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: []),
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'page')),
-            type: NamedTypeNode(name: NameNode(value: 'Int'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'users'),
+    type: OperationType.query,
+    name: NameNode(value: 'Almanak'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'search')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'String'),
+          isNonNull: false,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'first')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'Int'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'page')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'Int'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'users'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'search'),
+            value: VariableNode(name: NameNode(value: 'search')),
+          ),
+          ArgumentNode(
+            name: NameNode(value: 'first'),
+            value: VariableNode(name: NameNode(value: 'first')),
+          ),
+          ArgumentNode(
+            name: NameNode(value: 'page'),
+            value: VariableNode(name: NameNode(value: 'page')),
+          ),
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'paginatorInfo'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'search'),
-                  value: VariableNode(name: NameNode(value: 'search'))),
-              ArgumentNode(
-                  name: NameNode(value: 'first'),
-                  value: VariableNode(name: NameNode(value: 'first'))),
-              ArgumentNode(
-                  name: NameNode(value: 'page'),
-                  value: VariableNode(name: NameNode(value: 'page')))
-            ],
+            arguments: [],
             directives: [],
             selectionSet: SelectionSetNode(selections: [
               FieldNode(
-                  name: NameNode(value: 'paginatorInfo'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'hasMorePages'),
+                name: NameNode(value: 'hasMorePages'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
+            name: NameNode(value: 'data'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                name: NameNode(value: 'id'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'email'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'username'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+              FieldNode(
+                name: NameNode(value: 'fullContact'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: SelectionSetNode(selections: [
+                  FieldNode(
+                    name: NameNode(value: 'public'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: SelectionSetNode(selections: [
+                      FieldNode(
+                        name: NameNode(value: 'first_name'),
                         alias: null,
                         arguments: [],
                         directives: [],
-                        selectionSet: null),
-                    FieldNode(
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'last_name'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: '__typename'),
                         alias: null,
                         arguments: [],
                         directives: [],
-                        selectionSet: null)
-                  ])),
+                        selectionSet: null,
+                      ),
+                    ]),
+                  ),
+                  FieldNode(
+                    name: NameNode(value: '__typename'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                ]),
+              ),
               FieldNode(
-                  name: NameNode(value: 'data'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'id'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'email'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'username'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'fullContact'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'public'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: SelectionSetNode(selections: [
-                                FieldNode(
-                                    name: NameNode(value: 'first_name'),
-                                    alias: null,
-                                    arguments: [],
-                                    directives: [],
-                                    selectionSet: null),
-                                FieldNode(
-                                    name: NameNode(value: 'last_name'),
-                                    alias: null,
-                                    arguments: [],
-                                    directives: [],
-                                    selectionSet: null),
-                                FieldNode(
-                                    name: NameNode(value: '__typename'),
-                                    alias: null,
-                                    arguments: [],
-                                    directives: [],
-                                    selectionSet: null)
-                              ])),
-                          FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null)
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Query$Almanak _parserFn$Query$Almanak(Map<String, dynamic> data) =>
     Query$Almanak.fromJson(data);
 
 class Options$Query$Almanak extends graphql.QueryOptions<Query$Almanak> {
-  Options$Query$Almanak(
-      {String? operationName,
-      required Variables$Query$Almanak variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      Duration? pollInterval,
-      graphql.Context? context})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            pollInterval: pollInterval,
-            context: context,
-            document: documentNodeQueryAlmanak,
-            parserFn: _parserFn$Query$Almanak);
+  Options$Query$Almanak({
+    String? operationName,
+    required Variables$Query$Almanak variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Duration? pollInterval,
+    graphql.Context? context,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          pollInterval: pollInterval,
+          context: context,
+          document: documentNodeQueryAlmanak,
+          parserFn: _parserFn$Query$Almanak,
+        );
 }
 
 class WatchOptions$Query$Almanak
     extends graphql.WatchQueryOptions<Query$Almanak> {
-  WatchOptions$Query$Almanak(
-      {String? operationName,
-      required Variables$Query$Almanak variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeQueryAlmanak,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Query$Almanak);
+  WatchOptions$Query$Almanak({
+    String? operationName,
+    required Variables$Query$Almanak variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeQueryAlmanak,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Query$Almanak,
+        );
 }
 
 class FetchMoreOptions$Query$Almanak extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$Almanak(
-      {required graphql.UpdateQuery updateQuery,
-      required Variables$Query$Almanak variables})
-      : super(
-            updateQuery: updateQuery,
-            variables: variables.toJson(),
-            document: documentNodeQueryAlmanak);
+  FetchMoreOptions$Query$Almanak({
+    required graphql.UpdateQuery updateQuery,
+    required Variables$Query$Almanak variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables.toJson(),
+          document: documentNodeQueryAlmanak,
+        );
 }
 
 extension ClientExtension$Query$Almanak on graphql.GraphQLClient {
@@ -454,23 +537,30 @@ extension ClientExtension$Query$Almanak on graphql.GraphQLClient {
   graphql.ObservableQuery<Query$Almanak> watchQuery$Almanak(
           WatchOptions$Query$Almanak options) =>
       this.watchQuery(options);
-  void writeQuery$Almanak(
-          {required Query$Almanak data,
-          required Variables$Query$Almanak variables,
-          bool broadcast = true}) =>
+  void writeQuery$Almanak({
+    required Query$Almanak data,
+    required Variables$Query$Almanak variables,
+    bool broadcast = true,
+  }) =>
       this.writeQuery(
-          graphql.Request(
-              operation: graphql.Operation(document: documentNodeQueryAlmanak),
-              variables: variables.toJson()),
-          data: data.toJson(),
-          broadcast: broadcast);
-  Query$Almanak? readQuery$Almanak(
-      {required Variables$Query$Almanak variables, bool optimistic = true}) {
-    final result = this.readQuery(
         graphql.Request(
-            operation: graphql.Operation(document: documentNodeQueryAlmanak),
-            variables: variables.toJson()),
-        optimistic: optimistic);
+          operation: graphql.Operation(document: documentNodeQueryAlmanak),
+          variables: variables.toJson(),
+        ),
+        data: data.toJson(),
+        broadcast: broadcast,
+      );
+  Query$Almanak? readQuery$Almanak({
+    required Variables$Query$Almanak variables,
+    bool optimistic = true,
+  }) {
+    final result = this.readQuery(
+      graphql.Request(
+        operation: graphql.Operation(document: documentNodeQueryAlmanak),
+        variables: variables.toJson(),
+      ),
+      optimistic: optimistic,
+    );
     return result == null ? null : Query$Almanak.fromJson(result);
   }
 }
@@ -483,31 +573,37 @@ graphql.ObservableQuery<Query$Almanak> useWatchQuery$Almanak(
     graphql_flutter.useWatchQuery(options);
 
 class Query$Almanak$Widget extends graphql_flutter.Query<Query$Almanak> {
-  Query$Almanak$Widget(
-      {widgets.Key? key,
-      required Options$Query$Almanak options,
-      required graphql_flutter.QueryBuilder<Query$Almanak> builder})
-      : super(key: key, options: options, builder: builder);
+  Query$Almanak$Widget({
+    widgets.Key? key,
+    required Options$Query$Almanak options,
+    required graphql_flutter.QueryBuilder<Query$Almanak> builder,
+  }) : super(
+          key: key,
+          options: options,
+          builder: builder,
+        );
 }
 
 class Query$Almanak$users {
-  Query$Almanak$users(
-      {required this.paginatorInfo,
-      required this.data,
-      required this.$__typename});
+  Query$Almanak$users({
+    required this.paginatorInfo,
+    required this.data,
+    required this.$__typename,
+  });
 
   factory Query$Almanak$users.fromJson(Map<String, dynamic> json) {
     final l$paginatorInfo = json['paginatorInfo'];
     final l$data = json['data'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users(
-        paginatorInfo: Query$Almanak$users$paginatorInfo.fromJson(
-            (l$paginatorInfo as Map<String, dynamic>)),
-        data: (l$data as List<dynamic>)
-            .map((e) =>
-                Query$Almanak$users$data.fromJson((e as Map<String, dynamic>)))
-            .toList(),
-        $__typename: (l$$__typename as String));
+      paginatorInfo: Query$Almanak$users$paginatorInfo.fromJson(
+          (l$paginatorInfo as Map<String, dynamic>)),
+      data: (l$data as List<dynamic>)
+          .map((e) =>
+              Query$Almanak$users$data.fromJson((e as Map<String, dynamic>)))
+          .toList(),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Almanak$users$paginatorInfo paginatorInfo;
@@ -532,8 +628,11 @@ class Query$Almanak$users {
     final l$paginatorInfo = paginatorInfo;
     final l$data = data;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [l$paginatorInfo, Object.hashAll(l$data.map((v) => v)), l$$__typename]);
+    return Object.hashAll([
+      l$paginatorInfo,
+      Object.hashAll(l$data.map((v) => v)),
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -572,21 +671,26 @@ class Query$Almanak$users {
 
 extension UtilityExtension$Query$Almanak$users on Query$Almanak$users {
   CopyWith$Query$Almanak$users<Query$Almanak$users> get copyWith =>
-      CopyWith$Query$Almanak$users(this, (i) => i);
+      CopyWith$Query$Almanak$users(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Almanak$users<TRes> {
-  factory CopyWith$Query$Almanak$users(Query$Almanak$users instance,
-          TRes Function(Query$Almanak$users) then) =
-      _CopyWithImpl$Query$Almanak$users;
+  factory CopyWith$Query$Almanak$users(
+    Query$Almanak$users instance,
+    TRes Function(Query$Almanak$users) then,
+  ) = _CopyWithImpl$Query$Almanak$users;
 
   factory CopyWith$Query$Almanak$users.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak$users;
 
-  TRes call(
-      {Query$Almanak$users$paginatorInfo? paginatorInfo,
-      List<Query$Almanak$users$data>? data,
-      String? $__typename});
+  TRes call({
+    Query$Almanak$users$paginatorInfo? paginatorInfo,
+    List<Query$Almanak$users$data>? data,
+    String? $__typename,
+  });
   CopyWith$Query$Almanak$users$paginatorInfo<TRes> get paginatorInfo;
   TRes data(
       Iterable<Query$Almanak$users$data> Function(
@@ -597,7 +701,10 @@ abstract class CopyWith$Query$Almanak$users<TRes> {
 
 class _CopyWithImpl$Query$Almanak$users<TRes>
     implements CopyWith$Query$Almanak$users<TRes> {
-  _CopyWithImpl$Query$Almanak$users(this._instance, this._then);
+  _CopyWithImpl$Query$Almanak$users(
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak$users _instance;
 
@@ -605,20 +712,22 @@ class _CopyWithImpl$Query$Almanak$users<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? paginatorInfo = _undefined,
-          Object? data = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? paginatorInfo = _undefined,
+    Object? data = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak$users(
-          paginatorInfo: paginatorInfo == _undefined || paginatorInfo == null
-              ? _instance.paginatorInfo
-              : (paginatorInfo as Query$Almanak$users$paginatorInfo),
-          data: data == _undefined || data == null
-              ? _instance.data
-              : (data as List<Query$Almanak$users$data>),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        paginatorInfo: paginatorInfo == _undefined || paginatorInfo == null
+            ? _instance.paginatorInfo
+            : (paginatorInfo as Query$Almanak$users$paginatorInfo),
+        data: data == _undefined || data == null
+            ? _instance.data
+            : (data as List<Query$Almanak$users$data>),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Almanak$users$paginatorInfo<TRes> get paginatorInfo {
     final local$paginatorInfo = _instance.paginatorInfo;
     return CopyWith$Query$Almanak$users$paginatorInfo(
@@ -632,9 +741,10 @@ class _CopyWithImpl$Query$Almanak$users<TRes>
                           Query$Almanak$users$data>>)
               _fn) =>
       call(
-          data: _fn(_instance.data
-                  .map((e) => CopyWith$Query$Almanak$users$data(e, (i) => i)))
-              .toList());
+          data: _fn(_instance.data.map((e) => CopyWith$Query$Almanak$users$data(
+                e,
+                (i) => i,
+              ))).toList());
 }
 
 class _CopyWithStubImpl$Query$Almanak$users<TRes>
@@ -643,10 +753,11 @@ class _CopyWithStubImpl$Query$Almanak$users<TRes>
 
   TRes _res;
 
-  call(
-          {Query$Almanak$users$paginatorInfo? paginatorInfo,
-          List<Query$Almanak$users$data>? data,
-          String? $__typename}) =>
+  call({
+    Query$Almanak$users$paginatorInfo? paginatorInfo,
+    List<Query$Almanak$users$data>? data,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Almanak$users$paginatorInfo<TRes> get paginatorInfo =>
       CopyWith$Query$Almanak$users$paginatorInfo.stub(_res);
@@ -654,16 +765,19 @@ class _CopyWithStubImpl$Query$Almanak$users<TRes>
 }
 
 class Query$Almanak$users$paginatorInfo {
-  Query$Almanak$users$paginatorInfo(
-      {required this.hasMorePages, required this.$__typename});
+  Query$Almanak$users$paginatorInfo({
+    required this.hasMorePages,
+    required this.$__typename,
+  });
 
   factory Query$Almanak$users$paginatorInfo.fromJson(
       Map<String, dynamic> json) {
     final l$hasMorePages = json['hasMorePages'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users$paginatorInfo(
-        hasMorePages: (l$hasMorePages as bool),
-        $__typename: (l$$__typename as String));
+      hasMorePages: (l$hasMorePages as bool),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final bool hasMorePages;
@@ -683,7 +797,10 @@ class Query$Almanak$users$paginatorInfo {
   int get hashCode {
     final l$hasMorePages = hasMorePages;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$hasMorePages, l$$__typename]);
+    return Object.hashAll([
+      l$hasMorePages,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -712,25 +829,33 @@ class Query$Almanak$users$paginatorInfo {
 extension UtilityExtension$Query$Almanak$users$paginatorInfo
     on Query$Almanak$users$paginatorInfo {
   CopyWith$Query$Almanak$users$paginatorInfo<Query$Almanak$users$paginatorInfo>
-      get copyWith =>
-          CopyWith$Query$Almanak$users$paginatorInfo(this, (i) => i);
+      get copyWith => CopyWith$Query$Almanak$users$paginatorInfo(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Almanak$users$paginatorInfo<TRes> {
   factory CopyWith$Query$Almanak$users$paginatorInfo(
-          Query$Almanak$users$paginatorInfo instance,
-          TRes Function(Query$Almanak$users$paginatorInfo) then) =
-      _CopyWithImpl$Query$Almanak$users$paginatorInfo;
+    Query$Almanak$users$paginatorInfo instance,
+    TRes Function(Query$Almanak$users$paginatorInfo) then,
+  ) = _CopyWithImpl$Query$Almanak$users$paginatorInfo;
 
   factory CopyWith$Query$Almanak$users$paginatorInfo.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak$users$paginatorInfo;
 
-  TRes call({bool? hasMorePages, String? $__typename});
+  TRes call({
+    bool? hasMorePages,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Almanak$users$paginatorInfo<TRes>
     implements CopyWith$Query$Almanak$users$paginatorInfo<TRes> {
-  _CopyWithImpl$Query$Almanak$users$paginatorInfo(this._instance, this._then);
+  _CopyWithImpl$Query$Almanak$users$paginatorInfo(
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak$users$paginatorInfo _instance;
 
@@ -738,16 +863,18 @@ class _CopyWithImpl$Query$Almanak$users$paginatorInfo<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? hasMorePages = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? hasMorePages = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak$users$paginatorInfo(
-          hasMorePages: hasMorePages == _undefined || hasMorePages == null
-              ? _instance.hasMorePages
-              : (hasMorePages as bool),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        hasMorePages: hasMorePages == _undefined || hasMorePages == null
+            ? _instance.hasMorePages
+            : (hasMorePages as bool),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Almanak$users$paginatorInfo<TRes>
@@ -756,16 +883,21 @@ class _CopyWithStubImpl$Query$Almanak$users$paginatorInfo<TRes>
 
   TRes _res;
 
-  call({bool? hasMorePages, String? $__typename}) => _res;
+  call({
+    bool? hasMorePages,
+    String? $__typename,
+  }) =>
+      _res;
 }
 
 class Query$Almanak$users$data {
-  Query$Almanak$users$data(
-      {required this.id,
-      required this.email,
-      required this.username,
-      required this.fullContact,
-      required this.$__typename});
+  Query$Almanak$users$data({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.fullContact,
+    required this.$__typename,
+  });
 
   factory Query$Almanak$users$data.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
@@ -774,12 +906,13 @@ class Query$Almanak$users$data {
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users$data(
-        id: (l$id as String),
-        email: (l$email as String),
-        username: (l$username as String),
-        fullContact: Query$Almanak$users$data$fullContact.fromJson(
-            (l$fullContact as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      id: (l$id as String),
+      email: (l$email as String),
+      username: (l$username as String),
+      fullContact: Query$Almanak$users$data$fullContact.fromJson(
+          (l$fullContact as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String id;
@@ -814,8 +947,13 @@ class Query$Almanak$users$data {
     final l$username = username;
     final l$fullContact = fullContact;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [l$id, l$email, l$username, l$fullContact, l$$__typename]);
+    return Object.hashAll([
+      l$id,
+      l$email,
+      l$username,
+      l$fullContact,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -859,29 +997,37 @@ class Query$Almanak$users$data {
 extension UtilityExtension$Query$Almanak$users$data
     on Query$Almanak$users$data {
   CopyWith$Query$Almanak$users$data<Query$Almanak$users$data> get copyWith =>
-      CopyWith$Query$Almanak$users$data(this, (i) => i);
+      CopyWith$Query$Almanak$users$data(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Almanak$users$data<TRes> {
-  factory CopyWith$Query$Almanak$users$data(Query$Almanak$users$data instance,
-          TRes Function(Query$Almanak$users$data) then) =
-      _CopyWithImpl$Query$Almanak$users$data;
+  factory CopyWith$Query$Almanak$users$data(
+    Query$Almanak$users$data instance,
+    TRes Function(Query$Almanak$users$data) then,
+  ) = _CopyWithImpl$Query$Almanak$users$data;
 
   factory CopyWith$Query$Almanak$users$data.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak$users$data;
 
-  TRes call(
-      {String? id,
-      String? email,
-      String? username,
-      Query$Almanak$users$data$fullContact? fullContact,
-      String? $__typename});
+  TRes call({
+    String? id,
+    String? email,
+    String? username,
+    Query$Almanak$users$data$fullContact? fullContact,
+    String? $__typename,
+  });
   CopyWith$Query$Almanak$users$data$fullContact<TRes> get fullContact;
 }
 
 class _CopyWithImpl$Query$Almanak$users$data<TRes>
     implements CopyWith$Query$Almanak$users$data<TRes> {
-  _CopyWithImpl$Query$Almanak$users$data(this._instance, this._then);
+  _CopyWithImpl$Query$Almanak$users$data(
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak$users$data _instance;
 
@@ -889,26 +1035,28 @@ class _CopyWithImpl$Query$Almanak$users$data<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? id = _undefined,
-          Object? email = _undefined,
-          Object? username = _undefined,
-          Object? fullContact = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? id = _undefined,
+    Object? email = _undefined,
+    Object? username = _undefined,
+    Object? fullContact = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak$users$data(
-          id: id == _undefined || id == null ? _instance.id : (id as String),
-          email: email == _undefined || email == null
-              ? _instance.email
-              : (email as String),
-          username: username == _undefined || username == null
-              ? _instance.username
-              : (username as String),
-          fullContact: fullContact == _undefined || fullContact == null
-              ? _instance.fullContact
-              : (fullContact as Query$Almanak$users$data$fullContact),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        email: email == _undefined || email == null
+            ? _instance.email
+            : (email as String),
+        username: username == _undefined || username == null
+            ? _instance.username
+            : (username as String),
+        fullContact: fullContact == _undefined || fullContact == null
+            ? _instance.fullContact
+            : (fullContact as Query$Almanak$users$data$fullContact),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Almanak$users$data$fullContact<TRes> get fullContact {
     final local$fullContact = _instance.fullContact;
     return CopyWith$Query$Almanak$users$data$fullContact(
@@ -922,29 +1070,33 @@ class _CopyWithStubImpl$Query$Almanak$users$data<TRes>
 
   TRes _res;
 
-  call(
-          {String? id,
-          String? email,
-          String? username,
-          Query$Almanak$users$data$fullContact? fullContact,
-          String? $__typename}) =>
+  call({
+    String? id,
+    String? email,
+    String? username,
+    Query$Almanak$users$data$fullContact? fullContact,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Almanak$users$data$fullContact<TRes> get fullContact =>
       CopyWith$Query$Almanak$users$data$fullContact.stub(_res);
 }
 
 class Query$Almanak$users$data$fullContact {
-  Query$Almanak$users$data$fullContact(
-      {required this.public, required this.$__typename});
+  Query$Almanak$users$data$fullContact({
+    required this.public,
+    required this.$__typename,
+  });
 
   factory Query$Almanak$users$data$fullContact.fromJson(
       Map<String, dynamic> json) {
     final l$public = json['public'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users$data$fullContact(
-        public: Query$Almanak$users$data$fullContact$public.fromJson(
-            (l$public as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      public: Query$Almanak$users$data$fullContact$public.fromJson(
+          (l$public as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Almanak$users$data$fullContact$public public;
@@ -964,7 +1116,10 @@ class Query$Almanak$users$data$fullContact {
   int get hashCode {
     final l$public = public;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$public, l$$__typename]);
+    return Object.hashAll([
+      l$public,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -994,29 +1149,34 @@ extension UtilityExtension$Query$Almanak$users$data$fullContact
     on Query$Almanak$users$data$fullContact {
   CopyWith$Query$Almanak$users$data$fullContact<
           Query$Almanak$users$data$fullContact>
-      get copyWith =>
-          CopyWith$Query$Almanak$users$data$fullContact(this, (i) => i);
+      get copyWith => CopyWith$Query$Almanak$users$data$fullContact(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Almanak$users$data$fullContact<TRes> {
   factory CopyWith$Query$Almanak$users$data$fullContact(
-          Query$Almanak$users$data$fullContact instance,
-          TRes Function(Query$Almanak$users$data$fullContact) then) =
-      _CopyWithImpl$Query$Almanak$users$data$fullContact;
+    Query$Almanak$users$data$fullContact instance,
+    TRes Function(Query$Almanak$users$data$fullContact) then,
+  ) = _CopyWithImpl$Query$Almanak$users$data$fullContact;
 
   factory CopyWith$Query$Almanak$users$data$fullContact.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak$users$data$fullContact;
 
-  TRes call(
-      {Query$Almanak$users$data$fullContact$public? public,
-      String? $__typename});
+  TRes call({
+    Query$Almanak$users$data$fullContact$public? public,
+    String? $__typename,
+  });
   CopyWith$Query$Almanak$users$data$fullContact$public<TRes> get public;
 }
 
 class _CopyWithImpl$Query$Almanak$users$data$fullContact<TRes>
     implements CopyWith$Query$Almanak$users$data$fullContact<TRes> {
   _CopyWithImpl$Query$Almanak$users$data$fullContact(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak$users$data$fullContact _instance;
 
@@ -1024,14 +1184,18 @@ class _CopyWithImpl$Query$Almanak$users$data$fullContact<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? public = _undefined, Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? public = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak$users$data$fullContact(
-          public: public == _undefined || public == null
-              ? _instance.public
-              : (public as Query$Almanak$users$data$fullContact$public),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        public: public == _undefined || public == null
+            ? _instance.public
+            : (public as Query$Almanak$users$data$fullContact$public),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Almanak$users$data$fullContact$public<TRes> get public {
     final local$public = _instance.public;
     return CopyWith$Query$Almanak$users$data$fullContact$public(
@@ -1045,17 +1209,21 @@ class _CopyWithStubImpl$Query$Almanak$users$data$fullContact<TRes>
 
   TRes _res;
 
-  call(
-          {Query$Almanak$users$data$fullContact$public? public,
-          String? $__typename}) =>
+  call({
+    Query$Almanak$users$data$fullContact$public? public,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Almanak$users$data$fullContact$public<TRes> get public =>
       CopyWith$Query$Almanak$users$data$fullContact$public.stub(_res);
 }
 
 class Query$Almanak$users$data$fullContact$public {
-  Query$Almanak$users$data$fullContact$public(
-      {this.first_name, this.last_name, required this.$__typename});
+  Query$Almanak$users$data$fullContact$public({
+    this.first_name,
+    this.last_name,
+    required this.$__typename,
+  });
 
   factory Query$Almanak$users$data$fullContact$public.fromJson(
       Map<String, dynamic> json) {
@@ -1063,9 +1231,10 @@ class Query$Almanak$users$data$fullContact$public {
     final l$last_name = json['last_name'];
     final l$$__typename = json['__typename'];
     return Query$Almanak$users$data$fullContact$public(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -1090,7 +1259,11 @@ class Query$Almanak$users$data$fullContact$public {
     final l$first_name = first_name;
     final l$last_name = last_name;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$first_name, l$last_name, l$$__typename]);
+    return Object.hashAll([
+      l$first_name,
+      l$last_name,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -1125,26 +1298,34 @@ extension UtilityExtension$Query$Almanak$users$data$fullContact$public
     on Query$Almanak$users$data$fullContact$public {
   CopyWith$Query$Almanak$users$data$fullContact$public<
           Query$Almanak$users$data$fullContact$public>
-      get copyWith =>
-          CopyWith$Query$Almanak$users$data$fullContact$public(this, (i) => i);
+      get copyWith => CopyWith$Query$Almanak$users$data$fullContact$public(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Almanak$users$data$fullContact$public<TRes> {
   factory CopyWith$Query$Almanak$users$data$fullContact$public(
-          Query$Almanak$users$data$fullContact$public instance,
-          TRes Function(Query$Almanak$users$data$fullContact$public) then) =
-      _CopyWithImpl$Query$Almanak$users$data$fullContact$public;
+    Query$Almanak$users$data$fullContact$public instance,
+    TRes Function(Query$Almanak$users$data$fullContact$public) then,
+  ) = _CopyWithImpl$Query$Almanak$users$data$fullContact$public;
 
   factory CopyWith$Query$Almanak$users$data$fullContact$public.stub(TRes res) =
       _CopyWithStubImpl$Query$Almanak$users$data$fullContact$public;
 
-  TRes call({String? first_name, String? last_name, String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Almanak$users$data$fullContact$public<TRes>
     implements CopyWith$Query$Almanak$users$data$fullContact$public<TRes> {
   _CopyWithImpl$Query$Almanak$users$data$fullContact$public(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$Almanak$users$data$fullContact$public _instance;
 
@@ -1152,20 +1333,22 @@ class _CopyWithImpl$Query$Almanak$users$data$fullContact$public<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Almanak$users$data$fullContact$public(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Almanak$users$data$fullContact$public<TRes>
@@ -1174,5 +1357,10 @@ class _CopyWithStubImpl$Query$Almanak$users$data$fullContact$public<TRes>
 
   TRes _res;
 
-  call({String? first_name, String? last_name, String? $__typename}) => _res;
+  call({
+    String? first_name,
+    String? last_name,
+    String? $__typename,
+  }) =>
+      _res;
 }

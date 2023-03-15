@@ -1,3 +1,4 @@
+// ignore_for_file: type=lint
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -33,7 +34,10 @@ class Variables$Query$Announcement {
   }
 
   CopyWith$Variables$Query$Announcement<Variables$Query$Announcement>
-      get copyWith => CopyWith$Variables$Query$Announcement(this, (i) => i);
+      get copyWith => CopyWith$Variables$Query$Announcement(
+            this,
+            (i) => i,
+          );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -65,9 +69,9 @@ class Variables$Query$Announcement {
 
 abstract class CopyWith$Variables$Query$Announcement<TRes> {
   factory CopyWith$Variables$Query$Announcement(
-          Variables$Query$Announcement instance,
-          TRes Function(Variables$Query$Announcement) then) =
-      _CopyWithImpl$Variables$Query$Announcement;
+    Variables$Query$Announcement instance,
+    TRes Function(Variables$Query$Announcement) then,
+  ) = _CopyWithImpl$Variables$Query$Announcement;
 
   factory CopyWith$Variables$Query$Announcement.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$Announcement;
@@ -77,7 +81,10 @@ abstract class CopyWith$Variables$Query$Announcement<TRes> {
 
 class _CopyWithImpl$Variables$Query$Announcement<TRes>
     implements CopyWith$Variables$Query$Announcement<TRes> {
-  _CopyWithImpl$Variables$Query$Announcement(this._instance, this._then);
+  _CopyWithImpl$Variables$Query$Announcement(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Query$Announcement _instance;
 
@@ -103,15 +110,19 @@ class _CopyWithStubImpl$Variables$Query$Announcement<TRes>
 }
 
 class Query$Announcement {
-  Query$Announcement({required this.announcement, required this.$__typename});
+  Query$Announcement({
+    required this.announcement,
+    required this.$__typename,
+  });
 
   factory Query$Announcement.fromJson(Map<String, dynamic> json) {
     final l$announcement = json['announcement'];
     final l$$__typename = json['__typename'];
     return Query$Announcement(
-        announcement: Query$Announcement$announcement.fromJson(
-            (l$announcement as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      announcement: Query$Announcement$announcement.fromJson(
+          (l$announcement as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Announcement$announcement announcement;
@@ -131,7 +142,10 @@ class Query$Announcement {
   int get hashCode {
     final l$announcement = announcement;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$announcement, l$$__typename]);
+    return Object.hashAll([
+      l$announcement,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -158,25 +172,34 @@ class Query$Announcement {
 
 extension UtilityExtension$Query$Announcement on Query$Announcement {
   CopyWith$Query$Announcement<Query$Announcement> get copyWith =>
-      CopyWith$Query$Announcement(this, (i) => i);
+      CopyWith$Query$Announcement(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Announcement<TRes> {
   factory CopyWith$Query$Announcement(
-          Query$Announcement instance, TRes Function(Query$Announcement) then) =
-      _CopyWithImpl$Query$Announcement;
+    Query$Announcement instance,
+    TRes Function(Query$Announcement) then,
+  ) = _CopyWithImpl$Query$Announcement;
 
   factory CopyWith$Query$Announcement.stub(TRes res) =
       _CopyWithStubImpl$Query$Announcement;
 
-  TRes call(
-      {Query$Announcement$announcement? announcement, String? $__typename});
+  TRes call({
+    Query$Announcement$announcement? announcement,
+    String? $__typename,
+  });
   CopyWith$Query$Announcement$announcement<TRes> get announcement;
 }
 
 class _CopyWithImpl$Query$Announcement<TRes>
     implements CopyWith$Query$Announcement<TRes> {
-  _CopyWithImpl$Query$Announcement(this._instance, this._then);
+  _CopyWithImpl$Query$Announcement(
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcement _instance;
 
@@ -184,16 +207,18 @@ class _CopyWithImpl$Query$Announcement<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? announcement = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? announcement = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcement(
-          announcement: announcement == _undefined || announcement == null
-              ? _instance.announcement
-              : (announcement as Query$Announcement$announcement),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        announcement: announcement == _undefined || announcement == null
+            ? _instance.announcement
+            : (announcement as Query$Announcement$announcement),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Announcement$announcement<TRes> get announcement {
     final local$announcement = _instance.announcement;
     return CopyWith$Query$Announcement$announcement(
@@ -207,7 +232,10 @@ class _CopyWithStubImpl$Query$Announcement<TRes>
 
   TRes _res;
 
-  call({Query$Announcement$announcement? announcement, String? $__typename}) =>
+  call({
+    Query$Announcement$announcement? announcement,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Announcement$announcement<TRes> get announcement =>
       CopyWith$Query$Announcement$announcement.stub(_res);
@@ -215,143 +243,161 @@ class _CopyWithStubImpl$Query$Announcement<TRes>
 
 const documentNodeQueryAnnouncement = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.query,
-      name: NameNode(value: 'Announcement'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'announcementId')),
-            type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: false),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'announcement'),
+    type: OperationType.query,
+    name: NameNode(value: 'Announcement'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'announcementId')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'ID'),
+          isNonNull: false,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'announcement'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'id'),
+            value: VariableNode(name: NameNode(value: 'announcementId')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'author'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'id'),
-                  value: VariableNode(name: NameNode(value: 'announcementId')))
-            ],
+            arguments: [],
             directives: [],
-            selectionSet: SelectionSetNode(selections: [
-              FieldNode(
-                  name: NameNode(value: 'author'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'contents'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'created_at'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'id'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'title'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'updated_at'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'contents'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'created_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'id'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'title'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'updated_at'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Query$Announcement _parserFn$Query$Announcement(Map<String, dynamic> data) =>
     Query$Announcement.fromJson(data);
 
 class Options$Query$Announcement
     extends graphql.QueryOptions<Query$Announcement> {
-  Options$Query$Announcement(
-      {String? operationName,
-      Variables$Query$Announcement? variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      Duration? pollInterval,
-      graphql.Context? context})
-      : super(
-            variables: variables?.toJson() ?? {},
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            pollInterval: pollInterval,
-            context: context,
-            document: documentNodeQueryAnnouncement,
-            parserFn: _parserFn$Query$Announcement);
+  Options$Query$Announcement({
+    String? operationName,
+    Variables$Query$Announcement? variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Duration? pollInterval,
+    graphql.Context? context,
+  }) : super(
+          variables: variables?.toJson() ?? {},
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          pollInterval: pollInterval,
+          context: context,
+          document: documentNodeQueryAnnouncement,
+          parserFn: _parserFn$Query$Announcement,
+        );
 }
 
 class WatchOptions$Query$Announcement
     extends graphql.WatchQueryOptions<Query$Announcement> {
-  WatchOptions$Query$Announcement(
-      {String? operationName,
-      Variables$Query$Announcement? variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables?.toJson() ?? {},
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeQueryAnnouncement,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Query$Announcement);
+  WatchOptions$Query$Announcement({
+    String? operationName,
+    Variables$Query$Announcement? variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables?.toJson() ?? {},
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeQueryAnnouncement,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Query$Announcement,
+        );
 }
 
 class FetchMoreOptions$Query$Announcement extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$Announcement(
-      {required graphql.UpdateQuery updateQuery,
-      Variables$Query$Announcement? variables})
-      : super(
-            updateQuery: updateQuery,
-            variables: variables?.toJson() ?? {},
-            document: documentNodeQueryAnnouncement);
+  FetchMoreOptions$Query$Announcement({
+    required graphql.UpdateQuery updateQuery,
+    Variables$Query$Announcement? variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables?.toJson() ?? {},
+          document: documentNodeQueryAnnouncement,
+        );
 }
 
 extension ClientExtension$Query$Announcement on graphql.GraphQLClient {
@@ -361,25 +407,30 @@ extension ClientExtension$Query$Announcement on graphql.GraphQLClient {
   graphql.ObservableQuery<Query$Announcement> watchQuery$Announcement(
           [WatchOptions$Query$Announcement? options]) =>
       this.watchQuery(options ?? WatchOptions$Query$Announcement());
-  void writeQuery$Announcement(
-          {required Query$Announcement data,
-          Variables$Query$Announcement? variables,
-          bool broadcast = true}) =>
+  void writeQuery$Announcement({
+    required Query$Announcement data,
+    Variables$Query$Announcement? variables,
+    bool broadcast = true,
+  }) =>
       this.writeQuery(
-          graphql.Request(
-              operation:
-                  graphql.Operation(document: documentNodeQueryAnnouncement),
-              variables: variables?.toJson() ?? const {}),
-          data: data.toJson(),
-          broadcast: broadcast);
-  Query$Announcement? readQuery$Announcement(
-      {Variables$Query$Announcement? variables, bool optimistic = true}) {
-    final result = this.readQuery(
         graphql.Request(
-            operation:
-                graphql.Operation(document: documentNodeQueryAnnouncement),
-            variables: variables?.toJson() ?? const {}),
-        optimistic: optimistic);
+          operation: graphql.Operation(document: documentNodeQueryAnnouncement),
+          variables: variables?.toJson() ?? const {},
+        ),
+        data: data.toJson(),
+        broadcast: broadcast,
+      );
+  Query$Announcement? readQuery$Announcement({
+    Variables$Query$Announcement? variables,
+    bool optimistic = true,
+  }) {
+    final result = this.readQuery(
+      graphql.Request(
+        operation: graphql.Operation(document: documentNodeQueryAnnouncement),
+        variables: variables?.toJson() ?? const {},
+      ),
+      optimistic: optimistic,
+    );
     return result == null ? null : Query$Announcement.fromJson(result);
   }
 }
@@ -393,25 +444,27 @@ graphql.ObservableQuery<Query$Announcement> useWatchQuery$Announcement(
 
 class Query$Announcement$Widget
     extends graphql_flutter.Query<Query$Announcement> {
-  Query$Announcement$Widget(
-      {widgets.Key? key,
-      Options$Query$Announcement? options,
-      required graphql_flutter.QueryBuilder<Query$Announcement> builder})
-      : super(
-            key: key,
-            options: options ?? Options$Query$Announcement(),
-            builder: builder);
+  Query$Announcement$Widget({
+    widgets.Key? key,
+    Options$Query$Announcement? options,
+    required graphql_flutter.QueryBuilder<Query$Announcement> builder,
+  }) : super(
+          key: key,
+          options: options ?? Options$Query$Announcement(),
+          builder: builder,
+        );
 }
 
 class Query$Announcement$announcement {
-  Query$Announcement$announcement(
-      {required this.author,
-      required this.contents,
-      required this.created_at,
-      required this.id,
-      required this.title,
-      required this.updated_at,
-      required this.$__typename});
+  Query$Announcement$announcement({
+    required this.author,
+    required this.contents,
+    required this.created_at,
+    required this.id,
+    required this.title,
+    required this.updated_at,
+    required this.$__typename,
+  });
 
   factory Query$Announcement$announcement.fromJson(Map<String, dynamic> json) {
     final l$author = json['author'];
@@ -422,13 +475,14 @@ class Query$Announcement$announcement {
     final l$updated_at = json['updated_at'];
     final l$$__typename = json['__typename'];
     return Query$Announcement$announcement(
-        author: (l$author as String),
-        contents: (l$contents as String),
-        created_at: DateTime.parse((l$created_at as String)),
-        id: (l$id as String),
-        title: (l$title as String),
-        updated_at: DateTime.parse((l$updated_at as String)),
-        $__typename: (l$$__typename as String));
+      author: (l$author as String),
+      contents: (l$contents as String),
+      created_at: DateTime.parse((l$created_at as String)),
+      id: (l$id as String),
+      title: (l$title as String),
+      updated_at: DateTime.parse((l$updated_at as String)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String author;
@@ -480,7 +534,7 @@ class Query$Announcement$announcement {
       l$id,
       l$title,
       l$updated_at,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -535,31 +589,38 @@ class Query$Announcement$announcement {
 extension UtilityExtension$Query$Announcement$announcement
     on Query$Announcement$announcement {
   CopyWith$Query$Announcement$announcement<Query$Announcement$announcement>
-      get copyWith => CopyWith$Query$Announcement$announcement(this, (i) => i);
+      get copyWith => CopyWith$Query$Announcement$announcement(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Announcement$announcement<TRes> {
   factory CopyWith$Query$Announcement$announcement(
-          Query$Announcement$announcement instance,
-          TRes Function(Query$Announcement$announcement) then) =
-      _CopyWithImpl$Query$Announcement$announcement;
+    Query$Announcement$announcement instance,
+    TRes Function(Query$Announcement$announcement) then,
+  ) = _CopyWithImpl$Query$Announcement$announcement;
 
   factory CopyWith$Query$Announcement$announcement.stub(TRes res) =
       _CopyWithStubImpl$Query$Announcement$announcement;
 
-  TRes call(
-      {String? author,
-      String? contents,
-      DateTime? created_at,
-      String? id,
-      String? title,
-      DateTime? updated_at,
-      String? $__typename});
+  TRes call({
+    String? author,
+    String? contents,
+    DateTime? created_at,
+    String? id,
+    String? title,
+    DateTime? updated_at,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Announcement$announcement<TRes>
     implements CopyWith$Query$Announcement$announcement<TRes> {
-  _CopyWithImpl$Query$Announcement$announcement(this._instance, this._then);
+  _CopyWithImpl$Query$Announcement$announcement(
+    this._instance,
+    this._then,
+  );
 
   final Query$Announcement$announcement _instance;
 
@@ -567,34 +628,36 @@ class _CopyWithImpl$Query$Announcement$announcement<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? author = _undefined,
-          Object? contents = _undefined,
-          Object? created_at = _undefined,
-          Object? id = _undefined,
-          Object? title = _undefined,
-          Object? updated_at = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? author = _undefined,
+    Object? contents = _undefined,
+    Object? created_at = _undefined,
+    Object? id = _undefined,
+    Object? title = _undefined,
+    Object? updated_at = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Announcement$announcement(
-          author: author == _undefined || author == null
-              ? _instance.author
-              : (author as String),
-          contents: contents == _undefined || contents == null
-              ? _instance.contents
-              : (contents as String),
-          created_at: created_at == _undefined || created_at == null
-              ? _instance.created_at
-              : (created_at as DateTime),
-          id: id == _undefined || id == null ? _instance.id : (id as String),
-          title: title == _undefined || title == null
-              ? _instance.title
-              : (title as String),
-          updated_at: updated_at == _undefined || updated_at == null
-              ? _instance.updated_at
-              : (updated_at as DateTime),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        author: author == _undefined || author == null
+            ? _instance.author
+            : (author as String),
+        contents: contents == _undefined || contents == null
+            ? _instance.contents
+            : (contents as String),
+        created_at: created_at == _undefined || created_at == null
+            ? _instance.created_at
+            : (created_at as DateTime),
+        id: id == _undefined || id == null ? _instance.id : (id as String),
+        title: title == _undefined || title == null
+            ? _instance.title
+            : (title as String),
+        updated_at: updated_at == _undefined || updated_at == null
+            ? _instance.updated_at
+            : (updated_at as DateTime),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Announcement$announcement<TRes>
@@ -603,13 +666,14 @@ class _CopyWithStubImpl$Query$Announcement$announcement<TRes>
 
   TRes _res;
 
-  call(
-          {String? author,
-          String? contents,
-          DateTime? created_at,
-          String? id,
-          String? title,
-          DateTime? updated_at,
-          String? $__typename}) =>
+  call({
+    String? author,
+    String? contents,
+    DateTime? created_at,
+    String? id,
+    String? title,
+    DateTime? updated_at,
+    String? $__typename,
+  }) =>
       _res;
 }

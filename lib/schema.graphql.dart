@@ -1,17 +1,19 @@
+// ignore_for_file: type=lint
 class Input$IBooleanContact {
-  factory Input$IBooleanContact(
-          {bool? initials,
-          bool? first_name,
-          bool? last_name,
-          bool? zipcode,
-          bool? street,
-          bool? housenumber,
-          bool? housenumber_addition,
-          bool? city,
-          bool? country,
-          bool? email,
-          bool? phone_primary,
-          bool? phone_secondary}) =>
+  factory Input$IBooleanContact({
+    bool? initials,
+    bool? first_name,
+    bool? last_name,
+    bool? zipcode,
+    bool? street,
+    bool? housenumber,
+    bool? housenumber_addition,
+    bool? city,
+    bool? country,
+    bool? email,
+    bool? phone_primary,
+    bool? phone_secondary,
+  }) =>
       Input$IBooleanContact._({
         if (initials != null) r'initials': initials,
         if (first_name != null) r'first_name': first_name,
@@ -151,7 +153,10 @@ class Input$IBooleanContact {
   }
 
   CopyWith$Input$IBooleanContact<Input$IBooleanContact> get copyWith =>
-      CopyWith$Input$IBooleanContact(this, (i) => i);
+      CopyWith$Input$IBooleanContact(
+        this,
+        (i) => i,
+      );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -294,37 +299,42 @@ class Input$IBooleanContact {
       _$data.containsKey('country') ? l$country : const {},
       _$data.containsKey('email') ? l$email : const {},
       _$data.containsKey('phone_primary') ? l$phone_primary : const {},
-      _$data.containsKey('phone_secondary') ? l$phone_secondary : const {}
+      _$data.containsKey('phone_secondary') ? l$phone_secondary : const {},
     ]);
   }
 }
 
 abstract class CopyWith$Input$IBooleanContact<TRes> {
-  factory CopyWith$Input$IBooleanContact(Input$IBooleanContact instance,
-          TRes Function(Input$IBooleanContact) then) =
-      _CopyWithImpl$Input$IBooleanContact;
+  factory CopyWith$Input$IBooleanContact(
+    Input$IBooleanContact instance,
+    TRes Function(Input$IBooleanContact) then,
+  ) = _CopyWithImpl$Input$IBooleanContact;
 
   factory CopyWith$Input$IBooleanContact.stub(TRes res) =
       _CopyWithStubImpl$Input$IBooleanContact;
 
-  TRes call(
-      {bool? initials,
-      bool? first_name,
-      bool? last_name,
-      bool? zipcode,
-      bool? street,
-      bool? housenumber,
-      bool? housenumber_addition,
-      bool? city,
-      bool? country,
-      bool? email,
-      bool? phone_primary,
-      bool? phone_secondary});
+  TRes call({
+    bool? initials,
+    bool? first_name,
+    bool? last_name,
+    bool? zipcode,
+    bool? street,
+    bool? housenumber,
+    bool? housenumber_addition,
+    bool? city,
+    bool? country,
+    bool? email,
+    bool? phone_primary,
+    bool? phone_secondary,
+  });
 }
 
 class _CopyWithImpl$Input$IBooleanContact<TRes>
     implements CopyWith$Input$IBooleanContact<TRes> {
-  _CopyWithImpl$Input$IBooleanContact(this._instance, this._then);
+  _CopyWithImpl$Input$IBooleanContact(
+    this._instance,
+    this._then,
+  );
 
   final Input$IBooleanContact _instance;
 
@@ -332,19 +342,20 @@ class _CopyWithImpl$Input$IBooleanContact<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? initials = _undefined,
-          Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? zipcode = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? country = _undefined,
-          Object? email = _undefined,
-          Object? phone_primary = _undefined,
-          Object? phone_secondary = _undefined}) =>
+  TRes call({
+    Object? initials = _undefined,
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? zipcode = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? country = _undefined,
+    Object? email = _undefined,
+    Object? phone_primary = _undefined,
+    Object? phone_secondary = _undefined,
+  }) =>
       _then(Input$IBooleanContact._({
         ..._instance._$data,
         if (initials != _undefined) 'initials': (initials as bool?),
@@ -371,36 +382,38 @@ class _CopyWithStubImpl$Input$IBooleanContact<TRes>
 
   TRes _res;
 
-  call(
-          {bool? initials,
-          bool? first_name,
-          bool? last_name,
-          bool? zipcode,
-          bool? street,
-          bool? housenumber,
-          bool? housenumber_addition,
-          bool? city,
-          bool? country,
-          bool? email,
-          bool? phone_primary,
-          bool? phone_secondary}) =>
+  call({
+    bool? initials,
+    bool? first_name,
+    bool? last_name,
+    bool? zipcode,
+    bool? street,
+    bool? housenumber,
+    bool? housenumber_addition,
+    bool? city,
+    bool? country,
+    bool? email,
+    bool? phone_primary,
+    bool? phone_secondary,
+  }) =>
       _res;
 }
 
 class Input$IContact {
-  factory Input$IContact(
-          {String? initials,
-          String? first_name,
-          String? last_name,
-          String? zipcode,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? country,
-          String? email,
-          String? phone_primary,
-          String? phone_secondary}) =>
+  factory Input$IContact({
+    String? initials,
+    String? first_name,
+    String? last_name,
+    String? zipcode,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? country,
+    String? email,
+    String? phone_primary,
+    String? phone_secondary,
+  }) =>
       Input$IContact._({
         if (initials != null) r'initials': initials,
         if (first_name != null) r'first_name': first_name,
@@ -541,7 +554,10 @@ class Input$IContact {
   }
 
   CopyWith$Input$IContact<Input$IContact> get copyWith =>
-      CopyWith$Input$IContact(this, (i) => i);
+      CopyWith$Input$IContact(
+        this,
+        (i) => i,
+      );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -684,37 +700,42 @@ class Input$IContact {
       _$data.containsKey('country') ? l$country : const {},
       _$data.containsKey('email') ? l$email : const {},
       _$data.containsKey('phone_primary') ? l$phone_primary : const {},
-      _$data.containsKey('phone_secondary') ? l$phone_secondary : const {}
+      _$data.containsKey('phone_secondary') ? l$phone_secondary : const {},
     ]);
   }
 }
 
 abstract class CopyWith$Input$IContact<TRes> {
   factory CopyWith$Input$IContact(
-          Input$IContact instance, TRes Function(Input$IContact) then) =
-      _CopyWithImpl$Input$IContact;
+    Input$IContact instance,
+    TRes Function(Input$IContact) then,
+  ) = _CopyWithImpl$Input$IContact;
 
   factory CopyWith$Input$IContact.stub(TRes res) =
       _CopyWithStubImpl$Input$IContact;
 
-  TRes call(
-      {String? initials,
-      String? first_name,
-      String? last_name,
-      String? zipcode,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? country,
-      String? email,
-      String? phone_primary,
-      String? phone_secondary});
+  TRes call({
+    String? initials,
+    String? first_name,
+    String? last_name,
+    String? zipcode,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? country,
+    String? email,
+    String? phone_primary,
+    String? phone_secondary,
+  });
 }
 
 class _CopyWithImpl$Input$IContact<TRes>
     implements CopyWith$Input$IContact<TRes> {
-  _CopyWithImpl$Input$IContact(this._instance, this._then);
+  _CopyWithImpl$Input$IContact(
+    this._instance,
+    this._then,
+  );
 
   final Input$IContact _instance;
 
@@ -722,19 +743,20 @@ class _CopyWithImpl$Input$IContact<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? initials = _undefined,
-          Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? zipcode = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? country = _undefined,
-          Object? email = _undefined,
-          Object? phone_primary = _undefined,
-          Object? phone_secondary = _undefined}) =>
+  TRes call({
+    Object? initials = _undefined,
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? zipcode = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? country = _undefined,
+    Object? email = _undefined,
+    Object? phone_primary = _undefined,
+    Object? phone_secondary = _undefined,
+  }) =>
       _then(Input$IContact._({
         ..._instance._$data,
         if (initials != _undefined) 'initials': (initials as String?),
@@ -761,25 +783,28 @@ class _CopyWithStubImpl$Input$IContact<TRes>
 
   TRes _res;
 
-  call(
-          {String? initials,
-          String? first_name,
-          String? last_name,
-          String? zipcode,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? country,
-          String? email,
-          String? phone_primary,
-          String? phone_secondary}) =>
+  call({
+    String? initials,
+    String? first_name,
+    String? last_name,
+    String? zipcode,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? country,
+    String? email,
+    String? phone_primary,
+    String? phone_secondary,
+  }) =>
       _res;
 }
 
 class Input$OrderByClause {
-  factory Input$OrderByClause(
-          {required String column, required Enum$SortOrder order}) =>
+  factory Input$OrderByClause({
+    required String column,
+    required Enum$SortOrder order,
+  }) =>
       Input$OrderByClause._({
         r'column': column,
         r'order': order,
@@ -810,7 +835,10 @@ class Input$OrderByClause {
   }
 
   CopyWith$Input$OrderByClause<Input$OrderByClause> get copyWith =>
-      CopyWith$Input$OrderByClause(this, (i) => i);
+      CopyWith$Input$OrderByClause(
+        this,
+        (i) => i,
+      );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -836,24 +864,34 @@ class Input$OrderByClause {
   int get hashCode {
     final l$column = column;
     final l$order = order;
-    return Object.hashAll([l$column, l$order]);
+    return Object.hashAll([
+      l$column,
+      l$order,
+    ]);
   }
 }
 
 abstract class CopyWith$Input$OrderByClause<TRes> {
-  factory CopyWith$Input$OrderByClause(Input$OrderByClause instance,
-          TRes Function(Input$OrderByClause) then) =
-      _CopyWithImpl$Input$OrderByClause;
+  factory CopyWith$Input$OrderByClause(
+    Input$OrderByClause instance,
+    TRes Function(Input$OrderByClause) then,
+  ) = _CopyWithImpl$Input$OrderByClause;
 
   factory CopyWith$Input$OrderByClause.stub(TRes res) =
       _CopyWithStubImpl$Input$OrderByClause;
 
-  TRes call({String? column, Enum$SortOrder? order});
+  TRes call({
+    String? column,
+    Enum$SortOrder? order,
+  });
 }
 
 class _CopyWithImpl$Input$OrderByClause<TRes>
     implements CopyWith$Input$OrderByClause<TRes> {
-  _CopyWithImpl$Input$OrderByClause(this._instance, this._then);
+  _CopyWithImpl$Input$OrderByClause(
+    this._instance,
+    this._then,
+  );
 
   final Input$OrderByClause _instance;
 
@@ -861,7 +899,10 @@ class _CopyWithImpl$Input$OrderByClause<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? column = _undefined, Object? order = _undefined}) =>
+  TRes call({
+    Object? column = _undefined,
+    Object? order = _undefined,
+  }) =>
       _then(Input$OrderByClause._({
         ..._instance._$data,
         if (column != _undefined && column != null)
@@ -877,7 +918,11 @@ class _CopyWithStubImpl$Input$OrderByClause<TRes>
 
   TRes _res;
 
-  call({String? column, Enum$SortOrder? order}) => _res;
+  call({
+    String? column,
+    Enum$SortOrder? order,
+  }) =>
+      _res;
 }
 
 enum Enum$OrderByRelationAggregateFunction { COUNT, $unknown }
@@ -904,10 +949,10 @@ Enum$OrderByRelationAggregateFunction
 
 enum Enum$OrderByRelationWithColumnAggregateFunction {
   AVG,
-  COUNT,
-  MAX,
   MIN,
+  MAX,
   SUM,
+  COUNT,
   $unknown
 }
 
@@ -916,14 +961,14 @@ String toJson$Enum$OrderByRelationWithColumnAggregateFunction(
   switch (e) {
     case Enum$OrderByRelationWithColumnAggregateFunction.AVG:
       return r'AVG';
-    case Enum$OrderByRelationWithColumnAggregateFunction.COUNT:
-      return r'COUNT';
-    case Enum$OrderByRelationWithColumnAggregateFunction.MAX:
-      return r'MAX';
     case Enum$OrderByRelationWithColumnAggregateFunction.MIN:
       return r'MIN';
+    case Enum$OrderByRelationWithColumnAggregateFunction.MAX:
+      return r'MAX';
     case Enum$OrderByRelationWithColumnAggregateFunction.SUM:
       return r'SUM';
+    case Enum$OrderByRelationWithColumnAggregateFunction.COUNT:
+      return r'COUNT';
     case Enum$OrderByRelationWithColumnAggregateFunction.$unknown:
       return r'$unknown';
   }
@@ -934,14 +979,14 @@ Enum$OrderByRelationWithColumnAggregateFunction
   switch (value) {
     case r'AVG':
       return Enum$OrderByRelationWithColumnAggregateFunction.AVG;
-    case r'COUNT':
-      return Enum$OrderByRelationWithColumnAggregateFunction.COUNT;
-    case r'MAX':
-      return Enum$OrderByRelationWithColumnAggregateFunction.MAX;
     case r'MIN':
       return Enum$OrderByRelationWithColumnAggregateFunction.MIN;
+    case r'MAX':
+      return Enum$OrderByRelationWithColumnAggregateFunction.MAX;
     case r'SUM':
       return Enum$OrderByRelationWithColumnAggregateFunction.SUM;
+    case r'COUNT':
+      return Enum$OrderByRelationWithColumnAggregateFunction.COUNT;
     default:
       return Enum$OrderByRelationWithColumnAggregateFunction.$unknown;
   }

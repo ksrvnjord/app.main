@@ -1,3 +1,4 @@
+// ignore_for_file: type=lint
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -29,7 +30,10 @@ class Variables$Query$AlmanakProfile {
   }
 
   CopyWith$Variables$Query$AlmanakProfile<Variables$Query$AlmanakProfile>
-      get copyWith => CopyWith$Variables$Query$AlmanakProfile(this, (i) => i);
+      get copyWith => CopyWith$Variables$Query$AlmanakProfile(
+            this,
+            (i) => i,
+          );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -56,9 +60,9 @@ class Variables$Query$AlmanakProfile {
 
 abstract class CopyWith$Variables$Query$AlmanakProfile<TRes> {
   factory CopyWith$Variables$Query$AlmanakProfile(
-          Variables$Query$AlmanakProfile instance,
-          TRes Function(Variables$Query$AlmanakProfile) then) =
-      _CopyWithImpl$Variables$Query$AlmanakProfile;
+    Variables$Query$AlmanakProfile instance,
+    TRes Function(Variables$Query$AlmanakProfile) then,
+  ) = _CopyWithImpl$Variables$Query$AlmanakProfile;
 
   factory CopyWith$Variables$Query$AlmanakProfile.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$AlmanakProfile;
@@ -68,7 +72,10 @@ abstract class CopyWith$Variables$Query$AlmanakProfile<TRes> {
 
 class _CopyWithImpl$Variables$Query$AlmanakProfile<TRes>
     implements CopyWith$Variables$Query$AlmanakProfile<TRes> {
-  _CopyWithImpl$Variables$Query$AlmanakProfile(this._instance, this._then);
+  _CopyWithImpl$Variables$Query$AlmanakProfile(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Query$AlmanakProfile _instance;
 
@@ -94,15 +101,19 @@ class _CopyWithStubImpl$Variables$Query$AlmanakProfile<TRes>
 }
 
 class Query$AlmanakProfile {
-  Query$AlmanakProfile({required this.user, required this.$__typename});
+  Query$AlmanakProfile({
+    required this.user,
+    required this.$__typename,
+  });
 
   factory Query$AlmanakProfile.fromJson(Map<String, dynamic> json) {
     final l$user = json['user'];
     final l$$__typename = json['__typename'];
     return Query$AlmanakProfile(
-        user: Query$AlmanakProfile$user.fromJson(
-            (l$user as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      user:
+          Query$AlmanakProfile$user.fromJson((l$user as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$AlmanakProfile$user user;
@@ -122,7 +133,10 @@ class Query$AlmanakProfile {
   int get hashCode {
     final l$user = user;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$user, l$$__typename]);
+    return Object.hashAll([
+      l$user,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -149,24 +163,34 @@ class Query$AlmanakProfile {
 
 extension UtilityExtension$Query$AlmanakProfile on Query$AlmanakProfile {
   CopyWith$Query$AlmanakProfile<Query$AlmanakProfile> get copyWith =>
-      CopyWith$Query$AlmanakProfile(this, (i) => i);
+      CopyWith$Query$AlmanakProfile(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$AlmanakProfile<TRes> {
-  factory CopyWith$Query$AlmanakProfile(Query$AlmanakProfile instance,
-          TRes Function(Query$AlmanakProfile) then) =
-      _CopyWithImpl$Query$AlmanakProfile;
+  factory CopyWith$Query$AlmanakProfile(
+    Query$AlmanakProfile instance,
+    TRes Function(Query$AlmanakProfile) then,
+  ) = _CopyWithImpl$Query$AlmanakProfile;
 
   factory CopyWith$Query$AlmanakProfile.stub(TRes res) =
       _CopyWithStubImpl$Query$AlmanakProfile;
 
-  TRes call({Query$AlmanakProfile$user? user, String? $__typename});
+  TRes call({
+    Query$AlmanakProfile$user? user,
+    String? $__typename,
+  });
   CopyWith$Query$AlmanakProfile$user<TRes> get user;
 }
 
 class _CopyWithImpl$Query$AlmanakProfile<TRes>
     implements CopyWith$Query$AlmanakProfile<TRes> {
-  _CopyWithImpl$Query$AlmanakProfile(this._instance, this._then);
+  _CopyWithImpl$Query$AlmanakProfile(
+    this._instance,
+    this._then,
+  );
 
   final Query$AlmanakProfile _instance;
 
@@ -174,14 +198,18 @@ class _CopyWithImpl$Query$AlmanakProfile<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? user = _undefined, Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? user = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$AlmanakProfile(
-          user: user == _undefined || user == null
-              ? _instance.user
-              : (user as Query$AlmanakProfile$user),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        user: user == _undefined || user == null
+            ? _instance.user
+            : (user as Query$AlmanakProfile$user),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$AlmanakProfile$user<TRes> get user {
     final local$user = _instance.user;
     return CopyWith$Query$AlmanakProfile$user(local$user, (e) => call(user: e));
@@ -194,146 +222,175 @@ class _CopyWithStubImpl$Query$AlmanakProfile<TRes>
 
   TRes _res;
 
-  call({Query$AlmanakProfile$user? user, String? $__typename}) => _res;
+  call({
+    Query$AlmanakProfile$user? user,
+    String? $__typename,
+  }) =>
+      _res;
   CopyWith$Query$AlmanakProfile$user<TRes> get user =>
       CopyWith$Query$AlmanakProfile$user.stub(_res);
 }
 
 const documentNodeQueryAlmanakProfile = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.query,
-      name: NameNode(value: 'AlmanakProfile'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'profileId')),
-            type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'user'),
+    type: OperationType.query,
+    name: NameNode(value: 'AlmanakProfile'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'profileId')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'ID'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'user'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'id'),
+            value: VariableNode(name: NameNode(value: 'profileId')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'identifier'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'id'),
-                  value: VariableNode(name: NameNode(value: 'profileId')))
-            ],
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'email'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'username'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'fullContact'),
+            alias: null,
+            arguments: [],
             directives: [],
             selectionSet: SelectionSetNode(selections: [
               FieldNode(
-                  name: NameNode(value: 'identifier'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
+                name: NameNode(value: 'public'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: SelectionSetNode(selections: [
+                  FieldNode(
+                    name: NameNode(value: 'first_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'last_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'email'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'street'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber_addition'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'city'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'zipcode'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'phone_primary'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: '__typename'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                ]),
+              ),
               FieldNode(
-                  name: NameNode(value: 'email'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'username'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'fullContact'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'public'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'first_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'last_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'email'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber_addition'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'zipcode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'phone_primary'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null)
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Query$AlmanakProfile _parserFn$Query$AlmanakProfile(
         Map<String, dynamic> data) =>
@@ -341,66 +398,69 @@ Query$AlmanakProfile _parserFn$Query$AlmanakProfile(
 
 class Options$Query$AlmanakProfile
     extends graphql.QueryOptions<Query$AlmanakProfile> {
-  Options$Query$AlmanakProfile(
-      {String? operationName,
-      required Variables$Query$AlmanakProfile variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      Duration? pollInterval,
-      graphql.Context? context})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            pollInterval: pollInterval,
-            context: context,
-            document: documentNodeQueryAlmanakProfile,
-            parserFn: _parserFn$Query$AlmanakProfile);
+  Options$Query$AlmanakProfile({
+    String? operationName,
+    required Variables$Query$AlmanakProfile variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Duration? pollInterval,
+    graphql.Context? context,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          pollInterval: pollInterval,
+          context: context,
+          document: documentNodeQueryAlmanakProfile,
+          parserFn: _parserFn$Query$AlmanakProfile,
+        );
 }
 
 class WatchOptions$Query$AlmanakProfile
     extends graphql.WatchQueryOptions<Query$AlmanakProfile> {
-  WatchOptions$Query$AlmanakProfile(
-      {String? operationName,
-      required Variables$Query$AlmanakProfile variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeQueryAlmanakProfile,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Query$AlmanakProfile);
+  WatchOptions$Query$AlmanakProfile({
+    String? operationName,
+    required Variables$Query$AlmanakProfile variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeQueryAlmanakProfile,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Query$AlmanakProfile,
+        );
 }
 
 class FetchMoreOptions$Query$AlmanakProfile extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$AlmanakProfile(
-      {required graphql.UpdateQuery updateQuery,
-      required Variables$Query$AlmanakProfile variables})
-      : super(
-            updateQuery: updateQuery,
-            variables: variables.toJson(),
-            document: documentNodeQueryAlmanakProfile);
+  FetchMoreOptions$Query$AlmanakProfile({
+    required graphql.UpdateQuery updateQuery,
+    required Variables$Query$AlmanakProfile variables,
+  }) : super(
+          updateQuery: updateQuery,
+          variables: variables.toJson(),
+          document: documentNodeQueryAlmanakProfile,
+        );
 }
 
 extension ClientExtension$Query$AlmanakProfile on graphql.GraphQLClient {
@@ -410,26 +470,31 @@ extension ClientExtension$Query$AlmanakProfile on graphql.GraphQLClient {
   graphql.ObservableQuery<Query$AlmanakProfile> watchQuery$AlmanakProfile(
           WatchOptions$Query$AlmanakProfile options) =>
       this.watchQuery(options);
-  void writeQuery$AlmanakProfile(
-          {required Query$AlmanakProfile data,
-          required Variables$Query$AlmanakProfile variables,
-          bool broadcast = true}) =>
+  void writeQuery$AlmanakProfile({
+    required Query$AlmanakProfile data,
+    required Variables$Query$AlmanakProfile variables,
+    bool broadcast = true,
+  }) =>
       this.writeQuery(
-          graphql.Request(
-              operation:
-                  graphql.Operation(document: documentNodeQueryAlmanakProfile),
-              variables: variables.toJson()),
-          data: data.toJson(),
-          broadcast: broadcast);
-  Query$AlmanakProfile? readQuery$AlmanakProfile(
-      {required Variables$Query$AlmanakProfile variables,
-      bool optimistic = true}) {
-    final result = this.readQuery(
         graphql.Request(
-            operation:
-                graphql.Operation(document: documentNodeQueryAlmanakProfile),
-            variables: variables.toJson()),
-        optimistic: optimistic);
+          operation:
+              graphql.Operation(document: documentNodeQueryAlmanakProfile),
+          variables: variables.toJson(),
+        ),
+        data: data.toJson(),
+        broadcast: broadcast,
+      );
+  Query$AlmanakProfile? readQuery$AlmanakProfile({
+    required Variables$Query$AlmanakProfile variables,
+    bool optimistic = true,
+  }) {
+    final result = this.readQuery(
+      graphql.Request(
+        operation: graphql.Operation(document: documentNodeQueryAlmanakProfile),
+        variables: variables.toJson(),
+      ),
+      optimistic: optimistic,
+    );
     return result == null ? null : Query$AlmanakProfile.fromJson(result);
   }
 }
@@ -443,20 +508,25 @@ graphql.ObservableQuery<Query$AlmanakProfile> useWatchQuery$AlmanakProfile(
 
 class Query$AlmanakProfile$Widget
     extends graphql_flutter.Query<Query$AlmanakProfile> {
-  Query$AlmanakProfile$Widget(
-      {widgets.Key? key,
-      required Options$Query$AlmanakProfile options,
-      required graphql_flutter.QueryBuilder<Query$AlmanakProfile> builder})
-      : super(key: key, options: options, builder: builder);
+  Query$AlmanakProfile$Widget({
+    widgets.Key? key,
+    required Options$Query$AlmanakProfile options,
+    required graphql_flutter.QueryBuilder<Query$AlmanakProfile> builder,
+  }) : super(
+          key: key,
+          options: options,
+          builder: builder,
+        );
 }
 
 class Query$AlmanakProfile$user {
-  Query$AlmanakProfile$user(
-      {required this.identifier,
-      required this.email,
-      required this.username,
-      required this.fullContact,
-      required this.$__typename});
+  Query$AlmanakProfile$user({
+    required this.identifier,
+    required this.email,
+    required this.username,
+    required this.fullContact,
+    required this.$__typename,
+  });
 
   factory Query$AlmanakProfile$user.fromJson(Map<String, dynamic> json) {
     final l$identifier = json['identifier'];
@@ -465,12 +535,13 @@ class Query$AlmanakProfile$user {
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
     return Query$AlmanakProfile$user(
-        identifier: (l$identifier as String),
-        email: (l$email as String),
-        username: (l$username as String),
-        fullContact: Query$AlmanakProfile$user$fullContact.fromJson(
-            (l$fullContact as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      identifier: (l$identifier as String),
+      email: (l$email as String),
+      username: (l$username as String),
+      fullContact: Query$AlmanakProfile$user$fullContact.fromJson(
+          (l$fullContact as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String identifier;
@@ -505,8 +576,13 @@ class Query$AlmanakProfile$user {
     final l$username = username;
     final l$fullContact = fullContact;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [l$identifier, l$email, l$username, l$fullContact, l$$__typename]);
+    return Object.hashAll([
+      l$identifier,
+      l$email,
+      l$username,
+      l$fullContact,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -550,29 +626,37 @@ class Query$AlmanakProfile$user {
 extension UtilityExtension$Query$AlmanakProfile$user
     on Query$AlmanakProfile$user {
   CopyWith$Query$AlmanakProfile$user<Query$AlmanakProfile$user> get copyWith =>
-      CopyWith$Query$AlmanakProfile$user(this, (i) => i);
+      CopyWith$Query$AlmanakProfile$user(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$AlmanakProfile$user<TRes> {
-  factory CopyWith$Query$AlmanakProfile$user(Query$AlmanakProfile$user instance,
-          TRes Function(Query$AlmanakProfile$user) then) =
-      _CopyWithImpl$Query$AlmanakProfile$user;
+  factory CopyWith$Query$AlmanakProfile$user(
+    Query$AlmanakProfile$user instance,
+    TRes Function(Query$AlmanakProfile$user) then,
+  ) = _CopyWithImpl$Query$AlmanakProfile$user;
 
   factory CopyWith$Query$AlmanakProfile$user.stub(TRes res) =
       _CopyWithStubImpl$Query$AlmanakProfile$user;
 
-  TRes call(
-      {String? identifier,
-      String? email,
-      String? username,
-      Query$AlmanakProfile$user$fullContact? fullContact,
-      String? $__typename});
+  TRes call({
+    String? identifier,
+    String? email,
+    String? username,
+    Query$AlmanakProfile$user$fullContact? fullContact,
+    String? $__typename,
+  });
   CopyWith$Query$AlmanakProfile$user$fullContact<TRes> get fullContact;
 }
 
 class _CopyWithImpl$Query$AlmanakProfile$user<TRes>
     implements CopyWith$Query$AlmanakProfile$user<TRes> {
-  _CopyWithImpl$Query$AlmanakProfile$user(this._instance, this._then);
+  _CopyWithImpl$Query$AlmanakProfile$user(
+    this._instance,
+    this._then,
+  );
 
   final Query$AlmanakProfile$user _instance;
 
@@ -580,28 +664,30 @@ class _CopyWithImpl$Query$AlmanakProfile$user<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? identifier = _undefined,
-          Object? email = _undefined,
-          Object? username = _undefined,
-          Object? fullContact = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? identifier = _undefined,
+    Object? email = _undefined,
+    Object? username = _undefined,
+    Object? fullContact = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$AlmanakProfile$user(
-          identifier: identifier == _undefined || identifier == null
-              ? _instance.identifier
-              : (identifier as String),
-          email: email == _undefined || email == null
-              ? _instance.email
-              : (email as String),
-          username: username == _undefined || username == null
-              ? _instance.username
-              : (username as String),
-          fullContact: fullContact == _undefined || fullContact == null
-              ? _instance.fullContact
-              : (fullContact as Query$AlmanakProfile$user$fullContact),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        identifier: identifier == _undefined || identifier == null
+            ? _instance.identifier
+            : (identifier as String),
+        email: email == _undefined || email == null
+            ? _instance.email
+            : (email as String),
+        username: username == _undefined || username == null
+            ? _instance.username
+            : (username as String),
+        fullContact: fullContact == _undefined || fullContact == null
+            ? _instance.fullContact
+            : (fullContact as Query$AlmanakProfile$user$fullContact),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$AlmanakProfile$user$fullContact<TRes> get fullContact {
     final local$fullContact = _instance.fullContact;
     return CopyWith$Query$AlmanakProfile$user$fullContact(
@@ -615,29 +701,33 @@ class _CopyWithStubImpl$Query$AlmanakProfile$user<TRes>
 
   TRes _res;
 
-  call(
-          {String? identifier,
-          String? email,
-          String? username,
-          Query$AlmanakProfile$user$fullContact? fullContact,
-          String? $__typename}) =>
+  call({
+    String? identifier,
+    String? email,
+    String? username,
+    Query$AlmanakProfile$user$fullContact? fullContact,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$AlmanakProfile$user$fullContact<TRes> get fullContact =>
       CopyWith$Query$AlmanakProfile$user$fullContact.stub(_res);
 }
 
 class Query$AlmanakProfile$user$fullContact {
-  Query$AlmanakProfile$user$fullContact(
-      {required this.public, required this.$__typename});
+  Query$AlmanakProfile$user$fullContact({
+    required this.public,
+    required this.$__typename,
+  });
 
   factory Query$AlmanakProfile$user$fullContact.fromJson(
       Map<String, dynamic> json) {
     final l$public = json['public'];
     final l$$__typename = json['__typename'];
     return Query$AlmanakProfile$user$fullContact(
-        public: Query$AlmanakProfile$user$fullContact$public.fromJson(
-            (l$public as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      public: Query$AlmanakProfile$user$fullContact$public.fromJson(
+          (l$public as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$AlmanakProfile$user$fullContact$public public;
@@ -657,7 +747,10 @@ class Query$AlmanakProfile$user$fullContact {
   int get hashCode {
     final l$public = public;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$public, l$$__typename]);
+    return Object.hashAll([
+      l$public,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -687,29 +780,34 @@ extension UtilityExtension$Query$AlmanakProfile$user$fullContact
     on Query$AlmanakProfile$user$fullContact {
   CopyWith$Query$AlmanakProfile$user$fullContact<
           Query$AlmanakProfile$user$fullContact>
-      get copyWith =>
-          CopyWith$Query$AlmanakProfile$user$fullContact(this, (i) => i);
+      get copyWith => CopyWith$Query$AlmanakProfile$user$fullContact(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$AlmanakProfile$user$fullContact<TRes> {
   factory CopyWith$Query$AlmanakProfile$user$fullContact(
-          Query$AlmanakProfile$user$fullContact instance,
-          TRes Function(Query$AlmanakProfile$user$fullContact) then) =
-      _CopyWithImpl$Query$AlmanakProfile$user$fullContact;
+    Query$AlmanakProfile$user$fullContact instance,
+    TRes Function(Query$AlmanakProfile$user$fullContact) then,
+  ) = _CopyWithImpl$Query$AlmanakProfile$user$fullContact;
 
   factory CopyWith$Query$AlmanakProfile$user$fullContact.stub(TRes res) =
       _CopyWithStubImpl$Query$AlmanakProfile$user$fullContact;
 
-  TRes call(
-      {Query$AlmanakProfile$user$fullContact$public? public,
-      String? $__typename});
+  TRes call({
+    Query$AlmanakProfile$user$fullContact$public? public,
+    String? $__typename,
+  });
   CopyWith$Query$AlmanakProfile$user$fullContact$public<TRes> get public;
 }
 
 class _CopyWithImpl$Query$AlmanakProfile$user$fullContact<TRes>
     implements CopyWith$Query$AlmanakProfile$user$fullContact<TRes> {
   _CopyWithImpl$Query$AlmanakProfile$user$fullContact(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$AlmanakProfile$user$fullContact _instance;
 
@@ -717,14 +815,18 @@ class _CopyWithImpl$Query$AlmanakProfile$user$fullContact<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? public = _undefined, Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? public = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$AlmanakProfile$user$fullContact(
-          public: public == _undefined || public == null
-              ? _instance.public
-              : (public as Query$AlmanakProfile$user$fullContact$public),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        public: public == _undefined || public == null
+            ? _instance.public
+            : (public as Query$AlmanakProfile$user$fullContact$public),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$AlmanakProfile$user$fullContact$public<TRes> get public {
     final local$public = _instance.public;
     return CopyWith$Query$AlmanakProfile$user$fullContact$public(
@@ -738,26 +840,28 @@ class _CopyWithStubImpl$Query$AlmanakProfile$user$fullContact<TRes>
 
   TRes _res;
 
-  call(
-          {Query$AlmanakProfile$user$fullContact$public? public,
-          String? $__typename}) =>
+  call({
+    Query$AlmanakProfile$user$fullContact$public? public,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$AlmanakProfile$user$fullContact$public<TRes> get public =>
       CopyWith$Query$AlmanakProfile$user$fullContact$public.stub(_res);
 }
 
 class Query$AlmanakProfile$user$fullContact$public {
-  Query$AlmanakProfile$user$fullContact$public(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      this.phone_primary,
-      required this.$__typename});
+  Query$AlmanakProfile$user$fullContact$public({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    this.phone_primary,
+    required this.$__typename,
+  });
 
   factory Query$AlmanakProfile$user$fullContact$public.fromJson(
       Map<String, dynamic> json) {
@@ -772,16 +876,17 @@ class Query$AlmanakProfile$user$fullContact$public {
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
     return Query$AlmanakProfile$user$fullContact$public(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        phone_primary: (l$phone_primary as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      phone_primary: (l$phone_primary as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -851,7 +956,7 @@ class Query$AlmanakProfile$user$fullContact$public {
       l$city,
       l$zipcode,
       l$phone_primary,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -922,36 +1027,41 @@ extension UtilityExtension$Query$AlmanakProfile$user$fullContact$public
     on Query$AlmanakProfile$user$fullContact$public {
   CopyWith$Query$AlmanakProfile$user$fullContact$public<
           Query$AlmanakProfile$user$fullContact$public>
-      get copyWith =>
-          CopyWith$Query$AlmanakProfile$user$fullContact$public(this, (i) => i);
+      get copyWith => CopyWith$Query$AlmanakProfile$user$fullContact$public(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$AlmanakProfile$user$fullContact$public<TRes> {
   factory CopyWith$Query$AlmanakProfile$user$fullContact$public(
-          Query$AlmanakProfile$user$fullContact$public instance,
-          TRes Function(Query$AlmanakProfile$user$fullContact$public) then) =
-      _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public;
+    Query$AlmanakProfile$user$fullContact$public instance,
+    TRes Function(Query$AlmanakProfile$user$fullContact$public) then,
+  ) = _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public;
 
   factory CopyWith$Query$AlmanakProfile$user$fullContact$public.stub(TRes res) =
       _CopyWithStubImpl$Query$AlmanakProfile$user$fullContact$public;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? phone_primary,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public<TRes>
     implements CopyWith$Query$AlmanakProfile$user$fullContact$public<TRes> {
   _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Query$AlmanakProfile$user$fullContact$public _instance;
 
@@ -959,41 +1069,43 @@ class _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? phone_primary = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? phone_primary = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$AlmanakProfile$user$fullContact$public(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          phone_primary: phone_primary == _undefined
-              ? _instance.phone_primary
-              : (phone_primary as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        phone_primary: phone_primary == _undefined
+            ? _instance.phone_primary
+            : (phone_primary as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$AlmanakProfile$user$fullContact$public<TRes>
@@ -1002,16 +1114,17 @@ class _CopyWithStubImpl$Query$AlmanakProfile$user$fullContact$public<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? phone_primary,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  }) =>
       _res;
 }

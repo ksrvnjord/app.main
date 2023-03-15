@@ -1,3 +1,4 @@
+// ignore_for_file: type=lint
 import '../../../../schema.graphql.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart' as widgets;
@@ -6,16 +7,20 @@ import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 
 class Query$Me {
-  Query$Me({this.me, required this.$__typename});
+  Query$Me({
+    this.me,
+    required this.$__typename,
+  });
 
   factory Query$Me.fromJson(Map<String, dynamic> json) {
     final l$me = json['me'];
     final l$$__typename = json['__typename'];
     return Query$Me(
-        me: l$me == null
-            ? null
-            : Query$Me$me.fromJson((l$me as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      me: l$me == null
+          ? null
+          : Query$Me$me.fromJson((l$me as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Me$me? me;
@@ -35,7 +40,10 @@ class Query$Me {
   int get hashCode {
     final l$me = me;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$me, l$$__typename]);
+    return Object.hashAll([
+      l$me,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -61,21 +69,32 @@ class Query$Me {
 }
 
 extension UtilityExtension$Query$Me on Query$Me {
-  CopyWith$Query$Me<Query$Me> get copyWith => CopyWith$Query$Me(this, (i) => i);
+  CopyWith$Query$Me<Query$Me> get copyWith => CopyWith$Query$Me(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Me<TRes> {
-  factory CopyWith$Query$Me(Query$Me instance, TRes Function(Query$Me) then) =
-      _CopyWithImpl$Query$Me;
+  factory CopyWith$Query$Me(
+    Query$Me instance,
+    TRes Function(Query$Me) then,
+  ) = _CopyWithImpl$Query$Me;
 
   factory CopyWith$Query$Me.stub(TRes res) = _CopyWithStubImpl$Query$Me;
 
-  TRes call({Query$Me$me? me, String? $__typename});
+  TRes call({
+    Query$Me$me? me,
+    String? $__typename,
+  });
   CopyWith$Query$Me$me<TRes> get me;
 }
 
 class _CopyWithImpl$Query$Me<TRes> implements CopyWith$Query$Me<TRes> {
-  _CopyWithImpl$Query$Me(this._instance, this._then);
+  _CopyWithImpl$Query$Me(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me _instance;
 
@@ -83,12 +102,16 @@ class _CopyWithImpl$Query$Me<TRes> implements CopyWith$Query$Me<TRes> {
 
   static const _undefined = {};
 
-  TRes call({Object? me = _undefined, Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? me = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me(
-          me: me == _undefined ? _instance.me : (me as Query$Me$me?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        me: me == _undefined ? _instance.me : (me as Query$Me$me?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Me$me<TRes> get me {
     final local$me = _instance.me;
     return local$me == null
@@ -102,330 +125,382 @@ class _CopyWithStubImpl$Query$Me<TRes> implements CopyWith$Query$Me<TRes> {
 
   TRes _res;
 
-  call({Query$Me$me? me, String? $__typename}) => _res;
+  call({
+    Query$Me$me? me,
+    String? $__typename,
+  }) =>
+      _res;
   CopyWith$Query$Me$me<TRes> get me => CopyWith$Query$Me$me.stub(_res);
 }
 
 const documentNodeQueryMe = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.query,
-      name: NameNode(value: 'Me'),
-      variableDefinitions: [],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'me'),
+    type: OperationType.query,
+    name: NameNode(value: 'Me'),
+    variableDefinitions: [],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'me'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'identifier'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'email'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'username'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'listed'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'fullContact'),
             alias: null,
             arguments: [],
             directives: [],
             selectionSet: SelectionSetNode(selections: [
               FieldNode(
-                  name: NameNode(value: 'identifier'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
+                name: NameNode(value: 'public'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: SelectionSetNode(selections: [
+                  FieldNode(
+                    name: NameNode(value: 'first_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'last_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'email'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'street'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber_addition'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'city'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'zipcode'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'phone_primary'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: '__typename'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                ]),
+              ),
               FieldNode(
-                  name: NameNode(value: 'email'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
+                name: NameNode(value: 'private'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: SelectionSetNode(selections: [
+                  FieldNode(
+                    name: NameNode(value: 'first_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'last_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'email'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'street'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber_addition'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'city'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'zipcode'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'phone_primary'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: '__typename'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                ]),
+              ),
               FieldNode(
-                  name: NameNode(value: 'username'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
+                name: NameNode(value: 'update'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: SelectionSetNode(selections: [
+                  FieldNode(
+                    name: NameNode(value: 'first_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'last_name'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'email'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'street'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'housenumber_addition'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'city'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'zipcode'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: 'phone_primary'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                  FieldNode(
+                    name: NameNode(value: '__typename'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null,
+                  ),
+                ]),
+              ),
               FieldNode(
-                  name: NameNode(value: 'listed'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'fullContact'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'public'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'first_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'last_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'email'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber_addition'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'zipcode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'phone_primary'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null)
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: 'private'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'first_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'last_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'email'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber_addition'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'zipcode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'phone_primary'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null)
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: 'update'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'first_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'last_name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'email'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'housenumber_addition'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'zipcode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: 'phone_primary'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null),
-                          FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null)
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+                name: NameNode(value: '__typename'),
+                alias: null,
+                arguments: [],
+                directives: [],
+                selectionSet: null,
+              ),
+            ]),
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Query$Me _parserFn$Query$Me(Map<String, dynamic> data) =>
     Query$Me.fromJson(data);
 
 class Options$Query$Me extends graphql.QueryOptions<Query$Me> {
-  Options$Query$Me(
-      {String? operationName,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      Duration? pollInterval,
-      graphql.Context? context})
-      : super(
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            pollInterval: pollInterval,
-            context: context,
-            document: documentNodeQueryMe,
-            parserFn: _parserFn$Query$Me);
+  Options$Query$Me({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    Duration? pollInterval,
+    graphql.Context? context,
+  }) : super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          pollInterval: pollInterval,
+          context: context,
+          document: documentNodeQueryMe,
+          parserFn: _parserFn$Query$Me,
+        );
 }
 
 class WatchOptions$Query$Me extends graphql.WatchQueryOptions<Query$Me> {
-  WatchOptions$Query$Me(
-      {String? operationName,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeQueryMe,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Query$Me);
+  WatchOptions$Query$Me({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeQueryMe,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Query$Me,
+        );
 }
 
 class FetchMoreOptions$Query$Me extends graphql.FetchMoreOptions {
   FetchMoreOptions$Query$Me({required graphql.UpdateQuery updateQuery})
-      : super(updateQuery: updateQuery, document: documentNodeQueryMe);
+      : super(
+          updateQuery: updateQuery,
+          document: documentNodeQueryMe,
+        );
 }
 
 extension ClientExtension$Query$Me on graphql.GraphQLClient {
@@ -435,17 +510,22 @@ extension ClientExtension$Query$Me on graphql.GraphQLClient {
   graphql.ObservableQuery<Query$Me> watchQuery$Me(
           [WatchOptions$Query$Me? options]) =>
       this.watchQuery(options ?? WatchOptions$Query$Me());
-  void writeQuery$Me({required Query$Me data, bool broadcast = true}) =>
+  void writeQuery$Me({
+    required Query$Me data,
+    bool broadcast = true,
+  }) =>
       this.writeQuery(
-          graphql.Request(
-              operation: graphql.Operation(document: documentNodeQueryMe)),
-          data: data.toJson(),
-          broadcast: broadcast);
-  Query$Me? readQuery$Me({bool optimistic = true}) {
-    final result = this.readQuery(
         graphql.Request(
             operation: graphql.Operation(document: documentNodeQueryMe)),
-        optimistic: optimistic);
+        data: data.toJson(),
+        broadcast: broadcast,
+      );
+  Query$Me? readQuery$Me({bool optimistic = true}) {
+    final result = this.readQuery(
+      graphql.Request(
+          operation: graphql.Operation(document: documentNodeQueryMe)),
+      optimistic: optimistic,
+    );
     return result == null ? null : Query$Me.fromJson(result);
   }
 }
@@ -458,22 +538,26 @@ graphql.ObservableQuery<Query$Me> useWatchQuery$Me(
     graphql_flutter.useWatchQuery(options ?? WatchOptions$Query$Me());
 
 class Query$Me$Widget extends graphql_flutter.Query<Query$Me> {
-  Query$Me$Widget(
-      {widgets.Key? key,
-      Options$Query$Me? options,
-      required graphql_flutter.QueryBuilder<Query$Me> builder})
-      : super(
-            key: key, options: options ?? Options$Query$Me(), builder: builder);
+  Query$Me$Widget({
+    widgets.Key? key,
+    Options$Query$Me? options,
+    required graphql_flutter.QueryBuilder<Query$Me> builder,
+  }) : super(
+          key: key,
+          options: options ?? Options$Query$Me(),
+          builder: builder,
+        );
 }
 
 class Query$Me$me {
-  Query$Me$me(
-      {required this.identifier,
-      required this.email,
-      required this.username,
-      required this.listed,
-      required this.fullContact,
-      required this.$__typename});
+  Query$Me$me({
+    required this.identifier,
+    required this.email,
+    required this.username,
+    required this.listed,
+    required this.fullContact,
+    required this.$__typename,
+  });
 
   factory Query$Me$me.fromJson(Map<String, dynamic> json) {
     final l$identifier = json['identifier'];
@@ -483,13 +567,14 @@ class Query$Me$me {
     final l$fullContact = json['fullContact'];
     final l$$__typename = json['__typename'];
     return Query$Me$me(
-        identifier: (l$identifier as String),
-        email: (l$email as String),
-        username: (l$username as String),
-        listed: (l$listed as bool),
-        fullContact: Query$Me$me$fullContact.fromJson(
-            (l$fullContact as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      identifier: (l$identifier as String),
+      email: (l$email as String),
+      username: (l$username as String),
+      listed: (l$listed as bool),
+      fullContact: Query$Me$me$fullContact.fromJson(
+          (l$fullContact as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String identifier;
@@ -535,7 +620,7 @@ class Query$Me$me {
       l$username,
       l$listed,
       l$fullContact,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -582,29 +667,36 @@ class Query$Me$me {
 }
 
 extension UtilityExtension$Query$Me$me on Query$Me$me {
-  CopyWith$Query$Me$me<Query$Me$me> get copyWith =>
-      CopyWith$Query$Me$me(this, (i) => i);
+  CopyWith$Query$Me$me<Query$Me$me> get copyWith => CopyWith$Query$Me$me(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Me$me<TRes> {
   factory CopyWith$Query$Me$me(
-          Query$Me$me instance, TRes Function(Query$Me$me) then) =
-      _CopyWithImpl$Query$Me$me;
+    Query$Me$me instance,
+    TRes Function(Query$Me$me) then,
+  ) = _CopyWithImpl$Query$Me$me;
 
   factory CopyWith$Query$Me$me.stub(TRes res) = _CopyWithStubImpl$Query$Me$me;
 
-  TRes call(
-      {String? identifier,
-      String? email,
-      String? username,
-      bool? listed,
-      Query$Me$me$fullContact? fullContact,
-      String? $__typename});
+  TRes call({
+    String? identifier,
+    String? email,
+    String? username,
+    bool? listed,
+    Query$Me$me$fullContact? fullContact,
+    String? $__typename,
+  });
   CopyWith$Query$Me$me$fullContact<TRes> get fullContact;
 }
 
 class _CopyWithImpl$Query$Me$me<TRes> implements CopyWith$Query$Me$me<TRes> {
-  _CopyWithImpl$Query$Me$me(this._instance, this._then);
+  _CopyWithImpl$Query$Me$me(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me$me _instance;
 
@@ -612,32 +704,34 @@ class _CopyWithImpl$Query$Me$me<TRes> implements CopyWith$Query$Me$me<TRes> {
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? identifier = _undefined,
-          Object? email = _undefined,
-          Object? username = _undefined,
-          Object? listed = _undefined,
-          Object? fullContact = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? identifier = _undefined,
+    Object? email = _undefined,
+    Object? username = _undefined,
+    Object? listed = _undefined,
+    Object? fullContact = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me$me(
-          identifier: identifier == _undefined || identifier == null
-              ? _instance.identifier
-              : (identifier as String),
-          email: email == _undefined || email == null
-              ? _instance.email
-              : (email as String),
-          username: username == _undefined || username == null
-              ? _instance.username
-              : (username as String),
-          listed: listed == _undefined || listed == null
-              ? _instance.listed
-              : (listed as bool),
-          fullContact: fullContact == _undefined || fullContact == null
-              ? _instance.fullContact
-              : (fullContact as Query$Me$me$fullContact),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        identifier: identifier == _undefined || identifier == null
+            ? _instance.identifier
+            : (identifier as String),
+        email: email == _undefined || email == null
+            ? _instance.email
+            : (email as String),
+        username: username == _undefined || username == null
+            ? _instance.username
+            : (username as String),
+        listed: listed == _undefined || listed == null
+            ? _instance.listed
+            : (listed as bool),
+        fullContact: fullContact == _undefined || fullContact == null
+            ? _instance.fullContact
+            : (fullContact as Query$Me$me$fullContact),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Me$me$fullContact<TRes> get fullContact {
     final local$fullContact = _instance.fullContact;
     return CopyWith$Query$Me$me$fullContact(
@@ -651,24 +745,26 @@ class _CopyWithStubImpl$Query$Me$me<TRes>
 
   TRes _res;
 
-  call(
-          {String? identifier,
-          String? email,
-          String? username,
-          bool? listed,
-          Query$Me$me$fullContact? fullContact,
-          String? $__typename}) =>
+  call({
+    String? identifier,
+    String? email,
+    String? username,
+    bool? listed,
+    Query$Me$me$fullContact? fullContact,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Me$me$fullContact<TRes> get fullContact =>
       CopyWith$Query$Me$me$fullContact.stub(_res);
 }
 
 class Query$Me$me$fullContact {
-  Query$Me$me$fullContact(
-      {required this.public,
-      this.private,
-      this.update,
-      required this.$__typename});
+  Query$Me$me$fullContact({
+    required this.public,
+    this.private,
+    this.update,
+    required this.$__typename,
+  });
 
   factory Query$Me$me$fullContact.fromJson(Map<String, dynamic> json) {
     final l$public = json['public'];
@@ -676,17 +772,18 @@ class Query$Me$me$fullContact {
     final l$update = json['update'];
     final l$$__typename = json['__typename'];
     return Query$Me$me$fullContact(
-        public: Query$Me$me$fullContact$public.fromJson(
-            (l$public as Map<String, dynamic>)),
-        private: l$private == null
-            ? null
-            : Query$Me$me$fullContact$private.fromJson(
-                (l$private as Map<String, dynamic>)),
-        update: l$update == null
-            ? null
-            : Query$Me$me$fullContact$update.fromJson(
-                (l$update as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      public: Query$Me$me$fullContact$public.fromJson(
+          (l$public as Map<String, dynamic>)),
+      private: l$private == null
+          ? null
+          : Query$Me$me$fullContact$private.fromJson(
+              (l$private as Map<String, dynamic>)),
+      update: l$update == null
+          ? null
+          : Query$Me$me$fullContact$update.fromJson(
+              (l$update as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Query$Me$me$fullContact$public public;
@@ -716,7 +813,12 @@ class Query$Me$me$fullContact {
     final l$private = private;
     final l$update = update;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$public, l$private, l$update, l$$__typename]);
+    return Object.hashAll([
+      l$public,
+      l$private,
+      l$update,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -754,22 +856,27 @@ class Query$Me$me$fullContact {
 
 extension UtilityExtension$Query$Me$me$fullContact on Query$Me$me$fullContact {
   CopyWith$Query$Me$me$fullContact<Query$Me$me$fullContact> get copyWith =>
-      CopyWith$Query$Me$me$fullContact(this, (i) => i);
+      CopyWith$Query$Me$me$fullContact(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Query$Me$me$fullContact<TRes> {
-  factory CopyWith$Query$Me$me$fullContact(Query$Me$me$fullContact instance,
-          TRes Function(Query$Me$me$fullContact) then) =
-      _CopyWithImpl$Query$Me$me$fullContact;
+  factory CopyWith$Query$Me$me$fullContact(
+    Query$Me$me$fullContact instance,
+    TRes Function(Query$Me$me$fullContact) then,
+  ) = _CopyWithImpl$Query$Me$me$fullContact;
 
   factory CopyWith$Query$Me$me$fullContact.stub(TRes res) =
       _CopyWithStubImpl$Query$Me$me$fullContact;
 
-  TRes call(
-      {Query$Me$me$fullContact$public? public,
-      Query$Me$me$fullContact$private? private,
-      Query$Me$me$fullContact$update? update,
-      String? $__typename});
+  TRes call({
+    Query$Me$me$fullContact$public? public,
+    Query$Me$me$fullContact$private? private,
+    Query$Me$me$fullContact$update? update,
+    String? $__typename,
+  });
   CopyWith$Query$Me$me$fullContact$public<TRes> get public;
   CopyWith$Query$Me$me$fullContact$private<TRes> get private;
   CopyWith$Query$Me$me$fullContact$update<TRes> get update;
@@ -777,7 +884,10 @@ abstract class CopyWith$Query$Me$me$fullContact<TRes> {
 
 class _CopyWithImpl$Query$Me$me$fullContact<TRes>
     implements CopyWith$Query$Me$me$fullContact<TRes> {
-  _CopyWithImpl$Query$Me$me$fullContact(this._instance, this._then);
+  _CopyWithImpl$Query$Me$me$fullContact(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me$me$fullContact _instance;
 
@@ -785,24 +895,26 @@ class _CopyWithImpl$Query$Me$me$fullContact<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? public = _undefined,
-          Object? private = _undefined,
-          Object? update = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? public = _undefined,
+    Object? private = _undefined,
+    Object? update = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me$me$fullContact(
-          public: public == _undefined || public == null
-              ? _instance.public
-              : (public as Query$Me$me$fullContact$public),
-          private: private == _undefined
-              ? _instance.private
-              : (private as Query$Me$me$fullContact$private?),
-          update: update == _undefined
-              ? _instance.update
-              : (update as Query$Me$me$fullContact$update?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        public: public == _undefined || public == null
+            ? _instance.public
+            : (public as Query$Me$me$fullContact$public),
+        private: private == _undefined
+            ? _instance.private
+            : (private as Query$Me$me$fullContact$private?),
+        update: update == _undefined
+            ? _instance.update
+            : (update as Query$Me$me$fullContact$update?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Query$Me$me$fullContact$public<TRes> get public {
     final local$public = _instance.public;
     return CopyWith$Query$Me$me$fullContact$public(
@@ -832,11 +944,12 @@ class _CopyWithStubImpl$Query$Me$me$fullContact<TRes>
 
   TRes _res;
 
-  call(
-          {Query$Me$me$fullContact$public? public,
-          Query$Me$me$fullContact$private? private,
-          Query$Me$me$fullContact$update? update,
-          String? $__typename}) =>
+  call({
+    Query$Me$me$fullContact$public? public,
+    Query$Me$me$fullContact$private? private,
+    Query$Me$me$fullContact$update? update,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Query$Me$me$fullContact$public<TRes> get public =>
       CopyWith$Query$Me$me$fullContact$public.stub(_res);
@@ -847,17 +960,18 @@ class _CopyWithStubImpl$Query$Me$me$fullContact<TRes>
 }
 
 class Query$Me$me$fullContact$public {
-  Query$Me$me$fullContact$public(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      this.phone_primary,
-      required this.$__typename});
+  Query$Me$me$fullContact$public({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    this.phone_primary,
+    required this.$__typename,
+  });
 
   factory Query$Me$me$fullContact$public.fromJson(Map<String, dynamic> json) {
     final l$first_name = json['first_name'];
@@ -871,16 +985,17 @@ class Query$Me$me$fullContact$public {
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
     return Query$Me$me$fullContact$public(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        phone_primary: (l$phone_primary as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      phone_primary: (l$phone_primary as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -950,7 +1065,7 @@ class Query$Me$me$fullContact$public {
       l$city,
       l$zipcode,
       l$phone_primary,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -1020,34 +1135,41 @@ class Query$Me$me$fullContact$public {
 extension UtilityExtension$Query$Me$me$fullContact$public
     on Query$Me$me$fullContact$public {
   CopyWith$Query$Me$me$fullContact$public<Query$Me$me$fullContact$public>
-      get copyWith => CopyWith$Query$Me$me$fullContact$public(this, (i) => i);
+      get copyWith => CopyWith$Query$Me$me$fullContact$public(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Me$me$fullContact$public<TRes> {
   factory CopyWith$Query$Me$me$fullContact$public(
-          Query$Me$me$fullContact$public instance,
-          TRes Function(Query$Me$me$fullContact$public) then) =
-      _CopyWithImpl$Query$Me$me$fullContact$public;
+    Query$Me$me$fullContact$public instance,
+    TRes Function(Query$Me$me$fullContact$public) then,
+  ) = _CopyWithImpl$Query$Me$me$fullContact$public;
 
   factory CopyWith$Query$Me$me$fullContact$public.stub(TRes res) =
       _CopyWithStubImpl$Query$Me$me$fullContact$public;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? phone_primary,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Me$me$fullContact$public<TRes>
     implements CopyWith$Query$Me$me$fullContact$public<TRes> {
-  _CopyWithImpl$Query$Me$me$fullContact$public(this._instance, this._then);
+  _CopyWithImpl$Query$Me$me$fullContact$public(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me$me$fullContact$public _instance;
 
@@ -1055,41 +1177,43 @@ class _CopyWithImpl$Query$Me$me$fullContact$public<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? phone_primary = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? phone_primary = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me$me$fullContact$public(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          phone_primary: phone_primary == _undefined
-              ? _instance.phone_primary
-              : (phone_primary as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        phone_primary: phone_primary == _undefined
+            ? _instance.phone_primary
+            : (phone_primary as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Me$me$fullContact$public<TRes>
@@ -1098,32 +1222,34 @@ class _CopyWithStubImpl$Query$Me$me$fullContact$public<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? phone_primary,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  }) =>
       _res;
 }
 
 class Query$Me$me$fullContact$private {
-  Query$Me$me$fullContact$private(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      this.phone_primary,
-      required this.$__typename});
+  Query$Me$me$fullContact$private({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    this.phone_primary,
+    required this.$__typename,
+  });
 
   factory Query$Me$me$fullContact$private.fromJson(Map<String, dynamic> json) {
     final l$first_name = json['first_name'];
@@ -1137,16 +1263,17 @@ class Query$Me$me$fullContact$private {
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
     return Query$Me$me$fullContact$private(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        phone_primary: (l$phone_primary as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      phone_primary: (l$phone_primary as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -1216,7 +1343,7 @@ class Query$Me$me$fullContact$private {
       l$city,
       l$zipcode,
       l$phone_primary,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -1286,34 +1413,41 @@ class Query$Me$me$fullContact$private {
 extension UtilityExtension$Query$Me$me$fullContact$private
     on Query$Me$me$fullContact$private {
   CopyWith$Query$Me$me$fullContact$private<Query$Me$me$fullContact$private>
-      get copyWith => CopyWith$Query$Me$me$fullContact$private(this, (i) => i);
+      get copyWith => CopyWith$Query$Me$me$fullContact$private(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Me$me$fullContact$private<TRes> {
   factory CopyWith$Query$Me$me$fullContact$private(
-          Query$Me$me$fullContact$private instance,
-          TRes Function(Query$Me$me$fullContact$private) then) =
-      _CopyWithImpl$Query$Me$me$fullContact$private;
+    Query$Me$me$fullContact$private instance,
+    TRes Function(Query$Me$me$fullContact$private) then,
+  ) = _CopyWithImpl$Query$Me$me$fullContact$private;
 
   factory CopyWith$Query$Me$me$fullContact$private.stub(TRes res) =
       _CopyWithStubImpl$Query$Me$me$fullContact$private;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? phone_primary,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Me$me$fullContact$private<TRes>
     implements CopyWith$Query$Me$me$fullContact$private<TRes> {
-  _CopyWithImpl$Query$Me$me$fullContact$private(this._instance, this._then);
+  _CopyWithImpl$Query$Me$me$fullContact$private(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me$me$fullContact$private _instance;
 
@@ -1321,41 +1455,43 @@ class _CopyWithImpl$Query$Me$me$fullContact$private<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? phone_primary = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? phone_primary = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me$me$fullContact$private(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          phone_primary: phone_primary == _undefined
-              ? _instance.phone_primary
-              : (phone_primary as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        phone_primary: phone_primary == _undefined
+            ? _instance.phone_primary
+            : (phone_primary as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Me$me$fullContact$private<TRes>
@@ -1364,32 +1500,34 @@ class _CopyWithStubImpl$Query$Me$me$fullContact$private<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? phone_primary,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  }) =>
       _res;
 }
 
 class Query$Me$me$fullContact$update {
-  Query$Me$me$fullContact$update(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      this.phone_primary,
-      required this.$__typename});
+  Query$Me$me$fullContact$update({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    this.phone_primary,
+    required this.$__typename,
+  });
 
   factory Query$Me$me$fullContact$update.fromJson(Map<String, dynamic> json) {
     final l$first_name = json['first_name'];
@@ -1403,16 +1541,17 @@ class Query$Me$me$fullContact$update {
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
     return Query$Me$me$fullContact$update(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        phone_primary: (l$phone_primary as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      phone_primary: (l$phone_primary as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -1482,7 +1621,7 @@ class Query$Me$me$fullContact$update {
       l$city,
       l$zipcode,
       l$phone_primary,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -1552,34 +1691,41 @@ class Query$Me$me$fullContact$update {
 extension UtilityExtension$Query$Me$me$fullContact$update
     on Query$Me$me$fullContact$update {
   CopyWith$Query$Me$me$fullContact$update<Query$Me$me$fullContact$update>
-      get copyWith => CopyWith$Query$Me$me$fullContact$update(this, (i) => i);
+      get copyWith => CopyWith$Query$Me$me$fullContact$update(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Query$Me$me$fullContact$update<TRes> {
   factory CopyWith$Query$Me$me$fullContact$update(
-          Query$Me$me$fullContact$update instance,
-          TRes Function(Query$Me$me$fullContact$update) then) =
-      _CopyWithImpl$Query$Me$me$fullContact$update;
+    Query$Me$me$fullContact$update instance,
+    TRes Function(Query$Me$me$fullContact$update) then,
+  ) = _CopyWithImpl$Query$Me$me$fullContact$update;
 
   factory CopyWith$Query$Me$me$fullContact$update.stub(TRes res) =
       _CopyWithStubImpl$Query$Me$me$fullContact$update;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? phone_primary,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Me$me$fullContact$update<TRes>
     implements CopyWith$Query$Me$me$fullContact$update<TRes> {
-  _CopyWithImpl$Query$Me$me$fullContact$update(this._instance, this._then);
+  _CopyWithImpl$Query$Me$me$fullContact$update(
+    this._instance,
+    this._then,
+  );
 
   final Query$Me$me$fullContact$update _instance;
 
@@ -1587,41 +1733,43 @@ class _CopyWithImpl$Query$Me$me$fullContact$update<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? phone_primary = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? phone_primary = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Query$Me$me$fullContact$update(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          phone_primary: phone_primary == _undefined
-              ? _instance.phone_primary
-              : (phone_primary as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        phone_primary: phone_primary == _undefined
+            ? _instance.phone_primary
+            : (phone_primary as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Query$Me$me$fullContact$update<TRes>
@@ -1630,17 +1778,18 @@ class _CopyWithStubImpl$Query$Me$me$fullContact$update<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? phone_primary,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  }) =>
       _res;
 }
 
@@ -1671,7 +1820,10 @@ class Variables$Mutation$Me {
   }
 
   CopyWith$Variables$Mutation$Me<Variables$Mutation$Me> get copyWith =>
-      CopyWith$Variables$Mutation$Me(this, (i) => i);
+      CopyWith$Variables$Mutation$Me(
+        this,
+        (i) => i,
+      );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -1696,9 +1848,10 @@ class Variables$Mutation$Me {
 }
 
 abstract class CopyWith$Variables$Mutation$Me<TRes> {
-  factory CopyWith$Variables$Mutation$Me(Variables$Mutation$Me instance,
-          TRes Function(Variables$Mutation$Me) then) =
-      _CopyWithImpl$Variables$Mutation$Me;
+  factory CopyWith$Variables$Mutation$Me(
+    Variables$Mutation$Me instance,
+    TRes Function(Variables$Mutation$Me) then,
+  ) = _CopyWithImpl$Variables$Mutation$Me;
 
   factory CopyWith$Variables$Mutation$Me.stub(TRes res) =
       _CopyWithStubImpl$Variables$Mutation$Me;
@@ -1708,7 +1861,10 @@ abstract class CopyWith$Variables$Mutation$Me<TRes> {
 
 class _CopyWithImpl$Variables$Mutation$Me<TRes>
     implements CopyWith$Variables$Mutation$Me<TRes> {
-  _CopyWithImpl$Variables$Mutation$Me(this._instance, this._then);
+  _CopyWithImpl$Variables$Mutation$Me(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Mutation$Me _instance;
 
@@ -1733,17 +1889,21 @@ class _CopyWithStubImpl$Variables$Mutation$Me<TRes>
 }
 
 class Mutation$Me {
-  Mutation$Me({this.updateContactDetails, required this.$__typename});
+  Mutation$Me({
+    this.updateContactDetails,
+    required this.$__typename,
+  });
 
   factory Mutation$Me.fromJson(Map<String, dynamic> json) {
     final l$updateContactDetails = json['updateContactDetails'];
     final l$$__typename = json['__typename'];
     return Mutation$Me(
-        updateContactDetails: l$updateContactDetails == null
-            ? null
-            : Mutation$Me$updateContactDetails.fromJson(
-                (l$updateContactDetails as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      updateContactDetails: l$updateContactDetails == null
+          ? null
+          : Mutation$Me$updateContactDetails.fromJson(
+              (l$updateContactDetails as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final Mutation$Me$updateContactDetails? updateContactDetails;
@@ -1763,7 +1923,10 @@ class Mutation$Me {
   int get hashCode {
     final l$updateContactDetails = updateContactDetails;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$updateContactDetails, l$$__typename]);
+    return Object.hashAll([
+      l$updateContactDetails,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -1789,25 +1952,32 @@ class Mutation$Me {
 }
 
 extension UtilityExtension$Mutation$Me on Mutation$Me {
-  CopyWith$Mutation$Me<Mutation$Me> get copyWith =>
-      CopyWith$Mutation$Me(this, (i) => i);
+  CopyWith$Mutation$Me<Mutation$Me> get copyWith => CopyWith$Mutation$Me(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Mutation$Me<TRes> {
   factory CopyWith$Mutation$Me(
-          Mutation$Me instance, TRes Function(Mutation$Me) then) =
-      _CopyWithImpl$Mutation$Me;
+    Mutation$Me instance,
+    TRes Function(Mutation$Me) then,
+  ) = _CopyWithImpl$Mutation$Me;
 
   factory CopyWith$Mutation$Me.stub(TRes res) = _CopyWithStubImpl$Mutation$Me;
 
-  TRes call(
-      {Mutation$Me$updateContactDetails? updateContactDetails,
-      String? $__typename});
+  TRes call({
+    Mutation$Me$updateContactDetails? updateContactDetails,
+    String? $__typename,
+  });
   CopyWith$Mutation$Me$updateContactDetails<TRes> get updateContactDetails;
 }
 
 class _CopyWithImpl$Mutation$Me<TRes> implements CopyWith$Mutation$Me<TRes> {
-  _CopyWithImpl$Mutation$Me(this._instance, this._then);
+  _CopyWithImpl$Mutation$Me(
+    this._instance,
+    this._then,
+  );
 
   final Mutation$Me _instance;
 
@@ -1815,16 +1985,18 @@ class _CopyWithImpl$Mutation$Me<TRes> implements CopyWith$Mutation$Me<TRes> {
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? updateContactDetails = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? updateContactDetails = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Mutation$Me(
-          updateContactDetails: updateContactDetails == _undefined
-              ? _instance.updateContactDetails
-              : (updateContactDetails as Mutation$Me$updateContactDetails?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        updateContactDetails: updateContactDetails == _undefined
+            ? _instance.updateContactDetails
+            : (updateContactDetails as Mutation$Me$updateContactDetails?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Mutation$Me$updateContactDetails<TRes> get updateContactDetails {
     final local$updateContactDetails = _instance.updateContactDetails;
     return local$updateContactDetails == null
@@ -1840,9 +2012,10 @@ class _CopyWithStubImpl$Mutation$Me<TRes>
 
   TRes _res;
 
-  call(
-          {Mutation$Me$updateContactDetails? updateContactDetails,
-          String? $__typename}) =>
+  call({
+    Mutation$Me$updateContactDetails? updateContactDetails,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Mutation$Me$updateContactDetails<TRes> get updateContactDetails =>
       CopyWith$Mutation$Me$updateContactDetails.stub(_res);
@@ -1850,125 +2023,146 @@ class _CopyWithStubImpl$Mutation$Me<TRes>
 
 const documentNodeMutationMe = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.mutation,
-      name: NameNode(value: 'Me'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'contact')),
-            type: NamedTypeNode(
-                name: NameNode(value: 'IContact'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'updateContactDetails'),
+    type: OperationType.mutation,
+    name: NameNode(value: 'Me'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'contact')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'IContact'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      )
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'updateContactDetails'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'contact'),
+            value: VariableNode(name: NameNode(value: 'contact')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'first_name'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'contact'),
-                  value: VariableNode(name: NameNode(value: 'contact')))
-            ],
+            arguments: [],
             directives: [],
-            selectionSet: SelectionSetNode(selections: [
-              FieldNode(
-                  name: NameNode(value: 'first_name'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'last_name'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'email'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'street'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'housenumber'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'housenumber_addition'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'city'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'zipcode'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'last_name'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'email'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'street'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'housenumber'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'housenumber_addition'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'city'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'zipcode'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Mutation$Me _parserFn$Mutation$Me(Map<String, dynamic> data) =>
     Mutation$Me.fromJson(data);
 typedef OnMutationCompleted$Mutation$Me = FutureOr<void> Function(
-    dynamic, Mutation$Me?);
+  dynamic,
+  Mutation$Me?,
+);
 
 class Options$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
-  Options$Mutation$Me(
-      {String? operationName,
-      required Variables$Mutation$Me variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      OnMutationCompleted$Mutation$Me? onCompleted,
-      graphql.OnMutationUpdate<Mutation$Me>? update,
-      graphql.OnError? onError})
-      : onCompletedWithParsed = onCompleted,
+  Options$Mutation$Me({
+    String? operationName,
+    required Variables$Mutation$Me variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$Me? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Me>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
         super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            onCompleted: onCompleted == null
-                ? null
-                : (data) => onCompleted(
-                    data, data == null ? null : _parserFn$Mutation$Me(data)),
-            update: update,
-            onError: onError,
-            document: documentNodeMutationMe,
-            parserFn: _parserFn$Mutation$Me);
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$Me(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationMe,
+          parserFn: _parserFn$Mutation$Me,
+        );
 
   final OnMutationCompleted$Mutation$Me? onCompletedWithParsed;
 
@@ -1977,37 +2171,38 @@ class Options$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
         ...super.onCompleted == null
             ? super.properties
             : super.properties.where((property) => property != onCompleted),
-        onCompletedWithParsed
+        onCompletedWithParsed,
       ];
 }
 
 class WatchOptions$Mutation$Me extends graphql.WatchQueryOptions<Mutation$Me> {
-  WatchOptions$Mutation$Me(
-      {String? operationName,
-      required Variables$Mutation$Me variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeMutationMe,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Mutation$Me);
+  WatchOptions$Mutation$Me({
+    String? operationName,
+    required Variables$Mutation$Me variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeMutationMe,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Mutation$Me,
+        );
 }
 
 extension ClientExtension$Mutation$Me on graphql.GraphQLClient {
@@ -2020,7 +2215,10 @@ extension ClientExtension$Mutation$Me on graphql.GraphQLClient {
 }
 
 class Mutation$Me$HookResult {
-  Mutation$Me$HookResult(this.runMutation, this.result);
+  Mutation$Me$HookResult(
+    this.runMutation,
+    this.result,
+  );
 
   final RunMutation$Mutation$Me runMutation;
 
@@ -2044,32 +2242,35 @@ graphql.ObservableQuery<Mutation$Me> useWatchMutation$Me(
     graphql_flutter.useWatchMutation(options);
 
 class WidgetOptions$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
-  WidgetOptions$Mutation$Me(
-      {String? operationName,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      OnMutationCompleted$Mutation$Me? onCompleted,
-      graphql.OnMutationUpdate<Mutation$Me>? update,
-      graphql.OnError? onError})
-      : onCompletedWithParsed = onCompleted,
+  WidgetOptions$Mutation$Me({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$Me? onCompleted,
+    graphql.OnMutationUpdate<Mutation$Me>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
         super(
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            onCompleted: onCompleted == null
-                ? null
-                : (data) => onCompleted(
-                    data, data == null ? null : _parserFn$Mutation$Me(data)),
-            update: update,
-            onError: onError,
-            document: documentNodeMutationMe,
-            parserFn: _parserFn$Mutation$Me);
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
+                    data,
+                    data == null ? null : _parserFn$Mutation$Me(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationMe,
+          parserFn: _parserFn$Mutation$Me,
+        );
 
   final OnMutationCompleted$Mutation$Me? onCompletedWithParsed;
 
@@ -2078,40 +2279,58 @@ class WidgetOptions$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
         ...super.onCompleted == null
             ? super.properties
             : super.properties.where((property) => property != onCompleted),
-        onCompletedWithParsed
+        onCompletedWithParsed,
       ];
 }
 
 typedef RunMutation$Mutation$Me = graphql.MultiSourceResult<Mutation$Me>
-    Function(Variables$Mutation$Me, {Object? optimisticResult});
+    Function(
+  Variables$Mutation$Me, {
+  Object? optimisticResult,
+});
 typedef Builder$Mutation$Me = widgets.Widget Function(
-    RunMutation$Mutation$Me, graphql.QueryResult<Mutation$Me>?);
+  RunMutation$Mutation$Me,
+  graphql.QueryResult<Mutation$Me>?,
+);
 
 class Mutation$Me$Widget extends graphql_flutter.Mutation<Mutation$Me> {
-  Mutation$Me$Widget(
-      {widgets.Key? key,
-      WidgetOptions$Mutation$Me? options,
-      required Builder$Mutation$Me builder})
-      : super(
-            key: key,
-            options: options ?? WidgetOptions$Mutation$Me(),
-            builder: (run, result) => builder(
-                (variables, {optimisticResult}) =>
-                    run(variables.toJson(), optimisticResult: optimisticResult),
-                result));
+  Mutation$Me$Widget({
+    widgets.Key? key,
+    WidgetOptions$Mutation$Me? options,
+    required Builder$Mutation$Me builder,
+  }) : super(
+          key: key,
+          options: options ?? WidgetOptions$Mutation$Me(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult: optimisticResult,
+            ),
+            result,
+          ),
+        );
 }
 
 class Mutation$Me$updateContactDetails {
-  Mutation$Me$updateContactDetails(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      required this.$__typename});
+  Mutation$Me$updateContactDetails({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    required this.$__typename,
+  });
 
   factory Mutation$Me$updateContactDetails.fromJson(Map<String, dynamic> json) {
     final l$first_name = json['first_name'];
@@ -2124,15 +2343,16 @@ class Mutation$Me$updateContactDetails {
     final l$zipcode = json['zipcode'];
     final l$$__typename = json['__typename'];
     return Mutation$Me$updateContactDetails(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -2196,7 +2416,7 @@ class Mutation$Me$updateContactDetails {
       l$housenumber_addition,
       l$city,
       l$zipcode,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -2261,33 +2481,40 @@ class Mutation$Me$updateContactDetails {
 extension UtilityExtension$Mutation$Me$updateContactDetails
     on Mutation$Me$updateContactDetails {
   CopyWith$Mutation$Me$updateContactDetails<Mutation$Me$updateContactDetails>
-      get copyWith => CopyWith$Mutation$Me$updateContactDetails(this, (i) => i);
+      get copyWith => CopyWith$Mutation$Me$updateContactDetails(
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Mutation$Me$updateContactDetails<TRes> {
   factory CopyWith$Mutation$Me$updateContactDetails(
-          Mutation$Me$updateContactDetails instance,
-          TRes Function(Mutation$Me$updateContactDetails) then) =
-      _CopyWithImpl$Mutation$Me$updateContactDetails;
+    Mutation$Me$updateContactDetails instance,
+    TRes Function(Mutation$Me$updateContactDetails) then,
+  ) = _CopyWithImpl$Mutation$Me$updateContactDetails;
 
   factory CopyWith$Mutation$Me$updateContactDetails.stub(TRes res) =
       _CopyWithStubImpl$Mutation$Me$updateContactDetails;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Mutation$Me$updateContactDetails<TRes>
     implements CopyWith$Mutation$Me$updateContactDetails<TRes> {
-  _CopyWithImpl$Mutation$Me$updateContactDetails(this._instance, this._then);
+  _CopyWithImpl$Mutation$Me$updateContactDetails(
+    this._instance,
+    this._then,
+  );
 
   final Mutation$Me$updateContactDetails _instance;
 
@@ -2295,37 +2522,39 @@ class _CopyWithImpl$Mutation$Me$updateContactDetails<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Mutation$Me$updateContactDetails(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Mutation$Me$updateContactDetails<TRes>
@@ -2334,22 +2563,25 @@ class _CopyWithStubImpl$Mutation$Me$updateContactDetails<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? $__typename,
+  }) =>
       _res;
 }
 
 class Variables$Mutation$UpdateVisibility {
-  factory Variables$Mutation$UpdateVisibility(
-          {required bool listed, required Input$IBooleanContact contact}) =>
+  factory Variables$Mutation$UpdateVisibility({
+    required bool listed,
+    required Input$IBooleanContact contact,
+  }) =>
       Variables$Mutation$UpdateVisibility._({
         r'listed': listed,
         r'contact': contact,
@@ -2384,8 +2616,10 @@ class Variables$Mutation$UpdateVisibility {
 
   CopyWith$Variables$Mutation$UpdateVisibility<
           Variables$Mutation$UpdateVisibility>
-      get copyWith =>
-          CopyWith$Variables$Mutation$UpdateVisibility(this, (i) => i);
+      get copyWith => CopyWith$Variables$Mutation$UpdateVisibility(
+            this,
+            (i) => i,
+          );
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -2412,25 +2646,34 @@ class Variables$Mutation$UpdateVisibility {
   int get hashCode {
     final l$listed = listed;
     final l$contact = contact;
-    return Object.hashAll([l$listed, l$contact]);
+    return Object.hashAll([
+      l$listed,
+      l$contact,
+    ]);
   }
 }
 
 abstract class CopyWith$Variables$Mutation$UpdateVisibility<TRes> {
   factory CopyWith$Variables$Mutation$UpdateVisibility(
-          Variables$Mutation$UpdateVisibility instance,
-          TRes Function(Variables$Mutation$UpdateVisibility) then) =
-      _CopyWithImpl$Variables$Mutation$UpdateVisibility;
+    Variables$Mutation$UpdateVisibility instance,
+    TRes Function(Variables$Mutation$UpdateVisibility) then,
+  ) = _CopyWithImpl$Variables$Mutation$UpdateVisibility;
 
   factory CopyWith$Variables$Mutation$UpdateVisibility.stub(TRes res) =
       _CopyWithStubImpl$Variables$Mutation$UpdateVisibility;
 
-  TRes call({bool? listed, Input$IBooleanContact? contact});
+  TRes call({
+    bool? listed,
+    Input$IBooleanContact? contact,
+  });
 }
 
 class _CopyWithImpl$Variables$Mutation$UpdateVisibility<TRes>
     implements CopyWith$Variables$Mutation$UpdateVisibility<TRes> {
-  _CopyWithImpl$Variables$Mutation$UpdateVisibility(this._instance, this._then);
+  _CopyWithImpl$Variables$Mutation$UpdateVisibility(
+    this._instance,
+    this._then,
+  );
 
   final Variables$Mutation$UpdateVisibility _instance;
 
@@ -2438,7 +2681,10 @@ class _CopyWithImpl$Variables$Mutation$UpdateVisibility<TRes>
 
   static const _undefined = {};
 
-  TRes call({Object? listed = _undefined, Object? contact = _undefined}) =>
+  TRes call({
+    Object? listed = _undefined,
+    Object? contact = _undefined,
+  }) =>
       _then(Variables$Mutation$UpdateVisibility._({
         ..._instance._$data,
         if (listed != _undefined && listed != null) 'listed': (listed as bool),
@@ -2453,24 +2699,32 @@ class _CopyWithStubImpl$Variables$Mutation$UpdateVisibility<TRes>
 
   TRes _res;
 
-  call({bool? listed, Input$IBooleanContact? contact}) => _res;
+  call({
+    bool? listed,
+    Input$IBooleanContact? contact,
+  }) =>
+      _res;
 }
 
 class Mutation$UpdateVisibility {
-  Mutation$UpdateVisibility(
-      {this.toggleListed, this.updatePublicContact, required this.$__typename});
+  Mutation$UpdateVisibility({
+    this.toggleListed,
+    this.updatePublicContact,
+    required this.$__typename,
+  });
 
   factory Mutation$UpdateVisibility.fromJson(Map<String, dynamic> json) {
     final l$toggleListed = json['toggleListed'];
     final l$updatePublicContact = json['updatePublicContact'];
     final l$$__typename = json['__typename'];
     return Mutation$UpdateVisibility(
-        toggleListed: (l$toggleListed as bool?),
-        updatePublicContact: l$updatePublicContact == null
-            ? null
-            : Mutation$UpdateVisibility$updatePublicContact.fromJson(
-                (l$updatePublicContact as Map<String, dynamic>)),
-        $__typename: (l$$__typename as String));
+      toggleListed: (l$toggleListed as bool?),
+      updatePublicContact: l$updatePublicContact == null
+          ? null
+          : Mutation$UpdateVisibility$updatePublicContact.fromJson(
+              (l$updatePublicContact as Map<String, dynamic>)),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final bool? toggleListed;
@@ -2495,8 +2749,11 @@ class Mutation$UpdateVisibility {
     final l$toggleListed = toggleListed;
     final l$updatePublicContact = updatePublicContact;
     final l$$__typename = $__typename;
-    return Object.hashAll(
-        [l$toggleListed, l$updatePublicContact, l$$__typename]);
+    return Object.hashAll([
+      l$toggleListed,
+      l$updatePublicContact,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -2530,28 +2787,36 @@ class Mutation$UpdateVisibility {
 extension UtilityExtension$Mutation$UpdateVisibility
     on Mutation$UpdateVisibility {
   CopyWith$Mutation$UpdateVisibility<Mutation$UpdateVisibility> get copyWith =>
-      CopyWith$Mutation$UpdateVisibility(this, (i) => i);
+      CopyWith$Mutation$UpdateVisibility(
+        this,
+        (i) => i,
+      );
 }
 
 abstract class CopyWith$Mutation$UpdateVisibility<TRes> {
-  factory CopyWith$Mutation$UpdateVisibility(Mutation$UpdateVisibility instance,
-          TRes Function(Mutation$UpdateVisibility) then) =
-      _CopyWithImpl$Mutation$UpdateVisibility;
+  factory CopyWith$Mutation$UpdateVisibility(
+    Mutation$UpdateVisibility instance,
+    TRes Function(Mutation$UpdateVisibility) then,
+  ) = _CopyWithImpl$Mutation$UpdateVisibility;
 
   factory CopyWith$Mutation$UpdateVisibility.stub(TRes res) =
       _CopyWithStubImpl$Mutation$UpdateVisibility;
 
-  TRes call(
-      {bool? toggleListed,
-      Mutation$UpdateVisibility$updatePublicContact? updatePublicContact,
-      String? $__typename});
+  TRes call({
+    bool? toggleListed,
+    Mutation$UpdateVisibility$updatePublicContact? updatePublicContact,
+    String? $__typename,
+  });
   CopyWith$Mutation$UpdateVisibility$updatePublicContact<TRes>
       get updatePublicContact;
 }
 
 class _CopyWithImpl$Mutation$UpdateVisibility<TRes>
     implements CopyWith$Mutation$UpdateVisibility<TRes> {
-  _CopyWithImpl$Mutation$UpdateVisibility(this._instance, this._then);
+  _CopyWithImpl$Mutation$UpdateVisibility(
+    this._instance,
+    this._then,
+  );
 
   final Mutation$UpdateVisibility _instance;
 
@@ -2559,21 +2824,23 @@ class _CopyWithImpl$Mutation$UpdateVisibility<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? toggleListed = _undefined,
-          Object? updatePublicContact = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? toggleListed = _undefined,
+    Object? updatePublicContact = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Mutation$UpdateVisibility(
-          toggleListed: toggleListed == _undefined
-              ? _instance.toggleListed
-              : (toggleListed as bool?),
-          updatePublicContact: updatePublicContact == _undefined
-              ? _instance.updatePublicContact
-              : (updatePublicContact
-                  as Mutation$UpdateVisibility$updatePublicContact?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        toggleListed: toggleListed == _undefined
+            ? _instance.toggleListed
+            : (toggleListed as bool?),
+        updatePublicContact: updatePublicContact == _undefined
+            ? _instance.updatePublicContact
+            : (updatePublicContact
+                as Mutation$UpdateVisibility$updatePublicContact?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
   CopyWith$Mutation$UpdateVisibility$updatePublicContact<TRes>
       get updatePublicContact {
     final local$updatePublicContact = _instance.updatePublicContact;
@@ -2591,10 +2858,11 @@ class _CopyWithStubImpl$Mutation$UpdateVisibility<TRes>
 
   TRes _res;
 
-  call(
-          {bool? toggleListed,
-          Mutation$UpdateVisibility$updatePublicContact? updatePublicContact,
-          String? $__typename}) =>
+  call({
+    bool? toggleListed,
+    Mutation$UpdateVisibility$updatePublicContact? updatePublicContact,
+    String? $__typename,
+  }) =>
       _res;
   CopyWith$Mutation$UpdateVisibility$updatePublicContact<TRes>
       get updatePublicContact =>
@@ -2603,152 +2871,178 @@ class _CopyWithStubImpl$Mutation$UpdateVisibility<TRes>
 
 const documentNodeMutationUpdateVisibility = DocumentNode(definitions: [
   OperationDefinitionNode(
-      type: OperationType.mutation,
-      name: NameNode(value: 'UpdateVisibility'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'listed')),
-            type: NamedTypeNode(
-                name: NameNode(value: 'Boolean'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: []),
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'contact')),
-            type: NamedTypeNode(
-                name: NameNode(value: 'IBooleanContact'), isNonNull: true),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'toggleListed'),
+    type: OperationType.mutation,
+    name: NameNode(value: 'UpdateVisibility'),
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'listed')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'Boolean'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'contact')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'IBooleanContact'),
+          isNonNull: true,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+    ],
+    directives: [],
+    selectionSet: SelectionSetNode(selections: [
+      FieldNode(
+        name: NameNode(value: 'toggleListed'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'state'),
+            value: VariableNode(name: NameNode(value: 'listed')),
+          )
+        ],
+        directives: [],
+        selectionSet: null,
+      ),
+      FieldNode(
+        name: NameNode(value: 'updatePublicContact'),
+        alias: null,
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'contact'),
+            value: VariableNode(name: NameNode(value: 'contact')),
+          )
+        ],
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+            name: NameNode(value: 'first_name'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'state'),
-                  value: VariableNode(name: NameNode(value: 'listed')))
-            ],
+            arguments: [],
             directives: [],
-            selectionSet: null),
-        FieldNode(
-            name: NameNode(value: 'updatePublicContact'),
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'last_name'),
             alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'contact'),
-                  value: VariableNode(name: NameNode(value: 'contact')))
-            ],
+            arguments: [],
             directives: [],
-            selectionSet: SelectionSetNode(selections: [
-              FieldNode(
-                  name: NameNode(value: 'first_name'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'last_name'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'email'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'street'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'housenumber'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'housenumber_addition'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'city'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'zipcode'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'phone_primary'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null)
-            ])),
-        FieldNode(
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'email'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'street'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'housenumber'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'housenumber_addition'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'city'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'zipcode'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
+            name: NameNode(value: 'phone_primary'),
+            alias: null,
+            arguments: [],
+            directives: [],
+            selectionSet: null,
+          ),
+          FieldNode(
             name: NameNode(value: '__typename'),
             alias: null,
             arguments: [],
             directives: [],
-            selectionSet: null)
-      ])),
+            selectionSet: null,
+          ),
+        ]),
+      ),
+      FieldNode(
+        name: NameNode(value: '__typename'),
+        alias: null,
+        arguments: [],
+        directives: [],
+        selectionSet: null,
+      ),
+    ]),
+  ),
 ]);
 Mutation$UpdateVisibility _parserFn$Mutation$UpdateVisibility(
         Map<String, dynamic> data) =>
     Mutation$UpdateVisibility.fromJson(data);
 typedef OnMutationCompleted$Mutation$UpdateVisibility = FutureOr<void> Function(
-    dynamic, Mutation$UpdateVisibility?);
+  dynamic,
+  Mutation$UpdateVisibility?,
+);
 
 class Options$Mutation$UpdateVisibility
     extends graphql.MutationOptions<Mutation$UpdateVisibility> {
-  Options$Mutation$UpdateVisibility(
-      {String? operationName,
-      required Variables$Mutation$UpdateVisibility variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
-      graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
-      graphql.OnError? onError})
-      : onCompletedWithParsed = onCompleted,
+  Options$Mutation$UpdateVisibility({
+    String? operationName,
+    required Variables$Mutation$UpdateVisibility variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
+    graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
         super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            onCompleted: onCompleted == null
-                ? null
-                : (data) => onCompleted(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
                     data,
                     data == null
                         ? null
-                        : _parserFn$Mutation$UpdateVisibility(data)),
-            update: update,
-            onError: onError,
-            document: documentNodeMutationUpdateVisibility,
-            parserFn: _parserFn$Mutation$UpdateVisibility);
+                        : _parserFn$Mutation$UpdateVisibility(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationUpdateVisibility,
+          parserFn: _parserFn$Mutation$UpdateVisibility,
+        );
 
   final OnMutationCompleted$Mutation$UpdateVisibility? onCompletedWithParsed;
 
@@ -2757,38 +3051,39 @@ class Options$Mutation$UpdateVisibility
         ...super.onCompleted == null
             ? super.properties
             : super.properties.where((property) => property != onCompleted),
-        onCompletedWithParsed
+        onCompletedWithParsed,
       ];
 }
 
 class WatchOptions$Mutation$UpdateVisibility
     extends graphql.WatchQueryOptions<Mutation$UpdateVisibility> {
-  WatchOptions$Mutation$UpdateVisibility(
-      {String? operationName,
-      required Variables$Mutation$UpdateVisibility variables,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      Duration? pollInterval,
-      bool? eagerlyFetchResults,
-      bool carryForwardDataOnException = true,
-      bool fetchResults = false})
-      : super(
-            variables: variables.toJson(),
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            document: documentNodeMutationUpdateVisibility,
-            pollInterval: pollInterval,
-            eagerlyFetchResults: eagerlyFetchResults,
-            carryForwardDataOnException: carryForwardDataOnException,
-            fetchResults: fetchResults,
-            parserFn: _parserFn$Mutation$UpdateVisibility);
+  WatchOptions$Mutation$UpdateVisibility({
+    String? operationName,
+    required Variables$Mutation$UpdateVisibility variables,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    Duration? pollInterval,
+    bool? eagerlyFetchResults,
+    bool carryForwardDataOnException = true,
+    bool fetchResults = false,
+  }) : super(
+          variables: variables.toJson(),
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          document: documentNodeMutationUpdateVisibility,
+          pollInterval: pollInterval,
+          eagerlyFetchResults: eagerlyFetchResults,
+          carryForwardDataOnException: carryForwardDataOnException,
+          fetchResults: fetchResults,
+          parserFn: _parserFn$Mutation$UpdateVisibility,
+        );
 }
 
 extension ClientExtension$Mutation$UpdateVisibility on graphql.GraphQLClient {
@@ -2803,7 +3098,10 @@ extension ClientExtension$Mutation$UpdateVisibility on graphql.GraphQLClient {
 }
 
 class Mutation$UpdateVisibility$HookResult {
-  Mutation$UpdateVisibility$HookResult(this.runMutation, this.result);
+  Mutation$UpdateVisibility$HookResult(
+    this.runMutation,
+    this.result,
+  );
 
   final RunMutation$Mutation$UpdateVisibility runMutation;
 
@@ -2830,35 +3128,37 @@ graphql.ObservableQuery<Mutation$UpdateVisibility>
 
 class WidgetOptions$Mutation$UpdateVisibility
     extends graphql.MutationOptions<Mutation$UpdateVisibility> {
-  WidgetOptions$Mutation$UpdateVisibility(
-      {String? operationName,
-      graphql.FetchPolicy? fetchPolicy,
-      graphql.ErrorPolicy? errorPolicy,
-      graphql.CacheRereadPolicy? cacheRereadPolicy,
-      Object? optimisticResult,
-      graphql.Context? context,
-      OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
-      graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
-      graphql.OnError? onError})
-      : onCompletedWithParsed = onCompleted,
+  WidgetOptions$Mutation$UpdateVisibility({
+    String? operationName,
+    graphql.FetchPolicy? fetchPolicy,
+    graphql.ErrorPolicy? errorPolicy,
+    graphql.CacheRereadPolicy? cacheRereadPolicy,
+    Object? optimisticResult,
+    graphql.Context? context,
+    OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
+    graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
+    graphql.OnError? onError,
+  })  : onCompletedWithParsed = onCompleted,
         super(
-            operationName: operationName,
-            fetchPolicy: fetchPolicy,
-            errorPolicy: errorPolicy,
-            cacheRereadPolicy: cacheRereadPolicy,
-            optimisticResult: optimisticResult,
-            context: context,
-            onCompleted: onCompleted == null
-                ? null
-                : (data) => onCompleted(
+          operationName: operationName,
+          fetchPolicy: fetchPolicy,
+          errorPolicy: errorPolicy,
+          cacheRereadPolicy: cacheRereadPolicy,
+          optimisticResult: optimisticResult,
+          context: context,
+          onCompleted: onCompleted == null
+              ? null
+              : (data) => onCompleted(
                     data,
                     data == null
                         ? null
-                        : _parserFn$Mutation$UpdateVisibility(data)),
-            update: update,
-            onError: onError,
-            document: documentNodeMutationUpdateVisibility,
-            parserFn: _parserFn$Mutation$UpdateVisibility);
+                        : _parserFn$Mutation$UpdateVisibility(data),
+                  ),
+          update: update,
+          onError: onError,
+          document: documentNodeMutationUpdateVisibility,
+          parserFn: _parserFn$Mutation$UpdateVisibility,
+        );
 
   final OnMutationCompleted$Mutation$UpdateVisibility? onCompletedWithParsed;
 
@@ -2867,44 +3167,60 @@ class WidgetOptions$Mutation$UpdateVisibility
         ...super.onCompleted == null
             ? super.properties
             : super.properties.where((property) => property != onCompleted),
-        onCompletedWithParsed
+        onCompletedWithParsed,
       ];
 }
 
-typedef RunMutation$Mutation$UpdateVisibility = graphql
-        .MultiSourceResult<Mutation$UpdateVisibility>
-    Function(Variables$Mutation$UpdateVisibility, {Object? optimisticResult});
+typedef RunMutation$Mutation$UpdateVisibility
+    = graphql.MultiSourceResult<Mutation$UpdateVisibility> Function(
+  Variables$Mutation$UpdateVisibility, {
+  Object? optimisticResult,
+});
 typedef Builder$Mutation$UpdateVisibility = widgets.Widget Function(
-    RunMutation$Mutation$UpdateVisibility,
-    graphql.QueryResult<Mutation$UpdateVisibility>?);
+  RunMutation$Mutation$UpdateVisibility,
+  graphql.QueryResult<Mutation$UpdateVisibility>?,
+);
 
 class Mutation$UpdateVisibility$Widget
     extends graphql_flutter.Mutation<Mutation$UpdateVisibility> {
-  Mutation$UpdateVisibility$Widget(
-      {widgets.Key? key,
-      WidgetOptions$Mutation$UpdateVisibility? options,
-      required Builder$Mutation$UpdateVisibility builder})
-      : super(
-            key: key,
-            options: options ?? WidgetOptions$Mutation$UpdateVisibility(),
-            builder: (run, result) => builder(
-                (variables, {optimisticResult}) =>
-                    run(variables.toJson(), optimisticResult: optimisticResult),
-                result));
+  Mutation$UpdateVisibility$Widget({
+    widgets.Key? key,
+    WidgetOptions$Mutation$UpdateVisibility? options,
+    required Builder$Mutation$UpdateVisibility builder,
+  }) : super(
+          key: key,
+          options: options ?? WidgetOptions$Mutation$UpdateVisibility(),
+          builder: (
+            run,
+            result,
+          ) =>
+              builder(
+            (
+              variables, {
+              optimisticResult,
+            }) =>
+                run(
+              variables.toJson(),
+              optimisticResult: optimisticResult,
+            ),
+            result,
+          ),
+        );
 }
 
 class Mutation$UpdateVisibility$updatePublicContact {
-  Mutation$UpdateVisibility$updatePublicContact(
-      {this.first_name,
-      this.last_name,
-      this.email,
-      this.street,
-      this.housenumber,
-      this.housenumber_addition,
-      this.city,
-      this.zipcode,
-      this.phone_primary,
-      required this.$__typename});
+  Mutation$UpdateVisibility$updatePublicContact({
+    this.first_name,
+    this.last_name,
+    this.email,
+    this.street,
+    this.housenumber,
+    this.housenumber_addition,
+    this.city,
+    this.zipcode,
+    this.phone_primary,
+    required this.$__typename,
+  });
 
   factory Mutation$UpdateVisibility$updatePublicContact.fromJson(
       Map<String, dynamic> json) {
@@ -2919,16 +3235,17 @@ class Mutation$UpdateVisibility$updatePublicContact {
     final l$phone_primary = json['phone_primary'];
     final l$$__typename = json['__typename'];
     return Mutation$UpdateVisibility$updatePublicContact(
-        first_name: (l$first_name as String?),
-        last_name: (l$last_name as String?),
-        email: (l$email as String?),
-        street: (l$street as String?),
-        housenumber: (l$housenumber as String?),
-        housenumber_addition: (l$housenumber_addition as String?),
-        city: (l$city as String?),
-        zipcode: (l$zipcode as String?),
-        phone_primary: (l$phone_primary as String?),
-        $__typename: (l$$__typename as String));
+      first_name: (l$first_name as String?),
+      last_name: (l$last_name as String?),
+      email: (l$email as String?),
+      street: (l$street as String?),
+      housenumber: (l$housenumber as String?),
+      housenumber_addition: (l$housenumber_addition as String?),
+      city: (l$city as String?),
+      zipcode: (l$zipcode as String?),
+      phone_primary: (l$phone_primary as String?),
+      $__typename: (l$$__typename as String),
+    );
   }
 
   final String? first_name;
@@ -2998,7 +3315,7 @@ class Mutation$UpdateVisibility$updatePublicContact {
       l$city,
       l$zipcode,
       l$phone_primary,
-      l$$__typename
+      l$$__typename,
     ]);
   }
 
@@ -3070,36 +3387,41 @@ extension UtilityExtension$Mutation$UpdateVisibility$updatePublicContact
   CopyWith$Mutation$UpdateVisibility$updatePublicContact<
           Mutation$UpdateVisibility$updatePublicContact>
       get copyWith => CopyWith$Mutation$UpdateVisibility$updatePublicContact(
-          this, (i) => i);
+            this,
+            (i) => i,
+          );
 }
 
 abstract class CopyWith$Mutation$UpdateVisibility$updatePublicContact<TRes> {
   factory CopyWith$Mutation$UpdateVisibility$updatePublicContact(
-          Mutation$UpdateVisibility$updatePublicContact instance,
-          TRes Function(Mutation$UpdateVisibility$updatePublicContact) then) =
-      _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact;
+    Mutation$UpdateVisibility$updatePublicContact instance,
+    TRes Function(Mutation$UpdateVisibility$updatePublicContact) then,
+  ) = _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact;
 
   factory CopyWith$Mutation$UpdateVisibility$updatePublicContact.stub(
           TRes res) =
       _CopyWithStubImpl$Mutation$UpdateVisibility$updatePublicContact;
 
-  TRes call(
-      {String? first_name,
-      String? last_name,
-      String? email,
-      String? street,
-      String? housenumber,
-      String? housenumber_addition,
-      String? city,
-      String? zipcode,
-      String? phone_primary,
-      String? $__typename});
+  TRes call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact<TRes>
     implements CopyWith$Mutation$UpdateVisibility$updatePublicContact<TRes> {
   _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact(
-      this._instance, this._then);
+    this._instance,
+    this._then,
+  );
 
   final Mutation$UpdateVisibility$updatePublicContact _instance;
 
@@ -3107,41 +3429,43 @@ class _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact<TRes>
 
   static const _undefined = {};
 
-  TRes call(
-          {Object? first_name = _undefined,
-          Object? last_name = _undefined,
-          Object? email = _undefined,
-          Object? street = _undefined,
-          Object? housenumber = _undefined,
-          Object? housenumber_addition = _undefined,
-          Object? city = _undefined,
-          Object? zipcode = _undefined,
-          Object? phone_primary = _undefined,
-          Object? $__typename = _undefined}) =>
+  TRes call({
+    Object? first_name = _undefined,
+    Object? last_name = _undefined,
+    Object? email = _undefined,
+    Object? street = _undefined,
+    Object? housenumber = _undefined,
+    Object? housenumber_addition = _undefined,
+    Object? city = _undefined,
+    Object? zipcode = _undefined,
+    Object? phone_primary = _undefined,
+    Object? $__typename = _undefined,
+  }) =>
       _then(Mutation$UpdateVisibility$updatePublicContact(
-          first_name: first_name == _undefined
-              ? _instance.first_name
-              : (first_name as String?),
-          last_name: last_name == _undefined
-              ? _instance.last_name
-              : (last_name as String?),
-          email: email == _undefined ? _instance.email : (email as String?),
-          street: street == _undefined ? _instance.street : (street as String?),
-          housenumber: housenumber == _undefined
-              ? _instance.housenumber
-              : (housenumber as String?),
-          housenumber_addition: housenumber_addition == _undefined
-              ? _instance.housenumber_addition
-              : (housenumber_addition as String?),
-          city: city == _undefined ? _instance.city : (city as String?),
-          zipcode:
-              zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
-          phone_primary: phone_primary == _undefined
-              ? _instance.phone_primary
-              : (phone_primary as String?),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String)));
+        first_name: first_name == _undefined
+            ? _instance.first_name
+            : (first_name as String?),
+        last_name: last_name == _undefined
+            ? _instance.last_name
+            : (last_name as String?),
+        email: email == _undefined ? _instance.email : (email as String?),
+        street: street == _undefined ? _instance.street : (street as String?),
+        housenumber: housenumber == _undefined
+            ? _instance.housenumber
+            : (housenumber as String?),
+        housenumber_addition: housenumber_addition == _undefined
+            ? _instance.housenumber_addition
+            : (housenumber_addition as String?),
+        city: city == _undefined ? _instance.city : (city as String?),
+        zipcode:
+            zipcode == _undefined ? _instance.zipcode : (zipcode as String?),
+        phone_primary: phone_primary == _undefined
+            ? _instance.phone_primary
+            : (phone_primary as String?),
+        $__typename: $__typename == _undefined || $__typename == null
+            ? _instance.$__typename
+            : ($__typename as String),
+      ));
 }
 
 class _CopyWithStubImpl$Mutation$UpdateVisibility$updatePublicContact<TRes>
@@ -3150,16 +3474,17 @@ class _CopyWithStubImpl$Mutation$UpdateVisibility$updatePublicContact<TRes>
 
   TRes _res;
 
-  call(
-          {String? first_name,
-          String? last_name,
-          String? email,
-          String? street,
-          String? housenumber,
-          String? housenumber_addition,
-          String? city,
-          String? zipcode,
-          String? phone_primary,
-          String? $__typename}) =>
+  call({
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? street,
+    String? housenumber,
+    String? housenumber_addition,
+    String? city,
+    String? zipcode,
+    String? phone_primary,
+    String? $__typename,
+  }) =>
       _res;
 }
