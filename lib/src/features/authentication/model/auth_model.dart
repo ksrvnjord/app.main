@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -13,6 +14,8 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _storage = FlutterSecureStorage();
+
+final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
 class AuthModel extends ChangeNotifier {
   oauth2.Client? client;

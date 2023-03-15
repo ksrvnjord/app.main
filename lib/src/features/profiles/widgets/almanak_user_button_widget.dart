@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
@@ -6,17 +8,17 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 // shared preferences
 
-class AlmanakUserButtonWidget extends StatelessWidget {
+class AlmanakUserButtonWidget extends ConsumerWidget {
   final Query$Almanak$users$data user;
 
   const AlmanakUserButtonWidget(this.user, {Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    final client = Provider.of<GraphQLModel>(context).client;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final GraphQLClient client = ref.watch(graphQLModelProvider
+        .select((auth) => auth.client)); // watch GraphQL client
 
     return Card(
       // add rounding of 16
