@@ -74,6 +74,9 @@ Future<Uint8List?> getHttpImageAndCache(
 //// This sets the cache to empty for a key
 void setEmptyImageCacheForKey(String key) => putInHiveCache(key, null);
 
+void removeImageCacheForKey(String key) =>
+    Hive.box<ImageCacheItem>('imageCache').delete(hashKeytoString(key));
+
 /// This puts an image in the cache for a key
 void putInHiveCache(String key, Uint8List? data) =>
     Hive.box<ImageCacheItem>('imageCache').put(
