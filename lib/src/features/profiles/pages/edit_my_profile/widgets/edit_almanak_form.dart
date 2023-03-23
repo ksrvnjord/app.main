@@ -45,6 +45,9 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
   Widget build(BuildContext context) {
     const double fieldPadding = 8;
 
+    const double imageHelpTextSize = 12;
+    const double imageHelpTextTopPadding = 4;
+
     return FutureWrapper(
       future: getMyFirestoreProfileData(),
       success: (user) => Form(
@@ -57,9 +60,12 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
                 onChanged: changeProfilePicture,
               ),
               const Text(
-                'Het kan even duren voordat andere mensen je nieuwe '
-                'profielfoto zien.',
-              ).textColor(Colors.grey),
+                'Het kan even duren voordat je nieuwe profielfoto zichtbaar is.',
+              )
+                  .textColor(Colors.grey)
+                  .textAlignment(TextAlign.center)
+                  .fontSize(imageHelpTextSize)
+                  .padding(top: imageHelpTextTopPadding),
             ].toColumn(),
           ),
           TextFormField(
