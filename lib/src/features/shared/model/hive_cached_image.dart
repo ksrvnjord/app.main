@@ -11,8 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import 'hive_cache.dart';
 import 'image_cache_item.dart';
 
-// Default expiry is one day
-const defaultExpiry = 24;
+// Default expiry is one week
+const int defaultExpiry = 24 * 7;
 
 // TODO: NEEDS TO BE REWRITTEN INTO AN OBJECT-ORIENTED CLASS,
 // USE CASE FOR THAT WILL PROBABLY SURFACE IN A COUPLE WEEKS OR
