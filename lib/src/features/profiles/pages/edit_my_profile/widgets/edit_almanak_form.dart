@@ -51,9 +51,15 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
         child: <Widget>[
           // create a field to enter Field of Study
           Center(
-            child: EditProfilePictureWidget(
-              onChanged: changeProfilePicture,
-            ),
+            child: [
+              EditProfilePictureWidget(
+                onChanged: changeProfilePicture,
+              ),
+              const Text(
+                'Het kan even duren voordat andere mensen je nieuwe '
+                'profielfoto zien.',
+              ).textColor(Colors.grey),
+            ].toColumn(),
           ),
           TextFormField(
             initialValue: user.study,
