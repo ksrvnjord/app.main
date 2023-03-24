@@ -78,6 +78,10 @@ function checkPermissions({reservationObject, user}:
     return Reporter.fail({message: "We konnen je permissies niet vinden"});
   }
   const userPermissions: Array<string> = user.permissions;
+  if (userPermissions.includes("admin")) { // admins can always reserve
+    return Reporter.success();
+  }
+
   const reservationObjectPermissions: Array<string> = reservationObject?.permissions;
   const objectIsPermissioned = reservationObjectPermissions.length > 0;
   const userHasRequiredPermission = userPermissions
