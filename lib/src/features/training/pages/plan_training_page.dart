@@ -65,8 +65,8 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
   late TimeOfDay _startTimeOfDay; // Selected start time of the slider
   late TimeOfDay _endTimeOfDay; // Selected end time of the slider
 
-  static const intervalOfSelector = Duration(minutes: 30);
-  static const minimumReservationDuration = Duration(minutes: 30);
+  static const intervalOfSelector = Duration(minutes: 15);
+  static const minimumReservationDuration = Duration(minutes: 15);
 
   @override
   void initState() {
