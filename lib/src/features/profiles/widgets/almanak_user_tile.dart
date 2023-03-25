@@ -38,7 +38,7 @@ class AlmanakUserTile extends StatelessWidget {
         title: Text("$firstName $lastName"),
         subtitle: subtitle != null ? Text(subtitle!) : null,
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
-        onTap: () => Routemaster.of(context).push(user!.id),
+        onTap: () => Routemaster.of(context).push(user!.identifier),
       ),
       loading: ListTile(
         leading: const ShimmerWidget(child: DefaultProfilePicture()),

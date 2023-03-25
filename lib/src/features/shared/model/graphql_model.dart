@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -7,6 +8,12 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
 final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
+
+final graphQLModelProvider = ChangeNotifierProvider((ref) {
+  final auth = ref.watch(authModelProvider); // we need auth for the client
+
+  return GraphQLModel(auth);
+});
 
 class GraphQLModel extends ChangeNotifier {
   GraphQLClient client = GraphQLClient(link: httpLink, cache: cache);

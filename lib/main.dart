@@ -2,6 +2,7 @@ import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -101,37 +102,40 @@ class Application extends StatelessWidget {
           create: (_) => GraphQLModel(null),
         ),
       ],
-      child: Builder(
-        builder: (context) => MaterialApp.router(
-          title: 'K.S.R.V. Njord',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: GoogleFonts.ibmPlexSansTextTheme(
-              Theme.of(context).textTheme,
+      child: riverpod.ProviderScope(
+        // store state of Riverpod providers
+        child: Builder(
+          builder: (context) => MaterialApp.router(
+            title: 'K.S.R.V. Njord',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              textTheme: GoogleFonts.ibmPlexSansTextTheme(
+                Theme.of(context).textTheme,
+              ),
+              pageTransitionsTheme: const PageTransitionsTheme(builders: {
+                // this is to use swipe transitions on iOS
+                TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+                TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+              }),
             ),
-            pageTransitionsTheme: const PageTransitionsTheme(builders: {
-              // this is to use swipe transitions on iOS
-              TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-              TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
-            }),
-          ),
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('nl', 'NL'),
-          ],
-          debugShowCheckedModeBanner: false,
-          routeInformationParser: const RoutemasterParser(),
-          routerDelegate: RoutemasterDelegate(
-            observers: [GlobalObserver()],
-            routesBuilder: getRoutes,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('nl', 'NL'),
+            ],
+            debugShowCheckedModeBanner: false,
+            routeInformationParser: const RoutemasterParser(),
+            routerDelegate: RoutemasterDelegate(
+              observers: [GlobalObserver()],
+              routesBuilder: getRoutes,
+            ),
           ),
         ),
       ),

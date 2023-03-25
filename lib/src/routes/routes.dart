@@ -100,7 +100,7 @@ final routeMap = RouteMap(
           name: 'Bestuur',
           child: AlmanakBestuurPage(),
         ),
-    '/almanak/bestuur/:profileId': (info) => const CupertinoPage(
+    '/almanak/bestuur/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/commissies': (_) => CupertinoPage(
@@ -118,7 +118,7 @@ final routeMap = RouteMap(
             commissieName: route.queryParameters['commissie']!,
           ),
         ),
-    '/almanak/commissies/leeden/:profileId': (info) => const CupertinoPage(
+    '/almanak/commissies/leeden/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
@@ -136,7 +136,7 @@ final routeMap = RouteMap(
             houseName: route.queryParameters['huis']!,
           ),
         ),
-    '/almanak/huizen/leeden/:profileId': (info) => const CupertinoPage(
+    '/almanak/huizen/leeden/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/substructuren': (_) => const CupertinoPage(
@@ -154,10 +154,10 @@ final routeMap = RouteMap(
             substructuurName: route.queryParameters['substructuur']!,
           ),
         ),
-    '/almanak/substructuren/leeden/:profileId': (info) => const CupertinoPage(
+    '/almanak/substructuren/leeden/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
-    '/almanak/leeden/:profileId': (info) => const CupertinoPage(
+    '/almanak/leeden/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/settings': (info) => const CupertinoPage(
