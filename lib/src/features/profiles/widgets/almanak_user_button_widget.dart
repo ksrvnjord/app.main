@@ -21,7 +21,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
         title: Text(
           '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
         ),
-        onTap: () => Routemaster.of(context).push(user.id),
+        onTap: () => Routemaster.of(context).push(user.identifier),
       ),
     );
   }

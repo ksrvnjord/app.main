@@ -1,5 +1,5 @@
 // TODO: maybe start looking a bit more into the json_serializable package
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 class AlmanakProfile {
@@ -46,7 +46,7 @@ class AlmanakProfile {
   });
 
   void mergeWithHeimdallProfile(
-    Query$AlmanakProfile$user$fullContact$public u,
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
   ) {
     email = u.email;
     phonePrimary = u.phone_primary;

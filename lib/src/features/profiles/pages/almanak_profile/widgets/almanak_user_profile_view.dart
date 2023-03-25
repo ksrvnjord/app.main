@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/almanak_user_data.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
+
+import '../../../api/profile_by_identifier.graphql.dart';
 
 final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
     .collection('people')
@@ -22,12 +23,11 @@ class AlmanakUserProfileView extends StatelessWidget {
     required this.heimdallUser,
   });
 
-  final Query$AlmanakProfile$user heimdallUser;
+  final Query$AlmanakProfileByIdentifier$userByIdentifier heimdallUser;
 
   @override
   Widget build(BuildContext context) {
-    Query$AlmanakProfile$user$fullContact$public contact =
-        heimdallUser.fullContact.public;
+    final contact = heimdallUser.fullContact.public;
     String userId = heimdallUser.identifier;
 
     // check if authenticated by Firebase
