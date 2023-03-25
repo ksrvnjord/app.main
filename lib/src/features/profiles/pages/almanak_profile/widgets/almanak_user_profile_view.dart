@@ -1,5 +1,6 @@
 import 'package:action_sheet/action_sheet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -171,16 +172,17 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   name: "Andere vereniging(en)",
                   value: u.otherAssociation!,
                 ),
-              FutureWrapper(
-                future:
-                    getCommissiesForUser<Future<QuerySnapshot<CommissieEntry>>>(
-                  u.lidnummer,
+              if (FirebaseAuth.instance.currentUser != null)
+                FutureWrapper(
+                  future: getCommissiesForUser<
+                      Future<QuerySnapshot<CommissieEntry>>>(
+                    u.lidnummer,
+                  ),
+                  success: (snapshot) => CommissiesListWidget(
+                    snapshot: snapshot,
+                    legacyCommissies: u.commissies,
+                  ),
                 ),
-                success: (snapshot) => CommissiesListWidget(
-                  snapshot: snapshot,
-                  legacyCommissies: u.commissies,
-                ),
-              ),
             ],
           ),
           loading: () => const Center(child: CircularProgressIndicator()),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
@@ -21,7 +22,12 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
         title: Text(
           '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
         ),
-        onTap: () => Routemaster.of(context).push(user.identifier),
+        onTap: () => Routemaster.of(context).push(
+          FirebaseAuth.instance.currentUser != null
+              ? user.identifier
+              : user
+                  .id, // some demo users have no identifier and we don't query Firebase for them, so we use the id instead
+        ),
       ),
     );
   }

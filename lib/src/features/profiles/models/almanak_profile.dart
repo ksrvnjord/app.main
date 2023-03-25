@@ -2,6 +2,8 @@
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
+import '../api/profile.graphql.dart';
+
 class AlmanakProfile {
   // --- FIRESTORE FIELDS ---
   String? firstName;
@@ -78,6 +80,26 @@ class AlmanakProfile {
       bestuursFunctie: json['bestuurs_functie'] as String?,
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
+    );
+  }
+
+  factory AlmanakProfile.fromHeimdall(Query$AlmanakProfile$user user) {
+    Query$AlmanakProfile$user$fullContact$public publicContact =
+        user.fullContact.public;
+
+    return AlmanakProfile(
+      lidnummer: user.identifier,
+      firstName: publicContact.first_name,
+      lastName: publicContact.last_name,
+      email: publicContact.email,
+      phonePrimary: publicContact.phone_primary,
+      address: Address(
+        street: publicContact.street,
+        houseNumber: publicContact.housenumber,
+        houseNumberAddition: publicContact.housenumber_addition,
+        postalCode: publicContact.zipcode,
+        city: publicContact.city,
+      ),
     );
   }
 
