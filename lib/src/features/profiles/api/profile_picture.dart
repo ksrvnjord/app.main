@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
 
@@ -12,36 +13,40 @@ final auth = FirebaseAuth.instance;
 
 // gets profile picture for a user, by looking first in cache
 final profilePictureProvider =
-    FutureProvider.family<Uint8List?, String>((ref, identifier) async {
-  // Check Hive for the Cached Image
-  String cachingKey = 'profile-avatar-$identifier';
-  ImageCacheItem? cacheItem = await getFromHiveCache(cachingKey);
-  if (cacheItem != null && DateTime.now().isBefore(cacheItem.expire)) {
-    return cacheItem.data; // return the cached image
-  }
+    FutureProvider.family<ImageProvider<Object>?, String>(
+  (ref, identifier) async {
+    // Check Hive for the Cached Image
+    String cachingKey = 'profile-avatar-$identifier';
+    ImageCacheItem? cacheItem = await getFromHiveCache(cachingKey);
+    if (cacheItem != null && DateTime.now().isBefore(cacheItem.expire)) {
+      return cacheItem.data != null
+          ? MemoryImage(cacheItem.data!)
+          : null; // return the cached image
+    }
 
-  // Check Firebase Storage for the image
-  String? url = await getProfilePictureUrl(
-    identifier,
-  ); // get the url from Firebase Storage
-  if (url == null) {
-    // no profile picture for this user
-    setEmptyImageCacheForKey(cachingKey);
+    // Check Firebase Storage for the image
+    String? url = await getProfilePictureUrl(
+      identifier,
+    ); // get the url from Firebase Storage
+    if (url == null) {
+      // no profile picture for this user
+      setEmptyImageCacheForKey(cachingKey);
 
-    return null;
-  }
-  // Get the profile picture from Firebase Storage
-  Uint8List? firestoreImage = await getHttpImageAndCache(
-    url,
-    key: cachingKey,
-  );
-  if (firestoreImage == null) {
-    // no profile picture for this user
-    return null;
-  }
+      return null;
+    }
+    // Get the profile picture from Firebase Storage
+    Uint8List? firestoreImage = await getHttpImageAndCache(
+      url,
+      key: cachingKey,
+    );
+    if (firestoreImage == null) {
+      // no profile picture for this user
+      return null;
+    }
 
-  return firestoreImage;
-});
+    return MemoryImage(firestoreImage);
+  },
+);
 
 Reference getProfilePictureRef(String userId) {
   // Get the profile picture from a user's folder, all avatars are

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
@@ -19,21 +17,19 @@ class ProfilePictureWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<Uint8List?> profilePicture =
+    final AsyncValue<ImageProvider<Object>?> profilePicture =
         ref.watch(profilePictureProvider(userId));
 
     return profilePicture.when(
       // first check if the image is already cached
-      data: (data) => data == null
+      data: (imageProvider) => imageProvider == null
           ? DefaultProfilePicture(radius: size)
           : CircleAvatar(
-              foregroundImage: Image.memory(data).image,
-              backgroundImage:
-                  Image.asset(Images.placeholderProfilePicture).image,
-              backgroundColor: Colors.transparent,
+              foregroundImage: imageProvider,
+              backgroundColor: Colors.grey[300]!,
               radius: size,
             ),
-      loading: () => ShimmerWidget(child: DefaultProfilePicture(radius: size)),
+      loading: () => ShimmerWidget(child: CircleAvatar(radius: size)),
       error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,
         radius: size,
