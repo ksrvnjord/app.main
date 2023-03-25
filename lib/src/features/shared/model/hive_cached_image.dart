@@ -17,6 +17,8 @@ const int defaultExpiry = 24 * 7;
 // TODO: NEEDS TO BE REWRITTEN INTO AN OBJECT-ORIENTED CLASS,
 // USE CASE FOR THAT WILL PROBABLY SURFACE IN A COUPLE WEEKS OR
 // SO.
+final LazyBox<ImageCacheItem> hiveImageCache =
+    Hive.lazyBox<ImageCacheItem>('imageCache');
 
 // This function is used to get an image from the cache
 // If the image is not cached, it will return null
@@ -75,11 +77,10 @@ Future<Uint8List?> getHttpImageAndCache(
 void setEmptyImageCacheForKey(String key) => putInHiveCache(key, null);
 
 void removeImageCacheForKey(String key) =>
-    Hive.box<ImageCacheItem>('imageCache').delete(hashKeytoString(key));
+    hiveImageCache.delete(hashKeytoString(key));
 
 /// This puts an image in the cache for a key
-void putInHiveCache(String key, Uint8List? data) =>
-    Hive.box<ImageCacheItem>('imageCache').put(
+void putInHiveCache(String key, Uint8List? data) => hiveImageCache.put(
       hashKeytoString(key),
       ImageCacheItem(
         expire: DateTime.now().add(const Duration(hours: defaultExpiry)),
@@ -88,8 +89,8 @@ void putInHiveCache(String key, Uint8List? data) =>
     );
 
 /// This gets an image from the cache for a key
-Future<ImageCacheItem?> getFromHiveCache(String key) async =>
-    Hive.box<ImageCacheItem>('imageCache').get(hashKeytoString(key));
+Future<ImageCacheItem?> getFromHiveCache(String key) =>
+    hiveImageCache.get(hashKeytoString(key));
 
 // Hashes a key to a string
 String hashKeytoString(String key) =>
@@ -97,7 +98,7 @@ String hashKeytoString(String key) =>
 
 /// Deletes
 Future<void> deleteAllCache() async {
-  await Hive.close(); // close all open boxes
+  await Hive.close(); // close all open lazyBoxes
   Directory appDir = await getApplicationDocumentsDirectory();
   Directory hiveDir = Directory('${appDir.path}/${HiveCache.cachePath}');
   hiveDir.delete(recursive: true);
