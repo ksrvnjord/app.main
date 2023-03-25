@@ -1,3 +1,4 @@
+// ignore_for_file: avoid-non-ascii-symbols
 import 'dart:collection';
 
 final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
@@ -23,7 +24,7 @@ final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
   "Merchandisecommissie": "merchandise@njord.nl",
   "Najaarscommissie": "najaars@njord.nl",
   "Pascommissie": "pascie@njord.nl",
-  "Petit Comite": "petitcomite@njord.nl",
+  "Petit Comité": "petitcomite@njord.nl",
   "Promotiecommissie": "promotie@njord.nl",
   "Rowing Blindcommissie": "leiden@rowingblind.nl",
   "Ringvaartcommissie": "ringvaart@njord.nl",
@@ -33,4 +34,5 @@ final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
   "Topcommissie": "top@njord.nl",
   "Voorjaarsafroeicommissie": "vac@njord.nl",
   "Zwanehalscommissie": "zwanehals@njord.nl",
+  "Zwanencomité": "zwanencomite@gmail.com",
 });

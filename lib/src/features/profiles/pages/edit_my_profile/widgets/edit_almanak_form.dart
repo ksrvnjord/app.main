@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:routemaster/routemaster.dart';
@@ -44,6 +45,9 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
   Widget build(BuildContext context) {
     const double fieldPadding = 8;
 
+    const double imageHelpTextSize = 12;
+    const double imageHelpTextTopPadding = 4;
+
     return FutureWrapper(
       future: getMyFirestoreProfileData(),
       success: (user) => Form(
@@ -51,9 +55,18 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
         child: <Widget>[
           // create a field to enter Field of Study
           Center(
-            child: EditProfilePictureWidget(
-              onChanged: changeProfilePicture,
-            ),
+            child: [
+              EditProfilePictureWidget(
+                onChanged: changeProfilePicture,
+              ),
+              const Text(
+                'Het kan even duren voordat je nieuwe profielfoto zichtbaar is.',
+              )
+                  .textColor(Colors.grey)
+                  .textAlignment(TextAlign.center)
+                  .fontSize(imageHelpTextSize)
+                  .padding(top: imageHelpTextTopPadding),
+            ].toColumn(),
           ),
           TextFormField(
             initialValue: user.study,
@@ -221,6 +234,9 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
     if (newprofilePicture != null) {
       try {
         uploadMyProfilePicture(newprofilePicture!);
+        removeImageCacheForKey(
+          'profile-avatar-$userId',
+        ); // invalidate cache to force refresh of image
       } on FirebaseException catch (err) {
         error = err;
         success = false;
