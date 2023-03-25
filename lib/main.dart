@@ -59,9 +59,7 @@ Future<void> main() async {
     HiveCache.cachePath,
   ); // store the cache in a separate folder
   Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
-  Hive.openBox<ImageCacheItem>(
-    'imageCache',
-  ); // open the image cache box, we don't have to do this lazily because it won't contain that much data and everyone has plenty of RAM
+  Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {

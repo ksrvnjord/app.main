@@ -103,6 +103,28 @@ class AlmanakProfile {
     );
   }
 
+  factory AlmanakProfile.fromHeimdallByIdentifier(
+    Query$AlmanakProfileByIdentifier$userByIdentifier user,
+  ) {
+    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public
+        publicContact = user.fullContact.public;
+
+    return AlmanakProfile(
+      lidnummer: user.identifier,
+      firstName: publicContact.first_name,
+      lastName: publicContact.last_name,
+      email: publicContact.email,
+      phonePrimary: publicContact.phone_primary,
+      address: Address(
+        street: publicContact.street,
+        houseNumber: publicContact.housenumber,
+        houseNumberAddition: publicContact.housenumber_addition,
+        postalCode: publicContact.zipcode,
+        city: publicContact.city,
+      ),
+    );
+  }
+
   // This method contains the fields that are sent to Firestore
   Map<String, dynamic> toJson() {
     return {
