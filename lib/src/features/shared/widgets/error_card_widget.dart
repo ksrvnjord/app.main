@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 
@@ -15,6 +17,7 @@ class ErrorCardWidget extends StatelessWidget {
     const double errorCardHeight = 100;
     const double errorTitleFontSize = 18;
     const double cardBorderWidth = 2;
+    log(errorMessage);
 
     return GestureDetector(
       child: Container(
