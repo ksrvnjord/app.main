@@ -21,11 +21,14 @@ final almanakUserProvider = FutureProvider.autoDispose
   Future<Query$AlmanakProfileByIdentifier$userByIdentifier?> heimdallProfile =
       almanakProfileByIdentifier(identifier, client);
 
-  AlmanakProfile profile = await getFirestoreProfileData(identifier);
+  AlmanakProfile? profile = await getFirestoreProfileData(identifier);
   final heimdallProfileData = await heimdallProfile;
 
   // merge the data
-  profile.mergeWithHeimdallProfile(heimdallProfileData!.fullContact.public);
+  profile?.mergeWithHeimdallProfile(heimdallProfileData!.fullContact.public);
 
-  return profile;
+  return profile ??
+      AlmanakProfile.fromHeimdallByIdentifier(
+        heimdallProfileData!,
+      ); // if no profile was found in firestore, return the heimdall profile
 });

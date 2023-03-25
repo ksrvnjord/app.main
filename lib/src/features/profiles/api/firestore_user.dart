@@ -9,13 +9,13 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-Future<AlmanakProfile> getFirestoreProfileData(String userId) async {
+Future<AlmanakProfile?> getFirestoreProfileData(String userId) async {
   QuerySnapshot<AlmanakProfile> profile =
       await people.where('identifier', isEqualTo: userId).get();
 
-  return profile.docs.first.data();
+  return profile.docs.isNotEmpty ? profile.docs.first.data() : null;
 }
 
-Future<AlmanakProfile> getMyFirestoreProfileData() {
-  return getFirestoreProfileData(getCurrentUserId());
+Future<AlmanakProfile> getMyFirestoreProfileData() async {
+  return (await getFirestoreProfileData(getCurrentUserId()))!;
 }

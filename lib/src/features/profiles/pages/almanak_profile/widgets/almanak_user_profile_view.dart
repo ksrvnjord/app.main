@@ -186,9 +186,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
             ],
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, _) => ErrorCardWidget(
-            errorMessage: "$error",
-          ), // the shown user might have no data in Firestore, in that case show nothing
+          error: (error, stacktrace) => ErrorCardWidget(
+            errorMessage: "$error $stacktrace",
+          ),
         ),
       ],
     );
