@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/widgets/almanak_user_data.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../../../api/profile_by_identifier.graphql.dart';
@@ -17,7 +18,7 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class AlmanakUserProfileView extends StatelessWidget {
+class AlmanakUserProfileView extends ConsumerWidget {
   const AlmanakUserProfileView({
     super.key,
     required this.heimdallUser,
@@ -26,7 +27,7 @@ class AlmanakUserProfileView extends StatelessWidget {
   final Query$AlmanakProfileByIdentifier$userByIdentifier heimdallUser;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final contact = heimdallUser.fullContact.public;
     String userId = heimdallUser.identifier;
 
@@ -37,6 +38,9 @@ class AlmanakUserProfileView extends StatelessWidget {
     const double elementPadding = 8;
 
     const double nameFontSize = 20;
+
+    final AsyncValue<AlmanakProfile> profile =
+        ref.watch(almanakUserProvider(userId));
 
     return ListView(
       children: [
@@ -50,14 +54,15 @@ class AlmanakUserProfileView extends StatelessWidget {
             .padding(top: elementPadding)
             .center(),
         if (firebaseUser != null) // only show if authenticated by Firebase
-          FutureWrapper(
-            future: getFirestoreProfileData(userId),
-            success: (AlmanakProfile profile) => AlmanakUserData(
+          profile.when(
+            data: (AlmanakProfile profile) => AlmanakUserData(
               u: profile,
               heimdallContact: contact,
             ),
-            error: (error) =>
-                Container(), // the shown user might have no data in Firestore, in that case show nothing
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => ErrorCardWidget(
+              errorMessage: "$error",
+            ), // the shown user might have no data in Firestore, in that case show nothing
           ),
       ],
     );
