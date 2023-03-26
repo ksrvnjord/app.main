@@ -7,8 +7,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 // retrieves all data from firestore and heimdall for a given user
-final almanakUserProvider = FutureProvider
-    .family<AlmanakProfile, String>((ref, identifier) async {
+final almanakUserProvider =
+    FutureProvider.family<AlmanakProfile, String>((ref, identifier) async {
   final client = ref.watch(graphQLModelProvider).client;
   if (FirebaseAuth.instance.currentUser == null) {
     // if in DEMO mode
