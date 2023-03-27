@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AllTrainingPage extends StatefulWidget {
+class AllTrainingPage extends ConsumerStatefulWidget {
   const AllTrainingPage({Key? key}) : super(key: key);
 
   @override
-  State<AllTrainingPage> createState() => _AllTrainingPage();
+  ConsumerState<AllTrainingPage> createState() => _AllTrainingPage();
 }
 
-class _AllTrainingPage extends State<AllTrainingPage> {
-  // List of filters to apply
-  List<String> _filters = [];
-
-  late SharedPreferences _sharedPrefs;
-
+class _AllTrainingPage extends ConsumerState<AllTrainingPage> {
   static const int amountOfDaysUserCanBookInAdvance =
       4; // user can book x days in the advance
 
@@ -28,32 +24,13 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     (index) => DateTime.now().add(Duration(days: index)),
   );
 
-  void updateFilters(List<String> filters) {
-    setState(() {
-      _filters = filters;
-    });
-
-    _sharedPrefs.setStringList('afschrijf_filters', filters);
-  }
-
-  /// Get the filters from SharedPreferences and update the state
-  Future<void> _getFiltersFromSharedPreferences() async {
-    _sharedPrefs = await SharedPreferences.getInstance();
-    if (mounted) {
-      setState(() {
-        _filters = _sharedPrefs.getStringList('afschrijf_filters') ?? [];
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getFiltersFromSharedPreferences();
-  }
-
   @override
   Widget build(BuildContext context) {
+    Map<String, List<String>> activeFilters =
+        ref.watch(reservationTypeFiltersProvider);
+
+    List<String> filterList = activeFilters.values.expand((e) => e).toList();
+
     const double yourFiltersLPadding = 8;
     const double yourFiltersRPadding = 4;
     const double filterLabelSize = 12;
@@ -64,15 +41,13 @@ class _AllTrainingPage extends State<AllTrainingPage> {
         floatingActionButton: Stack(children: [
           FloatingActionButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ShowFiltersPage(
-                parentUpdate: updateFilters,
-              ),
+              builder: (context) => const ShowFiltersPage(),
             )),
             tooltip: "Kies afschrijf filters",
             backgroundColor: Colors.lightBlue,
             child: const Icon(Icons.filter_list_alt),
           ),
-          if (_filters.isNotEmpty)
+          if (filterList.isNotEmpty)
             // show a red badge if there are filters selected, don't show the amount of filters
             Positioned(
               right: 0,
@@ -123,7 +98,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  if (_filters.isNotEmpty)
+                  if (filterList.isNotEmpty)
                     const Text(
                       'Je selectie:',
                       style: TextStyle(color: Colors.white, fontSize: 14),
@@ -131,7 +106,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                       right: yourFiltersRPadding,
                       left: yourFiltersLPadding,
                     ),
-                  ..._filters
+                  ...filterList
                       .map<Widget>(
                         (filter) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -156,7 +131,7 @@ class _AllTrainingPage extends State<AllTrainingPage> {
             physics: const NeverScrollableScrollPhysics(),
             children: days
                 .map<Widget>(
-                  (date) => CalendarOverview(date: date, filters: _filters),
+                  (date) => CalendarOverview(date: date, filters: filterList),
                 )
                 .toList(),
           ).expanded(),

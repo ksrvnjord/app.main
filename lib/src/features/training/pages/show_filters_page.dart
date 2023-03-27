@@ -2,83 +2,44 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/model/boat_types.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ShowFiltersPage extends StatefulWidget {
-  final Function parentUpdate;
+import '../api/reservation_object_type_filters_notifier.dart';
 
+class ShowFiltersPage extends ConsumerStatefulWidget {
   const ShowFiltersPage({
     Key? key,
-    required this.parentUpdate,
   }) : super(key: key);
 
   @override
-  State<ShowFiltersPage> createState() => _ShowFiltersPage();
+  ConsumerState<ShowFiltersPage> createState() => _ShowFiltersPage();
 }
 
-class _ShowFiltersPage extends State<ShowFiltersPage> {
-  final Future<SharedPreferences> _prefsFuture =
-      SharedPreferences.getInstance();
-  late SharedPreferences _sharedPrefs;
-
-  late List<String> _selectedFilters = [];
-  final Map<String, List<String>> _activeFiltersMap = {};
-
-  Future<void> _getFiltersFromPrefs() async {
-    // retrieve the filters from SharedPreferences
-    _sharedPrefs = await _prefsFuture;
-
-    if (mounted) {
-      setState(() {
-        List<String> filters =
-            _sharedPrefs.getStringList('afschrijf_filters') ?? [];
-        _selectedFilters = filters;
-        // place the filters in the correct category
-        for (final category in reservationObjectTypes.entries) {
-          String key = category.key;
-          List<String> values = category.value;
-          _activeFiltersMap[key] = [];
-
-          for (final filter in filters) {
-            if (values.contains(filter)) {
-              _activeFiltersMap[key]?.add(filter);
-            }
-          }
-        }
-      });
-    }
-  }
-
+class _ShowFiltersPage extends ConsumerState<ShowFiltersPage> {
   void updateFilters(String category, List<String> filters) {
-    setState(() {
-      _activeFiltersMap[category] = filters;
-      _selectedFilters = _activeFiltersMap.values.expand((e) => e).toList();
-      widget.parentUpdate(_selectedFilters);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getFiltersFromPrefs();
+    ref
+        .read(reservationTypeFiltersProvider.notifier)
+        .updateFiltersForCategory(category, filters);
   }
 
   @override
   Widget build(BuildContext context) {
     const double pagePadding = 8;
     const double headerFontSize = 16;
+    final Map<String, List<String>> activeFilters =
+        ref.watch(reservationTypeFiltersProvider);
 
     Map<String, List<MultiSelectItem<String?>>> availableFilters =
-        reservationObjectTypes.map((key, value) => MapEntry(
-              key,
-              value
-                  .map((filter) => MultiSelectItem<String?>(
-                        filter,
+        reservationObjectTypes.map((category, types) => MapEntry(
+              category,
+              types
+                  .map((type) => MultiSelectItem<String?>(
+                        type,
                         // ignore: no-equal-arguments
-                        filter,
+                        type,
                       ))
                   .toList(),
             ));
@@ -137,7 +98,7 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                           color: Colors.white,
                         ),
                         showHeader: false,
-                        initialValue: _activeFiltersMap[key] ?? [],
+                        initialValue: activeFilters[key] ?? [],
                         onTap: (values) => updateFilters(
                           key,
                           values.whereType<String>().toList(),
