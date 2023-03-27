@@ -118,19 +118,19 @@ class _AllTrainingPage extends State<AllTrainingPage> {
         body: [
           Container(
             color: Colors.lightBlue,
-            // width: double.infinity,
             alignment: Alignment.center,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  const Text(
-                    'Je selectie:',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ).padding(
-                    right: yourFiltersRPadding,
-                    left: yourFiltersLPadding,
-                  ),
+                  if (_filters.isNotEmpty)
+                    const Text(
+                      'Je selectie:',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ).padding(
+                      right: yourFiltersRPadding,
+                      left: yourFiltersLPadding,
+                    ),
                   ..._filters
                       .map<Widget>(
                         (filter) => Padding(
@@ -143,7 +143,6 @@ class _AllTrainingPage extends State<AllTrainingPage> {
                               fontSize: filterLabelSize,
                               fontWeight: FontWeight.w400,
                             ),
-                            // padding: const EdgeInsets.all(0),
                             visualDensity: VisualDensity.compact,
                           ),
                         ),
