@@ -67,3 +67,9 @@ final reservationTypeFiltersProvider = StateNotifierProvider<
     ));
   },
 );
+
+final reservationTypeFiltersListProvider = Provider<List<String>>((ref) {
+  final filters = ref.watch(reservationTypeFiltersProvider);
+
+  return filters.values.expand((element) => element).toList();
+});

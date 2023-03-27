@@ -25,11 +25,8 @@ class AllTrainingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Map<String, List<String>> activeFilters =
-        ref.watch(reservationTypeFiltersProvider);
-
     final List<String> filterList =
-        activeFilters.values.expand((e) => e).toList();
+        ref.watch(reservationTypeFiltersListProvider);
 
     return DefaultTabController(
       length: days.length,
@@ -127,7 +124,7 @@ class AllTrainingPage extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             children: days
                 .map<Widget>(
-                  (date) => CalendarOverview(date: date, filters: filterList),
+                  (date) => CalendarOverview(date: date),
                 )
                 .toList(),
           ).expanded(),

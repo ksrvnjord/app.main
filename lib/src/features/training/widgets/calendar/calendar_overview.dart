@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_sticky_header.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 // Shows all available objects for a given day and filters
-class CalendarOverview extends StatefulWidget {
+class CalendarOverview extends ConsumerStatefulWidget {
   final DateTime date;
-  final List<String> filters;
 
   const CalendarOverview({
     Key? key,
     required this.date,
-    required this.filters,
   }) : super(key: key);
 
   @override
   createState() => _CalendarOverview();
 }
 
-class _CalendarOverview extends State<CalendarOverview> {
+class _CalendarOverview extends ConsumerState<CalendarOverview> {
   late final ScrollController boatsController;
   late final ScrollController timesController;
 
@@ -48,7 +48,7 @@ class _CalendarOverview extends State<CalendarOverview> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> filters = widget.filters;
+    List<String> filters = ref.watch(reservationTypeFiltersListProvider);
 
     if (filters.isEmpty) {
       const double iconPadding = 8;
