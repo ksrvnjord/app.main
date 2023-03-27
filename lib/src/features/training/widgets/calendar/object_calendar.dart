@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
@@ -10,9 +12,10 @@ import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 
-import '../../model/reservation.dart';
+import 'api/reservations_for_object_provider.dart';
+import 'model/reservations_query.dart';
 
-class ObjectCalendar extends StatefulWidget {
+class ObjectCalendar extends ConsumerStatefulWidget {
   final DateTime date;
   final QueryDocumentSnapshot<ReservationObject> boat;
   const ObjectCalendar({
@@ -22,34 +25,20 @@ class ObjectCalendar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ObjectCalendar> createState() => _ObjectCalendar();
+  createState() => _ObjectCalendar();
 }
 
-class _ObjectCalendar extends State<ObjectCalendar> {
+class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
   // Date is passed by parent
-  late DateTime date;
-  // Boat is passed by parent
-  late QueryDocumentSnapshot<ReservationObject> boat;
   late DateTime? reservation;
   bool hasPermission = false;
-
-  // Create reference for query
-  CollectionReference<Reservation> reservationRef = FirebaseFirestore.instance
-      .collection('reservations')
-      .withConverter<Reservation>(
-        fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
-        toFirestore: (reservation, _) => reservation.toJson(),
-      );
-
-  // Get current time
-  DateTime now = DateTime.now();
+  late ReservationsQuery reservationsQuery;
 
   @override
   void initState() {
     super.initState();
-    date = widget.date;
-    boat = widget.boat;
     reservation = null;
+    reservationsQuery = ReservationsQuery(widget.date, widget.boat.reference);
     checkPermission();
   }
 
@@ -59,11 +48,11 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     // 1: Get the ID token that contains the permission claims
     FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
       // 2: Check if the boat permissions are empty
-      if (boat.data().permissions.isEmpty ||
+      if (widget.boat.data().permissions.isEmpty ||
           // If not, 3: convert permissions to a set,
           // get the permissions from the token
           // and see if there is any overlap
-          boat
+          widget.boat
               .data()
               .permissions
               .toSet()
@@ -77,7 +66,7 @@ class _ObjectCalendar extends State<ObjectCalendar> {
   }
 
   void handleTap(TapUpDetails details) {
-    final boatData = boat.data();
+    final boatData = widget.boat.data();
 
     // Check if the boat is in-de-vaart
     if (!boatData.available) {
@@ -127,45 +116,24 @@ class _ObjectCalendar extends State<ObjectCalendar> {
     final int offsetMinutes = slotNumber * 30;
 
     // Add offsetMinutes to 6:00 to get the time the user tapped
-    DateTime time = DateTime(date.year, date.month, date.day, 6, 0, 0)
-        .add(Duration(minutes: offsetMinutes));
+    DateTime time =
+        DateTime(widget.date.year, widget.date.month, widget.date.day, 6, 0, 0)
+            .add(Duration(minutes: offsetMinutes));
 
-    Routemaster.of(context)
-        .push('plan', queryParameters: {
-          'reservationObjectId': boat.id,
-          'reservationObjectName': boat.get('name'),
-          'startTime': time.toIso8601String(),
-        })
-        .result
-        .then((value) => setState(() => {}));
+    // TODO: calculate here from when till when the user can make a reservation
+
+    Routemaster.of(context).push('plan', queryParameters: {
+      'reservationObjectId': widget.boat.id,
+      'reservationObjectName': widget.boat.get('name'),
+      'startTime': time.toIso8601String(),
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Calculate start and end of day
-    DateTime nowStart = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      CalendarMeasurement.startHour,
-      0,
-      0,
-    );
-    DateTime nowEnd = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      CalendarMeasurement.endHour,
-      0,
-      0,
-    );
-
-    // Get all reservations within that time period
-    final reservations = reservationRef
-        .where('object', isEqualTo: boat.reference)
-        .where('startTime', isGreaterThanOrEqualTo: nowStart)
-        .where('startTime', isLessThanOrEqualTo: nowEnd)
-        .get(const GetOptions(source: Source.serverAndCache));
+    final reservations = ref.watch(reservationsProvider(
+      reservationsQuery,
+    ));
 
     return SizedBox(
       width: CalendarMeasurement.slotWidth,
@@ -181,16 +149,15 @@ class _ObjectCalendar extends State<ObjectCalendar> {
             // it does not pass gestures through to the background
             child: AbsorbPointer(
               child: CalendarBackground(
-                available: (hasPermission && boat.data().available) &&
-                    !boat.data().critical,
+                available: (hasPermission && widget.boat.data().available) &&
+                    !widget.boat.data().critical,
               ),
             ),
           ),
           // Wrap the reservations
-          FutureWrapper(
-            future: reservations,
+          reservations.when(
             // Shimmer entire screen on loading
-            loading: const ShimmerWidget(
+            loading: () => const ShimmerWidget(
               child: SizedBox(
                 height: CalendarMeasurement.slotHeight *
                     CalendarMeasurement.amountOfSlots,
@@ -198,15 +165,19 @@ class _ObjectCalendar extends State<ObjectCalendar> {
               ),
             ),
             // Create a stack of the resulting reservations
-            success: (reservations) => reservations.docs
-                .map((reservation) {
-                  return CalendarReservation(
-                    data: reservation.data().toJson(),
-                    reservationDocumentId: reservation.id,
-                  );
-                })
-                .toList()
-                .toStack(),
+            data: (reservations) {
+              return reservations.docs
+                  .map((reservation) {
+                    return CalendarReservation(
+                      data: reservation.data().toJson(),
+                      reservationDocumentId: reservation.id,
+                    );
+                  })
+                  .toList()
+                  .toStack();
+            },
+            error: (error, stackTrace) =>
+                ErrorCardWidget(errorMessage: error.toString()),
           ),
         ],
       ),

@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_made_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
@@ -39,7 +41,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
-class PlanTrainingPage extends StatefulWidget {
+class PlanTrainingPage extends ConsumerStatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
   late final DateTime date;
@@ -56,10 +58,10 @@ class PlanTrainingPage extends StatefulWidget {
   }
 
   @override
-  State<PlanTrainingPage> createState() => _PlanTrainingPageState();
+  createState() => _PlanTrainingPageState();
 }
 
-class _PlanTrainingPageState extends State<PlanTrainingPage> {
+class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   late DateTime _startTime; // Selected start time of the slider
   late DateTime _endTime; // Selected end time of the slider
   late TimeOfDay _startTimeOfDay; // Selected start time of the slider
@@ -305,6 +307,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           ),
         );
       }
+      ref.read(reservationMadeProvider.notifier).madeReservation();
       Routemaster.of(context).pop();
     });
   }
