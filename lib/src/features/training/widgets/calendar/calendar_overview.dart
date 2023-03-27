@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/api/reservation_objects.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_sticky_header.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -64,18 +62,12 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
     }
 
     DateTime date = widget.date;
-    CollectionReference<ReservationObject> reservationObjectsRef =
-        FirebaseFirestore.instance
-            .collection('reservationObjects')
-            .withConverter<ReservationObject>(
-              fromFirestore: (snapshot, _) =>
-                  ReservationObject.fromJson(snapshot.data()!),
-              toFirestore: (reservation, _) => reservation.toJson(),
-            );
 
-    return FutureWrapper(
-      future: getAvailableReservationObjects(reservationObjectsRef, filters),
-      success: (snapshot) => Stack(
+    final availableReservationObjects =
+        ref.watch(availableReservationObjectsProvider);
+
+    return availableReservationObjects.when(
+      data: (snapshot) => Stack(
         children: <Widget>[
           SingleChildScrollView(
             key: UniqueKey(),
@@ -91,21 +83,14 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
           ), // this builds the time column on the left side
         ],
       ),
-      error: (error) => <Widget>[
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stk) => <Widget>[
         const ErrorCardWidget(
           errorMessage: "Er is iets misgegaan met het ophalen van de data",
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
     );
-  }
-
-  Future<QuerySnapshot<ReservationObject>> getAvailableReservationObjects(
-    CollectionReference<ReservationObject> reservationObjectsRef,
-    List<String> filters,
-  ) {
-    return reservationObjectsRef
-        .where('type', whereIn: filters)
-        .where('available', isEqualTo: true)
-        .get();
   }
 }
