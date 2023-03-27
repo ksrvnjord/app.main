@@ -46,13 +46,13 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
     super.initState();
   }
 
+  static const double iconPadding = 8;
+
   @override
   Widget build(BuildContext context) {
-    List<String> filters = ref.watch(reservationTypeFiltersListProvider);
+    final List<String> filters = ref.watch(reservationTypeFiltersListProvider);
 
     if (filters.isEmpty) {
-      const double iconPadding = 8;
-
       return <Widget>[
         const Icon(Icons.waves, color: Colors.blueGrey)
             .padding(all: iconPadding),
