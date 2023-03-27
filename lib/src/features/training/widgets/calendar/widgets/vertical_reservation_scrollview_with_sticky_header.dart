@@ -24,7 +24,7 @@ class VerticalReservationScrollViewWithStickyHeader extends StatelessWidget {
       scrollDirection: Axis.vertical,
       controller: boatsController,
       child: Padding(
-        padding: const EdgeInsets.only(left: 64),
+        padding: const EdgeInsets.symmetric(horizontal: 64),
         child: StickyHeader(
           header: snapshot.docs // this builds the header with the boat names
               .map<Widget>(
