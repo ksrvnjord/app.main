@@ -47,12 +47,12 @@ class AllTrainingPage extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(1),
                 decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: Colors.blueGrey,
                   borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
                 constraints: const BoxConstraints(
-                  minWidth: 14,
-                  minHeight: 14,
+                  minWidth: 16,
+                  minHeight: 16,
                 ),
               ),
             ),
@@ -89,34 +89,42 @@ class AllTrainingPage extends ConsumerWidget {
             alignment: Alignment.center,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  if (filterList.isNotEmpty)
-                    const Text(
-                      'Je selectie:',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ).padding(
-                      right: yourFiltersRPadding,
-                      left: yourFiltersLPadding,
-                    ),
-                  ...filterList
-                      .map<Widget>(
-                        (filter) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Chip(
-                            backgroundColor: Colors.grey[300],
-                            label: Text(filter),
-                            labelStyle: TextStyle(
-                              color: Colors.grey[700],
-                              fontSize: filterLabelSize,
-                              fontWeight: FontWeight.w400,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ShowFiltersPage(),
+                )),
+                child: Row(
+                  children: [
+                    if (filterList.isNotEmpty)
+                      const Text(
+                        'Je selectie:',
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ).padding(
+                        right: yourFiltersRPadding,
+                        left: yourFiltersLPadding,
+                      ),
+                    ...filterList
+                        .map<Widget>(
+                          (filter) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Chip(
+                              backgroundColor: Colors.lightBlue,
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 1,
+                              ),
+                              label: Text(filter),
+                              labelStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: filterLabelSize,
+                              ),
+                              visualDensity: VisualDensity.compact,
                             ),
-                            visualDensity: VisualDensity.compact,
                           ),
-                        ),
-                      )
-                      .toList(),
-                ],
+                        )
+                        .toList(),
+                  ],
+                ),
               ),
             ),
           ),
