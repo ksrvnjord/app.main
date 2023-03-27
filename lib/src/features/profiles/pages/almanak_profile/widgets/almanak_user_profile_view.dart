@@ -43,6 +43,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
     const double bestuurFontSize = 16;
     const double actionButtonSize = 96;
 
+    final String yearOfArrival = identifier.substring(
+      0,
+      2,
+    ); // aankomstjaar is de eerste 2 cijfers van het lidnummer
+
     final AsyncValue<AlmanakProfile> profile =
         ref.watch(almanakUserProvider(identifier));
 
@@ -154,6 +159,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   ).padding(all: formFieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
               UserAddressWidget(address: u.address!),
+              DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
               if (u.ploeg != null && u.ploeg!.isNotEmpty)
                 DataTextListTile(name: "Ploeg", value: u.ploeg!),
               if (u.board != null && u.board!.isNotEmpty)
