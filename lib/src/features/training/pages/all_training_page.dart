@@ -7,33 +7,29 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AllTrainingPage extends ConsumerStatefulWidget {
-  const AllTrainingPage({Key? key}) : super(key: key);
+class AllTrainingPage extends ConsumerWidget {
+  AllTrainingPage({Key? key}) : super(key: key);
 
-  @override
-  ConsumerState<AllTrainingPage> createState() => _AllTrainingPage();
-}
-
-class _AllTrainingPage extends ConsumerState<AllTrainingPage> {
   static const int amountOfDaysUserCanBookInAdvance =
       4; // user can book x days in the advance
 
   // Generate a list of the coming 14 days
-  List<DateTime> days = List.generate(
+  final List<DateTime> days = List.generate(
     amountOfDaysUserCanBookInAdvance,
     (index) => DateTime.now().add(Duration(days: index)),
   );
 
+  static const double yourFiltersLPadding = 8;
+  static const double yourFiltersRPadding = 4;
+  static const double filterLabelSize = 12;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Map<String, List<String>> activeFilters =
         ref.watch(reservationTypeFiltersProvider);
 
-    List<String> filterList = activeFilters.values.expand((e) => e).toList();
-
-    const double yourFiltersLPadding = 8;
-    const double yourFiltersRPadding = 4;
-    const double filterLabelSize = 12;
+    final List<String> filterList =
+        activeFilters.values.expand((e) => e).toList();
 
     return DefaultTabController(
       length: days.length,
@@ -41,7 +37,7 @@ class _AllTrainingPage extends ConsumerState<AllTrainingPage> {
         floatingActionButton: Stack(children: [
           FloatingActionButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const ShowFiltersPage(),
+              builder: (context) => ShowFiltersPage(),
             )),
             tooltip: "Kies afschrijf filters",
             backgroundColor: Colors.lightBlue,

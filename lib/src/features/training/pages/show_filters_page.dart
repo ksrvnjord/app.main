@@ -9,54 +9,42 @@ import 'package:styled_widget/styled_widget.dart';
 
 import '../api/reservation_object_type_filters_notifier.dart';
 
-class ShowFiltersPage extends ConsumerStatefulWidget {
-  const ShowFiltersPage({
+class ShowFiltersPage extends ConsumerWidget {
+  ShowFiltersPage({
     Key? key,
   }) : super(key: key);
 
-  @override
-  ConsumerState<ShowFiltersPage> createState() => _ShowFiltersPage();
-}
+  final Map<String, List<MultiSelectItem<String?>>>
+      availableFilters = // build a map of categories and their types
+      reservationObjectTypes.map((category, types) => MapEntry(
+            category,
+            types
+                .map((type) => MultiSelectItem<String?>(
+                      type,
+                      // ignore: no-equal-arguments
+                      type,
+                    ))
+                .toList(),
+          ));
+  static const Map<String, Color> categoryColors = {
+    'Binnen': Colors.blue,
+    '1 roeier': Colors.red,
+    '2 roeiers': Colors.orange,
+    '4 roeiers': Colors.green,
+    '8 roeiers': Colors.purple,
+    'Overig': Colors.grey,
+  };
+  static const double categoryPadding = 4;
+  static const double selectedChipOpacity = 0.5;
 
-class _ShowFiltersPage extends ConsumerState<ShowFiltersPage> {
-  void updateFilters(String category, List<String> filters) {
-    ref
-        .read(reservationTypeFiltersProvider.notifier)
-        .updateFiltersForCategory(category, filters);
-  }
+  static const double categoryFontSize = 16;
+  static const double pagePadding = 8;
+  static const double headerFontSize = 16;
 
   @override
-  Widget build(BuildContext context) {
-    const double pagePadding = 8;
-    const double headerFontSize = 16;
+  Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, List<String>> activeFilters =
         ref.watch(reservationTypeFiltersProvider);
-
-    Map<String, List<MultiSelectItem<String?>>> availableFilters =
-        reservationObjectTypes.map((category, types) => MapEntry(
-              category,
-              types
-                  .map((type) => MultiSelectItem<String?>(
-                        type,
-                        // ignore: no-equal-arguments
-                        type,
-                      ))
-                  .toList(),
-            ));
-
-    const double categoryPadding = 4;
-    const double selectedChipOpacity = 0.5;
-
-    Map<String, Color> categoryColors = {
-      'Binnen': Colors.blue,
-      '1 roeier': Colors.red,
-      '2 roeiers': Colors.orange,
-      '4 roeiers': Colors.green,
-      '8 roeiers': Colors.purple,
-      'Overig': Colors.grey,
-    };
-
-    const double categoryFontSize = 16;
 
     return Scaffold(
       appBar: AppBar(
@@ -99,10 +87,12 @@ class _ShowFiltersPage extends ConsumerState<ShowFiltersPage> {
                         ),
                         showHeader: false,
                         initialValue: activeFilters[key] ?? [],
-                        onTap: (values) => updateFilters(
-                          key,
-                          values.whereType<String>().toList(),
-                        ),
+                        onTap: (values) => ref
+                            .read(reservationTypeFiltersProvider.notifier)
+                            .updateFiltersForCategory(
+                              key,
+                              values.whereType<String>().toList(),
+                            ),
                       ).padding(vertical: categoryPadding),
                     ],
                   ),

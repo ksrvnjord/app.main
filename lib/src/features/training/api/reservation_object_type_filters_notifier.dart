@@ -39,7 +39,7 @@ class ReservationObjectTypeFiltersNotifier
   }
 }
 
-final reservationTypeFiltersProvider = StateNotifierProvider.autoDispose<
+final reservationTypeFiltersProvider = StateNotifierProvider<
     ReservationObjectTypeFiltersNotifier, Map<String, List<String>>>(
   (ref) {
     final filterList = ref.watch(reservationTypeFiltersFromSharedPrefsProvider);
