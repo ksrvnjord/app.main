@@ -7,6 +7,9 @@ import 'package:routemaster/routemaster.dart';
 class TrainingPage extends StatelessWidget {
   const TrainingPage({Key? key}) : super(key: key);
 
+  static const double spacingFloatingButtons = 10;
+  static const double runSpacingFloatingButtons = 12;
+
   @override
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
@@ -19,23 +22,28 @@ class TrainingPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        actions: [
-          if (FirebaseAuth.instance.currentUser !=
-              null) // Firebase-only-Feature
-            IconButton(
-              icon: const Icon(Icons.report),
-              onPressed: () => navigator.push('damages'),
-            ),
-        ],
       ),
       body: const TrainingList(),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
-          ? FloatingActionButton.extended(
-              onPressed: () => navigator.push('all'),
-              backgroundColor: Colors.lightBlue,
-              icon: const Icon(Icons.add),
-              label: const Text('Afschrijving toevoegen'),
+          ? Wrap(
+              spacing: spacingFloatingButtons,
+              runSpacing: runSpacingFloatingButtons,
+              alignment: WrapAlignment.end,
+              children: [
+                FloatingActionButton.extended(
+                  onPressed: () => navigator.push('damages'),
+                  backgroundColor: Colors.blue,
+                  icon: const Icon(Icons.report),
+                  label: const Text('Schademeldingen'),
+                ),
+                FloatingActionButton.extended(
+                  onPressed: () => navigator.push('all'),
+                  backgroundColor: Colors.lightBlue,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Afschrijven'),
+                ),
+              ],
             )
           : null,
     );
