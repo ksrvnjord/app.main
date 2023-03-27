@@ -8,7 +8,6 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/api/reservation_made_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
@@ -330,7 +329,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           ),
         );
       }
-      ref.read(reservationMadeProvider.notifier).madeReservation();
       ref.read(reservationProgressProvider.notifier).done();
       Routemaster.of(context).pop();
     });
