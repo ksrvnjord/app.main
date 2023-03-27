@@ -61,39 +61,40 @@ class _AllTrainingPage extends State<AllTrainingPage> {
     return DefaultTabController(
       length: days.length,
       child: Scaffold(
+        floatingActionButton: Stack(children: [
+          FloatingActionButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ShowFiltersPage(
+                parentUpdate: updateFilters,
+              ),
+            )),
+            tooltip: "Kies afschrijf filters",
+            backgroundColor: Colors.lightBlue,
+            child: const Icon(Icons.filter_list_alt),
+          ),
+          if (_filters.isNotEmpty)
+            // show a red badge if there are filters selected, don't show the amount of filters
+            Positioned(
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(1),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 14,
+                  minHeight: 14,
+                ),
+              ),
+            ),
+        ]),
         appBar: AppBar(
           title: const Text('Afschrijven'),
           backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
           systemOverlayStyle:
               const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-          actions: [
-            // show filter icon button to toggle filters
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ShowFiltersPage(
-                      parentUpdate: updateFilters,
-                    ),
-                  )),
-                  icon: const Icon(Icons.filter_list_alt),
-                ),
-                if (_filters.isNotEmpty)
-                  const Positioned(
-                    top: 10,
-                    right: 8,
-                    child: // show a white dot if there are filters applied
-                        Icon(
-                      Icons.circle,
-                      size: 14,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-              ],
-            ),
-          ],
           bottom: TabBar(
             isScrollable: true,
             labelColor: Colors.black,
