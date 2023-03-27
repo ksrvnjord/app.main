@@ -38,24 +38,10 @@ class AllTrainingPage extends ConsumerWidget {
             )),
             tooltip: "Kies afschrijf filters",
             backgroundColor: Colors.lightBlue,
+            foregroundColor: // depend on if filters selected
+                filterList.isNotEmpty ? Colors.orangeAccent : Colors.white,
             child: const Icon(Icons.filter_list_alt),
           ),
-          if (filterList.isNotEmpty)
-            // show a red badge if there are filters selected, don't show the amount of filters
-            Positioned(
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(1),
-                decoration: const BoxDecoration(
-                  color: Colors.blueGrey,
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                ),
-                constraints: const BoxConstraints(
-                  minWidth: 16,
-                  minHeight: 16,
-                ),
-              ),
-            ),
         ]),
         appBar: AppBar(
           title: const Text('Afschrijven'),
