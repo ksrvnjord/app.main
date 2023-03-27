@@ -65,12 +65,14 @@ class AllTrainingPage extends ConsumerWidget {
               const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
           bottom: TabBar(
             isScrollable: true,
-            labelColor: Colors.black,
-            labelStyle: const TextStyle(fontSize: 20),
-            unselectedLabelStyle: const TextStyle(fontSize: 16),
+            labelColor: Colors.white,
+            labelStyle: const TextStyle(fontSize: 16),
+            unselectedLabelStyle: const TextStyle(fontSize: 14),
             unselectedLabelColor: Colors.white60,
             indicator: BoxDecoration(
-              color: Colors.grey[50],
+              // color: Colors.grey[50],
+              border: // white border around the selected tab
+                  Border.all(color: Colors.white, width: 1),
               borderRadius: const BorderRadius.all(Radius.circular(40)),
               shape: BoxShape.rectangle,
             ),
@@ -78,7 +80,9 @@ class AllTrainingPage extends ConsumerWidget {
             indicatorWeight: 0,
             tabs: days
                 .map<Widget>(
-                  (e) => Tab(icon: null, text: DateFormat('E d MMM').format(e)),
+                  (e) => Tab(
+                    text: DateFormat('EEEE d MMM', 'nl_NL').format(e),
+                  ),
                 )
                 .toList(),
           ),
