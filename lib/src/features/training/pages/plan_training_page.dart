@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_ti
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_made_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
@@ -259,31 +260,51 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           ),
         ],
       ),
-      ElevatedButton(
-        onPressed: () => createReservation(
-          firebaseUser.uid,
-          creatorName,
-        ),
-        style: ElevatedButton.styleFrom(
-          // add rounding
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          backgroundColor: Colors.lightBlue,
-        ),
-        child: <Widget>[
-          const Icon(LucideIcons.check).padding(bottom: 1),
-          const Text('Afschrijven', style: TextStyle(fontSize: 18))
-              .padding(vertical: fieldPadding),
-        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+      _buildReservateButton(
+        firebaseUser,
+        creatorName,
+        fieldPadding,
       ).padding(all: fieldPadding),
     ]);
+  }
+
+  ElevatedButton _buildReservateButton(
+    User firebaseUser,
+    String creatorName,
+    double fieldPadding,
+  ) {
+    final reservationIsInProgress = ref.watch(reservationProgressProvider);
+
+    return ElevatedButton(
+      onPressed: reservationIsInProgress
+          ? null
+          : () => createReservation(
+                firebaseUser.uid,
+                creatorName,
+              ),
+      style: ElevatedButton.styleFrom(
+        // add rounding
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        backgroundColor: Colors.lightBlue,
+      ),
+      child: <Widget>[
+        Icon(reservationIsInProgress ? LucideIcons.loader : LucideIcons.check)
+            .padding(bottom: 1),
+        Text(
+          reservationIsInProgress ? "Zwanen voeren..." : 'Afschrijven',
+          style: const TextStyle(fontSize: 18),
+        ).padding(vertical: fieldPadding),
+      ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+    );
   }
 
   void createReservation(
     String uid,
     String creatorName,
   ) {
+    ref.read(reservationProgressProvider.notifier).inProgress();
     createReservationCloud(Reservation(
       _startTime,
       _endTime,
@@ -295,6 +316,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       if (res['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+            showCloseIcon: true,
             backgroundColor: Colors.green,
             content: Text('Afschrijving gelukt!'),
           ),
@@ -302,12 +324,14 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            showCloseIcon: true,
             backgroundColor: Colors.red,
             content: Text("Afschrijving mislukt! ${res['error']}"),
           ),
         );
       }
       ref.read(reservationMadeProvider.notifier).madeReservation();
+      ref.read(reservationProgressProvider.notifier).done();
       Routemaster.of(context).pop();
     });
   }
