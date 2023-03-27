@@ -66,14 +66,17 @@ class AllTrainingPage extends ConsumerWidget {
           bottom: TabBar(
             isScrollable: true,
             labelColor: Colors.white,
-            labelStyle: const TextStyle(fontSize: 16),
+            labelStyle:
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(fontSize: 14),
             unselectedLabelColor: Colors.white60,
-            indicator: BoxDecoration(
+            indicator: const BoxDecoration(
               // color: Colors.grey[50],
               border: // white border around the selected tab
-                  Border.all(color: Colors.white, width: 1),
-              borderRadius: const BorderRadius.all(Radius.circular(40)),
+                  Border.fromBorderSide(
+                BorderSide(color: Colors.white, width: 1),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(40)),
               shape: BoxShape.rectangle,
             ),
             indicatorPadding: const EdgeInsets.all(4),
