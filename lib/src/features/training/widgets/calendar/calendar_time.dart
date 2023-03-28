@@ -17,6 +17,7 @@ class CalendarTime extends StatelessWidget {
   static const double smallTicks = 56;
   static const double bigTicks = 50;
   static const double leftPaddingOfTime = 8;
+  static const double timeRightPadding = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +51,12 @@ class CalendarTime extends StatelessWidget {
                     ]
                         .toRow(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
                         )
-                        .padding(left: leftPaddingOfTime),
+                        .padding(
+                          left: leftPaddingOfTime,
+                          right: timeRightPadding,
+                        ),
                 ]),
               ))
           .toList()
