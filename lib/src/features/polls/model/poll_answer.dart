@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PollAnswer {
   final String userId;
-  final String answer;
+  final String? answer; // user can choose to not answer
   final DateTime answeredAt;
 
   const PollAnswer({
