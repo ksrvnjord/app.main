@@ -49,11 +49,15 @@ class PollsPage extends ConsumerWidget {
                         value: option,
                         title: Text(option),
                         onChanged: (String? choice) => {
-                          answer.docs.first.reference.update({
-                            'answer': choice,
-                          }),
+                          answer.size == 0
+                              ? {} // TODO: add new answer here
+                              : answer.docs.first.reference.update({
+                                  'answer': choice,
+                                }),
                         },
-                        groupValue: answer.docs.first.data().answer,
+                        groupValue: answer.size == 0
+                            ? null
+                            : answer.docs.first.data().answer,
                       )),
                 ].toColumn(),
                 error: (err, stk) =>
