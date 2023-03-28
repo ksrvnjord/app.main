@@ -43,11 +43,12 @@ class PollsPage extends ConsumerWidget {
               answer.when(
                 data: (answer) => [
                   ...poll.options.map((option) => RadioListTile(
+                        toggleable: true,
                         value: option,
                         title: Text(option),
-                        onChanged: (_) => {
+                        onChanged: (String? choice) => {
                           answer.docs.first.reference.update({
-                            'answer': option,
+                            'answer': choice,
                           }),
                         },
                         groupValue: answer.docs.first.data().answer,
