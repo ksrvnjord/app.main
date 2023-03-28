@@ -30,6 +30,8 @@ class AllTrainingPage extends ConsumerWidget {
 
     return DefaultTabController(
       length: days.length,
+      animationDuration:
+          const Duration(milliseconds: 1726 ~/ 2), // no need to explain this
       child: Scaffold(
         floatingActionButton: Stack(children: [
           FloatingActionButton(
