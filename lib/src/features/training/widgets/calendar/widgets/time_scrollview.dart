@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-import '../calendar_measurement.dart';
-
 class TimeScrollView extends StatelessWidget {
   const TimeScrollView({
     super.key,
