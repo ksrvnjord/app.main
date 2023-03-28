@@ -7,6 +7,8 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+// TODO: add handling for if user has no answer yet
+// TODO: Only polls that are open should be modifiable
 class PollsPage extends ConsumerWidget {
   const PollsPage({Key? key}) : super(key: key);
 
