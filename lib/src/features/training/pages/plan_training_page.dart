@@ -192,7 +192,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       DataTextListTile(name: 'Boot', value: widget.objectName),
       DataTextListTile(
         name: "Datum",
-        value: DateFormat.yMMMMd().format(widget.date),
+        value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
       ),
       Row(
         children: [
