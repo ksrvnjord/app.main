@@ -128,6 +128,8 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     });
   }
 
+  static const double stripeWidth1726 = 8;
+
   @override
   Widget build(BuildContext context) {
     final reservations = ref.watch(reservationsProvider(
@@ -177,6 +179,26 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
             },
             error: (error, stackTrace) =>
                 ErrorCardWidget(errorMessage: error.toString()),
+          ),
+          Positioned(
+            top: CalendarMeasurement.amountOfPixelsTill1726FromTop(),
+            left: 0,
+            child: Row(
+              children: [
+                for (int i = 0;
+                    i < CalendarMeasurement.slotWidth ~/ stripeWidth1726;
+                    i++)
+                  Container(
+                    color: // use hex color code
+                        // ignore: no-magic-number
+                        i % 2 == 0
+                            ? const Color(0x6011436d)
+                            : Colors.transparent,
+                    height: 2,
+                    width: stripeWidth1726,
+                  ),
+              ],
+            ),
           ),
         ],
       ),

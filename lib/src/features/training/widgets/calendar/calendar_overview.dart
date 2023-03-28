@@ -70,6 +70,7 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
               TimeScrollView(
                 timesController: timesController,
               ), // this builds the time column on the left side
+              // I want to draw a line across the screen horizontally
             ],
           );
   }
