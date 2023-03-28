@@ -18,7 +18,7 @@ class TrainingListItem extends StatelessWidget {
     final navigator = Routemaster.of(context);
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
-    final DateFormat dateFormat = DateFormat('MMM d, HH:mm');
+    final DateFormat dateFormat = DateFormat('E d MMM HH:mm', 'nl_NL');
     final CollectionReference reservationObjectsRef =
         db.collection('reservationObjects');
     String trainingTimeFromTimestamps(reservation) {
@@ -45,12 +45,15 @@ class TrainingListItem extends StatelessWidget {
               snapshot.data!.data() as Map<String, dynamic>;
 
           return ListTile(
-            tileColor: Colors.white,
             title: Text(boat['name']),
             subtitle: Text(trainingTimeFromTimestamps(reservation)),
-            leading: const Icon(
-              Icons.fitness_center,
-              color: Colors.blueGrey,
+            leading: const [
+              Icon(
+                Icons.fitness_center,
+                color: Colors.blueGrey,
+              ),
+            ].toColumn(
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
             trailing: <Widget>[
               IconButton(
@@ -76,6 +79,14 @@ class TrainingListItem extends StatelessWidget {
               ),
             ].toWrap(
               direction: Axis.horizontal,
+            ),
+          ).card(
+            color: // if damage is critical show light red, else orange
+                Colors.white,
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(color: Colors.lightBlue, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           );
         }

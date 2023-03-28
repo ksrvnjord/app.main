@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.da
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class TrainingList extends StatefulWidget {
   const TrainingList({super.key});
@@ -49,8 +50,9 @@ class TrainingListState extends State<TrainingList> {
 
   Widget showMyReservations(QuerySnapshot<Reservation> snapshot) {
     if (snapshot.docs.isEmpty) {
-      return const Center(
-        child: Text('Je hebt geen afschrijvingen...'),
+      return Center(
+        // ignore: avoid-non-ascii-symbols
+        child: const Text('Het is wel leeg hier...').textColor(Colors.blueGrey),
       );
     }
 
@@ -58,7 +60,7 @@ class TrainingListState extends State<TrainingList> {
       itemCount: snapshot.docs.length,
       padding: const EdgeInsets.all(10),
       separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
       itemBuilder: (BuildContext context, int index) => Center(
         child: TrainingListItem(reservation: snapshot.docs[index]),
       ),

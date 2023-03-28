@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
@@ -39,7 +41,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
-class PlanTrainingPage extends StatefulWidget {
+class PlanTrainingPage extends ConsumerStatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
   late final DateTime date;
@@ -56,10 +58,10 @@ class PlanTrainingPage extends StatefulWidget {
   }
 
   @override
-  State<PlanTrainingPage> createState() => _PlanTrainingPageState();
+  createState() => _PlanTrainingPageState();
 }
 
-class _PlanTrainingPageState extends State<PlanTrainingPage> {
+class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   late DateTime _startTime; // Selected start time of the slider
   late DateTime _endTime; // Selected end time of the slider
   late TimeOfDay _startTimeOfDay; // Selected start time of the slider
@@ -190,7 +192,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       DataTextListTile(name: 'Boot', value: widget.objectName),
       DataTextListTile(
         name: "Datum",
-        value: DateFormat.yMMMMd().format(widget.date),
+        value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
       ),
       Row(
         children: [
@@ -257,31 +259,51 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
           ),
         ],
       ),
-      ElevatedButton(
-        onPressed: () => createReservation(
-          firebaseUser.uid,
-          creatorName,
-        ),
-        style: ElevatedButton.styleFrom(
-          // add rounding
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          backgroundColor: Colors.lightBlue,
-        ),
-        child: <Widget>[
-          const Icon(LucideIcons.check).padding(bottom: 1),
-          const Text('Afschrijven', style: TextStyle(fontSize: 18))
-              .padding(vertical: fieldPadding),
-        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+      _buildReservateButton(
+        firebaseUser,
+        creatorName,
+        fieldPadding,
       ).padding(all: fieldPadding),
     ]);
+  }
+
+  ElevatedButton _buildReservateButton(
+    User firebaseUser,
+    String creatorName,
+    double fieldPadding,
+  ) {
+    final reservationIsInProgress = ref.watch(reservationProgressProvider);
+
+    return ElevatedButton(
+      onPressed: reservationIsInProgress
+          ? null
+          : () => createReservation(
+                firebaseUser.uid,
+                creatorName,
+              ),
+      style: ElevatedButton.styleFrom(
+        // add rounding
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        backgroundColor: Colors.lightBlue,
+      ),
+      child: <Widget>[
+        Icon(reservationIsInProgress ? LucideIcons.loader : LucideIcons.check)
+            .padding(bottom: 1),
+        Text(
+          reservationIsInProgress ? "Zwanen voeren..." : 'Afschrijven',
+          style: const TextStyle(fontSize: 18),
+        ).padding(vertical: fieldPadding),
+      ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+    );
   }
 
   void createReservation(
     String uid,
     String creatorName,
   ) {
+    ref.read(reservationProgressProvider.notifier).inProgress();
     createReservationCloud(Reservation(
       _startTime,
       _endTime,
@@ -293,6 +315,7 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       if (res['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+            showCloseIcon: true,
             backgroundColor: Colors.green,
             content: Text('Afschrijving gelukt!'),
           ),
@@ -300,11 +323,13 @@ class _PlanTrainingPageState extends State<PlanTrainingPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            showCloseIcon: true,
             backgroundColor: Colors.red,
             content: Text("Afschrijving mislukt! ${res['error']}"),
           ),
         );
       }
+      ref.read(reservationProgressProvider.notifier).done();
       Routemaster.of(context).pop();
     });
   }

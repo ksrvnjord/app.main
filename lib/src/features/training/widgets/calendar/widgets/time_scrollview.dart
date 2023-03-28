@@ -13,6 +13,7 @@ class TimeScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double topLeftCornerHeight = 64;
+    // calculate amount of minutes between 17:26 and 22:00
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,

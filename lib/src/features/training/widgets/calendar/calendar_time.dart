@@ -14,6 +14,11 @@ class CalendarTime extends StatelessWidget {
         .add(Duration(minutes: index * CalendarMeasurement.minutesInSlot)),
   );
 
+  static const double smallTicks = 56;
+  static const double bigTicks = 50;
+  static const double leftPaddingOfTime = 8;
+  static const double timeRightPadding = 18;
+
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
@@ -26,18 +31,32 @@ class CalendarTime extends StatelessWidget {
                 width: timeWidth,
                 child: Stack(children: [
                   Container(
-                    padding: const EdgeInsets.only(left: 54),
+                    padding: EdgeInsets.only(
+                      left: timestamp.minute == 0 ? bigTicks : smallTicks,
+                    ),
                     height: CalendarMeasurement.slotHeight,
                     child: const Divider(
                       color: Colors.grey,
                     ),
                   ),
-                  Text(
-                    DateFormat('Hm').format(timestamp),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ).center(),
+                  if (timestamp.minute ==
+                      0) // only show the time if it's a full hour
+                    [
+                      Text(
+                        DateFormat('H:mm').format(timestamp),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ).center(),
+                    ]
+                        .toRow(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                        )
+                        .padding(
+                          left: leftPaddingOfTime,
+                          right: timeRightPadding,
+                        ),
                 ]),
               ))
           .toList()

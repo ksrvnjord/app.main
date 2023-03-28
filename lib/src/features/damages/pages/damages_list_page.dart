@@ -57,8 +57,8 @@ class DamagesListPage extends StatelessWidget {
           ? FloatingActionButton.extended(
               onPressed: () => navigator.push('create'),
               backgroundColor: Colors.blue,
-              icon: const Icon(Icons.report),
-              label: const Text('Schade melden'),
+              icon: const Icon(Icons.add),
+              label: const Text('Nieuwe schade melden'),
             )
           : null,
     );

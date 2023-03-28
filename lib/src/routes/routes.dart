@@ -191,7 +191,7 @@ final routeMap = RouteMap(
             reservationObjectId: route.queryParameters['reservationObjectId']!,
           ),
         ),
-    '/training/all': (_) => const CupertinoPage(
+    '/training/all': (_) => CupertinoPage(
           child: AllTrainingPage(),
         ),
     '/training/all/plan': (route) => CupertinoPage(

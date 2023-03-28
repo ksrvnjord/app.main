@@ -89,7 +89,8 @@ class ShowTrainingPage extends StatelessWidget {
                   DateTime date = DateTime.fromMillisecondsSinceEpoch(
                     reservation['startTime'].millisecondsSinceEpoch,
                   );
-                  String formattedDate = DateFormat.yMMMMEEEEd().format(date);
+                  String formattedDate =
+                      DateFormat.yMMMMEEEEd('nl_NL').format(date);
 
                   children.addAll([
                     // add ListTile with the date

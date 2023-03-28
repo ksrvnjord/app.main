@@ -2,100 +2,49 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/model/boat_types.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ShowFiltersPage extends StatefulWidget {
-  final Function parentUpdate;
+import '../api/reservation_object_type_filters_notifier.dart';
 
-  const ShowFiltersPage({
+class ShowFiltersPage extends ConsumerWidget {
+  ShowFiltersPage({
     Key? key,
-    required this.parentUpdate,
   }) : super(key: key);
 
-  @override
-  State<ShowFiltersPage> createState() => _ShowFiltersPage();
-}
+  final Map<String, List<MultiSelectItem<String?>>>
+      availableFilters = // build a map of categories and their types
+      reservationObjectTypes.map((category, types) => MapEntry(
+            category,
+            types
+                .map((type) => MultiSelectItem<String?>(
+                      type,
+                      // ignore: no-equal-arguments
+                      type,
+                    ))
+                .toList(),
+          ));
+  static const Map<String, Color> categoryColors = {
+    'Binnen': Colors.blue,
+    '1 roeier': Colors.red,
+    '2 roeiers': Colors.orange,
+    '4 roeiers': Colors.green,
+    '8 roeiers': Colors.purple,
+    'Overig': Colors.grey,
+  };
+  static const double categoryPadding = 4;
+  static const double selectedChipOpacity = 0.5;
 
-class _ShowFiltersPage extends State<ShowFiltersPage> {
-  final Future<SharedPreferences> _prefsFuture =
-      SharedPreferences.getInstance();
-  late SharedPreferences _sharedPrefs;
-
-  late List<String> _selectedFilters = [];
-  final Map<String, List<String>> _activeFiltersMap = {};
-
-  Future<void> _getFiltersFromPrefs() async {
-    // retrieve the filters from SharedPreferences
-    _sharedPrefs = await _prefsFuture;
-
-    if (mounted) {
-      setState(() {
-        List<String> filters =
-            _sharedPrefs.getStringList('afschrijf_filters') ?? [];
-        _selectedFilters = filters;
-        // place the filters in the correct category
-        for (final category in reservationObjectTypes.entries) {
-          String key = category.key;
-          List<String> values = category.value;
-          _activeFiltersMap[key] = [];
-
-          for (final filter in filters) {
-            if (values.contains(filter)) {
-              _activeFiltersMap[key]?.add(filter);
-            }
-          }
-        }
-      });
-    }
-  }
-
-  void updateFilters(String category, List<String> filters) {
-    setState(() {
-      _activeFiltersMap[category] = filters;
-      _selectedFilters = _activeFiltersMap.values.expand((e) => e).toList();
-      widget.parentUpdate(_selectedFilters);
-    });
-  }
+  static const double categoryFontSize = 16;
+  static const double pagePadding = 8;
+  static const double headerFontSize = 16;
 
   @override
-  void initState() {
-    super.initState();
-    _getFiltersFromPrefs();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const double pagePadding = 8;
-    const double headerFontSize = 16;
-
-    Map<String, List<MultiSelectItem<String?>>> availableFilters =
-        reservationObjectTypes.map((key, value) => MapEntry(
-              key,
-              value
-                  .map((filter) => MultiSelectItem<String?>(
-                        filter,
-                        // ignore: no-equal-arguments
-                        filter,
-                      ))
-                  .toList(),
-            ));
-
-    const double categoryPadding = 4;
-    const double selectedChipOpacity = 0.5;
-
-    Map<String, Color> categoryColors = {
-      'Binnen': Colors.blue,
-      '1 roeier': Colors.red,
-      '2 roeiers': Colors.orange,
-      '4 roeiers': Colors.green,
-      '8 roeiers': Colors.purple,
-      'Overig': Colors.grey,
-    };
-
-    const double categoryFontSize = 16;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Map<String, List<String>> activeFilters =
+        ref.watch(reservationTypeFiltersProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -137,11 +86,13 @@ class _ShowFiltersPage extends State<ShowFiltersPage> {
                           color: Colors.white,
                         ),
                         showHeader: false,
-                        initialValue: _activeFiltersMap[key] ?? [],
-                        onTap: (values) => updateFilters(
-                          key,
-                          values.whereType<String>().toList(),
-                        ),
+                        initialValue: activeFilters[key] ?? [],
+                        onTap: (values) => ref
+                            .read(reservationTypeFiltersProvider.notifier)
+                            .updateFiltersForCategory(
+                              key,
+                              values.whereType<String>().toList(),
+                            ),
                       ).padding(vertical: categoryPadding),
                     ],
                   ),
