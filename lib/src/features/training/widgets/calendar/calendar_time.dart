@@ -16,6 +16,7 @@ class CalendarTime extends StatelessWidget {
 
   static const double smallTicks = 56;
   static const double bigTicks = 50;
+  static const double leftPaddingOfTime = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,8 @@ class CalendarTime extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  if (timestamp.minute == 0)
+                  if (timestamp.minute ==
+                      0) // only show the time if it's a full hour
                     [
                       Text(
                         DateFormat('H:mm').format(timestamp),
@@ -50,7 +52,7 @@ class CalendarTime extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                         )
-                        .padding(left: 8),
+                        .padding(left: leftPaddingOfTime),
                 ]),
               ))
           .toList()
