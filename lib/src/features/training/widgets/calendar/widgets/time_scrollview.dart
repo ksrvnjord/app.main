@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+import '../calendar_measurement.dart';
+
 class TimeScrollView extends StatelessWidget {
   const TimeScrollView({
     super.key,
@@ -25,6 +27,30 @@ class TimeScrollView extends StatelessWidget {
           Container(
             color: Colors.grey[50],
             child: CalendarTime().padding(top: topLeftCornerHeight),
+          ),
+          Positioned(
+            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() +
+                topLeftCornerHeight,
+            left: 0,
+            child: Row(
+              children: [
+                for (int i = 0;
+                    i <
+                        CalendarMeasurement.slotWidth ~/
+                            CalendarMeasurement.stripeWidth1726;
+                    i++)
+                  Container(
+                    color: // use hex color code
+                        // ignore: no-magic-number
+                        i % 2 == 0
+                            ? const Color(0x6011436d)
+                            : Colors.transparent,
+                    // ignore: no-magic-number
+                    height: 2,
+                    width: CalendarMeasurement.stripeWidth1726,
+                  ),
+              ],
+            ),
           ),
         ],
       ),

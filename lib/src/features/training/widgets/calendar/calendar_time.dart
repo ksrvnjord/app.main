@@ -14,6 +14,9 @@ class CalendarTime extends StatelessWidget {
         .add(Duration(minutes: index * CalendarMeasurement.minutesInSlot)),
   );
 
+  static const double smallTicks = 56;
+  static const double bigTicks = 48;
+
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
@@ -26,18 +29,21 @@ class CalendarTime extends StatelessWidget {
                 width: timeWidth,
                 child: Stack(children: [
                   Container(
-                    padding: const EdgeInsets.only(left: 54),
+                    padding: EdgeInsets.only(
+                      left: timestamp.minute == 0 ? bigTicks : smallTicks,
+                    ),
                     height: CalendarMeasurement.slotHeight,
                     child: const Divider(
                       color: Colors.grey,
                     ),
                   ),
-                  Text(
-                    DateFormat('Hm').format(timestamp),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ).center(),
+                  if (timestamp.minute == 0)
+                    Text(
+                      DateFormat('H').format(timestamp),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ).center(),
                 ]),
               ))
           .toList()
