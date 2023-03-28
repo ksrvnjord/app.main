@@ -194,6 +194,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                         i % 2 == 0
                             ? const Color(0x6011436d)
                             : Colors.transparent,
+                    // ignore: no-magic-number
                     height: 2,
                     width: stripeWidth1726,
                   ),

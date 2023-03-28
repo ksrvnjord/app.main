@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_time.dart';
 import 'package:styled_widget/styled_widget.dart';
 
