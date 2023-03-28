@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PollAnswer {
   final String userId;
   final String answer;
@@ -14,7 +16,7 @@ class PollAnswer {
     return PollAnswer(
       userId: json['userId'],
       answer: json['answer'],
-      answeredAt: DateTime.parse(json['answeredAt']),
+      answeredAt: (json['answeredAt'] as Timestamp).toDate(),
     );
   }
 

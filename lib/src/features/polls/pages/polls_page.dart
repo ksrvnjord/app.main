@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -28,7 +29,9 @@ class PollsPage extends ConsumerWidget {
           padding: const EdgeInsets.all(8),
           itemCount: polls.size,
           itemBuilder: (context, index) {
-            final poll = polls.docs.toList()[index].data();
+            final pollDoc = polls.docs.toList()[index];
+            final poll = pollDoc.data();
+            final answer = ref.watch(pollAnswerProvider(pollDoc.reference));
 
             return [
               ListTile(
@@ -37,12 +40,23 @@ class PollsPage extends ConsumerWidget {
                   'Sluit op ${dateFormat.format(poll.openUntil)}',
                 ),
               ),
-              ...poll.options.map((option) => RadioListTile(
-                    value: option,
-                    title: Text(option),
-                    onChanged: (_) => {},
-                    groupValue: 'Ja',
-                  )),
+              answer.when(
+                data: (answer) => [
+                  ...poll.options.map((option) => RadioListTile(
+                        value: option,
+                        title: Text(option),
+                        onChanged: (_) => {
+                          answer.docs.first.reference.update({
+                            'answer': option,
+                          }),
+                        },
+                        groupValue: answer.docs.first.data().answer,
+                      )),
+                ].toColumn(),
+                error: (err, stk) =>
+                    ErrorCardWidget(errorMessage: err.toString()),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              ),
             ].toColumn().card(
                   color: Colors.white,
                   elevation: 0,
