@@ -16,7 +16,7 @@ class TrainingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Afschrijvingen'),
+        title: const Text('Mijn afschrijvingen'),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,

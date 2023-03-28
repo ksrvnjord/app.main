@@ -60,7 +60,7 @@ class TrainingListState extends State<TrainingList> {
       itemCount: snapshot.docs.length,
       padding: const EdgeInsets.all(10),
       separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
       itemBuilder: (BuildContext context, int index) => Center(
         child: TrainingListItem(reservation: snapshot.docs[index]),
       ),
