@@ -22,37 +22,9 @@ class TimeScrollView extends StatelessWidget {
       physics:
           const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
       controller: timesController,
-      child: Stack(
-        children: [
-          Container(
-            color: Colors.grey[50],
-            child: CalendarTime().padding(top: topLeftCornerHeight),
-          ),
-          Positioned(
-            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() +
-                topLeftCornerHeight,
-            left: 0,
-            child: Row(
-              children: [
-                for (int i = 0;
-                    i <
-                        CalendarMeasurement.slotWidth ~/
-                            CalendarMeasurement.stripeWidth1726;
-                    i++)
-                  Container(
-                    color: // use hex color code
-                        // ignore: no-magic-number
-                        i % 2 == 0
-                            ? const Color(0x6011436d)
-                            : Colors.transparent,
-                    // ignore: no-magic-number
-                    height: 2,
-                    width: CalendarMeasurement.stripeWidth1726,
-                  ),
-              ],
-            ),
-          ),
-        ],
+      child: Container(
+        color: Colors.grey[50],
+        child: CalendarTime().padding(top: topLeftCornerHeight),
       ),
     );
   }

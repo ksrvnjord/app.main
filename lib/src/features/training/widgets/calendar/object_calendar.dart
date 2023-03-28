@@ -179,7 +179,8 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
           Positioned(
-            top: CalendarMeasurement.amountOfPixelsTill1726FromTop(),
+            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() -
+                1, // -1, because the line is 2px high
             left: 0,
             child: Row(
               children: [

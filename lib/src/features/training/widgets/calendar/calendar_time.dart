@@ -15,7 +15,7 @@ class CalendarTime extends StatelessWidget {
   );
 
   static const double smallTicks = 56;
-  static const double bigTicks = 48;
+  static const double bigTicks = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,19 @@ class CalendarTime extends StatelessWidget {
                     ),
                   ),
                   if (timestamp.minute == 0)
-                    Text(
-                      DateFormat('H').format(timestamp),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ).center(),
+                    [
+                      Text(
+                        DateFormat('H:mm').format(timestamp),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ).center(),
+                    ]
+                        .toRow(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                        )
+                        .padding(left: 8),
                 ]),
               ))
           .toList()
