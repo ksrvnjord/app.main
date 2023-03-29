@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-// TODO: add handling for if user has no answer yet
 // TODO: Only polls that are open should be modifiable
 class PollsPage extends ConsumerWidget {
   const PollsPage({Key? key}) : super(key: key);
@@ -33,7 +35,17 @@ class PollsPage extends ConsumerWidget {
           itemBuilder: (context, index) {
             final pollDoc = polls.docs.toList()[index];
             final poll = pollDoc.data();
-            final answer = ref.watch(pollAnswerProvider(pollDoc.reference));
+            final answerStream =
+                ref.watch(pollAnswerProvider(pollDoc.reference));
+
+            final CollectionReference<PollAnswer> answersOfPoll =
+                FirebaseFirestore.instance
+                    .collection('${pollDoc.reference.path}/answers')
+                    .withConverter<PollAnswer>(
+                      fromFirestore: (snapshot, _) =>
+                          PollAnswer.fromJson(snapshot.data()!),
+                      toFirestore: (answer, _) => answer.toJson(),
+                    );
 
             return [
               ListTile(
@@ -42,24 +54,34 @@ class PollsPage extends ConsumerWidget {
                   'Sluit op ${dateFormat.format(poll.openUntil)}',
                 ),
               ),
-              answer.when(
-                data: (answer) => [
-                  ...poll.options.map((option) => RadioListTile(
-                        toggleable: true,
-                        value: option,
-                        title: Text(option),
-                        onChanged: (String? choice) => {
-                          answer.size == 0
-                              ? {} // TODO: add new answer here
-                              : answer.docs.first.reference.update({
-                                  'answer': choice,
-                                }),
-                        },
-                        groupValue: answer.size == 0
-                            ? null
-                            : answer.docs.first.data().answer,
-                      )),
-                ].toColumn(),
+              answerStream.when(
+                data: (snapshot) {
+                  return [
+                    ...poll.options.map((option) => RadioListTile(
+                          toggleable: true,
+                          value: option,
+                          title: Text(option),
+                          onChanged: (String? choice) => {
+                            snapshot.size == 0
+                                ? {
+                                    answersOfPoll.add(PollAnswer(
+                                      userId: FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      answer: choice,
+                                      answeredAt: DateTime.now(),
+                                    )),
+                                  }
+                                : snapshot.docs.first.reference.update({
+                                    'answer': choice,
+                                    'answeredAt': Timestamp.now(),
+                                  }),
+                          },
+                          groupValue: snapshot.size == 0
+                              ? null
+                              : snapshot.docs.first.data().answer,
+                        )),
+                  ].toColumn();
+                },
                 error: (err, stk) =>
                     ErrorCardWidget(errorMessage: err.toString()),
                 loading: () => const Center(child: CircularProgressIndicator()),
