@@ -25,7 +25,9 @@ class PollAnswer {
     return {
       'userId': userId,
       'answer': answer,
-      'answeredAt': answeredAt.toIso8601String(),
+      'answeredAt': Timestamp.fromDate(answeredAt),
     };
   }
+
+  // create static method that adds a poll answer to Firestore
 }
