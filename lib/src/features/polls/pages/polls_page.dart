@@ -1,14 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 // TODO: Only polls that are open should be modifiable
 class PollsPage extends ConsumerWidget {
@@ -16,9 +11,7 @@ class PollsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pollsVal = ref.watch(pollsProvider);
-    // create DateFormat for Dayname Day Month Year Time
-    final DateFormat dateFormat = DateFormat('EEEE d MMMM y HH:mm', 'nl_NL');
+    final pollQuery = ref.watch(pollsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,75 +21,14 @@ class PollsPage extends ConsumerWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: pollsVal.when(
-        data: (polls) => ListView.builder(
+      body: pollQuery.when(
+        data: (snapshot) => ListView.separated(
           padding: const EdgeInsets.all(8),
-          itemCount: polls.size,
-          itemBuilder: (context, index) {
-            final pollDoc = polls.docs.toList()[index];
-            final poll = pollDoc.data();
-            final answerStream =
-                ref.watch(pollAnswerProvider(pollDoc.reference));
-
-            final CollectionReference<PollAnswer> answersOfPoll =
-                FirebaseFirestore.instance
-                    .collection('${pollDoc.reference.path}/answers')
-                    .withConverter<PollAnswer>(
-                      fromFirestore: (snapshot, _) =>
-                          PollAnswer.fromJson(snapshot.data()!),
-                      toFirestore: (answer, _) => answer.toJson(),
-                    );
-
-            return [
-              ListTile(
-                title: Text(poll.question),
-                subtitle: Text(
-                  'Sluit op ${dateFormat.format(poll.openUntil)}',
-                ),
-              ),
-              answerStream.when(
-                data: (snapshot) {
-                  return [
-                    ...poll.options.map((option) => RadioListTile(
-                          toggleable: true,
-                          value: option,
-                          title: Text(option),
-                          onChanged: (String? choice) => {
-                            snapshot.size == 0
-                                ? {
-                                    answersOfPoll.add(PollAnswer(
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      answer: choice,
-                                      answeredAt: DateTime.now(),
-                                    )),
-                                  }
-                                : snapshot.docs.first.reference.update({
-                                    'answer': choice,
-                                    'answeredAt': Timestamp.now(),
-                                  }),
-                          },
-                          groupValue: snapshot.size == 0
-                              ? null
-                              : snapshot.docs.first.data().answer,
-                        )),
-                  ].toColumn();
-                },
-                error: (err, stk) =>
-                    ErrorCardWidget(errorMessage: err.toString()),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              ),
-            ].toColumn().card(
-                  color: Colors.white,
-                  elevation: 0,
-                  // add lightblue border
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.lightBlue, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                );
-          },
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+          itemCount: snapshot.size,
+          itemBuilder: (context, index) => PollCard(
+            pollDoc: snapshot.docs[index],
+          ),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>
