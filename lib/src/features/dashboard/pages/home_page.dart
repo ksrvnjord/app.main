@@ -17,24 +17,23 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double elementPadding = 4;
 
+    final double logoSize =
+        0.5 * MediaQuery.of(context).size.width; // half of the screen width
+
     return Scaffold(
-      appBar: AppBar(
-        title: [
-          const LogoWidget(image: Images.appLogo),
-        ].toRow(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-        ),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(top: 40),
+          child: [
+            Image.asset(
+              Images.appLogoBlue,
+              width: logoSize,
+            ),
+          ].toRow(),
+        ),
         const VaarverbodWidget().padding(
           bottom: elementPadding,
-        ), // TODO: this widget looks a bit awkward
-        // create Raised Button that leads to polls page
+        ),
         MaterialButton(
           elevation: 0,
           color: Colors.lightBlue,
