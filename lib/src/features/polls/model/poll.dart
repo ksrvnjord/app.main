@@ -6,11 +6,13 @@ class Poll {
   final String question;
   final List<String> options;
   final DateTime openUntil;
+  final String? description;
 
   const Poll({
     required this.question,
     required this.options,
     required this.openUntil,
+    this.description,
   });
 
   // create fromJson method
@@ -19,6 +21,7 @@ class Poll {
       question: json['question'],
       options: json['options'].cast<String>(),
       openUntil: (json['openUntil'] as Timestamp).toDate(),
+      description: json.containsKey('description') ? json['description'] : null,
     );
   }
 
@@ -28,6 +31,7 @@ class Poll {
       'question': question,
       'options': options,
       'openUntil': openUntil.toIso8601String(),
+      'description': description,
     };
   }
 }

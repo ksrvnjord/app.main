@@ -37,8 +37,8 @@ class FormsWidget extends ConsumerWidget {
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
           ).textColor(Colors.grey),
           children: [
-            const Text("De varsity is de mooiste studentenroeiwedstrijd!")
-                .textColor(Colors.blueGrey),
+            if (poll.description != null)
+              Text(poll.description!).textColor(Colors.blueGrey),
             answerStream.when(
               data: (snapshot) {
                 final String? answerOfUser = snapshot.size != 0
