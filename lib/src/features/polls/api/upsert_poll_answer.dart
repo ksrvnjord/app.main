@@ -6,8 +6,13 @@ import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 void upsertPollAnswer(
   String? choice,
   QuerySnapshot<PollAnswer> snapshot,
-  DocumentSnapshot<Poll> pollDoc,
+  QueryDocumentSnapshot<Poll> pollDoc,
 ) {
+  final Poll poll = pollDoc.data();
+  if (DateTime.now().isAfter(poll.openUntil)) {
+    throw Exception('Poll is closed');
+  }
+
   final CollectionReference<PollAnswer> answersOfPoll = FirebaseFirestore
       .instance
       .collection('${pollDoc.reference.path}/answers')
