@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -28,11 +26,12 @@ class HomePage extends StatelessWidget {
             Image.asset(
               Images.appLogoBlue,
               width: logoSize,
-            ),
-          ].toRow(),
-        ),
-        const VaarverbodWidget().padding(
-          bottom: elementPadding,
+            ).padding(right: 8),
+            const VaarverbodWidget().expanded(),
+          ].toRow(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+          ),
         ),
         MaterialButton(
           elevation: 0,
