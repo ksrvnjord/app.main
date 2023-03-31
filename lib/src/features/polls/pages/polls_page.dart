@@ -22,14 +22,17 @@ class PollsPage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: pollQuery.when(
-        data: (snapshot) => ListView.separated(
-          padding: const EdgeInsets.all(8),
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemCount: snapshot.size,
-          itemBuilder: (context, index) => PollCard(
-            pollDoc: snapshot.docs[index],
-          ),
-        ),
+        data: (snapshot) => snapshot.size == 0
+            ? const Center(child: Text('Geen polls gevonden'))
+            : ListView.separated(
+                padding: const EdgeInsets.all(8),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+                itemCount: snapshot.size,
+                itemBuilder: (context, index) => PollCard(
+                  pollDoc: snapshot.docs[index],
+                ),
+              ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>
             ErrorCardWidget(errorMessage: error.toString()),

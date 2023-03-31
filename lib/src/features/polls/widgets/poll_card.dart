@@ -53,6 +53,9 @@ class PollCard extends ConsumerWidget {
       ),
       answerStream.when(
         data: (snapshot) {
+          final String? answerOfUser =
+              snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
+
           return [
             ...poll.options.map((option) => RadioListTile(
                   toggleable: true,
@@ -60,9 +63,7 @@ class PollCard extends ConsumerWidget {
                   title: Text(option),
                   onChanged: (String? choice) =>
                       upsertPollAnswer(choice, snapshot),
-                  groupValue: snapshot.size == 0
-                      ? null
-                      : snapshot.docs.first.data().answer,
+                  groupValue: answerOfUser,
                 )),
           ].toColumn();
         },
