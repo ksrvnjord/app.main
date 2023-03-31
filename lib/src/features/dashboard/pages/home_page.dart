@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.only(top: 40),
           child: [
             Image.asset(
               Images.appLogoBlue,

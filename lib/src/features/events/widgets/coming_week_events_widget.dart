@@ -20,8 +20,6 @@ class ComingWeekEventsWidget extends StatelessWidget {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
     final eventsData = events(client);
 
-    initializeDateFormatting('nl_NL');
-
     const double titleFontSize = 16;
 
     return Column(
