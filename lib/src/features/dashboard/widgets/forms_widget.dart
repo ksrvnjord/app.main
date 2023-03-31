@@ -16,8 +16,8 @@ class FormsWidget extends ConsumerWidget {
   });
 
   Widget _buildOpenPollsList(QuerySnapshot<Poll> polls, WidgetRef ref) {
-    if (polls.size == 0) {
-      return const Text("Geen open polls");
+    if (polls.size != 0) {
+      return const Text("Geen open forms op dit moment").textColor(Colors.grey);
     }
     final docs = polls.docs;
     final first = docs.first;
