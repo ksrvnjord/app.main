@@ -75,7 +75,7 @@ class PollCard extends ConsumerWidget {
           elevation: 0,
           // add lightblue border
           shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.lightBlue, width: 2),
+            side: BorderSide(color: Colors.blueGrey, width: 1),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           margin: const EdgeInsets.symmetric(vertical: 5),
