@@ -20,6 +20,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
@@ -66,6 +67,10 @@ final routeMap = RouteMap(
     '/home': (_) => const CupertinoPage(
           name: 'Home',
           child: HomePage(),
+        ),
+    '/home/polls': (_) => const CupertinoPage(
+          name: 'Polls',
+          child: PollsPage(),
         ),
     '/home/announcements/:announcementId': (_) => const CupertinoPage(
           child: AnnouncementPage(),
