@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
@@ -48,7 +49,6 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(CurrentUser());
 
   runApp(const BetterFeedback(
-    localeOverride: Locale('nl', 'NL'),
     child: Application(),
   ));
 }
@@ -92,6 +92,8 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('nl_NL');
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
