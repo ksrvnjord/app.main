@@ -73,6 +73,28 @@ class FormsWidget extends StatelessWidget {
         ).alignment(Alignment.centerRight),
       ].toStack(),
       // TODO: show latest three forms
+      ExpansionTile(
+        initiallyExpanded: true,
+        title: Text("Zin in de Varsity?"),
+        subtitle:
+            Text("Sluit op 1 oktober 2021 om 23:59").textColor(Colors.grey),
+        children: [
+          Text("De varsity is de mooiste studentenroeiwedstrijd!")
+              .textColor(Colors.blueGrey),
+          RadioListTile(
+            value: "Ja",
+            title: Text("Ja"),
+            groupValue: null,
+            onChanged: (_) => null,
+          ),
+          RadioListTile(
+            value: "Natuurlijk",
+            title: Text("Natuurlijk"),
+            groupValue: null,
+            onChanged: (_) => null,
+          )
+        ],
+      ),
     ].toColumn();
   }
 }
