@@ -17,17 +17,20 @@ class PollCard extends ConsumerWidget {
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Poll> pollDoc;
+  static const double descriptionHPadding = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Poll poll = pollDoc.data();
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));
 
+    final bool pollIsOpen = DateTime.now().isBefore(poll.openUntil);
+
     return [
       ListTile(
         title: Text(poll.question),
         subtitle: Text(
-          'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
+          '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
         ),
       ),
       answerStream.when(
@@ -36,15 +39,23 @@ class PollCard extends ConsumerWidget {
               snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
 
           return [
+            if (poll.description != null)
+              Text(poll.description!)
+                  .textColor(Colors.blueGrey)
+                  .padding(horizontal: descriptionHPadding),
             ...poll.options.map((option) => RadioListTile(
                   toggleable: true,
                   value: option,
                   title: Text(option),
-                  onChanged: (String? choice) =>
-                      upsertPollAnswer(choice, snapshot, pollDoc),
+                  onChanged: pollIsOpen
+                      ? (String? choice) =>
+                          upsertPollAnswer(choice, snapshot, pollDoc)
+                      : null,
                   groupValue: answerOfUser,
                 )),
-          ].toColumn();
+          ].toColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+          );
         },
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
         loading: () => const Center(child: CircularProgressIndicator()),

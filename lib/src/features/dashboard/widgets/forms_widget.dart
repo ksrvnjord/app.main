@@ -16,11 +16,12 @@ class FormsWidget extends ConsumerWidget {
   });
 
   Widget _buildOpenPollsList(QuerySnapshot<Poll> polls, WidgetRef ref) {
-    if (polls.size != 0) {
+    if (polls.size == 0) {
       return const Text("Geen open forms op dit moment").textColor(Colors.grey);
     }
     final docs = polls.docs;
     final first = docs.first;
+    const double descriptionHPadding = 16;
 
     return [
       ...docs.map((doc) {
@@ -32,13 +33,16 @@ class FormsWidget extends ConsumerWidget {
             side: BorderSide(color: Colors.transparent, width: 0),
           ),
           initiallyExpanded: doc == first, // expand first poll
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
           title: Text(poll.question),
           subtitle: Text(
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
           ).textColor(Colors.grey),
           children: [
             if (poll.description != null)
-              Text(poll.description!).textColor(Colors.blueGrey),
+              Text(poll.description!)
+                  .textColor(Colors.blueGrey)
+                  .padding(horizontal: descriptionHPadding),
             answerStream.when(
               data: (snapshot) {
                 final String? answerOfUser = snapshot.size != 0
@@ -76,7 +80,7 @@ class FormsWidget extends ConsumerWidget {
     return [
       [
         const Text(
-          "Forms",
+          "Open forms",
         )
             .fontSize(headerFontSize)
             .fontWeight(FontWeight.w300)
