@@ -34,25 +34,38 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
           ),
         ),
-        MaterialButton(
-          elevation: 0,
-          color: Colors.lightBlue,
-          shape: // rounding
-              const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          child: [
-            // icon for filling form
-            const Icon(
-              Icons.assignment,
-              color: Colors.white,
-            ).padding(right: formsIconRightPadding),
-            const Text("Forms").textColor(Colors.white),
-          ].toRow(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
-          onPressed: () => Routemaster.of(context).push('polls'),
+        Column(
+          children: [
+            [
+              Align(
+                alignment: Alignment.center,
+                child: const Text(
+                  // TODO: make this a row so user can navigate to all forms
+                  "Forms",
+                )
+                    .fontSize(16)
+                    .fontWeight(FontWeight.w300)
+                    .textColor(Colors.blueGrey),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () => Routemaster.of(context).push('polls'),
+                  child: [
+                    const Text("Meer").textColor(Colors.blueGrey),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.blueGrey,
+                    ),
+                  ].toRow(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                  ),
+                ),
+              ),
+            ].toStack(),
+            // TODO: show latest three forms
+          ],
         ),
         const ComingWeekEventsWidget().padding(vertical: elementPadding),
         const AnnouncementsWidget().padding(vertical: elementPadding),
