@@ -1,32 +1,32 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/model/vaarverbod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class VaarverbodWidget extends StatelessWidget {
+class VaarverbodWidget extends ConsumerWidget {
   const VaarverbodWidget({Key? key}) : super(key: key);
 
   Widget showVaarverbod(
-    Response<Map<String, dynamic>> data,
+    Vaarverbod data,
     double innerPadding,
   ) {
-    Map<String, dynamic> r = data.data!;
-    final Color bgColor =
-        r['status'] == true ? Colors.redAccent : Colors.lightBlue;
-    final Color fgColor = r['status'] == true ? Colors.black : Colors.white;
+    bool status = data.status;
+    String message = data.message;
+    final Color bgColor = status ? Colors.redAccent : Colors.lightBlue;
+    final Color fgColor = status ? Colors.black : Colors.white;
     const double textSize = 16;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(r['status'] == true
-                ? Icons.priority_high
-                : Icons.favorite_outlined)
+        Icon(status ? Icons.priority_high : Icons.favorite_outlined)
             .iconColor(fgColor),
         Text(
-          r['message'],
+          message,
           textAlign: TextAlign.right,
           style: TextStyle(
             fontWeight: FontWeight.w800,
@@ -45,16 +45,14 @@ class VaarverbodWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Future<Response<Map<String, dynamic>>> vaarverbod =
-        Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vaarverbodRef = ref.watch(vaarverbodProvider);
 
     const double innerPadding = 8;
 
-    return FutureWrapper(
-      future: vaarverbod,
-      success: (data) => showVaarverbod(data, innerPadding),
-      loading: Shimmer.fromColors(
+    return vaarverbodRef.when(
+      data: (data) => showVaarverbod(data, innerPadding),
+      loading: () => Shimmer.fromColors(
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.grey[100]!,
         child: <Widget>[
@@ -68,14 +66,10 @@ class VaarverbodWidget extends StatelessWidget {
               ),
             ),
       ),
-      error: showErrorCard,
-    );
-  }
-
-  Widget showErrorCard(_) {
-    return const ErrorCardWidget(
-      errorMessage:
-          "Het is niet gelukt om het vaarverbod op te halen van de server. Heb je internet?",
+      error: (_, __) => const ErrorCardWidget(
+        errorMessage:
+            "Het is niet gelukt om het vaarverbod op te halen van de server. Heb je internet?",
+      ),
     );
   }
 }
