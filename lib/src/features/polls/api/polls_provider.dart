@@ -12,3 +12,10 @@ final CollectionReference<Poll> pollsCollection =
 final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
   return pollsCollection.get();
 });
+
+final openPollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) =>
+    pollsCollection
+        .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+        .orderBy('openUntil', descending: false)
+        .limit(3)
+        .get());
