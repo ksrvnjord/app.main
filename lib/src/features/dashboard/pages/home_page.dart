@@ -10,6 +10,7 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static const double formsIconRightPadding = 8;
+  static const double logoRightPadding = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,8 @@ class HomePage extends StatelessWidget {
             Image.asset(
               Images.appLogoBlue,
               width: logoSize,
-            ).padding(right: 8),
-            const VaarverbodWidget().expanded(),
+            ).padding(right: logoRightPadding),
+            const VaarverbodWidget(),
           ].toRow(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
