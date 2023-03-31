@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -16,28 +17,6 @@ class PollCard extends ConsumerWidget {
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Poll> pollDoc;
-
-  void upsertPollAnswer(String? choice, QuerySnapshot<PollAnswer> snapshot) {
-    final CollectionReference<PollAnswer> answersOfPoll = FirebaseFirestore
-        .instance
-        .collection('${pollDoc.reference.path}/answers')
-        .withConverter<PollAnswer>(
-          fromFirestore: (snapshot, _) => PollAnswer.fromJson(snapshot.data()!),
-          toFirestore: (answer, _) => answer.toJson(),
-        );
-    if (snapshot.size == 0) {
-      answersOfPoll.add(PollAnswer(
-        userId: FirebaseAuth.instance.currentUser!.uid,
-        answer: choice,
-        answeredAt: DateTime.now(),
-      ));
-    } else {
-      snapshot.docs.first.reference.update({
-        'answer': choice,
-        'answeredAt': Timestamp.now(),
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -62,7 +41,7 @@ class PollCard extends ConsumerWidget {
                   value: option,
                   title: Text(option),
                   onChanged: (String? choice) =>
-                      upsertPollAnswer(choice, snapshot),
+                      upsertPollAnswer(choice, snapshot, pollDoc),
                   groupValue: answerOfUser,
                 )),
           ].toColumn();
