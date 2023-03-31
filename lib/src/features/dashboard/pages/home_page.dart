@@ -34,42 +34,45 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
           ),
         ),
-        Column(
-          children: [
-            [
-              Align(
-                alignment: Alignment.center,
-                child: const Text(
-                  // TODO: make this a row so user can navigate to all forms
-                  "Forms",
-                )
-                    .fontSize(16)
-                    .fontWeight(FontWeight.w300)
-                    .textColor(Colors.blueGrey),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () => Routemaster.of(context).push('polls'),
-                  child: [
-                    const Text("Meer").textColor(Colors.blueGrey),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Colors.blueGrey,
-                    ),
-                  ].toRow(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                  ),
-                ),
-              ),
-            ].toStack(),
-            // TODO: show latest three forms
-          ],
-        ),
+        const FormsWidget(),
         const ComingWeekEventsWidget().padding(vertical: elementPadding),
         const AnnouncementsWidget().padding(vertical: elementPadding),
       ]),
     );
+  }
+}
+
+class FormsWidget extends StatelessWidget {
+  const FormsWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return [
+      [
+        const Text(
+          "Forms",
+        )
+            .fontSize(16)
+            .fontWeight(FontWeight.w300)
+            .textColor(Colors.blueGrey)
+            .alignment(Alignment.center),
+        GestureDetector(
+          onTap: () => Routemaster.of(context).push('polls'),
+          child: [
+            const Text("Meer").textColor(Colors.blueGrey),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: Colors.blueGrey,
+            ),
+          ].toRow(
+            mainAxisAlignment: MainAxisAlignment.end,
+          ),
+        ).alignment(Alignment.centerRight),
+      ].toStack(),
+      // TODO: show latest three forms
+    ].toColumn();
   }
 }
