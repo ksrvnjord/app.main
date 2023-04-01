@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 
 import '../../shared/model/image_cache_item.dart';
 
@@ -17,7 +18,7 @@ final profilePictureProvider =
   (ref, identifier) async {
     // Check Hive for the Cached Image
     String cachingKey = 'profile-avatar-$identifier';
-    ImageCacheItem? cacheItem = await getFromHiveCache(cachingKey);
+    ImageCacheItem? cacheItem = await HiveCache.get(cachingKey);
     if (cacheItem != null && DateTime.now().isBefore(cacheItem.expire)) {
       return cacheItem.data != null
           ? MemoryImage(cacheItem.data!)
@@ -30,15 +31,15 @@ final profilePictureProvider =
     ); // get the url from Firebase Storage
     if (url == null) {
       // no profile picture for this user
-      setEmptyImageCacheForKey(cachingKey);
+      HiveCache.putEmpty(cachingKey);
+
+      SubstructureImage().get("hi");
 
       return null;
     }
     // Get the profile picture from Firebase Storage
-    Uint8List? firestoreImage = await getHttpImageAndCache(
-      url,
-      key: cachingKey,
-    );
+    Uint8List? firestoreImage =
+        await HiveCache.getHttpImageAndCache(url, key: cachingKey);
     if (firestoreImage == null) {
       // no profile picture for this user
       return null;
