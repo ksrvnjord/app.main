@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AdvancedSettingsPage extends StatelessWidget {
@@ -10,7 +10,7 @@ class AdvancedSettingsPage extends StatelessWidget {
 
   // create  a function that clear the cache and exits the app
   Future<void> clearCache() async {
-    await deleteAllCache();
+    await HiveCache.deleteAll();
     if (Platform.isAndroid) {
       SystemNavigator.pop();
     } else if (Platform.isIOS) {
