@@ -50,7 +50,8 @@ class CommissieChoiceListTileState
       }),
       child: [
         [
-          Image(
+          FadeInImage(
+            placeholder: Image.asset(Images.placeholderProfilePicture).image,
             image: commissiePicture.when(
               data: (data) => data,
               error: (err, stk) =>
@@ -60,7 +61,11 @@ class CommissieChoiceListTileState
             ),
             width: imageWidth,
             height: imageHeight,
+            fadeInDuration: const Duration(milliseconds: 800),
+            fadeOutDuration: const Duration(milliseconds: 600),
             fit: BoxFit.cover,
+            // ignore: no-equal-arguments
+            placeholderFit: BoxFit.cover,
           ).padding(right: imageRightPadding),
           Text(widget.commissie).fontSize(titleFontSize),
         ].toRow().alignment(Alignment.centerLeft),
