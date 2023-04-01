@@ -13,6 +13,7 @@ final commissiePictureProvider =
     return CachedImage.get(
       firebaseStoragePath: "almanak/commissies/$commissie/$year/picture.jpg",
       placeholderImagePath: Images.placeholderProfilePicture,
+      maxAge: const Duration(days: 14),
     );
   },
 );
