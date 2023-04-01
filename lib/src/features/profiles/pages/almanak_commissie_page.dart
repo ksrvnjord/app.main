@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
@@ -17,7 +20,7 @@ final commissiesRef = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class AlmanakCommissiePage extends StatefulWidget {
+class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
     required this.commissieName,
@@ -29,11 +32,14 @@ class AlmanakCommissiePage extends StatefulWidget {
   AlmanakCommissiePageState createState() => AlmanakCommissiePageState();
 }
 
-class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
+class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   Tuple2<int, int> selectedYear = Tuple2<int, int>(
     getNjordYear(),
     getNjordYear() + 1,
   );
+
+  static const yearSelectorPadding = 8.0;
+  static const imageAspectRatio = 3 / 4;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,13 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
 
     const double menuMaxHeight = 256;
 
+    final commissiePicture = ref.watch(
+      commissiePictureProvider(Tuple2(
+        widget.commissieName,
+        selectedYear.item1,
+      )),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.commissieName),
@@ -68,36 +81,53 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(8),
         children: [
-          [
-            const Text('Kies een jaar: ').textColor(Colors.blueGrey),
-            DropdownButton<Tuple2<int, int>>(
-              value: selectedYear,
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
-              menuMaxHeight: menuMaxHeight,
-              items: years
-                  .map(
-                    (year) => DropdownMenuItem<Tuple2<int, int>>(
-                      value: year,
-                      child: Text("${year.item1}-${year.item2}")
-                          .textColor(Colors.blueGrey),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (tuple) => setState(() {
-                selectedYear = tuple!;
-              }),
+          Image(
+            image: commissiePicture.when(
+              data: (data) => data,
+              error: (err, stk) =>
+                  Image.asset(Images.placeholderProfilePicture).image,
+              loading: () =>
+                  Image.asset(Images.placeholderProfilePicture).image,
             ),
-          ].toRow(),
-          FutureWrapper(
-            future: getCommissieLeedenFromYear(
-              widget.commissieName,
-              selectedYear.item1,
-            ),
-            success: (snapshot) => buildCommissieList(snapshot),
-            error: (error) => ErrorCardWidget(errorMessage: error.toString()),
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * imageAspectRatio,
           ),
+          [
+            [
+              const Text('Kies een jaar: ').textColor(Colors.blueGrey),
+              DropdownButton<Tuple2<int, int>>(
+                value: selectedYear,
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+                menuMaxHeight: menuMaxHeight,
+                items: years
+                    .map(
+                      (year) => DropdownMenuItem<Tuple2<int, int>>(
+                        value: year,
+                        child: Text("${year.item1}-${year.item2}")
+                            .textColor(Colors.blueGrey),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (tuple) => setState(() {
+                  selectedYear = tuple!;
+                }),
+              ),
+            ].toRow(mainAxisAlignment: MainAxisAlignment.end),
+            FutureWrapper(
+              future: getCommissieLeedenFromYear(
+                widget.commissieName,
+                selectedYear.item1,
+              ),
+              success: (snapshot) => buildCommissieList(snapshot),
+              error: (error) => ErrorCardWidget(errorMessage: error.toString()),
+            ),
+          ].toColumn().padding(
+                right: yearSelectorPadding,
+                // ignore: no-equal-arguments
+                bottom: yearSelectorPadding,
+              ),
         ],
       ),
     );
