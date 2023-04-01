@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -68,6 +69,8 @@ class CachedImage {
     try {
       return await FirebaseStorage.instance.ref(path).getDownloadURL();
     } catch (e) {
+      log("Error getting Url for object on $path", error: e);
+
       return null;
     }
   }
