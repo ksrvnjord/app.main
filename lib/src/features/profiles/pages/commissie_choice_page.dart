@@ -19,6 +19,8 @@ class CommissieChoicePage extends ConsumerWidget {
   final String pushRoute;
   final String queryParameterName;
 
+  static const cacheExtent = 800.0;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -30,21 +32,23 @@ class CommissieChoicePage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        children: choices
-            .map(
-              (choice) => <Widget>[
-                CommissieChoiceListTile(
-                  commissie: choice,
-                  pushRoute: pushRoute,
-                  queryParameterName: queryParameterName,
-                ),
-                const Divider(
-                  thickness: 0.5,
-                  height: 0,
-                ),
-              ].toColumn(),
-            )
-            .toList(),
+        addAutomaticKeepAlives: true,
+        cacheExtent: cacheExtent,
+        children: [
+          ...choices.map(
+            (choice) => <Widget>[
+              CommissieChoiceListTile(
+                commissie: choice,
+                pushRoute: pushRoute,
+                queryParameterName: queryParameterName,
+              ),
+              const Divider(
+                thickness: 0.5,
+                height: 0,
+              ),
+            ].toColumn(),
+          ),
+        ],
       ),
     );
   }
