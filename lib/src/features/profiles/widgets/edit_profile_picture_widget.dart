@@ -36,12 +36,9 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
 
     return FutureWrapper(
       future: CachedProfilePicture.getMyProfilePicture(),
-      success: (snapshot) => ImagePickerWidget(
+      success: (image) => ImagePickerWidget(
         diameter: profilePictureSize,
-        initialImage: imageProvider ??
-            (snapshot != null
-                ? Image.memory(snapshot).image
-                : Image.asset(Images.placeholderProfilePicture).image),
+        initialImage: image,
         shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
         isEditable: true,
         shouldCrop: true,
