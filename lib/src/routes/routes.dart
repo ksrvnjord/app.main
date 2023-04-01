@@ -155,11 +155,11 @@ final routeMap = RouteMap(
             userId: route.pathParameters['identifier']!,
           ),
         ),
-    '/almanak/substructuren': (_) => const CupertinoPage(
+    '/almanak/substructuren': (_) => CupertinoPage(
           name: 'Substructuren',
           child: ChoicePage(
             title: "Substructuren",
-            choices: substructures,
+            choices: substructures.toList(),
             pushRoute: 'leeden',
             queryParameterName: 'substructuur',
           ),
