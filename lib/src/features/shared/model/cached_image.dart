@@ -33,21 +33,21 @@ class CachedImage {
     required String placeholderImagePath,
     Duration maxAge = const Duration(days: 7),
   }) async {
-    ImageProvider<Object>? image = await HiveCache.getHiveCachedImage(
+    ImageProvider<Object>? cachedImage = await HiveCache.getHiveCachedImage(
       firebaseStoragePath,
       imageOnCacheHitWithNoData: Image.asset(placeholderImagePath).image,
     );
-    if (image != null) {
-      return image;
+    if (cachedImage != null) {
+      return cachedImage;
     }
-
     // Image is not cached, so we need to fetch it from the network
     String? url = await getUrl(firebaseStoragePath);
+    ImageProvider<Object> placeholder = Image.asset(placeholderImagePath).image;
     if (url == null) {
       // there is no image at this path in Firebase Storage
       HiveCache.putEmpty(firebaseStoragePath);
 
-      return Image.asset(placeholderImagePath).image;
+      return placeholder;
     }
 
     // We have url of image, so now we can download and cache it
@@ -57,7 +57,7 @@ class CachedImage {
       maxAge: maxAge,
     );
     if (firestoreImage == null) {
-      return Image.asset(placeholderImagePath).image;
+      return placeholder;
     }
 
     return MemoryImage(firestoreImage);
@@ -66,7 +66,7 @@ class CachedImage {
   /// Returns the FirebaseStorage download url of the image at the given path, or null if it doesn't exist
   static Future<String?> getUrl(String path) async {
     try {
-      return FirebaseStorage.instance.ref(path).getDownloadURL();
+      return await FirebaseStorage.instance.ref(path).getDownloadURL();
     } catch (e) {
       return null;
     }
