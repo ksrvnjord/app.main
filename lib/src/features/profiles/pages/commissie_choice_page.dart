@@ -31,24 +31,20 @@ class CommissieChoicePage extends ConsumerWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: ListView(
+      body: ListView.builder(
+        itemCount: choices.length,
         addAutomaticKeepAlives: true,
-        cacheExtent: cacheExtent,
-        children: [
-          ...choices.map(
-            (choice) => <Widget>[
-              CommissieChoiceListTile(
-                commissie: choice,
-                pushRoute: pushRoute,
-                queryParameterName: queryParameterName,
-              ),
-              const Divider(
-                thickness: 0.5,
-                height: 0,
-              ),
-            ].toColumn(),
+        itemBuilder: (context, index) => [
+          CommissieChoiceListTile(
+            commissie: choices[index],
+            pushRoute: pushRoute,
+            queryParameterName: queryParameterName,
           ),
-        ],
+          const Divider(
+            thickness: 0.5,
+            height: 0,
+          ),
+        ].toColumn(),
       ),
     );
   }

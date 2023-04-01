@@ -17,7 +17,7 @@ class HiveCache {
   static final LazyBox<ImageCacheItem> hiveImageCache =
       Hive.lazyBox<ImageCacheItem>(imageCacheBoxName);
 
-  static const int defaultExpiry = 24 * 7; // default cache for 1 week
+  static const Duration defaultMaxAge = Duration(days: 7);
 
   static Future<ImageCacheItem?> get(String key) async {
     if (!hiveImageCache.isOpen) {
@@ -51,7 +51,7 @@ class HiveCache {
   static Future<Uint8List?> getHttpImageAndCache(
     String url, {
     required String key,
-    Duration? maxAge,
+    Duration maxAge = defaultMaxAge,
   }) async {
     try {
       Response response = await Dio().get<Uint8List>(
@@ -78,7 +78,7 @@ class HiveCache {
   static Future<void> put({
     required String key,
     Uint8List? value,
-    Duration? maxAge,
+    Duration maxAge = defaultMaxAge,
   }) async {
     if (!hiveImageCache.isOpen) {
       await Hive.openLazyBox(imageCacheBoxName);
@@ -88,14 +88,17 @@ class HiveCache {
       hashKeytoString(key),
       ImageCacheItem(
         expire: DateTime.now().add(
-          maxAge ?? const Duration(hours: defaultExpiry),
+          maxAge,
         ),
         data: value,
       ),
     );
   }
 
-  static Future<void> putEmpty(String key, {Duration? expiry}) async {
+  static Future<void> putEmpty(
+    String key, {
+    Duration expiry = defaultMaxAge,
+  }) async {
     await put(key: key, value: null, maxAge: expiry);
   }
 
