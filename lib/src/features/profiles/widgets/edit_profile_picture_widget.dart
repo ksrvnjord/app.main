@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
@@ -35,7 +35,7 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
     const double profilePictureSize = 240;
 
     return FutureWrapper(
-      future: getMyProfilePicture(),
+      future: CachedProfilePicture.getMyProfilePicture(),
       success: (snapshot) => ImagePickerWidget(
         diameter: profilePictureSize,
         initialImage: imageProvider ??

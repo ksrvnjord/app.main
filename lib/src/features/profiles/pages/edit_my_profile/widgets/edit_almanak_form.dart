@@ -4,13 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
 
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -234,8 +233,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     if (newprofilePicture != null) {
       try {
-        uploadMyProfilePicture(newprofilePicture!);
-        await HiveCache.delete('profile-avatar-$userId'); // invalidate cache
+        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture!);
       } on FirebaseException catch (err) {
         error = err;
         success = false;
