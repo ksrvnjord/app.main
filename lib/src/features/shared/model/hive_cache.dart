@@ -46,6 +46,7 @@ class HiveCache {
   static Future<Uint8List?> getHttpImageAndCache(
     String url, {
     required String key,
+    Duration? maxAge,
   }) async {
     try {
       Response response = await Dio().get<Uint8List>(
@@ -53,7 +54,7 @@ class HiveCache {
         options: Options(responseType: ResponseType.bytes),
       );
       Uint8List? output = response.data;
-      HiveCache.put(key: key, value: output);
+      HiveCache.put(key: key, value: output, maxAge: maxAge);
 
       return output;
     } on DioError catch (e) {
@@ -72,21 +73,21 @@ class HiveCache {
   static Future<void> put({
     required String key,
     Uint8List? value,
-    int? expiry,
+    Duration? maxAge,
   }) async {
     await hiveImageCache.put(
       hashKeytoString(key),
       ImageCacheItem(
-        expire: DateTime.now().add(Duration(
-          hours: expiry ?? defaultExpiry,
-        )),
+        expire: DateTime.now().add(
+          maxAge ?? const Duration(hours: defaultExpiry),
+        ),
         data: value,
       ),
     );
   }
 
-  static Future<void> putEmpty(String key, {int? expiry}) async {
-    await put(key: key, value: null, expiry: expiry);
+  static Future<void> putEmpty(String key, {Duration? expiry}) async {
+    await put(key: key, value: null, maxAge: expiry);
   }
 
   static Future<void> delete(String key) async {
