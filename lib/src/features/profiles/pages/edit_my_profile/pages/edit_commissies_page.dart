@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/widgets/edit_commissies_list.dart';
@@ -9,14 +10,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.da
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class EditCommissiesPage extends StatefulWidget {
+class EditCommissiesPage extends ConsumerStatefulWidget {
   const EditCommissiesPage({Key? key}) : super(key: key);
 
   @override
   EditCommissiesPageState createState() => EditCommissiesPageState();
 }
 
-class EditCommissiesPageState extends State<EditCommissiesPage> {
+class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
   static const double fieldPadding = 8;
   static const double titleFontSize = 20;
 
@@ -37,7 +38,7 @@ class EditCommissiesPageState extends State<EditCommissiesPage> {
             .padding(all: fieldPadding),
         StreamWrapper(
           // use stream to show updates in real time
-          stream: getMyCommissies<Stream<QuerySnapshot<CommissieEntry>>>(),
+          stream: ref.watch(myCommissiesProvider.stream),
           success: (commissies) => EditCommissiesList(snapshot: commissies),
           error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         ),
