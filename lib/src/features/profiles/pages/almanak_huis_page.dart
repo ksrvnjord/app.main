@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/home_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-final peopleRef = FirebaseFirestore.instance.collection("people").withConverter(
-      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
-
-class AlmanakHuisPage extends StatelessWidget {
+class AlmanakHuisPage extends ConsumerWidget {
   const AlmanakHuisPage({
     Key? key,
     required this.houseName,
@@ -20,10 +17,8 @@ class AlmanakHuisPage extends StatelessWidget {
   final String houseName;
 
   @override
-  Widget build(BuildContext context) {
-    Future<QuerySnapshot<AlmanakProfile>> getHuis() {
-      return peopleRef.where("huis", isEqualTo: houseName).get();
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final users = ref.watch(homeUsers(houseName));
 
     return Scaffold(
       appBar: AppBar(
@@ -36,9 +31,12 @@ class AlmanakHuisPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          FutureWrapper(
-            future: getHuis(),
-            success: (snapshot) => buildHuisList(snapshot),
+          users.when(
+            data: (snapshot) => buildHuisList(snapshot),
+            loading: () => const CircularProgressIndicator().center(),
+            error: (error, stack) => ErrorCardWidget(
+              errorMessage: error.toString(),
+            ),
           ),
         ],
       ),
