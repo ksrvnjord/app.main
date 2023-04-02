@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
@@ -43,16 +44,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<QuerySnapshot<CommissieEntry>> getCommissieLeedenFromYear(
-      String commissie,
-      int year,
-    ) {
-      return commissiesRef
-          .where('name', isEqualTo: commissie)
-          .where('startYear', isEqualTo: year)
-          .get();
-    }
-
     const int startYear = 1874;
     final List<Tuple2<int, int>> years = List.generate(
       DateTime.now().year - startYear,
@@ -65,11 +56,17 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     const double menuMaxHeight = 256;
 
+    final Tuple2<String, int> commissieAndYear = Tuple2(
+      widget.commissieName,
+      selectedYear.item1,
+    );
+
     final commissiePicture = ref.watch(
-      commissiePictureProvider(Tuple2(
-        widget.commissieName,
-        selectedYear.item1,
-      )),
+      commissiePictureProvider(commissieAndYear),
+    );
+
+    final commissieLeeden = ref.watch(
+      commissieLeedenProvider(commissieAndYear),
     );
 
     return Scaffold(
@@ -115,13 +112,13 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                 }),
               ),
             ].toRow(mainAxisAlignment: MainAxisAlignment.end),
-            FutureWrapper(
-              future: getCommissieLeedenFromYear(
-                widget.commissieName,
-                selectedYear.item1,
+            commissieLeeden.when(
+              data: (snapshot) => buildCommissieList(snapshot),
+              error: (error, stk) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
               ),
-              success: (snapshot) => buildCommissieList(snapshot),
-              error: (error) => ErrorCardWidget(errorMessage: error.toString()),
             ),
           ].toColumn().padding(
                 right: yearSelectorPadding,
