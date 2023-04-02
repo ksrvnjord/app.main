@@ -64,6 +64,7 @@ dependencies:
   flutter_riverpod: ^2.2.0
   riverpod_generator: ^1.1.1
   riverpod_annotation: ^1.0.7
+  expand_widget: ^3.1.1
 
 
 dev_dependencies:

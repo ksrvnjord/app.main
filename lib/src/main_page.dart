@@ -42,8 +42,8 @@ class _MainPageState extends State<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Agenda',
+            icon: Icon(Icons.chat_outlined),
+            label: 'Prikbord',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_calendar),
