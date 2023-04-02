@@ -16,7 +16,6 @@ import '../../../../shared/widgets/data_text_list_tile.dart';
 import '../../../../shared/widgets/future_wrapper.dart';
 import '../../../../training/widgets/calendar/widgets/chip_widget.dart';
 import '../../../api/user_commissies.dart';
-import '../../edit_my_profile/models/commissie_entry.dart';
 import 'commissies_list_widget.dart';
 
 final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
@@ -180,10 +179,8 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 ),
               if (FirebaseAuth.instance.currentUser != null)
                 FutureWrapper(
-                  future: getCommissiesForUser<
-                      Future<QuerySnapshot<CommissieEntry>>>(
-                    u.lidnummer,
-                  ),
+                  future:
+                      ref.watch(commissiesForUserProvider(u.lidnummer).future),
                   success: (snapshot) => CommissiesListWidget(
                     snapshot: snapshot,
                     legacyCommissies: u.commissies,
