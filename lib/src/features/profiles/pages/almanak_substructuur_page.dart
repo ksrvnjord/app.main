@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-final peopleRef = FirebaseFirestore.instance.collection("people").withConverter(
-      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
-
-class AlmanakSubstructuurPage extends StatelessWidget {
+class AlmanakSubstructuurPage extends ConsumerWidget {
   const AlmanakSubstructuurPage({
     Key? key,
     required this.substructuurName,
@@ -20,12 +17,9 @@ class AlmanakSubstructuurPage extends StatelessWidget {
   final String substructuurName;
 
   @override
-  Widget build(BuildContext context) {
-    Future<QuerySnapshot<AlmanakProfile>> getSubstructuur() {
-      return peopleRef
-          .where("substructuren", arrayContains: substructuurName)
-          .get();
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final substructureUsers =
+        ref.watch(substructureUsersProvider(substructuurName));
 
     return Scaffold(
       appBar: AppBar(
@@ -38,9 +32,12 @@ class AlmanakSubstructuurPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          FutureWrapper(
-            future: getSubstructuur(),
-            success: (snapshot) => buildSubstructuurList(snapshot),
+          substructureUsers.when(
+            data: (snapshot) => buildSubstructuurList(snapshot),
+            loading: () => const CircularProgressIndicator().center(),
+            error: (error, stack) => ErrorCardWidget(
+              errorMessage: error.toString(),
+            ),
           ),
         ],
       ),
