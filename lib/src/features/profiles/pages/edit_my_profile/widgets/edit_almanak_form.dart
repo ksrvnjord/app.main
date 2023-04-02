@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -23,14 +24,14 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class EditAlmanakForm extends StatefulWidget {
+class EditAlmanakForm extends ConsumerStatefulWidget {
   const EditAlmanakForm({Key? key}) : super(key: key);
 
   @override
   createState() => _EditAlmanakFormState();
 }
 
-class _EditAlmanakFormState extends State<EditAlmanakForm> {
+class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
   final AlmanakProfile _formData =
@@ -49,7 +50,7 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
     const double imageHelpTextTopPadding = 4;
 
     return FutureWrapper(
-      future: getMyFirestoreProfileData(),
+      future: ref.watch(firestoreUserProvider(getCurrentUserId()).future),
       success: (user) => Form(
         key: _formKey,
         child: <Widget>[
