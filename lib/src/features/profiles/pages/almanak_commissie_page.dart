@@ -111,19 +111,17 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                 }),
               ),
             ].toRow(mainAxisAlignment: MainAxisAlignment.end),
-            commissieLeeden.when(
-              data: (snapshot) => buildCommissieList(snapshot),
-              error: (error, stk) =>
-                  ErrorCardWidget(errorMessage: error.toString()),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
           ].toColumn().padding(
                 right: yearSelectorPadding,
-                // ignore: no-equal-arguments
-                bottom: yearSelectorPadding,
               ),
+          commissieLeeden.when(
+            data: (snapshot) => buildCommissieList(snapshot),
+            error: (error, stk) =>
+                ErrorCardWidget(errorMessage: error.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
         ],
       ),
     );
