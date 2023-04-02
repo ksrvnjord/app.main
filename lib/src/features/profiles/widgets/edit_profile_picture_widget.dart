@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
-class EditProfilePictureWidget extends StatefulWidget {
+class EditProfilePictureWidget extends ConsumerStatefulWidget {
   const EditProfilePictureWidget({
     Key? key,
     required this.onChanged,
@@ -20,7 +21,8 @@ class EditProfilePictureWidget extends StatefulWidget {
   createState() => _EditProfilePictureWidgetState();
 }
 
-class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
+class _EditProfilePictureWidgetState
+    extends ConsumerState<EditProfilePictureWidget> {
   ImageProvider? imageProvider;
 
   void onChange(File file) {
@@ -34,9 +36,11 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
   Widget build(BuildContext context) {
     const double profilePictureSize = 240;
 
-    return FutureWrapper(
-      future: CachedProfilePicture.getMyProfilePicture(),
-      success: (image) => ImagePickerWidget(
+    final myProfilePicture =
+        ref.watch(profilePictureProvider(getCurrentUserId()));
+
+    return myProfilePicture.when(
+      data: (image) => ImagePickerWidget(
         diameter: profilePictureSize,
         initialImage: image,
         shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
@@ -44,7 +48,7 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
         shouldCrop: true,
         onChange: widget.onChanged,
       ),
-      error: (error) => ImagePickerWidget(
+      error: (error, stk) => ImagePickerWidget(
         // error means that the user has no profle picture set
         diameter: profilePictureSize,
         shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
@@ -53,7 +57,7 @@ class _EditProfilePictureWidgetState extends State<EditProfilePictureWidget> {
         shouldCrop: true,
         onChange: widget.onChanged,
       ),
-      loading: const ShimmerWidget(
+      loading: () => const ShimmerWidget(
         child: DefaultProfilePicture(
           radius: profilePictureSize / 2,
         ), // profilepicture size is the diameter
