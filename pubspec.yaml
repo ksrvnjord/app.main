@@ -64,6 +64,7 @@ dependencies:
   flutter_riverpod: ^2.2.0
   riverpod_generator: ^1.1.1
   riverpod_annotation: ^1.0.7
+  easy_image_viewer: ^1.2.0
 
 
 dev_dependencies:
