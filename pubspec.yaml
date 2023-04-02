@@ -67,6 +67,7 @@ dependencies:
   expand_widget: ^3.1.1
   timeago: ^3.3.0
   expandable_text: ^2.3.0
+  easy_image_viewer: ^1.2.0
 
 
 dev_dependencies:

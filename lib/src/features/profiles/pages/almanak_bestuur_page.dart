@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,17 +33,27 @@ class AlmanakBestuurPage extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          Image(
-            image: bestuurImage.when(
-              data: (data) => data,
-              error: (err, stk) =>
-                  Image.asset(Images.placeholderProfilePicture).image,
-              loading: () =>
-                  Image.asset(Images.placeholderProfilePicture).image,
+          bestuurImage.when(
+            data: (imageProvider) => InkWell(
+              onTap: () => showImageViewer(
+                context,
+                imageProvider,
+                swipeDismissible: true,
+                doubleTapZoomable: true,
+              ),
+              child: Image(
+                image: imageProvider,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width * imageAspectRatio,
+              ),
             ),
-            fit: BoxFit.cover,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * imageAspectRatio,
+            error: (err, stk) => Image(
+              image: Image.asset(Images.placeholderProfilePicture).image,
+            ),
+            loading: () => Image(
+              image: Image.asset(Images.placeholderProfilePicture).image,
+            ),
           ),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),
