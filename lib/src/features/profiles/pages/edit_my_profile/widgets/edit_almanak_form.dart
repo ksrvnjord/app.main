@@ -11,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -49,9 +50,10 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
     const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
 
-    return FutureWrapper(
-      future: ref.watch(firestoreUserProvider(getCurrentUserId()).future),
-      success: (user) => Form(
+    final userVal = ref.watch(firestoreUserProvider(getCurrentUserId()));
+
+    return userVal.when(
+      data: (user) => Form(
         key: _formKey,
         child: <Widget>[
           // create a field to enter Field of Study
@@ -186,7 +188,8 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
           ].toRow(),
         ].toColumn(),
       ),
-      loading: Container(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
     );
   }
 
