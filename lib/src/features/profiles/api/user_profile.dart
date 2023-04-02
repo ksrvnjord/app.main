@@ -21,7 +21,8 @@ final almanakUserProvider =
   final heimdallProfile =
       ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
-  AlmanakProfile? profile = await getFirestoreProfileData(lidnummer);
+  AlmanakProfile? profile =
+      await ref.watch(firestoreUserProvider(lidnummer).future);
   final heimdallProfileData = await heimdallProfile;
 
   // merge the data

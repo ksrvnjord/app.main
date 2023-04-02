@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 
 final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
     .collection('people')
@@ -9,13 +9,11 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-Future<AlmanakProfile?> getFirestoreProfileData(String userId) async {
-  QuerySnapshot<AlmanakProfile> profile =
-      await people.where('identifier', isEqualTo: userId).get();
+final firestoreUserProvider = FutureProvider.family<AlmanakProfile?, String>(
+  (ref, userId) async {
+    QuerySnapshot<AlmanakProfile> profile =
+        await people.where('identifier', isEqualTo: userId).get();
 
-  return profile.docs.isNotEmpty ? profile.docs.first.data() : null;
-}
-
-Future<AlmanakProfile> getMyFirestoreProfileData() async {
-  return (await getFirestoreProfileData(getCurrentUserId()))!;
-}
+    return profile.docs.isNotEmpty ? profile.docs.first.data() : null;
+  },
+);
