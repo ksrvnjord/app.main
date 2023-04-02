@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
