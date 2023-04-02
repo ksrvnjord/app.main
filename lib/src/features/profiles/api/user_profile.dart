@@ -21,17 +21,14 @@ final almanakUserProvider =
   final heimdallProfile =
       ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
-  AlmanakProfile? profile =
+  AlmanakProfile profile =
       await ref.watch(firestoreUserProvider(lidnummer).future);
   final heimdallProfileData = await heimdallProfile;
 
   // merge the data
-  profile?.mergeWithHeimdallProfile(heimdallProfileData!.fullContact.public);
+  profile.mergeWithHeimdallProfile(heimdallProfileData!.fullContact.public);
 
-  return profile ??
-      AlmanakProfile.fromHeimdallByIdentifier(
-        heimdallProfileData!,
-      ); // if no profile was found in firestore, return the heimdall profile
+  return profile;
 });
 
 final heimdallUserByLidnummerProvider = FutureProvider.family<
