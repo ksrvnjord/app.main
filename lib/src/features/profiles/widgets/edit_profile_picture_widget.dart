@@ -26,10 +26,12 @@ class _EditProfilePictureWidgetState
   ImageProvider? imageProvider;
 
   void onChange(File file) {
+    final image = Image.file(file).image;
     setState(() {
-      imageProvider = Image.file(file).image;
+      imageProvider = image;
     });
     widget.onChanged.call(file);
+    profilePictureProvider(getCurrentUserId()).overrideWith((ref) => image);
   }
 
   @override
