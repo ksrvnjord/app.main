@@ -42,16 +42,12 @@ class AlmanakBestuurPage extends ConsumerWidget {
                 imageProvider: imageProvider,
               ),
             ),
-            error: (err, stk) => AlmanakSubstructureCoverPicture(
-              imageAspectRatio: imageAspectRatio,
-              imageProvider:
-                  Image.asset(Images.placeholderProfilePicture).image,
-            ),
             loading: () => AlmanakSubstructureCoverPicture(
               imageAspectRatio: imageAspectRatio,
               imageProvider:
                   Image.asset(Images.placeholderProfilePicture).image,
             ),
+            error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
           ),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),
