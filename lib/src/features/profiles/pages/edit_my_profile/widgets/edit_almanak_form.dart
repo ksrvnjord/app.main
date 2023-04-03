@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cached_image.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -23,14 +23,14 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class EditAlmanakForm extends StatefulWidget {
+class EditAlmanakForm extends ConsumerStatefulWidget {
   const EditAlmanakForm({Key? key}) : super(key: key);
 
   @override
   createState() => _EditAlmanakFormState();
 }
 
-class _EditAlmanakFormState extends State<EditAlmanakForm> {
+class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
   final AlmanakProfile _formData =
@@ -48,9 +48,10 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
     const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
 
-    return FutureWrapper(
-      future: getMyFirestoreProfileData(),
-      success: (user) => Form(
+    final userVal = ref.watch(firestoreUserProvider(getCurrentUserId()));
+
+    return userVal.when(
+      data: (user) => Form(
         key: _formKey,
         child: <Widget>[
           // create a field to enter Field of Study
@@ -185,7 +186,8 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
           ].toRow(),
         ].toColumn(),
       ),
-      loading: Container(),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
     );
   }
 
@@ -233,17 +235,14 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
 
     if (newprofilePicture != null) {
       try {
-        uploadMyProfilePicture(newprofilePicture!);
-        removeImageCacheForKey(
-          'profile-avatar-$userId',
-        ); // invalidate cache to force refresh of image
+        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture!);
       } on FirebaseException catch (err) {
         error = err;
         success = false;
       }
     }
 
-    if (!success) {
+    if (!success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
         content: Text(
@@ -254,11 +253,13 @@ class _EditAlmanakFormState extends State<EditAlmanakForm> {
       return;
     }
     // show snackbar with success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: Colors.green,
-        content: Text('Je profiel is succesvol gewijzigd'),
-      ),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Je profiel is succesvol gewijzigd'),
+        ),
+      );
+    }
   }
 }

@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
@@ -17,7 +22,7 @@ final commissiesRef = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-class AlmanakCommissiePage extends StatefulWidget {
+class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
     required this.commissieName,
@@ -29,24 +34,17 @@ class AlmanakCommissiePage extends StatefulWidget {
   AlmanakCommissiePageState createState() => AlmanakCommissiePageState();
 }
 
-class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
+class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   Tuple2<int, int> selectedYear = Tuple2<int, int>(
     getNjordYear(),
     getNjordYear() + 1,
   );
 
+  static const yearSelectorPadding = 8.0;
+  static const imageAspectRatio = 3 / 4;
+
   @override
   Widget build(BuildContext context) {
-    Future<QuerySnapshot<CommissieEntry>> getCommissieLeedenFromYear(
-      String commissie,
-      int year,
-    ) {
-      return commissiesRef
-          .where('name', isEqualTo: commissie)
-          .where('startYear', isEqualTo: year)
-          .get();
-    }
-
     const int startYear = 1874;
     final List<Tuple2<int, int>> years = List.generate(
       DateTime.now().year - startYear,
@@ -59,6 +57,19 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
 
     const double menuMaxHeight = 256;
 
+    final Tuple2<String, int> commissieAndYear = Tuple2(
+      widget.commissieName,
+      selectedYear.item1,
+    );
+
+    final commissiePicture = ref.watch(
+      commissiePictureProvider(commissieAndYear),
+    );
+
+    final commissieLeeden = ref.watch(
+      commissieLeedenProvider(commissieAndYear),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.commissieName),
@@ -68,35 +79,57 @@ class AlmanakCommissiePageState extends State<AlmanakCommissiePage> {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(8),
         children: [
+          commissiePicture.when(
+            data: (data) => ZoomableImage(
+              imageProvider: data,
+              image: AlmanakSubstructureCoverPicture(
+                imageAspectRatio: imageAspectRatio,
+                imageProvider: data,
+              ),
+            ),
+            error: (err, stk) => AlmanakSubstructureCoverPicture(
+              imageAspectRatio: imageAspectRatio,
+              imageProvider:
+                  Image.asset(Images.placeholderProfilePicture).image,
+            ),
+            loading: () => AlmanakSubstructureCoverPicture(
+              imageAspectRatio: imageAspectRatio,
+              imageProvider:
+                  Image.asset(Images.placeholderProfilePicture).image,
+            ),
+          ),
           [
-            const Text('Kies een jaar: ').textColor(Colors.blueGrey),
-            DropdownButton<Tuple2<int, int>>(
-              value: selectedYear,
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
-              menuMaxHeight: menuMaxHeight,
-              items: years
-                  .map(
-                    (year) => DropdownMenuItem<Tuple2<int, int>>(
-                      value: year,
-                      child: Text("${year.item1}-${year.item2}")
-                          .textColor(Colors.blueGrey),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (tuple) => setState(() {
-                selectedYear = tuple!;
-              }),
+            [
+              const Text('Kies een jaar: ').textColor(Colors.blueGrey),
+              DropdownButton<Tuple2<int, int>>(
+                value: selectedYear,
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+                menuMaxHeight: menuMaxHeight,
+                items: years
+                    .map(
+                      (year) => DropdownMenuItem<Tuple2<int, int>>(
+                        value: year,
+                        child: Text("${year.item1}-${year.item2}")
+                            .textColor(Colors.blueGrey),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (tuple) => setState(() {
+                  selectedYear = tuple!;
+                }),
+              ),
+            ].toRow(mainAxisAlignment: MainAxisAlignment.end),
+          ].toColumn().padding(
+                right: yearSelectorPadding,
+              ),
+          commissieLeeden.when(
+            data: (snapshot) => buildCommissieList(snapshot),
+            error: (error, stk) =>
+                ErrorCardWidget(errorMessage: error.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ].toRow(),
-          FutureWrapper(
-            future: getCommissieLeedenFromYear(
-              widget.commissieName,
-              selectedYear.item1,
-            ),
-            success: (snapshot) => buildCommissieList(snapshot),
-            error: (error) => ErrorCardWidget(errorMessage: error.toString()),
           ),
         ],
       ),
