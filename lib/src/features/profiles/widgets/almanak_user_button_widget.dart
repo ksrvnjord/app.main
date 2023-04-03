@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AlmanakUserButtonWidget extends ConsumerWidget {
@@ -18,7 +18,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
       ),
       child: ListTile(
         // add rounding to list tile
-        leading: ProfilePictureWidget(userId: user.identifier),
+        leading: ProfilePictureListTileWidget(profileId: user.identifier),
         title: Text(
           '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
         ),

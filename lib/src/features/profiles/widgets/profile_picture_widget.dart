@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_pro
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
 
+/// Zoomable profile picture widget
 class ProfilePictureWidget extends ConsumerWidget {
   const ProfilePictureWidget({
     Key? key,

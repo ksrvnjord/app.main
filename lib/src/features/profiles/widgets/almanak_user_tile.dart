@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/heimdall_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
@@ -35,7 +35,7 @@ class AlmanakUserTile extends ConsumerWidget {
       data: (user) => user == null
           ? const SizedBox() // no user found, show nothing
           : ListTile(
-              leading: ProfilePictureWidget(userId: lidnummer),
+              leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text("$firstName $lastName"),
               subtitle: subtitle != null ? Text(subtitle!) : null,
               trailing:
