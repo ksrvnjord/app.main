@@ -9,11 +9,11 @@ class ProfilePictureWidget extends ConsumerWidget {
   const ProfilePictureWidget({
     Key? key,
     required this.userId,
-    this.size,
+    required this.size,
   }) : super(key: key);
 
   final String userId;
-  final double? size;
+  final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
