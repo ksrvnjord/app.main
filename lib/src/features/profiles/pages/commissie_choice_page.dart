@@ -33,7 +33,6 @@ class CommissieChoicePage extends ConsumerWidget {
       ),
       body: ListView.builder(
         itemCount: choices.length,
-        addAutomaticKeepAlives: true,
         itemBuilder: (context, index) => [
           CommissieChoiceListTile(
             commissie: choices[index],
