@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart'
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
@@ -36,18 +37,20 @@ class AlmanakBestuurPage extends ConsumerWidget {
           bestuurImage.when(
             data: (imageProvider) => ZoomableImage(
               imageProvider: imageProvider,
-              image: Image(
-                image: imageProvider,
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width * imageAspectRatio,
+              image: AlmanakSubstructureCoverPicture(
+                imageAspectRatio: imageAspectRatio,
+                imageProvider: imageProvider,
               ),
             ),
-            error: (err, stk) => Image(
-              image: Image.asset(Images.placeholderProfilePicture).image,
+            error: (err, stk) => AlmanakSubstructureCoverPicture(
+              imageAspectRatio: imageAspectRatio,
+              imageProvider:
+                  Image.asset(Images.placeholderProfilePicture).image,
             ),
-            loading: () => Image(
-              image: Image.asset(Images.placeholderProfilePicture).image,
+            loading: () => AlmanakSubstructureCoverPicture(
+              imageAspectRatio: imageAspectRatio,
+              imageProvider:
+                  Image.asset(Images.placeholderProfilePicture).image,
             ),
           ),
           bestuur.when(

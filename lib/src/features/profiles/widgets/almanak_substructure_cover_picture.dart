@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
 
 class AlmanakSubstructureCoverPicture extends StatelessWidget {
   const AlmanakSubstructureCoverPicture({
@@ -12,7 +13,8 @@ class AlmanakSubstructureCoverPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
+    return FadeInImage(
+      placeholder: Image.asset(Images.placeholderProfilePicture).image,
       image: imageProvider,
       fit: BoxFit.cover,
       width: MediaQuery.of(context).size.width,
