@@ -24,8 +24,7 @@ class CommissieChoiceListTile extends ConsumerStatefulWidget {
 }
 
 class CommissieChoiceListTileState
-    extends ConsumerState<CommissieChoiceListTile>
-    with AutomaticKeepAliveClientMixin {
+    extends ConsumerState<CommissieChoiceListTile> {
   static const imageWidth = 80.0;
   static const imageHeight = 72.0;
   static const imageRightPadding = 16.0;
@@ -33,12 +32,7 @@ class CommissieChoiceListTileState
   static const iconHorizontalPadding = 16.0;
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     final commissiePicture = ref.watch(
       commissiePictureProvider(Tuple2(widget.commissie, getNjordYear())),
     );
