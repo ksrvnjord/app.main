@@ -9,7 +9,7 @@ class ZoomableImage extends StatelessWidget {
   }) : super(key: key);
 
   final ImageProvider imageProvider;
-  final Image image;
+  final Widget image;
 
   @override
   Widget build(BuildContext context) {
