@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
+import 'package:ksrvnjord_main_app/src/features/board/pages/add_post.dart';
 import 'package:ksrvnjord_main_app/src/features/board/pages/main_board.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
@@ -70,6 +71,7 @@ final routeMap = RouteMap(
         ),
     '/board': (_) =>
         const CupertinoPage(name: "Prikbord", child: MainBoardPage()),
+    '/board/new_post': (_) => const CupertinoPage(child: AddPost()),
     '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
           child: EventsPage(),
