@@ -1,81 +1,64 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class VaarverbodWidget extends StatelessWidget {
-  const VaarverbodWidget({Key? key}) : super(key: key);
+class VaarverbodWidget extends ConsumerWidget {
+  const VaarverbodWidget({
+    super.key,
+  });
 
-  Widget showVaarverbod(
-    Response<Map<String, dynamic>> data,
-    double innerPadding,
-  ) {
-    Map<String, dynamic> r = data.data!;
-    final Color bgColor =
-        r['status'] == true ? Colors.redAccent : Colors.lightBlue;
-    final Color fgColor = r['status'] == true ? Colors.black : Colors.white;
-    const double textSize = 16;
+  static const double textSize = 14;
+  static const double cardInnerPadding = 8;
+  static const double iconRightPadding = 12;
+  static const double cardWidth = 144;
+  static const double cardElementHPadding = 4;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Icon(r['status'] == true
-                ? Icons.priority_high
-                : Icons.favorite_outlined)
-            .iconColor(fgColor),
-        Text(
-          r['message'],
-          textAlign: TextAlign.right,
-          style: TextStyle(
-            fontWeight: FontWeight.w800,
-            fontSize: textSize,
-            color: fgColor,
-          ),
-        ).padding(right: innerPadding),
-      ],
-    ).padding(all: innerPadding).card(
-          color: bgColor,
-          elevation: 0,
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vaarverbodRef = ref.watch(vaarverbodProvider);
+
+    return SizedBox(
+      width: cardWidth,
+      child: vaarverbodRef.when(
+        data: (data) => Card(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Future<Response<Map<String, dynamic>>> vaarverbod =
-        Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
-
-    const double innerPadding = 8;
-
-    return FutureWrapper(
-      future: vaarverbod,
-      success: (data) => showVaarverbod(data, innerPadding),
-      loading: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: <Widget>[
-          const Icon(Icons.downloading, color: Colors.white)
-              .padding(all: innerPadding),
-        ].toRow().card(
-              color: Colors.grey,
-              elevation: 0,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
+          elevation: 0,
+          color: data.status ? Colors.red[300] : Colors.green[300],
+          child: [
+            // should shield check icon
+            FaIcon(
+              data.status
+                  ? FontAwesomeIcons.ban
+                  : FontAwesomeIcons.shieldHalved,
+              color: Colors.white,
+            ).padding(
+              horizontal: cardElementHPadding,
             ),
+            Text(data.message)
+                .textColor(Colors.white)
+                .fontSize(textSize)
+                .textAlignment(TextAlign.end)
+                .fontWeight(FontWeight.bold)
+                .padding(horizontal: cardElementHPadding)
+                .expanded(),
+          ]
+              .toRow(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+              )
+              .padding(all: cardInnerPadding),
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => const ErrorCardWidget(
+          errorMessage:
+              "Het is niet gelukt om het vaarverbod op te halen van de server.",
+        ),
       ),
-      error: showErrorCard,
-    );
-  }
-
-  Widget showErrorCard(_) {
-    return const ErrorCardWidget(
-      errorMessage:
-          "Het is niet gelukt om het vaarverbod op te halen van de server. Heb je internet?",
     );
   }
 }

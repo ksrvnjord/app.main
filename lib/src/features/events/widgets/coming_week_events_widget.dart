@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
@@ -19,8 +18,6 @@ class ComingWeekEventsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
     final eventsData = events(client);
-
-    initializeDateFormatting('nl_NL');
 
     const double titleFontSize = 16;
 

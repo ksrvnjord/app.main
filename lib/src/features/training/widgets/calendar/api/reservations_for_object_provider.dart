@@ -13,8 +13,8 @@ final CollectionReference<Reservation> reservationRef = FirebaseFirestore
     );
 
 // we use a StreamProvider so that if the user makes a reservation, we don't have to query the database again as we can just listen to the stream
-final reservationsProvider = StreamProvider.autoDispose
-    .family<QuerySnapshot<Reservation>, ReservationsQuery>((
+final reservationsProvider =
+    StreamProvider.family<QuerySnapshot<Reservation>, ReservationsQuery>((
   ref,
   query,
 ) {

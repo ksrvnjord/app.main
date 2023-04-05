@@ -10,8 +10,8 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double landscapeImageHeightModifier = 0.05;
-    const double portraitImageHeightModifier = 0.1;
+    const double landscapeImageHeightModifier = 0.08;
+    const double portraitImageHeightModifier = 0.2;
 
     final double imageHeightModifier =
         MediaQuery.of(context).orientation == Orientation.portrait
