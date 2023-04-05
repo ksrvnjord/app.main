@@ -71,6 +71,6 @@ class CommentList extends StatelessWidget {
                               ]));
                     })));
           }
-        });
+        },);
   }
 }
