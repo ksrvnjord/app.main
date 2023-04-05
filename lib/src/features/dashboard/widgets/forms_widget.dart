@@ -89,7 +89,7 @@ class FormsWidget extends ConsumerWidget {
         GestureDetector(
           onTap: () => Routemaster.of(context).push('polls'),
           child: [
-            const Text("Meer").textColor(Colors.blueGrey),
+            const Text("Alle forms").textColor(Colors.blueGrey),
             const Icon(
               Icons.arrow_forward_ios,
               size: 16,
