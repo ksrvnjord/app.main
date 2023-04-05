@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AddPost extends StatefulWidget {
@@ -16,18 +17,20 @@ class AddPost extends StatefulWidget {
 
 class AddPostState extends State<AddPost> {
   final GlobalKey<FormState> _key = GlobalKey();
-  String selectedTopic = 'coaching';
+  String selectedTopic = '';
   String title = '';
   String content = '';
-  List topics = ['coaching', 'test'];
 
   QuerySnapshot? topicsSnapshot;
   @override
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
+    CollectionReference postTopicsRef =
+        FirebaseFirestore.instance.collection('postTopics');
     CollectionReference postsRef =
         FirebaseFirestore.instance.collection('posts');
     User user = FirebaseAuth.instance.currentUser!;
+    var userName = GetIt.I.get<CurrentUser>().user!.fullContact.public;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,20 +51,39 @@ class AddPostState extends State<AddPost> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            DropdownButtonFormField<String>(
-                items: topics
-                    .map(
-                      (e) => DropdownMenuItem<String>(value: e, child: Text(e)),
-                    )
-                    .toList(),
-                onChanged: (value) => {selectedTopic = value!},
-                validator: ((value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Kies alsjeblieft een onderwerp.';
-                  } else {
-                    return null;
-                  }
-                })),
+            FutureBuilder(
+              future: postTopicsRef.get(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<QuerySnapshot> topicData,
+              ) {
+                if (!topicData.hasData) {
+                  return const CircularProgressIndicator();
+                }
+                if (topicData.hasError) {
+                  return Text(topicData.error.toString());
+                } else {
+                  return DropdownButtonFormField<String>(
+                    items: topicData.data!.docs
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e.id,
+                            child: Text(e.id),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) => {selectedTopic = value!},
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Kies alsjeblieft een onderwerp.';
+                      } else {
+                        return null;
+                      }
+                    }),
+                  );
+                }
+              },
+            ),
             const Text(
               'Titel',
               style: TextStyle(
@@ -99,7 +121,8 @@ class AddPostState extends State<AddPost> {
                 if (_key.currentState!.validate()) {
                   postsRef.add({
                     'authorId': user.uid,
-                    'authorName': user.uid,
+                    'authorName':
+                        userName.first_name! + ' ' + userName.last_name!,
                     'content': content,
                     'createdTime': DateTime.now(),
                     'likes': [],
