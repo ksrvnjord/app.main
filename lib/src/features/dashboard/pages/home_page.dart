@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double elementPadding = 4;
+    const double elementPadding = 8;
 
     final double logoSize =
         0.5 * MediaQuery.of(context).size.width; // half of the screen width
