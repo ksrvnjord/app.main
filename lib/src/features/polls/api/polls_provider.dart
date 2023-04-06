@@ -10,7 +10,7 @@ final CollectionReference<Poll> pollsCollection =
 
 // retrieves all the polls
 final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
-  return pollsCollection.get();
+  return pollsCollection.orderBy('openUntil', descending: false).get();
 });
 
 final openPollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) =>
