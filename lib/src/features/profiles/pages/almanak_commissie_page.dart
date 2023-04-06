@@ -2,16 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
@@ -62,10 +59,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       selectedYear.item1,
     );
 
-    final commissiePicture = ref.watch(
-      commissiePictureProvider(commissieAndYear),
-    );
-
     final commissieLeeden = ref.watch(
       commissieLeedenProvider(commissieAndYear),
     );
@@ -80,24 +73,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       ),
       body: ListView(
         children: [
-          commissiePicture.when(
-            data: (data) => ZoomableImage(
-              imageProvider: data,
-              image: AlmanakSubstructureCoverPicture(
-                imageAspectRatio: imageAspectRatio,
-                imageProvider: data,
-              ),
-            ),
-            error: (err, stk) => AlmanakSubstructureCoverPicture(
-              imageAspectRatio: imageAspectRatio,
-              imageProvider:
-                  Image.asset(Images.placeholderProfilePicture).image,
-            ),
-            loading: () => AlmanakSubstructureCoverPicture(
-              imageAspectRatio: imageAspectRatio,
-              imageProvider:
-                  Image.asset(Images.placeholderProfilePicture).image,
-            ),
+          AlmanakSubstructureCoverPicture(
+            imageAspectRatio: imageAspectRatio,
+            commissieAndYear: commissieAndYear,
           ),
           [
             [
