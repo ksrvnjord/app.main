@@ -8,7 +8,13 @@ import 'package:tuple/tuple.dart';
 
 import '../api/substructure_picture_provider.dart';
 
-class CommissieChoiceListTile extends ConsumerStatefulWidget {
+class CommissieChoiceListTile extends ConsumerWidget {
+  static const imageWidth = 80.0;
+  static const imageHeight = 72.0;
+  static const imageRightPadding = 16.0;
+  static const titleFontSize = 16.0;
+  static const iconHorizontalPadding = 16.0;
+
   const CommissieChoiceListTile({
     Key? key,
     required this.commissie,
@@ -20,27 +26,14 @@ class CommissieChoiceListTile extends ConsumerStatefulWidget {
   final String pushRoute;
 
   @override
-  CommissieChoiceListTileState createState() => CommissieChoiceListTileState();
-}
-
-class CommissieChoiceListTileState
-    extends ConsumerState<CommissieChoiceListTile> {
-  static const imageWidth = 80.0;
-  static const imageHeight = 72.0;
-  static const imageRightPadding = 16.0;
-  static const titleFontSize = 16.0;
-  static const iconHorizontalPadding = 16.0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final commissiePicture = ref.watch(
-      commissiePictureProvider(Tuple2(widget.commissie, getNjordYear())),
+      commissiePictureProvider(Tuple2(commissie, getNjordYear())),
     );
 
     return InkWell(
-      onTap: () =>
-          Routemaster.of(context).push(widget.pushRoute, queryParameters: {
-        widget.queryParameterName: widget.commissie,
+      onTap: () => Routemaster.of(context).push(pushRoute, queryParameters: {
+        queryParameterName: commissie,
       }),
       child: [
         [
@@ -61,7 +54,7 @@ class CommissieChoiceListTileState
             // ignore: no-equal-arguments
             placeholderFit: BoxFit.cover,
           ).padding(right: imageRightPadding),
-          Text(widget.commissie).fontSize(titleFontSize),
+          Text(commissie).fontSize(titleFontSize),
         ].toRow().alignment(Alignment.centerLeft),
         const Icon(
           Icons.arrow_forward_ios,
