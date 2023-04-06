@@ -10,12 +10,15 @@ final CollectionReference<Poll> pollsCollection =
 
 // retrieves all the polls
 final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
-  return pollsCollection.get();
+  return pollsCollection.orderBy('openUntil', descending: true).get();
 });
 
-final openPollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) =>
-    pollsCollection
+final openPollsProvider =
+    FutureProvider<QuerySnapshot<Poll>>((ref) => pollsCollection
         .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-        .orderBy('openUntil', descending: false)
+        .orderBy(
+          'openUntil',
+          descending: false,
+        ) // show the poll with closest deadline first
         .limit(3)
         .get());
