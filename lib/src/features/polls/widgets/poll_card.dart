@@ -37,7 +37,7 @@ class PollCard extends ConsumerWidget {
               snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
 
           return [
-            if (poll.description != null)
+            if (poll.description != null && poll.description!.isNotEmpty)
               Text(poll.description!)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
