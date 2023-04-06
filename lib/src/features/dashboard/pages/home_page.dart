@@ -20,9 +20,16 @@ class HomePage extends StatelessWidget {
         0.5 * MediaQuery.of(context).size.width; // half of the screen width
 
     return Scaffold(
+      appBar: PreferredSize(
+        // this is to make the body start below the status bar
+        preferredSize: Size.fromHeight(MediaQuery.of(context).padding.top),
+        child: SizedBox(
+          height: MediaQuery.of(context).padding.top,
+        ),
+      ),
       body: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.only(top: 16),
           child: [
             Image.asset(
               Images.appLogoBlue,
