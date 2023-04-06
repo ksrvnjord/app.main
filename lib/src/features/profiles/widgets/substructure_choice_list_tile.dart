@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
@@ -8,14 +9,14 @@ import 'package:tuple/tuple.dart';
 
 import '../api/substructure_picture_provider.dart';
 
-class CommissieChoiceListTile extends ConsumerWidget {
+class SubstructureChoiceListTile extends ConsumerWidget {
   static const imageWidth = 80.0;
   static const imageHeight = 72.0;
   static const imageRightPadding = 16.0;
   static const titleFontSize = 16.0;
   static const iconHorizontalPadding = 16.0;
 
-  const CommissieChoiceListTile({
+  const SubstructureChoiceListTile({
     Key? key,
     required this.commissie,
     required this.pushRoute,
