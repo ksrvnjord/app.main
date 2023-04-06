@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
@@ -11,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
@@ -22,7 +19,6 @@ class AlmanakBestuurPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bestuur = ref.watch(bestuurUsersProvider);
-    final bestuurImage = ref.watch(bestuurPictureProvider(getNjordYear()));
 
     return Scaffold(
       appBar: AppBar(
@@ -34,20 +30,9 @@ class AlmanakBestuurPage extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          bestuurImage.when(
-            data: (imageProvider) => ZoomableImage(
-              imageProvider: imageProvider,
-              image: AlmanakSubstructureCoverPicture(
-                imageAspectRatio: imageAspectRatio,
-                imageProvider: imageProvider,
-              ),
-            ),
-            loading: () => AlmanakSubstructureCoverPicture(
-              imageAspectRatio: imageAspectRatio,
-              imageProvider:
-                  Image.asset(Images.placeholderProfilePicture).image,
-            ),
-            error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+          AlmanakSubstructureCoverPicture(
+            imageAspectRatio: imageAspectRatio,
+            bestuurYear: getNjordYear(),
           ),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),

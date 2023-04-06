@@ -17,3 +17,14 @@ final commissiePictureProvider = FutureProvider.autoDispose
     );
   },
 );
+
+final substructurePictureProvider =
+    FutureProvider.autoDispose.family<ImageProvider<Object>, String>(
+  (ref, substructure) {
+    return CachedImage.get(
+      firebaseStoragePath: "almanak/substructuren/$substructure/picture.jpg",
+      placeholderImagePath: Images.placeholderProfilePicture,
+      maxAge: const Duration(days: 14),
+    );
+  },
+);
