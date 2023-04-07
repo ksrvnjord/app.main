@@ -33,6 +33,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/p
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/select_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
@@ -114,17 +115,15 @@ final routeMap = RouteMap(
           child: CommissieChoicePage(
             title: "Commissies",
             choices: commissieEmailMap.keys.toList(),
-            pushRoute: 'leeden',
-            queryParameterName: 'commissie',
           ),
         ),
-    '/almanak/commissies/leeden': (route) => CupertinoPage(
+    '/almanak/commissies/:commissie': (route) => CupertinoPage(
           name: 'Commissie',
           child: AlmanakCommissiePage(
-            commissieName: route.queryParameters['commissie']!,
+            commissieName: Uri.decodeFull(route.pathParameters['commissie']!),
           ),
         ),
-    '/almanak/commissies/leeden/:identifier': (info) => const CupertinoPage(
+    '/almanak/commissies/:commissie/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
@@ -132,35 +131,33 @@ final routeMap = RouteMap(
           child: ChoicePage(
             title: "Huizen",
             choices: houseNames,
-            pushRoute: 'leeden',
-            queryParameterName: 'huis',
           ),
         ),
-    '/almanak/huizen/leeden': (route) => CupertinoPage(
+    '/almanak/huizen/:huis': (route) => CupertinoPage(
           name: 'Huizen',
           child: AlmanakHuisPage(
-            houseName: route.queryParameters['huis']!,
+            houseName: Uri.decodeFull(route.pathParameters['huis']!),
           ),
         ),
-    '/almanak/huizen/leeden/:identifier': (info) => const CupertinoPage(
+    '/almanak/huizen/:huis/:identifier': (info) => const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/substructuren': (_) => CupertinoPage(
           name: 'Substructuren',
-          child: ChoicePage(
+          child: SubstructureChoicePage(
             title: "Substructuren",
             choices: substructures.toList(),
-            pushRoute: 'leeden',
-            queryParameterName: 'substructuur',
           ),
         ),
-    '/almanak/substructuren/leeden': (route) => CupertinoPage(
-          name: 'Substructuren',
+    '/almanak/substructuren/:substructuur': (route) => CupertinoPage(
           child: AlmanakSubstructuurPage(
-            substructuurName: route.queryParameters['substructuur']!,
+            name: Uri.decodeFull(
+              route.pathParameters['substructuur']!,
+            ),
           ),
         ),
-    '/almanak/substructuren/leeden/:identifier': (info) => const CupertinoPage(
+    '/almanak/substructuren/:substructuur/:identifier': (info) =>
+        const CupertinoPage(
           child: AlmanakProfilePage(),
         ),
     '/almanak/leeden/:identifier': (info) => const CupertinoPage(

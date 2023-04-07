@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -11,27 +13,28 @@ import 'package:styled_widget/styled_widget.dart';
 class AlmanakSubstructuurPage extends ConsumerWidget {
   const AlmanakSubstructuurPage({
     Key? key,
-    required this.substructuurName,
+    required this.name,
   }) : super(key: key);
 
-  final String substructuurName;
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final substructureUsers =
-        ref.watch(substructureUsersProvider(substructuurName));
+    final substructureUsers = ref.watch(substructureUsersProvider(name));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(substructuurName),
+        title: Text(name),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(8),
         children: [
+          AlmanakSubstructureCoverPicture(
+            imageProvider: ref.watch(substructurePictureProvider(name)),
+          ),
           substructureUsers.when(
             data: (snapshot) => buildSubstructuurList(snapshot),
             loading: () => const CircularProgressIndicator().center(),

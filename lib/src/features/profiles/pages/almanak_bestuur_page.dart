@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
@@ -31,8 +32,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(
-            imageAspectRatio: imageAspectRatio,
-            bestuurYear: getNjordYear(),
+            imageProvider: ref.watch(bestuurPictureProvider(getNjordYear())),
           ),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),
