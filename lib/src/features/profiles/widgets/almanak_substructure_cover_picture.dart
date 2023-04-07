@@ -11,7 +11,8 @@ import 'package:tuple/tuple.dart';
 class AlmanakSubstructureCoverPicture extends ConsumerWidget {
   const AlmanakSubstructureCoverPicture({
     super.key,
-    required this.imageAspectRatio,
+    // ignore: no-magic-number
+    this.imageAspectRatio = 9 / 16,
     this.commissieAndYear,
     this.substructure,
     this.bestuurYear,
