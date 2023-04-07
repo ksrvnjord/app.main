@@ -68,6 +68,7 @@ dependencies:
   timeago: ^3.3.0
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
+  yaml: ^3.1.1
 
 
 dev_dependencies:
@@ -85,4 +86,5 @@ flutter:
    - assets/icons/
    - assets/images/
    - assets/documents/
+   - assets/data/
 
