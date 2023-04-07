@@ -17,22 +17,22 @@ class SubstructureChoiceListTile extends ConsumerWidget {
 
   const SubstructureChoiceListTile({
     Key? key,
-    required this.commissie,
+    required this.name,
+    required this.imageProvider, // the imageProvider for the choice
   }) : super(key: key);
-  final String commissie;
+  final String name;
+
+  final AsyncValue<ImageProvider<Object>> imageProvider;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commissiePicture = ref.watch(
-      commissiePictureProvider(Tuple2(commissie, getNjordYear())),
-    );
-
     return InkWell(
-      onTap: () => Routemaster.of(context).push(commissie),
+      onTap: () => Routemaster.of(context).push(name),
       child: [
         [
           FadeInImage(
             placeholder: Image.asset(Images.placeholderProfilePicture).image,
-            image: commissiePicture.when(
+            image: imageProvider.when(
               data: (data) => data,
               error: (err, stk) =>
                   Image.asset(Images.placeholderProfilePicture).image,
@@ -47,7 +47,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
             // ignore: no-equal-arguments
             placeholderFit: BoxFit.cover,
           ).padding(right: imageRightPadding),
-          Text(commissie).fontSize(titleFontSize),
+          Text(name).fontSize(titleFontSize),
         ].toRow().alignment(Alignment.centerLeft),
         const Icon(
           Icons.arrow_forward_ios,
