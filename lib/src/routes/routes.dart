@@ -36,6 +36,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/p
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/edit_commissies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/fill_commissie_info_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/pages/select_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/pages/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
@@ -159,7 +160,7 @@ final routeMap = RouteMap(
         ),
     '/almanak/substructuren': (_) => CupertinoPage(
           name: 'Substructuren',
-          child: ChoicePage(
+          child: SubstructureChoicePage(
             title: "Substructuren",
             choices: substructures.toList(),
           ),
