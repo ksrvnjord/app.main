@@ -1,0 +1,113 @@
+/// ------------- FIRESTORE RULES ------------- ///
+/// Docs: https://firebase.google.com/docs/rules
+/// Deploy with: firebase deploy --only firestore:rules
+/// For deployment, you need to have the firebase CLI installed and logged in
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+// by default don't allow reads/writes 
+match /{document=**} {
+  allow read, write: if false;
+}
+
+function isLoggedIn(){
+  return request.auth.uid != null;
+}
+
+function isCreator(){
+  return request.auth.uid == request.resource.data.creatorId;
+}
+
+function isOriginalCreator(){
+  return request.auth.uid == resource.data['creatorId'];
+}
+
+
+/// ------------- POSTS ----------- ///
+// everyone can read the postTopics
+match /postTopics/{topic}{
+  allow read: if isLoggedIn();
+}
+// everyone can read posts, edit can only be containg likes
+match /posts/{post}{
+  allow read: if isLoggedIn();
+  allow create: if isLoggedIn();
+  allow update: if isLoggedIn();
+}
+// everyone can read comments on posts
+match /posts/{post}/comments/{comment}{
+  allow read: if isLoggedIn();
+  allow write: if isLoggedIn();
+  allow update: if isLoggedIn();
+}
+
+
+/// ---------- POLLS ------------ ///
+match /polls/{poll} {
+  allow read: if isLoggedIn();
+  
+  match /answers/{answer} {
+    allow read: if isLoggedIn();
+    allow write: if request.auth.uid == request.resource.data['userId'];
+  }
+}
+
+/// ------------- ALMANAK ------------- ///
+
+// everyone can CollectionGroupQuery on Commissies
+match /{path=**}/commissies/{commissieEntry} {
+  allow read: if isLoggedIn();
+}
+
+match /people/{personId} {
+  function isOwnDocument() {
+    return request.auth.uid == personId;
+  }
+
+    // All users can read everyone's profile
+  allow read: if isLoggedIn();
+  // Users can write their own data, needed for writing to almanak
+  allow write: if isLoggedIn() && isOwnDocument();
+
+  /// ------------ Push notifications --------- ///
+  // Allow user to write to their own Firebase Messaging tokens
+  match /tokens/{token} {
+    allow read, write: if isOwnDocument();
+  } // tokens
+  
+  // Commissies of a user subcollection
+  match /commissies/{document=**} {
+      // All user can read everyone's commissies
+      allow read: if isLoggedIn();
+      // Allow users to update their own commissies
+      allow write: if isLoggedIn() && isOwnDocument();
+  }
+}
+match /substructuur_info/{document=**} {
+  allow read: if isLoggedIn();
+}
+  
+  /// ------------ RESERVATIONS & DAMAGES ----------- ///
+match /reservations/{reservation} {
+    allow read: if isLoggedIn();
+    allow delete: if isLoggedIn() && isOriginalCreator();
+}
+
+match /reservationObjects/{reservationObject}{
+  allow read: if isLoggedIn();
+
+  match /damages/{damage} {
+    allow read, write: if isLoggedIn();
+    allow update, delete: if isLoggedIn() && isCreator();
+  }
+}
+  
+// everyone can CollectionGroupQuery on Damages
+match /{path=**}/damages/{damageEntry} {
+  allow read: if isLoggedIn();
+}
+
+
+    } // RULES END
+  }
