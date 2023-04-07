@@ -1,3 +1,7 @@
+/// ------------- FIRESTORE RULES ------------- ///
+/// Docs: https://firebase.google.com/docs/rules
+/// Deploy with: firebase deploy --only firestore:rules
+/// For deployment, you need to have the firebase CLI installed and logged in
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -79,9 +83,9 @@ match /people/{personId} {
       // Allow users to update their own commissies
       allow write: if isLoggedIn() && isOwnDocument();
   }
-
-
-  
+}
+match /substructuur_info/{document=**} {
+  allow read: if isLoggedIn();
 }
   
   /// ------------ RESERVATIONS & DAMAGES ----------- ///
