@@ -10,14 +10,10 @@ class CommissieChoicePage extends ConsumerWidget {
     Key? key,
     required this.title,
     required this.choices,
-    required this.pushRoute,
-    required this.queryParameterName,
   }) : super(key: key);
 
   final String title;
   final List<String> choices;
-  final String pushRoute;
-  final String queryParameterName;
 
   static const cacheExtent = 800.0;
 
@@ -36,8 +32,6 @@ class CommissieChoicePage extends ConsumerWidget {
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
             commissie: choices[index],
-            pushRoute: pushRoute,
-            queryParameterName: queryParameterName,
           ),
           const Divider(
             thickness: 0.5,

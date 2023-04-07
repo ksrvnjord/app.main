@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 /// Page that shows a list of choices, and pushes a new page when a choice is chosen
 class ChoicePage extends StatelessWidget {
@@ -9,14 +8,10 @@ class ChoicePage extends StatelessWidget {
     Key? key,
     required this.title,
     required this.choices,
-    required this.pushRoute,
-    required this.queryParameterName,
   }) : super(key: key);
 
   final String title;
   final List<String> choices;
-  final String pushRoute;
-  final String queryParameterName;
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +26,22 @@ class ChoicePage extends StatelessWidget {
       body: ListView(
         children: choices
             .map(
-              (choice) => [
-                ListTile(
-                  title: Text(choice),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.lightBlue,
+              (choice) => Column(
+                children: [
+                  ListTile(
+                    title: Text(choice),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.lightBlue,
+                    ),
+                    onTap: () => Routemaster.of(context).push(choice),
                   ),
-                  onTap: () =>
-                      Routemaster.of(context).push(pushRoute, queryParameters: {
-                    queryParameterName: choice,
-                  }),
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-              ].toColumn(),
+                  const Divider(
+                    thickness: 1,
+                    height: 1,
+                  ),
+                ],
+              ),
             )
             .toList(),
       ),
