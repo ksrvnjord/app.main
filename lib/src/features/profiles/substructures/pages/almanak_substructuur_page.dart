@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_users.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/substructure_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/leeden_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -42,7 +40,7 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
             data: (data) => data == null
                 ? const SizedBox.shrink()
                 : [
-                    Text(data).textColor(Colors.blueGrey).expanded(flex: 0),
+                    Text(data).expanded(flex: 0),
                   ].toColumn().padding(all: widgetPadding),
             loading: () => const CircularProgressIndicator().center(),
             error: (error, stack) => ErrorCardWidget(
@@ -50,7 +48,8 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
             ),
           ),
           substructureUsers.when(
-            data: (snapshot) => buildSubstructuurList(snapshot),
+            data: (snapshot) =>
+                LeedenList(name: name, almanakProfileSnapshot: snapshot),
             loading: () => const CircularProgressIndicator().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
@@ -59,25 +58,5 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  Widget buildSubstructuurList(QuerySnapshot<AlmanakProfile> snapshot) {
-    List<QueryDocumentSnapshot<AlmanakProfile>> docs = snapshot.docs;
-    const double notFoundPadding = 16;
-
-    return <Widget>[
-      ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName!,
-          lastName: doc.data().lastName!,
-          lidnummer: doc.data().lidnummer,
-        ),
-      ),
-      if (docs.isEmpty)
-        const Text("Geen Leeden gevonden voor deze substructuur")
-            .textColor(Colors.grey)
-            .center()
-            .padding(all: notFoundPadding),
-    ].toColumn();
   }
 }
