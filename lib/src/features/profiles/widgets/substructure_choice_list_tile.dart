@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
@@ -19,13 +18,8 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   const SubstructureChoiceListTile({
     Key? key,
     required this.commissie,
-    required this.pushRoute,
-    required this.queryParameterName,
   }) : super(key: key);
   final String commissie;
-  final String queryParameterName;
-  final String pushRoute;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commissiePicture = ref.watch(
@@ -33,9 +27,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
     );
 
     return InkWell(
-      onTap: () => Routemaster.of(context).push(pushRoute, queryParameters: {
-        queryParameterName: commissie,
-      }),
+      onTap: () => Routemaster.of(context).push(commissie),
       child: [
         [
           FadeInImage(

@@ -11,19 +11,18 @@ import 'package:styled_widget/styled_widget.dart';
 class AlmanakSubstructuurPage extends ConsumerWidget {
   const AlmanakSubstructuurPage({
     Key? key,
-    required this.substructuurName,
+    required this.name,
   }) : super(key: key);
 
-  final String substructuurName;
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final substructureUsers =
-        ref.watch(substructureUsersProvider(substructuurName));
+    final substructureUsers = ref.watch(substructureUsersProvider(name));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(substructuurName),
+        title: Text(name),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
