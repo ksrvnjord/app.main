@@ -38,7 +38,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   );
 
   static const yearSelectorPadding = 8.0;
-  static const imageAspectRatio = 3 / 4;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(
-            imageAspectRatio: imageAspectRatio,
             commissieAndYear: commissieAndYear,
           ),
           [

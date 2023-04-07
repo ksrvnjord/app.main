@@ -31,7 +31,6 @@ class AlmanakBestuurPage extends ConsumerWidget {
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(
-            imageAspectRatio: imageAspectRatio,
             bestuurYear: getNjordYear(),
           ),
           bestuur.when(
