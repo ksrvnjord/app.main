@@ -65,6 +65,7 @@ dependencies:
   riverpod_generator: ^1.1.1
   riverpod_annotation: ^1.0.7
   easy_image_viewer: ^1.2.0
+  yaml: ^3.1.1
 
 
 dev_dependencies:
@@ -82,4 +83,5 @@ flutter:
    - assets/icons/
    - assets/images/
    - assets/documents/
+   - assets/data/
 
