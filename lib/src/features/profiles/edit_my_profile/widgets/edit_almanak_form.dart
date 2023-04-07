@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/edit_profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
