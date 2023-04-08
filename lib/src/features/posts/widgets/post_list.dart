@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expand_widget/expand_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_list.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
@@ -12,6 +11,7 @@ class PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore db = FirebaseFirestore.instance;
+
     return ListView.builder(
         itemCount: snapshot.data!.size,
         itemBuilder: ((context, index) {

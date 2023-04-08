@@ -6,8 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/pages/add_post.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/pages/main_board_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
@@ -19,6 +18,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_bestuur_page.dart';
@@ -70,7 +70,7 @@ final routeMap = RouteMap(
           name: "Aankondiging",
         ),
     '/posts': (_) => const CupertinoPage(name: "Prikbord", child: PostsPage()),
-    '/posts/new': (_) => const CupertinoPage(child: CreatePost()),
+    '/posts/new': (_) => const CupertinoPage(child: CreatePostPage()),
     '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
           child: EventsPage(),

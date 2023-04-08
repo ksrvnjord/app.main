@@ -6,16 +6,16 @@ import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:routemaster/routemaster.dart';
 
-class CreatePost extends StatefulWidget {
-  const CreatePost({super.key});
+class CreatePostPage extends StatefulWidget {
+  const CreatePostPage({super.key});
 
   @override
-  CreatePostState createState() {
-    return CreatePostState();
+  CreatePostPageState createState() {
+    return CreatePostPageState();
   }
 }
 
-class CreatePostState extends State<CreatePost> {
+class CreatePostPageState extends State<CreatePostPage> {
   final GlobalKey<FormState> _key = GlobalKey();
   String selectedTopic = '';
   String title = '';
