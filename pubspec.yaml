@@ -65,6 +65,7 @@ dependencies:
   riverpod_generator: ^1.1.1
   riverpod_annotation: ^1.0.7
   expand_widget: ^3.1.1
+  timeago: ^3.3.0
 
 
 dev_dependencies:

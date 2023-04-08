@@ -21,6 +21,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 @pragma('vm:entry-point')
 // ignore: no-empty-block,avoid-redundant-async
@@ -60,6 +61,8 @@ Future<void> main() async {
   ); // store the cache in a separate folder
   Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
   Hive.openLazyBox<ImageCacheItem>('imageCache');
+
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {

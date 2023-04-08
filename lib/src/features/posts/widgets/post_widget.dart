@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_list.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
+import 'package:styled_widget/styled_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
   const PostWidget({
@@ -14,38 +17,55 @@ class PostWidget extends StatelessWidget {
   final QueryDocumentSnapshot<Post> doc;
 
   static const likeIconSize = 20.0;
+  static const double profilePictureIconSize = 16;
+  static const double postTimeFontSize = 12;
+  static const double titleLeftPadding = 8;
 
   @override
   Widget build(BuildContext context) {
     final Post post = doc.data();
 
-    return Card(
-      elevation: 1,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+    return [
+      [
+        ProfilePictureWidget(
+          userId: post.authorId,
+          size: profilePictureIconSize,
+        ),
+        [
+          Text(post.authorName),
+          Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
+              .textColor(Colors.blueGrey)
+              .fontSize(postTimeFontSize),
+        ]
+            .toColumn(
+              crossAxisAlignment: CrossAxisAlignment.start,
+            )
+            .padding(left: titleLeftPadding),
+      ].toRow(),
+      // TODO: here the post's content
+      // TODO: here a row with the post's likes and button to expand comments
+      [
+        Text(
+          post.title,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        const Spacer(),
+        DisplayLikes(
+          docRef: doc.reference,
+          likedBy: post.likedBy,
+          iconSize: likeIconSize,
+        ),
+      ].toRow(
+        crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      child: Column(children: [
-        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Icon(
-            Icons.person,
-            size: 40,
+      Text(post.content),
+      const Divider(),
+      ExpandChild(child: CommentList(post: doc)),
+    ].toColumn().padding(all: 16).card(
+          elevation: 1,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          const SizedBox(width: 20),
-          Text(
-            post.title,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          const Spacer(),
-          DisplayLikes(
-            docRef: doc.reference,
-            likedBy: post.likedBy,
-            iconSize: likeIconSize,
-          ),
-        ]),
-        Text(post.content),
-        const Divider(),
-        ExpandChild(child: CommentList(post: doc)),
-      ]),
-    );
+        );
   }
 }
