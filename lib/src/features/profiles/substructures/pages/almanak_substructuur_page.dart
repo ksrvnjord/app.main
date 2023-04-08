@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_users.
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/substructure_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/leeden_list.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -21,7 +22,6 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final substructureUsers = ref.watch(substructureUsersProvider(name));
-    final description = ref.watch(substructureDescriptionProvider(name));
 
     return Scaffold(
       appBar: AppBar(
@@ -36,17 +36,11 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
           AlmanakSubstructureCoverPicture(
             imageProvider: ref.watch(substructurePictureProvider(name)),
           ),
-          description.when(
-            data: (data) => data == null
-                ? const SizedBox.shrink()
-                : [
-                    Text(data).expanded(flex: 0),
-                  ].toColumn().padding(all: widgetPadding),
-            loading: () => const CircularProgressIndicator().center(),
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
+          SubstructureDescriptionWidget(
+            descriptionAsyncVal: ref.watch(
+              substructureDescriptionProvider(name),
             ),
-          ),
+          ).padding(all: widgetPadding),
           substructureUsers.when(
             data: (snapshot) =>
                 LeedenList(name: name, almanakProfileSnapshot: snapshot),
