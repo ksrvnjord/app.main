@@ -46,7 +46,12 @@ PODS:
     - DKImagePickerController/PhotoGallery
     - Flutter
   - Firebase/Auth (10.7.0):
+  - Firebase/Auth (10.7.0):
     - Firebase/CoreOnly
+    - FirebaseAuth (~> 10.7.0)
+  - Firebase/CoreOnly (10.7.0):
+    - FirebaseCore (= 10.7.0)
+  - Firebase/Firestore (10.7.0):
     - FirebaseAuth (~> 10.7.0)
   - Firebase/CoreOnly (10.7.0):
     - FirebaseCore (= 10.7.0)
@@ -54,23 +59,35 @@ PODS:
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.7.0)
   - Firebase/Functions (10.7.0):
+    - FirebaseFirestore (~> 10.7.0)
+  - Firebase/Functions (10.7.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 10.7.0)
   - Firebase/Messaging (10.7.0):
+    - FirebaseFunctions (~> 10.7.0)
+  - Firebase/Messaging (10.7.0):
     - Firebase/CoreOnly
+    - FirebaseMessaging (~> 10.7.0)
+  - Firebase/Storage (10.7.0):
     - FirebaseMessaging (~> 10.7.0)
   - Firebase/Storage (10.7.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.7.0)
   - firebase_app_check (0.1.2):
     - Firebase/CoreOnly (~> 10.7.0)
+    - FirebaseStorage (~> 10.7.0)
+  - firebase_app_check (0.1.2):
+    - Firebase/CoreOnly (~> 10.7.0)
     - firebase_core
+    - FirebaseAppCheck (~> 10.7.0-beta)
     - FirebaseAppCheck (~> 10.7.0-beta)
     - Flutter
   - firebase_auth (4.4.0):
     - Firebase/Auth (= 10.7.0)
     - firebase_core
     - Flutter
+  - firebase_core (2.9.0):
+    - Firebase/CoreOnly (= 10.7.0)
   - firebase_core (2.9.0):
     - Firebase/CoreOnly (= 10.7.0)
     - Flutter
@@ -83,16 +100,19 @@ PODS:
     - firebase_core
     - Flutter
   - FirebaseAppCheck (10.7.0):
+  - FirebaseAppCheck (10.7.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - PromisesObjC (~> 2.1)
   - FirebaseAppCheckInterop (10.7.0)
+  - FirebaseAuth (10.7.0):
   - FirebaseAuth (10.7.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - FirebaseAuthInterop (10.7.0)
+  - FirebaseCore (10.7.0):
   - FirebaseCore (10.7.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
@@ -104,11 +124,17 @@ PODS:
   - FirebaseFirestore (10.7.0):
     - FirebaseFirestore/AutodetectLeveldb (= 10.7.0)
   - FirebaseFirestore/AutodetectLeveldb (10.7.0):
+  - FirebaseFirestore (10.7.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 10.7.0)
+  - FirebaseFirestore/AutodetectLeveldb (10.7.0):
     - FirebaseFirestore/Base
     - FirebaseFirestore/WithLeveldb
   - FirebaseFirestore/Base (10.7.0)
   - FirebaseFirestore/WithLeveldb (10.7.0):
+  - FirebaseFirestore/Base (10.7.0)
+  - FirebaseFirestore/WithLeveldb (10.7.0):
     - FirebaseFirestore/Base
+  - FirebaseFunctions (10.7.0):
   - FirebaseFunctions (10.7.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseAuthInterop (~> 10.0)
@@ -123,6 +149,7 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
   - FirebaseMessaging (10.7.0):
+  - FirebaseMessaging (10.7.0):
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
     - GoogleDataTransport (~> 9.2)
@@ -133,6 +160,7 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseMessagingInterop (10.7.0)
   - FirebaseSharedSwift (10.7.0)
+  - FirebaseStorage (10.7.0):
   - FirebaseStorage (10.7.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseAuthInterop (~> 10.0)
@@ -223,6 +251,7 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - FirebaseAppCheck
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.7.0`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.7.0`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
@@ -290,6 +319,7 @@ EXTERNAL SOURCES:
   FirebaseFirestore:
     :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
     :tag: 10.7.0
+    :tag: 10.7.0
   Flutter:
     :path: Flutter
   flutter_local_notifications:
@@ -323,6 +353,7 @@ CHECKOUT OPTIONS:
   FirebaseFirestore:
     :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
     :tag: 10.7.0
+    :tag: 10.7.0
 
 SPEC CHECKSUMS:
   cloud_firestore: 84f58b426bd8d21a22c4b19d9d18028fc4ff3eb1
@@ -340,16 +371,22 @@ SPEC CHECKSUMS:
   FirebaseAppCheck: 81143f6f973d277962b71e16c63068a8f4a755dc
   FirebaseAppCheckInterop: 8e907eea79958960a8bd2058e067f31e03a7914b
   FirebaseAuth: dd64c01631df724b09f33e584625775c52f7d71f
+  FirebaseAuth: dd64c01631df724b09f33e584625775c52f7d71f
   FirebaseAuthInterop: 46201190fe90ef1f581513eb0f9fa3d7820e7d6d
+  FirebaseCore: e317665b9d744727a97e623edbbed009320afdd7
   FirebaseCore: e317665b9d744727a97e623edbbed009320afdd7
   FirebaseCoreExtension: f17247ba8c61e4d3c8d136b5e2de3cb4ac6a85b6
   FirebaseCoreInternal: 8845798510aae74703467480f71ac613788d0696
   FirebaseFirestore: 7b7d95b74637ed61b76996077a2b292167dae7e5
   FirebaseFunctions: 6cede311274dd1e13ea4950fc9e57221d3538386
+  FirebaseFirestore: 7b7d95b74637ed61b76996077a2b292167dae7e5
+  FirebaseFunctions: 6cede311274dd1e13ea4950fc9e57221d3538386
   FirebaseInstallations: 59c0e4c7a816a0f76710d83f77e5369b3e45eb96
+  FirebaseMessaging: ac9062bcc35ed56e15a0241d8fd317022499baf8
   FirebaseMessaging: ac9062bcc35ed56e15a0241d8fd317022499baf8
   FirebaseMessagingInterop: c49e2766f4059ea4ef9e7c7764ed741a14aaeded
   FirebaseSharedSwift: 993e46657e34f14fe497c4a43c1f9608dabfb2e5
+  FirebaseStorage: 4841efa304543e1f9e4ca116c559c7a1ea2a9d0f
   FirebaseStorage: 4841efa304543e1f9e4ca116c559c7a1ea2a9d0f
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
@@ -378,5 +415,7 @@ SPEC CHECKSUMS:
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: ddddab2e7f1d258c3dcd46bc2cf6ff271b29f6bc
+PODFILE CHECKSUM: ddddab2e7f1d258c3dcd46bc2cf6ff271b29f6bc
 
+COCOAPODS: 1.12.0
 COCOAPODS: 1.12.0
