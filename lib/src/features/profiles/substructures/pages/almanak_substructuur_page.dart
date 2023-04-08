@@ -40,7 +40,7 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
             descriptionAsyncVal: ref.watch(
               substructureDescriptionProvider(name),
             ),
-          ).padding(all: widgetPadding),
+          ),
           substructureUsers.when(
             data: (snapshot) =>
                 LeedenList(name: name, almanakProfileSnapshot: snapshot),

@@ -87,14 +87,14 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             descriptionAsyncVal: ref.watch(
               commissieInfoProvider(widget.commissieName),
             ),
-          ).padding(all: widgetPadding),
+          ),
           [
             const Text("Leeden")
                 .textColor(Colors.blueGrey)
                 .fontSize(titleFontSize)
                 .fontWeight(FontWeight.w500)
                 .alignment(Alignment.centerLeft)
-                .padding(horizontal: titleHPadding, bottom: titleVPadding),
+                .padding(horizontal: titleHPadding),
             [
               const Text('Kies een jaar: ').textColor(Colors.blueGrey),
               DropdownButton<Tuple2<int, int>>(
