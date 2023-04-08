@@ -11,12 +11,11 @@ class PostList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
     return ListView.builder(
       itemCount: snapshot.size,
       itemBuilder: ((context, index) {
-        QueryDocumentSnapshot doc = snapshot.docs[index];
+        final doc = snapshot.docs[index];
+        final post = doc.data();
 
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
@@ -32,21 +31,20 @@ class PostList extends StatelessWidget {
               ),
               const SizedBox(width: 20),
               Text(
-                doc.get('title'),
+                post.title,
                 style:
                     const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              Text(doc.get('likes').length.toString()),
               DisplayLikes(
-                pathToLikeableObject: db.collection('posts'),
-                likableObject: doc,
+                docRef: doc.reference,
+                likedBy: post.likedBy,
                 iconSize: 20,
               ),
             ]),
-            Text(doc.get('content')),
+            Text(post.content),
             const Divider(),
-            ExpandChild(child: CommentList(post: doc))
+            ExpandChild(child: CommentList(post: doc)),
           ]),
         );
       }),
