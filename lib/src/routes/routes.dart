@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/board/pages/add_post.dart';
-import 'package:ksrvnjord_main_app/src/features/board/pages/main_board.dart';
+import 'package:ksrvnjord_main_app/src/features/board/pages/main_board_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
