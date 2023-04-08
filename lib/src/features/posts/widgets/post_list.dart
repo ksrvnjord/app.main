@@ -13,12 +13,7 @@ class PostList extends StatelessWidget {
       itemCount: snapshot.size,
       padding: const EdgeInsets.all(16),
       separatorBuilder: (context, index) => const SizedBox(height: 16),
-      itemBuilder: ((context, index) {
-        final doc = snapshot.docs[index];
-        final post = doc.data();
-
-        return PostWidget(post: post, doc: doc);
-      }),
+      itemBuilder: ((context, index) => PostWidget(doc: snapshot.docs[index])),
     );
   }
 }

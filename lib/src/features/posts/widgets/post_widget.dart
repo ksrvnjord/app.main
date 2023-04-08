@@ -8,17 +8,17 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart
 class PostWidget extends StatelessWidget {
   const PostWidget({
     super.key,
-    required this.post,
     required this.doc,
   });
 
-  final Post post;
   final QueryDocumentSnapshot<Post> doc;
 
   static const likeIconSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
+    final Post post = doc.data();
+
     return Card(
       elevation: 1,
       shape: const RoundedRectangleBorder(
