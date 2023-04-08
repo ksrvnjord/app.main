@@ -6,8 +6,10 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.d
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/pages/edit_my_profile/models/commissie_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_substructure_cover_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/commissie_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -39,6 +41,14 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   );
 
   static const yearSelectorPadding = 8.0;
+  static const double widgetPadding = 16.0;
+  static const double titleFontSize = 20;
+  static const double titleHPadding = 16;
+  static const double titleVPadding = 8;
+
+  final ScrollController scrollController = ScrollController(
+    keepScrollOffset: true,
+  ); // for keeping scroll position when changing year
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +82,26 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
+        controller:
+            scrollController, // for keeping scroll position when changing year
+        physics: const AlwaysScrollableScrollPhysics(),
         children: [
           AlmanakSubstructureCoverPicture(
             imageProvider:
                 ref.watch(commissiePictureProvider(commissieAndYear)),
           ),
+          SubstructureDescriptionWidget(
+            descriptionAsyncVal: ref.watch(
+              commissieInfoProvider(widget.commissieName),
+            ),
+          ),
           [
+            const Text("Leeden")
+                .textColor(Colors.blueGrey)
+                .fontSize(titleFontSize)
+                .fontWeight(FontWeight.w500)
+                .alignment(Alignment.centerLeft)
+                .padding(horizontal: titleHPadding),
             [
               const Text('Kies een jaar: ').textColor(Colors.blueGrey),
               DropdownButton<Tuple2<int, int>>(
@@ -97,8 +121,8 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                   selectedYear = tuple!;
                 }),
               ),
-            ].toRow(mainAxisAlignment: MainAxisAlignment.end),
-          ].toColumn().padding(
+            ].toRow(),
+          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 right: yearSelectorPadding,
               ),
           commissieLeeden.when(
