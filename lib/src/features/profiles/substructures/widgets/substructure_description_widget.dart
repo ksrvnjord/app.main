@@ -12,6 +12,7 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
   final AsyncValue<String?> descriptionAsyncVal;
 
   static const double fontSize = 14;
+  static const double widgetPadding = 16.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +21,9 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
           ? const SizedBox.shrink()
           : [
               Text(data).fontSize(fontSize).expanded(flex: 0),
-            ].toColumn(),
+            ].toColumn().padding(
+                all: widgetPadding,
+              ), // only add padding if there is a description
       loading: () => const CircularProgressIndicator().center(),
       error: (error, stack) => ErrorCardWidget(
         errorMessage: error.toString(),
