@@ -46,6 +46,10 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   static const double titleHPadding = 16;
   static const double titleVPadding = 8;
 
+  final ScrollController scrollController = ScrollController(
+    keepScrollOffset: true,
+  ); // for keeping scroll position when changing year
+
   @override
   Widget build(BuildContext context) {
     const int startYear = 1874;
@@ -78,6 +82,8 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
+        controller:
+            scrollController, // for keeping scroll position when changing year
         children: [
           AlmanakSubstructureCoverPicture(
             imageProvider:
