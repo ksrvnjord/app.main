@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/board/api/post_topics_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/board/widgets/post_list.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
+
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
-class MainBoardPage extends ConsumerWidget {
-  const MainBoardPage({
+class PostsPage extends ConsumerWidget {
+  const PostsPage({
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +29,7 @@ class MainBoardPage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => navigator.push('/board/new_post'),
+        onPressed: () => navigator.push('new'),
         backgroundColor: Colors.blue,
         icon: const Icon(Icons.add),
         label: const Text('Nieuw bericht'),

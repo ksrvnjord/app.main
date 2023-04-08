@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
-import 'package:ksrvnjord_main_app/src/features/board/pages/add_post.dart';
-import 'package:ksrvnjord_main_app/src/features/board/pages/main_board_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/add_post.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/main_board_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
@@ -54,7 +54,7 @@ final routeMap = RouteMap(
           child: MainPage(),
           paths: [
             '/home',
-            '/board',
+            '/posts',
             '/training',
             '/almanak',
             '/more',
@@ -69,9 +69,8 @@ final routeMap = RouteMap(
           child: AnnouncementPage(),
           name: "Aankondiging",
         ),
-    '/board': (_) =>
-        const CupertinoPage(name: "Prikbord", child: MainBoardPage()),
-    '/board/new_post': (_) => const CupertinoPage(child: AddPost()),
+    '/posts': (_) => const CupertinoPage(name: "Prikbord", child: PostsPage()),
+    '/posts/new': (_) => const CupertinoPage(child: CreatePost()),
     '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
           child: EventsPage(),

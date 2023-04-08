@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/board/widgets/add_comment.dart';
-import 'package:ksrvnjord_main_app/src/features/board/widgets/display_likes.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/add_comment.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
 
 class CommentList extends StatelessWidget {
   final QueryDocumentSnapshot<Object?> post;
