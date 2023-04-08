@@ -15,30 +15,34 @@ class DisplayLikes extends StatelessWidget {
     required this.iconSize,
   }) : super(key: key);
 
+  static const double likeTextLeftPadding = 4;
+
   @override
   Widget build(BuildContext context) {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     final bool liked = likedBy.contains(uid);
 
-    return [
-      IconButton(
-        padding: const EdgeInsets.all(0),
-        constraints: BoxConstraints.tight(Size.square(iconSize)),
-        iconSize: iconSize,
-        onPressed: () => liked
-            ? docRef.update({
-                'likes': FieldValue.arrayRemove([uid]),
-              })
-            : docRef.update({
-                'likes': FieldValue.arrayUnion([uid]),
-              }),
-        icon: Icon(
-          liked ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-          color: liked ? Colors.red : Colors.black,
+    return GestureDetector(
+      onTap: () => liked
+          ? docRef.update({
+              'likes': FieldValue.arrayRemove([uid]),
+            })
+          : docRef.update({
+              'likes': FieldValue.arrayUnion([uid]),
+            }),
+      child: [
+        IconButton(
+          padding: const EdgeInsets.all(0),
+          constraints: BoxConstraints.tight(Size.square(iconSize)),
+          iconSize: iconSize,
+          onPressed: () => {},
+          icon: Icon(
+            liked ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+            color: liked ? Colors.red : Colors.black,
+          ),
         ),
-      ),
-      // show amount of likes
-      Text(likedBy.length.toString()),
-    ].toRow();
+        const Text("Vind ik leuk").padding(left: likeTextLeftPadding),
+      ].toRow(),
+    );
   }
 }

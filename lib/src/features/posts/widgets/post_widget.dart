@@ -46,22 +46,26 @@ class PostWidget extends StatelessWidget {
           .fontSize(16)
           .fontWeight(FontWeight.bold)
           .alignment(Alignment.centerLeft),
-      // TODO: here the post's content
-      // TODO: here a row with the post's likes and button to expand comments
       [
-        const Spacer(),
+        Text(post.content),
+      ].toRow(),
+      // [].toRow(mainAxisAlignment: MainAxisAlignment.end),
+
+      [
+        Text("${post.likedBy.length.toString()} likes")
+            .textColor(Colors.blueGrey),
+      ].toRow(
+        mainAxisAlignment: MainAxisAlignment.start,
+      ),
+      const Divider(),
+      [
         DisplayLikes(
           docRef: doc.reference,
           likedBy: post.likedBy,
           iconSize: likeIconSize,
         ),
-      ].toRow(
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
-      Text(post.content),
-      const Divider(),
-      ExpandChild(child: CommentList(post: doc)),
-    ].toColumn().padding(all: 16).card(
+      ].toRow(mainAxisAlignment: MainAxisAlignment.end),
+    ].toColumn().padding(horizontal: 16, top: 16).card(
           elevation: 1,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
