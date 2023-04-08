@@ -42,13 +42,13 @@ class PostWidget extends StatelessWidget {
             )
             .padding(left: titleLeftPadding),
       ].toRow(),
+      Text(post.title)
+          .fontSize(16)
+          .fontWeight(FontWeight.bold)
+          .alignment(Alignment.centerLeft),
       // TODO: here the post's content
       // TODO: here a row with the post's likes and button to expand comments
       [
-        Text(
-          post.title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
         const Spacer(),
         DisplayLikes(
           docRef: doc.reference,
