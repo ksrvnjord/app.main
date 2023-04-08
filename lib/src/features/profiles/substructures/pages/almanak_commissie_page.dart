@@ -84,6 +84,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       body: ListView(
         controller:
             scrollController, // for keeping scroll position when changing year
+        physics: const AlwaysScrollableScrollPhysics(),
         children: [
           AlmanakSubstructureCoverPicture(
             imageProvider:
