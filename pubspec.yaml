@@ -70,6 +70,7 @@ dependencies:
   easy_image_viewer: ^1.2.0
   yaml: ^3.1.1
   expand_widget: ^3.1.1
+  timeago: ^3.3.0
 
 
 dev_dependencies:
