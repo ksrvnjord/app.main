@@ -13,5 +13,7 @@ final commentsProvider = StreamProvider.autoDispose
         toFirestore: (comment, _) => comment.toJson(),
       );
 
-  return commentsCollection.snapshots();
+  return commentsCollection
+      .orderBy('createdTime', descending: false) // show oldest first
+      .snapshots();
 });

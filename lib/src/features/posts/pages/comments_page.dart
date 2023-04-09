@@ -42,12 +42,7 @@ class CommentsPage extends ConsumerWidget {
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Divider(
-                height: 0,
-              ),
-            ),
+            const SizedBox(height: 8),
             comments.when(
               data: (data) => CommentsWidget(comments: data),
               loading: () => const Center(
