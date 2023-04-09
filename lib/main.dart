@@ -63,6 +63,7 @@ Future<void> main() async {
   Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
 
   // "kReleaseMode" is true if the app is not being debugged
   if (kReleaseMode) {

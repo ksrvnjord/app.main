@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentWidget extends StatelessWidget {
   final Comment comment;
@@ -11,6 +12,7 @@ class CommentWidget extends StatelessWidget {
   static const double cardPadding = 8;
   static const double profilePictureSize = 20;
   static const double authorNameFontSize = 12;
+  static const double profilePicAndCommentSpacing = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +35,16 @@ class CommentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
             ),
-      ].toColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
-      ),
+        [
+          Text(timeago.format(comment.createdTime.toDate(), locale: 'nl_short'))
+              .textColor(Colors.blueGrey)
+              .fontSize(authorNameFontSize),
+        ].toRow().padding(left: cardPadding),
+      ]
+          .toColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )
+          .padding(left: profilePicAndCommentSpacing),
     ].toRow(crossAxisAlignment: CrossAxisAlignment.start);
   }
 }
