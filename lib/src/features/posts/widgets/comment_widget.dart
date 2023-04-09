@@ -11,7 +11,28 @@ class CommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
-      ProfilePictureWidget(userId: comment.authorId, size: 20),
-    ].toRow();
+      ProfilePictureWidget(userId: comment.authorId, size: 20).padding(top: 4),
+      [
+        [
+          Text(comment.authorName).fontWeight(FontWeight.bold).fontSize(12),
+          Text(comment.content),
+        ]
+            .toColumn(crossAxisAlignment: CrossAxisAlignment.start)
+            .padding(all: 8)
+            .card(
+              elevation: 0,
+              color: Colors.lightBlue.shade50,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+            ),
+        const Text("'Vo amice")
+            .fontWeight(FontWeight.bold)
+            .fontSize(12)
+            .padding(horizontal: 8),
+      ].toColumn(
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+    ].toRow(crossAxisAlignment: CrossAxisAlignment.start);
   }
 }
