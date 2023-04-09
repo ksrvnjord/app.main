@@ -20,8 +20,8 @@ class CommentsWidget extends StatelessWidget {
             child: Text('Er heeft nog niemand gereageerd'),
           )
         : [
-            ...comments.docs.map((e) => [
-                  CommentWidget(comment: e.data()),
+            ...comments.docs.map((snapshot) => [
+                  CommentWidget(snapshot: snapshot),
                   const SizedBox(height: commentSpacing),
                 ].toColumn()),
           ].toColumn();

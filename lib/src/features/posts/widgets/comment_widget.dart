@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar.dart';
@@ -6,9 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture
 import 'package:styled_widget/styled_widget.dart';
 
 class CommentWidget extends StatelessWidget {
-  final Comment comment;
+  final QueryDocumentSnapshot<Comment> snapshot;
 
-  const CommentWidget({Key? key, required this.comment}) : super(key: key);
+  const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
 
   static const double cardPadding = 8;
   static const double profilePictureSize = 20;
@@ -17,12 +18,14 @@ class CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final comment = snapshot.data();
+
     return [
       ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize),
       [
         [
           CommentCard(comment: comment),
-          CommentBottomBar(comment: comment).padding(left: cardPadding),
+          CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
         ]
             .toColumn(
               crossAxisAlignment: CrossAxisAlignment.start,
