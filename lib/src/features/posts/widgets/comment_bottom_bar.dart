@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,9 +14,26 @@ class CommentBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     const double authorNameFontSize = 12;
     final comment = snapshot.data();
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    bool likedByMe = comment.likedBy.contains(uid);
+    final docRef = snapshot.reference;
 
     return [
-      // TODO: add like text
+      InkWell(
+        onTap: () => likedByMe
+            ? docRef.update({
+                'likes': FieldValue.arrayRemove([uid]),
+              })
+            : docRef.update({
+                'likes': FieldValue.arrayUnion([uid]),
+              }),
+        child: const Text("'Vo amice")
+            .textColor(
+              likedByMe ? Colors.blue : Colors.blueGrey,
+            )
+            .fontSize(authorNameFontSize)
+            .fontWeight(FontWeight.bold),
+      ).padding(right: 8),
       Text(timeago.format(comment.createdTime.toDate(), locale: 'nl_short'))
           .textColor(Colors.blueGrey)
           .fontSize(authorNameFontSize),
