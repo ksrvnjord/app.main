@@ -22,6 +22,8 @@ class CommentCard extends StatelessWidget {
           .fontSize(authorNameFontSize),
       Text(
         comment.content,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 20,
       ),
     ]
         .toColumn(
