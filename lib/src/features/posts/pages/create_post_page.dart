@@ -21,6 +21,8 @@ class CreatePostPageState extends State<CreatePostPage> {
   String title = '';
   String content = '';
 
+  static const int maxTitleLength = 40;
+
   QuerySnapshot? topicsSnapshot;
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,8 @@ class CreatePostPageState extends State<CreatePostPage> {
                     validator: ((value) {
                       if (value == null || value.isEmpty) {
                         return 'Kies alsjeblieft een onderwerp.';
+                      } else if (value.length > maxTitleLength) {
+                        return 'Onderwerp mag niet langer zijn dan 40 karakters.';
                       } else {
                         return null;
                       }

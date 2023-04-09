@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
@@ -41,16 +42,24 @@ class PostWidget extends StatelessWidget {
             )
             .padding(left: titleLeftPadding),
       ].toRow(),
-      Text(post.title)
+      Text(
+        post.title,
+        overflow: TextOverflow.ellipsis,
+      )
           .fontSize(16)
           .fontWeight(FontWeight.bold)
           .alignment(Alignment.centerLeft),
       [
-        Text(
-          post.content,
-          maxLines: contentMaxLines,
-          overflow: TextOverflow.ellipsis,
-        ).expanded(),
+        Expanded(
+          child: ExpandableText(
+            post.content,
+            expandText: "meer",
+            collapseText: "minder",
+            maxLines: contentMaxLines,
+            linkColor: Colors.blueGrey,
+            linkEllipsis: false,
+          ),
+        ),
       ].toRow(),
       // [].toRow(mainAxisAlignment: MainAxisAlignment.end),
 
