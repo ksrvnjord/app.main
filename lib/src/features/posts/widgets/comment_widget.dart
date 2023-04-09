@@ -20,26 +20,39 @@ class CommentWidget extends StatelessWidget {
     return [
       ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize),
       [
-        CommentCard(comment: comment),
-        CommentBottomBar(comment: comment).padding(left: cardPadding),
-      ]
-          .toColumn(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          )
-          .padding(left: profilePicAndCommentSpacing),
+        [
+          CommentCard(comment: comment),
+          CommentBottomBar(comment: comment).padding(left: cardPadding),
+        ]
+            .toColumn(
+              crossAxisAlignment: CrossAxisAlignment.start,
+            )
+            .padding(left: profilePicAndCommentSpacing),
+        if (comment.likedBy.isNotEmpty)
+          Positioned(
+            bottom: 6,
+            right: 0,
+            child: Container(
+              // make edges round
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(40)),
+                color: Colors.lightBlue.shade300,
+              ),
+              child: [
+                // heart icon
+                const Icon(
+                  Icons.favorite,
+                  color: Colors.white,
+                  size: 12,
+                ).padding(right: 2),
+                Text(comment.likedBy.length.toString())
+                    .fontWeight(FontWeight.bold)
+                    .fontSize(12)
+                    .textColor(Colors.white),
+              ].toRow().padding(horizontal: 2),
+            ),
+          ),
+      ].toStack(),
     ].toRow(crossAxisAlignment: CrossAxisAlignment.start);
   }
 }
-
-// // add amount of likes
-// Positioned(
-//   bottom: 0,
-//   right: 0,
-//   child: [
-//     Text(comment.likedBy.length.toString())
-//         .fontWeight(FontWeight.bold)
-//         .fontSize(authorNameFontSize),
-//   ].toRow(),
-// ),
-
-
