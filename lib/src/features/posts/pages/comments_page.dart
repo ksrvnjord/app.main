@@ -17,6 +17,8 @@ class CommentsPage extends ConsumerWidget {
 
   final String postDocId;
 
+  static const double commentsLeftPadding = 4;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(postProvider(postDocId));
@@ -44,7 +46,8 @@ class CommentsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             comments.when(
-              data: (data) => CommentsWidget(comments: data),
+              data: (data) => CommentsWidget(comments: data)
+                  .padding(left: commentsLeftPadding),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
