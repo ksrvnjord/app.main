@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
@@ -71,6 +72,11 @@ final routeMap = RouteMap(
         ),
     '/posts': (_) => const CupertinoPage(name: "Prikbord", child: PostsPage()),
     '/posts/new': (_) => const CupertinoPage(child: CreatePostPage()),
+    '/posts/:postId/comments': (route) => CupertinoPage(
+          child: CommentsPage(
+            docId: route.pathParameters['postId']!,
+          ),
+        ),
     '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
           child: EventsPage(),

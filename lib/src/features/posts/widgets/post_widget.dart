@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -13,7 +14,7 @@ class PostWidget extends StatelessWidget {
     required this.doc,
   });
 
-  final QueryDocumentSnapshot<Post> doc;
+  final DocumentSnapshot<Post> doc;
 
   static const likeIconSize = 20.0;
   static const double profilePictureIconSize = 16;
@@ -24,7 +25,7 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Post post = doc.data();
+    final Post post = doc.data()!;
 
     return [
       [
@@ -77,6 +78,7 @@ class PostWidget extends StatelessWidget {
           iconSize: likeIconSize,
         ),
         InkWell(
+          onTap: () => Routemaster.of(context).push('${doc.id}/comments'),
           child: [
             const Icon(
               Icons.mode_comment_outlined,

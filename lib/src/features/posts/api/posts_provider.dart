@@ -21,3 +21,10 @@ final postsProvider = StreamProvider.autoDispose
       .orderBy('createdTime', descending: true)
       .snapshots();
 });
+
+final postProvider =
+    StreamProvider.autoDispose.family<DocumentSnapshot<Post>, String>(
+  (ref, docId) {
+    return postsCollection.doc(docId).snapshots();
+  },
+);
