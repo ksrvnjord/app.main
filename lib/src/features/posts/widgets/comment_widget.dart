@@ -10,14 +10,12 @@ class CommentWidget extends StatelessWidget {
 
   static const double cardPadding = 8;
   static const double profilePictureSize = 20;
-  static const double profilePictureTopPadding = 6;
   static const double authorNameFontSize = 12;
 
   @override
   Widget build(BuildContext context) {
     return [
-      ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize)
-          .padding(top: profilePictureTopPadding),
+      ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize),
       [
         [
           Text(comment.authorName)
