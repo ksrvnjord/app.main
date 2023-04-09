@@ -53,14 +53,12 @@ class CommentsPage extends ConsumerWidget {
                       child: Text('Er heeft nog niemand gereageerd'),
                     )
                   : comments.docs
-                      .map((snapshot) => [
-                            CommentWidget(snapshot: snapshot),
-                            const SizedBox(height: commentSpacing),
-                          ].toColumn())
+                      .map(
+                        (snapshot) => CommentWidget(snapshot: snapshot),
+                      )
                       .toList()
                       .toColumn(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        separator: const SizedBox(height: commentSpacing),
                       )
                       .padding(horizontal: commentHPadding),
               loading: () => const Center(
@@ -70,7 +68,7 @@ class CommentsPage extends ConsumerWidget {
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
           ],
-        ).expanded(),
+        ).expanded(), // fill space between appbar and create comment widget
         CreateCommentWidget(postDocId: postDocId),
       ].toColumn(),
     );

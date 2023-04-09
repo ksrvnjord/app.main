@@ -42,9 +42,9 @@ class CommentWidget extends StatelessWidget {
           ),
       ].toStack().expanded(),
     ].toRow(
+      // comment is a row of widgets
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
-      // mainAxisSize: MainAxisSize.min,
     );
   }
 }
