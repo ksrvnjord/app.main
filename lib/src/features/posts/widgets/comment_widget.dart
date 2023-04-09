@@ -26,10 +26,6 @@ class CommentWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
             ),
-        const Text("'Vo amice")
-            .fontWeight(FontWeight.bold)
-            .fontSize(12)
-            .padding(horizontal: 8),
       ].toColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
       ),

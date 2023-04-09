@@ -74,7 +74,7 @@ final routeMap = RouteMap(
     '/posts/new': (_) => const CupertinoPage(child: CreatePostPage()),
     '/posts/:postId/comments': (route) => CupertinoPage(
           child: CommentsPage(
-            docId: Uri.decodeFull(route.pathParameters['postId']!),
+            postDocId: Uri.decodeFull(route.pathParameters['postId']!),
           ),
         ),
     '/calendar': (info) => const CupertinoPage(
