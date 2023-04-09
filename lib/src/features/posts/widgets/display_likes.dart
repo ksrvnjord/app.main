@@ -41,7 +41,7 @@ class DisplayLikes extends StatelessWidget {
             color: liked ? Colors.red : Colors.black,
           ),
         ),
-        const Text("Vind ik leuk").padding(left: likeTextLeftPadding),
+        const Text("'Vo amice").padding(left: likeTextLeftPadding),
       ].toRow(),
     );
   }

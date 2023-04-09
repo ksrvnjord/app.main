@@ -20,6 +20,7 @@ class PostWidget extends StatelessWidget {
   static const double postTimeFontSize = 12;
   static const double titleLeftPadding = 8;
   static const int contentMaxLines = 3;
+  static const double postPadding = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +62,6 @@ class PostWidget extends StatelessWidget {
           ),
         ),
       ].toRow(),
-      // [].toRow(mainAxisAlignment: MainAxisAlignment.end),
-
       [
         Text(
           "${post.likedBy.length.toString()} likes",
@@ -77,8 +76,17 @@ class PostWidget extends StatelessWidget {
           likedBy: post.likedBy,
           iconSize: likeIconSize,
         ),
-      ].toRow(mainAxisAlignment: MainAxisAlignment.end),
-    ].toColumn().padding(horizontal: 16, top: 16).card(
+        InkWell(
+          child: [
+            const Icon(
+              Icons.mode_comment_outlined,
+              size: 20,
+            ),
+            const Text("Commenteren").padding(left: 4),
+          ].toRow(),
+        ),
+      ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround),
+    ].toColumn().padding(all: postPadding).card(
           elevation: 1,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
