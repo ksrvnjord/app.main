@@ -89,6 +89,7 @@ class PostWidget extends StatelessWidget {
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround),
     ].toColumn().padding(all: postPadding).card(
+          // TODO: abstract card out of here, so it can be used in other places
           elevation: 1,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
