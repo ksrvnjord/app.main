@@ -8,18 +8,27 @@ class CommentWidget extends StatelessWidget {
 
   const CommentWidget({Key? key, required this.comment}) : super(key: key);
 
+  static const double cardPadding = 8;
+  static const double profilePictureSize = 20;
+  static const double profilePictureTopPadding = 6;
+  static const double authorNameFontSize = 12;
+
   @override
   Widget build(BuildContext context) {
     return [
-      ProfilePictureWidget(userId: comment.authorId, size: 20).padding(top: 4),
+      ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize)
+          .padding(top: profilePictureTopPadding),
       [
         [
-          Text(comment.authorName).fontWeight(FontWeight.bold).fontSize(12),
+          Text(comment.authorName)
+              .fontWeight(FontWeight.bold)
+              .fontSize(authorNameFontSize),
           Text(comment.content),
         ]
             .toColumn(crossAxisAlignment: CrossAxisAlignment.start)
-            .padding(all: 8)
+            .padding(all: cardPadding)
             .card(
+              margin: EdgeInsets.zero,
               elevation: 0,
               color: Colors.lightBlue.shade50,
               shape: const RoundedRectangleBorder(

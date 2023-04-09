@@ -11,6 +11,7 @@ class CommentsWidget extends StatelessWidget {
   }) : super(key: key);
 
   final QuerySnapshot<Comment> comments;
+  static const double commentSpacing = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,10 @@ class CommentsWidget extends StatelessWidget {
             child: Text('Er heeft nog niemand gereageerd'),
           )
         : [
-            ...comments.docs.map((e) => CommentWidget(comment: e.data())),
+            ...comments.docs.map((e) => [
+                  CommentWidget(comment: e.data()),
+                  const SizedBox(height: commentSpacing),
+                ].toColumn()),
           ].toColumn();
   }
 }
