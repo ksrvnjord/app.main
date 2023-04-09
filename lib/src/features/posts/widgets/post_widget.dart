@@ -64,7 +64,7 @@ class PostWidget extends StatelessWidget {
       ].toRow(),
       [
         Text(
-          "${post.likedBy.length.toString()} likes",
+          "${post.likedBy.length.toString()}x 'Vo amice",
         ).textColor(Colors.blueGrey),
       ].toRow(
         mainAxisAlignment: MainAxisAlignment.start,
