@@ -24,6 +24,9 @@ class CommentsWidget extends StatelessWidget {
                   CommentWidget(snapshot: snapshot),
                   const SizedBox(height: commentSpacing),
                 ].toColumn()),
-          ].toColumn();
+          ].toColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+          );
   }
 }
