@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_list.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -20,6 +18,7 @@ class PostWidget extends StatelessWidget {
   static const double profilePictureIconSize = 16;
   static const double postTimeFontSize = 12;
   static const double titleLeftPadding = 8;
+  static const int contentMaxLines = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +46,18 @@ class PostWidget extends StatelessWidget {
           .fontWeight(FontWeight.bold)
           .alignment(Alignment.centerLeft),
       [
-        Text(post.content),
+        Text(
+          post.content,
+          maxLines: contentMaxLines,
+          overflow: TextOverflow.ellipsis,
+        ).expanded(),
       ].toRow(),
       // [].toRow(mainAxisAlignment: MainAxisAlignment.end),
 
       [
-        Text("${post.likedBy.length.toString()} likes")
-            .textColor(Colors.blueGrey),
+        Text(
+          "${post.likedBy.length.toString()} likes",
+        ).textColor(Colors.blueGrey),
       ].toRow(
         mainAxisAlignment: MainAxisAlignment.start,
       ),
