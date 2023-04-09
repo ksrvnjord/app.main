@@ -16,34 +16,25 @@ class CommentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoContextMenu(
-      actions: [
-        CupertinoContextMenuAction(
-          isDestructiveAction: true,
-          trailingIcon: Icons.delete,
-          child: const Text('Delete'),
-          onPressed: () {},
-        ),
-      ],
-      child: [
-        Text(comment.authorName)
-            .fontWeight(FontWeight.bold)
-            .fontSize(authorNameFontSize),
-        Text(
-          comment.content,
-        ),
-      ].toColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return [
+      Text(comment.authorName)
+          .fontWeight(FontWeight.bold)
+          .fontSize(authorNameFontSize),
+      Text(
+        comment.content,
       ),
-      // .padding(all: cardPadding)
-      // .card(
-      //   margin: EdgeInsets.zero,
-      //   elevation: 0,
-      //   color: Colors.lightBlue.shade50,
-      //   shape: const RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.all(Radius.circular(16)),
-      //   ),
-      // ),
-    );
+    ]
+        .toColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        )
+        .padding(all: cardPadding)
+        .card(
+          margin: EdgeInsets.zero,
+          elevation: 0,
+          color: Colors.lightBlue.shade50,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+        );
   }
 }

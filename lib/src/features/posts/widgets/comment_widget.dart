@@ -30,22 +30,20 @@ class CommentWidget extends StatelessWidget {
           CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
         ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
         ),
-        // if (comment.likedBy.isNotEmpty)
-        //   Positioned(
-        //     bottom: 6,
-        //     right: 0,
-        //     child: AmountOfLikesForCommentWidget(
-        //       amountOfLikes: comment.likedBy.length,
-        //     ),
-        //   ),
+        if (comment.likedBy.isNotEmpty)
+          Positioned(
+            bottom: 6,
+            right: 0,
+            child: AmountOfLikesForCommentWidget(
+              amountOfLikes: comment.likedBy.length,
+            ),
+          ),
       ].toStack(),
     ].toRow(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
     );
   }
 }
