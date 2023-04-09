@@ -40,10 +40,11 @@ class CommentWidget extends StatelessWidget {
               amountOfLikes: comment.likedBy.length,
             ),
           ),
-      ].toStack(),
+      ].toStack().expanded(),
     ].toRow(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
     );
   }
 }

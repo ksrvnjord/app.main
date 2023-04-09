@@ -25,7 +25,11 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
             .fontWeight(FontWeight.bold)
             .fontSize(12)
             .textColor(Colors.white),
-      ].toRow().padding(horizontal: 2),
+      ]
+          .toRow(
+            mainAxisSize: MainAxisSize.min,
+          )
+          .padding(horizontal: 2),
     );
   }
 }

@@ -17,7 +17,7 @@ class CommentsPage extends ConsumerWidget {
 
   final String postDocId;
 
-  static const double commentsLeftPadding = 4;
+  static const double commentHPadding = 4;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +36,7 @@ class CommentsPage extends ConsumerWidget {
       ),
       body: [
         ListView(
-          // shrinkWrap: true,
+          shrinkWrap: true,
           children: [
             post.when(
               data: (data) => PostWidget(doc: data),
@@ -62,7 +62,7 @@ class CommentsPage extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                       )
-                      .padding(left: commentsLeftPadding),
+                      .padding(horizontal: commentHPadding),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
