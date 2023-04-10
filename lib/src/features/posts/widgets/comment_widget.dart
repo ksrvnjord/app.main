@@ -7,26 +7,20 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class CommentWidget extends StatelessWidget {
   final QueryDocumentSnapshot<Comment> snapshot;
 
   const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
 
-  static const double cardPadding = 8;
-  static const double profilePictureSize = 20;
-
-  static const double profilePicAndCommentSpacing = 4;
-
   @override
   Widget build(BuildContext context) {
     final comment = snapshot.data();
 
-    const double authorNameFontSize = 12;
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    bool likedByMe = comment.likedBy.contains(uid);
-    final docRef = snapshot.reference;
+    const double cardPadding = 8;
+    const double profilePictureSize = 20;
+
+    const double profilePicAndCommentSpacing = 4;
 
     return [
       ProfilePictureWidget(
@@ -34,6 +28,7 @@ class CommentWidget extends StatelessWidget {
         size: profilePictureSize,
       ),
       Flexible(
+        // so that the comment can be as long as it wants
         child: [
           [
             CommentCard(comment: comment),
@@ -47,7 +42,8 @@ class CommentWidget extends StatelessWidget {
                 ),
               ),
           ].toStack(
-            clipBehavior: Clip.none,
+            clipBehavior: Clip
+                .none, // because of the amount of likes that clips outside the comment card
           ),
           CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
         ].toColumn(
@@ -58,6 +54,7 @@ class CommentWidget extends StatelessWidget {
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       separator: const SizedBox(width: profilePicAndCommentSpacing),
     );
   }
