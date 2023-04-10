@@ -60,7 +60,7 @@ class CommentWidget extends StatelessWidget {
                     onPop: () => CommentsService.like(snapshot),
                   ),
                   trailingIcon: likedByMe ? Icons.heart_broken : Icons.favorite,
-                  child: Text(likedByMe ? "Niet meer 'Vo amice" : "'Vo amice"),
+                  child: Text(likedByMe ? "Anti-'Vo" : "'Vo"),
                 ),
 
                 // only show delete button if the comment is from the current user

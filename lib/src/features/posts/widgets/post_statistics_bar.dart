@@ -21,7 +21,7 @@ class PostStatisticsBar extends ConsumerWidget {
 
     return [
       Text(
-        "${post.likedBy.length.toString()}x 'Vo amice",
+        "${post.likedBy.length.toString()}x 'Vo",
       ).textColor(Colors.blueGrey),
       commentsVal.when(
         data: (data) => data.size > 0

@@ -34,8 +34,7 @@ class PostBottomActionBar extends StatelessWidget {
             color: likedByMe ? Colors.lightBlue : Colors.black,
             size: iconSize,
           ),
-          const Text("'Vo amice")
-              .textColor(likedByMe ? Colors.lightBlue : null),
+          const Text("'Vo").textColor(likedByMe ? Colors.lightBlue : null),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
       ),
       InkWell(
