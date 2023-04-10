@@ -14,13 +14,17 @@ class PostList extends ConsumerWidget {
     final posts = ref.watch(postsProvider(topic));
 
     return posts.when(
-      data: (snapshot) => ListView.separated(
-        itemCount: snapshot.size,
-        padding: const EdgeInsets.all(8),
-        separatorBuilder: (context, index) => const SizedBox(height: 8),
-        itemBuilder: ((context, index) =>
-            PostCard(snapshot: snapshot.docs[index])),
-      ),
+      data: (snapshot) => snapshot.size == 0
+          ? const Center(
+              child: Text("Er zijn nog geen berichten geplaatst."),
+            )
+          : ListView.separated(
+              itemCount: snapshot.size,
+              padding: const EdgeInsets.all(8),
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+              itemBuilder: ((context, index) =>
+                  PostCard(snapshot: snapshot.docs[index])),
+            ),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
