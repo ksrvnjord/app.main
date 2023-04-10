@@ -1,5 +1,4 @@
 import 'package:expandable_text/expandable_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -9,18 +8,24 @@ class CommentCard extends StatelessWidget {
 
   const CommentCard({Key? key, required this.comment}) : super(key: key);
 
-  static const double cardPadding = 8;
-  static const double profilePictureSize = 20;
-  static const double authorNameFontSize = 12;
-  static const double profilePicAndCommentSpacing = 4;
-
   @override
   Widget build(BuildContext context) {
+    const int maxLines = 3;
+    const double cardPadding = 8;
+    const double authorNameFontSize = 12;
+
     return [
       Text(comment.authorName)
           .fontWeight(FontWeight.bold)
           .fontSize(authorNameFontSize),
-      Text(comment.content),
+      ExpandableText(
+        comment.content,
+        expandText: "meer",
+        collapseText: "minder",
+        maxLines: maxLines,
+        linkColor: Colors.blueGrey,
+        linkEllipsis: false,
+      ),
     ]
         .toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
