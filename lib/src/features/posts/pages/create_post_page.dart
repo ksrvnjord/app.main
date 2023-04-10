@@ -30,6 +30,7 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   Widget build(BuildContext context) {
     const int maxTitleLength = 40;
     const int maxContentLength = 1726;
+    const double submitButtonHPadding = 12;
 
     return Scaffold(
       appBar: AppBar(
@@ -106,8 +107,10 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                   Text(
                     postCreationInProgress ? "Zwanen voeren..." : 'Verstuur',
                     style: const TextStyle(fontSize: 18),
-                  ).padding(vertical: 12),
-                ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                  ),
+                ]
+                    .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween)
+                    .padding(vertical: submitButtonHPadding),
               ),
             ].toColumn(
               // use column inside listview so we can specify separator

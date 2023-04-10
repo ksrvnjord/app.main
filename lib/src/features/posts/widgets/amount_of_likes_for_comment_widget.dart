@@ -9,6 +9,13 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double shadowOpacity = 0.1726;
+    const double shadowBlurRadius = 2;
+    const double innerSpacing = 2;
+    const double outerHPadding = 4;
+    const double iconSize = 12;
+    const double textFontSize = 12;
+
     return Container(
       // make edges round
       decoration: BoxDecoration(
@@ -17,9 +24,9 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
         // add shadow
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(shadowOpacity),
             spreadRadius: 1,
-            blurRadius: 2,
+            blurRadius: shadowBlurRadius,
             offset: const Offset(0, 1), // changes position of shadow
           ),
         ],
@@ -28,17 +35,18 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
         const Icon(
           Icons.favorite,
           color: Colors.white,
-          size: 12,
-        ).padding(right: 2),
+          size: iconSize,
+        ),
         Text(amountOfLikes.toString())
             .fontWeight(FontWeight.bold)
-            .fontSize(12)
+            .fontSize(textFontSize)
             .textColor(Colors.white),
       ]
           .toRow(
             mainAxisSize: MainAxisSize.min,
+            separator: const SizedBox(width: innerSpacing),
           )
-          .padding(horizontal: 2),
+          .padding(horizontal: outerHPadding),
     );
   }
 }
