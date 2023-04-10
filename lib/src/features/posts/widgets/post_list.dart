@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -19,7 +20,7 @@ class PostList extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         itemBuilder: ((context, index) =>
-            PostWidget(snapshot: snapshot.docs[index])),
+            PostCard(snapshot: snapshot.docs[index])),
       ),
       loading: () => const Center(
         child: CircularProgressIndicator(),
