@@ -12,9 +12,11 @@ class PostWidget extends ConsumerWidget {
   const PostWidget({
     super.key,
     required this.snapshot,
+    this.expanded = false,
   });
 
   final DocumentSnapshot<Post> snapshot;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,6 +44,7 @@ class PostWidget extends ConsumerWidget {
             maxLines: contentMaxLines,
             linkColor: Colors.blueGrey,
             linkEllipsis: false,
+            expanded: expanded,
           ),
         ),
       ].toRow(),

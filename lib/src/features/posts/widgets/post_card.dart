@@ -11,18 +11,23 @@ class PostCard extends StatelessWidget {
     this.margin = true,
     this.elevation = true,
     this.squareBorder = false,
+    this.expandContent = false,
   }) : super(key: key);
 
   final DocumentSnapshot<Post> snapshot;
   final bool margin;
   final bool elevation;
   final bool squareBorder;
+  final bool expandContent;
 
   @override
   Widget build(BuildContext context) {
     const double postPadding = 8;
 
-    return PostWidget(snapshot: snapshot).padding(all: postPadding).card(
+    return PostWidget(
+      snapshot: snapshot,
+      expanded: expandContent,
+    ).padding(all: postPadding).card(
           margin: margin ? const EdgeInsets.all(8) : null,
           elevation: elevation ? 1 : 0,
           shape: RoundedRectangleBorder(

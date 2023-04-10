@@ -44,6 +44,7 @@ class CommentsPage extends ConsumerWidget {
                 margin: false,
                 elevation: false,
                 squareBorder: true,
+                expandContent: true,
               ),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
