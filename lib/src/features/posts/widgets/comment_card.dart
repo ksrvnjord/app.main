@@ -17,17 +17,12 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
-      Text(comment.authorName)
-          .fontWeight(FontWeight.bold)
-          .fontSize(authorNameFontSize),
-      Text(
-        comment.content,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 20,
-      ),
+      Text("Abra Ham").fontWeight(FontWeight.bold).fontSize(authorNameFontSize),
+      Text(comment.content),
     ]
         .toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
         )
         .padding(all: cardPadding)
         .card(

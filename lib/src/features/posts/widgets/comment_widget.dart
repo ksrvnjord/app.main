@@ -36,25 +36,7 @@ class CommentWidget extends StatelessWidget {
       Flexible(
         child: [
           [
-            [
-              Text("Abra Ham")
-                  .fontWeight(FontWeight.bold)
-                  .fontSize(authorNameFontSize),
-              Text(comment.content),
-            ]
-                .toColumn(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                )
-                .padding(all: cardPadding)
-                .card(
-                  margin: EdgeInsets.zero,
-                  elevation: 0,
-                  color: Colors.lightBlue.shade50,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
+            CommentCard(comment: comment),
             // create positioned red circle
             if (comment.likedBy.isNotEmpty)
               Positioned(
@@ -67,32 +49,7 @@ class CommentWidget extends StatelessWidget {
           ].toStack(
             clipBehavior: Clip.none,
           ),
-          [
-            InkWell(
-              onTap: () => likedByMe
-                  ? docRef.update({
-                      'likes': FieldValue.arrayRemove([uid]),
-                    })
-                  : docRef.update({
-                      'likes': FieldValue.arrayUnion([uid]),
-                    }),
-              child: const Text("'Vo amice")
-                  .textColor(
-                    likedByMe ? Colors.blue : Colors.blueGrey,
-                  )
-                  .fontSize(authorNameFontSize)
-                  .fontWeight(FontWeight.bold),
-            ).padding(right: 4),
-            Text(timeago.format(
-              comment.createdTime.toDate(),
-              locale: 'nl_short',
-            )).textColor(Colors.blueGrey).fontSize(authorNameFontSize),
-          ]
-              .toRow(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-              )
-              .padding(left: cardPadding),
+          CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
         ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

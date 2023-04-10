@@ -33,10 +33,14 @@ class CommentBottomBar extends StatelessWidget {
             )
             .fontSize(authorNameFontSize)
             .fontWeight(FontWeight.bold),
-      ).padding(right: 8),
-      Text(timeago.format(comment.createdTime.toDate(), locale: 'nl_short'))
-          .textColor(Colors.blueGrey)
-          .fontSize(authorNameFontSize),
-    ].toRow();
+      ).padding(right: 4),
+      Text(timeago.format(
+        comment.createdTime.toDate(),
+        locale: 'nl_short',
+      )).textColor(Colors.blueGrey).fontSize(authorNameFontSize),
+    ].toRow(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+    );
   }
 }
