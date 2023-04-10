@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/comments_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_bottom_action_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends ConsumerWidget {
   const PostWidget({
     super.key,
     required this.snapshot,
@@ -16,7 +18,7 @@ class PostWidget extends StatelessWidget {
   final DocumentSnapshot<Post> snapshot;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Post post = snapshot.data()!;
 
     const double profilePictureIconSize = 16;
@@ -24,6 +26,8 @@ class PostWidget extends StatelessWidget {
     const double titleLeftPadding = 8;
     const int contentMaxLines = 3;
     const double postPadding = 8;
+
+    final commentsVal = ref.watch(commentsProvider(snapshot.id));
 
     return [
       [
@@ -65,8 +69,20 @@ class PostWidget extends StatelessWidget {
         Text(
           "${post.likedBy.length.toString()}x 'Vo amice",
         ).textColor(Colors.blueGrey),
+        commentsVal.when(
+          data: (data) => data.size > 0
+              ? Text(
+                  "${data.size} reactie${data.size > 1 ? 's' : ''}",
+                ).textColor(Colors.blueGrey)
+              : const SizedBox.shrink(),
+          loading: () => const SizedBox.shrink(),
+          error: (error, stack) => Text(error.toString()),
+        ),
       ].toRow(
         mainAxisAlignment: MainAxisAlignment.start,
+        separator: const SizedBox(
+          width: 4,
+        ),
       ),
       const Divider(),
       PostBottomActionBar(
