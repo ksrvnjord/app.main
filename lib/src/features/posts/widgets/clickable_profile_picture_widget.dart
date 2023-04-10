@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_profile/almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 
 class ClickableProfilePictureWidget extends StatelessWidget {
@@ -22,7 +22,10 @@ class ClickableProfilePictureWidget extends StatelessWidget {
         // don't make separate route in Routemap because it would not make sense to make a /posts/:userId route
         builder: (context) => AlmanakProfilePage(userId: userId),
       )),
-      child: ProfilePictureWidget(userId: userId),
+      child: ProfilePictureWidget(
+        userId: userId,
+        size: size,
+      ),
     );
   }
 }
