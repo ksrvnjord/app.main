@@ -20,7 +20,8 @@ class PostList extends ConsumerWidget {
             )
           : ListView.separated(
               itemCount: snapshot.size,
-              padding: const EdgeInsets.all(8),
+              padding:
+                  const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 64),
               separatorBuilder: (context, index) => const SizedBox(height: 8),
               itemBuilder: ((context, index) =>
                   PostCard(snapshot: snapshot.docs[index])),
