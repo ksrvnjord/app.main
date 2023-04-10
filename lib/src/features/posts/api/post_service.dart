@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/model/topic.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 class PostService {
@@ -27,14 +28,14 @@ class PostService {
   }
 
   static create({
-    required String topic,
+    required Topic topic,
     required String title,
     required String content,
   }) {
     final me = GetIt.I<CurrentUser>().user!.fullContact.private!;
 
     postsCollection.add(Post(
-      topic: topic,
+      topic: topic.name,
       title: title,
       content: content,
       createdTime: Timestamp.now(),
