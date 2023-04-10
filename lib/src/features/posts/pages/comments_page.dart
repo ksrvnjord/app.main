@@ -17,7 +17,7 @@ class CommentsPage extends ConsumerWidget {
 
   final String postDocId;
 
-  static const double commentHPadding = 4;
+  static const double commentHPadding = 8;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

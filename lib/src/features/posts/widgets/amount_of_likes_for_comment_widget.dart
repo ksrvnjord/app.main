@@ -14,6 +14,15 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(40)),
         color: Colors.lightBlue.shade300,
+        // add shadow
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
       ),
       child: [
         const Icon(

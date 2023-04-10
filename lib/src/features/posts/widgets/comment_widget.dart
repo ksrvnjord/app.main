@@ -29,15 +29,15 @@ class CommentWidget extends StatelessWidget {
     final docRef = snapshot.reference;
 
     return [
-      [
-        ProfilePictureWidget(
-          userId: comment.authorId,
-          size: profilePictureSize,
-        ),
-        Flexible(
-          child: [
+      ProfilePictureWidget(
+        userId: comment.authorId,
+        size: profilePictureSize,
+      ),
+      Flexible(
+        child: [
+          [
             [
-              Text(comment.authorName)
+              Text("Abra Ham")
                   .fontWeight(FontWeight.bold)
                   .fontSize(authorNameFontSize),
               Text(comment.content),
@@ -55,51 +55,53 @@ class CommentWidget extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                   ),
                 ),
-            [
-              InkWell(
-                onTap: () => likedByMe
-                    ? docRef.update({
-                        'likes': FieldValue.arrayRemove([uid]),
-                      })
-                    : docRef.update({
-                        'likes': FieldValue.arrayUnion([uid]),
-                      }),
-                child: const Text("'Vo amice")
-                    .textColor(
-                      likedByMe ? Colors.blue : Colors.blueGrey,
-                    )
-                    .fontSize(authorNameFontSize)
-                    .fontWeight(FontWeight.bold),
-              ).padding(right: 4),
-              Text(timeago.format(
-                comment.createdTime.toDate(),
-                locale: 'nl_short',
-              )).textColor(Colors.blueGrey).fontSize(authorNameFontSize),
-            ]
-                .toRow(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                )
-                .padding(left: cardPadding),
-          ].toColumn(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            // create positioned red circle
+            if (comment.likedBy.isNotEmpty)
+              Positioned(
+                right: -4,
+                bottom: -6,
+                child: AmountOfLikesForCommentWidget(
+                  amountOfLikes: comment.likedBy.length,
+                ),
+              ),
+          ].toStack(
+            clipBehavior: Clip.none,
           ),
+          [
+            InkWell(
+              onTap: () => likedByMe
+                  ? docRef.update({
+                      'likes': FieldValue.arrayRemove([uid]),
+                    })
+                  : docRef.update({
+                      'likes': FieldValue.arrayUnion([uid]),
+                    }),
+              child: const Text("'Vo amice")
+                  .textColor(
+                    likedByMe ? Colors.blue : Colors.blueGrey,
+                  )
+                  .fontSize(authorNameFontSize)
+                  .fontWeight(FontWeight.bold),
+            ).padding(right: 4),
+            Text(timeago.format(
+              comment.createdTime.toDate(),
+              locale: 'nl_short',
+            )).textColor(Colors.blueGrey).fontSize(authorNameFontSize),
+          ]
+              .toRow(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+              )
+              .padding(left: cardPadding),
+        ].toColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
         ),
-      ].toRow(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        separator: const SizedBox(width: profilePicAndCommentSpacing),
       ),
-      // create positioned red circle
-      if (comment.likedBy.isNotEmpty)
-        Positioned(
-          right: 0,
-          bottom: 6,
-          child: AmountOfLikesForCommentWidget(
-            amountOfLikes: comment.likedBy.length,
-          ),
-        ),
-    ].toStack();
+    ].toRow(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      separator: const SizedBox(width: profilePicAndCommentSpacing),
+    );
   }
 }
