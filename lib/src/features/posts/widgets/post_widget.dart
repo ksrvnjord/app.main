@@ -22,9 +22,10 @@ class PostWidget extends ConsumerWidget {
     const int contentMaxLines = 3;
 
     const double titleFontSize = 16;
+    const double headerPadding = 4;
 
     return [
-      PostHeaderBar(post: post),
+      PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
         post.title,
         overflow: TextOverflow.ellipsis,
