@@ -59,7 +59,8 @@ class CommentsPage extends ConsumerWidget {
                       .toList()
                       .toColumn(
                         separator: const SizedBox(height: commentSpacing),
-                      ),
+                      )
+                      .padding(horizontal: commentHPadding),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
