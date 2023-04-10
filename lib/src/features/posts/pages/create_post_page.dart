@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/topic.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class CreatePostPage extends ConsumerStatefulWidget {
   const CreatePostPage({super.key});
@@ -22,8 +24,13 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
 
   static const int maxTitleLength = 40;
 
+  bool postCreationInProgress = false;
+
   @override
   Widget build(BuildContext context) {
+    const int maxTitleLength = 40;
+    const int maxContentLength = 1726;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe post'),
@@ -35,7 +42,7 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(16),
           children: <Widget>[
             const Text(
               'Categorie',
@@ -64,11 +71,13 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
               ),
             ),
             TextFormField(
+              maxLength: maxTitleLength,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               // The validator receives the text that the user has entered.
               validator: (value) => value == null || value.isEmpty
                   ? 'Vul alsjeblieft een berichttitel in.'
                   : null,
-              onChanged: (value) => title = value,
+              onSaved: (value) => title = value ?? '',
             ),
             const Text(
               'Inhoud',
@@ -77,15 +86,34 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
               ),
             ),
             TextFormField(
+              maxLines: null,
+              maxLength: maxContentLength,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               // The validator receives the text that the user has entered.
               validator: (value) => value == null || value.isEmpty
                   ? 'Vul alsjeblieft een berichtinhoud in.'
                   : null,
-              onChanged: (value) => content = value,
+              onSaved: (value) => content = value ?? '',
             ),
             ElevatedButton(
-              onPressed: submitForm,
-              child: const Text('Submit'),
+              onPressed: postCreationInProgress ? null : () => submitForm(),
+              style: ElevatedButton.styleFrom(
+                // add rounding
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                backgroundColor: Colors.lightBlue,
+              ),
+              child: <Widget>[
+                Icon(postCreationInProgress
+                        ? LucideIcons.loader
+                        : LucideIcons.check)
+                    .padding(bottom: 1),
+                Text(
+                  postCreationInProgress ? "Zwanen voeren..." : 'Nieuwe post',
+                  style: const TextStyle(fontSize: 18),
+                ).padding(vertical: 12),
+              ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
             ),
           ],
         ),
@@ -99,11 +127,17 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     }
     _formKey.currentState!.save();
 
-    PostService.create(
+    postCreationInProgress = true;
+
+    await PostService.create(
       topic: selectedTopic,
       title: title,
       content: content,
     );
+
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Niewe post aangemaakt!')),

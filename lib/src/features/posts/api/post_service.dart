@@ -27,14 +27,14 @@ class PostService {
     });
   }
 
-  static create({
+  static Future<void> create({
     required Topic topic,
     required String title,
     required String content,
-  }) {
+  }) async {
     final me = GetIt.I<CurrentUser>().user!.fullContact.private!;
 
-    postsCollection.add(Post(
+    await postsCollection.add(Post(
       topic: topic.name,
       title: title,
       content: content,
