@@ -86,7 +86,10 @@ class CommentWidget extends StatelessWidget {
             // create positioned red circle
             if (comment.likedBy.isNotEmpty)
               Positioned(
+                // these values are hardcoded because they are based on the design
+                // ignore: no-magic-number
                 right: -4,
+                // ignore: no-magic-number
                 bottom: -6,
                 child: AmountOfLikesForCommentWidget(
                   amountOfLikes: comment.likedBy.length,

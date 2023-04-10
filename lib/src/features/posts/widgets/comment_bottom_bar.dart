@@ -27,7 +27,7 @@ class CommentBottomBar extends StatelessWidget {
             )
             .fontSize(authorNameFontSize)
             .fontWeight(FontWeight.bold),
-      ).padding(right: 4),
+      ),
       Text(timeago.format(
         comment.createdTime.toDate(),
         locale: 'nl_short',
@@ -35,6 +35,7 @@ class CommentBottomBar extends StatelessWidget {
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      separator: const SizedBox(width: 4),
     );
   }
 }

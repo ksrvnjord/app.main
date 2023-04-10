@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/create_comment_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 

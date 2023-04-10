@@ -52,7 +52,8 @@ class PostHeaderBar extends StatelessWidget {
                 (context) => AlertDialog(
               title: const Text('Verwijderen'),
               content: const Text(
-                  'Weet je zeker dat je dit bericht wilt verwijderen?'),
+                'Weet je zeker dat je dit bericht wilt verwijderen?',
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),

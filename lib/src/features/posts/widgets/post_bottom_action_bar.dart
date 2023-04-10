@@ -44,8 +44,10 @@ class PostBottomActionBar extends StatelessWidget {
             Icons.mode_comment_outlined,
             size: iconSize,
           ),
-          const Text("Commenteren").padding(left: 4),
-        ].toRow(),
+          const Text("Commenteren"),
+        ].toRow(
+          separator: const SizedBox(width: 4),
+        ),
       ),
     ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);
   }
