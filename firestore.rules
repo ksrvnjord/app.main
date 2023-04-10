@@ -60,9 +60,9 @@ match /posts/{post}{
 }
 // everyone can read comments on posts
 match /posts/{post}/comments/{comment}{
-  allow read: if isLoggedIn();
+  allow read, create: if isLoggedIn();
   allow update: if  (isLoggedIn() && onlyModifiesLikes()) || isOwnPost();
-  allow create, delete: if isLoggedIn() && isOwnPost();
+  allow delete: if isLoggedIn() && isOwnPost();
 }
 
 
