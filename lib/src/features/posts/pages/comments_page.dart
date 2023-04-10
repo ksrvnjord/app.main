@@ -40,7 +40,6 @@ class CommentsPage extends ConsumerWidget {
             post.when(
               data: (data) => PostCard(
                 snapshot: data,
-                margin: false,
                 elevation: false,
                 squareBorder: true,
                 expandContent: true,

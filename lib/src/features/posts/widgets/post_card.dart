@@ -8,14 +8,12 @@ class PostCard extends StatelessWidget {
   const PostCard({
     Key? key,
     required this.snapshot,
-    this.margin = true,
     this.elevation = true,
     this.squareBorder = false,
     this.expandContent = false,
   }) : super(key: key);
 
   final DocumentSnapshot<Post> snapshot;
-  final bool margin;
   final bool elevation;
   final bool squareBorder;
   final bool expandContent;
@@ -28,7 +26,7 @@ class PostCard extends StatelessWidget {
       snapshot: snapshot,
       expanded: expandContent,
     ).padding(all: postPadding).card(
-          margin: margin ? const EdgeInsets.all(8) : null,
+          margin: null,
           elevation: elevation ? 1 : 0,
           shape: RoundedRectangleBorder(
             borderRadius: squareBorder
