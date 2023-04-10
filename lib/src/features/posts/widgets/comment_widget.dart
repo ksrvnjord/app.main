@@ -22,29 +22,23 @@ class CommentWidget extends StatelessWidget {
     final comment = snapshot.data();
 
     return [
-      ProfilePictureWidget(userId: comment.authorId, size: profilePictureSize),
-      const SizedBox(width: profilePicAndCommentSpacing),
       [
-        [
-          CommentCard(comment: comment),
-          CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
-        ].toColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        ProfilePictureWidget(
+            userId: comment.authorId, size: profilePictureSize),
+        Flexible(child: Text(comment.content)),
+      ].toRow(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        separator: const SizedBox(width: profilePicAndCommentSpacing),
+      ),
+      // create positioned red circle
+      Positioned(
+        right: 0,
+        bottom: 0,
+        child: AmountOfLikesForCommentWidget(
+          amountOfLikes: comment.likedBy.length,
         ),
-        if (comment.likedBy.isNotEmpty)
-          Positioned(
-            bottom: 6,
-            right: 0,
-            child: AmountOfLikesForCommentWidget(
-              amountOfLikes: comment.likedBy.length,
-            ),
-          ),
-      ].toStack().expanded(),
-    ].toRow(
-      // comment is a row of widgets
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-    );
+      ),
+    ].toStack();
   }
 }
