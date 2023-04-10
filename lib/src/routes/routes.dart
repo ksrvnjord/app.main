@@ -73,6 +73,9 @@ final routeMap = RouteMap(
           name: 'Polls',
           child: PollsPage(),
         ),
+    '/home/events': (info) => const CupertinoPage(
+          child: EventsPage(),
+        ),
     '/home/announcements/:announcementId': (_) => const CupertinoPage(
           child: AnnouncementPage(),
           name: "Aankondiging",

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
@@ -78,28 +79,11 @@ class FormsWidget extends ConsumerWidget {
     final openPolls = ref.watch(openPollsProvider);
 
     return [
-      [
-        const Text(
-          "Open forms",
-        )
-            .fontSize(headerFontSize)
-            .fontWeight(FontWeight.w300)
-            .textColor(Colors.blueGrey)
-            .alignment(Alignment.center),
-        GestureDetector(
-          onTap: () => Routemaster.of(context).push('polls'),
-          child: [
-            const Text("Alle forms").textColor(Colors.blueGrey),
-            const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: Colors.blueGrey,
-            ),
-          ].toRow(
-            mainAxisAlignment: MainAxisAlignment.end,
-          ),
-        ).alignment(Alignment.centerRight),
-      ].toStack(),
+      WidgetHeader(
+        title: "Open forms",
+        onTapName: "Alle forms",
+        onTap: () => Routemaster.of(context).push('polls'),
+      ),
       openPolls.when(
         data: (data) => _buildOpenPollsList(data, ref),
         loading: () => const CircularProgressIndicator(),

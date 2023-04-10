@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -22,12 +23,7 @@ class AnnouncementListWidget extends StatelessWidget {
 
     return Column(
       children: [
-        const Text(
-          "Recente aankondigingen",
-        )
-            .fontSize(titleFontSize)
-            .fontWeight(FontWeight.w300)
-            .textColor(Colors.blueGrey),
+        const WidgetHeader(title: "Recente aankondigingen"),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: announcements
