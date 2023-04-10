@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:routemaster/routemaster.dart';
@@ -29,10 +31,14 @@ class PostBottomActionBar extends StatelessWidget {
       InkWell(
         onTap: () => PostService.like(snapshot),
         child: [
-          const Text(
-            // ignore: avoid-non-ascii-symbols
-            "🦢",
-          ).fontSize(iconSize),
+          SvgPicture.asset(
+            Svgs.swanWhite,
+            width: likeIconSize,
+            // ignore: deprecated_member_use
+            color: likedByMe ? Colors.lightBlue : null,
+            // ignore: no-equal-arguments
+            height: likeIconSize,
+          ),
           const Text("Zwaan").textColor(likedByMe ? Colors.lightBlue : null),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
       ),

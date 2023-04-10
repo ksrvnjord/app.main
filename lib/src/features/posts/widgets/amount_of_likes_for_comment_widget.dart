@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AmountOfLikesForCommentWidget extends StatelessWidget {
@@ -32,10 +34,13 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
         ],
       ),
       child: [
-        const Icon(
-          Icons.favorite,
+        SvgPicture.asset(
+          Svgs.swanWhite,
+          width: iconSize,
+          // ignore: deprecated_member_use
           color: Colors.white,
-          size: iconSize,
+          // ignore: no-equal-arguments
+          height: iconSize,
         ),
         Text(amountOfLikes.toString())
             .fontWeight(FontWeight.bold)
