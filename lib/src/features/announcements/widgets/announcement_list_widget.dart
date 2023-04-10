@@ -19,8 +19,6 @@ class AnnouncementListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double titleFontSize = 16;
-
     return Column(
       children: [
         const WidgetHeader(title: "Recente aankondigingen"),
