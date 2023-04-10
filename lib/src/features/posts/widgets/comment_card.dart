@@ -18,13 +18,16 @@ class CommentCard extends StatelessWidget {
       Text(comment.authorName)
           .fontWeight(FontWeight.bold)
           .fontSize(authorNameFontSize),
-      ExpandableText(
-        comment.content,
-        expandText: "meer",
-        collapseText: "minder",
-        maxLines: maxLines,
-        linkColor: Colors.blueGrey,
-        linkEllipsis: false,
+      LimitedBox(
+        maxWidth: MediaQuery.of(context).size.width,
+        child: ExpandableText(
+          comment.content,
+          expandText: "meer",
+          collapseText: "minder",
+          maxLines: maxLines,
+          linkColor: Colors.blueGrey,
+          linkEllipsis: false,
+        ),
       ),
     ]
         .toColumn(
