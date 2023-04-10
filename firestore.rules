@@ -42,15 +42,14 @@ match /postTopics/{topic}{
 // everyone can read posts, edit can only be containg likes
 match /posts/{post}{
   allow read: if isLoggedIn();
-  allow create: if isLoggedIn();
-  allow update: if isLoggedIn();
-  allow delete: if isLoggedIn() && request.auth.uid == request.resource.data.authorId;
+  allow create: if isLoggedIn() && request.auth.uid == request.resource.data['authorId'];
+  allow update, delete: if isLoggedIn() && request.auth.uid == resource.data['authorId'];
 }
 // everyone can read comments on posts
 match /posts/{post}/comments/{comment}{
   allow read: if isLoggedIn();
-  allow write: if isLoggedIn();
-  allow update: if isLoggedIn();
+  allow create: if isLoggedIn() && request.auth.uid == request.resource.data['authorId'];
+  allow update, delete: if isLoggedIn() && request.auth.uid == resource.data['authorId'];
 }
 
 
