@@ -29,12 +29,11 @@ class PostBottomActionBar extends StatelessWidget {
       InkWell(
         onTap: () => PostService.like(snapshot),
         child: [
-          Icon(
-            likedByMe ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-            color: likedByMe ? Colors.lightBlue : Colors.black,
-            size: iconSize,
-          ),
-          const Text("'Vo").textColor(likedByMe ? Colors.lightBlue : null),
+          const Text(
+            // ignore: avoid-non-ascii-symbols
+            "🦢",
+          ).fontSize(iconSize),
+          const Text("Zwaan").textColor(likedByMe ? Colors.lightBlue : null),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
       ),
       InkWell(

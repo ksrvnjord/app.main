@@ -21,7 +21,7 @@ class CommentBottomBar extends StatelessWidget {
     return [
       InkWell(
         onTap: () => CommentsService.like(snapshot),
-        child: const Text("'Vo")
+        child: const Text("Zwaan")
             .textColor(
               likedByMe ? Colors.blue : Colors.blueGrey,
             )
