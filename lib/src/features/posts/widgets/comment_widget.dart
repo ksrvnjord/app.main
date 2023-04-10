@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/amount_of_likes_fo
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_card.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CommentWidget extends StatelessWidget {
