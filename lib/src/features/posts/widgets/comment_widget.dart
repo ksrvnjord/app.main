@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/comments_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/amount_of_likes_for_comment_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
@@ -44,7 +45,7 @@ class CommentWidget extends StatelessWidget {
     final bool likedByMe = comment.likedByMe;
 
     return [
-      ProfilePictureWidget(
+      ClickableProfilePictureWidget(
         userId: comment.authorId,
         size: profilePictureSize,
       ),

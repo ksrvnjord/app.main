@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
@@ -26,7 +27,7 @@ class PostHeaderBar extends StatelessWidget {
 
     return [
       [
-        ProfilePictureWidget(
+        ClickableProfilePictureWidget(
           userId: post.authorId,
           size: profilePictureIconSize,
         ),
