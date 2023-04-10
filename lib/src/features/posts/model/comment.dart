@@ -12,6 +12,7 @@ class Comment {
   final String content;
   final Timestamp createdTime;
   final List<String> likedBy;
+  final bool likedByMe;
 
   const Comment({
     required this.authorId,
@@ -19,6 +20,7 @@ class Comment {
     required this.content,
     required this.createdTime,
     this.likedBy = const [],
+    this.likedByMe = false,
   });
 
   factory Comment.fromMap(Map<String, dynamic> map) {
@@ -28,6 +30,8 @@ class Comment {
       content: map['content'] as String,
       createdTime: map['createdTime'] as Timestamp,
       likedBy: List<String>.from(map['likes']),
+      likedByMe: List<String>.from(map['likes'])
+          .contains(FirebaseAuth.instance.currentUser!.uid),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/comments_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -16,17 +17,10 @@ class CommentBottomBar extends StatelessWidget {
     final comment = snapshot.data();
     final uid = FirebaseAuth.instance.currentUser!.uid;
     bool likedByMe = comment.likedBy.contains(uid);
-    final docRef = snapshot.reference;
 
     return [
       InkWell(
-        onTap: () => likedByMe
-            ? docRef.update({
-                'likes': FieldValue.arrayRemove([uid]),
-              })
-            : docRef.update({
-                'likes': FieldValue.arrayUnion([uid]),
-              }),
+        onTap: () => CommentsService.like(snapshot),
         child: const Text("'Vo amice")
             .textColor(
               likedByMe ? Colors.blue : Colors.blueGrey,

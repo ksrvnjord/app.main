@@ -15,26 +15,33 @@ class CommentWidget extends StatelessWidget {
 
   const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
 
+  // wrapper function for usage in the CupertinoContextMenu
+  void popAnd(
+    BuildContext context, {
+    required Function onPop,
+    bool waitForPopAnimation = false,
+  }) {
+    Navigator.of(context, rootNavigator: true).pop(); // pop the context menu
+
+    if (waitForPopAnimation) {
+      Future.delayed(
+        const Duration(milliseconds: 1726 ~/ 2),
+        () => onPop.call(),
+      );
+    } else {
+      // delay delete, because otherwise the context menu will not be able to pop
+      onPop.call();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final comment = snapshot.data();
 
     const double cardPadding = 8;
     const double profilePictureSize = 20;
-
     const double profilePicAndCommentSpacing = 4;
-
-    void deleteCommentAndPop() {
-      Navigator.of(context, rootNavigator: true).pop(); // pop the context menu
-
-      // delay delete, because otherwise the context menu will not be able to pop
-      Future.delayed(
-        const Duration(milliseconds: 1726 ~/ 2),
-        () => CommentsService.deleteComment(
-          snapshot.reference.path,
-        ),
-      );
-    }
+    final bool likedByMe = comment.likedByMe;
 
     return [
       ProfilePictureWidget(
@@ -48,11 +55,28 @@ class CommentWidget extends StatelessWidget {
             CupertinoContextMenu(
               actions: [
                 CupertinoContextMenuAction(
-                  isDestructiveAction: true,
-                  onPressed: deleteCommentAndPop,
-                  trailingIcon: Icons.delete,
-                  child: const Text('Verwijder'),
+                  onPressed: () => popAnd(
+                    context,
+                    onPop: () => CommentsService.like(snapshot),
+                  ),
+                  trailingIcon: likedByMe ? Icons.heart_broken : Icons.favorite,
+                  child: Text(likedByMe ? "Niet meer 'Vo amice" : "'Vo amice"),
                 ),
+
+                // only show delete button if the comment is from the current user
+                if (FirebaseAuth.instance.currentUser!.uid == comment.authorId)
+                  CupertinoContextMenuAction(
+                    isDestructiveAction: true,
+                    onPressed: () => popAnd(
+                      context,
+                      onPop: () => CommentsService.deleteComment(
+                        snapshot.reference.path,
+                      ),
+                      waitForPopAnimation: true,
+                    ),
+                    trailingIcon: Icons.delete,
+                    child: const Text('Verwijder'),
+                  ),
               ],
               child: SingleChildScrollView(
                 // we need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435
