@@ -58,7 +58,11 @@ class CommentsPage extends ConsumerWidget {
                       )
                       .toList()
                       .toColumn(
-                        separator: const SizedBox(height: commentSpacing),
+                        separator: const SizedBox(
+                          height: commentSpacing,
+                        ), // add spacing between comments
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // let each comment widget start at the left
                       )
                       .padding(horizontal: commentHPadding),
               loading: () => const Center(
