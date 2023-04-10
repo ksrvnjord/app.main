@@ -6,6 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_list_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.dart';
@@ -17,6 +19,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -55,7 +58,7 @@ final routeMap = RouteMap(
           child: MainPage(),
           paths: [
             '/home',
-            '/calendar',
+            '/posts',
             '/training',
             '/almanak',
             '/more',
@@ -70,9 +73,19 @@ final routeMap = RouteMap(
           name: 'Polls',
           child: PollsPage(),
         ),
+    '/home/events': (info) => const CupertinoPage(
+          child: EventsPage(),
+        ),
     '/home/announcements/:announcementId': (_) => const CupertinoPage(
           child: AnnouncementPage(),
           name: "Aankondiging",
+        ),
+    '/posts': (_) => const CupertinoPage(name: "Prikbord", child: PostsPage()),
+    '/posts/new': (_) => const CupertinoPage(child: CreatePostPage()),
+    '/posts/:postId/comments': (route) => CupertinoPage(
+          child: CommentsPage(
+            postDocId: Uri.decodeFull(route.pathParameters['postId']!),
+          ),
         ),
     '/calendar': (info) => const CupertinoPage(
           name: "Agenda",
@@ -107,8 +120,10 @@ final routeMap = RouteMap(
           name: 'Bestuur',
           child: AlmanakBestuurPage(),
         ),
-    '/almanak/bestuur/:identifier': (info) => const CupertinoPage(
-          child: AlmanakProfilePage(),
+    '/almanak/bestuur/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
         ),
     '/almanak/commissies': (_) => CupertinoPage(
           name: 'Commissies',
@@ -123,8 +138,10 @@ final routeMap = RouteMap(
             commissieName: Uri.decodeFull(route.pathParameters['commissie']!),
           ),
         ),
-    '/almanak/commissies/:commissie/:identifier': (info) => const CupertinoPage(
-          child: AlmanakProfilePage(),
+    '/almanak/commissies/:commissie/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
           name: 'Huizen',
@@ -139,8 +156,10 @@ final routeMap = RouteMap(
             houseName: Uri.decodeFull(route.pathParameters['huis']!),
           ),
         ),
-    '/almanak/huizen/:huis/:identifier': (info) => const CupertinoPage(
-          child: AlmanakProfilePage(),
+    '/almanak/huizen/:huis/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
         ),
     '/almanak/substructuren': (_) => CupertinoPage(
           name: 'Substructuren',
@@ -156,12 +175,16 @@ final routeMap = RouteMap(
             ),
           ),
         ),
-    '/almanak/substructuren/:substructuur/:identifier': (info) =>
-        const CupertinoPage(
-          child: AlmanakProfilePage(),
+    '/almanak/substructuren/:substructuur/:identifier': (route) =>
+        CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
         ),
-    '/almanak/leeden/:identifier': (info) => const CupertinoPage(
-          child: AlmanakProfilePage(),
+    '/almanak/leeden/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
         ),
     '/settings': (info) => const CupertinoPage(
           child: MePage(),

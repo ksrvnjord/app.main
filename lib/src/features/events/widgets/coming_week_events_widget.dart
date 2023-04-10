@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/fade_bottom_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:provider/provider.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'upcoming_event_widget.dart';
 
@@ -19,16 +21,13 @@ class ComingWeekEventsWidget extends StatelessWidget {
     GraphQLClient client = Provider.of<GraphQLModel>(context).client;
     final eventsData = events(client);
 
-    const double titleFontSize = 16;
-
     return Column(
       children: [
-        const Text(
-          "Opkomende evenementen",
-        )
-            .fontSize(titleFontSize)
-            .fontWeight(FontWeight.w300)
-            .textColor(Colors.blueGrey),
+        WidgetHeader(
+          title: "Opkomende evenementen",
+          onTapName: "Agenda",
+          onTap: () => Routemaster.of(context).push('events'),
+        ),
         SizedBox(
           height: cardHeight,
           child: Card(

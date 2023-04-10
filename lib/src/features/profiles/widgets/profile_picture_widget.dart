@@ -10,10 +10,12 @@ class ProfilePictureWidget extends ConsumerWidget {
     Key? key,
     required this.userId,
     required this.size,
+    this.zoomable = true,
   }) : super(key: key);
 
   final String userId;
   final double size;
+  final bool zoomable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,14 +24,20 @@ class ProfilePictureWidget extends ConsumerWidget {
 
     return profilePicture.when(
       // first check if the image is already cached
-      data: (imageProvider) => ZoomableImage(
-        imageProvider: imageProvider,
-        image: CircleAvatar(
-          foregroundImage: imageProvider,
-          backgroundColor: Colors.grey[300]!,
-          radius: size,
-        ),
-      ),
+      data: (imageProvider) => zoomable
+          ? ZoomableImage(
+              imageProvider: imageProvider,
+              image: CircleAvatar(
+                foregroundImage: imageProvider,
+                backgroundColor: Colors.grey[300]!,
+                radius: size,
+              ),
+            )
+          : CircleAvatar(
+              foregroundImage: imageProvider,
+              backgroundColor: Colors.grey[300]!,
+              radius: size,
+            ),
       loading: () => ShimmerWidget(child: CircleAvatar(radius: size)),
       error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,
