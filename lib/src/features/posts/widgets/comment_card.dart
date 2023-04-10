@@ -17,7 +17,9 @@ class CommentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return [
-      Text("Abra Ham").fontWeight(FontWeight.bold).fontSize(authorNameFontSize),
+      Text(comment.authorName)
+          .fontWeight(FontWeight.bold)
+          .fontSize(authorNameFontSize),
       Text(comment.content),
     ]
         .toColumn(
