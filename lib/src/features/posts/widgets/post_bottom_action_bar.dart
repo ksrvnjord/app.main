@@ -31,11 +31,12 @@ class PostBottomActionBar extends StatelessWidget {
         child: [
           Icon(
             likedByMe ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-            color: likedByMe ? Colors.red : Colors.black,
+            color: likedByMe ? Colors.lightBlue : Colors.black,
             size: iconSize,
           ),
-          const Text("'Vo amice").padding(left: likeTextLeftPadding),
-        ].toRow(),
+          const Text("'Vo amice")
+              .textColor(likedByMe ? Colors.lightBlue : null),
+        ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
       ),
       InkWell(
         onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
