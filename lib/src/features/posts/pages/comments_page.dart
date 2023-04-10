@@ -36,7 +36,6 @@ class CommentsPage extends ConsumerWidget {
       ),
       body: [
         ListView(
-          shrinkWrap: true,
           children: [
             post.when(
               data: (data) => PostWidget(doc: data),
@@ -48,23 +47,19 @@ class CommentsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             commentsVal.when(
-              data: (comments) => comments.size == 0
-                  ? const Center(
-                      child: Text('Er heeft nog niemand gereageerd'),
-                    )
-                  : comments.docs
+              data: (data) => data.size == 0
+                  ? const Center(child: Text('Er heeft nog niemand gereageerd'))
+                  : data.docs
                       .map(
-                        (snapshot) => CommentWidget(snapshot: snapshot),
+                        (e) => Align(
+                          alignment: Alignment.centerLeft,
+                          child: CommentWidget(snapshot: e),
+                        ),
                       )
                       .toList()
                       .toColumn(
-                        separator: const SizedBox(
-                          height: commentSpacing,
-                        ), // add spacing between comments
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // let each comment widget start at the left
-                      )
-                      .padding(horizontal: commentHPadding),
+                        separator: const SizedBox(height: commentSpacing),
+                      ),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -72,9 +67,9 @@ class CommentsPage extends ConsumerWidget {
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
           ],
-        ).expanded(), // fill space between appbar and create comment widget
+        ).expanded(),
         CreateCommentWidget(postDocId: postDocId),
-      ].toColumn(),
+      ].toColumn(), // fill space between appbar and create comment widget
     );
   }
 }
