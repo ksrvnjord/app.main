@@ -19,7 +19,7 @@ class PostList extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         itemBuilder: ((context, index) =>
-            PostWidget(doc: snapshot.docs[index])),
+            PostWidget(snapshot: snapshot.docs[index])),
       ),
       loading: () => const Center(
         child: CircularProgressIndicator(),

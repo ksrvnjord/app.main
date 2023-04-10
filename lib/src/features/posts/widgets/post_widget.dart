@@ -2,30 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/widgets/display_likes.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_bottom_action_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
   const PostWidget({
     super.key,
-    required this.doc,
+    required this.snapshot,
   });
 
-  final DocumentSnapshot<Post> doc;
-
-  static const likeIconSize = 20.0;
-  static const double profilePictureIconSize = 16;
-  static const double postTimeFontSize = 12;
-  static const double titleLeftPadding = 8;
-  static const int contentMaxLines = 3;
-  static const double postPadding = 8;
+  final DocumentSnapshot<Post> snapshot;
 
   @override
   Widget build(BuildContext context) {
-    final Post post = doc.data()!;
+    final Post post = snapshot.data()!;
+
+    const double profilePictureIconSize = 16;
+    const double postTimeFontSize = 12;
+    const double titleLeftPadding = 8;
+    const int contentMaxLines = 3;
+    const double postPadding = 8;
 
     return [
       [
@@ -71,23 +69,9 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
       ),
       const Divider(),
-      [
-        DisplayLikes(
-          docRef: doc.reference,
-          likedBy: post.likedBy,
-          iconSize: likeIconSize,
-        ),
-        InkWell(
-          onTap: () => Routemaster.of(context).push('${doc.id}/comments'),
-          child: [
-            const Icon(
-              Icons.mode_comment_outlined,
-              size: 20,
-            ),
-            const Text("Commenteren").padding(left: 4),
-          ].toRow(),
-        ),
-      ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround),
+      PostBottomActionBar(
+        snapshot: snapshot,
+      ),
     ].toColumn().padding(all: postPadding).card(
           // TODO: abstract card out of here, so it can be used in other places
           elevation: 1,

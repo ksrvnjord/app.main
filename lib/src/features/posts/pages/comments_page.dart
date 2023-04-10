@@ -38,7 +38,7 @@ class CommentsPage extends ConsumerWidget {
         ListView(
           children: [
             post.when(
-              data: (data) => PostWidget(doc: data),
+              data: (data) => PostWidget(snapshot: data),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
