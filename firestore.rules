@@ -44,6 +44,7 @@ match /posts/{post}{
   allow read: if isLoggedIn();
   allow create: if isLoggedIn();
   allow update: if isLoggedIn();
+  allow delete: if isLoggedIn() && request.auth.uid == request.resource.data.authorId;
 }
 // everyone can read comments on posts
 match /posts/{post}/comments/{comment}{
