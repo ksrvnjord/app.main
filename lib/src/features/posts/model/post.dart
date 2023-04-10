@@ -17,7 +17,7 @@ class Post {
     required this.authorId,
     required this.authorName,
     required this.createdTime,
-    required this.likedBy,
+    this.likedBy = const [],
     required this.topic,
   });
 
