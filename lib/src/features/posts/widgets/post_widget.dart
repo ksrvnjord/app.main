@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +22,9 @@ class PostWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Post post = snapshot.data()!;
     const int contentMaxLines = 12;
-    const int contentMinLines = 4;
 
     const double titleFontSize = 18;
     const double headerPadding = 4;
-
-    final random = Random();
 
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
@@ -45,8 +40,7 @@ class PostWidget extends ConsumerWidget {
           child: ExpandableText(
             post.content,
             expandText: "meer",
-            maxLines: contentMinLines +
-                random.nextInt(contentMaxLines - contentMinLines),
+            maxLines: contentMaxLines,
             linkColor: Colors.blueGrey,
             linkEllipsis: false,
             expanded: expanded,
