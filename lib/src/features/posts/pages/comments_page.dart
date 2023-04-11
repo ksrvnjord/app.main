@@ -56,7 +56,8 @@ class CommentsPage extends ConsumerWidget {
               commentsVal.when(
                 data: (data) => data.size == 0
                     ? const Center(
-                        child: Text('Er heeft nog niemand gereageerd'))
+                        child: Text('Er heeft nog niemand gereageerd'),
+                      )
                     : data.docs
                         .map(
                           (e) => Align(
