@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
@@ -41,7 +42,8 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
           ),
         ),
-        const FormsWidget().padding(vertical: elementPadding),
+        if (FirebaseAuth.instance.currentUser != null)
+          const FormsWidget().padding(vertical: elementPadding),
         const ComingWeekEventsWidget().padding(vertical: elementPadding),
         const AnnouncementsWidget().padding(vertical: elementPadding),
       ]),
