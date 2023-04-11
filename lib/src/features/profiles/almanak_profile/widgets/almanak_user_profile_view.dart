@@ -56,6 +56,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
         ProfilePictureWidget(
           userId: identifier,
           size: profilePictureSize,
+          useThumbnail: false, // show full size profile picture
         ).padding(all: elementPadding).center(),
         profile.when(
           data: (AlmanakProfile u) => Column(

@@ -26,6 +26,7 @@ class ClickableProfilePictureWidget extends StatelessWidget {
         userId: userId,
         size: size,
         zoomable: false,
+        useThumbnail: false,
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class ProfilePictureListTileWidget extends ConsumerWidget {
   const ProfilePictureListTileWidget({
@@ -13,8 +14,9 @@ class ProfilePictureListTileWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<ImageProvider<Object>> profilePicture =
-        ref.watch(profilePictureProvider(profileId));
+    final AsyncValue<ImageProvider<Object>> profilePicture = ref.watch(
+      profilePictureProvider(Tuple2(profileId, true)),
+    ); // get thumbnail
 
     return profilePicture.when(
       data: (data) => CircleAvatar(

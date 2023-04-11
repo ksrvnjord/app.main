@@ -32,7 +32,7 @@ class CachedImage {
     required String firebaseStoragePath,
     required String placeholderImagePath,
     Duration maxAge = const Duration(days: 7),
-    bool thumbnail = false, // if true, the thumbnail will be returned
+    required bool thumbnail, // if true, the thumbnail will be returned
   }) async {
     ImageProvider<Object>? cachedImage = await HiveCache.getHiveCachedImage(
       firebaseStoragePath,

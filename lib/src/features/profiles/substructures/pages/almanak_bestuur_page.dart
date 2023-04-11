@@ -11,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/a
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
   const AlmanakBestuurPage({Key? key}) : super(key: key);
@@ -32,7 +33,8 @@ class AlmanakBestuurPage extends ConsumerWidget {
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(
-            imageProvider: ref.watch(bestuurPictureProvider(getNjordYear())),
+            imageProvider: ref
+                .watch(bestuurPictureProvider(Tuple2(getNjordYear(), false))),
           ),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),

@@ -11,17 +11,19 @@ class CachedProfilePicture {
   static const String placeholderImagePath = Images.placeholderProfilePicture;
   static const Duration maxAge = Duration(days: 7); // 1 week
 
-  static Future<ImageProvider<Object>> get(String lidnummer) => CachedImage.get(
+  static Future<ImageProvider<Object>> get(
+    String lidnummer, {
+    required bool thumbnail,
+  }) =>
+      CachedImage.get(
         placeholderImagePath: placeholderImagePath,
         firebaseStoragePath: path(lidnummer),
         maxAge: maxAge,
+        thumbnail: thumbnail,
       );
 
   // path is the path to the image in firebase storage
   static String path(String userId) => "$userId/profile_picture.png";
-
-  static Future<ImageProvider<Object>> getMyProfilePicture() =>
-      get(FirebaseAuth.instance.currentUser!.uid);
 
   static UploadTask uploadMyProfilePicture(File file) {
     final String uid = FirebaseAuth.instance.currentUser!.uid;

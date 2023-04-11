@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_pro
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class EditProfilePictureWidget extends ConsumerStatefulWidget {
   const EditProfilePictureWidget({
@@ -31,7 +32,8 @@ class _EditProfilePictureWidgetState
       imageProvider = image;
     });
     widget.onChanged.call(file);
-    profilePictureProvider(getCurrentUserId()).overrideWith((ref) => image);
+    profilePictureProvider(Tuple2(getCurrentUserId(), false))
+        .overrideWith((ref) => image);
   }
 
   @override
@@ -39,7 +41,7 @@ class _EditProfilePictureWidgetState
     const double profilePictureSize = 240;
 
     final myProfilePicture =
-        ref.watch(profilePictureProvider(getCurrentUserId()));
+        ref.watch(profilePictureProvider(Tuple2(getCurrentUserId(), false)));
 
     return myProfilePicture.when(
       data: (image) => ImagePickerWidget(
