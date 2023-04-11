@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 
 class CachedProfilePicture {
   static const String placeholderImagePath = Images.placeholderProfilePicture;
@@ -17,17 +18,29 @@ class CachedProfilePicture {
         maxAge: maxAge,
       );
 
+  static Future<ImageProvider<Object>> getThumbnail(String lidnummer) =>
+      CachedImage.get(
+        placeholderImagePath: placeholderImagePath,
+        firebaseStoragePath: thumbnailPath(lidnummer),
+        maxAge: maxAge,
+      );
+
   // path is the path to the image in firebase storage
   static String path(String userId) => "$userId/profile_picture.png";
 
+  static String thumbnailPath(String userId) =>
+      "$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
+// 21203/thumbnails/profile_picture_200x200.png
   static Future<ImageProvider<Object>> getMyProfilePicture() =>
       get(FirebaseAuth.instance.currentUser!.uid);
 
   static UploadTask uploadMyProfilePicture(File file) {
     final String uid = FirebaseAuth.instance.currentUser!.uid;
-    String myPath = path(uid);
-    HiveCache.delete(myPath); // invalidate cache for my profile picture
+    String originalPath = CachedProfilePicture.path(uid);
+    HiveCache.delete(originalPath); // invalidate cache for my profile picture
+    String thumbnailPath = CachedProfilePicture.thumbnailPath(uid);
+    HiveCache.delete(thumbnailPath); // invalidate cache for the thumbnail
 
-    return FirebaseStorage.instance.ref(myPath).putFile(file);
+    return FirebaseStorage.instance.ref(originalPath).putFile(file);
   }
 }

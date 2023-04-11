@@ -13,3 +13,8 @@ final profilePictureProvider =
     FutureProvider.autoDispose.family<ImageProvider<Object>, String>(
   (ref, identifier) => CachedProfilePicture.get(identifier),
 );
+
+final profilePictureThumbnailProvider =
+    FutureProvider.autoDispose.family<ImageProvider<Object>, String>(
+  (ref, identifier) => CachedProfilePicture.getThumbnail(identifier),
+);

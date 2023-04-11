@@ -14,7 +14,7 @@ class ProfilePictureListTileWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<ImageProvider<Object>> profilePicture =
-        ref.watch(profilePictureProvider(profileId));
+        ref.watch(profilePictureThumbnailProvider(profileId));
 
     return profilePicture.when(
       data: (data) => CircleAvatar(
