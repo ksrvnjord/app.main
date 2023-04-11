@@ -72,6 +72,7 @@ class CommentsPage extends ConsumerWidget {
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
+            const SizedBox(height: 64),
           ],
         ).expanded(),
         CreateCommentWidget(postDocId: postDocId),
