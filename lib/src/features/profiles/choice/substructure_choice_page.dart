@@ -32,7 +32,7 @@ class SubstructureChoicePage extends ConsumerWidget {
           SubstructureChoiceListTile(
             name: choices[index],
             imageProvider: ref.watch(
-              substructurePictureProvider(choices[index]),
+              substructureThumbnailProvider(choices[index]),
             ),
           ),
           const Divider(

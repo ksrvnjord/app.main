@@ -30,13 +30,13 @@ class CommissieChoicePage extends ConsumerWidget {
       ),
       body: ListView.builder(
         itemCount: choices.length,
-        addAutomaticKeepAlives: false,
-        addRepaintBoundaries: false,
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
             name: choices[index],
             imageProvider: ref.watch(
-              commissiePictureProvider(Tuple2(choices[index], getNjordYear())),
+              commissieThumbnailProvider(
+                Tuple2(choices[index], getNjordYear()),
+              ),
             ),
           ),
           const Divider(
