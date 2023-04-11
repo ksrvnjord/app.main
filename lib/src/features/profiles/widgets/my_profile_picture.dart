@@ -1,7 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:routemaster/routemaster.dart';
 
 class MyProfilePicture extends StatelessWidget {
@@ -17,7 +16,7 @@ class MyProfilePicture extends StatelessWidget {
     return IconButton(
       iconSize: profileIconSize,
       icon: ProfilePictureListTileWidget(
-        profileId: GetIt.I.get<CurrentUser>().user!.identifier,
+        profileId: FirebaseAuth.instance.currentUser!.uid,
       ),
       onPressed: () => Routemaster.of(context).push('edit'),
     );
