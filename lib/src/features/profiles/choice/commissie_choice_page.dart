@@ -30,6 +30,8 @@ class CommissieChoicePage extends ConsumerWidget {
       ),
       body: ListView.builder(
         itemCount: choices.length,
+        addAutomaticKeepAlives: false,
+        addRepaintBoundaries: false,
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
             name: choices[index],
