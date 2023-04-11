@@ -12,7 +12,7 @@ class CommentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const int contentMaxLines = 8;
     const double cardPadding = 8;
-    const double authorNameFontSize = 12;
+    const double authorNameFontSize = 14;
 
     return [
       Text(comment.authorName)
@@ -26,6 +26,9 @@ class CommentCard extends StatelessWidget {
           maxLines: contentMaxLines,
           linkColor: Colors.blueGrey,
           linkEllipsis: false,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
         ),
       ),
     ]

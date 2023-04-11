@@ -22,13 +22,15 @@ class PostStatisticsBar extends ConsumerWidget {
     final commentsVal = ref.watch(commentsProvider(snapshot.id));
     const swanIconSize = 16.0;
 
+    const double fontSize = 16;
+
     return [
       if (post.likedBy.isNotEmpty)
         [
           Text(
             // ignore: avoid-non-ascii-symbols
             "${post.likedBy.length.toString()}x ",
-          ).textColor(Colors.blueGrey),
+          ).textColor(Colors.blueGrey).fontSize(fontSize),
           SvgPicture.asset(
             Svgs.swanWhite,
             width: swanIconSize,
@@ -45,7 +47,7 @@ class PostStatisticsBar extends ConsumerWidget {
                     Routemaster.of(context).push('${snapshot.id}/comments'),
                 child: Text(
                   "${data.size} reactie${data.size > 1 ? 's' : ''}",
-                ).textColor(Colors.blueGrey),
+                ).textColor(Colors.blueGrey).fontSize(fontSize),
               )
             : const SizedBox.shrink(),
         loading: () => const SizedBox.shrink(),

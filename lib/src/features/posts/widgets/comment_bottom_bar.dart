@@ -13,7 +13,7 @@ class CommentBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double authorNameFontSize = 12;
+    const double bottomBarFontSize = 14;
     final comment = snapshot.data();
     final uid = FirebaseAuth.instance.currentUser!.uid;
     bool likedByMe = comment.likedBy.contains(uid);
@@ -25,13 +25,13 @@ class CommentBottomBar extends StatelessWidget {
             .textColor(
               likedByMe ? Colors.blue : Colors.blueGrey,
             )
-            .fontSize(authorNameFontSize)
+            .fontSize(bottomBarFontSize)
             .fontWeight(FontWeight.bold),
       ),
       Text(timeago.format(
         comment.createdTime.toDate(),
         locale: 'nl_short',
-      )).textColor(Colors.blueGrey).fontSize(authorNameFontSize),
+      )).textColor(Colors.blueGrey).fontSize(bottomBarFontSize),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

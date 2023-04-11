@@ -23,7 +23,7 @@ class PostWidget extends ConsumerWidget {
     final Post post = snapshot.data()!;
     const int contentMaxLines = 12;
 
-    const double titleFontSize = 18;
+    const double titleFontSize = 20;
     const double headerPadding = 4;
 
     return [
@@ -50,7 +50,7 @@ class PostWidget extends ConsumerWidget {
           ),
         ),
       ].toRow(),
-      PostStatisticsBar(snapshot: snapshot),
+      PostStatisticsBar(snapshot: snapshot).padding(top: 4),
       const Divider(),
       PostBottomActionBar(
         snapshot: snapshot,
