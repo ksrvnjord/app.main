@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_choice_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 /// Page that shows a list of choices, and pushes a new page when a choice is chosen
 class SubstructureChoicePage extends ConsumerWidget {
@@ -32,7 +33,7 @@ class SubstructureChoicePage extends ConsumerWidget {
           SubstructureChoiceListTile(
             name: choices[index],
             imageProvider: ref.watch(
-              substructurePictureProvider(choices[index]),
+              substructurePictureProvider(Tuple2(choices[index], true)),
             ),
           ),
           const Divider(

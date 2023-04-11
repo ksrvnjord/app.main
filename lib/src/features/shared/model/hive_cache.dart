@@ -8,10 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as image_p;
 
 class HiveCache {
   static const String cachePath =
       'hive_cache'; // relative to ApplicationDocumentsDirectory
+
+  static const String thumbnailSuffix = 'thumbnail';
 
   static const String imageCacheBoxName = 'imageCache';
   static final LazyBox<ImageCacheItem> hiveImageCache =
@@ -30,13 +33,16 @@ class HiveCache {
   static Future<ImageProvider<Object>?> getHiveCachedImage(
     String key, {
     required ImageProvider<Object> imageOnCacheHitWithNoData,
+    bool thumbnail = false,
   }) async {
     if (key == '') {
       throw Exception('Key cannot be empty');
     }
     // Check if we have an item in our cache,
     // and then check if we should use it
-    ImageCacheItem? item = await HiveCache.get(key);
+    ImageCacheItem? item = await HiveCache.get(
+      thumbnail ? '$key-$thumbnailSuffix' : key,
+    );
 
     // We have it, so return it.
     if (item != null && DateTime.now().isBefore(item.expire)) {
@@ -46,6 +52,35 @@ class HiveCache {
     }
 
     return null; // no cached image found
+  }
+
+  static Future<void> cacheThumbnail(
+    Uint8List? output,
+    String key,
+    Duration maxAge,
+  ) async {
+    if (output == null) {
+      await HiveCache.put(
+        key: "$key-$thumbnailSuffix",
+        value: output,
+        maxAge: maxAge,
+      ); // save thumbnail
+
+      return;
+    }
+    image_p.Image? temp = image_p.decodeImage(output);
+    image_p.Image resized = image_p.copyResize(
+      temp!,
+      // ignore: no-magic-number
+      width: 4 * 80,
+    );
+    final png = image_p.encodePng(resized);
+
+    await HiveCache.put(
+      key: "$key-$thumbnailSuffix",
+      value: png,
+      maxAge: maxAge,
+    ); // save thumbnail
   }
 
   static Future<Uint8List?> getHttpImageAndCache(
@@ -59,7 +94,8 @@ class HiveCache {
         options: Options(responseType: ResponseType.bytes),
       );
       Uint8List? output = response.data;
-      HiveCache.put(key: key, value: output, maxAge: maxAge);
+      await HiveCache.put(key: key, value: output, maxAge: maxAge);
+      await HiveCache.cacheThumbnail(output, key, maxAge);
 
       return output;
     } on DioError catch (e) {

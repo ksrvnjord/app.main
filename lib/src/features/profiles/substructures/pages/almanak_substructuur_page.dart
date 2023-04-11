@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/l
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakSubstructuurPage extends ConsumerWidget {
   const AlmanakSubstructuurPage({
@@ -34,7 +35,8 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(
-            imageProvider: ref.watch(substructurePictureProvider(name)),
+            imageProvider:
+                ref.watch(substructurePictureProvider(Tuple2(name, false))),
           ),
           SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(

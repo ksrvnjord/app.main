@@ -87,8 +87,11 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           AlmanakSubstructureCoverPicture(
-            imageProvider:
-                ref.watch(commissiePictureProvider(commissieAndYear)),
+            imageProvider: ref.watch(commissiePictureProvider(Tuple3(
+              widget.commissieName,
+              selectedYear.item1,
+              false,
+            ))),
           ),
           SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(

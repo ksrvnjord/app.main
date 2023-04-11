@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +32,12 @@ class CachedImage {
     required String firebaseStoragePath,
     required String placeholderImagePath,
     Duration maxAge = const Duration(days: 7),
+    bool thumbnail = false, // if true, the thumbnail will be returned
   }) async {
     ImageProvider<Object>? cachedImage = await HiveCache.getHiveCachedImage(
       firebaseStoragePath,
       imageOnCacheHitWithNoData: Image.asset(placeholderImagePath).image,
+      thumbnail: thumbnail,
     );
     if (cachedImage != null) {
       return cachedImage;
@@ -52,16 +53,23 @@ class CachedImage {
     }
 
     // We have url of image, so now we can download and cache it
-    Uint8List? firestoreImage = await HiveCache.getHttpImageAndCache(
+    await HiveCache.getHttpImageAndCache(
       url,
       key: firebaseStoragePath,
       maxAge: maxAge,
     );
-    if (firestoreImage == null) {
+
+    // check cache for the image
+    ImageProvider<Object>? cached = await HiveCache.getHiveCachedImage(
+      firebaseStoragePath,
+      imageOnCacheHitWithNoData: Image.asset(placeholderImagePath).image,
+      thumbnail: thumbnail,
+    );
+    if (cached == null) {
       return placeholder;
     }
 
-    return MemoryImage(firestoreImage);
+    return cached;
   }
 
   /// Returns the FirebaseStorage download url of the image at the given path, or null if it doesn't exist
