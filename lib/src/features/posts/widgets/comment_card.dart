@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
@@ -10,9 +12,12 @@ class CommentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int maxLines = 3;
+    const int contentMaxLines = 12;
+    const int contentMinLines = 4;
     const double cardPadding = 8;
     const double authorNameFontSize = 12;
+
+    final random = Random();
 
     return [
       Text(comment.authorName)
@@ -24,7 +29,8 @@ class CommentCard extends StatelessWidget {
           comment.content,
           expandText: "meer",
           collapseText: "minder",
-          maxLines: maxLines,
+          maxLines: contentMinLines +
+              random.nextInt(contentMaxLines - contentMinLines),
           linkColor: Colors.blueGrey,
           linkEllipsis: false,
         ),
