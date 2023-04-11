@@ -18,7 +18,7 @@ class AlmanakPage extends StatelessWidget {
         actions: <Widget>[
           FirebaseAuth.instance.currentUser != null
               ? const MyProfilePicture(profileIconSize: 48.0)
-              : Container(),
+              : const SizedBox.shrink(),
         ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
