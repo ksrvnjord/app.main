@@ -22,17 +22,18 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const double postPadding = 8;
 
-    return PostWidget(
-      snapshot: snapshot,
-      expanded: expandContent,
-    ).padding(all: postPadding).card(
-          margin: null,
-          elevation: elevation ? 1 : 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: squareBorder
-                ? BorderRadius.zero
-                : const BorderRadius.all(Radius.circular(16)),
-          ),
-        );
+    return Container(
+      // white background
+      color: Colors.white,
+      child: [
+        PostWidget(
+          snapshot: snapshot,
+          expanded: expandContent,
+        ).padding(all: postPadding),
+        const Divider(
+          height: 0,
+        ),
+      ].toColumn(),
+    );
   }
 }

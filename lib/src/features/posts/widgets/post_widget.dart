@@ -21,10 +21,11 @@ class PostWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Post post = snapshot.data()!;
-    const int contentMaxLines = 3;
+    const int contentMaxLines = 12;
 
-    const double titleFontSize = 16;
+    const double titleFontSize = 20;
     const double headerPadding = 4;
+    const double postStatisticsTopPadding = 4;
 
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
@@ -40,15 +41,18 @@ class PostWidget extends ConsumerWidget {
           child: ExpandableText(
             post.content,
             expandText: "meer",
-            collapseText: "minder",
             maxLines: contentMaxLines,
             linkColor: Colors.blueGrey,
             linkEllipsis: false,
             expanded: expanded,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
           ),
         ),
       ].toRow(),
-      PostStatisticsBar(snapshot: snapshot),
+      PostStatisticsBar(snapshot: snapshot)
+          .padding(top: postStatisticsTopPadding),
       const Divider(),
       PostBottomActionBar(
         snapshot: snapshot,

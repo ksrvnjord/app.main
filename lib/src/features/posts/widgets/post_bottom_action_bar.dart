@@ -27,6 +27,8 @@ class PostBottomActionBar extends StatelessWidget {
     const double likeTextLeftPadding = 4;
     const iconSize = 20.0;
 
+    const double fontSize = 16;
+
     return [
       InkWell(
         onTap: () => PostService.like(snapshot),
@@ -39,7 +41,9 @@ class PostBottomActionBar extends StatelessWidget {
             // ignore: no-equal-arguments
             height: likeIconSize,
           ),
-          const Text("Zwaan").textColor(likedByMe ? Colors.lightBlue : null),
+          const Text("Zwaan")
+              .textColor(likedByMe ? Colors.lightBlue : null)
+              .fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
       ),
       InkWell(
@@ -49,7 +53,7 @@ class PostBottomActionBar extends StatelessWidget {
             Icons.mode_comment_outlined,
             size: iconSize,
           ),
-          const Text("Commenteren"),
+          const Text("Commenteren").fontSize(fontSize),
         ].toRow(
           separator: const SizedBox(width: 4),
         ),

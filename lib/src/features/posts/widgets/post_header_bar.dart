@@ -15,9 +15,10 @@ class PostHeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final post = snapshot.data()!;
-    const double profilePictureIconSize = 16;
-    const double postTimeFontSize = 12;
+    const double profilePictureIconSize = 20;
+    const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
+    const double authorNameFontSize = 18;
 
     void deletePost() {
       Navigator.of(context, rootNavigator: true).pop();
@@ -31,7 +32,9 @@ class PostHeaderBar extends StatelessWidget {
           size: profilePictureIconSize,
         ),
         [
-          Text(post.authorName),
+          Text(post.authorName)
+              .fontWeight(FontWeight.bold)
+              .fontSize(authorNameFontSize),
           Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
               .textColor(Colors.blueGrey)
               .fontSize(postTimeFontSize),
