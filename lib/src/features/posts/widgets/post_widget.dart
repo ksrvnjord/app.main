@@ -25,6 +25,7 @@ class PostWidget extends ConsumerWidget {
 
     const double titleFontSize = 20;
     const double headerPadding = 4;
+    const double postStatisticsTopPadding = 4;
 
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
@@ -50,7 +51,8 @@ class PostWidget extends ConsumerWidget {
           ),
         ),
       ].toRow(),
-      PostStatisticsBar(snapshot: snapshot).padding(top: 4),
+      PostStatisticsBar(snapshot: snapshot)
+          .padding(top: postStatisticsTopPadding),
       const Divider(),
       PostBottomActionBar(
         snapshot: snapshot,
