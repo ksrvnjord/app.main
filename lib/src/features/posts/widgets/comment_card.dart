@@ -28,7 +28,6 @@ class CommentCard extends StatelessWidget {
         child: ExpandableText(
           comment.content,
           expandText: "meer",
-          collapseText: "minder",
           maxLines: contentMinLines +
               random.nextInt(contentMaxLines - contentMinLines),
           linkColor: Colors.blueGrey,
