@@ -31,7 +31,7 @@ class PostHeaderBar extends StatelessWidget {
           size: profilePictureIconSize,
         ),
         [
-          Text(post.authorName),
+          Text(post.authorName).fontWeight(FontWeight.bold),
           Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
               .textColor(Colors.blueGrey)
               .fontSize(postTimeFontSize),
