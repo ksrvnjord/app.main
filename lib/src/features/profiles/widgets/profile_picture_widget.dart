@@ -11,16 +11,19 @@ class ProfilePictureWidget extends ConsumerWidget {
     required this.userId,
     required this.size,
     this.zoomable = true,
+    this.thumbnail = false,
   }) : super(key: key);
 
   final String userId;
   final double size;
   final bool zoomable;
+  final bool thumbnail;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<ImageProvider<Object>> profilePicture =
-        ref.watch(profilePictureProvider(userId));
+    final AsyncValue<ImageProvider<Object>> profilePicture = ref.watch(thumbnail
+        ? profilePictureThumbnailProvider(userId)
+        : profilePictureProvider(userId));
 
     return profilePicture.when(
       // first check if the image is already cached
