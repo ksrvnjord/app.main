@@ -23,20 +23,21 @@ class PostStatisticsBar extends ConsumerWidget {
     const swanIconSize = 16.0;
 
     return [
-      [
-        Text(
-          // ignore: avoid-non-ascii-symbols
-          "${post.likedBy.length.toString()}x ",
-        ).textColor(Colors.blueGrey),
-        SvgPicture.asset(
-          Svgs.swanWhite,
-          width: swanIconSize,
-          // ignore: deprecated_member_use
-          color: Colors.lightBlue,
-          // ignore: no-equal-arguments
-          height: swanIconSize,
-        ),
-      ].toRow(),
+      if (post.likedBy.isNotEmpty)
+        [
+          Text(
+            // ignore: avoid-non-ascii-symbols
+            "${post.likedBy.length.toString()}x ",
+          ).textColor(Colors.blueGrey),
+          SvgPicture.asset(
+            Svgs.swanWhite,
+            width: swanIconSize,
+            // ignore: deprecated_member_use
+            color: Colors.lightBlue,
+            // ignore: no-equal-arguments
+            height: swanIconSize,
+          ),
+        ].toRow(),
       commentsVal.when(
         data: (data) => data.size > 0
             ? InkWell(
