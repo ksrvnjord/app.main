@@ -64,7 +64,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   // refresh function
   Future<void> _refresh() async {
     // invalidate all providers for the widgets on the home page
-    ref.invalidate(currentFirebaseUserProvider);
+    ref.invalidate(firebaseAuthUserProvider);
     ref.invalidate(vaarverbodProvider);
     ref.invalidate(openPollsProvider);
     ref.invalidate(pollAnswerProvider);

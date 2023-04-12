@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
 class PostsPage extends ConsumerWidget {
@@ -14,7 +13,8 @@ class PostsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseUser = ref.watch(currentFirebaseUserProvider);
+    final topics = ref.watch(postTopicsProvider);
+    final firebaseUser = ref.watch(firebaseAuthUserProvider);
 
     return firebaseUser == null
         ? Scaffold(
@@ -32,54 +32,49 @@ class PostsPage extends ConsumerWidget {
           )
         : Scaffold(
             // we need this extra top-level scaffold, in case of loading/error
-            body: ref.watch(postTopicsProvider).when(
-                  data: (topics) => DefaultTabController(
-                    length: topics.length,
-                    animationDuration: const Duration(
-                      milliseconds: 1726 ~/ 2,
-                    ), // no need to explain this
-                    child: Scaffold(
-                      appBar: AppBar(
-                        title: const Text("Prikbord"),
-                        backgroundColor: Colors.lightBlue,
-                        shadowColor: Colors.transparent,
-                        systemOverlayStyle: const SystemUiOverlayStyle(
-                          statusBarColor: Colors.lightBlue,
-                        ),
-                        bottom: TabBar(
-                          isScrollable: true,
-                          labelColor: Colors.white,
-                          labelStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          unselectedLabelStyle: const TextStyle(fontSize: 12),
-                          unselectedLabelColor: Colors.white60,
-                          tabs: [
-                            ...topics.map((topic) => Tab(
-                                  text: topic,
-                                )),
-                          ],
-                        ),
-                      ),
-                      floatingActionButton: FloatingActionButton.extended(
-                        onPressed: () => Routemaster.of(context).push('new'),
-                        backgroundColor: Colors.blue,
-                        icon: const Icon(Icons.add),
-                        label: const Text('Nieuw bericht'),
-                      ),
-                      body: TabBarView(
-                        children: [
-                          ...topics.map((topic) => PostList(topic: topic)),
-                        ],
-                      ),
-                    ),
+            body: DefaultTabController(
+              length: topics.length,
+              initialIndex: 1,
+              animationDuration: const Duration(
+                milliseconds: 1726 ~/ 2,
+              ), // no need to explain this
+              child: Scaffold(
+                appBar: AppBar(
+                  title: const Text("Prikbord"),
+                  backgroundColor: Colors.lightBlue,
+                  shadowColor: Colors.transparent,
+                  systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: Colors.lightBlue,
                   ),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) =>
-                      ErrorCardWidget(errorMessage: error.toString()),
+                  bottom: TabBar(
+                    isScrollable: true,
+                    labelColor: Colors.white,
+                    labelStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    unselectedLabelStyle: const TextStyle(fontSize: 12),
+                    unselectedLabelColor: Colors.white60,
+                    tabs: [
+                      ...topics.map((topic) => Tab(
+                            text: topic,
+                          )),
+                    ],
+                  ),
                 ),
+                floatingActionButton: FloatingActionButton.extended(
+                  onPressed: () => Routemaster.of(context).push('new'),
+                  backgroundColor: Colors.blue,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Nieuw bericht'),
+                ),
+                body: TabBarView(
+                  children: [
+                    ...topics.map((topic) => PostList(topic: topic)),
+                  ],
+                ),
+              ),
+            ),
           );
   }
 }

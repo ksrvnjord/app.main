@@ -1,24 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_firebase_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class PostHeaderBar extends StatelessWidget {
+class PostHeaderBar extends ConsumerWidget {
   final DocumentSnapshot<Post> snapshot;
 
   const PostHeaderBar({Key? key, required this.snapshot}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final post = snapshot.data()!;
     const double profilePictureIconSize = 20;
     const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
     const double authorNameFontSize = 18;
+
+    final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
     void deletePost() {
       Navigator.of(context, rootNavigator: true).pop();
@@ -46,7 +50,8 @@ class PostHeaderBar extends StatelessWidget {
       ].toRow(),
       // three dots for more options, show if user is author
 
-      if (post.authorId == FirebaseAuth.instance.currentUser!.uid)
+      if (post.authorId == FirebaseAuth.instance.currentUser!.uid ||
+          (firebaseUser != null && firebaseUser.isBestuur))
         InkWell(
           onTap: () => showDialog(
             context: context,

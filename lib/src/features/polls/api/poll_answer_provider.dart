@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 final pollAnswerProvider =
     StreamProvider.family<QuerySnapshot<PollAnswer>, DocumentReference>(
   (ref, docRef) {
-    final user = ref.watch(currentFirebaseUserProvider);
+    final user = ref.watch(firebaseAuthUserProvider);
     final CollectionReference<PollAnswer> pollsCollection = FirebaseFirestore
         .instance
         .collection('${docRef.path}/answers')

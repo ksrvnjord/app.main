@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/model/topic.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,7 +18,7 @@ class CreatePostPage extends ConsumerStatefulWidget {
 
 class CreatePostPageState extends ConsumerState<CreatePostPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  Topic selectedTopic = Topic.wandelGangen; // default value
+  String selectedTopic = 'Wandelgangen'; // default value
   String title = '';
   String content = '';
 
@@ -48,24 +48,28 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
             padding: const EdgeInsets.all(16),
             children: <Widget>[
               [
-                // DropdownButtonFormField<Topic>( // no point in showing it for now if there's only one option
-                //   decoration: const InputDecoration(
-                //     hintText: 'Selecteer een categorie',
-                //     labelText: 'Categorie',
-                //   ),
-                //   items: [Topic.wandelGangen]
-                //       .map(
-                //         (topic) => DropdownMenuItem<Topic>(
-                //           value: topic,
-                //           child: Text(topic.name),
-                //         ),
-                //       )
-                //       .toList(),
-                //   onChanged: null,
-                //   value: selectedTopic,
-                //   validator: (value) =>
-                //       value == null ? 'Kies alsjeblieft een onderwerp.' : null,
-                // ),
+                DropdownButtonFormField<String>(
+                  // no point in showing it for now if there's only one option
+                  decoration: const InputDecoration(
+                    hintText: 'Selecteer een categorie',
+                    labelText: 'Categorie',
+                  ),
+                  items: ref
+                      .watch(postTopicsProvider)
+                      .map(
+                        (topic) => DropdownMenuItem<String>(
+                          value: topic,
+                          child: Text(topic),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) => selectedTopic = value ?? 'Wandelgangen',
+                  onSaved: (newValue) =>
+                      selectedTopic = newValue ?? 'Wandelgangen',
+                  value: selectedTopic,
+                  validator: (value) =>
+                      value == null ? 'Kies alsjeblieft een onderwerp.' : null,
+                ),
                 TextFormField(
                   maxLength: maxTitleLength,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
