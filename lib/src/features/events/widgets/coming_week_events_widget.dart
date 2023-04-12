@@ -25,31 +25,34 @@ class ComingWeekEventsWidget extends ConsumerWidget {
           onTapName: "Agenda",
           onTap: () => Routemaster.of(context).push('events'),
         ),
-        SizedBox(
-          height: cardHeight,
-          child: comingEvents.when(
-            data: (events) => FadeBottomWidget(
-              parentHeight: cardHeight,
-              child: ListView.builder(
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  Event event = events[index];
-                  const double elementPadding = 4;
+        InkWell(
+          onTap: () => Routemaster.of(context).push('events'),
+          child: SizedBox(
+            height: cardHeight,
+            child: comingEvents.when(
+              data: (events) => FadeBottomWidget(
+                parentHeight: cardHeight,
+                child: ListView.builder(
+                  itemCount: events.length,
+                  itemBuilder: (context, index) {
+                    Event event = events[index];
+                    const double elementPadding = 4;
 
-                  return UpcomingEventWidget(
-                    elementPadding: elementPadding,
-                    event: event,
-                  ).paddingDirectional(horizontal: elementPadding);
-                },
+                    return UpcomingEventWidget(
+                      elementPadding: elementPadding,
+                      event: event,
+                    ).paddingDirectional(horizontal: elementPadding);
+                  },
+                ),
               ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) =>
-                ErrorCardWidget(errorMessage: error.toString()),
-          ),
-        ).card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ).card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
           ),
         ),
       ],
