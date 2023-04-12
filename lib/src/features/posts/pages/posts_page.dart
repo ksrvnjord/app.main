@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -14,7 +15,9 @@ class PostsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FirebaseAuth.instance.currentUser == null
+    final firebaseUser = ref.watch(currentFirebaseUserProvider);
+
+    return firebaseUser == null
         ? Scaffold(
             appBar: AppBar(
               title: const Text("Prikbord"),

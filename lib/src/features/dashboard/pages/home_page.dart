@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -52,8 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
           ),
-          if (FirebaseAuth.instance.currentUser != null)
-            const FormsWidget().padding(vertical: elementPadding),
+          FirebaseWidget(const FormsWidget().padding(vertical: elementPadding)),
           const ComingWeekEventsWidget().padding(vertical: elementPadding),
           const AnnouncementsWidget().padding(vertical: elementPadding),
         ]),
