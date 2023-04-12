@@ -48,7 +48,7 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
     const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
 
-    final userVal = ref.watch(firestoreUserProvider(getCurrentUserId()));
+    final userVal = ref.watch(firestoreUserFutureProvider(getCurrentUserId()));
 
     return userVal.when(
       data: (user) => Form(

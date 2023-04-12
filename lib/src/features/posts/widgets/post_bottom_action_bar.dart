@@ -53,7 +53,7 @@ class PostBottomActionBar extends StatelessWidget {
             Icons.mode_comment_outlined,
             size: iconSize,
           ),
-          const Text("Reageren").fontSize(fontSize),
+          const Text("Reageer").fontSize(fontSize),
         ].toRow(
           separator: const SizedBox(width: 4),
         ),
