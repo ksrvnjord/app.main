@@ -26,6 +26,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
           onTap: () => Routemaster.of(context).push('events'),
         ),
         InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           onTap: () => Routemaster.of(context).push('events'),
           child: SizedBox(
             height: cardHeight,
