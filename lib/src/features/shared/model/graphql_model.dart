@@ -18,10 +18,8 @@ final graphQLModelProvider = ChangeNotifierProvider((ref) {
 class GraphQLModel extends ChangeNotifier {
   GraphQLClient client = GraphQLClient(link: httpLink, cache: cache);
 
-  GraphQLModel(AuthModel? auth) {
-    if (auth != null) {
-      client = boot(auth);
-    }
+  GraphQLModel(AuthModel auth) {
+    client = boot(auth);
   }
 
   GraphQLClient boot(AuthModel auth) {
