@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_edit_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
-class DamagesEditPage extends StatelessWidget {
+class DamagesEditPage extends ConsumerWidget {
   final String id;
   final String reservationObjectId;
 
@@ -16,26 +15,26 @@ class DamagesEditPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FutureWrapper(
-      future: getDamage(
-        reservationObjectId,
-        id,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final damage = ref.watch(damageProvider(Tuple2(reservationObjectId, id)));
+
+    return damage.when(
+      data: (data) {
+        return DamageEditWidget(
+          id: id,
+          reservationObjectId: reservationObjectId,
+        );
+      },
+      loading: () => const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
-      success: (data) => data.exists
-          ? ChangeNotifierProvider(
-              create: (_) => DamageForm(
-                type: data.data()!.type,
-                name: data.data()!.name,
-                description: data.data()!.description,
-                critical: data.data()!.critical,
-              ),
-              child: DamageEditWidget(
-                id: id,
-                reservationObjectId: reservationObjectId,
-              ),
-            )
-          : Container(),
+      error: (e, s) => Scaffold(
+        body: Center(
+          child: Text(e.toString()),
+        ),
+      ),
     );
   }
 }

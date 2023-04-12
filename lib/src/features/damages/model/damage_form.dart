@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DamageForm with ChangeNotifier {
+final damageFormProvider = ChangeNotifierProvider((ref) => DamageForm());
+
+class DamageForm extends ChangeNotifier {
   String? _type;
   String? _name;
   File? _image;

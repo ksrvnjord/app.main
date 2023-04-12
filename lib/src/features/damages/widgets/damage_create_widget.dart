@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/mutations/new_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class DamageCreateWidget extends StatelessWidget {
+class DamageCreateWidget extends ConsumerWidget {
   final double padding = 16;
 
   const DamageCreateWidget({
@@ -18,8 +18,8 @@ class DamageCreateWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final formData = context.watch<DamageForm>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formData = ref.watch(damageFormProvider);
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Routemaster.of(context);
 

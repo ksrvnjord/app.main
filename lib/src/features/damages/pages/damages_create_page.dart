@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_create_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/queries/get_reservation_object.dart';
-import 'package:provider/provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_provider.dart';
 
-class DamagesCreatePage extends StatelessWidget {
+class DamagesCreatePage extends ConsumerWidget {
   final String? reservationObjectId;
 
   const DamagesCreatePage({
@@ -14,27 +14,40 @@ class DamagesCreatePage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (reservationObjectId == null) {
-      return Scaffold(
-        body: ChangeNotifierProvider(
-          create: (_) => DamageForm(),
-          child: const DamageCreateWidget(),
-        ),
+      return const Scaffold(
+        body: DamageCreateWidget(),
       );
     }
 
+    final reservationObject =
+        ref.watch(reservationObjectProvider(reservationObjectId!));
+
     return Scaffold(
-      body: FutureWrapper(
-        future: getReservationObject(reservationObjectId!),
-        success: (data) => ChangeNotifierProvider(
-          create: (_) => data.exists
-              ? DamageForm(
-                  type: data.data()!.type,
-                  name: data.data()!.name,
-                )
-              : DamageForm(),
-          child: const DamageCreateWidget(),
+      body: reservationObject.when(
+        data: (data) {
+          if (!data.exists) {
+            return const DamageCreateWidget();
+          }
+
+          // TODO: this is not a nice solution, its like calling setState() in the build method
+          Future.delayed(
+            const Duration(milliseconds: 1),
+            // ignore: prefer-extracting-callbacks
+            () {
+              ref.read(damageFormProvider.notifier).type = data.data()!.type;
+              ref.read(damageFormProvider.notifier).name = data.data()!.name;
+            },
+          );
+
+          return const DamageCreateWidget();
+        },
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (e, s) => Center(
+          child: ErrorCardWidget(errorMessage: e.toString()),
         ),
       ),
     );

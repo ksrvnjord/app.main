@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   static const routename = '/login';
   const LoginForm({Key? key, required this.loginCallback}) : super(key: key);
   final void Function(bool) loginCallback;
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: 'LoginForm');
 
   final _username = TextEditingController();
@@ -31,8 +31,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthModel>(context);
-    final graphql = Provider.of<GraphQLModel>(context);
+    final auth = ref.watch(authModelProvider);
+    final graphql = ref.watch(graphQLModelProvider);
 
     const double errorTextPadding = 8;
     const double textFormFieldPadding = 8;

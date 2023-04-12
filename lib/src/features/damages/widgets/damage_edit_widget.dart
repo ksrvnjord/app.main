@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/mutations/delete_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/mutations/edit_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class DamageEditWidget extends StatelessWidget {
+class DamageEditWidget extends ConsumerWidget {
   final double borderRadius = 12;
   final double padding = 16;
   final String id;
@@ -21,8 +21,8 @@ class DamageEditWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final damage = context.watch<DamageForm>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final damageForm = ref.watch(damageFormProvider);
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Routemaster.of(context);
 
@@ -35,10 +35,10 @@ class DamageEditWidget extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         actions: [
-          damage.complete
+          damageForm.complete
               ? IconButton(
                   onPressed: () =>
-                      editDamage(id, reservationObjectId, damage).then(
+                      editDamage(id, reservationObjectId, damageForm).then(
                     (e) {
                       messenger.showSnackBar(SnackBar(
                         backgroundColor: Colors.green[900],
@@ -89,31 +89,31 @@ class DamageEditWidget extends StatelessWidget {
         ],
       ),
       body: [
-        damage.type != null
+        damageForm.type != null
             ? DropdownButtonFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                value: damage.type,
+                value: damageForm.type,
                 items: [
                   DropdownMenuItem(
-                    value: damage.type,
-                    child: Text(damage.type ?? ''),
+                    value: damageForm.type,
+                    child: Text(damageForm.type ?? ''),
                   ),
                 ],
                 onChanged: null,
               )
             : Container(),
-        damage.type != null
+        damageForm.type != null
             ? DropdownButtonFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
-                value: damage.name,
+                value: damageForm.name,
                 items: [
                   DropdownMenuItem(
-                    value: damage.name,
-                    child: Text(damage.name ?? ''),
+                    value: damageForm.name,
+                    child: Text(damageForm.name ?? ''),
                   ),
                 ],
                 onChanged: null,

@@ -1,19 +1,19 @@
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends ConsumerWidget {
   const MorePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, String> optionMap = {
       "Mijn Njord-account": "/settings",
       "Agenda": "events",
@@ -75,8 +75,7 @@ class MorePage extends StatelessWidget {
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
-            onTap: () =>
-                Provider.of<AuthModel>(context, listen: false).logout(),
+            onTap: () => ref.read(authModelProvider).logout(),
           ),
         ],
       ),
