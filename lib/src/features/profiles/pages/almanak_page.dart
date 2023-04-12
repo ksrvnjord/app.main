@@ -32,8 +32,7 @@ class AlmanakPage extends StatelessWidget {
             pushRoute: "leeden",
             imagePath: 'assets/images/leeden.png',
           ).padding(all: choiceWidgetPadding),
-          if (FirebaseAuth.instance.currentUser !=
-              null) // this is all Firebase stuff, so demo users can't see it
+          FirebaseWidget(
             [
               const AlmanakStructureChoiceWidget(
                 title: "Bestuur",
@@ -57,6 +56,7 @@ class AlmanakPage extends StatelessWidget {
                 imagePath: 'assets/images/substructures.jpeg',
               ).padding(all: choiceWidgetPadding),
             ].toColumn(),
+          ),
         ],
       ),
     );
