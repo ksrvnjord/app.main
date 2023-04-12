@@ -29,6 +29,7 @@ class DamageShowWidget extends StatelessWidget {
       DataTextListTile(name: 'Type', value: damage?.type ?? ''),
       DataTextListTile(name: 'Object', value: damage?.name ?? ''),
       DataTextListTile(name: 'Description', value: damage?.description ?? ''),
+      DataTextListTile(name: 'Cause', value: damage?.cause ?? ''),
       DataTextListTile(
         name: 'Kritisch',
         value: (damage?.critical ?? false) ? 'Ja' : 'Nee',

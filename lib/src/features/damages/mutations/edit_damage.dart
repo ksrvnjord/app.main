@@ -29,6 +29,7 @@ Future<void> editDamage(
   // Update the damage item, using the Damage object / class.
   await damage.reference.update({
     'description': damageForm.description,
+    'cause': damageForm.cause,
     'critical': damageForm.critical,
     'active': true,
     'type': damageForm.type,
