@@ -7,6 +7,7 @@ class Damage {
   final String name;
   final String type;
   final String creatorId;
+  final String cause;
   final DateTime createdTime;
   final String description;
   final bool critical;
@@ -17,6 +18,7 @@ class Damage {
     this.image,
     this.critical = false,
     this.active = false,
+    this.cause = '',
     required this.parent,
     required this.description,
     required this.createdTime,
@@ -34,6 +36,7 @@ class Damage {
         creatorId = json['creatorId']! as String,
         createdTime = (json['createdTime'] as Timestamp).toDate(),
         description = json['description']! as String,
+        cause = (json['cause'] ?? '') as String,
         critical = (json['critical'] ?? false) as bool,
         active = (json['active'] ?? false) as bool;
 
@@ -45,6 +48,7 @@ class Damage {
       'active': active,
       'parent': parent,
       'description': description,
+      'cause': cause,
       'createdTime': createdTime,
       'creatorId': creatorId,
       'name': name,

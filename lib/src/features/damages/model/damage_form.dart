@@ -15,12 +15,14 @@ class DamageForm extends ChangeNotifier {
   DamageForm({
     String? type,
     String? name,
+    String? cause,
     File? image,
     String? description,
     bool critical = false,
   }) {
     _type = type;
     _name = name;
+    _cause = cause;
     _image = image;
     _description = description;
     _critical = critical;
@@ -28,6 +30,7 @@ class DamageForm extends ChangeNotifier {
 
   String? get type => _type;
   String? get name => _name;
+  String? get cause = _cause;
   File? get image => _image;
   String? get description => _description;
   bool get critical => _critical;
@@ -62,6 +65,13 @@ class DamageForm extends ChangeNotifier {
   set description(String? e) {
     if (e != _description) {
       _description = e;
+      notifyListeners();
+    }
+  }
+
+  set cause(String? e) {
+    if (e != _cause) {
+      _cause = e;
       notifyListeners();
     }
   }

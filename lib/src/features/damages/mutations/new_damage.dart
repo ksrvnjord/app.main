@@ -35,6 +35,7 @@ Future<void> newDamage(DamageForm damageForm) async {
   final addedDamage = await object.collection('damages').add(Damage.fromJson({
         'parent': object,
         'description': damageForm.description,
+        'cause': damageForm.cause,
         'critical': damageForm.critical,
         'active': true,
         'createdTime': Timestamp.now(),

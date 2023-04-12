@@ -27,6 +27,14 @@ class DamageFormWidget extends ConsumerWidget {
           ),
           onChanged: (e) => formData.description = e,
         ),
+        TextFormField(
+          initialValue: formData.cause,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Oorzaak',
+          ),
+          onChanged: (e) => formData.cause = e,
+        ),
         Row(children: [
           Checkbox(
             value: formData.critical,
