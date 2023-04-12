@@ -9,7 +9,8 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
-final firestoreUserProvider = FutureProvider.family<AlmanakProfile, String>(
+final firestoreUserFutureProvider =
+    FutureProvider.family<AlmanakProfile, String>(
   (ref, userId) async {
     QuerySnapshot<AlmanakProfile> profile =
         await people.where('identifier', isEqualTo: userId).limit(1).get();
