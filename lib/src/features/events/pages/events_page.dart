@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:graphql/client.dart';
-import 'package:ksrvnjord_main_app/src/features/events/models/events.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/events_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-class EventsPage extends StatelessWidget {
+class EventsPage extends ConsumerWidget {
   const EventsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    GraphQLClient client = Provider.of<GraphQLModel>(context).client;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final events = ref.watch(comingEventsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,9 +20,12 @@ class EventsPage extends StatelessWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: FutureWrapper(
-        future: events(client),
-        success: (data) => EventsWidget(data: data),
+      body: events.when(
+        data: (data) => EventsWidget(data: data),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
       ),
     );
   }

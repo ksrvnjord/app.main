@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class EventsWidget extends StatelessWidget {
   const EventsWidget({super.key, required this.data});
 
-  final List<Query$CalendarItems$events?> data;
-
-  static List<Meeting> mapResultToItems(
-    List<Query$CalendarItems$events?> events,
-  ) {
-    return events.map<Meeting>((e) {
-      {
-        return Meeting(
-          e!.toJson()['title'],
-          DateTime.parse(e.toJson()['start_time']),
-          DateTime.parse(e.toJson()['end_time']),
-          Colors.blue,
-        );
-      }
-    }).toList();
-  }
+  final List<Event> data;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +13,7 @@ class EventsWidget extends StatelessWidget {
       view: CalendarView.schedule,
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
-      dataSource: MeetingDataSource(mapResultToItems(data)),
+      dataSource: MeetingDataSource(data),
       scheduleViewSettings: const ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
         monthHeaderSettings: MonthHeaderSettings(
@@ -48,54 +33,31 @@ class EventsWidget extends StatelessWidget {
 }
 
 class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
+  MeetingDataSource(List<Event> source) {
     appointments = source;
   }
 
   @override
   DateTime getStartTime(int index) {
-    return _getMeetingData(index).startTime;
+    return _meetingData(index).startTime;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return _getMeetingData(index).endTime;
+    return _meetingData(index).endTime;
   }
 
   @override
   String getSubject(int index) {
-    return _getMeetingData(index).title;
+    return _meetingData(index).title;
   }
 
   @override
   Color getColor(int index) {
-    return _getMeetingData(index).color;
+    return Colors.blue;
   }
 
-  Meeting _getMeetingData(int index) {
-    final Meeting? meeting = appointments![index];
-    late final Meeting meetingData;
-    if (meeting is Meeting) {
-      meetingData = meeting;
-    }
-
-    return meetingData;
+  Event _meetingData(int index) {
+    return appointments![index];
   }
-}
-
-class Meeting {
-  /// Creates a meeting class with required details.
-  Meeting(this.title, this.startTime, this.endTime, this.color);
-
-  /// Event name which is equivalent to subject property of [Appointment].
-  String title;
-
-  /// From which is equivalent to start time property of [Appointment].
-  DateTime startTime;
-
-  /// To which is equivalent to end time property of [Appointment].
-  DateTime endTime;
-
-  /// Background which is equivalent to color property of [Appointment].
-  Color color;
 }

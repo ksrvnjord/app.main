@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/model/vaarverbod.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class VaarverbodWidget extends ConsumerWidget {
@@ -10,55 +11,78 @@ class VaarverbodWidget extends ConsumerWidget {
     super.key,
   });
 
-  static const double textSize = 14;
-  static const double cardInnerPadding = 8;
-  static const double iconRightPadding = 12;
-  static const double cardWidth = 144;
-  static const double cardElementHPadding = 4;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vaarverbodRef = ref.watch(vaarverbodProvider);
+    return ref.watch(vaarverbodProvider).when(
+          data: (data) => _buildVaarverbodCard(vaarverbod: data),
+          loading: () => ShimmerWidget(
+            child: _buildVaarverbodCard(),
+          ),
+          error: (error, stack) => _buildVaarverbodCard(),
+        );
+  }
+
+  Widget _buildVaarverbodCard({Vaarverbod? vaarverbod}) {
+    const double textSize = 14;
+    const double cardInnerPadding = 8;
+    const double boxWidth = 128;
+    const double boxHeight = 56;
+    const double cardElementHPadding = 4;
+
+    IconData icon;
+    if (vaarverbod == null) {
+      icon = FontAwesomeIcons.circleExclamation;
+    } else if (vaarverbod.status) {
+      icon = FontAwesomeIcons.ban;
+    } else {
+      icon = FontAwesomeIcons.shieldHalved;
+    }
+
+    String message;
+    if (vaarverbod == null) {
+      message = 'Niet gelukt om te laden';
+    } else {
+      message = vaarverbod.message;
+    }
+
+    bool status;
+    if (vaarverbod == null) {
+      status = true;
+    } else {
+      status = vaarverbod.status;
+    }
 
     return SizedBox(
-      width: cardWidth,
-      child: vaarverbodRef.when(
-        data: (data) => Card(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
-          elevation: 0,
-          color: data.status ? Colors.red[300] : Colors.green[300],
-          child: [
-            // should shield check icon
-            FaIcon(
-              data.status
-                  ? FontAwesomeIcons.ban
-                  : FontAwesomeIcons.shieldHalved,
-              color: Colors.white,
-            ).padding(
-              horizontal: cardElementHPadding,
-            ),
-            Text(data.message)
-                .textColor(Colors.white)
-                .fontSize(textSize)
-                .textAlignment(TextAlign.end)
-                .fontWeight(FontWeight.bold)
-                .padding(horizontal: cardElementHPadding)
-                .expanded(),
-          ]
-              .toRow(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-              )
-              .padding(all: cardInnerPadding),
+      width: boxWidth,
+      height: boxHeight,
+      child: [
+        // should shield check icon
+        FaIcon(
+          icon,
+          color: Colors.white,
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => const ErrorCardWidget(
-          errorMessage:
-              "Het is niet gelukt om het vaarverbod op te halen van de server.",
-        ),
+        Text(
+          message,
+        )
+            .textColor(Colors.white)
+            .fontSize(textSize)
+            .textAlignment(TextAlign.end)
+            .fontWeight(FontWeight.bold)
+            .padding(horizontal: cardElementHPadding)
+            .expanded(),
+      ]
+          .toRow(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            separator: const SizedBox(width: cardElementHPadding),
+          )
+          .padding(horizontal: cardInnerPadding),
+    ).card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
+      elevation: 0,
+      color: status ? Colors.red[300] : Colors.green[300],
     );
   }
 }

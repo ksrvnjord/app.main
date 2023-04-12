@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
@@ -15,10 +16,8 @@ class AlmanakPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        actions: <Widget>[
-          FirebaseAuth.instance.currentUser != null
-              ? const MyProfilePicture(profileIconSize: 48.0)
-              : const SizedBox.shrink(),
+        actions: const <Widget>[
+          FirebaseWidget(MyProfilePicture(profileIconSize: 48.0)),
         ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,

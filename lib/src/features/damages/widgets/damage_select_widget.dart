@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/all_object_types.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class DamageSelectWidget extends StatelessWidget {
+class DamageSelectWidget extends ConsumerWidget {
   const DamageSelectWidget({
     Key? key,
   }) : super(key: key);
@@ -13,8 +13,8 @@ class DamageSelectWidget extends StatelessWidget {
   final double padding = 16;
 
   @override
-  Widget build(BuildContext context) {
-    final formData = context.watch<DamageForm>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formData = ref.watch(damageFormProvider);
 
     return FutureWrapper(
       future: reservationObjectsByType(),

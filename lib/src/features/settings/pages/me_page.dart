@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -7,19 +8,18 @@ import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 const double betweenFields = 20;
 const double marginContainer = 5;
 const double paddingBody = 15;
 
-class MePage extends StatelessWidget {
+class MePage extends ConsumerWidget {
   const MePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final client = Provider.of<GraphQLModel>(context).client;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final client = ref.watch(graphQLModelProvider).client;
     var result = me(client);
 
     return Scaffold(
@@ -39,7 +39,7 @@ class MePage extends StatelessWidget {
   }
 }
 
-class MeWidget extends StatefulWidget {
+class MeWidget extends ConsumerStatefulWidget {
   const MeWidget(this.user, {Key? key}) : super(key: key);
   final Query$Me$me user;
 
@@ -63,7 +63,7 @@ Map<String, Object?> createInitialField({
   };
 }
 
-class _MeWidgetState extends State<MeWidget> {
+class _MeWidgetState extends ConsumerState<MeWidget> {
   List<Map<String, Map<String, dynamic>>> fields = [];
   bool saving = false;
   Color buttonColor = Colors.blue;
@@ -165,7 +165,7 @@ class _MeWidgetState extends State<MeWidget> {
   @override
   Widget build(BuildContext context) {
     final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
-    final client = Provider.of<GraphQLModel>(context).client;
+    final client = ref.watch(graphQLModelProvider).client;
 
     const double fieldPadding = 8;
 
@@ -241,7 +241,7 @@ class _MeWidgetState extends State<MeWidget> {
           height: 32,
         ),
         GestureDetector(
-          onTap: () => Provider.of<AuthModel>(context, listen: false).logout(),
+          onTap: () => ref.read(authModelProvider).logout(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

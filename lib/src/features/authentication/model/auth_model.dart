@@ -153,6 +153,7 @@ class AuthModel extends ChangeNotifier {
       // to login
       if (data != null && data['token'] != null) {
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
+        notifyListeners();
 
         // Subscribe the user to FirebaseMessaging as well
         String? uid = FirebaseAuth.instance.currentUser?.uid;

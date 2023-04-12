@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_done_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class _LoginFormCard extends StatelessWidget {
+class _LoginFormCard extends ConsumerWidget {
   const _LoginFormCard({Key? key, required this.loginCallback})
       : super(key: key);
   final void Function(bool) loginCallback;
 
   @override
-  Widget build(BuildContext context) {
-    var auth = Provider.of<AuthModel>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authModelProvider);
 
     if (auth.isBusy) {
       return const LoginLoadingWidget();

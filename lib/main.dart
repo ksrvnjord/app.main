@@ -2,7 +2,7 @@ import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +15,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -49,8 +48,16 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
 
-  runApp(const BetterFeedback(
-    child: Application(),
+  final container =
+      ProviderContainer(); // used to initialize always active providers
+  container.read(authModelProvider); // initialize the authModelProvider
+  container.read(graphQLModelProvider); // initialize the graphQLModelProvider
+
+  runApp(BetterFeedback(
+    child: UncontrolledProviderScope(
+      container: container,
+      child: const Application(),
+    ),
   ));
 }
 
@@ -84,63 +91,51 @@ Future<void> main() async {
 
 // Main is not a nice class name, but it is the main class of the app
 // ignore: prefer-match-file-name
-class Application extends StatelessWidget {
+class Application extends ConsumerWidget {
   const Application({Key? key}) : super(key: key);
 
-  RouteMap getRoutes(BuildContext context) {
-    final auth = Provider.of<AuthModel>(context);
+  RouteMap getRoutes(WidgetRef ref) {
+    final auth = ref.watch(authModelProvider);
     final loggedIn = auth.client != null;
 
     return loggedIn ? routeMap : authenticationRoutes;
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthModel>(create: (_) => AuthModel()),
-        ChangeNotifierProxyProvider<AuthModel, GraphQLModel>(
-          update: (context, auth, _) => GraphQLModel(auth),
-          create: (_) => GraphQLModel(null),
-        ),
-      ],
-      child: riverpod.ProviderScope(
-        // store state of Riverpod providers
-        child: Builder(
-          builder: (context) => MaterialApp.router(
-            title: 'K.S.R.V. Njord',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              textTheme: GoogleFonts.ibmPlexSansTextTheme(
-                Theme.of(context).textTheme,
-              ),
-              pageTransitionsTheme: const PageTransitionsTheme(builders: {
-                // this is to use swipe transitions on iOS
-                TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-                TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
-              }),
-            ),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('nl', 'NL'),
-            ],
-            debugShowCheckedModeBanner: false,
-            routeInformationParser: const RoutemasterParser(),
-            routerDelegate: RoutemasterDelegate(
-              observers: [GlobalObserver()],
-              routesBuilder: getRoutes,
-            ),
+    return Builder(
+      builder: (context) => MaterialApp.router(
+        title: 'K.S.R.V. Njord',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.ibmPlexSansTextTheme(
+            Theme.of(context).textTheme,
           ),
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+            // this is to use swipe transitions on iOS
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+          }),
+        ),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('nl', 'NL'),
+        ],
+        debugShowCheckedModeBanner: false,
+        routeInformationParser: const RoutemasterParser(),
+        routerDelegate: RoutemasterDelegate(
+          observers: [GlobalObserver()],
+          routesBuilder: (context) => getRoutes(ref),
         ),
       ),
     );

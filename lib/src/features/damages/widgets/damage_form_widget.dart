@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker_widget/image_picker_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class DamageFormWidget extends StatelessWidget {
+class DamageFormWidget extends ConsumerWidget {
   const DamageFormWidget({
     Key? key,
   }) : super(key: key);
@@ -12,8 +12,8 @@ class DamageFormWidget extends StatelessWidget {
   final double padding = 16;
 
   @override
-  Widget build(BuildContext context) {
-    final formData = context.watch<DamageForm>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formData = ref.watch(damageFormProvider);
     final diameter = MediaQuery.of(context).size.width;
 
     return Wrap(

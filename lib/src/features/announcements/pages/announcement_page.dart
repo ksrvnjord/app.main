@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/models/announcement.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_body_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
-class AnnouncementPage extends StatefulWidget {
+class AnnouncementPage extends ConsumerStatefulWidget {
   const AnnouncementPage({Key? key}) : super(key: key);
 
   @override
   createState() => _AnnouncementPageState();
 }
 
-class _AnnouncementPageState extends State<AnnouncementPage> {
+class _AnnouncementPageState extends ConsumerState<AnnouncementPage> {
   String title = 'Bericht';
 
   @override
   Widget build(BuildContext context) {
-    var client = Provider.of<GraphQLModel>(context).client;
+    final client = ref.watch(graphQLModelProvider).client;
     var params = RouteData.of(context).pathParameters;
 
     return FutureWrapper<Query$Announcement$announcement?>(

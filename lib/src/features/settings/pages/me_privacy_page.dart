@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:provider/provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 const double betweenFields = 20;
 const double marginContainer = 5;
 const double paddingBody = 15;
 
-class MePrivacyPage extends StatelessWidget {
+class MePrivacyPage extends ConsumerWidget {
   const MePrivacyPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final client = Provider.of<GraphQLModel>(context).client;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final client = ref.watch(graphQLModelProvider).client;
     final result = me(client);
 
     return Scaffold(
@@ -38,7 +38,7 @@ class MePrivacyPage extends StatelessWidget {
   }
 }
 
-class MePrivacyWidget extends StatefulWidget {
+class MePrivacyWidget extends ConsumerStatefulWidget {
   const MePrivacyWidget(this.user, {Key? key}) : super(key: key);
   final Query$Me$me? user;
 
@@ -46,7 +46,7 @@ class MePrivacyWidget extends StatefulWidget {
   createState() => _MePrivacyWidgetState();
 }
 
-class _MePrivacyWidgetState extends State<MePrivacyWidget> {
+class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   Map<String, bool> checkboxes = {};
   bool listed = false;
   bool saving = false;
@@ -110,7 +110,7 @@ class _MePrivacyWidgetState extends State<MePrivacyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final client = Provider.of<GraphQLModel>(context).client;
+    final client = ref.watch(graphQLModelProvider).client;
     const double saveButtonPadding = 8;
     const double pagePadding = 8;
     const double buttonRounding = 16;
