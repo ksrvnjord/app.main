@@ -14,7 +14,7 @@ class PostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topics = ref.watch(postTopicsProvider);
-    final firebaseUser = ref.watch(currentFirebaseUserProvider);
+    final firebaseUser = ref.watch(firebaseAuthUserProvider);
 
     return firebaseUser == null
         ? Scaffold(

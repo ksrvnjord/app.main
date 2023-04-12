@@ -11,7 +11,7 @@ class FirebaseWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentFirebaseUserProvider);
+    final user = ref.watch(firebaseAuthUserProvider);
 
     return user == null ? const SizedBox.shrink() : child;
   }
