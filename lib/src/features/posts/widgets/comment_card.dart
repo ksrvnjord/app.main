@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/widgets/author_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CommentCard extends StatelessWidget {
@@ -15,9 +16,11 @@ class CommentCard extends StatelessWidget {
     const double authorNameFontSize = 14;
 
     return [
-      Text(comment.authorName)
-          .fontWeight(FontWeight.bold)
-          .fontSize(authorNameFontSize),
+      AuthorWidget(
+        authorName: comment.authorName,
+        authorId: comment.authorId,
+        fontSize: authorNameFontSize,
+      ),
       LimitedBox(
         maxWidth: MediaQuery.of(context).size.width,
         child: ExpandableText(
