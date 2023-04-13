@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,13 +19,19 @@ class CreatePostPage extends ConsumerStatefulWidget {
 
 class CreatePostPageState extends ConsumerState<CreatePostPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String selectedTopic = 'Wandelgangen'; // default value
+  String selectedTopic = ""; // default value
   String title = '';
   String content = '';
 
   static const int maxTitleLength = 40;
 
   bool postCreationInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedTopic = ref.read(selectedTopicProvider); // read topic once on init
+  }
 
   @override
   Widget build(BuildContext context) {
