@@ -77,7 +77,6 @@ class PostsPage extends ConsumerWidget {
                     label: const Text('Nieuw bericht'),
                   ),
                   body: TabBarView(
-                    // TODO: get index: https://stackoverflow.com/a/54606911
                     children: [
                       ...topics.map((topic) => PostList(topic: topic)),
                     ],
