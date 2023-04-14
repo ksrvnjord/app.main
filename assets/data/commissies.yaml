@@ -1,9 +1,383 @@
+Afroeicommissie:
+  description: 'Commissaris alles, P Evenementen, Recordhouder rondje Njord, Bart
+    Blik, Big Jolk, medium chest Mukan, Maumau het Zeedier, Clowntje Elton & Sophie
+    pootjes gingen dit jaar de uitdaging aan om de nieuwe aanwas scholieren gespuis
+    wat leidsche manieren bij te brengen. Deze reis ging, zoals het hoort te gaan
+    bij een commissie, niet zonder slag of stoot. Begrotingstekorten zijn afgewisseld
+    met vergunningen die meer als optioneel werden gezien. Maar de AC zou de AC niet
+    zijn als we dit niet allemaal tot een prachtig einde hebben gebracht. Als ouders
+    die kijken hoe hun kinderen het huis uit gaan, kijken ook wij hoe ons meesterwerk
+    de vleugels uitslaat. We zijn enorm trots op de Lichting en we hebben er alle
+    vertrouwen in dat ze de komende jaren de fundering van Njord worden. '
+  email: ac@njord.nl
+Almanakcommissie:
+  email: almanak@njord.nl
 Appcommissie:
-  description: |-
-    Wij willen u graag de aandacht vestigen op de illustere Appcommissie, welke in het jaar 2021 is opgericht. Deze groep van technisch vaardige studenten heeft zichzelf ten doel gesteld om de meest voortreffelijke app te ontwikkelen die ooit binnen een studentenvereniging is gerealiseerd.
+  description: 'Wij willen u graag de aandacht vestigen op de illustere Appcommissie,
+    welke in het jaar 2021 is opgericht. Deze groep van technisch vaardige studenten
+    heeft zichzelf ten doel gesteld om de meest voortreffelijke app te ontwikkelen
+    die ooit binnen een studentenvereniging is gerealiseerd.
 
-    Met hun scherpe oog voor detail en ongekende gevoel voor design zijn deze jonge programmeurs in staat om zelfs de meest complexe codes te ontrafelen en om te vormen tot een app die met een simpele vingerbeweging te bedienen is. Niets is te groot voor hen, geen functie te klein. Zij zijn ware meesters van de digitale taal en niets ontsnapt aan hun waakzame blik.
 
-    Echter, de AppCo is niet alleen een groep techneuten; zij zijn ook zeer sociaal en aimabel. In hun vrije tijd genieten zij van een goed glas en aangename conversaties, waarbij hun favoriete programmeertalen frequent besproken worden. Hun teamspirit en uitzonderlijke volharding stellen hen in staat om zelfs de meest uitdagende problemen te trotseren en te overwinnen.
+    Met hun scherpe oog voor detail en ongekende gevoel voor design zijn deze jonge
+    programmeurs in staat om zelfs de meest complexe codes te ontrafelen en om te
+    vormen tot een app die met een simpele vingerbeweging te bedienen is. Niets is
+    te groot voor hen, geen functie te klein. Zij zijn ware meesters van de digitale
+    taal en niets ontsnapt aan hun waakzame blik.
 
-    Moge de Appcommissie nog vele hoogstandjes bereiken en de K.S.R.V. Njord verrijken met hun bijzondere vaardigheden en gezelligheid.
+
+    Echter, de AppCo is niet alleen een groep techneuten; zij zijn ook zeer sociaal
+    en aimabel. In hun vrije tijd genieten zij van een goed glas en aangename conversaties,
+    waarbij hun favoriete programmeertalen frequent besproken worden. Hun teamspirit
+    en uitzonderlijke volharding stellen hen in staat om zelfs de meest uitdagende
+    problemen te trotseren en te overwinnen.
+
+
+    Moge de Appcommissie nog vele hoogstandjes bereiken en de K.S.R.V. Njord verrijken
+    met hun bijzondere vaardigheden en gezelligheid.'
+  email: app@njord.nl
+Archiefcommissie:
+  email: archief@njord.nl
+Buffetcommissie:
+  description: "Roeien is Njord, maar er kan uiteraard goed ook worden geborreld.\
+    \ Inmiddels is de BuCo niet meer weg te denken van Njord. De BuCo houdt zich bezig\
+    \ met voorraadbeheer, evenementen, veiligheid op de borrels en tappers. Ook wordt\
+    \ de zaal onderhouden en hopelijk snel het haardhout weer bijgevuld. Dit kunnen\
+    \ wij uiteraard niet alleen, zonder de actieve tappers, DJ\u2019s en sjaarzen\
+    \ die ons veelvuldig uit de brand helpen. Oort probeert het gehele zooitje bij\
+    \ elkaar te houden, met Amber altijd aan zijn zijde. Sara zorgt ervoor dat de\
+    \ mails worden beantwoord en schema\u2019s worden gemaakt, terwijl Oosterhof sjaarzen\
+    \ aangiert bij het schoonmaken. Madelief en Kim beheren de voorraad en regelen\
+    \ bij elke borrel en evenement de tappers. Het evenementenduo met Bastiaannet\
+    \ en Goedkoop zorgt voor de sfeer en de nodige gierpartijen. Gelukkig hebben wij\
+    \ ook Liefers en Clara, die de oude mores bewaken en iedereen zich veilig laten\
+    \ voelen. "
+  email: buco@njord.nl
+Businesscommissie:
+  description: "Nu de Njord Business Commissie dit jaar in een nieuw jasje is gehesen,\
+    \ zijn wij meer dan klaar om n\xF3g meer mooie deals en inspirerende samenwerkingen\
+    \ binnen te slepen en aan te gaan. Onze Unique Selling Points: toegankelijk, daadkrachtig,\
+    \ en ruimte voor idee\xEBn en goed gelul. Verder verwijzen wij graag naar ons\
+    \ commissiemotto!"
+  email: business@njord.nl
+Carrierecommissie:
+  description: "De Carri\xE8re Commissie is een commissie opgezet voor en door een\
+    \ diverse groep studenten. Wij zijn samengekomen vanuit alle verschillende aspecten\
+    \ van de K.S.R.V., van compo tot wedstrijd en van ouderejaars tot twaars. Wij\
+    \ zijn er dan ook voor iedereen. Door het hele jaar organiseert deze ambitieuze\
+    \ commissie evenementen om Njord-leden de mogelijkheid te bieden om na te denken\
+    \ over hun eigen toekomst en de carri\xE8remogelijkheden tijdens en na hun Njord-tijd.\
+    \ Tijdens NjordTalks, de carri\xE8redagen en alle externe evenementen komen de\
+    \ meest diverse sprekers voorbij, die onze leden zullen inspireren, motiveren\
+    \ en activeren."
+  email: carriere@njord.nl
+Competitiecommissie:
+  description: "De Competitiecommissie \u201822-\u201923 bestaat dit jaar opnieuw\
+    \ uit vier mannen en zeven vrouwen. \nWe hebben ons opgemaakt voor een onvergetelijk\
+    \ eerste jaar voor de sjaarzen waarin wij ons sjaarzenjaar mogen herbeleven. Met\
+    \ CCT\u2019s en sparsessies stomen we de nieuwe lichting klaar om vele taarten\
+    \ naar de K.S.R.V. mee te nemen. Niet alleen op de wedstrijden, maar ook op de\
+    \ feesten laten we zien wie de winnaar is. Dit betekent voor ons als CC lange\
+    \ dagen en korte nachten. In regen en zonneschijn, wij zullen er altijd staan\
+    \ (of liggen in het gras) en blijven lachen, zolang u zelf zorgt voor dat stuurtje.\
+    \ Met hoge verwachtingen voor deze nieuwe lichting kijken wij uit naar een jaar\
+    \ vol taart en bier.\n"
+  email: cc@njord.nl
+Duurzaamheidscommissie:
+  description: "Duurzaamheid is een maatschappelijk doel dat in grote lijnen betrekking\
+    \ heeft op het vermogen van mensen om gedurende lange tijd veilig samen te leven\
+    \ op aarde. Over de specifieke definitie van duurzaamheid is nog geen oveernstemming\
+    \ gevonden en verschilt gezien de literatuur, context en tijd. Duurzaamheid wordt\
+    \ gewoonlijk omschreven als bestaande uit 3 dimensies: ecologisch, economisch\
+    \ en sociaal. Veel publicaties stellen dat de milieudimensie de belangrijkste\
+    \ is, en in het dagelijks gebruik is \"duurzaamheid\" vaak gericht op het tegengaan\
+    \ van grote milieuproblemen, zoals klimaatverandering, verlies van biodiversiteit,\
+    \ verlies van ecosysteemdiensten, landdegradatie en lucht- en waterverontreiniging.\
+    \ Het concept van duurzaamheid kan worden gebruikt om beslissingen op mondiaal,\
+    \ nationaal en individueel niveau te sturen (bijvoorbeeld duurzaam leven). \n\
+    In het kort #savetheturtles \nxoxox"
+Eerstejaarscommissie:
+  description: "September 2021. Een nieuwe lichting \u2018Doorstarters\u2019 vond\
+    \ haar plek op de K.S.R.V. \u201CNjord\u201D. Van domme scholier tot jeugdroeiende\
+    \ pre-fab, iedereen was vertegenwoordigd in dit veelbelovende jaar. En terwijl\
+    \ menig sjaars zich voegde bij een wedstrijdploeg of zich in de compo-wereld een\
+    \ weg vond, was er \xE9\xE9n commissie die al dit gespuis samen probeerde te brengen.\
+    \ Een commissie van en voor sjaarzen: de SjaCie. \nWellicht wel de meeste diverse\
+    \ commissie van Njord. Roeiers, minder actieve roeiers, harde borrelaars en intraining-zijnde\
+    \ labo\u2019s: heel lichting \u201921 was present. Dit heeft geleid tot een breed\
+    \ aanbod aan leuke activiteiten, waarvan de Ouderdag wellicht wel het hoogtepunt\
+    \ was. \nEr werd ge\xEBrgo\u2019t, geroeid, gedronken en rondgeleid totdat een\
+    \ overheerlijke BBQ de avond inluidde die de hongerige magen van Leeden en hun\
+    \ ouders vulde! Tenslotte vormden donkere wolken zich boven het Leidsche en viel\
+    \ de dag na alle festiviteiten toch nog in het water. Dus trek een bak!\nLBG,\
+    \ \nSjaCie 2021-2022\n"
+  email: sjacie@njord.nl
+Extern Roeien Commissie:
+  description: Het wegwijs maken van middelbare scholieren en burgers is de taak van
+    de Extern Roeien Commissie. De commissie laat Leiden en omstreken kennis maken
+    met de roeisport en het bijbehorende studentenroeien. Samen met onze (bijna) altijd
+    aanwezige en enthousiaste supercrew weten we meermaals per week een leerzame clinic
+    te verzorgen.
+  email: clinics@njord.nl
+Fotocommissie:
+  email: foto@njord.nl
+Fuifroeicommissie:
+  email: lsfg@njord.nl
+Galacommissie:
+  description: "Kostbare herinneringen ten overvloede\u2026waar moeten we beginnen?\
+    \ De eerste vergadering zonder Isabel? Het bezoek aan Berckt toen Noor tijdelijk\
+    \ vermist leek te zijn? De photoshop kwaliteit waarmee Isa in de commissiefoto\
+    \ is geplakt?  De gesneuvelde glazen en Hema-taart? De pepernoten en brie van\
+    \ Mai? Lars zijn onvermoeibare charmes waardoor de dames van de Etos overstag\
+    \ gingen? De eindeloos creatieve ingevingen en punctualiteit van Sophie? De nuchtere,\
+    \ zeer relativerende, opmerkingen van Klaartje Kouffeld\u2019s culturele coaching\
+    \ omdat de meesten van de commissie tot ons bezoek aan de Berckt nog nooit buiten\
+    \ de Randstad waren geweest? Ook de aanhang bleek van onmisbare waarde toen er\
+    \ de avond voor het gala nog 500 goodiebags gevuld moesten worden. De meest effici\xEB\
+    nte keten ooit, \xFCberhaupt waren wij een geoliede machine (met gig als brandstof).\
+    \ Het hoogtepunt was waarschijnlijk het kwartier waarin we eindelijk samen de\
+    \ dansvloer onveilig konden maken, om half 5 \u2018s ochtends in de schijn van\
+    \ onze lichtletters. Tis een wonder dat we nog stonden. Met veel trots en dankbaarheid\
+    \ kijken we terug op het eerste Njord gala m\xE9t overnachting \u2018Tales of\
+    \ wonder\u2019 in kasteel de Berckt. De kamerindeling was een hel. "
+  email: gala@njord.nl
+Goede Doelencommissie:
+  description: 3 vrouwen, 1 man met 1 doel; namelijk het goede doel
+  email: goededoelen@njord.nl
+Hollandiacommissie:
+  description: "Deze commissie brengt Njord en Triton samen met het gezamenlijke doel\
+    \ om de Hollandia roeiwedstrijd te organiseren, die 21, 22 en 23 april plaats\
+    \ zal vinden op de Bosbaan. Sinds oktober gaan wij aan de slag met een druk vergader\
+    \ schema en een nog drukker borrel schema, want met wekelijkse uitstapjes naar\
+    \ de donker- en lichtblauwe verenigingen zijn de voorbereidingen voor deze karakteristieke\
+    \ wedstrijd al in volle gang. \n\nDe beste wedstrijdroeiers van Nederland zijn\
+    \ van harte welkom om de strijd voor een 2k-blik aan te gaan en de harde knal\
+    \ van de canon af te laten gaan. Hiernaast nodigen we iedereen uit om deze krachtmeting\
+    \ toe te schouwen onder het genot van goed weer, een biertje, een hamburger en\
+    \ een gezellige sfeer!"
+  email: hollandia@njord.nl
+Introductiecommissie:
+  description: "Je bent IC en je wilt wat. Je wilt introductiecommissie zijn en absol\xFA\
+    \xFAt geen introcommissie. Je wilt dat het druk is op het festival, maar niet\
+    \ zo druk dat je geen munten meer kan halen. Je wilt een nieuw vet feest bedenken\
+    \ terwijl je weet dat een bucketborrel altijd werkt. Je wilt een ICinema, een\
+    \ Nicole Beukenloods, een photobooth, maar uiteindelijk ben je vooral blij met\
+    \ de zitzakken waar je brak in kan slapen. Niet alles gaat altijd volgens plan,\
+    \ zeker niet tijdens een EL CID. Gelukkig ontstaan de mooiste dingen in het moment\
+    \ zelf. Zoals de lange rij aan inschrijvers, zinkende C1\u2019s en de buikschuifbaan.\
+    \ Je krijgt niet altijd wat je wilt, maar soms resulteert dat alleen maar in beter.\
+    \ P.S. Er is echt nog meer dan genoeg poedersuiker."
+  email: ic@njord.nl
+Kalendercommissie:
+  description: "Wij hebben de afgelopen maanden een fantastische kalender gemaakt.\
+    \ Van zeer spannende locaties tot extreem saaie vergaderingen. Zonder de sublieme\
+    \ inzet van de volgende mensen was de mooiste kalender ooit nooit tot stand gekomen.\
+    \ \n\nIdse Termaat, de man met het Nederlandse record voor meest massieve billen\n\
+    Mijntje van den Berg, De ijverige notulist met een voetfetish\nBjarne Dijkstra,\
+    \ De trouwe fotograaf die in staat was twee hele vergaderingen bij te wonen (beide\
+    \ te laat en met een bakje magere kwark)\n\nIris Kamphuis, De ultieme Juice queen\
+    \ die altijd net iets te enthousiast is over de mannelijke modellen\nPuck Bruin,\
+    \ De fotoshoot veteraan die heerlijk heeft gewandeld in het frikandellenbos \n\
+    Camiel Meijer: Onze fantastische bewerker die voor elke situatie wel een verkeerde\
+    \ opmerking heeft.\n\n\nEveline Boon: Onze promolocomotief die echt niet bang\
+    \ is om te zeggen dat ze \u2026 lam is\nOberon Janszen: Onze financi\xEBle kenner\
+    \ en enthousiaste Unit liefhebber.\n"
+  email: kalender@njord.nl
+KookCluster:
+  description: 'Iedereen weet dat de grotere commissies vaak een sub-commissie hebben
+    ter ondersteuning. Dit geldt ook voor de KoCo. Niet alleen Leden van voorgenoemde
+    commissie staan iedere dinsdag en zaterdag in de keuken; ook het Kookcluster is
+    onmisbaar in het kookproces. Hoewel we door bij ieder bekende omstandigheden de
+    keuken nog niet vaak samen hebben bemand, blijkt toch uit de keren dat het wel
+    kon hoe gezellig het was. Er werd goed gezopen en de muziek stond aldoor luid.
+    Soms zou je bijna vergeten dat er ook nog gekookt wordt. Maar koken - lees: voornamelijk
+    snijden - dat kan het Kookcluster als geen ander! Ieder hapje dat u op de borrel
+    nuttigt, bevat een beetje KoClu. Het hele jaar zullen zij klaar staan voor de
+    Leeden en het eten op de dinsdag samen met de KoCo naar een nog hoger niveau tillen.
+    Zoals Gandhi ooit zei: "koken is eigenlijk pas leuk als je met elkaar kunt zuipen"'
+Kookcommissie:
+  description: "Hier staan ze: de motor der K.S.R.V. \u201CNjord\u201D. Immers wat\
+    \ is een roeier zonder goede voeding en wat is een borrelaar zonder goede bodem?\
+    \ Op het eerste gezicht zou je wellicht niet denken dat deze tien gezellige, maar\
+    \ ietwat chaotische commissieleden op dinsdag heel gestructureerd hun handen in\
+    \ een slaan en voor al Njord haar leden een heerlijk bordje eten maakt, maar dat\
+    \ is toch zeker het geval. Vol enthousiasme, met hopelijk alle ingredi\xEBnten\
+    \ van de Sligro en een heel capabel KookCluster verzamelen we op dinsdagmiddag\
+    \ in de keuken. De schorten gaan aan, de messen worden geslepen en onder het genot\
+    \ van een biertje en de afspeellijst van Jemima gaan we aan de slag. In de Njordkeuken\
+    \ wordt gelachen, gezopen, gehuild, gefrituurd en goede gesprekken gevoerd. Want\
+    \ (commissie)liefde gaat immers door de maag."
+  email: koco@njord.nl
+Magazinecommissie:
+  email: magazine@njord.nl
+Matgroep:
+  description: Een oud lid zou de matgroep herkennen als een commissie gedomineerd
+    door mannen. Menig oud matgroeper herinnerd zich ook dat de matgroep naar triton
+    ging om met de MaCo te borrelen, want daar zaten de vrouwen (niks bleek minder
+    waar). Toch is inmiddels de helft de matgroep samengesteld uit echte klusvrouwen,
+    iets waar voorgaande matgroepers alleen maar over konden dromen. Deze mannen en
+    vrouwen van de matgroep staan iedere dinsdag en vrijdag middag voor u klaar om
+    dat wat u met veel spijt sloopt snel weer te repareren. Met vakkundigheid en een
+    ongezonde hoeveelheid koffie brengt deze commissie zonder twijfel de vereniging
+    naar hoger niveau.
+  email: materieel@njord.nl
+Meerderejaarscommissie:
+  description: "\u201CBij wie eten we vanavond?\u201D luidt standaard de vraag op\
+    \ donderdag middag, als we moeten samenkomen om te vergaderen. Het Tl-licht van\
+    \ het commissiehok wordt dan ook het liefst vervangen door gezelligheid in een\
+    \ fusie. De meerderejaarscommissie ziet het dan ook als haar taak om zo veel mogelijk\
+    \ lichtblauwe harten plezier te brengen bij het roeien. Het jaar zit dan ook vol\
+    \ leuke evenementen en wedstrijden waar de commissie met plezier de handen uit\
+    \ de mouwen voor steekt. Diners, verticaalbokaal, de K.N.S.R.Blauwe Spar en veel\
+    \ meer. De organisatie loopt natuurlijk alleen soepel als de commissiegenoten\
+    \ het goed met elkaar vinden en in het geval van de meerderejaarscommissie had\
+    \ niets meer waar kunnen zijn. Zo eindigt het altijd in escalatie zoals zwemmen\
+    \ op de vloer van de keuken op Njord. Met plezier kijken wij uit naar een jaar\
+    \ waarbij wij zowel op als buiten Njord nieuwe banden en vriendschappen sluiten."
+  email: meerderejaars@njord.nl
+Merchandisecommissie:
+  description: 'Wij zijn als Merchandise Commissie verantwoordelijk voor al uw zwanetruien,
+    plokjes, dassen, wielerkleding, oproeijacks, leggings, ploegjassen, lichtingstruien,
+    badslippers, manchetknopen, wedstrijdjassen, mokken, posters, badjassen, shirts,
+    zwanesokken, mutsen, speelkaarten, sporttassen, wanten, zwaanstekers, composokken,
+    bretels, wedstrijdscarfs, pockies, mondkapjes, scrunchies, clips, turtles, pakjes,
+    dobbelstenen, fannypacks, bidons, compojassen, buckethats, petten, telefoonhoesjes,
+    joggingbroeken, kortom: EINDELOOS VEEL MERCH'
+  email: merchandise@njord.nl
+Najaarscommissie:
+  description: "De Njord Najaarscommissie heeft op 8 en 9 november 2022 de 2e editie\
+    \ van de Njord Najaarswedstrijden georganiseerd. Na maanden van voorbereiding\
+    \ vond er voor het eerst een Njord-wedstrijd op eigen water plaats! Onder het\
+    \ genot van vele biertjes hebben tientallen leden zich ingezet voor een mooi roei-evenement\
+    \ waar vele nummers aan de start verschenen, van de skiff tot de 8+. \nWaar overdag\
+    \ de zon de roeiers aangenaam verwarmde, maakte deze \u2018s avonds plaats voor\
+    \ de broeierige hitte van Leidens bekendste discotheek! Een afgeladen Hifi bekroonde\
+    \ de eerste wedstrijddag en was dan ook (misschien) wel het hoogtepunt van de\
+    \ wedstrijd! \nMet de afgelopen twee edities in het achterhoofd maakt Njord zich\
+    \ op voor een eigen wedstrijd in het hoofdseizoen, maar tot die tijd zien we u\
+    \ graag terug op de 3e editie van de Njord Najaars!"
+  email: najaars@njord.nl
+Pascommissie:
+  description: "Elke dinsdagborrel kom je wel in aanraking met de systemen van de\
+    \ PasCie. Je komt aan bij het buffet om lekker een pitcher te halen voor al je\
+    \ ploegleden met de befaamde pitcherknop maar helaas heeft een TapCo lid je iets\
+    \ vervelends mede te delen. Je pas is leeg, dus er komt geen bier uit de tap.\
+    \ Vervolgens slenter je naar de oplaadpaal om je pas met \u20AC20,00, die je hopelijk\
+    \ nog hebt van ome DUO, op te laden om het nog een keer te proberen. Je komt aan\
+    \ bij het buffet en besteld ditmaal een pitcher en een PK voor de leuke dame die\
+    \ even naast je kwam staan. Dit keer komt er w\xE9l bier uit de tap en uit het\
+    \ sterksysteem. Je bent stomverbaasd, het lijkt wel magie. Dit alles is gemaakt\
+    \ en onderhouden door een van de belangrijkste commissies die de dinsdagborrel\
+    \ draaiende houdt: De PasCie."
+  email: pascie@njord.nl
+"Petit Comit\xE9":
+  description: "Een paar lessen die wij tijdens de zomerweek hebben geleerd: \n- Niet\
+    \ je eigen drank meenemen naar een club\n- Bedenk altijd: action = consequence\
+    \ (helemaal als je 1000 liter schuim wilt gebruiken voor iets). \n- Verdam fixt\
+    \ het wel voor ons. \n- Slapen is niet noodzakelijk\n- Zorg ervoor dat iedereen\
+    \ de hele week kan\n- van schuim worden je borrel schoenen wel lekker schoon \n\
+    - Al het bier kan op binnen een paar dagen\n- Vliegende keep shift = chill shift\n\
+    - Portofoons zijn de grootste Njord act\n- Had geen leukere commissie kunnen wensen\
+    \ <3 "
+  email: petitcomite@njord.nl
+Promotiecommissie:
+  description: 'Nieuwe lichtingen kunnen het zich niet voorstellen, maar ooit had
+    elke commissie zijn eigen insta-account. De live-laugh-love spatte er vaak nog
+    net niet af. Gelukkig was daar de promotiecommissie om orde in de chaos te scheppen.
+    Ook dit jaar staan wij weer klaar om de influencers in jullie naar boven te halen.
+    Schroom bovendien niet om hulp te vragen bij het maken van een poster - wij soggen
+    immers het liefst door te knutselen met Canva of Illustrator. '
+  email: promotie@njord.nl
+Ringvaartcommissie:
+  email: ringvaart@njord.nl
+Rowing Blindcommissie:
+  description: "Beste deelnemer, \n\nMijn naam is Anouk. Ik stuur dit mailtje (inclusief\
+    \ weerbericht) om u te feliciteren met uw deelname aan het aankomende Rowing Blind\
+    \ traject op de K.S.R.V. Njord. Wat leuk dat u via het item op de Radio en het\
+    \ spotje op NOS.nl ge\xEBnthousiasmeerd bent geworden. Dat heeft Thijmen geweldig\
+    \ geregeld! Voor aankomende training heeft Annelies een 2k op de planning staan,\
+    \ zij weet precies waar u wanneer moet zijn. U roeit dit traject samen met een\
+    \ Njordlid als roeimaatje, die met alle zorgvuldigheid door Joost en Ariane aan\
+    \ u wordt gekoppeld. Hannah zal u de eerste training ontvangen met een kop thee\
+    \ of koffie en zal met liefde zorgen voor uw blindgeleidebuddy. Achteraf zal er\
+    \ uiteraard een biertje voor u klaar staan na alle inspanning.\n\nMet lichtblauwe\
+    \ groet,\nAnouk Bos\n\nHet weer voor april 2023: 15 graden en zonnig met een grote\
+    \ kans op de Varsity winst\n"
+  email: leiden@rowingblind.nl
+Skireiscommissie:
+  description: "Wij introduceren onze commissie aan u. \nAllereerst onze Praeses van\
+    \ Tets, de rots in de branding, die voor altijd trouw is aan zijn vergader-skimuts.\
+    \ Onthoud lieve leden, zonder hem was er geen skireis geweest. \n\nOnze Ab-Actis,\
+    \ Hannah de Doorstarter die de mores niet kent, en in wiens ogen het flonder het\
+    \ terras is. Ze maakt zich hard voor de mutsen van de Skico, en gaat zo ver dat\
+    \ ze nu ook streetcred heeft gekregen bij de lokale straatbewoners.\n\nOnze Questor\
+    \ Maya, onze grote out-of-the-box-thinker, maar weet daarom de vergadering altijd\
+    \ te rekken. Korter dan 2 uur, lukt ons dan ook niet. \n\nOnze Evenementen en\
+    \ zangeres Roxanne, ofnee Frederieke (hebben jullie het Njord skilied al gehoord?)\
+    \ gaat door het vuur voor de hoofdband, voor altijd dank voor deze bijdrage. \n\
+    \nOnze Assessor mega Tobiii (van der Burg), met zijn verborgen talent in Acquisitie\
+    \ en Promotie is nog steeds op zoek naar zijn Mindy (0655706401). \n\nOnze Assessor\
+    \ Thijs de Wolf, weet iemand waar hij is? Desalniettemin zegt hij wel maar weer\
+    \ zijn date af voor ons. "
+  email: ski@njord.nl
+Talentwervingscommissie:
+  description: "Talentwervingscommissie of Talentenwervingscommissie, een existenti\xEB\
+    le crisis in de categorie to be or not to be. To be a jeugdroeier or not to be\
+    \ a jeugdroeier, het is eigenlijk niet echt een vraag in dit gezelschap. Zij die\
+    \ het zijn runnen de commissie, zij die het niet zijn mogen typen of koken. Hier\
+    \ bij de TWC, eeuwig aartsrivaal van het NOC*NSF, zoeken wij het onbevlogen jeugdige\
+    \ talent dat zichzelf als hobby vol zuur over een finishlijn op de Bosbaan, of\
+    \ nog erger, de WAB sleept. Ken jij nou iemand die jong is, een beetje gek is\
+    \ en dus roeit (bij voorkeur hard) en (bij voorkeur) geen biefstuk eet, gooi even\
+    \ een balletje op en dan kunnen wij dit talent proberen te verleiden met ons immer\
+    \ schone pand, de uitstekende vloot en de speeltuin om de hoek! De jeugd heeft\
+    \ de toekomst; wij een pingpong tafel en boten waar iedereen in past. "
+Tapcommissie:
+  description: "De TapCo is \xE9\xE9n van de mooiste commissies die de K kent, waar\
+    \ alle aspecten terug zijn te vinden: Van sjaarzen tot ouderejaars, van compo\
+    \ tot wedstrijd en van disputen tot verbanden. De TapCo heeft het allemaal. Hiermee\
+    \ zijn wij ook de grootste commissie die de K kent. Los hiervan staat er in onze\
+    \ commissie \xE9\xE9n ding centraal. Op dinsdag van 17.26 tot in de late uurtjes\
+    \ staan we met het mooie goudgeel in onze hand. Maar er is \xE9\xE9n ding nog\
+    \ mooier dan dit, wij willen namelijk graag samen met u van de borrel genieten.\
+    \ Daarom staat de TapCo elke borrel voor u klaar om u van dit zelfde levenselixer\
+    \ te voorzien. De TapCo bevindt zich onder de leden en is een onmisbare kracht\
+    \ achter het Buffet. Vergeet dan ook niet om immer dorstige tappers een drankje\
+    \ aan te bieden als u zich aan het Buffet bevindt! "
+  email: buco@njord.nl
+Tentroeicommissie:
+  description: 'De Tentroei Commissie zet zich elk jaar in om de band tussen Minerva
+    en Njord te versterken en behouden. Legendarische borrels op beide verenigingen
+    voor leden van beide verenigingen, jaarlijkse Dubbelleeden-diners, het promoten
+    van de Varsity en binnenkort een Dubbelleedengezelschap vallen hier allemaal onder. '
+  email: tentroei@njord.nl
+Topcommissie:
+  description: Binnen en buiten de boot, het Topsport Ondersteunend Programma zal
+    alle leden van Njord ondersteunen om te kunnen floreren. Samen met professionele
+    experts maken wij ons hard op het gebied van fysieke en mentale gezondheid, krachttraining
+    en voeding. Het aanspreekpunt voor alle vragen over hoe jij het komende jaar het
+    beste kan floreren!
+  email: top@njord.nl
+Voorjaarsafroeicommissie:
+  description: 'De VAC, van april tot en met juni brachten wij weer leven in de zaal.
+    Na een gure, lange en eenzame winter met lockdowns en treurnis, begon het leven
+    op de K weer te bloeien. Maar liefst 90 lenteleden betraden onze vereniging en
+    begonnen onbezonnen aan hun lenteperiode. Door te trainen in de C4+, te borrelen
+    aan het buffet en te strijden op de lenteladder kregen zij een inkijkje in al
+    het moois dat Njord te bieden heeft. Als commissie hebben wij van kop tot staart
+    genoten van deze periode. Een van de hoogtepunten waar wij op terug mogen kijken
+    was de SkaNjoLaTri. Het evenement op Skadi waarin de mannen van Njord het buitenland
+    te snel af wisten te zijn, waar de bankjes uit de VAC-boot vlogen en waar de overwinning
+    ongelofelijk mooi gevierd werd op het aansluitende feest, waar ook het Njordlied
+    mocht galmen. Maar ook het lentevent, waar menig driedeeldragend lid het Galgewater
+    van dichtbij mocht inspecteren, was onvergetelijk. Als VAC zijn we trots en vereerd
+    dat wij het lenteroeien dit jaar weer mochten organiseren. '
+  email: vac@njord.nl
+Zwanehalscommissie:
+  description: Waar kan een Njordlid terecht voor zowel diepgravende onderzoeksjournalistiek
+    als ontroerend mooie proza en simpele achterklap? Juist ja, bij ons prachtige
+    verenigingstijdschrift de 'Zwanehals'. Drie maal per jaar van A tot Z verzorgd
+    door de Zwanehalscommissie, speciaal voor u, de Leden.
+  email: zwanehals@njord.nl
+"Zwanencomit\xE9":
+  email: zwanencomite@gmail.com
