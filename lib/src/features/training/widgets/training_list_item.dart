@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/confire_delete_reservation.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingListItem extends StatelessWidget {
-  final QueryDocumentSnapshot<Object?> reservation;
+  final QueryDocumentSnapshot<Reservation> reservation;
 
   const TrainingListItem({
     Key? key,
@@ -21,6 +22,7 @@ class TrainingListItem extends StatelessWidget {
     final DateFormat dateFormat = DateFormat('E d MMM HH:mm', 'nl_NL');
     final CollectionReference reservationObjectsRef =
         db.collection('reservationObjects');
+
     String trainingTimeFromTimestamps(reservation) {
       final DateTime startTime = reservation['startTime'].toDate();
       final DateTime endTime = reservation['endTime'].toDate();
