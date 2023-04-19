@@ -22,6 +22,7 @@ class MorePage extends ConsumerWidget {
       if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
         "Notificatie-instellingen": "notifications",
       'Geavanceerde instellingen': 'advanced-settings',
+      'Gallerij': 'gallery',
     };
 
     return Scaffold(
