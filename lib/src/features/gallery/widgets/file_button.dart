@@ -19,8 +19,10 @@ class FileButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = getThumbnailReference(item).getDownloadURL();
+    final navigator = Navigator.of(context);
 
     return InkWell(
+      onTap: () => navigator.pushNamed("_file/${item.fullPath}"),
       splashColor: Colors.blue,
       child: FutureBuilder(
         future: image,

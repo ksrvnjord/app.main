@@ -18,10 +18,10 @@ class FolderButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigator = Routemaster.of(context);
+    final navigator = Navigator.of(context);
 
     return InkWell(
-      onTap: () => navigator.push(item.name),
+      onTap: () => navigator.pushNamed(item.fullPath),
       child: [
         const Icon(Icons.folder, size: iconSize),
         Text(
