@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/author_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class CommentCard extends StatelessWidget {
   final Comment comment;
@@ -29,6 +30,11 @@ class CommentCard extends StatelessWidget {
           maxLines: contentMaxLines,
           linkColor: Colors.blueGrey,
           linkEllipsis: false,
+          onUrlTap: (url) => launchUrlString(url),
+          urlStyle: // show links as blue underlined
+              const TextStyle(
+            color: Colors.blue,
+          ),
           style: const TextStyle(
             fontSize: 16,
           ),
