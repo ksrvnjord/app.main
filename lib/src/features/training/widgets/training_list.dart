@@ -1,12 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -39,7 +35,7 @@ class TrainingList extends ConsumerWidget {
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(height: 4),
                   itemBuilder: (BuildContext context, int index) => Center(
-                    child: TrainingListItem(reservation: data.docs[index]),
+                    child: TrainingListItem(snapshot: data.docs[index]),
                   ),
                 ),
         );
