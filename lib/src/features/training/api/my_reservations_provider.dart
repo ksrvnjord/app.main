@@ -19,15 +19,25 @@ final myReservationsProvider =
         toFirestore: (reservation, _) => reservation.toJson(),
       );
 
+  final startOfToday = DateTime.now().subtract(
+    Duration(
+      hours: DateTime.now().hour,
+      minutes: DateTime.now().minute,
+      seconds: DateTime.now().second,
+      milliseconds: DateTime.now().millisecond,
+      microseconds: DateTime.now().microsecond,
+    ),
+  );
+
   return reservationsRef
       .where(
         'creatorId',
         isEqualTo: uid,
       )
       .where(
+        // show reservations booked for today and later
         'startTime',
-        isGreaterThanOrEqualTo:
-            DateTime.now().subtract(const Duration(days: 1)),
+        isGreaterThanOrEqualTo: startOfToday,
       )
       .orderBy('startTime', descending: false)
       .snapshots();
