@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingList extends ConsumerWidget {
@@ -35,7 +35,7 @@ class TrainingList extends ConsumerWidget {
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(height: 4),
                   itemBuilder: (BuildContext context, int index) => Center(
-                    child: TrainingListItem(snapshot: data.docs[index]),
+                    child: ReservationListTile(snapshot: data.docs[index]),
                   ),
                 ),
         );
