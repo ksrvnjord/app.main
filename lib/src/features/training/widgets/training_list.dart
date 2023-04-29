@@ -1,29 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class TrainingList extends StatefulWidget {
-  const TrainingList({super.key});
+class TrainingList extends ConsumerWidget {
+  const TrainingList({Key? key}) : super(key: key);
 
   @override
-  State<TrainingList> createState() => TrainingListState();
-}
-
-class TrainingListState extends State<TrainingList> {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
-  @override
-  Widget build(BuildContext context) {
-    final CollectionReference<Reservation> reservationsRef =
-        db.collection('reservations').withConverter<Reservation>(
-              fromFirestore: (snapshot, _) =>
-                  Reservation.fromJson(snapshot.data()!),
-              toFirestore: (reservation, _) => reservation.toJson(),
-            );
+  Widget build(BuildContext context, WidgetRef ref) {
     if (FirebaseAuth.instance.currentUser == null) {
       // this should show to the user that there are no reservations
       return const Center(
@@ -32,18 +21,7 @@ class TrainingListState extends State<TrainingList> {
     }
 
     return StreamWrapper(
-      stream: reservationsRef
-          .where(
-            'creatorId',
-            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
-          )
-          .where(
-            'startTime',
-            isGreaterThanOrEqualTo:
-                DateTime.now().subtract(const Duration(days: 1)),
-          )
-          .orderBy('startTime', descending: false)
-          .snapshots(),
+      stream: ref.watch(myReservationsProvider.stream),
       success: showMyReservations,
     );
   }
