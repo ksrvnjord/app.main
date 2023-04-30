@@ -30,59 +30,62 @@ class VaarverbodWidget extends ConsumerWidget {
     const double cardElementHPadding = 4;
 
     IconData icon;
+    String message;
+    bool status;
+    String tooltipMessage = vaarverbod?.message ?? 'Laden...';
     if (vaarverbod == null) {
       icon = FontAwesomeIcons.circleExclamation;
-    } else if (vaarverbod.status) {
-      icon = FontAwesomeIcons.ban;
-    } else {
-      icon = FontAwesomeIcons.shieldHalved;
-    }
-
-    String message;
-    if (vaarverbod == null) {
       message = 'Niet gelukt om te laden';
-    } else {
-      message = vaarverbod.message;
-    }
-
-    bool status;
-    if (vaarverbod == null) {
       status = true;
     } else {
+      message =
+          vaarverbod.status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod';
       status = vaarverbod.status;
+      if (vaarverbod.status) {
+        icon = FontAwesomeIcons.ban;
+      } else {
+        icon = FontAwesomeIcons.shieldHalved;
+      }
     }
 
-    return SizedBox(
-      width: boxWidth,
-      height: boxHeight,
-      child: [
-        // should shield check icon
-        FaIcon(
-          icon,
-          color: Colors.white,
-        ),
-        Text(
-          message,
-        )
-            .textColor(Colors.white)
-            .fontSize(textSize)
-            .textAlignment(TextAlign.end)
-            .fontWeight(FontWeight.bold)
-            .padding(horizontal: cardElementHPadding)
-            .expanded(),
-      ]
-          .toRow(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            separator: const SizedBox(width: cardElementHPadding),
+    return Tooltip(
+      // show tooltip on tap of the card
+      enableFeedback: true,
+      triggerMode: TooltipTriggerMode.tap,
+      showDuration: const Duration(milliseconds: 2 * 1726),
+      message: tooltipMessage,
+      child: SizedBox(
+        width: boxWidth,
+        height: boxHeight,
+        child: [
+          // should shield check icon
+          FaIcon(
+            icon,
+            color: Colors.white,
+          ),
+          Text(
+            message,
           )
-          .padding(horizontal: cardInnerPadding),
-    ).card(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+              .textColor(Colors.white)
+              .fontSize(textSize)
+              .textAlignment(TextAlign.end)
+              .fontWeight(FontWeight.bold)
+              .padding(horizontal: cardElementHPadding)
+              .expanded(),
+        ]
+            .toRow(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              separator: const SizedBox(width: cardElementHPadding),
+            )
+            .padding(horizontal: cardInnerPadding),
+      ).card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        elevation: 0,
+        color: status ? Colors.red[300] : Colors.green[300],
       ),
-      elevation: 0,
-      color: status ? Colors.red[300] : Colors.green[300],
     );
   }
 }
