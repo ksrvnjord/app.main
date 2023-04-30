@@ -1,27 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/models/announcements.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_list_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
+import 'package:routemaster/routemaster.dart';
+import 'package:styled_widget/styled_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class AnnouncementsWidget extends ConsumerWidget {
   const AnnouncementsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.watch(graphQLModelProvider).client;
+    final announcementsVal = ref.watch(announcementsProvider);
+    const double minLeadingWidth = 8;
+    const double announcementSubtitleFontSize = 12;
+    const double shimmerContainerHeight = 320;
 
-    return FutureWrapper<Query$Announcements?>(
-      future: announcements(client),
-      success: showAnnouncementsList,
-    );
-  }
-
-  Widget showAnnouncementsList(data) {
-    return AnnouncementListWidget(
-      announcements: data!.announcements!.data,
-    );
+    return [
+      const WidgetHeader(title: "Recente aankondigingen"),
+      announcementsVal.when(
+        data: (announcements) => announcements
+            .map(
+              (announcement) => ListTile(
+                title: Text(announcement.title),
+                subtitle: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "${announcement.author} ",
+                      )
+                          .textColor(Colors.black54)
+                          .fontSize(announcementSubtitleFontSize)
+                          .fontWeight(FontWeight.bold),
+                      TextSpan(
+                        text: timeago.format(
+                          announcement.created_at,
+                          locale: 'nl',
+                        ),
+                      )
+                          .textColor(Colors.grey)
+                          .fontSize(announcementSubtitleFontSize),
+                    ],
+                  ),
+                ),
+                shape: // circular border
+                    const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                trailing: [
+                  const Icon(
+                    Icons.chevron_right,
+                    color: Colors.blueGrey,
+                  ),
+                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                minLeadingWidth: minLeadingWidth,
+                onTap: () => Routemaster.of(context)
+                    .push('announcements/${announcement.id}'),
+              ),
+            )
+            .toList()
+            .toColumn(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              separator: const Divider(
+                height: 1,
+              ),
+            ),
+        error: (error, stackTrace) =>
+            ErrorCardWidget(errorMessage: error.toString()),
+        loading: () => ShimmerWidget(
+          child: Container(
+            height: shimmerContainerHeight,
+            decoration: // circle border
+                const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
+      ),
+    ].toColumn();
   }
 }
