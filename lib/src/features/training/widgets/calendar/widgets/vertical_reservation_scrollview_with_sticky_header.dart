@@ -55,7 +55,7 @@ class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
         ),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => ErrorCardWidget(errorMessage: error.toString()),
+      error: (error, stack) => Text(error.toString()).card(),
     );
   }
 }
