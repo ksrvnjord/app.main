@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -14,24 +16,45 @@ class AnnouncementsWidget extends ConsumerWidget {
     final announcementsVal = ref.watch(announcementsProvider);
     const double minLeadingWidth = 8;
     const double announcementSubtitleFontSize = 12;
+    const double shimmerContainerHeight = 320;
 
-    return announcementsVal.when(
-      data: (announcements) => [
-        const WidgetHeader(title: "Recente aankondigingen"),
-        announcements
-            .map<Widget>(
+    return [
+      const WidgetHeader(title: "Recente aankondigingen"),
+      announcementsVal.when(
+        data: (announcements) => announcements
+            .map(
               (announcement) => ListTile(
                 title: Text(announcement.title),
-                subtitle: Text(
-                  "${announcement.author} - ${timeago.format(announcement.created_at, locale: 'nl')}",
-                ).fontSize(announcementSubtitleFontSize),
+                subtitle: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "${announcement.author} ",
+                      )
+                          .textColor(Colors.black54)
+                          .fontSize(announcementSubtitleFontSize)
+                          .fontWeight(FontWeight.bold),
+                      TextSpan(
+                        text: timeago.format(
+                          announcement.created_at,
+                          locale: 'nl',
+                        ),
+                      )
+                          .textColor(Colors.grey)
+                          .fontSize(announcementSubtitleFontSize),
+                    ],
+                  ),
+                ),
                 shape: // circular border
                     const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                // tileColor: Colors.white,
-                trailing: [const Icon(Icons.chevron_right)]
-                    .toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                trailing: [
+                  const Icon(
+                    Icons.chevron_right,
+                    color: Colors.blueGrey,
+                  ),
+                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
                 minLeadingWidth: minLeadingWidth,
                 onTap: () => Routemaster.of(context)
                     .push('announcements/${announcement.id}'),
@@ -44,9 +67,19 @@ class AnnouncementsWidget extends ConsumerWidget {
                 height: 1,
               ),
             ),
-      ].toColumn(),
-      error: (error, stackTrace) => Text(error.toString()),
-      loading: () => const CircularProgressIndicator(),
-    );
+        error: (error, stackTrace) =>
+            ErrorCardWidget(errorMessage: error.toString()),
+        loading: () => ShimmerWidget(
+          child: Container(
+            height: shimmerContainerHeight,
+            decoration: // circle border
+                const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+        ),
+      ),
+    ].toColumn();
   }
 }
