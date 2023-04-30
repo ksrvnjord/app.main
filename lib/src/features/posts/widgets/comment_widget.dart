@@ -2,15 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/comments_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/amount_of_likes_for_comment_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_card.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class CommentWidget extends StatelessWidget {
+class CommentWidget extends ConsumerWidget {
   final QueryDocumentSnapshot<Comment> snapshot;
 
   const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
@@ -35,8 +37,9 @@ class CommentWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final comment = snapshot.data();
+    final postAuthor = ref.watch(firestoreUserProvider(comment.authorId));
 
     const double cardPadding = 8;
     const double profilePictureSize = 20;
@@ -80,7 +83,7 @@ class CommentWidget extends StatelessWidget {
               ],
               child: SingleChildScrollView(
                 // we need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435
-                child: CommentCard(comment: comment),
+                child: CommentCard(comment: comment, postAuthor: postAuthor),
               ),
             ),
             // create positioned red circle

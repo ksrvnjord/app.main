@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
@@ -22,6 +21,8 @@ class PostHeaderBar extends ConsumerWidget {
     const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
+    final postAuthor = ref.watch(firestoreUserProvider(post.authorId));
+
     final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
     void deletePost() {
@@ -36,7 +37,7 @@ class PostHeaderBar extends ConsumerWidget {
           size: profilePictureIconSize,
         ),
         [
-          AuthorWidget(authorName: post.authorName, authorId: post.authorId),
+          AuthorWidget(authorName: post.authorName, postAuthor: postAuthor),
           Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
               .textColor(Colors.blueGrey)
               .fontSize(postTimeFontSize),
@@ -48,8 +49,8 @@ class PostHeaderBar extends ConsumerWidget {
       ].toRow(),
       // three dots for more options, show if user is author
 
-      if (post.authorId == FirebaseAuth.instance.currentUser!.uid ||
-          (firebaseUser != null && firebaseUser.isBestuur))
+      if (firebaseUser != null &&
+          (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
           onTap: () => showDialog(
             context: context,

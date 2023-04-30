@@ -2,13 +2,16 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/author_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CommentCard extends StatelessWidget {
   final Comment comment;
+  final FirebaseUser? postAuthor;
 
-  const CommentCard({Key? key, required this.comment}) : super(key: key);
+  const CommentCard({Key? key, required this.postAuthor, required this.comment})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class CommentCard extends StatelessWidget {
     return [
       AuthorWidget(
         authorName: comment.authorName,
-        authorId: comment.authorId,
+        postAuthor: postAuthor,
         fontSize: authorNameFontSize,
       ),
       LimitedBox(
