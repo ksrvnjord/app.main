@@ -29,8 +29,8 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     startYear: DateTime.now().year - 1,
     endYear: DateTime.now().year,
     lidnummer: FirebaseAuth.instance.currentUser!.uid,
-    firstName: GetIt.I<CurrentUser>().user!.fullContact.private!.first_name!,
-    lastName: GetIt.I<CurrentUser>().user!.fullContact.private!.last_name!,
+    firstName: GetIt.I<CurrentUser>().user!.fullContact.public.first_name!,
+    lastName: GetIt.I<CurrentUser>().user!.fullContact.public.last_name!,
   );
 
   @override
