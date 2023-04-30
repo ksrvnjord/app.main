@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/api/reservation_objects.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/reservation_object_name_box.dart';
@@ -55,7 +54,7 @@ class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
         ),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => ErrorCardWidget(errorMessage: error.toString()),
+      error: (error, stack) => Text(error.toString()).card(),
     );
   }
 }

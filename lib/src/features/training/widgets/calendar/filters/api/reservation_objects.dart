@@ -21,5 +21,6 @@ final availableReservationObjectsProvider =
   return await reservationObjectsRef
       .where('type', whereIn: filters)
       .where('available', isEqualTo: true)
+      .orderBy('name')
       .get();
 });
