@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementBodyWidget extends StatelessWidget {
   const AnnouncementBodyWidget({
@@ -35,11 +35,16 @@ class AnnouncementBodyWidget extends StatelessWidget {
     );
   }
 
-  void launchUrlIfPossible(_, url, __) {
+  void launchUrlIfPossible(_, String? url, __) {
+    if (url == null) {
+      return;
+    }
     // Check if an URL is actually given
-    if (url?.isNotEmpty ?? false) {
-      // Launch the URL
-      launchUrlString(url!);
+    if (url.isNotEmpty) {
+      // convert url to URI
+      final uri = Uri.parse(url);
+      // launch url in separate browser
+      launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 }
