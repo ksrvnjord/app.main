@@ -14,11 +14,8 @@ final postsProvider = StreamProvider.autoDispose
     .family<QuerySnapshot<Post>, String>((ref, topic) {
   return postsCollection
       .where('topic', isEqualTo: topic)
-      .where(
-        'createdTime',
-        isGreaterThan: DateTime.now().subtract(const Duration(days: 14)),
-      )
       .orderBy('createdTime', descending: true)
+      .limit(50) // TODO: use pagination for posts
       .snapshots();
 });
 
