@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/fade_bottom_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'upcoming_event_widget.dart';
@@ -46,11 +47,21 @@ class ComingWeekEventsWidget extends ConsumerWidget {
                   },
                 ),
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => ShimmerWidget(
+                child: Container(
+                  height: cardHeight,
+                  // circular border radius
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300]!,
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  ),
+                ),
+              ),
               error: (error, stackTrace) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
           ).card(
+            elevation: 0,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
