@@ -33,7 +33,8 @@ dependencies:
   lucide_icons: ^0.216.0
   sticky_headers: ^0.3.0+2
   syncfusion_flutter_sliders: ^21.2.4
-  firebase_auth: any
+  firebase_auth: ^4.3.0
+  firebase_auth_web: any
   permission_handler: ^10.2.0
   time_range_picker: ^2.2.0
   firebase_core: ^2.3.0
@@ -41,6 +42,8 @@ dependencies:
   firebase_messaging: ^14.2.1
   flutter_local_notifications: ^14.0.0+1
   file_picker: ^5.2.4
+  flutter_localizations:
+    sdk: flutter
   image_picker_widget: '>=2.0.0 <3.0.0'
   firebase_storage: ^11.0.9
   cached_network_image: ^3.2.3
