@@ -242,10 +242,10 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         ),
         GestureDetector(
           onTap: () => ref.read(authModelProvider).logout(),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.logout,
                 color: Colors.red,

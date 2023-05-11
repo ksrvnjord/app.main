@@ -34,12 +34,13 @@ jobs:
         run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
 
       - name: dart-code-metrics
-        uses: dart-code-checker/dart-code-metrics-action@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          fatal_warnings: true
-          fatal_performance: true
-          fatal_style: false # We can turn this fatal when we have fixed most issues
+        # uses: dart-code-checker/dart-code-metrics-action@v3 # commented because this action isn't updated to latest flutter with intl 0.18.0
+        # with:
+        #   github_token: ${{ secrets.GITHUB_TOKEN }}
+        #   fatal_warnings: true
+        #   fatal_performance: true
+        #   fatal_style: false # We can turn this fatal when we have fixed most issues
+        run: flutter pub run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
 
 
 
