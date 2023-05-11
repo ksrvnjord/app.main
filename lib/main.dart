@@ -1,11 +1,12 @@
+import 'firebase_options.dart';
 import 'package:feedback_sentry/feedback_sentry.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -20,8 +21,6 @@ import 'package:routemaster/routemaster.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'firebase_options.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 @pragma('vm:entry-point')
@@ -32,7 +31,7 @@ Future<void> appRunner() async {
   WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
   await Firebase.initializeApp(
-    name: 'ksrv-njord',
+    // name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(

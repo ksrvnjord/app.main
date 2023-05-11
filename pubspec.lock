@@ -474,7 +474,7 @@ packages:
     source: hosted
     version: "6.14.0"
   firebase_auth_web:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firebase_auth_web
       sha256: de446cda07814ce690688830748fd9857fc4027e8434f8a8af11c8d4619c2197
