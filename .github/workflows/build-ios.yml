@@ -3,6 +3,11 @@ name: Build iOS Application
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  flutter_version: "3.7.7"
 
 jobs:
   build_ios:
@@ -12,8 +17,20 @@ jobs:
       BUILD_CONFIGURATION: Release
 
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+    
 
       - name: Restore packages
         run: flutter pub get
