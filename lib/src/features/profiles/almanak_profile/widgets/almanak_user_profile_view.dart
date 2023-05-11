@@ -100,7 +100,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           // mail icon
                           Text("Mail"),
                           Icon(
@@ -147,7 +147,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           // phone icon
                           Text("Telefoon"),
                           Icon(

@@ -245,7 +245,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.logout,
                 color: Colors.red,
