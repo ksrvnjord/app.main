@@ -113,6 +113,19 @@ jobs:
       - name: Analyze code
         run: flutter analyze --fatal-warnings --fatal-infos .
 
+  dart-format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
+    steps:
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      
+      - name: Install Stable Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "stable"
+        
+      - name: Format files
+        run: dart format --set-exit-if-changed .
 
 
