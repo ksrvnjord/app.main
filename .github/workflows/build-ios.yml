@@ -1,17 +1,17 @@
 name: Build iOS Application
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [ "main" ]
+  pull_request_review:
+    types: [submitted] # on approval build iOS to be sure that it works
 
 env:
   flutter_version: "3.7.7"
 
 jobs:
   build_ios:
+    if: github.event.review.state == 'approved'
     runs-on: macos-latest
+    timeout-minutes: 20 # build should not take more than 20 minutes
     env:
       SHEME: Runner
       BUILD_CONFIGURATION: Release
@@ -22,7 +22,7 @@ jobs:
       - name: Cache Flutter dependencies
         uses: actions/cache@v3.3.1
         with:
-          path: /opt/hostedtoolcache/flutter
+          path: /Users/runner/hostedtoolcache/flutter # NOTE: This path differs from Linux
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
