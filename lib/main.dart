@@ -1,7 +1,6 @@
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -123,11 +122,6 @@ class Application extends ConsumerWidget {
             TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
           }),
         ),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
         supportedLocales: const [
           Locale('nl', 'NL'),
         ],
