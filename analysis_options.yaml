@@ -31,6 +31,7 @@ linter:
 analyzer:
   exclude:
     - lib/**.graphql.dart # exclude generated files
+    - lib/firebase_options.dart # exclude generated files
   plugins:
     - dart_code_metrics
 

@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:755032766973:ios:c70e32ff733792ca4e0194</string>
+	<key>DATABASE_URL</key>
+	<string>https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
