@@ -1,7 +1,5 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+# This run all static analysis tools and checks for unused files and unnecessary nullable parameters
+# Caches Flutter dependencies to speed up the process
 
 name: Dart Code Metrics
 
@@ -15,7 +13,7 @@ env:
   flutter_version: "3.7.7"
 
 jobs:
-  check-files-and-nullable-params:
+  check-unused-files:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -23,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3.3.1
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -39,6 +37,28 @@ jobs:
 
       - name: Check unused files
         run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
+
+  check-nullable-params:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
       
       - name: Check unnecessary nullable parameters
         run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
@@ -51,7 +71,7 @@ jobs:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3.3.1
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
