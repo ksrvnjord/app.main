@@ -2,10 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_page.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/pages/register_web_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -287,15 +284,6 @@ final authenticationRoutes = RouteMap(
         ),
     '/forgot': (info) => const CupertinoPage(
           child: ForgotPasswordPage(),
-        ),
-    '/forgot/webview': (info) => const CupertinoPage(
-          child: ForgotPasswordWebPage(),
-        ),
-    '/register': (_) => const CupertinoPage(
-          child: RegisterPage(),
-        ),
-    '/register/webview': (info) => const CupertinoPage(
-          child: RegisterWebPage(),
         ),
   },
 );

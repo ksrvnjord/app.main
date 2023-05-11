@@ -73,8 +73,8 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
         builderDelegate: PagedChildBuilderDelegate<Query$Almanak$users$data>(
           itemBuilder: (context, item, index) => AlmanakUserButtonWidget(item),
           firstPageErrorIndicatorBuilder: (context) => const LoadingWidget(),
-          noItemsFoundIndicatorBuilder: (context) => const Column(
-            children: [
+          noItemsFoundIndicatorBuilder: (context) => Column(
+            children: const [
               Text('Geen Leeden gevonden met deze zoekterm.'),
             ],
           ),

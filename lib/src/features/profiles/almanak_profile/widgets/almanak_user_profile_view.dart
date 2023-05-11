@@ -96,11 +96,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ),
                     ),
                     onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           // mail icon
                           Text("Mail"),
                           Icon(
@@ -143,11 +143,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                             )),
                       ],
                     ),
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           // phone icon
                           Text("Telefoon"),
                           Icon(
