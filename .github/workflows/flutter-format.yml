@@ -23,6 +23,9 @@ jobs:
       - name: Flutter action
         # You may pin to the exact commit or the version.
         uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: '3.7.7'
+          channel: 'stable'
 
       - name: Install Stable Dart
         uses: dart-lang/setup-dart@v1
