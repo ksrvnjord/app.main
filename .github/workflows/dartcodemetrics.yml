@@ -11,20 +11,28 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  flutter_version: "3.7.7"
+
 jobs:
   check:
     name: dart-code-metrics-action
-
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        # You may pin to the exact commit or the version.
         uses: subosito/flutter-action@v2.8.0
         with:
-          flutter-version: '3.7.7'
+          flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
 
       - name: Install dependencies
