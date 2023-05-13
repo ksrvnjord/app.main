@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:routemaster/routemaster.dart';
@@ -39,13 +40,9 @@ class _EditAlmanakProfilePageState
 
   @override
   Widget build(BuildContext context) {
-    const double fieldVPadding = 8;
-
     const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
-    const double headerFontSize = 20;
     const double groupSpacing = 32;
-    const double fieldHPadding = 8;
 
     final userVal = ref.watch(firestoreUserFutureProvider(getCurrentUserId()));
 
@@ -70,22 +67,21 @@ class _EditAlmanakProfilePageState
             Form(
               key: _formKey,
               child: <Widget>[
-                // create a field to enter Field of Study
-                Center(
-                  child: [
-                    const EditProfilePictureWidget(),
-                    const Text(
-                      'Het kan even duren voordat iedereen je nieuwe foto ziet',
-                    )
-                        .textColor(Colors.grey)
-                        .textAlignment(TextAlign.center)
-                        .fontSize(imageHelpTextSize)
-                        .padding(top: imageHelpTextTopPadding),
-                  ].toColumn(),
-                ),
-                const SizedBox(height: groupSpacing),
-                const Text("Over mij").fontSize(headerFontSize),
                 [
+                  const EditProfilePictureWidget(),
+                  const Text(
+                    'Het kan even duren voordat iedereen je nieuwe foto ziet',
+                  )
+                      .textColor(Colors.grey)
+                      .textAlignment(TextAlign.center)
+                      .fontSize(imageHelpTextSize),
+                ]
+                    .toColumn(
+                      separator:
+                          const SizedBox(height: imageHelpTextTopPadding),
+                    )
+                    .center(),
+                FormSection(title: "Over mij", children: [
                   TextFormField(
                     initialValue: user.study,
                     onSaved: (study) => ref
@@ -118,104 +114,99 @@ class _EditAlmanakProfilePageState
                             .toList(),
                     onChanged: (_) => {},
                   ),
-                ]
-                    .toColumn(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      separator: const SizedBox(height: fieldVPadding),
-                    )
-                    .padding(horizontal: fieldHPadding),
-                const SizedBox(height: groupSpacing),
-                const Text("Mijn groepen").fontSize(headerFontSize),
-                // Add a TextFormField for the team the user is in
-                [
-                  TextFormField(
-                    initialValue: user.ploeg,
-                    onSaved: (ploeg) => ref
-                        .read(profileEditFormNotifierProvider.notifier)
-                        .setPloeg(ploeg),
-                    decoration: const InputDecoration(
-                      labelText: 'Ploeg',
-                    ),
-                  ),
-                  DropdownButtonFormField<String?>(
-                    value: user.huis,
-                    onSaved: (huis) => ref
-                        .read(profileEditFormNotifierProvider.notifier)
-                        .setHuis(huis),
-                    hint: const Text('Geen'),
-                    decoration: const InputDecoration(
-                      labelText: 'Njord-huis',
-                    ),
-                    items: ['Geen', ...houseNames]
-                        .map(
-                          (house) => DropdownMenuItem<String>(
-                            value: house,
-                            child: Text(house),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (_) => {},
-                  ),
-                  ListTile(
-                    title: const Text('Wijzig commissies'),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.lightBlue,
-                    ),
-                    onTap: () => Routemaster.of(context).push('commissies'),
-                  ),
-                  MultiSelectDialogField<String>(
-                    title: const Text('Substructuren'),
-                    // ignore: no-equal-arguments
-                    buttonText: const Text('Substructuren'),
-                    initialValue: user.substructuren ?? [],
-                    onSaved: (substructures) => ref
-                        .read(profileEditFormNotifierProvider.notifier)
-                        .setSubstructuren(substructures),
-                    items: substructures
-                        .map(
-                          (structure) => MultiSelectItem<String>(
-                            structure,
-                            // ignore: no-equal-arguments
-                            structure,
-                          ),
-                        )
-                        .toList(),
-                    onConfirm: (_) => {},
-                  ),
-                  DropdownButtonFormField<bool?>(
-                    value: user.dubbellid,
-                    onSaved: (dubbellib) => ref
-                        .read(profileEditFormNotifierProvider.notifier)
-                        .setDubbellid(dubbellib),
-                    hint: const Text('Ben je dubbellid?'),
-                    decoration: const InputDecoration(
-                      labelText: 'Dubbellid',
-                    ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: true,
-                        child: Text('Ja, bij L.S.V. Minerva'),
+                ]),
+                FormSection(
+                  title: "Mijn groepen",
+                  children: [
+                    TextFormField(
+                      initialValue: user.ploeg,
+                      onSaved: (ploeg) => ref
+                          .read(profileEditFormNotifierProvider.notifier)
+                          .setPloeg(ploeg),
+                      decoration: const InputDecoration(
+                        labelText: 'Ploeg',
                       ),
-                      DropdownMenuItem(value: false, child: Text('Nee')),
-                    ],
-                    onChanged: (_) => {},
-                  ),
-                  TextFormField(
-                    initialValue: user.otherAssociation,
-                    onSaved: (value) => ref
-                        .read(profileEditFormNotifierProvider.notifier)
-                        .setOtherAssociation(value),
-                    decoration: const InputDecoration(
-                      labelText: 'Zit je bij een andere vereniging?',
-                      hintText: 'L.V.V.S. Augustinus, etc.',
                     ),
-                  ),
-                ]
-                    .toColumn(separator: const SizedBox(height: fieldVPadding))
-                    .padding(horizontal: fieldHPadding),
+                    DropdownButtonFormField<String?>(
+                      value: user.huis,
+                      onSaved: (huis) => ref
+                          .read(profileEditFormNotifierProvider.notifier)
+                          .setHuis(huis),
+                      hint: const Text('Geen'),
+                      decoration: const InputDecoration(
+                        labelText: 'Njord-huis',
+                      ),
+                      items: ['Geen', ...houseNames]
+                          .map(
+                            (house) => DropdownMenuItem<String>(
+                              value: house,
+                              child: Text(house),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (_) => {},
+                    ),
+                    ListTile(
+                      title: const Text('Wijzig commissies'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.lightBlue,
+                      ),
+                      onTap: () => Routemaster.of(context).push('commissies'),
+                    ),
+                    MultiSelectDialogField<String>(
+                      title: const Text('Substructuren'),
+                      // ignore: no-equal-arguments
+                      buttonText: const Text('Substructuren'),
+                      initialValue: user.substructuren ?? [],
+                      onSaved: (substructures) => ref
+                          .read(profileEditFormNotifierProvider.notifier)
+                          .setSubstructuren(substructures),
+                      items: substructures
+                          .map(
+                            (structure) => MultiSelectItem<String>(
+                              structure,
+                              // ignore: no-equal-arguments
+                              structure,
+                            ),
+                          )
+                          .toList(),
+                      onConfirm: (_) => {},
+                    ),
+                    DropdownButtonFormField<bool?>(
+                      value: user.dubbellid,
+                      onSaved: (dubbellib) => ref
+                          .read(profileEditFormNotifierProvider.notifier)
+                          .setDubbellid(dubbellib),
+                      hint: const Text('Ben je dubbellid?'),
+                      decoration: const InputDecoration(
+                        labelText: 'Dubbellid',
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: true,
+                          child: Text('Ja, bij L.S.V. Minerva'),
+                        ),
+                        DropdownMenuItem(value: false, child: Text('Nee')),
+                      ],
+                      onChanged: (_) => {},
+                    ),
+                    TextFormField(
+                      initialValue: user.otherAssociation,
+                      onSaved: (value) => ref
+                          .read(profileEditFormNotifierProvider.notifier)
+                          .setOtherAssociation(value),
+                      decoration: const InputDecoration(
+                        labelText: 'Zit je bij een andere vereniging?',
+                        hintText: 'L.V.V.S. Augustinus, etc.',
+                      ),
+                    ),
+                  ],
+                ),
+                // Add a TextFormField for the team the user is in
               ].toColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                separator: const SizedBox(height: groupSpacing),
               ),
             ),
           ],
