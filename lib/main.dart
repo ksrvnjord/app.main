@@ -67,7 +67,7 @@ Future<void> main() async {
     HiveCache.cachePath,
   ); // store the cache in a separate folder
   Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
-  Hive.openLazyBox<ImageCacheItem>('imageCache');
+  await Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
