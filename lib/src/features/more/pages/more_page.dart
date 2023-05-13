@@ -40,7 +40,9 @@ class MorePage extends ConsumerWidget {
                 label: entry.key,
                 routePath: entry.value,
               ),
-              const Divider(),
+              const Divider(
+                height: 0,
+              ),
             ].toColumn(),
           ),
           ListTile(
@@ -55,24 +57,33 @@ class MorePage extends ConsumerWidget {
                   "Anoniem",
             ),
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
             label: "Webshop",
             url: "https://k-s-r-v-njord.myshopify.com/",
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
             label: 'Declareren',
             url:
                 'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
             label: 'Handige linkjes - Linktree',
             url: 'https://linktr.ee/ksrvnjord_intern',
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           ListTile(
+            visualDensity: VisualDensity.standard,
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
             onTap: () => ref.read(authModelProvider).logout(),

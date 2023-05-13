@@ -14,6 +14,7 @@ class MoreLinkTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      visualDensity: VisualDensity.standard,
       title: Text(label),
       trailing: // icon that shows external link
           const Icon(Icons.open_in_new, color: Colors.lightBlue),
