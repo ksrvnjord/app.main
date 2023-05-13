@@ -22,11 +22,11 @@ class WeatherMetricWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const double cardHeight = 128;
 
-    const double headerIconSize = 16;
-    const double mainTextSize = 20;
+    const double headerIconSize = 14;
+    const double mainTextSize = 24;
     const double headerTextSize = 14;
     const double bottomTextSize = 12;
-    const double innerPadding = 8;
+    const double innerPadding = 10;
 
     return SizedBox(
       height: cardHeight,
@@ -42,7 +42,7 @@ class WeatherMetricWidget extends StatelessWidget {
                 .textColor(Colors.white)
                 .fontSize(headerTextSize)
                 .fontWeight(
-                  FontWeight.bold,
+                  FontWeight.w600,
                 ),
           ].toRow(
             mainAxisSize: MainAxisSize.min,
