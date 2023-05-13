@@ -48,12 +48,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               Image.asset(
                 Images.appLogoBlue,
                 height: logoHeight,
-              ),
+              ).padding(bottom: elementPadding),
               FirebaseWidget(IconButton(
-                padding: const EdgeInsets.only(
-                  right: 8,
-                  bottom: 4,
-                ), // for alignment with the logo
                 iconSize: myProfileSize,
                 onPressed: () => Routemaster.of(context)
                     .push('/almanak/edit'), // TODO: create route for 'home/edit
@@ -65,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
-            const VaarverbodWidget(),
+            const VaarverbodWidget().padding(vertical: elementPadding),
             FirebaseWidget(
               const FormsWidget().padding(vertical: elementPadding),
             ),
