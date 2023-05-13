@@ -29,6 +29,7 @@ class AdvancedSettingsPage extends StatelessWidget {
       body: ListView(children: [
         // create a button to clear the cache
         ListTile(
+          visualDensity: VisualDensity.standard,
           title: const Text('Cache verwijderen'),
           subtitle: const Text(
             "Alle opgeslagen data op je telefoon wordt verwijderd. Dit sluit je app af.",
@@ -56,7 +57,9 @@ class AdvancedSettingsPage extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(),
+        const Divider(
+          height: 0,
+        ),
       ]),
     );
   }

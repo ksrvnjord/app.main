@@ -57,18 +57,21 @@ class _NotificationsListState extends State<NotificationsList> {
 
     return ListView(children: <Widget>[
       const SwitchListTile(
+        visualDensity: VisualDensity.standard,
         title: Text('Bestuursnotificaties'),
         value: true,
         onChanged: null,
       ),
       const SwitchListTile(
+        visualDensity: VisualDensity.standard,
         title: Text('Persoonlijke notificaties'),
         value: true,
         onChanged: null,
       ),
-      const Divider(height: 8),
+      const Divider(height: 0),
       ...topics
           .map((e) => SwitchListTile(
+                visualDensity: VisualDensity.standard,
                 title: Text(e['title']!),
                 value: widget.topics.get(e['topic']!) ?? false,
                 onChanged: (value) => toggleTopic(

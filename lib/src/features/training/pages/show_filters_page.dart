@@ -26,25 +26,25 @@ class ShowFiltersPage extends ConsumerWidget {
                     ))
                 .toList(),
           ));
-  static const Map<String, Color> categoryColors = {
-    'Binnen': Colors.blue,
-    '1 roeier': Colors.red,
-    '2 roeiers': Colors.orange,
-    '4 roeiers': Colors.green,
-    '8 roeiers': Colors.purple,
-    'Overig': Colors.grey,
-  };
-  static const double categoryPadding = 4;
-  static const double selectedChipOpacity = 0.5;
-
-  static const double categoryFontSize = 16;
-  static const double pagePadding = 8;
-  static const double headerFontSize = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, List<String>> activeFilters =
         ref.watch(reservationTypeFiltersProvider);
+
+    final Map<String, Color> categoryColors = {
+      'Binnen': Colors.blue,
+      '1 roeier': Colors.red,
+      '2 roeiers': Colors.orange,
+      '4 roeiers': Colors.green,
+      '8 roeiers': Colors.purple,
+      'Overig': Colors.grey,
+    };
+
+    const double categoryPadding = 8;
+    const double pagePadding = 8;
+    const double headerFontSize = 20;
+    const int cardBackgroundColorAlpha = 120;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,52 +54,54 @@ class ShowFiltersPage extends ConsumerWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(pagePadding),
-        child: ListView(
-          children: [
-            // Make a MultiSelectChipField for each category in availableFilters dynamically
-            ...availableFilters.keys
-                .map(
-                  (String key) => Column(
-                    children: [
-                      Text(key)
-                          .fontSize(categoryFontSize)
-                          .fontWeight(FontWeight.bold),
-                      MultiSelectChipField<String?>(
-                        scroll: false,
-                        decoration: const BoxDecoration(),
-                        items: availableFilters[key] ?? [],
-                        icon: const Icon(Icons.check),
-                        title: Text(key)
-                            .textColor(Colors.white)
-                            .fontSize(headerFontSize),
-                        headerColor: categoryColors[key],
-                        chipShape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+        children: [
+          // Make a MultiSelectChipField for each category in availableFilters dynamically
+          ...availableFilters.keys
+              .map(
+                (String key) => [
+                  MultiSelectChipField<String?>(
+                    scroll: false,
+                    decoration: const BoxDecoration(),
+                    items: availableFilters[key] ?? [],
+                    title: Text(key)
+                        .fontSize(headerFontSize)
+                        .fontWeight(FontWeight.bold),
+                    headerColor: Colors.transparent,
+                    chipShape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    selectedChipColor: categoryColors[key],
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    selectedTextStyle: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    // chipWidth: 80,
+                    showHeader: true,
+                    initialValue: activeFilters[key] ?? [],
+                    onTap: (values) => ref
+                        .read(reservationTypeFiltersProvider.notifier)
+                        .updateFiltersForCategory(
+                          key,
+                          values.whereType<String>().toList(),
                         ),
-                        // ignore: no-equal-arguments
-                        chipColor: categoryColors[key],
-                        selectedChipColor: categoryColors[key]!
-                            .withOpacity(selectedChipOpacity),
-                        textStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        showHeader: false,
-                        initialValue: activeFilters[key] ?? [],
-                        onTap: (values) => ref
-                            .read(reservationTypeFiltersProvider.notifier)
-                            .updateFiltersForCategory(
-                              key,
-                              values.whereType<String>().toList(),
-                            ),
-                      ).padding(vertical: categoryPadding),
-                    ],
+                  ).card(
+                    elevation: 0,
+                    color: categoryColors[key]!
+                        .withAlpha(cardBackgroundColorAlpha),
+                    margin: const EdgeInsets.all(0),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
                   ),
-                )
-                .toList(),
-          ],
-        ),
+                  const SizedBox(height: categoryPadding),
+                ].toColumn(),
+              )
+              .toList(),
+        ],
       ),
     );
   }
