@@ -11,7 +11,7 @@ class AlmanakPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double choiceWidgetPadding = 4;
+    const double choiceWidgetPadding = 8;
     const double profileIconSize = 40;
 
     return Scaffold(
@@ -36,31 +36,35 @@ class AlmanakPage extends StatelessWidget {
             title: "Leeden",
             pushRoute: "leeden",
             imagePath: 'assets/images/leeden.png',
-          ).padding(all: choiceWidgetPadding),
+          ),
           FirebaseWidget(
             [
               const AlmanakStructureChoiceWidget(
                 title: "Bestuur",
                 pushRoute: "bestuur",
                 imagePath: 'assets/images/bestuur.jpeg',
-              ).padding(all: choiceWidgetPadding),
+              ),
               const AlmanakStructureChoiceWidget(
                 title: "Commissies",
                 pushRoute: "commissies",
                 imagePath: 'assets/images/commissies.jpeg',
-              ).padding(all: choiceWidgetPadding),
+              ),
               const AlmanakStructureChoiceWidget(
                 pushRoute: "huizen",
                 title: "Huizen",
                 imagePath: 'assets/images/huizen.jpeg',
-              ).padding(all: choiceWidgetPadding),
+              ),
               // TODO: Add ploegen
               const AlmanakStructureChoiceWidget(
                 title: "Substructuren",
                 pushRoute: "substructuren",
                 imagePath: 'assets/images/substructures.jpeg',
-              ).padding(all: choiceWidgetPadding),
-            ].toColumn(),
+              ),
+            ].toColumn(
+              separator: const SizedBox(
+                height: choiceWidgetPadding,
+              ),
+            ),
           ),
         ],
       ),
