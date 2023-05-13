@@ -1,8 +1,10 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/model/vaarverbod.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -47,35 +49,40 @@ class VaarverbodWidget extends ConsumerWidget {
         status ? Colors.red[300]! : Colors.green[300]!;
 
     const double descriptionPadding = 8;
+    const double headerFontSize = 16;
 
-    return ExpansionTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(message),
-      collapsedTextColor: Colors.white,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
+    return ExpandablePanel(
+      theme: const ExpandableThemeData(
+        hasIcon: true,
+        iconColor: Colors.white,
+        tapHeaderToExpand: true,
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
+      ),
+      // leading: Icon(icon, color: Colors.white),
+      header: [
+        Icon(icon, color: Colors.white),
+        Text(message).fontSize(headerFontSize).textColor(Colors.white),
+      ]
+          .toRow(separator: const SizedBox(width: descriptionPadding))
+          .paddingDirectional(start: descriptionPadding),
+      collapsed: const SizedBox.shrink(),
+      expanded: [
+        Text(vaarverbod?.message ?? 'Laden...').textColor(Colors.white),
+        const WeatherWidget(),
+      ]
+          .toColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )
+          .paddingDirectional(
+            all: descriptionPadding,
+          ), // padding for expanded widget
+    ).card(
+      color: backgroundColor,
+      elevation: 0,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      // ignore: no-equal-arguments
-      collapsedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      // ignore: no-equal-arguments
-      collapsedBackgroundColor: backgroundColor,
-      // ignore: no-equal-arguments
-      collapsedIconColor: Colors.white,
-      // ignore: no-equal-arguments
-      iconColor: Colors.white,
-      children: [
-        Text(vaarverbod?.message ?? 'Laden...')
-            .textColor(Colors.white)
-            .paddingDirectional(
-              horizontal: descriptionPadding,
-              // ignore: no-equal-arguments
-              bottom: descriptionPadding,
-            ),
-      ],
+      margin: const EdgeInsets.all(0),
     );
   }
 }
