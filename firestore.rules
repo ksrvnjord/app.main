@@ -102,6 +102,13 @@ match /people/{personId} {
       // Allow users to update their own commissies
       allow write: if isLoggedIn() && isOwnDocument();
   }
+    // Groups of a user subcollection
+  match /groups/{document=**} {
+      // All user can read everyone's groups
+      allow read: if isLoggedIn();
+      // Allow users to update their own groups
+      allow write: if isLoggedIn() && isOwnDocument();
+  }
 }
 match /substructuur_info/{document=**} {
   allow read: if isLoggedIn();
