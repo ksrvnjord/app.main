@@ -43,10 +43,13 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
 
   @override
   Widget build(BuildContext context) {
-    const double fieldPadding = 8;
+    const double fieldVPadding = 8;
 
     const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
+    const double headerFontSize = 20;
+    const double groupSpacing = 32;
+    const double fieldHPadding = 8;
 
     final userVal = ref.watch(firestoreUserFutureProvider(getCurrentUserId()));
 
@@ -69,109 +72,124 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
                   .padding(top: imageHelpTextTopPadding),
             ].toColumn(),
           ),
-          TextFormField(
-            initialValue: user.study,
-            onSaved: (value) => _formData.study = value,
-            decoration: const InputDecoration(
-              labelText: 'Studie',
-              hintText: 'Rechten, Geneeskunde, etc.',
-            ),
-          ).padding(bottom: fieldPadding),
-
-          // Add a TextFormField for the team the user is in
-          TextFormField(
-            initialValue: user.ploeg,
-            onSaved: (value) => _formData.ploeg = value,
-            decoration: const InputDecoration(
-              labelText: 'Ploeg',
-            ),
-          ).padding(vertical: fieldPadding),
-          DropdownButtonFormField<String?>(
-            value: user.board,
-            onSaved: (value) => _formData.board = value,
-            hint: const Text('Welk boord?'),
-            decoration: const InputDecoration(
-              labelText: 'Boord',
-              hintText: 'Welk boord roei je?',
-            ),
-            items:
-                // The boards are Bakboord, Stuurboord, etc.
-                ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
-                    .map(
-                      (board) => DropdownMenuItem<String>(
-                        value: board,
-                        child: Text(board),
-                      ),
-                    )
-                    .toList(),
-            onChanged: (_) => {},
-          ).padding(vertical: fieldPadding),
-          DropdownButtonFormField<String?>(
-            value: user.huis,
-            onSaved: (value) => _formData.huis =
-                value != 'Geen' ? value : null, // allow user to 'deselect' huis
-            hint: const Text('Njord-Huis'),
-            decoration: const InputDecoration(
-              labelText: 'Njord-huis',
-            ),
-            items: ['Geen', ...houseNames]
-                .map(
-                  (house) => DropdownMenuItem<String>(
-                    value: house,
-                    child: Text(house),
-                  ),
-                )
-                .toList(),
-            onChanged: (_) => {},
-          ).padding(vertical: fieldPadding),
-          ListTile(
-            title: const Text('Wijzig commissies'),
-            trailing:
-                const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
-            onTap: () => Routemaster.of(context).push('commissies'),
-          ),
-          MultiSelectDialogField<String>(
-            title: const Text('Substructuren'),
-            // ignore: no-equal-arguments
-            buttonText: const Text('Substructuren'),
-            initialValue: user.substructuren ?? [],
-            onSaved: (items) => _formData.substructuren = items,
-            items: substructures
-                .map(
-                  (structure) => MultiSelectItem<String>(
-                    structure,
-                    // ignore: no-equal-arguments
-                    structure,
-                  ),
-                )
-                .toList(),
-            onConfirm: (_) => {},
-          ).padding(vertical: fieldPadding),
-          DropdownButtonFormField<bool?>(
-            value: user.dubbellid,
-            onSaved: (value) => _formData.dubbellid = value,
-            hint: const Text('Ben je dubbellid?'),
-            decoration: const InputDecoration(
-              labelText: 'Dubbellid',
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: true,
-                child: Text('Ja, bij L.S.V. Minerva'),
+          const SizedBox(height: groupSpacing),
+          const Text("Over mij").fontSize(headerFontSize),
+          [
+            TextFormField(
+              initialValue: user.study,
+              onSaved: (value) => _formData.study = value,
+              decoration: const InputDecoration(
+                labelText: 'Studie',
+                hintText: 'Rechten, Geneeskunde, etc.',
               ),
-              DropdownMenuItem(value: false, child: Text('Nee')),
-            ],
-            onChanged: (_) => {},
-          ).padding(vertical: fieldPadding),
-          TextFormField(
-            initialValue: user.otherAssociation,
-            onSaved: (value) =>
-                _formData.otherAssociation = value == '' ? null : value,
-            decoration: const InputDecoration(
-              labelText: 'Zit je bij een andere vereniging?',
-              hintText: 'L.V.V.S. Augustinus, etc.',
             ),
-          ).padding(vertical: fieldPadding),
+            DropdownButtonFormField<String?>(
+              value: user.board,
+              onSaved: (value) => _formData.board = value,
+              hint: const Text('Welk boord?'),
+              decoration: const InputDecoration(
+                labelText: 'Boord',
+                hintText: 'Welk boord roei je?',
+              ),
+              items:
+                  // The boards are Bakboord, Stuurboord, etc.
+                  ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
+                      .map(
+                        (board) => DropdownMenuItem<String>(
+                          value: board,
+                          child: Text(board),
+                        ),
+                      )
+                      .toList(),
+              onChanged: (_) => {},
+            ),
+          ]
+              .toColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                separator: const SizedBox(height: fieldVPadding),
+              )
+              .padding(horizontal: fieldHPadding),
+          const SizedBox(height: groupSpacing),
+          const Text("Mijn groepen").fontSize(headerFontSize),
+          // Add a TextFormField for the team the user is in
+          [
+            TextFormField(
+              initialValue: user.ploeg,
+              onSaved: (value) => _formData.ploeg = value,
+              decoration: const InputDecoration(
+                labelText: 'Ploeg',
+              ),
+            ),
+            DropdownButtonFormField<String?>(
+              value: user.huis,
+              onSaved: (value) => _formData.huis = value != 'Geen'
+                  ? value
+                  : null, // allow user to 'deselect' huis
+              hint: const Text('Njord-Huis'),
+              decoration: const InputDecoration(
+                labelText: 'Njord-huis',
+              ),
+              items: ['Geen', ...houseNames]
+                  .map(
+                    (house) => DropdownMenuItem<String>(
+                      value: house,
+                      child: Text(house),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (_) => {},
+            ),
+            ListTile(
+              title: const Text('Wijzig commissies'),
+              trailing:
+                  const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
+              onTap: () => Routemaster.of(context).push('commissies'),
+            ),
+            MultiSelectDialogField<String>(
+              title: const Text('Substructuren'),
+              // ignore: no-equal-arguments
+              buttonText: const Text('Substructuren'),
+              initialValue: user.substructuren ?? [],
+              onSaved: (items) => _formData.substructuren = items,
+              items: substructures
+                  .map(
+                    (structure) => MultiSelectItem<String>(
+                      structure,
+                      // ignore: no-equal-arguments
+                      structure,
+                    ),
+                  )
+                  .toList(),
+              onConfirm: (_) => {},
+            ),
+            DropdownButtonFormField<bool?>(
+              value: user.dubbellid,
+              onSaved: (value) => _formData.dubbellid = value,
+              hint: const Text('Ben je dubbellid?'),
+              decoration: const InputDecoration(
+                labelText: 'Dubbellid',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: true,
+                  child: Text('Ja, bij L.S.V. Minerva'),
+                ),
+                DropdownMenuItem(value: false, child: Text('Nee')),
+              ],
+              onChanged: (_) => {},
+            ),
+            TextFormField(
+              initialValue: user.otherAssociation,
+              onSaved: (value) =>
+                  _formData.otherAssociation = value == '' ? null : value,
+              decoration: const InputDecoration(
+                labelText: 'Zit je bij een andere vereniging?',
+                hintText: 'L.V.V.S. Augustinus, etc.',
+              ),
+            ),
+          ]
+              .toColumn(separator: const SizedBox(height: fieldVPadding))
+              .padding(horizontal: fieldHPadding),
           [
             ElevatedButton(
               onPressed: submitForm,
@@ -184,7 +202,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
               child: const Text('Opslaan'),
             ).expanded(),
           ].toRow(),
-        ].toColumn(),
+        ].toColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
