@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
@@ -11,12 +12,17 @@ class AlmanakPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double choiceWidgetPadding = 4;
+    const double profileIconSize = 40;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        actions: const <Widget>[
-          FirebaseWidget(MyProfilePicture(profileIconSize: 48.0)),
+        actions: <Widget>[
+          FirebaseWidget(IconButton(
+            onPressed: () => Routemaster.of(context).push('edit'),
+            iconSize: profileIconSize,
+            icon: const MyProfilePicture(),
+          )),
         ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,

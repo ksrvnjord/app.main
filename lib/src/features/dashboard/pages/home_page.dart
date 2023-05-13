@@ -10,8 +10,10 @@ import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -25,10 +27,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     const double elementPadding = 8;
-    const double logoRightPadding = 16;
 
-    final double logoSize =
-        0.5 * MediaQuery.of(context).size.width; // half of the screen width
+    const double logoHeight = 64;
+    const double myProfileSize = 48;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -40,24 +41,38 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
       body: RefreshIndicator(
         onRefresh: _refresh,
-        child: ListView(padding: const EdgeInsets.all(16), children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(top: 16),
-            child: [
+        child: ListView(
+          padding: const EdgeInsets.all(8),
+          children: <Widget>[
+            [
               Image.asset(
                 Images.appLogoBlue,
-                width: logoSize,
-              ).padding(right: logoRightPadding),
-              const VaarverbodWidget(),
+                height: logoHeight,
+              ),
+              FirebaseWidget(IconButton(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  bottom: 4,
+                ), // for alignment with the logo
+                iconSize: myProfileSize,
+                onPressed: () => Routemaster.of(context)
+                    .push('/almanak/edit'), // TODO: create route for 'home/edit
+                icon: const MyProfilePicture(
+                  profileIconSize: 48,
+                ),
+              )),
             ].toRow(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
-          ),
-          FirebaseWidget(const FormsWidget().padding(vertical: elementPadding)),
-          const ComingWeekEventsWidget().padding(vertical: elementPadding),
-          const AnnouncementsWidget().padding(vertical: elementPadding),
-        ]),
+            const VaarverbodWidget(),
+            FirebaseWidget(
+              const FormsWidget().padding(vertical: elementPadding),
+            ),
+            const ComingWeekEventsWidget().padding(vertical: elementPadding),
+            const AnnouncementsWidget().padding(vertical: elementPadding),
+          ],
+        ),
       ),
     );
   }

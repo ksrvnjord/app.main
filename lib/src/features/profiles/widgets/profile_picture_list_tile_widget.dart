@@ -7,9 +7,11 @@ class ProfilePictureListTileWidget extends ConsumerWidget {
   const ProfilePictureListTileWidget({
     super.key,
     required this.profileId,
+    this.radius,
   });
 
   final String profileId;
+  final double? radius;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,10 +22,16 @@ class ProfilePictureListTileWidget extends ConsumerWidget {
       data: (data) => CircleAvatar(
         foregroundImage: data,
         backgroundColor: Colors.grey[300]!,
+        radius: radius,
       ),
-      loading: () => const ShimmerWidget(child: CircleAvatar()),
-      error: (obj, stk) => const CircleAvatar(
+      loading: () => ShimmerWidget(
+        child: CircleAvatar(
+          radius: radius,
+        ),
+      ),
+      error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,
+        radius: radius,
       ),
     );
   }
