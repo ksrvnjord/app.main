@@ -66,6 +66,9 @@ final routeMap = RouteMap(
           name: 'Home',
           child: HomePage(),
         ),
+    '/home/edit': (_) => const CupertinoPage(
+          child: EditAlmanakProfilePage(),
+        ),
     '/home/polls': (_) => const CupertinoPage(
           name: 'Polls',
           child: PollsPage(),
