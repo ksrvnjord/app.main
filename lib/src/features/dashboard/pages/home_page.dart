@@ -51,8 +51,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ).padding(bottom: elementPadding),
               FirebaseWidget(IconButton(
                 iconSize: myProfileSize,
-                onPressed: () => Routemaster.of(context)
-                    .push('/almanak/edit'), // TODO: create route for 'home/edit
+                onPressed: () => Routemaster.of(context).push('edit'),
                 icon: const MyProfilePicture(
                   profileIconSize: 48,
                 ),
