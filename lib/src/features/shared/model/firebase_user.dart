@@ -42,7 +42,7 @@ final currentFirebaseUserProvider =
     final FirebaseUser? firebaseUser = firestoreUserVal.whenOrNull(
       data: (data) => FirebaseUser(
         uid: user.uid,
-        isBestuur: data.bestuursFunctie != null,
+        isBestuur: data.data().bestuursFunctie != null,
       ),
     );
 
@@ -60,9 +60,9 @@ final firestoreUserProvider =
     final firestoreUserVal = ref.watch(firestoreUserFutureProvider(userId));
 
     final FirebaseUser? firebaseUser = firestoreUserVal.whenOrNull(
-      data: (data) => FirebaseUser(
-        uid: data.lidnummer,
-        isBestuur: data.bestuursFunctie != null,
+      data: (snapshot) => FirebaseUser(
+        uid: snapshot.data().lidnummer,
+        isBestuur: snapshot.data().bestuursFunctie != null,
       ),
     );
 

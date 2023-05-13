@@ -22,7 +22,7 @@ final almanakUserProvider =
       ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
   AlmanakProfile profile =
-      await ref.watch(firestoreUserFutureProvider(lidnummer).future);
+      (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
   final heimdallProfileData = await heimdallProfile;
 
   // merge the data

@@ -10,11 +10,11 @@ final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
     );
 
 final firestoreUserFutureProvider =
-    FutureProvider.family<AlmanakProfile, String>(
+    FutureProvider.family<QueryDocumentSnapshot<AlmanakProfile>, String>(
   (ref, userId) async {
     QuerySnapshot<AlmanakProfile> profile =
         await people.where('identifier', isEqualTo: userId).limit(1).get();
 
-    return profile.docs.first.data();
+    return profile.docs.first;
   },
 );

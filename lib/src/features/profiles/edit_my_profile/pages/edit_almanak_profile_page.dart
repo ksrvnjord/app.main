@@ -83,7 +83,7 @@ class _EditAlmanakProfilePageState
                     .center(),
                 FormSection(title: "Over mij", children: [
                   TextFormField(
-                    initialValue: user.study,
+                    initialValue: user.data().study,
                     onSaved: (study) => ref
                         .read(profileEditFormNotifierProvider.notifier)
                         .setStudy(study),
@@ -93,7 +93,7 @@ class _EditAlmanakProfilePageState
                     ),
                   ),
                   DropdownButtonFormField<String?>(
-                    value: user.board,
+                    value: user.data().board,
                     onSaved: (value) => ref
                         .read(profileEditFormNotifierProvider.notifier)
                         .setBoard(value),
@@ -137,7 +137,7 @@ class _EditAlmanakProfilePageState
                       onTap: () => Routemaster.of(context).push('commissies'),
                     ),
                     DropdownButtonFormField<String?>(
-                      value: user.huis,
+                      value: user.data().huis,
                       onSaved: (huis) => ref
                           .read(profileEditFormNotifierProvider.notifier)
                           .setHuis(huis),
@@ -159,7 +159,7 @@ class _EditAlmanakProfilePageState
                       title: const Text('Substructuren'),
                       // ignore: no-equal-arguments
                       buttonText: const Text('Substructuren'),
-                      initialValue: user.substructuren ?? [],
+                      initialValue: user.data().substructuren ?? [],
                       onSaved: (substructures) => ref
                           .read(profileEditFormNotifierProvider.notifier)
                           .setSubstructuren(substructures),
@@ -175,7 +175,7 @@ class _EditAlmanakProfilePageState
                       onConfirm: (_) => {},
                     ),
                     DropdownButtonFormField<bool?>(
-                      value: user.dubbellid,
+                      value: user.data().dubbellid,
                       onSaved: (dubbellib) => ref
                           .read(profileEditFormNotifierProvider.notifier)
                           .setDubbellid(dubbellib),
@@ -193,7 +193,7 @@ class _EditAlmanakProfilePageState
                       onChanged: (_) => {},
                     ),
                     TextFormField(
-                      initialValue: user.otherAssociation,
+                      initialValue: user.data().otherAssociation,
                       onSaved: (value) => ref
                           .read(profileEditFormNotifierProvider.notifier)
                           .setOtherAssociation(value),
