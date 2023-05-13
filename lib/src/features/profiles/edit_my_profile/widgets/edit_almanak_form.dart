@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
@@ -33,14 +34,6 @@ class EditAlmanakForm extends ConsumerStatefulWidget {
 class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
   final _formKey = GlobalKey<FormState>();
 
-  final AlmanakProfile _formData =
-      AlmanakProfile(lidnummer: FirebaseAuth.instance.currentUser!.uid);
-  File? newprofilePicture;
-
-  void changeProfilePicture(File file) {
-    newprofilePicture = file;
-  }
-
   @override
   Widget build(BuildContext context) {
     const double fieldVPadding = 8;
@@ -60,9 +53,7 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
           // create a field to enter Field of Study
           Center(
             child: [
-              EditProfilePictureWidget(
-                onChanged: changeProfilePicture,
-              ),
+              const EditProfilePictureWidget(),
               const Text(
                 'Het kan even duren voordat je nieuwe profielfoto zichtbaar is.',
               )
@@ -77,7 +68,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
           [
             TextFormField(
               initialValue: user.study,
-              onSaved: (value) => _formData.study = value,
+              onSaved: (study) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setStudy(study),
               decoration: const InputDecoration(
                 labelText: 'Studie',
                 hintText: 'Rechten, Geneeskunde, etc.',
@@ -85,7 +78,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
             ),
             DropdownButtonFormField<String?>(
               value: user.board,
-              onSaved: (value) => _formData.board = value,
+              onSaved: (value) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setBoard(value),
               hint: const Text('Welk boord?'),
               decoration: const InputDecoration(
                 labelText: 'Boord',
@@ -115,16 +110,18 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
           [
             TextFormField(
               initialValue: user.ploeg,
-              onSaved: (value) => _formData.ploeg = value,
+              onSaved: (ploeg) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setPloeg(ploeg),
               decoration: const InputDecoration(
                 labelText: 'Ploeg',
               ),
             ),
             DropdownButtonFormField<String?>(
               value: user.huis,
-              onSaved: (value) => _formData.huis = value != 'Geen'
-                  ? value
-                  : null, // allow user to 'deselect' huis
+              onSaved: (huis) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setHuis(huis),
               hint: const Text('Njord-Huis'),
               decoration: const InputDecoration(
                 labelText: 'Njord-huis',
@@ -150,7 +147,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
               // ignore: no-equal-arguments
               buttonText: const Text('Substructuren'),
               initialValue: user.substructuren ?? [],
-              onSaved: (items) => _formData.substructuren = items,
+              onSaved: (substructures) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setSubstructuren(substructures),
               items: substructures
                   .map(
                     (structure) => MultiSelectItem<String>(
@@ -164,7 +163,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
             ),
             DropdownButtonFormField<bool?>(
               value: user.dubbellid,
-              onSaved: (value) => _formData.dubbellid = value,
+              onSaved: (dubbellib) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setDubbellid(dubbellib),
               hint: const Text('Ben je dubbellid?'),
               decoration: const InputDecoration(
                 labelText: 'Dubbellid',
@@ -180,8 +181,9 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
             ),
             TextFormField(
               initialValue: user.otherAssociation,
-              onSaved: (value) =>
-                  _formData.otherAssociation = value == '' ? null : value,
+              onSaved: (value) => ref
+                  .read(profileEditFormNotifierProvider.notifier)
+                  .setOtherAssociation(value),
               decoration: const InputDecoration(
                 labelText: 'Zit je bij een andere vereniging?',
                 hintText: 'L.V.V.S. Augustinus, etc.',
@@ -212,8 +214,8 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
   }
 
   void submitForm() async {
+    // FORM VALIDATION
     if (!_formKey.currentState!.validate()) {
-      // show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.red,
@@ -224,62 +226,54 @@ class _EditAlmanakFormState extends ConsumerState<EditAlmanakForm> {
       return;
     }
     bool success = true; // on errors set to false
-    Object? error;
     // Get user id from FirebaseAuth
-    final String userId = getCurrentUserId();
 
-    // query people collection for user with id
-    final QuerySnapshot<AlmanakProfile> querySnapshot = await people
-        .where('identifier', isEqualTo: userId)
-        .get()
-        .catchError((err) {
-      // show snackbar with error messag
-      error = err;
-      success = false;
+    // FIND DOCUMENT OF CURRENT USER
+    final QuerySnapshot<AlmanakProfile> querySnapshot =
+        await people.where('identifier', isEqualTo: getCurrentUserId()).get();
 
-      return err;
-    });
-
-    // retrieve document reference from query snapshot
-    final DocumentReference<AlmanakProfile> documentReference =
-        querySnapshot.docs.first.reference;
-
+    // SAVE FORM
     _formKey.currentState?.save();
 
-    await documentReference.update(_formData.toJson()).catchError((err) {
-      // show snackbar with error message
+    // UPLOAD FORM TO FIRESTORE
+    final ProfileForm form = ref.read(profileEditFormNotifierProvider);
+    await querySnapshot.docs.first.reference
+        .update(form.toJson())
+        .catchError((err) {
       success = false;
-      error = err;
     });
-    if (!mounted) return;
 
+    ref.invalidate(firestoreUserFutureProvider); // invalidate cache
+
+    // PROFILE PICTURE UPLOAD
+    final File? newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {
-        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture!);
-      } on FirebaseException catch (err) {
-        error = err;
+        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
+        profilePictureProvider(getCurrentUserId())
+            .overrideWith((ref) => Image.file(newprofilePicture).image);
+      } on FirebaseException catch (_) {
         success = false;
       }
     }
 
-    if (!success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(
-          'Er ging iets mis bij het wijzigen van je profiel: ${error.toString()}',
-        ),
-      ));
-
-      return;
-    }
-    // show snackbar with success message
+    // SHOW CONFIRMATION TO USER
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Je profiel is succesvol gewijzigd'),
-        ),
-      );
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Je profiel is succesvol gewijzigd'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Er ging iets mis bij het wijzigen van je profiel'),
+          ),
+        );
+      }
     }
   }
 }

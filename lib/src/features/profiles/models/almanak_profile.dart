@@ -47,6 +47,43 @@ class AlmanakProfile {
     this.bestuursFunctie,
   });
 
+  // copyWith
+  AlmanakProfile copyWith({
+    String? firstName,
+    String? lastName,
+    String? lidnummer,
+    String? study,
+    String? board,
+    String? ploeg,
+    bool? dubbellid,
+    String? otherAssociation,
+    List<String>? commissies,
+    String? huis,
+    Address? address,
+    String? email,
+    String? phonePrimary,
+    List<String>? substructuren,
+    String? bestuursFunctie,
+  }) {
+    return AlmanakProfile(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      lidnummer: lidnummer ?? this.lidnummer,
+      study: study ?? this.study,
+      board: board ?? this.board,
+      ploeg: ploeg ?? this.ploeg,
+      dubbellid: dubbellid ?? this.dubbellid,
+      otherAssociation: otherAssociation ?? this.otherAssociation,
+      commissies: commissies ?? this.commissies,
+      huis: huis ?? this.huis,
+      address: address ?? this.address,
+      email: email ?? this.email,
+      phonePrimary: phonePrimary ?? this.phonePrimary,
+      substructuren: substructuren ?? this.substructuren,
+      bestuursFunctie: bestuursFunctie ?? this.bestuursFunctie,
+    );
+  }
+
   void mergeWithHeimdallProfile(
     Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
   ) {
