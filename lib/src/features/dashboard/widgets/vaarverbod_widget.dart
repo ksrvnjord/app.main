@@ -44,7 +44,6 @@ class VaarverbodWidget extends ConsumerWidget {
         icon = FontAwesomeIcons.shieldHalved;
       }
     }
-
     final Color backgroundColor =
         status ? Colors.red[300]! : Colors.green[300]!;
 
@@ -72,6 +71,7 @@ class VaarverbodWidget extends ConsumerWidget {
       ]
           .toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
+            separator: const SizedBox(height: descriptionPadding),
           )
           .paddingDirectional(
             all: descriptionPadding,

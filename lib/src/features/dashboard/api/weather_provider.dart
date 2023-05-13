@@ -6,6 +6,8 @@ final weatherProvider = FutureProvider((ref) async {
   const double longitude = 4.4729;
   // do api request
 
+  const dailyParams = ['sunrise', 'sunset'];
+
   final res = await Dio().get(
     'https://api.open-meteo.com/v1/forecast',
     queryParameters: {
@@ -13,6 +15,8 @@ final weatherProvider = FutureProvider((ref) async {
       'longitude': longitude,
       'timezone': 'Europe/Amsterdam',
       'current_weather': true,
+      'daily': dailyParams,
+      'forecast_days': 1,
     },
   );
 
