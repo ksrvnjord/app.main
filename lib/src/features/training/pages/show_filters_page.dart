@@ -88,15 +88,15 @@ class ShowFiltersPage extends ConsumerWidget {
                           key,
                           values.whereType<String>().toList(),
                         ),
-                  ).card(
-                    elevation: 0,
-                    color: categoryColors[key]!
-                        .withAlpha(cardBackgroundColorAlpha),
-                    margin: const EdgeInsets.all(0),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
+                  ).padding(bottom: categoryPadding).card(
+                        elevation: 0,
+                        color: categoryColors[key]!
+                            .withAlpha(cardBackgroundColorAlpha),
+                        margin: const EdgeInsets.all(0),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
+                      ),
                   const SizedBox(height: categoryPadding),
                 ].toColumn(),
               )
