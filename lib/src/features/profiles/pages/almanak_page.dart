@@ -12,18 +12,10 @@ class AlmanakPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double choiceWidgetPadding = 8;
-    const double profileIconSize = 40;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        actions: <Widget>[
-          FirebaseWidget(IconButton(
-            onPressed: () => Routemaster.of(context).push('edit'),
-            iconSize: profileIconSize,
-            icon: const MyProfilePicture(),
-          )),
-        ],
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:
