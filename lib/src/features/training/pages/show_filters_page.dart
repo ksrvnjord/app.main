@@ -45,7 +45,6 @@ class ShowFiltersPage extends ConsumerWidget {
     const double pagePadding = 8;
     const double headerFontSize = 20;
     const int cardBackgroundColorAlpha = 120;
-    const double selectableAreaHeight = 56;
 
     return Scaffold(
       appBar: AppBar(
