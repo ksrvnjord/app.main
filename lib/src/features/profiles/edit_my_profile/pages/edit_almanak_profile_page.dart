@@ -118,14 +118,23 @@ class _EditAlmanakProfilePageState
                 FormSection(
                   title: "Mijn groepen",
                   children: [
-                    TextFormField(
-                      initialValue: user.ploeg,
-                      onSaved: (ploeg) => ref
-                          .read(profileEditFormNotifierProvider.notifier)
-                          .setPloeg(ploeg),
-                      decoration: const InputDecoration(
-                        labelText: 'Ploeg',
+                    ListTile(
+                      title: const Text('Beheer mijn ploegen'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.lightBlue,
                       ),
+                      onTap: () => Routemaster.of(context).push(
+                        'groups',
+                      ), // in de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen
+                    ),
+                    ListTile(
+                      title: const Text('Wijzig commissies'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.lightBlue,
+                      ),
+                      onTap: () => Routemaster.of(context).push('commissies'),
                     ),
                     DropdownButtonFormField<String?>(
                       value: user.huis,
@@ -145,14 +154,6 @@ class _EditAlmanakProfilePageState
                           )
                           .toList(),
                       onChanged: (_) => {},
-                    ),
-                    ListTile(
-                      title: const Text('Wijzig commissies'),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.lightBlue,
-                      ),
-                      onTap: () => Routemaster.of(context).push('commissies'),
                     ),
                     MultiSelectDialogField<String>(
                       title: const Text('Substructuren'),
