@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class AddPloegPage extends ConsumerWidget {
   const AddPloegPage({Key? key}) : super(key: key);
@@ -12,6 +14,17 @@ class AddPloegPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ploegEntryForm = ref.watch(ploegEntryCreateNotifierProvider);
+
+    const int startYear = 1874;
+    final List<int> years = List.generate(
+      DateTime.now().year - startYear,
+      (index) =>
+          // '2022-2023', '2021-2022', ...
+          DateTime.now().year - index - 1,
+    );
+
+    const double dropdownMenuMaxHeight = 200;
+    const double labelFontSize = 20;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,8 +35,21 @@ class AddPloegPage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        const Text("Je bent een").fontSize(20),
+        DataTextListTile(name: "Ploeg", value: ploegEntryForm.name!),
+        const SizedBox(height: 32),
+        const Text("Ik ben een").fontSize(labelFontSize),
+        const SizedBox(height: 8),
         SegmentedButton<PloegRole>(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith((states) =>
+                states.contains(MaterialState.selected)
+                    ? Colors.blue
+                    : Colors.blue.shade100),
+            foregroundColor: MaterialStateProperty.resolveWith((states) =>
+                states.contains(MaterialState.selected)
+                    ? Colors.white
+                    : Colors.blueGrey),
+          ),
           segments: [
             for (final ploegType in PloegRole.values)
               ButtonSegment(
@@ -37,6 +63,26 @@ class AddPloegPage extends ConsumerWidget {
           onSelectionChanged: (types) => ref
               .read(ploegEntryCreateNotifierProvider.notifier)
               .setRole(types.first),
+        ),
+        const SizedBox(height: 32),
+        DropdownButtonFormField(
+          menuMaxHeight: dropdownMenuMaxHeight,
+          // make this field required
+          decoration: const InputDecoration(
+            // The asterisk is a hint to the user that this field is required
+            // ignore: unnecessary_string_escapes
+            labelText: "Welk jaar?",
+          ),
+          value: ploegEntryForm.year,
+          onChanged: (value) => ref
+              .read(ploegEntryCreateNotifierProvider.notifier)
+              .setYear(value),
+          items: years
+              .map((year) => DropdownMenuItem(
+                    value: year,
+                    child: Text("$year-${year + 1}"),
+                  ))
+              .toList(),
         ),
       ]),
       floatingActionButton: FloatingActionButton.extended(
@@ -56,7 +102,7 @@ class AddPloegPage extends ConsumerWidget {
         },
         label: const Text('Opslaan'),
         icon: const Icon(Icons.save),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
       ),
     );
   }
