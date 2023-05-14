@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/competitie_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
@@ -26,7 +28,7 @@ final ploegenProvider = Provider<List<String>>((ref) {
         data: (data) => data,
         loading: () => [],
         error: (err, __) {
-          return [];
+          throw err;
         },
       );
     default:

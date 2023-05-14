@@ -15,8 +15,9 @@ final competitiePloegenProvider =
         )
         .where('year', isEqualTo: query.year)
         .where('geslacht', isEqualTo: query.gender.name)
+        .orderBy('name')
         .get();
 
-    return snapshot.docs.map((e) => e.data().name).toList()..sort();
+    return snapshot.docs.map((e) => e.data().name).toList();
   },
 );
