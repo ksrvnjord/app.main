@@ -129,7 +129,7 @@ class _EditAlmanakProfilePageState
                       ), // in de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen
                     ),
                     ListTile(
-                      title: const Text('Wijzig commissies'),
+                      title: const Text('Beheer mijn commissies'),
                       trailing: const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.lightBlue,
