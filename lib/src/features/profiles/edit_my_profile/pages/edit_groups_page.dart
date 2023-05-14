@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/my_ploegen_provider.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EditGroupsPage extends ConsumerWidget {
@@ -23,27 +24,34 @@ class EditGroupsPage extends ConsumerWidget {
           'Mijn ploegen',
         ), // TODO: in the future make this My groups as this page will serve as a hub for all groups
       ),
-      body: myPloegen.when(
-        data: (data) {
-          return ListView.builder(
-            itemCount: data.docs.length,
-            itemBuilder: (context, index) {
-              final doc = data.docs[index];
-              print(doc.data().toJson());
-
-              return ListTile(
-                title: Text(
-                  doc.data().name,
-                  style: const TextStyle(
-                    fontSize: titleFontSize,
-                  ),
-                ),
-              );
-            },
-          );
-        },
-        error: (err, stk) => Text(err.toString()),
-        loading: () => const CircularProgressIndicator().center(),
+      body: ListView(
+        children: [
+          myPloegen.when(
+            data: (data) => data.docs
+                .map((doc) => ListTile(
+                      title: Text(
+                        doc.data().name,
+                        style: const TextStyle(
+                          fontSize: titleFontSize,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => doc.reference.delete(),
+                      ),
+                    ))
+                .toList()
+                .toColumn(),
+            error: (err, stk) => Text(err.toString()),
+            loading: () => const CircularProgressIndicator().center(),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Routemaster.of(context).push('ploeg'),
+        label: const Text('Voeg een ploeg toe'),
+        icon: const Icon(Icons.add),
+        backgroundColor: Colors.lightBlue,
       ),
     );
   }
