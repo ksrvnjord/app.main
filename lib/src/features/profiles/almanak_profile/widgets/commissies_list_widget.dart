@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/tag.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/group_info_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../../edit_my_profile/models/commissie_entry.dart';
@@ -20,13 +22,6 @@ class CommissiesListWidget extends StatelessWidget {
     const double fieldTitleFontSize = 16;
     const double fieldTitlePadding = 16;
 
-    Map<String, Color> functionMap = {
-      "Praeses": Colors.lightBlue[300]!,
-      "Ab-actis": Colors.red[300]!,
-      "Quaestor": Colors.lightGreen[300]!,
-    };
-
-    const double commissieNameFontSize = 20;
     const double headerBottomPadding = 8;
 
     return docs.isNotEmpty
@@ -47,50 +42,24 @@ class CommissiesListWidget extends StatelessWidget {
               docs
                   .map(
                     (doc) => [
-                      ListTile(
-                        tileColor: Colors.white,
-                        title: Text(doc.data().name)
-                            .fontSize(commissieNameFontSize),
-                        subtitle: <Widget>[
-                          Chip(
-                            label: Text(
-                              "${doc.data().startYear}-${doc.data().endYear}",
-                            ),
-                            avatar: const Icon(
-                              Icons.date_range,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                            backgroundColor: Colors.blueGrey[200],
-                            labelPadding:
-                                const EdgeInsets.only(left: 2, right: 8),
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+                      GroupInfoTile(
+                        header: doc.data().name,
+                        startYear: doc.data().startYear,
+                        endYear: doc.data().endYear,
+                        tags: [
                           if (doc.data().function != null &&
                               doc.data().function!.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Chip(
-                                label: Text(doc.data().function!),
-                                labelStyle: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                                // show avatar
-                                avatar: const Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                                labelPadding:
-                                    const EdgeInsets.only(left: 2, right: 8),
-                                backgroundColor:
-                                    functionMap[doc.data().function!] ??
-                                        Colors.blueGrey[300],
-                              ),
+                            Tag(
+                              label: doc.data().function!,
+                              backgroundColor: {
+                                    "Praeses": Colors.lightBlue[300]!,
+                                    "Ab-actis": Colors.red[300]!,
+                                    "Quaestor": Colors.lightGreen[300]!,
+                                  }[doc.data().function!] ??
+                                  Colors.blueGrey[300]!,
+                              icon: Icons.person,
                             ),
-                        ].toRow(),
+                        ],
                       ),
                       const Divider(
                         height: 1,
