@@ -72,6 +72,11 @@ final routeMap = RouteMap(
     '/home/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
         ),
+    '/home/edit/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
+        ),
     '/home/edit/groups': (_) => const CupertinoPage(
           child: EditGroupsPage(),
         ),

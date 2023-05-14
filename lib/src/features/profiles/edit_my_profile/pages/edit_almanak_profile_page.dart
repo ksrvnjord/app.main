@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:routemaster/routemaster.dart';
 import 'dart:io';
@@ -38,6 +39,9 @@ class _EditAlmanakProfilePageState
     const double groupSpacing = 32;
 
     final userVal = ref.watch(firestoreUserFutureProvider(getCurrentUserId()));
+    final userId = ref.watch(firebaseAuthUserProvider)!.uid;
+
+    const double floatingActionButtonSpacing = 16;
 
     return Scaffold(
       appBar: AppBar(
@@ -209,9 +213,20 @@ class _EditAlmanakProfilePageState
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
       ),
       floatingActionButton: // floating action button with save icon
-          FloatingActionButton(
-        onPressed: submitForm,
-        child: const Icon(Icons.save),
+          [
+        FloatingActionButton.extended(
+          backgroundColor: Colors.blueGrey,
+          onPressed: () => Routemaster.of(context).push(userId),
+          label: const Text("Publiek profiel bekijken"),
+        ),
+        FloatingActionButton.extended(
+          onPressed: submitForm,
+          icon: const Icon(Icons.save),
+          label: const Text('Opslaan'),
+        ),
+      ].toWrap(
+        spacing: floatingActionButtonSpacing,
+        crossAxisAlignment: WrapCrossAlignment.center,
       ),
     );
   }
