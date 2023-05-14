@@ -15,9 +15,9 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double headerFontSize = 20;
-    const double fieldVPadding = 8;
-    const double fieldHPadding = 8;
+    const double headerFontSize = 24;
+    const double fieldVPadding = 16;
+    const double cardInnerPadding = 16;
 
     return [
       Text(
@@ -27,7 +27,17 @@ class FormSection extends StatelessWidget {
           .toColumn(
             separator: const SizedBox(height: fieldVPadding),
           )
-          .padding(horizontal: fieldHPadding),
+          .padding(all: cardInnerPadding)
+          .card(
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              side: BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+            ),
+          ),
     ].toColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
     );
