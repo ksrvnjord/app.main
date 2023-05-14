@@ -18,5 +18,6 @@ final myPloegenProvider =
         toFirestore: (ploegEntry, _) => ploegEntry.toJson(),
       )
       .where('type', isEqualTo: 'ploeg')
+      .orderBy('year', descending: true)
       .snapshots();
 });
