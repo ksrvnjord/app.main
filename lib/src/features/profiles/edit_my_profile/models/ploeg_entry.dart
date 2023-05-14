@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 
 class PloegEntry extends GroupEntry {
   final PloegType ploegType;
+  final PloegRole role;
 
   static Map<String, PloegType> get typeMap => {
         'competitie': PloegType.competitie,
@@ -22,6 +23,7 @@ class PloegEntry extends GroupEntry {
     required String lastName,
     required String identifier,
     required this.ploegType,
+    required this.role,
   }) : super(
           year: year,
           name: name,
@@ -37,7 +39,8 @@ class PloegEntry extends GroupEntry {
       firstName: json['firstName'],
       lastName: json['lastName'],
       identifier: json['identifier'],
-      ploegType: typeMap[json['ploegType']]!,
+      ploegType: PloegType.values.byName(json['ploegType']),
+      role: PloegRole.values.byName(json['role']),
     );
   }
 
@@ -48,7 +51,8 @@ class PloegEntry extends GroupEntry {
       'firstName': firstName,
       'lastName': lastName,
       'identifier': identifier,
-      'ploegType': typeMapReverse[ploegType],
+      'ploegType': ploegType.name,
+      'role': role.name,
     };
   }
 }
@@ -57,7 +61,17 @@ enum PloegType {
   competitie("Competitie"),
   wedstrijd("Wedstrijd");
 
-  const PloegType(this.name);
+  const PloegType(this.value);
 
-  final String name;
+  final String value;
+}
+
+enum PloegRole {
+  roeier("Roeier"),
+  coach("Coach"),
+  stuur("Stuur");
+
+  const PloegRole(this.value);
+
+  final String value;
 }

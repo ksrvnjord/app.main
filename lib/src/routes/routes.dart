@@ -20,6 +20,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
@@ -76,6 +77,9 @@ final routeMap = RouteMap(
         ),
     '/home/edit/groups/ploeg': (_) => const CupertinoPage(
           child: SelectPloegPage(),
+        ),
+    '/home/edit/groups/ploeg/add': (_) => const CupertinoPage(
+          child: AddPloegPage(),
         ),
     '/home/edit/commissies': (info) => const CupertinoPage(
           child: EditCommissiesPage(),

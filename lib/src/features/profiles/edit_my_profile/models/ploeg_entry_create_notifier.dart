@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 
@@ -11,7 +13,6 @@ final ploegEntryCreateNotifierProvider =
       firstName: currentUser!.firstName,
       lastName: currentUser.lastName,
       identifier: currentUser.uid,
-      ploegType: PloegType.competitie,
     );
   },
 );
@@ -21,12 +22,13 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     required String firstName,
     required String lastName,
     required String identifier,
-    required PloegType ploegType,
   }) : super(PloegEntryCreateForm(
           firstName: firstName,
           lastName: lastName,
           identifier: identifier,
-          ploegType: ploegType,
+          ploegType: PloegType.competitie,
+          role: PloegRole.roeier,
+          year: getNjordYear(),
         ));
 
   void setPloegType(PloegType? ploegType) {
@@ -37,23 +39,42 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     state = state.copyWith(year: year);
   }
 
-  void setName(String? name) {
+  void setPloegName(String? name) {
     state = state.copyWith(name: name);
+  }
+
+  void setRole(PloegRole? role) {
+    state = state.copyWith(role: role);
+  }
+
+  Future<void> createPloegEntry() {
+    return FirebaseFirestore.instance
+        .collection('people')
+        .doc(state.identifier)
+        .collection('groups')
+        .withConverter<PloegEntryCreateForm>(
+          fromFirestore: (snapshot, _) =>
+              PloegEntryCreateForm.fromJson(snapshot.data()!),
+          toFirestore: (ploegEntry, _) => ploegEntry.toJson(),
+        )
+        .add(state);
   }
 }
 
 class PloegEntryCreateForm {
   final PloegType ploegType;
-  final int? year;
+  final int year;
   final String? name;
+  final PloegRole role;
   final String firstName;
   final String lastName;
   final String identifier;
 
   PloegEntryCreateForm({
     required this.ploegType,
-    this.year,
+    required this.year,
     this.name,
+    required this.role,
     required this.firstName,
     required this.lastName,
     required this.identifier,
@@ -63,14 +84,41 @@ class PloegEntryCreateForm {
     PloegType? ploegType,
     int? year,
     String? name,
+    PloegRole? role,
   }) {
     return PloegEntryCreateForm(
+      firstName: firstName,
+      identifier: identifier,
+      lastName: lastName,
       ploegType: ploegType ?? this.ploegType,
       year: year ?? this.year,
       name: name ?? this.name,
-      firstName: firstName,
-      lastName: lastName,
-      identifier: identifier,
+      role: role ?? this.role,
     );
+  }
+
+  factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
+    return PloegEntryCreateForm(
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      identifier: json['identifier'],
+      ploegType: PloegType.values.byName(json['ploegType']),
+      year: json['year'],
+      name: json['name'],
+      role: PloegRole.values.byName(json['role']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'identifier': identifier,
+      'ploegType': ploegType.name,
+      'year': year,
+      'name': name,
+      'role': role.name,
+      'type': 'ploeg',
+    };
   }
 }
