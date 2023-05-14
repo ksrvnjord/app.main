@@ -19,6 +19,16 @@ class SelectPloegPage extends ConsumerWidget {
 
     const double ploegenHeaderFontSize = 24;
 
+    const int startYear = 1874;
+    final List<int> years = List.generate(
+      DateTime.now().year - startYear,
+      (index) =>
+          // '2022-2023', '2021-2022', ...
+          DateTime.now().year - index - 1,
+    );
+
+    const double menuMaxHeight = 240;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies een ploeg'),
@@ -55,37 +65,59 @@ class SelectPloegPage extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         if (ploegEntryForm.ploegType == PloegType.competitie)
-          SegmentedButton<Gender>(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                  states.contains(MaterialState.selected)
-                      ? Colors.blue
-                      : Colors.blue.shade100),
-              foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                  states.contains(MaterialState.selected)
-                      ? Colors.white
-                      : Colors.blueGrey),
-            ),
-            segments: [
-              for (final gender in Gender.values)
-                ButtonSegment(
-                  label: Text(gender.value),
-                  value: gender,
-                ),
-            ],
-            selected: {
-              selectedGender,
-            },
-            onSelectionChanged: (types) => ref
-                .read(ploegGeslachtFilterProvider.notifier)
-                .state = types.first,
+          [
+            SegmentedButton<Gender>(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith((states) =>
+                    states.contains(MaterialState.selected)
+                        ? Colors.blue
+                        : Colors.blue.shade100),
+                foregroundColor: MaterialStateProperty.resolveWith((states) =>
+                    states.contains(MaterialState.selected)
+                        ? Colors.white
+                        : Colors.blueGrey),
+              ),
+              segments: [
+                for (final gender in Gender.values)
+                  ButtonSegment(
+                    label: Text(gender.value),
+                    value: gender,
+                  ),
+              ],
+              selected: {
+                selectedGender,
+              },
+              onSelectionChanged: (types) => ref
+                  .read(ploegGeslachtFilterProvider.notifier)
+                  .state = types.first,
+              // ignore: no-magic-number
+            ).expanded(flex: 5),
+            DropdownButton<int>(
+              menuMaxHeight: menuMaxHeight,
+              // isExpanded: true,
+              value: ploegEntryForm.year,
+              onChanged: (value) => ref
+                  .read(ploegEntryCreateNotifierProvider.notifier)
+                  .setYear(value!),
+              items: years
+                  .map((year) => DropdownMenuItem(
+                        value: year,
+                        child: Text("$year-${year + 1}"),
+                        // alignment: AlignmentDirectional.center,
+                      ))
+                  .toList(),
+              // ignore: no-magic-number
+            ).expanded(flex: 2),
+          ].toRow(
+            separator: const SizedBox(width: 32),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         const SizedBox(height: 16),
         const Text("Ploegen").fontSize(ploegenHeaderFontSize),
         for (final ploeg in ploegen)
           ListTile(
             title: Text(ploeg),
-            trailing: const Icon(Icons.arrow_forward_ios),
+            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
             // ignore: prefer-extracting-callbacks
             onTap: () {
               ref

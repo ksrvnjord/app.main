@@ -7,15 +7,19 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
 
 final ploegenProvider = Provider<List<String>>((ref) {
-  final selectedType = ref.watch(ploegEntryCreateNotifierProvider).ploegType;
+  final form = ref.watch(ploegEntryCreateNotifierProvider);
+  final selectedType = form.ploegType;
   switch (selectedType) {
     case PloegType.wedstrijd:
       return ref.watch(wedstrijdPloegenProvider);
     case PloegType.competitie:
-      final Gender selectedGender = ref.watch(ploegGeslachtFilterProvider);
+      final Gender selectedGender = ref.watch(
+        ploegGeslachtFilterProvider,
+      ); // is not part of the submission to Firestore
+      final int selectedYear = form.year;
 
       final ploegen = ref.watch(competitiePloegenProvider(
-        CompetitiePloegQuery(gender: selectedGender, year: 2022),
+        CompetitiePloegQuery(gender: selectedGender, year: selectedYear),
       ));
 
       return ploegen.when(
