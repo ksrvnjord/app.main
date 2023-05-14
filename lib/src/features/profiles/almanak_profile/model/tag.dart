@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class Tag {
   const Tag({
     required this.label,
-    this.backgroundColor,
-    this.icon,
+    required this.backgroundColor,
+    required this.icon,
   });
 
   final String label;
-  final Color? backgroundColor;
-  final IconData? icon;
+  final Color backgroundColor;
+  final IconData icon;
 }

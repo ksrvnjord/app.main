@@ -75,20 +75,21 @@ class UserGroupsListWidget extends StatelessWidget {
           header: doc.data().name,
           startYear: doc.data().year,
           endYear: doc.data().year + 1,
-          tags: [
-            if (commissieEntry.function != null &&
-                commissieEntry.function!.isNotEmpty)
-              Tag(
-                label: commissieEntry.function!,
-                backgroundColor: {
-                      "Praeses": Colors.lightBlue[300]!,
-                      "Ab-actis": Colors.red[300]!,
-                      "Quaestor": Colors.lightGreen[300]!,
-                    }[commissieEntry.function!] ??
-                    Colors.blueGrey[300]!,
-                icon: Icons.person,
-              ),
-          ],
+          tags: (commissieEntry.function == null ||
+                  commissieEntry.function!.isEmpty)
+              ? null
+              : [
+                  Tag(
+                    label: commissieEntry.function!,
+                    backgroundColor: {
+                          "Praeses": Colors.lightBlue[300]!,
+                          "Ab-actis": Colors.red[300]!,
+                          "Quaestor": Colors.lightGreen[300]!,
+                        }[commissieEntry.function!] ??
+                        Colors.blueGrey[300]!,
+                    icon: Icons.person,
+                  ),
+                ],
         );
       case PloegEntry:
         final ploegEntry = entry as PloegEntry;

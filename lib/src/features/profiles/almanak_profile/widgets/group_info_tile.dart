@@ -49,16 +49,12 @@ class GroupInfoTile extends StatelessWidget {
                       color: Colors.white,
                     ),
                     // show avatar
-                    avatar: tag.icon != null
-                        ? Icon(
-                            tag.icon,
-                            color: Colors.white,
-                            size: iconSize,
-                          )
-                        : null,
-                    labelPadding: tag.icon != null
-                        ? const EdgeInsets.only(right: 8)
-                        : null,
+                    avatar: Icon(
+                      tag.icon,
+                      color: Colors.white,
+                      size: iconSize,
+                    ),
+                    labelPadding: const EdgeInsets.only(right: 8),
                     backgroundColor: tag.backgroundColor,
                   ))
               .toList(),
