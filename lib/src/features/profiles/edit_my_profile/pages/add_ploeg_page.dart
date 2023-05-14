@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:tuple/tuple.dart';
 
 class AddPloegPage extends ConsumerWidget {
   const AddPloegPage({Key? key}) : super(key: key);
