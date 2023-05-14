@@ -34,13 +34,18 @@ final almanakUserProvider =
     return profile.copyWith(
       email: heimdallProfilePublic.email,
       phonePrimary: heimdallProfilePublic.phone_primary,
-      address: Address(
-        street: heimdallProfilePublic.street,
-        houseNumber: heimdallProfilePublic.housenumber,
-        city: heimdallProfilePublic.city,
-        postalCode: heimdallProfilePublic.zipcode,
-        houseNumberAddition: heimdallProfilePublic.housenumber_addition,
-      ),
+      address: heimdallProfilePublic.street != null ||
+              heimdallProfilePublic.housenumber != null ||
+              heimdallProfilePublic.city != null ||
+              heimdallProfilePublic.zipcode != null
+          ? Address(
+              street: heimdallProfilePublic.street,
+              houseNumber: heimdallProfilePublic.housenumber,
+              city: heimdallProfilePublic.city,
+              postalCode: heimdallProfilePublic.zipcode,
+              houseNumberAddition: heimdallProfilePublic.housenumber_addition,
+            )
+          : null,
     );
   },
 );

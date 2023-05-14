@@ -53,7 +53,7 @@ class CommissieEntry extends GroupEntry {
     String? firstName,
     String? lastName,
     String? identifier,
-    String? name,
+    required String name,
   }) {
     return CommissieEntry(
       startYear: startYear ?? this.startYear,
@@ -62,7 +62,7 @@ class CommissieEntry extends GroupEntry {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       identifier: identifier ?? this.identifier,
-      name: name ?? this.name,
+      name: name,
     );
   }
 }

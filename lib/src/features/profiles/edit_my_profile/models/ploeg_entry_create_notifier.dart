@@ -31,7 +31,7 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
           year: getNjordYear(),
         ));
 
-  void setPloegType(PloegType? ploegType) {
+  void setPloegType(PloegType ploegType) {
     state = state.copyWith(ploegType: ploegType);
   }
 
@@ -39,11 +39,11 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     state = state.copyWith(year: year);
   }
 
-  void setPloegName(String? name) {
+  void setPloegName(String name) {
     state = state.copyWith(name: name);
   }
 
-  void setRole(PloegRole? role) {
+  void setRole(PloegRole role) {
     state = state.copyWith(role: role);
   }
 
