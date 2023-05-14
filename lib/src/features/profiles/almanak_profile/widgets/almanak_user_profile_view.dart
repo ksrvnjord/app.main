@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
@@ -42,6 +43,8 @@ class AlmanakUserProfileView extends ConsumerWidget {
         ref.watch(almanakUserProvider(identifier));
 
     final userCommissies = ref.watch(commissiesForUserProvider(identifier));
+
+    final userPloegen = ref.watch(ploegenForUserProvider(identifier));
 
     return ListView(
       children: [

@@ -1,21 +1,25 @@
-class CommissieEntry {
-  String name;
-  String firstName; // user first name
-  String lastName; // user last name
-  String lidnummer; // user identifier
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
+
+class CommissieEntry extends GroupEntry {
   int startYear;
   int endYear;
   String? function;
 
   CommissieEntry({
-    required this.name,
     required this.startYear,
-    required this.firstName,
-    required this.lastName,
-    required this.lidnummer,
     required this.endYear,
+    required firstName,
+    required lastName,
+    required identifier,
+    required name,
     this.function,
-  });
+  }) : super(
+          year: startYear,
+          name: name,
+          firstName: firstName,
+          lastName: lastName,
+          identifier: identifier,
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -25,7 +29,7 @@ class CommissieEntry {
       'function': function,
       'user_first_name': firstName,
       'user_last_name': lastName,
-      'user_identifier': lidnummer,
+      'user_identifier': identifier,
     };
   }
 
@@ -37,7 +41,28 @@ class CommissieEntry {
       function: json['function'],
       firstName: json['user_first_name'],
       lastName: json['user_last_name'],
-      lidnummer: json['user_identifier'],
+      identifier: json['user_identifier'],
+    );
+  }
+
+  // copy with
+  CommissieEntry copyWith({
+    int? startYear,
+    int? endYear,
+    String? function,
+    String? firstName,
+    String? lastName,
+    String? identifier,
+    String? name,
+  }) {
+    return CommissieEntry(
+      startYear: startYear ?? this.startYear,
+      endYear: endYear ?? this.endYear,
+      function: function ?? this.function,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      identifier: identifier ?? this.identifier,
+      name: name ?? this.name,
     );
   }
 }
