@@ -5,12 +5,13 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart'
 final ploegEntryCreateNotifierProvider =
     StateNotifierProvider<PloegEntryCreateNotifier, PloegEntryCreateForm>(
   (ref) {
-    final u = ref.watch(currentFirebaseUserProvider);
+    final currentUser = ref.watch(currentFirebaseUserProvider);
 
     return PloegEntryCreateNotifier(
-      firstName: u!.firstName,
-      lastName: u.lastName,
-      identifier: u.uid,
+      firstName: currentUser!.firstName,
+      lastName: currentUser.lastName,
+      identifier: currentUser.uid,
+      ploegType: PloegType.competitie,
     );
   },
 );
@@ -20,10 +21,12 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     required String firstName,
     required String lastName,
     required String identifier,
+    required PloegType ploegType,
   }) : super(PloegEntryCreateForm(
           firstName: firstName,
           lastName: lastName,
           identifier: identifier,
+          ploegType: ploegType,
         ));
 
   void setPloegType(PloegType? ploegType) {
@@ -37,22 +40,10 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
   void setName(String? name) {
     state = state.copyWith(name: name);
   }
-
-  void setFirstName(String? firstName) {
-    state = state.copyWith(firstName: firstName);
-  }
-
-  void setLastName(String? lastName) {
-    state = state.copyWith(lastName: lastName);
-  }
-
-  void setIdentifier(String? identifier) {
-    state = state.copyWith(identifier: identifier);
-  }
 }
 
 class PloegEntryCreateForm {
-  final PloegType? ploegType;
+  final PloegType ploegType;
   final int? year;
   final String? name;
   final String firstName;
@@ -60,7 +51,7 @@ class PloegEntryCreateForm {
   final String identifier;
 
   PloegEntryCreateForm({
-    this.ploegType,
+    required this.ploegType,
     this.year,
     this.name,
     required this.firstName,
@@ -72,17 +63,14 @@ class PloegEntryCreateForm {
     PloegType? ploegType,
     int? year,
     String? name,
-    String? firstName,
-    String? lastName,
-    String? identifier,
   }) {
     return PloegEntryCreateForm(
       ploegType: ploegType ?? this.ploegType,
       year: year ?? this.year,
       name: name ?? this.name,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      identifier: identifier ?? this.identifier,
+      firstName: firstName,
+      lastName: lastName,
+      identifier: identifier,
     );
   }
 }

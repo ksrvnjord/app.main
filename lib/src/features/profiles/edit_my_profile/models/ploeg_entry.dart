@@ -54,6 +54,10 @@ class PloegEntry extends GroupEntry {
 }
 
 enum PloegType {
-  competitie,
-  wedstrijd,
+  competitie("Competitie"),
+  wedstrijd("Wedstrijd");
+
+  const PloegType(this.name);
+
+  final String name;
 }
