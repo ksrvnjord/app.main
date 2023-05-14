@@ -17,7 +17,8 @@ class ErrorCardWidget extends StatelessWidget {
     const double errorCardHeight = 100;
     const double errorTitleFontSize = 18;
     const double cardBorderWidth = 2;
-    log(errorMessage);
+    // ignore: no-magic-number
+    log(errorMessage, level: 2000);
 
     return GestureDetector(
       child: Container(
