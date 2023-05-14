@@ -110,7 +110,7 @@ match /people/{personId} {
       allow write: if isLoggedIn() && isOwnDocument();
   }
 }
-match /substructuur_info/{document=**} {
+match /group_info/{document=**} {
   allow read: if isLoggedIn();
 }
   
