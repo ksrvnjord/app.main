@@ -45,6 +45,13 @@ class AddPloegPage extends ConsumerWidget {
           ref
               .read(ploegEntryCreateNotifierProvider.notifier)
               .createPloegEntry();
+          // show confirmation dialog
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ploeg succesvol toegevoegd'),
+              backgroundColor: Colors.green,
+            ),
+          );
           Routemaster.of(context).replace('/home/edit/groups');
         },
         label: const Text('Opslaan'),
