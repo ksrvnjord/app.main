@@ -25,34 +25,37 @@ class EditGroupsPage extends ConsumerWidget {
           'Mijn ploegen',
         ), // TODO: in the future make this My groups as this page will serve as a hub for all groups
       ),
-      body: ListView(
-        children: [
-          myPloegen.when(
-            data: (data) => data.docs
-                .map((doc) => ListTile(
-                      leading: [
-                        Text(
-                          "${doc.data().year}-${doc.data().year + 1}",
-                        ),
-                      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                      title: Text(
-                        doc.data().name,
-                        style: const TextStyle(
-                          fontSize: titleFontSize,
-                        ),
-                      ),
-                      subtitle: Text(doc.data().role.value),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => doc.reference.delete(),
-                      ),
-                    ))
-                .toList()
-                .toColumn(),
-            error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-            loading: () => const CircularProgressIndicator().center(),
-          ),
-        ],
+      body: myPloegen.when(
+        data: (data) => data.size == 0
+            ? const Text('Voeg een ploeg toe om te beginnen').center()
+            : ListView(
+                children: [
+                  data.docs
+                      .map((doc) => ListTile(
+                            leading: [
+                              Text(
+                                "${doc.data().year}-${doc.data().year + 1}",
+                              ),
+                            ].toColumn(
+                                mainAxisAlignment: MainAxisAlignment.center),
+                            title: Text(
+                              doc.data().name,
+                              style: const TextStyle(
+                                fontSize: titleFontSize,
+                              ),
+                            ),
+                            subtitle: Text(doc.data().role.value),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => doc.reference.delete(),
+                            ),
+                          ))
+                      .toList()
+                      .toColumn(),
+                ],
+              ),
+        error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+        loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Routemaster.of(context).push('ploeg'),

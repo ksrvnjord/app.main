@@ -114,18 +114,25 @@ class SelectPloegPage extends ConsumerWidget {
           ),
         const SizedBox(height: 16),
         const Text("Ploegen").fontSize(ploegenHeaderFontSize),
-        for (final ploeg in ploegen)
-          ListTile(
-            title: Text(ploeg),
-            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
-            // ignore: prefer-extracting-callbacks
-            onTap: () {
-              ref
-                  .read(ploegEntryCreateNotifierProvider.notifier)
-                  .setPloegName(ploeg);
-              Routemaster.of(context).push("add");
-            },
-          ),
+        ploegen.isEmpty
+            ? const Text("Geen ploegen gevonden").center()
+            : const SizedBox(),
+        ...ploegen
+            .map(
+              (ploeg) => ListTile(
+                title: Text(ploeg),
+                trailing:
+                    const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  ref
+                      .read(ploegEntryCreateNotifierProvider.notifier)
+                      .setPloegName(ploeg);
+                  Routemaster.of(context).push("add");
+                },
+              ),
+            )
+            .toList(),
       ]),
     );
   }
