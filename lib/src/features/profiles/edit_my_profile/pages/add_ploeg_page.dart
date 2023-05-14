@@ -73,9 +73,11 @@ class AddPloegPage extends ConsumerWidget {
             labelText: "Welk jaar?",
           ),
           value: ploegEntryForm.year,
-          onChanged: (value) => ref
-              .read(ploegEntryCreateNotifierProvider.notifier)
-              .setYear(value),
+          onChanged: ploegEntryForm.ploegType == PloegType.competitie
+              ? null // competitieploegen are already set for a year
+              : (int? value) => ref
+                  .read(ploegEntryCreateNotifierProvider.notifier)
+                  .setYear(value),
           items: years
               .map((year) => DropdownMenuItem(
                     value: year,
