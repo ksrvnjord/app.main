@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../../edit_my_profile/models/commissie_entry.dart';
@@ -9,11 +8,9 @@ class CommissiesListWidget extends StatelessWidget {
   const CommissiesListWidget({
     Key? key,
     required this.snapshot,
-    required this.legacyCommissies, // TODO: remove this after 1 june 2023, this is to support old way to enter commissies
   }) : super(key: key);
 
   final QuerySnapshot<CommissieEntry> snapshot;
-  final List<String>? legacyCommissies;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +29,10 @@ class CommissiesListWidget extends StatelessWidget {
     const double commissieNameFontSize = 20;
     const double headerBottomPadding = 8;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: docs.isNotEmpty
-          ? [
+    return docs.isNotEmpty
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               const Text("Commissies")
                   .fontSize(fieldTitleFontSize)
                   .textColor(Colors.grey)
@@ -103,12 +100,8 @@ class CommissiesListWidget extends StatelessWidget {
                   )
                   .toList()
                   .toColumn(),
-            ]
-          : [
-              legacyCommissies != null && legacyCommissies!.isNotEmpty
-                  ? ChipWidget(title: "Commissies", values: legacyCommissies!)
-                  : Container(),
             ],
-    );
+          )
+        : const SizedBox.shrink();
   }
 }

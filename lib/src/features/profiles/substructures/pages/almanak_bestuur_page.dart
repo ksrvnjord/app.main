@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_pro
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/bestuurs_volgorde.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -46,25 +46,28 @@ class AlmanakBestuurPage extends ConsumerWidget {
     );
   }
 
-  Widget buildBestuurList(QuerySnapshot<AlmanakProfile> snapshot) {
-    List<QueryDocumentSnapshot<AlmanakProfile>> docs = snapshot.docs;
+  Widget buildBestuurList(QuerySnapshot<FirestoreAlmanakProfile> snapshot) {
+    List<QueryDocumentSnapshot<FirestoreAlmanakProfile>> docs = snapshot.docs;
     // we want to sort baseed on the bestuurs_volgorde
     docs.sort((a, b) => compareBestuursFunctie(a.data(), b.data()));
 
     return <Widget>[
       ...docs.map(
         (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName!,
-          lastName: doc.data().lastName!,
+          firstName: doc.data().firstName,
+          lastName: doc.data().lastName,
           subtitle: doc.data().bestuursFunctie!,
-          lidnummer: doc.data().lidnummer,
+          lidnummer: doc.data().identifier,
         ),
       ),
     ].toColumn();
   }
 
   /// Compare the bestuursfuncties op basis van constitutie
-  int compareBestuursFunctie(AlmanakProfile a, AlmanakProfile b) =>
+  int compareBestuursFunctie(
+    FirestoreAlmanakProfile a,
+    FirestoreAlmanakProfile b,
+  ) =>
       bestuurVolgorde
           .indexOf(a.bestuursFunctie!)
           .compareTo(bestuurVolgorde.indexOf(b.bestuursFunctie!));

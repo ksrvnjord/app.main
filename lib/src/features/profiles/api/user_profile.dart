@@ -4,32 +4,46 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 // retrieves all data from firestore and heimdall for a given user
 final almanakUserProvider =
-    FutureProvider.family<AlmanakProfile, String>((ref, lidnummer) async {
-  if (FirebaseAuth.instance.currentUser == null) {
-    // if in DEMO mode, the lidnummer is the heimdall id
-    final profile = await ref.watch(heimdallUserByIdProvider(lidnummer).future);
+    FutureProvider.family<FirestoreAlmanakProfile, String>(
+  (ref, lidnummer) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      // if in DEMO mode, the lidnummer is the heimdall id
+      final profile =
+          await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
-    return AlmanakProfile.fromHeimdall(profile!);
-  }
+      return FirestoreAlmanakProfile.fromHeimdall(profile!);
+    }
 
-  // call both queries in parallel
-  final heimdallProfile =
-      ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
+    // call both queries in parallel
+    final heimdallProfile =
+        ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
-  AlmanakProfile profile =
-      (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
-  final heimdallProfileData = await heimdallProfile;
+    FirestoreAlmanakProfile profile =
+        (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
+    final heimdallProfileData = await heimdallProfile;
 
-  // merge the data
-  profile.mergeWithHeimdallProfile(heimdallProfileData!.fullContact.public);
+    // merge the data
+    final heimdallProfilePublic = heimdallProfileData!.fullContact.public;
 
-  return profile;
-});
+    return profile.copyWith(
+      email: heimdallProfilePublic.email,
+      phonePrimary: heimdallProfilePublic.phone_primary,
+      address: Address(
+        street: heimdallProfilePublic.street,
+        houseNumber: heimdallProfilePublic.housenumber,
+        city: heimdallProfilePublic.city,
+        postalCode: heimdallProfilePublic.zipcode,
+        houseNumberAddition: heimdallProfilePublic.housenumber_addition,
+      ),
+    );
+  },
+);
 
 final heimdallUserByLidnummerProvider = FutureProvider.family<
     Query$AlmanakProfileByIdentifier$userByIdentifier?,

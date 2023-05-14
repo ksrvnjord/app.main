@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
 import 'package:routemaster/routemaster.dart';
 import 'dart:io';
@@ -17,13 +17,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_pict
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
-    .collection('people')
-    .withConverter<AlmanakProfile>(
-      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
 
 class EditAlmanakProfilePage extends ConsumerStatefulWidget {
   const EditAlmanakProfilePage({
@@ -159,7 +152,7 @@ class _EditAlmanakProfilePageState
                       title: const Text('Substructuren'),
                       // ignore: no-equal-arguments
                       buttonText: const Text('Substructuren'),
-                      initialValue: user.data().substructuren ?? [],
+                      initialValue: user.data().substructures ?? [],
                       onSaved: (substructures) => ref
                           .read(profileEditFormNotifierProvider.notifier)
                           .setSubstructuren(substructures),
@@ -239,8 +232,15 @@ class _EditAlmanakProfilePageState
     // Get user id from FirebaseAuth
 
     // FIND DOCUMENT OF CURRENT USER
-    final QuerySnapshot<AlmanakProfile> querySnapshot =
-        await people.where('identifier', isEqualTo: getCurrentUserId()).get();
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('people')
+        .withConverter<FirestoreAlmanakProfile>(
+          fromFirestore: (snapshot, _) =>
+              FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+          toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+        )
+        .where('identifier', isEqualTo: getCurrentUserId())
+        .get();
 
     // SAVE FORM
     _formKey.currentState?.save();
