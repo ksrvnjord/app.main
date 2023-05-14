@@ -4,8 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_pr
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
-final groupsForUserProvider =
-    FutureProvider.family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
+final groupsForUserProvider = FutureProvider.autoDispose
+    .family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
   (ref, userId) async {
     final commissies = ref.watch(commissiesForUserProvider(userId).future);
 

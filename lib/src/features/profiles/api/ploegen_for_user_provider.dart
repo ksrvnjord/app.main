@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 
-final ploegenForUserProvider =
-    FutureProvider.family<QuerySnapshot<PloegEntry>, String>((ref, userId) {
+final ploegenForUserProvider = FutureProvider.family
+    .autoDispose<QuerySnapshot<PloegEntry>, String>((ref, userId) {
   return FirebaseFirestore.instance
       .collection("people")
       .doc(userId)

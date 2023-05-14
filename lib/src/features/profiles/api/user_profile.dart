@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 
 // retrieves all data from firestore and heimdall for a given user
 final almanakUserProvider =
-    FutureProvider.family<FirestoreAlmanakProfile, String>(
+    FutureProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async {
     if (FirebaseAuth.instance.currentUser == null) {
       // if in DEMO mode, the lidnummer is the heimdall id
