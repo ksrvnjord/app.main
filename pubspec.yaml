@@ -73,6 +73,7 @@ dependencies:
   flutter_svg: ^2.0.5
   expandable: ^5.0.1
   weather_icons: ^3.0.0
+  stack_trace: any
 
 
 dev_dependencies:
