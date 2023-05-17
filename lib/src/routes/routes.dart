@@ -174,6 +174,10 @@ final routeMap = RouteMap(
             userId: route.pathParameters['identifier']!,
           ),
         ),
+    '/almanak/ploegen': (_) => const CupertinoPage(
+          name: 'Ploegen',
+          child: SelectPloegPage(),
+        ),
     '/almanak/huizen': (_) => const CupertinoPage(
           name: 'Huizen',
           child: ChoicePage(

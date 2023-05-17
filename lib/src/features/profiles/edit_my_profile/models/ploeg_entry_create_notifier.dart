@@ -10,9 +10,9 @@ final ploegEntryCreateNotifierProvider =
     final currentUser = ref.watch(currentFirebaseUserProvider);
 
     return PloegEntryCreateNotifier(
-      firstName: currentUser!.firstName,
-      lastName: currentUser.lastName,
-      identifier: currentUser.uid,
+      firstName: currentUser?.firstName ?? '',
+      lastName: currentUser?.lastName ?? '',
+      identifier: currentUser?.uid ?? '',
     );
   },
 );

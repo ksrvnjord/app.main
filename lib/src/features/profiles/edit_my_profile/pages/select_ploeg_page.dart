@@ -9,7 +9,10 @@ import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SelectPloegPage extends ConsumerWidget {
-  const SelectPloegPage({Key? key}) : super(key: key);
+  const SelectPloegPage({Key? key})
+      : super(
+          key: key,
+        ); // TODO: make this page more modular so that it can be used to find a ploeg in the almanak, as selecting a ploeg for adding to profile, by changing the route where it navigates to
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,7 +94,7 @@ class SelectPloegPage extends ConsumerWidget {
                   .read(ploegGeslachtFilterProvider.notifier)
                   .state = types.first,
               // ignore: no-magic-number
-            ).expanded(flex: 5),
+            ).expanded(),
             DropdownButton<int>(
               menuMaxHeight: menuMaxHeight,
               // isExpanded: true,
@@ -107,9 +110,9 @@ class SelectPloegPage extends ConsumerWidget {
                       ))
                   .toList(),
               // ignore: no-magic-number
-            ).expanded(flex: 2),
+            ),
           ].toRow(
-            separator: const SizedBox(width: 32),
+            separator: const SizedBox(width: 48),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         const SizedBox(height: 16),
