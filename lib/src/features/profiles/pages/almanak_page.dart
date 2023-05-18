@@ -42,7 +42,7 @@ class AlmanakPage extends StatelessWidget {
               const AlmanakStructureChoiceWidget(
                 pushRoute: "ploegen",
                 title: "Ploegen",
-                imagePath: 'assets/images/huizen.jpeg',
+                imagePath: 'assets/images/ploegen.jpg',
               ),
               const AlmanakStructureChoiceWidget(
                 pushRoute: "huizen",
