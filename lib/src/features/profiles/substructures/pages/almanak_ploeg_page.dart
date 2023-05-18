@@ -79,7 +79,7 @@ class AlmanakPloegPage extends ConsumerWidget {
                 horizontal: headerHPadding,
               ),
           users.when(
-            data: (snapshot) => buildCommissieList(snapshot),
+            data: (snapshot) => buildPloegList(snapshot),
             error: (error, stk) =>
                 ErrorCardWidget(errorMessage: error.toString()),
             loading: () => const Center(
@@ -91,7 +91,7 @@ class AlmanakPloegPage extends ConsumerWidget {
     );
   }
 
-  Widget buildCommissieList(QuerySnapshot<PloegEntry> snapshot) {
+  Widget buildPloegList(QuerySnapshot<PloegEntry> snapshot) {
     List<QueryDocumentSnapshot<PloegEntry>> docs = snapshot.docs;
     docs.sort((a, b) => comparePloegFunctie(a.data(), b.data()));
     const double notFoundPadding = 16;
