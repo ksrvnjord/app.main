@@ -24,10 +24,9 @@ class AlmanakPloegPage extends ConsumerWidget {
     final selectedYear = ref.watch(ploegYearProvider);
     final selectedPloegType = ref.watch(ploegTypeProvider);
 
-    const yearSelectorPadding = 8.0;
     const double titleFontSize = 20;
     const double menuMaxHeight = 256;
-    const double titleHPadding = 16;
+    const double headerHPadding = 16;
 
     const int startYear = 1874;
     final List<int> years = List.generate(
@@ -46,15 +45,14 @@ class AlmanakPloegPage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.only(bottom: 80),
         children: [
           [
             const Text("Leeden")
                 .textColor(Colors.blueGrey)
                 .fontSize(titleFontSize)
                 .fontWeight(FontWeight.w500)
-                .alignment(Alignment.centerLeft)
-                .padding(horizontal: titleHPadding),
+                .alignment(Alignment.centerLeft),
             if (selectedPloegType ==
                 PloegType.wedstrijd) // for wedstrijd we need a year selector
               [
@@ -78,7 +76,7 @@ class AlmanakPloegPage extends ConsumerWidget {
                 ),
               ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
-                right: yearSelectorPadding,
+                horizontal: headerHPadding,
               ),
           users.when(
             data: (snapshot) => buildCommissieList(snapshot),
