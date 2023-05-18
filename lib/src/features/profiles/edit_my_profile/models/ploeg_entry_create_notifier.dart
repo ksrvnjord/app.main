@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 
@@ -8,11 +9,15 @@ final ploegEntryCreateNotifierProvider =
     StateNotifierProvider<PloegEntryCreateNotifier, PloegEntryCreateForm>(
   (ref) {
     final currentUser = ref.watch(currentFirebaseUserProvider);
+    final ploegType = ref.watch(ploegTypeProvider);
+    final selectedYear = ref.watch(ploegYearProvider);
 
     return PloegEntryCreateNotifier(
       firstName: currentUser?.firstName ?? '',
       lastName: currentUser?.lastName ?? '',
       identifier: currentUser?.uid ?? '',
+      ploegType: ploegType,
+      year: selectedYear,
     );
   },
 );
@@ -22,13 +27,15 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     required String firstName,
     required String lastName,
     required String identifier,
+    required PloegType ploegType,
+    required int year,
   }) : super(PloegEntryCreateForm(
           firstName: firstName,
           lastName: lastName,
           identifier: identifier,
-          ploegType: PloegType.competitie,
+          ploegType: ploegType,
           role: PloegRole.roeier,
-          year: getNjordYear(),
+          year: year,
         ));
 
   void setPloegType(PloegType ploegType) {

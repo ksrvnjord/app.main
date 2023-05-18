@@ -18,6 +18,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
@@ -36,6 +37,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/s
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
@@ -176,7 +178,18 @@ final routeMap = RouteMap(
         ),
     '/almanak/ploegen': (_) => const CupertinoPage(
           name: 'Ploegen',
-          child: SelectPloegPage(),
+          child: PloegChoicePage(),
+        ),
+    '/almanak/ploegen/:ploeg': (route) => CupertinoPage(
+          name: 'Ploegen',
+          child: AlmanakPloegPage(
+            ploegName: Uri.decodeFull(route.pathParameters['ploeg']!),
+          ),
+        ),
+    '/almanak/ploegen/:ploeg/:userId': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['userId']!,
+          ),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(
           name: 'Huizen',

@@ -6,22 +6,21 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SelectPloegPage extends ConsumerWidget {
-  const SelectPloegPage({Key? key})
+class PloegChoicePage extends ConsumerWidget {
+  const PloegChoicePage({Key? key})
       : super(
           key: key,
-        ); // TODO: make this page more modular so that it can be used to find a ploeg in the almanak, as selecting a ploeg for adding to profile, by changing the route where it navigates to
+        );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ploegen = ref.watch(ploegenProvider);
     final selectedGender = ref.watch(ploegGeslachtFilterProvider);
     final ploegType = ref.watch(ploegTypeProvider);
-    final selectedYear = ref.watch(ploegYearProvider);
+    final ploegYear = ref.watch(ploegYearProvider);
+    final ploegen = ref.watch(ploegenProvider);
 
     const double ploegenHeaderFontSize = 24;
 
@@ -100,7 +99,7 @@ class SelectPloegPage extends ConsumerWidget {
             DropdownButton<int>(
               menuMaxHeight: menuMaxHeight,
               // isExpanded: true,
-              value: selectedYear,
+              value: ploegYear,
               onChanged: (value) =>
                   ref.read(ploegYearProvider.notifier).state = value!,
               items: years
@@ -128,12 +127,7 @@ class SelectPloegPage extends ConsumerWidget {
                 trailing:
                     const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                 // ignore: prefer-extracting-callbacks
-                onTap: () {
-                  ref
-                      .read(ploegEntryCreateNotifierProvider.notifier)
-                      .setPloegName(ploeg);
-                  Routemaster.of(context).push("add");
-                },
+                onTap: () => Routemaster.of(context).push(ploeg),
               ),
             )
             .toList(),
