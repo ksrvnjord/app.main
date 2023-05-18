@@ -34,26 +34,30 @@ class AlmanakPage extends StatelessWidget {
                 pushRoute: "bestuur",
                 imagePath: 'assets/images/bestuur.jpeg',
               ),
-              const AlmanakStructureChoiceWidget(
-                title: "Commissies",
-                pushRoute: "commissies",
-                imagePath: 'assets/images/commissies.jpeg',
-              ),
-              const AlmanakStructureChoiceWidget(
-                pushRoute: "ploegen",
-                title: "Ploegen",
-                imagePath: 'assets/images/ploegen.jpg',
-              ),
-              const AlmanakStructureChoiceWidget(
-                pushRoute: "huizen",
-                title: "Huizen",
-                imagePath: 'assets/images/huizen.jpeg',
-              ),
-              const AlmanakStructureChoiceWidget(
-                title: "Substructuren",
-                pushRoute: "substructuren",
-                imagePath: 'assets/images/substructures.jpeg',
-              ),
+              [
+                const AlmanakStructureChoiceWidget(
+                  title: "Commissies",
+                  pushRoute: "commissies",
+                  imagePath: 'assets/images/commissies.jpeg',
+                ).expanded(),
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "ploegen",
+                  title: "Ploegen",
+                  imagePath: 'assets/images/ploegen.jpg',
+                ).expanded(),
+              ].toRow(),
+              [
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "huizen",
+                  title: "Huizen",
+                  imagePath: 'assets/images/huizen.jpeg',
+                ).expanded(),
+                const AlmanakStructureChoiceWidget(
+                  title: "Substructuren",
+                  pushRoute: "substructuren",
+                  imagePath: 'assets/images/substructures.jpeg',
+                ).expanded(),
+              ].toRow(),
             ].toColumn(
               separator: const SizedBox(
                 height: choiceWidgetPadding,

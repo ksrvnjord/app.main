@@ -106,7 +106,7 @@ class AlmanakPloegPage extends ConsumerWidget {
         ),
       ),
       if (docs.isEmpty)
-        const Text("Geen Leeden gevonden voor deze ploeg gevonden")
+        Text("Geen Leeden gevonden voor $ploegName gevonden")
             .textColor(Colors.grey)
             .center()
             .padding(all: notFoundPadding),
