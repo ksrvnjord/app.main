@@ -37,7 +37,8 @@ class EditGroupsPage extends ConsumerWidget {
                                 "${doc.data().year}-${doc.data().year + 1}",
                               ),
                             ].toColumn(
-                                mainAxisAlignment: MainAxisAlignment.center),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
                             title: Text(
                               doc.data().name,
                               style: const TextStyle(
