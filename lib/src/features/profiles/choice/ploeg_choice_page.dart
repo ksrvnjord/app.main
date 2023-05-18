@@ -6,6 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -23,6 +25,8 @@ class PloegChoicePage extends ConsumerWidget {
     final ploegen = ref.watch(ploegenProvider);
 
     const double ploegenHeaderFontSize = 24;
+    const double titleShimmerPadding = 128;
+    const double titleShimmerHeight = 18;
 
     const int startYear = 1874;
     final List<int> years = List.generate(
@@ -117,20 +121,43 @@ class PloegChoicePage extends ConsumerWidget {
           ),
         const SizedBox(height: 16),
         const Text("Ploegen").fontSize(ploegenHeaderFontSize),
-        ploegen.isEmpty
-            ? const Text("Geen ploegen gevonden").center()
-            : const SizedBox(),
-        ...ploegen
-            .map(
-              (ploeg) => ListTile(
-                title: Text(ploeg),
-                trailing:
-                    const Icon(Icons.arrow_forward_ios, color: Colors.blue),
-                // ignore: prefer-extracting-callbacks
-                onTap: () => Routemaster.of(context).push(ploeg),
+        ploegen.when(
+          data: (data) => [
+            data.isEmpty
+                ? const Text("Geen ploegen gevonden").center()
+                : const SizedBox(),
+            ...data
+                .map(
+                  (ploeg) => ListTile(
+                    title: Text(ploeg),
+                    trailing:
+                        const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                    // ignore: prefer-extracting-callbacks
+                    onTap: () => Routemaster.of(context).push(ploeg),
+                  ),
+                )
+                .toList(),
+          ].toColumn(),
+          error: (error, _) => ErrorCardWidget(errorMessage: error.toString()),
+          loading: () => List.generate(
+            // ignore: no-magic-number
+            10,
+            (index) => ListTile(
+              title: ShimmerWidget(
+                child: Container(
+                  height: titleShimmerHeight,
+                  decoration: ShapeDecoration(
+                    shape: const RoundedRectangleBorder(),
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ).padding(right: titleShimmerPadding),
+              trailing: const ShimmerWidget(
+                child: Icon(Icons.arrow_forward_ios, color: Colors.grey),
               ),
-            )
-            .toList(),
+            ),
+          ).toColumn(),
+        ),
       ]),
     );
   }
