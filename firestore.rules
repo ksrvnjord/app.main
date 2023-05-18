@@ -79,6 +79,11 @@ match /{path=**}/commissies/{commissieEntry} {
   allow read: if isLoggedIn();
 }
 
+// everyone can CollectionGroupQuery on Groups
+match /{path=**}/groups/{groupEntry} {
+  allow read: if isLoggedIn();
+}
+
 match /people/{personId} {
   function isOwnDocument() {
     return request.auth.uid == personId;
