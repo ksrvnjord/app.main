@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
@@ -19,10 +21,21 @@ class AlmanakPloegPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final users = ref.watch(ploegUsersProvider(ploegName));
+    final selectedYear = ref.watch(ploegYearProvider);
+    final selectedPloegType = ref.watch(ploegTypeProvider);
 
     const yearSelectorPadding = 8.0;
     const double titleFontSize = 20;
+    const double menuMaxHeight = 256;
     const double titleHPadding = 16;
+
+    const int startYear = 1874;
+    final List<int> years = List.generate(
+      DateTime.now().year - startYear,
+      (index) =>
+          // '2022-2023', '2021-2022', ...
+          DateTime.now().year - index - 1,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -42,6 +55,28 @@ class AlmanakPloegPage extends ConsumerWidget {
                 .fontWeight(FontWeight.w500)
                 .alignment(Alignment.centerLeft)
                 .padding(horizontal: titleHPadding),
+            if (selectedPloegType ==
+                PloegType.wedstrijd) // for wedstrijd we need a year selector
+              [
+                const Text('Kies een jaar: ').textColor(Colors.blueGrey),
+                DropdownButton<int>(
+                  value: selectedYear,
+                  icon:
+                      const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+                  menuMaxHeight: menuMaxHeight,
+                  items: years
+                      .map(
+                        (year) => DropdownMenuItem<int>(
+                          value: year,
+                          child: Text("$year-${year + 1}")
+                              .textColor(Colors.blueGrey),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) =>
+                      ref.read(ploegYearProvider.notifier).state = value!,
+                ),
+              ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 right: yearSelectorPadding,
               ),
