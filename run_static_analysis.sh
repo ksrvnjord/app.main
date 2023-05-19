@@ -15,6 +15,7 @@ commands=(
     "flutter pub run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console"
     "flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib"
     "flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib"
+    "flutter pub run dependency_validator"
 )
 
 # loop through the array and execute each command
