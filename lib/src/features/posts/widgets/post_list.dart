@@ -16,7 +16,7 @@ class PostList extends ConsumerWidget {
       posts.when(
         data: (snapshot) => snapshot.size == 0
             ? const Center(
-                child: Text("Er zijn nog geen berichten geplaatst."),
+                child: Text("Wees de eerste die een post plaatst!"),
               )
             : [
                 for (final doc in snapshot.docs) ...[
@@ -36,6 +36,5 @@ class PostList extends ConsumerWidget {
         ),
       ),
     ]);
-    ;
   }
 }

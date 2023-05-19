@@ -24,6 +24,39 @@ class PostsPage extends ConsumerWidget {
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.lightBlue,
         ),
+        actions: [
+          // filter button
+          IconButton(
+            onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => Consumer(
+                builder: (_, ref, __) => Wrap(
+                  children: [
+                    RadioListTile<String?>(
+                      title: const Text("Alle posts"),
+                      value: null,
+                      groupValue: ref.watch(selectedTopicProvider),
+                      onChanged: (value) => ref
+                          .read(selectedTopicProvider.notifier)
+                          .state = value,
+                    ),
+                    for (final topic in topics)
+                      RadioListTile<String>(
+                        title: Text(topic),
+                        value: topic,
+                        groupValue: ref.watch(selectedTopicProvider),
+                        onChanged: (value) => ref
+                            .read(selectedTopicProvider.notifier)
+                            .state = value,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.filter_list),
+          ),
+        ],
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: FloatingActionButton.extended(
