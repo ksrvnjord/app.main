@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -313,6 +314,12 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       creatorName: creatorName,
     )).then((res) {
       if (res['success'] == true) {
+        FirebaseAnalytics.instance.logEvent(
+          name: 'reservation_created',
+          parameters: <String, dynamic>{
+            'reservation_object_name': widget.objectName,
+          },
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             showCloseIcon: true,
