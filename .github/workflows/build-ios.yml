@@ -3,6 +3,8 @@ name: Build iOS Application
 on:
   pull_request_review:
     types: [submitted] # on approval build iOS to be sure that it works
+  release:
+    types: [published]
 
 env:
   flutter_version: "3.7.7"
