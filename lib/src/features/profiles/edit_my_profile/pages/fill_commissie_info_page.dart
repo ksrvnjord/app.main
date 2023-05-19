@@ -100,8 +100,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                 hintText: 'Praeses, Abactis, etc.',
                 helperText: "Kan je ook leeg laten",
               ),
-              onSaved: (newValue) =>
-                  newValue != null ? _formData.function = newValue : null,
+              onSaved: (newValue) => newValue != null && newValue.isNotEmpty
+                  ? _formData.function = newValue
+                  : null,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(

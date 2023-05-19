@@ -149,7 +149,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           firstName: doc.data().firstName,
           lastName: doc.data().lastName,
           lidnummer: doc.data().identifier,
-          subtitle: doc.data().function ?? "",
+          subtitle: doc.data().function,
         ),
       ),
       if (docs.isEmpty)

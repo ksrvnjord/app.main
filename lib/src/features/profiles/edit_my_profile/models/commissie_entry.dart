@@ -26,7 +26,7 @@ class CommissieEntry extends GroupEntry {
       'name': name,
       'startYear': startYear,
       'endYear': endYear,
-      'function': function,
+      'function': function != null && function!.isNotEmpty ? function : null,
       'user_first_name': firstName,
       'user_last_name': lastName,
       'user_identifier': identifier,
@@ -38,7 +38,10 @@ class CommissieEntry extends GroupEntry {
       name: json['name'],
       startYear: json['startYear'],
       endYear: json['endYear'],
-      function: json['function'],
+      function: // only save function is it is not null and not empty
+          json['function'] != null && (json['function'] as String).isNotEmpty
+              ? json['function']
+              : null,
       firstName: json['user_first_name'],
       lastName: json['user_last_name'],
       identifier: json['user_identifier'],
