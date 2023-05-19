@@ -156,8 +156,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
               UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
               userPloegen.when(
-                data: (ploegenSnapshot) => (ploegenSnapshot.size > 0 &&
-                        (u.ploeg == null || u.ploeg!.isNotEmpty))
+                data: (ploegenSnapshot) => (u.ploeg == null ||
+                        u.ploeg!.isEmpty ||
+                        ploegenSnapshot.size > 0)
                     ? const SizedBox
                         .shrink() // user has filled in new ploegen widget, so don't show old ploegen widget
                     : DataTextListTile(name: "Ploeg", value: u.ploeg!),
