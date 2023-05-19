@@ -1,7 +1,5 @@
-import 'package:enough_platform_widgets/enough_platform_widgets.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/cupertino.dart';
-
+import 'package:package_info_plus/package_info_plus.dart';
 import 'firebase_options.dart';
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
@@ -52,6 +50,10 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(GlobalObserverService());
   GetIt.I.registerSingleton(GlobalConstants());
   GetIt.I.registerSingleton(CurrentUser());
+
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  await FirebaseAnalytics.instance
+      .setDefaultEventParameters({'version': packageInfo.version});
 
   final container =
       ProviderContainer(); // used to initialize always active providers
