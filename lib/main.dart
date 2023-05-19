@@ -1,3 +1,7 @@
+import 'package:enough_platform_widgets/enough_platform_widgets.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'firebase_options.dart';
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
@@ -142,7 +146,10 @@ class Application extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         routeInformationParser: const RoutemasterParser(),
         routerDelegate: RoutemasterDelegate(
-          observers: [GlobalObserver()],
+          observers: [
+            GlobalObserver(),
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+          ],
           routesBuilder: (context) => getRoutes(ref),
         ),
       ),

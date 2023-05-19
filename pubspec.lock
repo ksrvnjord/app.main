@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "867b77e2367bc502dcd4d5a66302615409f04eb20ed82ba1c0ba073f9107e018"
+      sha256: "8eb354cb8ebed8a9fdf63699d15deff533bc133128898afaf754926b57d611b6"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.1"
   action_sheet:
     dependency: "direct main"
     description:
@@ -281,6 +281,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.17.2"
+  cupertino_icons:
+    dependency: transitive
+    description:
+      name: cupertino_icons
+      sha256: e35129dc44c9118cee2a5603506d823bab99c68393879edb440e0090d07586be
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
+  cupertino_progress_bar:
+    dependency: transitive
+    description:
+      name: cupertino_progress_bar
+      sha256: "4962a7c6db9b94d1c19462ad6036fdf20db43defa4114c908a3c4cbef1b3a2e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  cupertino_stepper:
+    dependency: transitive
+    description:
+      name: cupertino_stepper
+      sha256: "124690b8b23db7b43fc6d547688e42a9f3d73c8f46d0b210568e98a04b5645b2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   custom_lint:
     dependency: transitive
     description:
@@ -353,6 +377,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  enough_platform_widgets:
+    dependency: "direct main"
+    description:
+      name: enough_platform_widgets
+      sha256: "7d9ae2de02decbff6d565348d5c4255a91879ce3ba77ebeaaf39a354f86bf52a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.2"
   expandable:
     dependency: "direct main"
     description:
@@ -409,6 +441,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      sha256: d283d7475afd8f9397889bf00961ddde55c3c2daf25334dd3e3a69db0f21c939
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.4.1"
+  firebase_analytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_analytics_platform_interface
+      sha256: e4f8f612a1847fc4e906bd581cbd84bea5385478ffa301dfe49796bf2c89308e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.1"
+  firebase_analytics_web:
+    dependency: transitive
+    description:
+      name: firebase_analytics_web
+      sha256: afeae10f89ef87b288e830d15ad1c712feedda881d27d422b2f064fa749952c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.4+1"
   firebase_app_check:
     dependency: "direct main"
     description:
@@ -461,26 +517,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: dcf54c170c5371ad0e79229d0fb372c58262ae0968b7de222bf28e51dd236be0
+      sha256: "250678b816279b3240c3a33e1f76bf712c00718f1fbeffc85873a5da8c077379"
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.0"
+    version: "2.13.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
-      sha256: ae79f335f6c7f2dadb00c98c429da2ca905d265e0225fb5e7dfa62ac3accad48
+      sha256: b63e3be6c96ef5c33bdec1aab23c91eb00696f6452f0519401d640938c94cba2
       url: "https://pub.dev"
     source: hosted
-    version: "4.7.0"
+    version: "4.8.0"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: e57ef862257a0d977c1308d02e2fbb9b68525e6d85711b08f3df8cec836fb444
+      sha256: "8c0f4c87d20e2d001a5915df238c1f9c88704231f591324205f5a5d2a7740a45"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.5.0"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -603,6 +659,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  flutter_platform_widgets:
+    dependency: transitive
+    description:
+      name: flutter_platform_widgets
+      sha256: "8ffd4a834f73a97dd8f1d73d6fcd067cdbe5e9190fb616e34772f1ffd14a277e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.4"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

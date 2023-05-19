@@ -66,6 +66,8 @@ dependencies:
   expandable: ^5.0.1
   weather_icons: ^3.0.0
   stack_trace: any
+  firebase_analytics: ^10.4.1
+  enough_platform_widgets: ^0.7.2
 
 
 dev_dependencies:
