@@ -81,13 +81,15 @@ class PloegChoicePage extends ConsumerWidget {
                 SegmentedButton<Gender>(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) => states.contains(MaterialState.selected)
-                            ? Colors.blue
-                            : Colors.blue.shade100),
+                      (states) => states.contains(MaterialState.selected)
+                          ? Colors.blue
+                          : Colors.blue.shade100,
+                    ),
                     foregroundColor: MaterialStateProperty.resolveWith(
-                        (states) => states.contains(MaterialState.selected)
-                            ? Colors.white
-                            : Colors.blueGrey),
+                      (states) => states.contains(MaterialState.selected)
+                          ? Colors.white
+                          : Colors.blueGrey,
+                    ),
                   ),
                   segments: [
                     for (final gender in Gender.values)
