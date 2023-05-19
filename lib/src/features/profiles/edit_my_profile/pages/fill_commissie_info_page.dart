@@ -24,18 +24,19 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   // create a form key to identify the form
   final _formKey = GlobalKey<FormState>();
 
-  final CommissieEntry _formData = CommissieEntry(
+  CommissieEntry _formData = CommissieEntry(
+    // TODO: use Riverpod for keeping form state
     name: "",
     startYear: DateTime.now().year - 1,
     endYear: DateTime.now().year,
-    lidnummer: FirebaseAuth.instance.currentUser!.uid,
+    identifier: FirebaseAuth.instance.currentUser!.uid,
     firstName: GetIt.I<CurrentUser>().user!.fullContact.public.first_name!,
     lastName: GetIt.I<CurrentUser>().user!.fullContact.public.last_name!,
   );
 
   @override
   void initState() {
-    _formData.name = widget.commissie;
+    _formData = _formData.copyWith(name: widget.commissie);
     super.initState();
   }
 

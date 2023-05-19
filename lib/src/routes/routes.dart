@@ -18,8 +18,12 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/almanak_profile_page.dart';
@@ -33,6 +37,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/s
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
@@ -68,6 +73,34 @@ final routeMap = RouteMap(
         ),
     '/home/edit': (_) => const CupertinoPage(
           child: EditAlmanakProfilePage(),
+        ),
+    '/home/edit/:identifier': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['identifier']!,
+          ),
+        ),
+    '/home/edit/groups': (_) => const CupertinoPage(
+          child: EditGroupsPage(),
+        ),
+    '/home/edit/groups/ploeg': (_) => const CupertinoPage(
+          child: SelectPloegPage(),
+        ),
+    '/home/edit/groups/ploeg/add': (_) => const CupertinoPage(
+          child: AddPloegPage(),
+        ),
+    '/home/edit/commissies': (info) => const CupertinoPage(
+          child: EditCommissiesPage(),
+        ),
+    '/home/edit/commissies/select': (info) => const CupertinoPage(
+          child: SelectCommissiePage(),
+        ),
+    '/home/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          child: FillCommissieInfoPage(
+            commissie: info.queryParameters['commissie']!,
+          ),
+        ),
+    '/home/edit/visibility': (info) => const CupertinoPage(
+          child: MePrivacyPage(),
         ),
     '/home/polls': (_) => const CupertinoPage(
           name: 'Polls',
@@ -141,6 +174,21 @@ final routeMap = RouteMap(
     '/almanak/commissies/:commissie/:identifier': (route) => CupertinoPage(
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
+          ),
+        ),
+    '/almanak/ploegen': (_) => const CupertinoPage(
+          name: 'Ploegen',
+          child: PloegChoicePage(),
+        ),
+    '/almanak/ploegen/:ploeg': (route) => CupertinoPage(
+          name: 'Ploegen',
+          child: AlmanakPloegPage(
+            ploegName: Uri.decodeFull(route.pathParameters['ploeg']!),
+          ),
+        ),
+    '/almanak/ploegen/:ploeg/:userId': (route) => CupertinoPage(
+          child: AlmanakProfilePage(
+            userId: route.pathParameters['userId']!,
           ),
         ),
     '/almanak/huizen': (_) => const CupertinoPage(

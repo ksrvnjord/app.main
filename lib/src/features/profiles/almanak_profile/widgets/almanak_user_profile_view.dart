@@ -1,12 +1,13 @@
 import 'package:action_sheet/action_sheet.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -14,15 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../shared/widgets/data_text_list_tile.dart';
 import '../../../training/widgets/calendar/widgets/chip_widget.dart';
-import '../../api/user_commissies.dart';
-import 'commissies_list_widget.dart';
-
-final CollectionReference<AlmanakProfile> people = FirebaseFirestore.instance
-    .collection('people')
-    .withConverter<AlmanakProfile>(
-      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
+import 'user_groups_list_widget.dart';
 
 class AlmanakUserProfileView extends ConsumerWidget {
   const AlmanakUserProfileView({
@@ -46,10 +39,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
       2,
     ); // aankomstjaar is de eerste 2 cijfers van het lidnummer
 
-    final AsyncValue<AlmanakProfile> profile =
+    final AsyncValue<FirestoreAlmanakProfile> profile =
         ref.watch(almanakUserProvider(identifier));
 
-    final userCommissies = ref.watch(commissiesForUserProvider(identifier));
+    final userGroups = ref.watch(groupsForUserProvider(identifier));
+    final userPloegen = ref.watch(ploegenForUserProvider(identifier));
 
     return ListView(
       children: [
@@ -59,7 +53,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
           thumbnail: false,
         ).padding(all: elementPadding).center(),
         profile.when(
-          data: (AlmanakProfile u) => Column(
+          data: (u) => Column(
             children: [
               Text('${u.firstName} ${u.lastName}')
                   .fontSize(nameFontSize)
@@ -161,12 +155,21 @@ class AlmanakUserProfileView extends ConsumerWidget {
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
               UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
-              if (u.ploeg != null && u.ploeg!.isNotEmpty)
-                DataTextListTile(name: "Ploeg", value: u.ploeg!),
+              userPloegen.when(
+                data: (ploegenSnapshot) => (ploegenSnapshot.size > 0 &&
+                            u.ploeg == null ||
+                        u.ploeg!.isEmpty)
+                    ? const SizedBox
+                        .shrink() // user has filled in new ploegen widget, so don't show old ploegen widget
+                    : DataTextListTile(name: "Ploeg", value: u.ploeg!),
+                error: (err, __) =>
+                    ErrorCardWidget(errorMessage: err.toString()),
+                loading: () => const SizedBox.shrink(),
+              ),
               if (u.board != null && u.board!.isNotEmpty)
                 DataTextListTile(name: "Voorkeurs boord", value: u.board!),
-              if (u.substructuren != null && u.substructuren!.isNotEmpty)
-                ChipWidget(title: "Substructuren", values: u.substructuren!),
+              if (u.substructures != null && u.substructures!.isNotEmpty)
+                ChipWidget(title: "Substructuren", values: u.substructures!),
               if (u.huis != null)
                 DataTextListTile(name: "Huis", value: u.huis!),
               if (u.dubbellid != null && u.dubbellid!) // only show if true
@@ -180,10 +183,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   value: u.otherAssociation!,
                 ),
               if (FirebaseAuth.instance.currentUser != null)
-                userCommissies.when(
-                  data: (snapshot) => CommissiesListWidget(
+                userGroups.when(
+                  data: (snapshot) => UserGroupsListWidget(
                     snapshot: snapshot,
-                    legacyCommissies: u.commissies,
                   ),
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

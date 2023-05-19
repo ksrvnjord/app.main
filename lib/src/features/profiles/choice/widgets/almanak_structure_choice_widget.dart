@@ -16,7 +16,11 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double cardTitleFontSize = 24;
+    final double cardTitleFontSize = MediaQuery.of(context).size.width < 480
+        ? 20
+        : MediaQuery.of(context).size.width < 768
+            ? 24
+            : 28;
     final double imageHeight =
         ((MediaQuery.of(context).size.height / 7) / 8).ceil() * 8;
 

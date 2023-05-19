@@ -22,6 +22,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 @pragma('vm:entry-point')
 // ignore: no-empty-block,avoid-redundant-async
@@ -62,6 +63,13 @@ Future<void> appRunner() async {
 }
 
 Future<void> main() async {
+  FlutterError.demangleStackTrace = (StackTrace stack) {
+    // riverpod uses different format of stack trace than flutter, so we need to convert it to flutter format
+    if (stack is stack_trace.Trace) return stack.vmTrace;
+    if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+
+    return stack;
+  };
   // Initialize the Hive Cache (Generic K/V cache, relevant for image caching)
   await Hive.initFlutter(
     HiveCache.cachePath,

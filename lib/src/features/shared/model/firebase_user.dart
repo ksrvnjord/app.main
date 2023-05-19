@@ -7,10 +7,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 class FirebaseUser {
   final String uid;
   final bool isBestuur;
+  final String firstName;
+  final String lastName;
 
   const FirebaseUser({
     required this.uid,
     required this.isBestuur,
+    required this.firstName,
+    required this.lastName,
   });
 
   bool get isAppCo => ['21203', '18031', '18257'].contains(uid);
@@ -18,10 +22,14 @@ class FirebaseUser {
   FirebaseUser copyWith({
     String? uid,
     bool? isBestuur,
+    String? firstName,
+    String? lastName,
   }) {
     return FirebaseUser(
       uid: uid ?? this.uid,
       isBestuur: isBestuur ?? this.isBestuur,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
     );
   }
 }
@@ -42,7 +50,9 @@ final currentFirebaseUserProvider =
     final FirebaseUser? firebaseUser = firestoreUserVal.whenOrNull(
       data: (data) => FirebaseUser(
         uid: user.uid,
-        isBestuur: data.bestuursFunctie != null,
+        isBestuur: data.data().bestuursFunctie != null,
+        firstName: data.data().firstName,
+        lastName: data.data().lastName,
       ),
     );
 
@@ -60,9 +70,11 @@ final firestoreUserProvider =
     final firestoreUserVal = ref.watch(firestoreUserFutureProvider(userId));
 
     final FirebaseUser? firebaseUser = firestoreUserVal.whenOrNull(
-      data: (data) => FirebaseUser(
-        uid: data.lidnummer,
-        isBestuur: data.bestuursFunctie != null,
+      data: (snapshot) => FirebaseUser(
+        uid: snapshot.data().identifier,
+        isBestuur: snapshot.data().bestuursFunctie != null,
+        firstName: snapshot.data().firstName,
+        lastName: snapshot.data().lastName,
       ),
     );
 
