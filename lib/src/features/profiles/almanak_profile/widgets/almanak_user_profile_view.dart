@@ -156,7 +156,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
               UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
               FirebaseWidget(
-                userPloegen.when(
+                onAuthenticated: userPloegen.when(
                   data: (ploegenSnapshot) => (u.ploeg == null ||
                           u.ploeg!.isEmpty ||
                           ploegenSnapshot.size > 0)
@@ -185,7 +185,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   value: u.otherAssociation!,
                 ),
               FirebaseWidget(
-                userGroups.when(
+                onAuthenticated: userGroups.when(
                   data: (snapshot) => UserGroupsListWidget(
                     snapshot: snapshot,
                   ),

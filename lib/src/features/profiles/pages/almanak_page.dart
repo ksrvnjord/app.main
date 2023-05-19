@@ -28,7 +28,7 @@ class AlmanakPage extends StatelessWidget {
             imagePath: 'assets/images/leeden.png',
           ),
           FirebaseWidget(
-            [
+            onAuthenticated: [
               const AlmanakStructureChoiceWidget(
                 title: "Bestuur",
                 pushRoute: "bestuur",

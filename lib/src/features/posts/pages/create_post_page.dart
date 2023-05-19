@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -30,7 +29,7 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   @override
   void initState() {
     super.initState();
-    selectedTopic = ref.read(selectedTopicProvider); // read topic once on init
+    selectedTopic = ref.read(postTopicsProvider).elementAt(1);
   }
 
   @override

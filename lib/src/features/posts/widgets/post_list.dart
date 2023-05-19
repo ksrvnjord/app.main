@@ -5,13 +5,11 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class PostList extends ConsumerWidget {
-  const PostList({Key? key, required this.topic}) : super(key: key);
-
-  final String topic;
+  const PostList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(postsProvider(topic));
+    final posts = ref.watch(newPostsProvider);
 
     return posts.when(
       data: (snapshot) => snapshot.size == 0

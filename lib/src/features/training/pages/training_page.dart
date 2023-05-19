@@ -24,25 +24,27 @@ class TrainingPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: const TrainingList(),
-      floatingActionButton: FirebaseWidget(Wrap(
-        spacing: spacingFloatingButtons,
-        runSpacing: runSpacingFloatingButtons,
-        alignment: WrapAlignment.end,
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () => navigator.push('damages'),
-            backgroundColor: Colors.blue,
-            icon: const Icon(Icons.report),
-            label: const Text('Schademeldingen'),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () => navigator.push('all'),
-            backgroundColor: Colors.lightBlue,
-            icon: const Icon(Icons.add),
-            label: const Text('Afschrijven'),
-          ),
-        ],
-      )),
+      floatingActionButton: FirebaseWidget(
+        onAuthenticated: Wrap(
+          spacing: spacingFloatingButtons,
+          runSpacing: runSpacingFloatingButtons,
+          alignment: WrapAlignment.end,
+          children: [
+            FloatingActionButton.extended(
+              onPressed: () => navigator.push('damages'),
+              backgroundColor: Colors.blue,
+              icon: const Icon(Icons.report),
+              label: const Text('Schademeldingen'),
+            ),
+            FloatingActionButton.extended(
+              onPressed: () => navigator.push('all'),
+              backgroundColor: Colors.lightBlue,
+              icon: const Icon(Icons.add),
+              label: const Text('Afschrijven'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
