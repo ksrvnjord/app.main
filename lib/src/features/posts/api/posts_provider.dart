@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 
 import '../model/post.dart';
 
@@ -25,3 +26,21 @@ final postProvider =
     return postsCollection.doc(docId).snapshots();
   },
 );
+
+// retrieves posts for a given topic
+final newPostsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
+  final String? topic = ref.watch(selectedTopicProvider);
+  if (topic == null) {
+    // get all posts if no topic selected
+    return postsCollection
+        .orderBy('createdTime', descending: true)
+        .limit(50)
+        .snapshots();
+  }
+
+  return postsCollection
+      .where('topic', isEqualTo: topic)
+      .orderBy('createdTime', descending: true)
+      .limit(50) // TODO: use pagination for posts
+      .snapshots();
+});

@@ -28,6 +28,14 @@ class PostWidget extends ConsumerWidget {
     const double headerPadding = 4;
     const double postStatisticsTopPadding = 4;
 
+    Map<String, Color> topicColors = {
+      "Promotie": Colors.red.shade100,
+      "Wandelgangen": Colors.blue.shade100,
+      "Kaartjes": Colors.yellow.shade100,
+      "Coach gezocht": Colors.orange.shade100,
+      "Gevonden voorwerpen": Colors.green.shade100,
+    };
+
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
@@ -57,12 +65,23 @@ class PostWidget extends ConsumerWidget {
           ),
         ),
       ].toRow(),
+      Chip(
+        label: Text(post.topic),
+        labelStyle: TextStyle(
+          color: Colors.blueGrey.shade900,
+        ),
+        visualDensity: VisualDensity.compact,
+        backgroundColor: topicColors[post.topic],
+        padding: EdgeInsets.zero,
+      ),
       PostStatisticsBar(snapshot: snapshot)
           .padding(top: postStatisticsTopPadding),
       const Divider(),
       PostBottomActionBar(
         snapshot: snapshot,
       ),
-    ].toColumn();
+    ].toColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
   }
 }

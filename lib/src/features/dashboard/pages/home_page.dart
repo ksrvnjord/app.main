@@ -60,20 +60,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                 Images.appLogoBlue,
                 height: logoHeight,
               ).padding(bottom: elementPadding),
-              FirebaseWidget(IconButton(
-                iconSize: myProfileSize,
-                onPressed: () => Routemaster.of(context).push('edit'),
-                icon: const MyProfilePicture(
-                  profileIconSize: 48,
+              FirebaseWidget(
+                onAuthenticated: IconButton(
+                  iconSize: myProfileSize,
+                  onPressed: () => Routemaster.of(context).push('edit'),
+                  icon: const MyProfilePicture(
+                    profileIconSize: 48,
+                  ),
                 ),
-              )),
+              ),
             ].toRow(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
             const VaarverbodWidget().padding(vertical: elementPadding),
             FirebaseWidget(
-              const FormsWidget().padding(vertical: elementPadding),
+              onAuthenticated:
+                  const FormsWidget().padding(vertical: elementPadding),
             ),
             const ComingWeekEventsWidget().padding(vertical: elementPadding),
             const AnnouncementsWidget().padding(vertical: elementPadding),
