@@ -65,9 +65,8 @@ dependencies:
   flutter_svg: ^2.0.5
   expandable: ^5.0.1
   weather_icons: ^3.0.0
-  stack_trace: any
+  stack_trace: ^1.11.0
   firebase_analytics: ^10.4.1
-  enough_platform_widgets: ^0.7.2
   package_info_plus: ^4.0.1
 
 
