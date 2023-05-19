@@ -72,34 +72,43 @@ final routeMap = RouteMap(
           child: HomePage(),
         ),
     '/home/edit': (_) => const CupertinoPage(
+          name: "Edit Profile",
           child: EditAlmanakProfilePage(),
         ),
     '/home/edit/:identifier': (route) => CupertinoPage(
+          name: "Preview my profile",
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
         ),
     '/home/edit/groups': (_) => const CupertinoPage(
+          name: "Edit my groups",
           child: EditGroupsPage(),
         ),
     '/home/edit/groups/ploeg': (_) => const CupertinoPage(
+          name: "Select a ploeg to add",
           child: SelectPloegPage(),
         ),
     '/home/edit/groups/ploeg/add': (_) => const CupertinoPage(
+          name: "Add a ploeg",
           child: AddPloegPage(),
         ),
     '/home/edit/commissies': (info) => const CupertinoPage(
+          name: "Edit my commissies",
           child: EditCommissiesPage(),
         ),
     '/home/edit/commissies/select': (info) => const CupertinoPage(
+          name: "Select a commissie to add",
           child: SelectCommissiePage(),
         ),
     '/home/edit/commissies/select/fill-info': (info) => CupertinoPage(
+          name: "Fill commissie info",
           child: FillCommissieInfoPage(
             commissie: info.queryParameters['commissie']!,
           ),
         ),
     '/home/edit/visibility': (info) => const CupertinoPage(
+          name: "Edit my visibility",
           child: MePrivacyPage(),
         ),
     '/home/polls': (_) => const CupertinoPage(
@@ -107,43 +116,34 @@ final routeMap = RouteMap(
           child: PollsPage(),
         ),
     '/home/events': (info) => const CupertinoPage(
+          name: "Events",
           child: EventsPage(),
         ),
     '/home/announcements/:announcementId': (_) => const CupertinoPage(
+          name: "Announcement",
           child: AnnouncementPage(),
-          name: "Aankondiging",
         ),
-    '/posts': (_) => const CupertinoPage(name: "Prikbord", child: PostsPage()),
-    '/posts/new': (_) => const CupertinoPage(child: CreatePostPage()),
+    '/posts': (_) => const CupertinoPage(
+          name: "Posts",
+          child: PostsPage(),
+        ),
+    '/posts/new': (_) => const CupertinoPage(
+          name: "New Post",
+          child: CreatePostPage(),
+        ),
     '/posts/:postId/comments': (route) => CupertinoPage(
+          name: "Comments",
           child: CommentsPage(
             postDocId: Uri.decodeFull(route.pathParameters['postId']!),
           ),
         ),
     '/calendar': (info) => const CupertinoPage(
-          name: "Agenda",
+          name: "Calendar",
           child: EventsPage(),
         ),
     '/almanak': (_) => const CupertinoPage(
           name: 'Almanak',
           child: AlmanakPage(),
-        ),
-    '/almanak/edit': (_) => const CupertinoPage(
-          child: EditAlmanakProfilePage(),
-        ),
-    '/almanak/edit/commissies': (info) => const CupertinoPage(
-          child: EditCommissiesPage(),
-        ),
-    '/almanak/edit/commissies/select': (info) => const CupertinoPage(
-          child: SelectCommissiePage(),
-        ),
-    '/almanak/edit/commissies/select/fill-info': (info) => CupertinoPage(
-          child: FillCommissieInfoPage(
-            commissie: info.queryParameters['commissie']!,
-          ),
-        ),
-    '/almanak/edit/visibility': (info) => const CupertinoPage(
-          child: MePrivacyPage(),
         ),
     '/almanak/leeden': (_) => const CupertinoPage(
           name: 'Leeden',
@@ -154,6 +154,7 @@ final routeMap = RouteMap(
           child: AlmanakBestuurPage(),
         ),
     '/almanak/bestuur/:identifier': (route) => CupertinoPage(
+          name: 'Bestuurslid',
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
@@ -172,6 +173,7 @@ final routeMap = RouteMap(
           ),
         ),
     '/almanak/commissies/:commissie/:identifier': (route) => CupertinoPage(
+          name: 'Commissielid',
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
@@ -181,12 +183,13 @@ final routeMap = RouteMap(
           child: PloegChoicePage(),
         ),
     '/almanak/ploegen/:ploeg': (route) => CupertinoPage(
-          name: 'Ploegen',
+          name: 'Ploeg',
           child: AlmanakPloegPage(
             ploegName: Uri.decodeFull(route.pathParameters['ploeg']!),
           ),
         ),
     '/almanak/ploegen/:ploeg/:userId': (route) => CupertinoPage(
+          name: 'Ploeglid',
           child: AlmanakProfilePage(
             userId: route.pathParameters['userId']!,
           ),
@@ -199,12 +202,13 @@ final routeMap = RouteMap(
           ),
         ),
     '/almanak/huizen/:huis': (route) => CupertinoPage(
-          name: 'Huizen',
+          name: 'Huis',
           child: AlmanakHuisPage(
             houseName: Uri.decodeFull(route.pathParameters['huis']!),
           ),
         ),
     '/almanak/huizen/:huis/:identifier': (route) => CupertinoPage(
+          name: 'Huisgenoot',
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
@@ -217,6 +221,7 @@ final routeMap = RouteMap(
           ),
         ),
     '/almanak/substructuren/:substructuur': (route) => CupertinoPage(
+          name: 'Substructuur',
           child: AlmanakSubstructuurPage(
             name: Uri.decodeFull(
               route.pathParameters['substructuur']!,
@@ -225,57 +230,64 @@ final routeMap = RouteMap(
         ),
     '/almanak/substructuren/:substructuur/:identifier': (route) =>
         CupertinoPage(
+          name: 'Substructuurlid',
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
         ),
     '/almanak/leeden/:identifier': (route) => CupertinoPage(
+          name: 'Lid',
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
         ),
     '/settings': (info) => const CupertinoPage(
+          name: "Settings",
           child: MePage(),
         ),
     '/training': (_) => const CupertinoPage(
           name: 'Training',
           child: TrainingPage(),
         ),
-    '/training/createdamage': (route) => CupertinoPage(
-          child: DamagesCreatePage(
-            reservationObjectId: route.queryParameters['reservationObjectId'],
-          ),
+    '/training/damages': (route) => const CupertinoPage(
+          name: 'Damages',
+          child: DamagesListPage(),
         ),
-    '/training/damages': (route) =>
-        const CupertinoPage(child: DamagesListPage()),
     '/training/damages/create': (route) => CupertinoPage(
+          name: "Create Damage",
           child: DamagesCreatePage(
             reservationObjectId: route.queryParameters['reservationObjectId'],
           ),
         ),
     '/training/damages/edit': (route) => CupertinoPage(
+          name: "Edit Damage",
           child: DamagesEditPage(
             id: route.queryParameters['id']!,
             reservationObjectId: route.queryParameters['reservationObjectId']!,
           ),
         ),
     '/training/damages/show': (route) => CupertinoPage(
+          name: "Show Damage",
           child: DamagesShowPage(
             id: route.queryParameters['id']!,
             reservationObjectId: route.queryParameters['reservationObjectId']!,
           ),
         ),
     '/training/all': (_) => CupertinoPage(
+          name: 'All Training',
           child: AllTrainingPage(),
         ),
     '/training/all/plan': (route) => CupertinoPage(
+          name: 'Plan Training',
           child: PlanTrainingPage(queryParams: route.queryParameters),
         ),
     '/training/all/:id': (info) => CupertinoPage(
+          name: 'Show Training',
           child: ShowTrainingPage(id: info.pathParameters['id']!),
         ),
     '/training/all/reservationObject/:reservationObjectId': (route) =>
         CupertinoPage(
+          name: 'Show Reservation Object',
           child: ShowReservationObjectPage(
             documentId: route.pathParameters['reservationObjectId']!,
             name: route.queryParameters['name']!,
@@ -283,6 +295,7 @@ final routeMap = RouteMap(
         ),
     '/training/all/reservationObject/:reservationObjectId/damage/edit':
         (route) => CupertinoPage(
+              name: 'Edit Damage',
               child: DamagesEditPage(
                 id: route.queryParameters['id']!,
                 reservationObjectId:
@@ -291,6 +304,7 @@ final routeMap = RouteMap(
             ),
     '/training/all/reservationObject/:reservationObjectId/damage/show':
         (route) => CupertinoPage(
+              name: 'Show Damage',
               child: DamagesShowPage(
                 id: route.queryParameters['id']!,
                 reservationObjectId:
@@ -299,6 +313,7 @@ final routeMap = RouteMap(
             ),
     '/training/all/reservationObject/:reservationObjectId/damage/create':
         (route) => CupertinoPage(
+              name: 'Create Damage',
               child: DamagesCreatePage(
                 reservationObjectId:
                     route.pathParameters['reservationObjectId']!,
@@ -309,18 +324,23 @@ final routeMap = RouteMap(
           child: MorePage(),
         ),
     '/more/events': (info) => const CupertinoPage(
+          name: 'Events',
           child: EventsPage(),
         ),
     '/more/beleid': (info) => const CupertinoPage(
+          name: 'Beleid',
           child: BeleidPage(),
         ),
     '/more/notifications': (info) => const CupertinoPage(
+          name: 'Notifications',
           child: NotificationsPage(),
         ),
     '/more/advanced-settings': (_) => const CupertinoPage(
+          name: 'Advanced Settings',
           child: AdvancedSettingsPage(),
         ),
     '/contact': (route) => const CupertinoPage(
+          name: 'Contact',
           child: ContactPage(),
         ),
   },
