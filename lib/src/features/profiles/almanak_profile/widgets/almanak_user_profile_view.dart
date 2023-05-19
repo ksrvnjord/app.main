@@ -1,5 +1,4 @@
 import 'package:action_sheet/action_sheet.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -155,16 +155,18 @@ class AlmanakUserProfileView extends ConsumerWidget {
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
               UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
-              userPloegen.when(
-                data: (ploegenSnapshot) => (u.ploeg == null ||
-                        u.ploeg!.isEmpty ||
-                        ploegenSnapshot.size > 0)
-                    ? const SizedBox
-                        .shrink() // user has filled in new ploegen widget, so don't show old ploegen widget
-                    : DataTextListTile(name: "Ploeg", value: u.ploeg!),
-                error: (err, __) =>
-                    ErrorCardWidget(errorMessage: err.toString()),
-                loading: () => const SizedBox.shrink(),
+              FirebaseWidget(
+                userPloegen.when(
+                  data: (ploegenSnapshot) => (u.ploeg == null ||
+                          u.ploeg!.isEmpty ||
+                          ploegenSnapshot.size > 0)
+                      ? const SizedBox
+                          .shrink() // user has filled in new ploegen widget, so don't show old ploegen widget
+                      : DataTextListTile(name: "Ploeg", value: u.ploeg!),
+                  error: (err, __) =>
+                      ErrorCardWidget(errorMessage: err.toString()),
+                  loading: () => const SizedBox.shrink(),
+                ),
               ),
               if (u.board != null && u.board!.isNotEmpty)
                 DataTextListTile(name: "Voorkeurs boord", value: u.board!),
@@ -182,7 +184,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   name: "Andere vereniging(en)",
                   value: u.otherAssociation!,
                 ),
-              if (FirebaseAuth.instance.currentUser != null)
+              FirebaseWidget(
                 userGroups.when(
                   data: (snapshot) => UserGroupsListWidget(
                     snapshot: snapshot,
@@ -192,6 +194,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   error: (error, stacktrace) =>
                       ErrorCardWidget(errorMessage: error.toString()),
                 ),
+              ),
             ],
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
