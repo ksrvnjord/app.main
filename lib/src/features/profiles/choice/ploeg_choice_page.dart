@@ -37,6 +37,7 @@ class PloegChoicePage extends ConsumerWidget {
     );
 
     const double menuMaxHeight = 240;
+    const double filtersHorizontalPadding = 8;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,35 +47,11 @@ class PloegChoicePage extends ConsumerWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: ListView(padding: const EdgeInsets.all(8), children: [
-        SegmentedButton<PloegType>(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.blue
-                    : Colors.blue.shade100),
-            foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.white
-                    : Colors.blueGrey),
-          ),
-          segments: [
-            for (final ploegType in PloegType.values)
-              ButtonSegment(
-                label: Text(ploegType.value),
-                value: ploegType,
-              ),
-          ],
-          selected: {
-            ploegType,
-          },
-          onSelectionChanged: (types) =>
-              ref.read(ploegTypeProvider.notifier).state = types.first,
-        ),
-        const SizedBox(height: 8),
-        if (ploegType == PloegType.competitie)
+      body: ListView(
+        padding: const EdgeInsets.only(top: 8, bottom: 80),
+        children: [
           [
-            SegmentedButton<Gender>(
+            SegmentedButton<PloegType>(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith((states) =>
                     states.contains(MaterialState.selected)
@@ -86,79 +63,113 @@ class PloegChoicePage extends ConsumerWidget {
                         : Colors.blueGrey),
               ),
               segments: [
-                for (final gender in Gender.values)
+                for (final ploegType in PloegType.values)
                   ButtonSegment(
-                    label: Text(gender.value),
-                    value: gender,
+                    label: Text(ploegType.value),
+                    value: ploegType,
                   ),
               ],
               selected: {
-                selectedGender,
+                ploegType,
               },
-              onSelectionChanged: (types) => ref
-                  .read(ploegGeslachtFilterProvider.notifier)
-                  .state = types.first,
-              // ignore: no-magic-number
-            ).expanded(),
-            DropdownButton<int>(
-              menuMaxHeight: menuMaxHeight,
-              // isExpanded: true,
-              value: ploegYear,
-              onChanged: (value) =>
-                  ref.read(ploegYearProvider.notifier).state = value!,
-              items: years
-                  .map((year) => DropdownMenuItem(
-                        value: year,
-                        child: Text("$year-${year + 1}"),
-                        // alignment: AlignmentDirectional.center,
-                      ))
-                  .toList(),
-              // ignore: no-magic-number
+              onSelectionChanged: (types) =>
+                  ref.read(ploegTypeProvider.notifier).state = types.first,
             ),
-          ].toRow(
-            separator: const SizedBox(width: 48),
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
-        const SizedBox(height: 16),
-        const Text("Ploegen").fontSize(ploegenHeaderFontSize),
-        ploegen.when(
-          data: (data) => [
-            data.isEmpty
-                ? const Text("Geen ploegen gevonden").center()
-                : const SizedBox(),
-            ...data
-                .map(
-                  (ploeg) => ListTile(
-                    title: Text(ploeg),
-                    trailing:
-                        const Icon(Icons.arrow_forward_ios, color: Colors.blue),
-                    // ignore: prefer-extracting-callbacks
-                    onTap: () => Routemaster.of(context).push(ploeg),
+            const SizedBox(height: 8),
+            if (ploegType == PloegType.competitie)
+              [
+                SegmentedButton<Gender>(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => states.contains(MaterialState.selected)
+                            ? Colors.blue
+                            : Colors.blue.shade100),
+                    foregroundColor: MaterialStateProperty.resolveWith(
+                        (states) => states.contains(MaterialState.selected)
+                            ? Colors.white
+                            : Colors.blueGrey),
                   ),
-                )
-                .toList(),
-          ].toColumn(),
-          error: (error, _) => ErrorCardWidget(errorMessage: error.toString()),
-          loading: () => List.generate(
-            // ignore: no-magic-number
-            10,
-            (index) => ListTile(
-              title: ShimmerWidget(
-                child: Container(
-                  height: titleShimmerHeight,
-                  decoration: ShapeDecoration(
-                    shape: const RoundedRectangleBorder(),
-                    color: Colors.grey[300],
-                  ),
+                  segments: [
+                    for (final gender in Gender.values)
+                      ButtonSegment(
+                        label: Text(gender.value),
+                        value: gender,
+                      ),
+                  ],
+                  selected: {
+                    selectedGender,
+                  },
+                  onSelectionChanged: (types) => ref
+                      .read(ploegGeslachtFilterProvider.notifier)
+                      .state = types.first,
+                  // ignore: no-magic-number
+                ).expanded(),
+                DropdownButton<int>(
+                  menuMaxHeight: menuMaxHeight,
+                  // isExpanded: true,
+                  value: ploegYear,
+                  onChanged: (value) =>
+                      ref.read(ploegYearProvider.notifier).state = value!,
+                  items: years
+                      .map((year) => DropdownMenuItem(
+                            value: year,
+                            child: Text("$year-${year + 1}"),
+                            // alignment: AlignmentDirectional.center,
+                          ))
+                      .toList(),
+                  // ignore: no-magic-number
                 ),
-              ).padding(right: titleShimmerPadding),
-              trailing: const ShimmerWidget(
-                child: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+              ].toRow(
+                separator: const SizedBox(width: 48),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-            ),
-          ).toColumn(),
-        ),
-      ]),
+            const SizedBox(height: 16),
+            const Text("Ploegen").fontSize(ploegenHeaderFontSize),
+          ]
+              .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch)
+              .padding(horizontal: filtersHorizontalPadding),
+          ploegen.when(
+            data: (data) => [
+              data.isEmpty
+                  ? const Text("Geen ploegen gevonden").center()
+                  : const SizedBox(),
+              ...data
+                  .map(
+                    (ploeg) => ListTile(
+                      title: Text(ploeg),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.blue,
+                      ),
+                      // ignore: prefer-extracting-callbacks
+                      onTap: () => Routemaster.of(context).push(ploeg),
+                    ),
+                  )
+                  .toList(),
+            ].toColumn(),
+            error: (error, _) =>
+                ErrorCardWidget(errorMessage: error.toString()),
+            loading: () => List.generate(
+              // ignore: no-magic-number
+              10,
+              (index) => ListTile(
+                title: ShimmerWidget(
+                  child: Container(
+                    height: titleShimmerHeight,
+                    decoration: ShapeDecoration(
+                      shape: const RoundedRectangleBorder(),
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                ).padding(right: titleShimmerPadding),
+                trailing: const ShimmerWidget(
+                  child: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+                ),
+              ),
+            ).toColumn(),
+          ),
+        ],
+      ),
     );
   }
 }

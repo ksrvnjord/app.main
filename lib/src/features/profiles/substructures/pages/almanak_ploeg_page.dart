@@ -53,28 +53,31 @@ class AlmanakPloegPage extends ConsumerWidget {
                 .fontSize(titleFontSize)
                 .fontWeight(FontWeight.w500)
                 .alignment(Alignment.centerLeft),
-            if (selectedPloegType ==
-                PloegType.wedstrijd) // for wedstrijd we need a year selector
-              [
-                const Text('Kies een jaar: ').textColor(Colors.blueGrey),
-                DropdownButton<int>(
-                  value: selectedYear,
-                  icon:
-                      const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
-                  menuMaxHeight: menuMaxHeight,
-                  items: years
-                      .map(
-                        (year) => DropdownMenuItem<int>(
-                          value: year,
-                          child: Text("$year-${year + 1}")
-                              .textColor(Colors.blueGrey),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) =>
-                      ref.read(ploegYearProvider.notifier).state = value!,
-                ),
-              ].toRow(),
+            [
+              const Text('Kies een jaar: ').textColor(
+                selectedPloegType == PloegType.wedstrijd
+                    ? Colors.blueGrey
+                    : Colors.grey,
+              ),
+              DropdownButton<int>(
+                value: selectedYear,
+                icon: const Icon(Icons.arrow_drop_down),
+                // iconDisabledColor: ,
+                menuMaxHeight: menuMaxHeight,
+                items: years
+                    .map(
+                      (year) => DropdownMenuItem<int>(
+                        value: year,
+                        child: Text("$year-${year + 1}"),
+                      ),
+                    )
+                    .toList(),
+                onChanged: selectedPloegType == PloegType.wedstrijd
+                    ? (value) =>
+                        ref.read(ploegYearProvider.notifier).state = value!
+                    : null,
+              ),
+            ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 horizontal: headerHPadding,
               ),
