@@ -29,11 +29,7 @@ class PostsPage extends ConsumerWidget {
         onAuthenticated: FloatingActionButton.extended(
           // small function so we can use the ignore comment
           // ignore: prefer-extracting-callbacks
-          onPressed: () {
-            ref.read(selectedTopicProvider.notifier).state =
-                topics[DefaultTabController.of(context).index];
-            Routemaster.of(context).push('new');
-          },
+          onPressed: () => Routemaster.of(context).push('new'),
           backgroundColor: Colors.blue,
           icon: const Icon(Icons.add),
           label: const Text('Nieuw bericht'),
