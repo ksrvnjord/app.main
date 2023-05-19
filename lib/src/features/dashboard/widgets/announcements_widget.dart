@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
@@ -56,8 +57,16 @@ class AnnouncementsWidget extends ConsumerWidget {
                   ),
                 ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
                 minLeadingWidth: minLeadingWidth,
-                onTap: () => Routemaster.of(context)
-                    .push('announcements/${announcement.id}'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  FirebaseAnalytics.instance
+                      .logEvent(name: 'announcement_opened', parameters: {
+                    'announcement_id': announcement.id,
+                    'announcement_title': announcement.title,
+                  });
+                  Routemaster.of(context)
+                      .push('announcements/${announcement.id}');
+                },
               ),
             )
             .toList()
