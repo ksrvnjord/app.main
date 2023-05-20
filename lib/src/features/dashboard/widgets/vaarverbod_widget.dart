@@ -32,7 +32,7 @@ class VaarverbodWidget extends ConsumerWidget {
           : FontAwesomeIcons.shieldHalved;
     }
     final Color backgroundColor =
-        status ? Colors.red[300]! : Colors.green[300]!;
+        status ? Colors.red.shade300 : Colors.green.shade300;
 
     const double descriptionPadding = 8;
     const double headerFontSize = 16;

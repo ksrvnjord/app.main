@@ -16,12 +16,12 @@ class PostHeaderBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = snapshot.data()!;
+    final post = snapshot.data();
     const double profilePictureIconSize = 20;
     const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
-    final postAuthor = ref.watch(firestoreUserProvider(post.authorId));
+    final postAuthor = ref.watch(firestoreUserProvider(post?.authorId ?? ""));
 
     final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
@@ -34,14 +34,18 @@ class PostHeaderBar extends ConsumerWidget {
     return [
       [
         ClickableProfilePictureWidget(
-          userId: post.authorId,
+          userId: post?.authorId ?? "",
           size: profilePictureIconSize,
         ),
         [
-          AuthorWidget(postAuthor: postAuthor, authorName: post.authorName),
-          Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
-              .textColor(Colors.blueGrey)
-              .fontSize(postTimeFontSize),
+          AuthorWidget(
+            postAuthor: postAuthor,
+            authorName: post?.authorName ?? "Onbekend",
+          ),
+          Text(timeago.format(
+            post?.createdTime.toDate() ?? DateTime.now(),
+            locale: 'nl',
+          )).textColor(Colors.blueGrey).fontSize(postTimeFontSize),
         ]
             .toColumn(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +55,7 @@ class PostHeaderBar extends ConsumerWidget {
       // Three dots for more options, show if user is author.
 
       if (firebaseUser != null &&
-          (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))
+          (post?.authorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
           child: const Icon(Icons.delete_outlined),
           onTap: () => showDialog(

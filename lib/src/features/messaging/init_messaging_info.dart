@@ -19,9 +19,9 @@ void initMessagingInfo() async {
   // ignore: avoid-ignoring-return-values
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-      message.notification!.body.toString(),
+      message.notification?.body?.toString() ?? "",
       htmlFormatBigText: true,
-      contentTitle: message.notification!.title.toString(),
+      contentTitle: message.notification?.title.toString(),
       htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics =

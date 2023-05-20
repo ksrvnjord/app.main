@@ -18,14 +18,14 @@ class PostStatisticsBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post post = snapshot.data()!;
+    final post = snapshot.data();
     final commentsVal = ref.watch(commentsProvider(snapshot.id));
     const swanIconSize = 16.0;
 
     const double fontSize = 16;
 
     return [
-      if (post.likedBy.isNotEmpty)
+      if (post != null && post.likedBy.isNotEmpty)
         [
           Text(
             // ignore: avoid-non-ascii-symbols

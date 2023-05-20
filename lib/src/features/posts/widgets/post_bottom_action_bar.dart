@@ -18,9 +18,9 @@ class PostBottomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final post = snapshot.data()!;
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    final bool likedByMe = post.likedBy.contains(uid);
+    final post = snapshot.data();
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final likedByMe = post?.likedBy.contains(uid) ?? false;
 
     const double likeTextLeftPadding = 4;
     const iconSize = 20.0;

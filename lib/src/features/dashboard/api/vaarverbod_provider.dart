@@ -7,6 +7,6 @@ final vaarverbodProvider = FutureProvider<Vaarverbod>(
     final Response<Map<String, dynamic>> response =
         await Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
 
-    return Vaarverbod.fromJson(response.data!);
+    return Vaarverbod.fromJson(response.data ?? {});
   },
 );

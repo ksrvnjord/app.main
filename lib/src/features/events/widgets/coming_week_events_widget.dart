@@ -49,7 +49,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
               loading: () => ShimmerWidget(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[300]!,
+                    color: Colors.grey.shade300,
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
                   ),
                   height: cardHeight,

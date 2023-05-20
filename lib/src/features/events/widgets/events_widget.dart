@@ -58,6 +58,6 @@ class MeetingDataSource extends CalendarDataSource {
   }
 
   Event _meetingData(int index) {
-    return appointments![index];
+    return appointments?[index];
   }
 }

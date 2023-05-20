@@ -69,7 +69,7 @@ class CommentWidget extends ConsumerWidget {
                 ),
 
                 // Only show delete button if the comment is from the current user.
-                if (FirebaseAuth.instance.currentUser!.uid == comment.authorId)
+                if (FirebaseAuth.instance.currentUser?.uid == comment.authorId)
                   CupertinoContextMenuAction(
                     // ignore: sort_child_properties_last
                     child: const Text('Verwijder'),

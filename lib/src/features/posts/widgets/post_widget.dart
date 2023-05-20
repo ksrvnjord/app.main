@@ -21,7 +21,7 @@ class PostWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post post = snapshot.data()!;
+    final post = snapshot.data();
     const int contentMaxLines = 12;
 
     const double titleFontSize = 20;
@@ -35,11 +35,12 @@ class PostWidget extends ConsumerWidget {
       "Coach gezocht": Colors.orange.shade100,
       "Gevonden voorwerpen": Colors.green.shade100,
     };
+    final postTopic = post?.topic ?? "";
 
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
-        post.title,
+        post?.title ?? "",
         overflow: TextOverflow.ellipsis,
       )
           .fontSize(titleFontSize)
@@ -48,7 +49,7 @@ class PostWidget extends ConsumerWidget {
       [
         Flexible(
           child: ExpandableText(
-            post.content,
+            post?.content ?? "",
             expandText: "meer",
             expanded: expanded,
             linkColor: Colors.blueGrey,
@@ -61,9 +62,9 @@ class PostWidget extends ConsumerWidget {
         ),
       ].toRow(),
       Chip(
-        label: Text(post.topic),
+        label: Text(postTopic),
         labelStyle: TextStyle(color: Colors.blueGrey.shade900),
-        backgroundColor: topicColors[post.topic],
+        backgroundColor: topicColors[postTopic],
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
       ),

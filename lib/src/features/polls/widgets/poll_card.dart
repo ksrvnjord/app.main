@@ -36,10 +36,11 @@ class PollCard extends ConsumerWidget {
         data: (snapshot) {
           final String? answerOfUser =
               snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
+          final description = poll.description;
 
           return [
-            if (poll.description != null && poll.description!.isNotEmpty)
-              Text(poll.description!)
+            if (description != null && description.isNotEmpty)
+              Text(description)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             ...poll.options.map((option) => RadioListTile(

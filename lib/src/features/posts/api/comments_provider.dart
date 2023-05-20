@@ -9,7 +9,7 @@ final commentsProvider = StreamProvider.autoDispose
       .doc(postId)
       .collection('comments')
       .withConverter<Comment>(
-        fromFirestore: (snapshot, _) => Comment.fromMap(snapshot.data()!),
+        fromFirestore: (snapshot, _) => Comment.fromMap(snapshot.data() ?? {}),
         toFirestore: (comment, _) => comment.toJson(),
       );
 

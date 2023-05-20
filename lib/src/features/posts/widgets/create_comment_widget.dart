@@ -56,10 +56,11 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
   }
 
   void submitForm() async {
-    if (!_formKey.currentState!.validate()) {
+    final formState = _formKey.currentState;
+    if (formState != null && !formState.validate()) {
       return;
     }
-    _formKey.currentState!.save(); // Save the form.
+    formState?.save(); // Save the form.
 
     // ignore: avoid-ignoring-return-values
     await Comment.createComment(
@@ -67,6 +68,6 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
       postId: widget.postDocId,
     );
 
-    _formKey.currentState!.reset(); // Reset the form.
+    formState?.reset(); // Reset the form.
   }
 }

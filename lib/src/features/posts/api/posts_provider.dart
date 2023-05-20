@@ -6,7 +6,7 @@ import '../model/post.dart';
 
 final postsCollection =
     FirebaseFirestore.instance.collection('posts').withConverter<Post>(
-          fromFirestore: (snapshot, _) => Post.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) => Post.fromJson(snapshot.data() ?? {}),
           toFirestore: (post, _) => post.toJson(),
         );
 

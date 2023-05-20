@@ -31,7 +31,7 @@ class Comment {
       createdTime: map['createdTime'] as Timestamp,
       likedBy: List<String>.from(map['likes']),
       likedByMe: List<String>.from(map['likes'])
-          .contains(FirebaseAuth.instance.currentUser!.uid),
+          .contains(FirebaseAuth.instance.currentUser?.uid),
     );
   }
 
@@ -50,21 +50,21 @@ class Comment {
     required String postId,
   }) {
     final current = GetIt.I<CurrentUser>();
-    Query$Me$me$fullContact$private private =
-        current.user!.fullContact.private!;
-    String firstName = private.first_name!;
-    String lastName = private.last_name!;
+    final private = current.user?.fullContact.private;
+    final firstName = private?.first_name;
+    final lastName = private?.last_name;
 
     return FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('comments')
         .withConverter<Comment>(
-          fromFirestore: (snapshot, _) => Comment.fromMap(snapshot.data()!),
+          fromFirestore: (snapshot, _) =>
+              Comment.fromMap(snapshot.data() ?? {}),
           toFirestore: (comment, _) => comment.toJson(),
         )
         .add(Comment(
-          authorId: FirebaseAuth.instance.currentUser!.uid,
+          authorId: FirebaseAuth.instance.currentUser?.uid ?? "",
           authorName: "$firstName $lastName",
           content: content,
           createdTime: Timestamp.now(),

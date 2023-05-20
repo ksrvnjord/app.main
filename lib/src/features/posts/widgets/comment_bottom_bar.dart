@@ -15,7 +15,7 @@ class CommentBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     const double bottomBarFontSize = 14;
     final comment = snapshot.data();
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     bool likedByMe = comment.likedBy.contains(uid);
 
     return [

@@ -17,13 +17,14 @@ void upsertPollAnswer(
       .instance
       .collection('${pollDoc.reference.path}/answers')
       .withConverter<PollAnswer>(
-        fromFirestore: (snapshot, _) => PollAnswer.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) =>
+            PollAnswer.fromJson(snapshot.data() ?? {}),
         toFirestore: (answer, _) => answer.toJson(),
       );
   if (snapshot.size == 0) {
     // ignore: avoid-ignoring-return-values
     await answersOfPoll.add(PollAnswer(
-      userId: FirebaseAuth.instance.currentUser!.uid,
+      userId: FirebaseAuth.instance.currentUser?.uid ?? "",
       answer: choice,
       answeredAt: DateTime.now(),
     ));

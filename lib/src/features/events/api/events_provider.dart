@@ -16,18 +16,16 @@ final comingEventsProvider = FutureProvider<List<Event>>(
     final List<Event> events = [];
     final now = DateTime.now();
     for (final Query$CalendarItems$events? event in maybeEvents) {
-      if (event == null) {
-        continue;
-      }
-
-      DateTime endTime = DateTime.parse(event.end_time!);
-      if (endTime.isAfter(now)) {
-        // Only add events that are going on, or are going to happen.
-        events.add(Event(
-          title: event.title!,
-          startTime: DateTime.parse(event.start_time!),
-          endTime: endTime,
-        ));
+      if (event != null) {
+        DateTime endTime = DateTime.parse(event.end_time ?? "");
+        if (endTime.isAfter(now)) {
+          // Only add events that are going on, or are going to happen.
+          events.add(Event(
+            title: event.title ?? "",
+            startTime: DateTime.parse(event.start_time ?? ""),
+            endTime: endTime,
+          ));
+        }
       }
     }
 

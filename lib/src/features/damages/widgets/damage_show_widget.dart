@@ -20,9 +20,9 @@ class DamageShowWidget extends StatelessWidget {
     if (damage == null) {
       return Container();
     }
-
-    final damageImage = damage?.image != null
-        ? FirebaseStorage.instance.ref().child(damage!.image!).getDownloadURL
+    final imagePath = damage?.image;
+    final damageImage = imagePath != null
+        ? FirebaseStorage.instance.ref().child(imagePath).getDownloadURL
         : null;
 
     return ListView(children: <Widget>[

@@ -131,10 +131,11 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   }
 
   void submitForm() async {
-    if (!_formKey.currentState!.validate()) {
+    final formstate = _formKey.currentState;
+    if (formstate != null && !formstate.validate()) {
       return;
     }
-    _formKey.currentState!.save();
+    formstate?.save();
 
     postCreationInProgress = true;
 

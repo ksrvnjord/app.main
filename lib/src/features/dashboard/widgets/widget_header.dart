@@ -29,7 +29,8 @@ class WidgetHeader extends StatelessWidget {
         GestureDetector(
           // ignore: sort_child_properties_last
           child: [
-            if (onTapName != null) Text(onTapName!).textColor(Colors.blueGrey),
+            if (onTapName != null)
+              Text(onTapName ?? "").textColor(Colors.blueGrey),
             const Icon(
               Icons.arrow_forward_ios,
               size: 16,

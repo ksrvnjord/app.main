@@ -11,7 +11,8 @@ final pollAnswerProvider =
         .instance
         .collection('${docRef.path}/answers')
         .withConverter<PollAnswer>(
-          fromFirestore: (snapshot, _) => PollAnswer.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) =>
+              PollAnswer.fromJson(snapshot.data() ?? {}),
           toFirestore: (answer, _) => answer.toJson(),
         );
 

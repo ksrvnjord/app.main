@@ -23,11 +23,16 @@ class AuthorWidget extends StatelessWidget {
     return [
       Text(authorName).fontWeight(FontWeight.bold).fontSize(fontSize),
       // Twitter checkmark.
-      if (postAuthor != null && (authorIsBestuur! || authorIsAppCo!))
+      if ((authorIsBestuur != null && authorIsBestuur) ||
+          (authorIsAppCo != null && authorIsAppCo))
         Icon(
           Icons.verified,
           size: fontSize,
-          color: authorIsAppCo! ? Colors.amber : Colors.lightBlue,
+          color: authorIsAppCo != null
+              ? authorIsAppCo
+                  ? Colors.amber
+                  : Colors.lightBlue
+              : null,
         ),
     ].toRow(
       separator: const SizedBox(width: 4),

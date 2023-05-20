@@ -8,7 +8,7 @@ class CommentsService {
   }
 
   static like(QueryDocumentSnapshot<Comment> snapshot) {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     final comment = snapshot.data();
     final likedByMe = comment.likedBy.contains(uid);
     snapshot.reference.update({

@@ -28,6 +28,7 @@ class FormsWidget extends ConsumerWidget {
       ...docs.map((doc) {
         final Poll poll = doc.data();
         final answerStream = ref.watch(pollAnswerProvider(doc.reference));
+        final description = poll.description;
 
         return ExpansionTile(
           title: Text(poll.question),
@@ -36,8 +37,8 @@ class FormsWidget extends ConsumerWidget {
           ).textColor(Colors.grey),
           // ignore: sort_child_properties_last
           children: [
-            if (poll.description != null)
-              Text(poll.description!)
+            if (description != null)
+              Text(description)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             answerStream.when(
