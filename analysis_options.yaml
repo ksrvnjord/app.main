@@ -57,10 +57,7 @@ dart_code_metrics:
     - test/** # we don't have any tests yet
     - lib/**.graphql.dart # exclude generated files
   rules:
-    - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments
     - avoid-non-null-assertion: false
-    - format-comment: false
-    # - prefer-single-widget-per-file: false
 
     # ------ RULES WE AIM TO AVOID -----------------
     - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
@@ -69,6 +66,7 @@ dart_code_metrics:
     - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
     - prefer-correct-identifier-length: # i used in for loops
         exceptions: [ 'i' ]
+    - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests

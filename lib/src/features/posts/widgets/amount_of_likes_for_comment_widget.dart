@@ -19,7 +19,7 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
     const double textFontSize = 12;
 
     return Container(
-      // make edges round
+      // Make edges round.
       decoration: BoxDecoration(
         color: Colors.lightBlue.shade300,
         borderRadius: const BorderRadius.all(Radius.circular(40)),

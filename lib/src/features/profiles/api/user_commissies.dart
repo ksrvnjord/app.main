@@ -27,7 +27,7 @@ final commissiesForUserProvider =
   ).orderBy('startYear', descending: true).get(),
 );
 
-// convenience method to get a reference to the commissies collection using the converter
+// Convenience method to get a reference to the commissies collection using the converter.
 CollectionReference<CommissieEntry> getCommissieCollectionRefWithConverter(
   DocumentReference<Map<String, dynamic>> ref,
 ) {

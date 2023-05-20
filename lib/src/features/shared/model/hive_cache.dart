@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 class HiveCache {
   static const String cachePath =
-      'hive_cache'; // relative to ApplicationDocumentsDirectory
+      'hive_cache'; // Relative to ApplicationDocumentsDirectory.
 
   static const String imageCacheBoxName = 'imageCache';
   static final LazyBox<ImageCacheItem> hiveImageCache =
@@ -35,8 +35,8 @@ class HiveCache {
     if (key == '') {
       throw Exception('Key cannot be empty');
     }
-    // Check if we have an item in our cache,
-    // and then check if we should use it
+    // Check if we have an item in our cache.
+    // Then check if we should use it.
     ImageCacheItem? item = await HiveCache.get(key);
 
     // We have it, so return it.
@@ -46,7 +46,7 @@ class HiveCache {
           : MemoryImage(item.data!);
     }
 
-    return null; // no cached image found
+    return null; // No cached image found.
   }
 
   static Future<Uint8List?> getHttpImageAndCache(
@@ -107,14 +107,14 @@ class HiveCache {
       sha512.convert(utf8.encode(key)).toString();
 
   static Future<void> deleteAll() async {
-    await Hive.close(); // close all open lazyBoxes
+    await Hive.close(); // Close all open lazyBoxes.
     Directory appDir = await getApplicationDocumentsDirectory();
     Directory hiveDir = Directory('${appDir.path}/$cachePath');
     // ignore: avoid-ignoring-return-values
     await hiveDir.delete(recursive: true);
     await Hive.initFlutter(
       HiveCache.cachePath,
-    ); // store the cache in a separate folder
+    ); // Store the cache in a separate folder.
     // ignore: avoid-ignoring-return-values
     await Hive.openLazyBox(imageCacheBoxName);
   }

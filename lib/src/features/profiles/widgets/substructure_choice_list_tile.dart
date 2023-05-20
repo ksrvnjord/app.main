@@ -14,7 +14,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   const SubstructureChoiceListTile({
     Key? key,
     required this.name,
-    required this.imageProvider, // the imageProvider for the choice
+    required this.imageProvider, // The imageProvider for the choice.
   }) : super(key: key);
   final String name;
 

@@ -11,7 +11,7 @@ class PloegEntry extends GroupEntry {
         'wedstrijd': PloegType.wedstrijd,
       };
 
-  // reverse of typemap
+  // Reverse of typemap.
   static Map<PloegType, String> get typeMapReverse => LinkedHashMap.fromEntries(
         typeMap.entries.map((entry) => MapEntry(entry.value, entry.key)),
       );

@@ -12,7 +12,7 @@ import 'package:styled_widget/styled_widget.dart';
 import '../widgets/availability_header.dart';
 import '../widgets/calendar/widgets/chip_widget.dart';
 
-// get reference to reservationObjects collection
+// Get reference to reservationObjects collection.
 final CollectionReference<ReservationObject>
     reservationObjectsCollectionReference = FirebaseFirestore.instance
         .collection('reservationObjects')
@@ -69,7 +69,7 @@ class ShowReservationObjectPage extends StatelessWidget {
     }
     ReservationObject obj = snapshot.data()!;
 
-    // show the reservationObject data in a ListView
+    // Show the reservationObject data in a ListView.
     return [
       AvailabilityHeader(isAvailable: obj.available && !obj.critical),
       Expanded(

@@ -8,19 +8,19 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
-// retrieves all data from firestore and heimdall for a given user
+// Retrieves all data from firestore and heimdall for a given user.
 final almanakUserProvider =
     FutureProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async {
     if (FirebaseAuth.instance.currentUser == null) {
-      // if in DEMO mode, the lidnummer is the heimdall id
+      // If in DEMO mode, the lidnummer is the heimdall id.
       final profile =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
       return FirestoreAlmanakProfile.fromHeimdall(profile!);
     }
 
-    // call both queries in parallel
+    // Call both queries in parallel.
     final heimdallProfile =
         ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
@@ -28,7 +28,7 @@ final almanakUserProvider =
         (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
     final heimdallProfileData = await heimdallProfile;
 
-    // merge the data
+    // Merge the data.
     final heimdallProfilePublic = heimdallProfileData!.fullContact.public;
 
     return profile.copyWith(

@@ -7,7 +7,7 @@ final ploegUsersProvider =
     FutureProvider.family<QuerySnapshot<PloegEntry>, String>(
   (ref, name) {
     final selectedYear =
-        ref.watch(ploegYearProvider); // year can be changed in state
+        ref.watch(ploegYearProvider); // Year can be changed in state.
 
     return FirebaseFirestore.instance
         .collectionGroup('groups')

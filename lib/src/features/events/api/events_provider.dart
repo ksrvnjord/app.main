@@ -22,7 +22,7 @@ final comingEventsProvider = FutureProvider<List<Event>>(
 
       DateTime endTime = DateTime.parse(event.end_time!);
       if (endTime.isAfter(now)) {
-        // only add events that are going on, or are going to happen
+        // Only add events that are going on, or are going to happen.
         events.add(Event(
           title: event.title!,
           startTime: DateTime.parse(event.start_time!),
@@ -33,6 +33,6 @@ final comingEventsProvider = FutureProvider<List<Event>>(
 
     return events
       ..sort((a, b) =>
-          a.startTime.compareTo(b.startTime)); // sort events by start time
+          a.startTime.compareTo(b.startTime)); // Sort events by start time.
   },
 );

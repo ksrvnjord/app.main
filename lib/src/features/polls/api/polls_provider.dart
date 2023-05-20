@@ -8,7 +8,7 @@ final CollectionReference<Poll> pollsCollection =
           toFirestore: (poll, _) => poll.toJson(),
         );
 
-// retrieves all the polls
+// Retrieves all the polls.
 final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
   return pollsCollection.orderBy('openUntil', descending: true).get();
 });
@@ -19,6 +19,6 @@ final openPollsProvider =
         .orderBy(
           'openUntil',
           descending: false,
-        ) // show the poll with closest deadline first
+        ) // Show the poll with closest deadline first.
         .limit(3)
         .get());

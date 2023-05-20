@@ -12,7 +12,7 @@ class TrainingList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (ref.watch(firebaseAuthUserProvider) == null) {
-      // this should show to the user that there are no reservations
+      // This should show to the user that there are no reservations.
       return const Center(
         child: Text('Je hebt geen afschrijvingen'),
       );

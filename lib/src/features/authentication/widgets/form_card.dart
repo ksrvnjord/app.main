@@ -17,8 +17,8 @@ class FormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Implement in Heimdall
-    // return const ForgotForm();
+    // TODO: Implement in Heimdall.
+
     const double textPadding = 16;
 
     const double buttonHeight = 54;

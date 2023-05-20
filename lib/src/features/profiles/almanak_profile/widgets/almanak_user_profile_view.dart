@@ -37,7 +37,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
     final Characters yearOfArrival = identifier.characters.getRange(
       0,
       2,
-    ); // aankomstjaar is de eerste 2 cijfers van het lidnummer
+    ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
     final AsyncValue<FirestoreAlmanakProfile> profile =
         ref.watch(almanakUserProvider(identifier));
@@ -65,7 +65,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     .textColor(Colors.blueGrey)
                     .alignment(Alignment.center),
               if (u.bestuursFunctie != null)
-                // make list tile with lightblue background and white text
+                // Make list tile with lightblue background and white text.
                 Center(
                   child: Card(
                     color: Colors.lightBlue,
@@ -153,7 +153,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                           u.ploeg!.isEmpty ||
                           ploegenSnapshot.size > 0)
                       ? const SizedBox
-                          .shrink() // user has filled in new ploegen widget, so don't show old ploegen widget
+                          .shrink() // User has filled in new ploegen widget, so don't show old ploegen widget.
                       : DataTextListTile(name: "Ploeg", value: u.ploeg!),
                   error: (err, __) =>
                       ErrorCardWidget(errorMessage: err.toString()),
@@ -166,7 +166,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 ChipWidget(title: "Substructuren", values: u.substructures!),
               if (u.huis != null)
                 DataTextListTile(name: "Huis", value: u.huis!),
-              if (u.dubbellid != null && u.dubbellid!) // only show if true
+              if (u.dubbellid != null && u.dubbellid!) // Only show if true.
                 DataTextListTile(
                   name: "Dubbellid",
                   value: u.dubbellid! ? "Ja" : "Nee",

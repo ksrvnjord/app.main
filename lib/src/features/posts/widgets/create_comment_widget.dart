@@ -50,7 +50,7 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
           child: const Icon(Icons.send, color: Colors.lightBlue)
               .padding(all: sendIconPadding),
           onTap: submitForm,
-        ), // expand in the cross axis
+        ), // Expand in the cross axis.
       ].toRow().backgroundColor(Colors.white),
     );
   }
@@ -59,7 +59,7 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    _formKey.currentState!.save(); // save the form
+    _formKey.currentState!.save(); // Save the form.
 
     // ignore: avoid-ignoring-return-values
     await Comment.createComment(
@@ -67,6 +67,6 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
       postId: widget.postDocId,
     );
 
-    _formKey.currentState!.reset(); // reset the form
+    _formKey.currentState!.reset(); // Reset the form.
   }
 }

@@ -38,7 +38,7 @@ class ReservationListTile extends StatelessWidget {
         ),
       ].toWrap(direction: Axis.horizontal),
     ).card(
-      color: // if damage is critical show light red, else orange
+      color: // If damage is critical show light red, else orange.
           Colors.white,
       elevation: 0,
       shape: const RoundedRectangleBorder(

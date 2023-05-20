@@ -35,13 +35,13 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
             .fontSize(titleFontSize)
             .padding(all: fieldPadding),
         StreamWrapper(
-          // use stream to show updates in real time
+          // Use stream to show updates in real time.
           stream: ref.watch(myCommissiesProvider.stream),
           success: (commissies) => EditCommissiesList(snapshot: commissies),
           error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         ),
       ]),
-      floatingActionButton: // button with a plus icon and the text "Commissie"
+      floatingActionButton: // Button with a plus icon and the text "Commissie".
           FloatingActionButton.extended(
         backgroundColor: Colors.lightBlue,
         onPressed: () => Routemaster.of(context).push('select'),

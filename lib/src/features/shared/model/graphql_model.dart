@@ -10,7 +10,7 @@ final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
 final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
 
 final graphQLModelProvider = ChangeNotifierProvider((ref) {
-  final auth = ref.watch(authModelProvider); // we need auth for the client
+  final auth = ref.watch(authModelProvider); // We need auth for the client.
 
   return GraphQLModel(auth);
 });
@@ -36,7 +36,7 @@ class GraphQLModel extends ChangeNotifier {
       cache: cache,
     );
 
-    // Fill contact details
+    // Fill contact details.
     GetIt.I.get<CurrentUser>().fillContact(client);
 
     return client;

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PollAnswer {
   final String userId;
-  final String? answer; // user can choose to not answer
+  final String? answer; // User can choose to not answer.
   final DateTime answeredAt;
 
   const PollAnswer({
@@ -11,7 +11,7 @@ class PollAnswer {
     required this.answeredAt,
   });
 
-  // create fromJson method
+  // Create fromJson method.
   factory PollAnswer.fromJson(Map<String, dynamic> json) {
     return PollAnswer(
       userId: json['userId'],
@@ -20,7 +20,7 @@ class PollAnswer {
     );
   }
 
-  // create toJson method
+  // Create toJson method.
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
@@ -29,5 +29,5 @@ class PollAnswer {
     };
   }
 
-  // create static method that adds a poll answer to Firestore
+  // Create static method that adds a poll answer to Firestore.
 }

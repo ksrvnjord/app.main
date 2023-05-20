@@ -33,7 +33,7 @@ class AlmanakUserTile extends ConsumerWidget {
 
     return heimdallAlmanakProfile.when(
       data: (user) => user == null
-          ? const SizedBox() // no user found, show nothing
+          ? const SizedBox() // No user found, show nothing.
           : ListTile(
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text("$firstName $lastName"),
@@ -67,6 +67,6 @@ class AlmanakUserTile extends ConsumerWidget {
       ),
       error: (error, stackTrace) =>
           ErrorCardWidget(errorMessage: error.toString()),
-    ); // show nothing if no heimdall user is found
+    ); // Show nothing if no heimdall user is found.
   }
 }

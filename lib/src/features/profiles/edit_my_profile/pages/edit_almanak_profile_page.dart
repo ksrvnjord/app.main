@@ -61,7 +61,7 @@ class _EditAlmanakProfilePageState
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
       ),
-      floatingActionButton: // floating action button with save icon
+      floatingActionButton: // Floating action button with save icon.
           [
         FloatingActionButton.extended(
           backgroundColor: Colors.blueGrey,
@@ -150,7 +150,7 @@ class _EditAlmanakProfilePageState
                   ),
                   onTap: () => Routemaster.of(context).push(
                     'groups',
-                  ), // in de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen
+                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
                 ListTile(
                   title: const Text('Beheer mijn commissies'),
@@ -216,7 +216,7 @@ class _EditAlmanakProfilePageState
                 ),
               ],
             ),
-            // Add a TextFormField for the team the user is in
+            // Add a TextFormField for the team the user is in.
           ].toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             separator: const SizedBox(height: groupSpacing),
@@ -227,7 +227,7 @@ class _EditAlmanakProfilePageState
   }
 
   void submitForm() async {
-    // FORM VALIDATION
+    // FORM VALIDATION.
     if (!_formKey.currentState!.validate()) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
@@ -239,10 +239,10 @@ class _EditAlmanakProfilePageState
 
       return;
     }
-    bool success = true; // on errors set to false
-    // Get user id from FirebaseAuth
+    bool success = true; // On errors set to false.
+    // Get user id from FirebaseAuth.
 
-    // FIND DOCUMENT OF CURRENT USER
+    // FIND DOCUMENT OF CURRENT USER.
     final querySnapshot = await FirebaseFirestore.instance
         .collection('people')
         .withConverter<FirestoreAlmanakProfile>(
@@ -253,10 +253,10 @@ class _EditAlmanakProfilePageState
         .where('identifier', isEqualTo: getCurrentUserId())
         .get();
 
-    // SAVE FORM
+    // SAVE FORM.
     _formKey.currentState?.save();
 
-    // UPLOAD FORM TO FIRESTORE
+    // UPLOAD FORM TO FIRESTORE.
     final ProfileForm form = ref.read(profileEditFormNotifierProvider);
     await querySnapshot.docs.first.reference
         .update(form.toJson())
@@ -264,9 +264,9 @@ class _EditAlmanakProfilePageState
       success = false;
     });
 
-    ref.invalidate(firestoreUserFutureProvider); // invalidate cache
+    ref.invalidate(firestoreUserFutureProvider); // Invalidate cache.
 
-    // PROFILE PICTURE UPLOAD
+    // PROFILE PICTURE UPLOAD.
     final File? newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {
@@ -280,7 +280,7 @@ class _EditAlmanakProfilePageState
       }
     }
 
-    // SHOW CONFIRMATION TO USER
+    // SHOW CONFIRMATION TO USER.
     if (context.mounted) {
       if (success) {
         // ignore: avoid-ignoring-return-values

@@ -13,7 +13,6 @@ class CompetitiePloeg {
     required this.year,
   });
 
-  // fromFirestore
   factory CompetitiePloeg.fromFirestore(Map<String, dynamic> json) {
     return CompetitiePloeg(
       name: json['name'],
@@ -23,7 +22,6 @@ class CompetitiePloeg {
     );
   }
 
-  // toFirestore
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,

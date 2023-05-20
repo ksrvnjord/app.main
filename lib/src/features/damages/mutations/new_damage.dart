@@ -12,23 +12,23 @@ Future<void> newDamage(DamageForm damageForm) async {
     throw Exception('DamageForm was submitted by unauthenticated user.');
   }
 
-  // Check if the form is complete
+  // Check if the form is complete.
   if (!damageForm.complete) {
     throw Exception('DamageForm was submitted, but not complete.');
   }
 
-  // Get the objects with the given type and name
+  // Get the objects with the given type and name.
   final objects = await objectByTypeAndName(damageForm.type!, damageForm.name!);
 
-  // Check if we received any objects
+  // Check if we received any objects.
   if (objects.isEmpty) {
     throw Exception('Submitted DamageForm could not find Reservation Object.');
   }
 
-  // Get the first object from the list and receive the subcollections
+  // Get the first object from the list and receive the subcollections.
   final object = objects.first.reference;
 
-  // First create the damages item, so we have an ID
+  // First create the damages item, so we have an ID.
   final addedDamage = await object.collection('damages').add(Damage.fromJson({
         'parent': object,
         'description': damageForm.description,
@@ -41,7 +41,7 @@ Future<void> newDamage(DamageForm damageForm) async {
         'name': damageForm.name,
       }).toJson());
 
-  // Check if there's an image, if so, upload it
+  // Check if there's an image, if so, upload it.
   if (damageForm.image != null) {
     final String path =
         '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
@@ -50,7 +50,7 @@ Future<void> newDamage(DamageForm damageForm) async {
           damageForm.image!,
         );
 
-    // Then, store it in the addedDamage
+    // Then, store it in the addedDamage.
     addedDamage.update({'image': path});
   }
 }

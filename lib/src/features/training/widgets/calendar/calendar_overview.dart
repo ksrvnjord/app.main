@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widget
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-// Shows all available objects for a given day and filters
+// Shows all available objects for a given day and filters.
 class CalendarOverview extends ConsumerStatefulWidget {
   final DateTime date;
 
@@ -28,7 +28,7 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
       if (boatsController.offset != timesController.offset) {
         timesController.jumpTo(boatsController.offset);
       }
-    }); // this makes the time column scroll with the boats
+    }); // This makes the time column scroll with the boats.
 
     super.initState();
   }
@@ -62,11 +62,10 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
                   boatsController: boatsController,
                   date: widget.date,
                 ),
-              ), // this builds the columns with the boats and the slots
+              ), // This builds the columns with the boats and the slots.
               TimeScrollView(
                 timesController: timesController,
-              ), // this builds the time column on the left side
-              // I want to draw a line across the screen horizontally
+              ), // This builds the time column on the left side.
             ],
           );
   }

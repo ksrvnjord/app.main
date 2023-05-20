@@ -36,7 +36,7 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
           fit: BoxFit.cover,
         ),
         error: (err, stk) => Image.asset(Images.placeholderProfilePicture),
-        // loading show shimmer widget here
+        // Loading show shimmer widget here.
         loading: () => Image.asset(
           Images.placeholderProfilePicture,
           width: width,

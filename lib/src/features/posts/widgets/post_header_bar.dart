@@ -48,7 +48,7 @@ class PostHeaderBar extends ConsumerWidget {
             )
             .padding(left: titleLeftPadding),
       ].toRow(),
-      // three dots for more options, show if user is author
+      // Three dots for more options, show if user is author.
 
       if (firebaseUser != null &&
           (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))

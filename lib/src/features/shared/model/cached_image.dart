@@ -42,17 +42,17 @@ class CachedImage {
     if (cachedImage != null) {
       return cachedImage;
     }
-    // Image is not cached, so we need to fetch it from the network
+    // Image is not cached, so we need to fetch it from the network.
     String? url = await getUrl(firebaseStoragePath);
     ImageProvider<Object> placeholder = placeholderImage;
     if (url == null) {
-      // there is no image at this path in Firebase Storage
+      // There is no image at this path in Firebase Storage.
       HiveCache.putEmpty(firebaseStoragePath);
 
       return placeholder;
     }
 
-    // We have url of image, so now we can download and cache it
+    // We have url of image, so now we can download and cache it.
     Uint8List? firestoreImage = await HiveCache.getHttpImageAndCache(
       url,
       key: firebaseStoragePath,
@@ -65,7 +65,7 @@ class CachedImage {
     return MemoryImage(firestoreImage);
   }
 
-  /// Returns the FirebaseStorage download url of the image at the given path, or null if it doesn't exist
+  /// Returns the FirebaseStorage download url of the image at the given path, or null if it doesn't exist.
   static Future<String?> getUrl(String path) async {
     try {
       return await FirebaseStorage.instance.ref(path).getDownloadURL();

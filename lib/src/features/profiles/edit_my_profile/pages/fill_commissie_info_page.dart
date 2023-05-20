@@ -21,7 +21,7 @@ class FillCommissieInfoPage extends StatefulWidget {
 }
 
 class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
-  // create a form key to identify the form
+  // Create a form key to identify the form.
   final _formKey = GlobalKey<FormState>();
 
   CommissieEntry _formData = CommissieEntry(
@@ -67,7 +67,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         child: ListView(
           children: [
             DataTextListTile(name: "Commissie", value: widget.commissie),
-            // create a year picker field that lets user select a year
+            // Create a year picker field that lets user select a year.
             DropdownButtonFormField(
               items: years
                   .map((tuple) => DropdownMenuItem(
@@ -116,10 +116,10 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     );
   }
 
-  // function that submits the form
+  // Function that submits the form.
   void submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
-      // don't submit if form is invalid
+      // Don't submit if form is invalid.
       return;
     }
     _formKey.currentState?.save();
@@ -145,8 +145,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
           backgroundColor: Colors.green,
         ),
       );
-      Routemaster.of(context)
-          .replace('/almanak/edit/commissies'); // go to overzicht of commissies
+      Routemaster.of(context).replace(
+        '/almanak/edit/commissies',
+      ); // Go to overzicht of commissies.
     }
   }
 }

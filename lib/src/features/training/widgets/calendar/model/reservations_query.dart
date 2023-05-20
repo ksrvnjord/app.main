@@ -5,7 +5,6 @@ class ReservationsQuery {
   final DateTime date;
   final DocumentReference<ReservationObject> docRef;
 
-  // override equality
   @override
   int get hashCode => date.hashCode ^ docRef.hashCode;
 

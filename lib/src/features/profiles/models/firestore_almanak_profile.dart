@@ -35,7 +35,7 @@ class FirestoreAlmanakProfile {
     this.substructures,
   });
 
-  // fromJson
+  // FromJson.
   factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
     return FirestoreAlmanakProfile(
       firstName: json['first_name'],
@@ -108,7 +108,7 @@ class FirestoreAlmanakProfile {
     );
   }
 
-  // toJson
+  // ToJson.
   Map<String, dynamic> toFirestore() {
     return {
       'ploeg': ploeg,

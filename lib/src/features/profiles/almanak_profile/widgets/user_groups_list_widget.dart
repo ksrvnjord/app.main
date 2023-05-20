@@ -67,7 +67,7 @@ class UserGroupsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<QueryDocumentSnapshot<GroupEntry>> docs = snapshot;
     bool usedPloegFeature =
-        false; // TODO: remove this when we most users have migrated to the new system
+        false; // TODO: remove this when we most users have migrated to the new system.
     for (final doc in docs) {
       if (doc.data() is PloegEntry) {
         usedPloegFeature = true;

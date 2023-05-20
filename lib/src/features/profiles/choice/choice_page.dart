@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:routemaster/routemaster.dart';
 
-/// Page that shows a list of choices, and pushes a new page when a choice is chosen
+/// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class ChoicePage extends StatelessWidget {
   const ChoicePage({
     Key? key,

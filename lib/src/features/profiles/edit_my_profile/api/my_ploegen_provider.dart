@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart'
 
 final myPloegenProvider =
     StreamProvider.autoDispose<QuerySnapshot<PloegEntry>>((ref) async* {
-  // we have to mark as async* because we need to await the future and lazily yield
+  // We have to mark as async* because we need to await the future and lazily yield.
   final uid = ref.watch(currentFirebaseUserProvider)!.uid;
 
   final userDoc = await ref.watch(firestoreUserFutureProvider(uid).future);

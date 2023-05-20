@@ -89,7 +89,7 @@ class ShowTrainingPage extends StatelessWidget {
                       DateFormat.yMMMMEEEEd('nl_NL').format(date);
 
                   children.addAll([
-                    // add ListTile with the date
+                    // Add ListTile with the date.
                     DataListTile(
                       icon: const Icon(Icons.calendar_today),
                       data: formattedDate,

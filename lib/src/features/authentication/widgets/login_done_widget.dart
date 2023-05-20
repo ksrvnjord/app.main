@@ -12,7 +12,7 @@ class LoginDoneWidget extends ConsumerWidget {
     // ignore: avoid-ignoring-return-values
     ref.watch(
       currentFirebaseUserProvider,
-    ); // get currentUser details from firebase
+    ); // Get currentUser details from firebase.
     // ignore: avoid-non-ascii-symbols
     const String swanEmoji = "\uD83E\uDDA2";
 

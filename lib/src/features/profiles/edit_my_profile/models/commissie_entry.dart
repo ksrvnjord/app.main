@@ -48,7 +48,6 @@ class CommissieEntry extends GroupEntry {
     };
   }
 
-  // copy with
   CommissieEntry copyWith({
     int? startYear,
     int? endYear,

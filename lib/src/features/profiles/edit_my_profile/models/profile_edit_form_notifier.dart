@@ -86,7 +86,7 @@ class ProfileForm {
     );
   }
 
-  // toJson
+  // ToJson.
   Map<String, dynamic> toJson() {
     return {
       if (study != null) 'study': study,

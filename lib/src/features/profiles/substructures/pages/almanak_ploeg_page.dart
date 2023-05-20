@@ -120,7 +120,7 @@ class AlmanakPloegPage extends ConsumerWidget {
   }
 
   int comparePloegFunctie(PloegEntry a, PloegEntry b) {
-    // sort based on role in ploeg
+    // Sort based on role in ploeg.
     int indexA = PloegRole.values.indexOf(a.role);
     int indexB = PloegRole.values.indexOf(b.role);
 

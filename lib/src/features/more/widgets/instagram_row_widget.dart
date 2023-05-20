@@ -9,8 +9,8 @@ class InstagramRowWidget extends StatelessWidget {
     required this.url,
     required this.handle,
   });
-  final String url; // the url of the instagram account
-  final String handle; // the handle of the instagram account @...
+  final String url; // The url of the instagram account.
+  final String handle; // The handle of the instagram account @...
 
   @override
   Widget build(BuildContext context) {

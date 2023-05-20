@@ -1,4 +1,4 @@
-// create Stateful page that lists all available filters for a reservation
+// Create Stateful page that lists all available filters for a reservation.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +15,7 @@ class ShowFiltersPage extends ConsumerWidget {
   }) : super(key: key);
 
   final Map<String, List<MultiSelectItem<String?>>>
-      availableFilters = // build a map of categories and their types
+      availableFilters = // Build a map of categories and their types.
       reservationObjectTypes.map((category, types) => MapEntry(
             category,
             types
@@ -57,7 +57,7 @@ class ShowFiltersPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(pagePadding),
         children: [
-          // Make a MultiSelectChipField for each category in availableFilters dynamically
+          // Make a MultiSelectChipField for each category in availableFilters dynamically.
           ...availableFilters.keys
               .map(
                 (String key) => [

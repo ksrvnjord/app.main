@@ -3,7 +3,7 @@ abstract class GroupEntry {
   final String name;
   final String firstName;
   final String lastName;
-  final String identifier; // lidnummer
+  final String identifier; // Lidnummer.
 
   GroupEntry({
     required this.year,

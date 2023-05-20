@@ -22,7 +22,7 @@ class AuthorWidget extends StatelessWidget {
 
     return [
       Text(authorName).fontWeight(FontWeight.bold).fontSize(fontSize),
-      // twitter checkmark
+      // Twitter checkmark.
       if (postAuthor != null && (authorIsBestuur! || authorIsAppCo!))
         Icon(
           Icons.verified,

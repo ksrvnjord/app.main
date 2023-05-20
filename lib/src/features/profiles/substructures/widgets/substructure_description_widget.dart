@@ -23,7 +23,7 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
               Text(data).fontSize(fontSize).expanded(flex: 0),
             ].toColumn().padding(
                 all: widgetPadding,
-              ), // only add padding if there is a description
+              ), // Only add padding if there is a description.
       loading: () => const CircularProgressIndicator().center(),
       error: (error, stack) => ErrorCardWidget(
         errorMessage: error.toString(),

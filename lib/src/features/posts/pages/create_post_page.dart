@@ -18,7 +18,7 @@ class CreatePostPage extends ConsumerStatefulWidget {
 
 class CreatePostPageState extends ConsumerState<CreatePostPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String selectedTopic = ""; // default value
+  String selectedTopic = ""; // Default value.
   String title = '';
   String content = '';
 

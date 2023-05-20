@@ -19,7 +19,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
 
     return ListView(
       children: [
-        // show title of announcement emphasized
+        // Show title of announcement emphasized.
         Text(
           title,
           style: const TextStyle(
@@ -39,11 +39,11 @@ class AnnouncementBodyWidget extends StatelessWidget {
     if (url == null) {
       return;
     }
-    // Check if an URL is actually given
+    // Check if an URL is actually given.
     if (url.isNotEmpty) {
-      // convert url to URI
+      // Convert url to URI.
       final uri = Uri.parse(url);
-      // launch url in separate browser
+      // Launch url in separate browser.
       // ignore: avoid-ignoring-return-values
       launchUrl(uri, mode: LaunchMode.externalApplication);
     }

@@ -11,9 +11,9 @@ class AllTrainingPage extends ConsumerWidget {
   AllTrainingPage({Key? key}) : super(key: key);
 
   static const int amountOfDaysUserCanBookInAdvance =
-      4; // user can book x days in the advance
+      4; // User can book x days in the advance.
 
-  // Generate a list of the coming 14 days
+  // Generate a list of the coming 14 days.
   final List<DateTime> days = List.generate(
     amountOfDaysUserCanBookInAdvance,
     (index) => DateTime.now().add(Duration(days: index)),

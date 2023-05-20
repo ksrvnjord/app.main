@@ -51,7 +51,7 @@ class DamagesListPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
-              null // only show button if user is logged in
+              null // Only show button if user is logged in.
           ? FloatingActionButton.extended(
               backgroundColor: Colors.blue,
               onPressed: () => navigator.push('create'),

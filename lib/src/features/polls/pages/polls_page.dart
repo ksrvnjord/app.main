@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-// TODO: Only polls that are open should be modifiable
+// TODO: Only polls that are open should be modifiable.
 class PollsPage extends ConsumerWidget {
   const PollsPage({Key? key}) : super(key: key);
 

@@ -48,7 +48,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
   final ScrollController scrollController = ScrollController(
     keepScrollOffset: true,
-  ); // for keeping scroll position when changing year
+  ); // For keeping scroll position when changing year.
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       ),
       body: ListView(
         controller:
-            scrollController, // for keeping scroll position when changing year
+            scrollController, // For keeping scroll position when changing year.
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           AlmanakSubstructureCoverPicture(
@@ -164,11 +164,11 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     );
   }
 
-  /// Compare the bestuursfuncties op basis van constitutie
+  /// Compare the bestuursfuncties op basis van constitutie.
   int compareCommissieFunctie(CommissieEntry a, CommissieEntry b) {
     int aPos = substructuurVolgorde.indexOf(a.function ?? "");
     int bPos = substructuurVolgorde.indexOf(b.function ?? "");
-    // Order the ones that are not in the list at the end
+    // Order the ones that are not in the list at the end.
     if (aPos == -1) aPos = substructuurVolgorde.length;
     if (bPos == -1) bPos = substructuurVolgorde.length;
 

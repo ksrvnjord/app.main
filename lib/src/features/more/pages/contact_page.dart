@@ -28,7 +28,7 @@ class ContactPage extends StatelessWidget {
         backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
-        // TODO: add linkje naar interne Njord Insta
+        // TODO: add linkje naar interne Njord Insta.
         ExpansionTile(
           title: const Text("Bestuur")
               .fontSize(expansionTileFontSize)
@@ -72,7 +72,7 @@ class ContactPage extends StatelessWidget {
                   (entry) => DataRow(cells: [
                     DataCell(Text(entry.key)),
                     DataCell(
-                      // create a link to the email
+                      // Create a link to the email.
                       InkWell(
                         child: const FaIcon(
                           FontAwesomeIcons.envelope,

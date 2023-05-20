@@ -19,7 +19,7 @@ class MorePage extends ConsumerWidget {
       "Agenda": "events",
       "Contact": "/contact",
       "Beleid van het bestuur": "beleid",
-      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
+      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature.
         "Notificatie-instellingen": "notifications",
       'Geavanceerde instellingen': 'advanced-settings',
     };
@@ -33,8 +33,8 @@ class MorePage extends ConsumerWidget {
       body: ListView(
         children: [
           ...optionMap.entries.map(
-            // Make a list of options to display and navigate to
-            // Each option is a tile with a divider below it
+            // Make a list of options to display and navigate to.
+            // Each option is a tile with a divider below it.
             (entry) => [
               MoreListTile(
                 label: entry.key,
@@ -52,7 +52,7 @@ class MorePage extends ConsumerWidget {
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
               name: GetIt.I<CurrentUser>()
                       .user
-                      ?.username ?? // CurrentUser might not be filled yet
+                      ?.username ?? // CurrentUser might not be filled yet.
                   FirebaseAuth.instance.currentUser?.uid ??
                   "Anoniem",
             ),

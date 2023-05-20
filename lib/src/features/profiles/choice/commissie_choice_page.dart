@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_ch
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
-/// Page that shows a list of choices, and pushes a new page when a choice is chosen
+/// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class CommissieChoicePage extends ConsumerWidget {
   const CommissieChoicePage({
     Key? key,

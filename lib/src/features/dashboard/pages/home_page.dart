@@ -25,9 +25,8 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  // refresh function
   Future<void> _refresh() async {
-    // invalidate all providers for the widgets on the home page
+    // Invalidate all providers for the widgets on the home page.
     ref.invalidate(firebaseAuthUserProvider);
     ref.invalidate(vaarverbodProvider);
     ref.invalidate(openPollsProvider);
@@ -35,7 +34,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.invalidate(comingEventsProvider);
     ref.invalidate(announcementsProvider);
 
-    // wait for all providers to be updated
+    // Wait for all providers to be updated.
     // ignore: avoid-ignoring-return-values
     await Future.wait([
       ref.watch(vaarverbodProvider.future),
@@ -45,7 +44,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ]);
   }
 
-  // override didCHangeDependencies
+  // Override didCHangeDependencies.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -53,7 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     // ignore: avoid-ignoring-return-values
     ref.watch(
       currentFirebaseUserProvider,
-    ); // init the current user with data from Firestore
+    ); // Init the current user with data from Firestore.
   }
 
   @override

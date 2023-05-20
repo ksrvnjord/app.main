@@ -10,13 +10,13 @@ final postsCollection =
           toFirestore: (post, _) => post.toJson(),
         );
 
-// retrieves posts for a given topic
+// Retrieves posts for a given topic.
 final postsProvider = StreamProvider.autoDispose
     .family<QuerySnapshot<Post>, String>((ref, topic) {
   return postsCollection
       .where('topic', isEqualTo: topic)
       .orderBy('createdTime', descending: true)
-      .limit(50) // TODO: use pagination for posts
+      .limit(50) // TODO: use pagination for posts.
       .snapshots();
 });
 
@@ -27,11 +27,11 @@ final postProvider =
   },
 );
 
-// retrieves posts for a given topic
+// Retrieves posts for a given topic.
 final newPostsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
   final String? topic = ref.watch(selectedTopicProvider);
   if (topic == null) {
-    // get all posts if no topic selected
+    // Get all posts if no topic selected.
     return postsCollection
         .orderBy('createdTime', descending: true)
         .limit(50)
@@ -41,6 +41,6 @@ final newPostsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
   return postsCollection
       .where('topic', isEqualTo: topic)
       .orderBy('createdTime', descending: true)
-      .limit(50) // TODO: use pagination for posts
+      .limit(50) // TODO: use pagination for posts.
       .snapshots();
 });

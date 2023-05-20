@@ -1,5 +1,5 @@
-// write a FutureProvider that gets the reservation filters from shared preferences
-// and returns them as a List<String>
+// Write a FutureProvider that gets the reservation filters from shared preferences.
+// And returns them as a List<String>.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

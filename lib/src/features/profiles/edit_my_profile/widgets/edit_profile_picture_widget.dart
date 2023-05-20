@@ -50,7 +50,7 @@ class _EditProfilePictureWidgetState
       loading: () => const ShimmerWidget(
         child: DefaultProfilePicture(
           radius: profilePictureSize / 2,
-        ), // profilepicture size is the diameter
+        ), // Profilepicture size is the diameter.
       ),
     );
   }

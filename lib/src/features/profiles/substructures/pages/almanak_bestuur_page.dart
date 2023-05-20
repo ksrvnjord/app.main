@@ -48,7 +48,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
 
   Widget buildBestuurList(QuerySnapshot<FirestoreAlmanakProfile> snapshot) {
     List<QueryDocumentSnapshot<FirestoreAlmanakProfile>> docs = snapshot.docs;
-    // we want to sort baseed on the bestuurs_volgorde
+    // We want to sort baseed on the bestuurs_volgorde.
     docs.sort((a, b) => compareBestuursFunctie(a.data(), b.data()));
 
     return <Widget>[
@@ -71,7 +71,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
     );
   }
 
-  /// Compare the bestuursfuncties op basis van constitutie
+  /// Compare the bestuursfuncties op basis van constitutie.
   int compareBestuursFunctie(
     FirestoreAlmanakProfile a,
     FirestoreAlmanakProfile b,

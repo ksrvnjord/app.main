@@ -9,7 +9,7 @@ final commissieInfoProvider =
     FutureProvider.autoDispose.family<String?, String>((ref, name) async {
   String yaml = await rootBundle.loadString(AssetData.commissies);
   final YamlMap doc = loadYaml(yaml);
-  // check if the name exists in the yaml file
+  // Check if the name exists in the yaml file.
   if (!doc.containsKey(name)) {
     return null;
   }

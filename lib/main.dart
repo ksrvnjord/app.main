@@ -36,11 +36,10 @@ Future<void> appRunner() async {
   Routemaster.setPathUrlStrategy();
   // ignore: avoid-ignoring-return-values
   await Firebase.initializeApp(
-    // name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228
+    // Can't add name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228.
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
-    // activate AppCheck
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
     androidProvider:
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
@@ -60,19 +59,19 @@ Future<void> appRunner() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   await FirebaseAnalytics.instance.setDefaultEventParameters(
     {'version': packageInfo.version},
-  ); // log app version with every event
+  ); // Log app version with every event.
 
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
     kReleaseMode,
-  ); // don't collect analytics in debug mode
+  ); // Don't collect analytics in debug mode.
 
   final container =
-      ProviderContainer(); // used to initialize always active providers
+      ProviderContainer(); // Used to initialize always active providers.
 
   // ignore: avoid-ignoring-return-values
-  container.read(authModelProvider); // initialize the authModelProvider
+  container.read(authModelProvider); // Initialize the authModelProvider.
   // ignore: avoid-ignoring-return-values
-  container.read(graphQLModelProvider); // initialize the graphQLModelProvider
+  container.read(graphQLModelProvider); // Initialize the graphQLModelProvider.
 
   runApp(BetterFeedback(
     child: UncontrolledProviderScope(
@@ -84,26 +83,26 @@ Future<void> appRunner() async {
 
 Future<void> main() async {
   FlutterError.demangleStackTrace = (StackTrace stack) {
-    // riverpod uses different format of stack trace than flutter, so we need to convert it to flutter format
+    // Riverpod uses different format of stack trace than flutter, so we need to convert it to flutter format.
     if (stack is stack_trace.Trace) return stack.vmTrace;
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
 
     return stack;
   };
-  // Initialize the Hive Cache (Generic K/V cache, relevant for image caching)
+  // Initialize the Hive Cache (Generic K/V cache, relevant for image caching).
   await Hive.initFlutter(
     HiveCache.cachePath,
-  ); // store the cache in a separate folder
-  Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
+  ); // Store the cache in a separate folder.
+  Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.
   // ignore: avoid-ignoring-return-values
   await Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
 
-  // "kReleaseMode" is true if the app is not being debugged
+  // Note: "kReleaseMode" is true if the app is not being debugged.
   if (kReleaseMode) {
-    // Run it inside of SentryFlutter, but log / except to the debug-app
+    // Run it inside of SentryFlutter, but log / except to the debug-app.
     const double sampleRate = 1;
     await SentryFlutter.init(
       (options) {
@@ -118,7 +117,7 @@ Future<void> main() async {
   }
 }
 
-// Main is not a nice class name, but it is the main class of the app
+// Main is not a nice class name, but it is the main class of the app.
 // ignore: prefer-match-file-name
 class Application extends ConsumerWidget {
   const Application({Key? key}) : super(key: key);

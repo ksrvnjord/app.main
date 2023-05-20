@@ -16,7 +16,7 @@ class SelectPloegPage extends ConsumerWidget {
   const SelectPloegPage({Key? key})
       : super(
           key: key,
-        ); // TODO: make this page more modular so that it can be used to find a ploeg in the almanak, as selecting a ploeg for adding to profile, by changing the route where it navigates to
+        ); // TODO: make this page more modular so that it can be used to find a ploeg in the almanak, as selecting a ploeg for adding to profile, by changing the route where it navigates to.
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

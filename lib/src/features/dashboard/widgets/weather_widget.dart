@@ -14,7 +14,7 @@ class WeatherWidget extends ConsumerWidget {
   });
 
   int windspeedToBeaufort(final double windspeed) {
-    // windspeed is in km/h
+    // Windspeed is in km/h.
     if (windspeed < 1) {
       return 0;
     } else if (windspeed < 6) {
@@ -57,10 +57,10 @@ class WeatherWidget extends ConsumerWidget {
         final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
         final sunset = DateTime.parse(data['daily']['sunset'][0]);
         final winddirection = (currentWeather['winddirection'] + 180) %
-            360; // winddirection should indicate where the wind is going to.
+            360; // Winddirection should indicate where the wind is going to.
 
         final fetchTime = DateTime.parse(currentWeather['time']);
-        // determine if it is night or day based on sunrise and sunset
+        // Determine if it is night or day based on sunrise and sunset.
         final now = DateTime.now();
         final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
 

@@ -58,7 +58,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     super.initState();
     if (widget.user != null) {
       var keys = widget.user!.fullContact.public.toJson().keys.toSet();
-      // User can't change visibility of these fields
+      // User can't change visibility of these fields.
 
       // ignore: avoid-ignoring-return-values
       keys.remove('first_name');

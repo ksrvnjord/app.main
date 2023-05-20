@@ -11,7 +11,8 @@ void initMessagingInfo() async {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  // TODO: provide implementation for when initialize fails
+  // TODO: Provide implementation for when initialize fails.
+
   // ignore: avoid-ignoring-return-values
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 

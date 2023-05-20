@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
-// No other idea than to use this function
+// No other idea than to use this function.
 // ignore: avoid-returning-widgets
 Widget onEmpty<T>(T arg) {
   return Text(arg.toString());

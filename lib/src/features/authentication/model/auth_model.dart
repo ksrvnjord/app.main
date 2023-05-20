@@ -46,11 +46,11 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<void> subscribeDefaultTopics(String userId) async {
-    // Required topics to subscribe to
+    // Required topics to subscribe to.
     await FirebaseMessaging.instance.subscribeToTopic(userId);
     await FirebaseMessaging.instance.subscribeToTopic("all");
 
-    // Store the subscribed topics in a local cache
+    // Store the subscribed topics in a local cache.
     Box cache = await Hive.openBox<bool>('topics');
     await cache.put(userId, true);
     await cache.put('all', true);
@@ -136,13 +136,13 @@ class AuthModel extends ChangeNotifier {
 
   Future<bool> firebase() async {
     final String? accessToken = client?.credentials.accessToken;
-    // Only fire this if an access token is available
+    // Only fire this if an access token is available.
     if (accessToken == null) {
       return false;
     }
 
     try {
-      // Get the token for the configured (constant) endpoint JWT
+      // Get the token for the configured (constant) endpoint JWT.
       var response = await Dio().get(
         globalConstants.jwtEndpoint().toString(),
         options: Options(headers: {
@@ -150,17 +150,16 @@ class AuthModel extends ChangeNotifier {
         }),
       );
 
-      // The token is returned as JSON, decode it
+      // The token is returned as JSON, decode it.
       var data = json.decode(response.data);
 
-      // If we have data && we have the token in our data, proceed
-      // to login
+      // If we have data and we have the token in our data, proceed to login.
       if (data != null && data['token'] != null) {
         // ignore: avoid-ignoring-return-values
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
         notifyListeners();
 
-        // Subscribe the user to FirebaseMessaging as well
+        // Subscribe the user to FirebaseMessaging as well.
         String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
           subscribeDefaultTopics(uid);

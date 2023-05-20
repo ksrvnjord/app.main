@@ -8,7 +8,7 @@ import 'package:styled_widget/styled_widget.dart';
 class AdvancedSettingsPage extends StatelessWidget {
   const AdvancedSettingsPage({Key? key}) : super(key: key);
 
-  // create  a function that clear the cache and exits the app
+  // Create  a function that clear the cache and exits the app.
   Future<void> clearCache() async {
     await HiveCache.deleteAll();
     if (Platform.isAndroid) {
@@ -27,7 +27,7 @@ class AdvancedSettingsPage extends StatelessWidget {
         backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
-        // create a button to clear the cache
+        // Create a button to clear the cache.
         ListTile(
           title: const Text('Cache verwijderen'),
           subtitle: const Text(

@@ -51,7 +51,7 @@ class DamageTileWidget extends StatelessWidget {
       ),
       onTap: showDamage,
     ).card(
-      color: // if damage is critical show light red, else orange
+      color: // If damage is critical show light red, else orange.
           damage.critical ? Colors.red[100] : Colors.orange[100],
       elevation: 0,
       shape: const RoundedRectangleBorder(

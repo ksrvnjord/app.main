@@ -32,7 +32,7 @@ class DamagesCreatePage extends ConsumerWidget {
             return const DamageCreateWidget();
           }
 
-          // TODO: this is not a nice solution, its like calling setState() in the build method
+          // TODO: this is not a nice solution, its like calling setState() in the build method.
           Future.delayed(
             const Duration(milliseconds: 1),
             // ignore: prefer-extracting-callbacks

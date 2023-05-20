@@ -35,7 +35,7 @@ final myReservationsProvider =
         isEqualTo: uid,
       )
       .where(
-        // show reservations booked for today and later
+        // Show reservations booked for today and later.
         'startTime',
         isGreaterThanOrEqualTo: startOfToday,
       )

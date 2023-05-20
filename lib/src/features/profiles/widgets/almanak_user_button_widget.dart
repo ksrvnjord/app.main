@@ -14,12 +14,12 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
     final publicContact = user.fullContact.public;
 
     return Card(
-      // add rounding of 16
+      // Add rounding of 16.
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: ListTile(
-        // add rounding to list tile
+        // Add rounding to list tile.
         leading: ProfilePictureListTileWidget(profileId: user.identifier),
         title: Text(
           '${publicContact.first_name ?? ''} ${publicContact.last_name ?? ''}',
@@ -28,7 +28,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
           FirebaseAuth.instance.currentUser != null
               ? user.identifier
               : user
-                  .id, // some demo users have no identifier and we don't query Firebase for them, so we use the id instead
+                  .id, // Some demo users have no identifier and we don't query Firebase for them, so we use the id instead.
         ),
       ),
     );

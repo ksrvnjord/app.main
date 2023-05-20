@@ -12,8 +12,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 
-// write a FutureProvider that returns a list of ReservationObjects
-
+// Write a FutureProvider that returns a list of ReservationObjects.
 final availableReservationObjectsProvider =
     FutureProvider<QuerySnapshot<ReservationObject>>((ref) async {
   final filters = ref.watch(reservationTypeFiltersListProvider);

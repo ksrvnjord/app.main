@@ -13,7 +13,7 @@ class Address {
     this.city,
   });
 
-  // Add a factory constructor that takes a Map<String, dynamic> and returns an Address
+  // Add a factory constructor that takes a Map<String, dynamic> and returns an Address.
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'] as String?,
@@ -24,7 +24,7 @@ class Address {
     );
   }
 
-  // Add a toJson method that returns a Map<String, dynamic>
+  // Add a toJson method that returns a Map<String, dynamic>.
   Map<String, dynamic> toJson() {
     return {
       'street': street,

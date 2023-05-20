@@ -12,16 +12,16 @@ Future<void> deleteDamage(
     throw Exception('DamageForm was submitted by unauthenticated user.');
   }
 
-  // Get the damage using the identifiers
+  // Get the damage using the identifiers.
   final damage = await getDamage(reservationObjectId, id);
 
-  // Check if there's an image, if so, delete it
+  // Check if there's an image, if so, delete it.
   if (damage.data()?.image != null) {
     final String path =
         '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
     await FirebaseStorage.instance.ref(path).delete();
   }
 
-  // First create the damages item, so we have an ID
+  // First create the damages item, so we have an ID.
   return await damage.reference.delete();
 }

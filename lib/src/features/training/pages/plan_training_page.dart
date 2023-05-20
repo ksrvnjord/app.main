@@ -43,11 +43,11 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
 }
 
 class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
-  DateTime _startTime = DateTime.now(); // Selected start time of the slider
-  DateTime _endTime = DateTime.now(); // Selected end time of the slider
+  DateTime _startTime = DateTime.now(); // Selected start time of the slider.
+  DateTime _endTime = DateTime.now(); // Selected end time of the slider.
   TimeOfDay _startTimeOfDay =
-      TimeOfDay.now(); // Selected start time of the slider
-  TimeOfDay _endTimeOfDay = TimeOfDay.now(); // Selected end time of the slider
+      TimeOfDay.now(); // Selected start time of the slider.
+  TimeOfDay _endTimeOfDay = TimeOfDay.now(); // Selected end time of the slider.
 
   static const intervalOfSelector = Duration(minutes: 15);
   static const minimumReservationDuration = Duration(minutes: 15);
@@ -122,11 +122,11 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
     DateTime earliestPossibleTime = widget.date.add(const Duration(
       hours: 6,
-    )); // people can reservate starting at 06:00
+    )); // People can reservate starting at 06:00.
 
     DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
     for (QueryDocumentSnapshot<Reservation> document in documents) {
-      // determine earliest/latest possible time for slider
+      // Determine earliest/latest possible time for slider.
       Reservation reservation = document.data();
       final reservationsHaveSameStartTime =
           reservation.startTime.isAtSameMomentAs(_startTime);
@@ -261,7 +261,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                 creatorName,
               ),
       style: ElevatedButton.styleFrom(
-        // add rounding
+        // Add rounding.
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),

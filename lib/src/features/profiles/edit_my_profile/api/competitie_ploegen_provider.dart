@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:tuple/tuple.dart';
 
-// we give year and gender to this provider, so we can save the state for a selected filter combination
+// We give year and gender to this provider, so we can save the state for a selected filter combination.
 final competitiePloegenProvider =
     FutureProvider.family<List<String>, Tuple2<int, Gender>>(
   (ref, yearAndGender) async {

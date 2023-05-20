@@ -14,12 +14,12 @@ Future<void> editDamage(
     throw Exception('DamageForm was submitted by unauthenticated user.');
   }
 
-  // Check if the form is complete
+  // Check if the form is complete.
   if (!damageForm.complete) {
     throw Exception('DamageForm was submitted, but not complete.');
   }
 
-  // Get the objects with the given type and name
+  // Get the objects with the given type and name.
   final damage = await getDamage(reservationObjectId, id);
 
   // Update the damage item, using the Damage object / class.
@@ -32,7 +32,7 @@ Future<void> editDamage(
     'name': damageForm.name,
   });
 
-  // Check if there's an image, if so, upload it
+  // Check if there's an image, if so, upload it.
   if (damageForm.image != null) {
     final String path =
         '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
@@ -41,7 +41,7 @@ Future<void> editDamage(
           damageForm.image!,
         );
 
-    // Then, store it in the addedDamage
+    // Then, store it in the addedDamage.
     damage.reference.update({'image': path});
   }
 }

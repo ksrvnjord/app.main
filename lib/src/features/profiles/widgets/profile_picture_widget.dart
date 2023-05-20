@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_pro
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.dart';
 
-/// Zoomable profile picture widget
+/// Zoomable profile picture widget.
 class ProfilePictureWidget extends ConsumerWidget {
   const ProfilePictureWidget({
     Key? key,
@@ -26,7 +26,7 @@ class ProfilePictureWidget extends ConsumerWidget {
         : profilePictureProvider(userId));
 
     return profilePicture.when(
-      // first check if the image is already cached
+      // First check if the image is already cached.
       data: (imageProvider) => zoomable
           ? ZoomableImage(
               imageProvider: imageProvider,

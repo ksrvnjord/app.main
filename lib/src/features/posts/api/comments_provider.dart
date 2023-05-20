@@ -14,6 +14,6 @@ final commentsProvider = StreamProvider.autoDispose
       );
 
   return commentsCollection
-      .orderBy('createdTime', descending: false) // show oldest first
+      .orderBy('createdTime', descending: false) // Show oldest first.
       .snapshots();
 });
