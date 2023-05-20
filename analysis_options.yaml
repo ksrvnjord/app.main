@@ -63,7 +63,8 @@ dart_code_metrics:
     - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
     - format-comment: false
     - prefer-async-await: false
-    - prefer-correct-identifier-length: false
+    - prefer-correct-identifier-length: # i used in for loops
+        exceptions: [ 'i' ]
     - avoid-late-keyword: false
     - prefer-single-widget-per-file: false
 

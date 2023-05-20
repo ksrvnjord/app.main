@@ -6,8 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_list_tile.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class ShowTrainingPage extends StatelessWidget {
-  final String id;
-  const ShowTrainingPage({Key? key, required this.id}) : super(key: key);
+  final String reservationDocumentId;
+  const ShowTrainingPage({Key? key, required this.reservationDocumentId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ShowTrainingPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: reservations.doc(id).get(),
+        future: reservations.doc(reservationDocumentId).get(),
         builder: (
           BuildContext context,
           AsyncSnapshot<DocumentSnapshot> snapshot,

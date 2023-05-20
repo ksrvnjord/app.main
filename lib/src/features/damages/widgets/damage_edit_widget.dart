@@ -11,12 +11,12 @@ import 'package:styled_widget/styled_widget.dart';
 class DamageEditWidget extends ConsumerWidget {
   final double borderRadius = 12;
   final double padding = 16;
-  final String id;
+  final String damageDocumentId;
   final String reservationObjectId;
 
   const DamageEditWidget({
     Key? key,
-    required this.id,
+    required this.damageDocumentId,
     required this.reservationObjectId,
   }) : super(key: key);
 
@@ -33,8 +33,11 @@ class DamageEditWidget extends ConsumerWidget {
         actions: [
           damageForm.complete
               ? IconButton(
-                  onPressed: () =>
-                      editDamage(id, reservationObjectId, damageForm).then(
+                  onPressed: () => editDamage(
+                    damageDocumentId,
+                    reservationObjectId,
+                    damageForm,
+                  ).then(
                     (e) {
                       // ignore: avoid-ignoring-return-values
                       messenger.showSnackBar(SnackBar(
@@ -64,7 +67,8 @@ class DamageEditWidget extends ConsumerWidget {
                   icon: Icon(Icons.save, color: Colors.blue[900]),
                 ),
           IconButton(
-            onPressed: () => deleteDamage(id, reservationObjectId).then(
+            onPressed: () =>
+                deleteDamage(damageDocumentId, reservationObjectId).then(
               (e) {
                 // ignore: avoid-ignoring-return-values
                 messenger.showSnackBar(SnackBar(

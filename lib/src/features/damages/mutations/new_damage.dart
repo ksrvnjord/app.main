@@ -5,9 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
-final FirebaseStorage store = FirebaseStorage.instance;
-
 Future<void> newDamage(DamageForm damageForm) async {
   // Get the current user ID.
   String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -49,7 +46,7 @@ Future<void> newDamage(DamageForm damageForm) async {
     final String path =
         '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
     // ignore: avoid-ignoring-return-values
-    store.ref(path).putFile(
+    FirebaseStorage.instance.ref(path).putFile(
           damageForm.image!,
         );
 

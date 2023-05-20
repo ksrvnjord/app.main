@@ -32,14 +32,14 @@ class PostService {
     required String content,
   }) async {
     final CurrentUser current = GetIt.I<CurrentUser>();
-    final me = current.user!.fullContact.private!;
+    final currentUser = current.user!.fullContact.private!;
 
     // ignore: avoid-ignoring-return-values
     await postsCollection.add(Post(
       title: title,
       content: content,
       authorId: FirebaseAuth.instance.currentUser!.uid,
-      authorName: "${me.first_name} ${me.last_name}",
+      authorName: "${currentUser.first_name} ${currentUser.last_name}",
       createdTime: Timestamp.now(),
       topic: topic,
     ));

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
 final CollectionReference<ReservationObject> reservationObjectsRef =
-    db.collection('reservationObjects').withConverter<ReservationObject>(
+    FirebaseFirestore.instance
+        .collection('reservationObjects')
+        .withConverter<ReservationObject>(
           fromFirestore: (snapshot, _) =>
               ReservationObject.fromJson(snapshot.data()!),
           toFirestore: (reservation, _) => reservation.toJson(),
@@ -22,11 +23,11 @@ Future<Map<String, List<ReservationObject>>> reservationObjectsByType() async {
 
   // Populate the map by type of the reservation object
   for (var e in listOfObjects) {
-    ReservationObject o = e.data();
-    if (objects.containsKey(o.type)) {
-      objects[o.type]?.add(o);
+    ReservationObject object = e.data();
+    if (objects.containsKey(object.type)) {
+      objects[object.type]?.add(object);
     } else {
-      objects[o.type] = [o];
+      objects[object.type] = [object];
     }
   }
 

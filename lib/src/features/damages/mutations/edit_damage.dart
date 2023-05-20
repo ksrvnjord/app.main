@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
-
-final FirebaseFirestore db = FirebaseFirestore.instance;
-final FirebaseStorage store = FirebaseStorage.instance;
 
 Future<void> editDamage(
   String id,
@@ -41,7 +37,7 @@ Future<void> editDamage(
     final String path =
         '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
     // ignore: avoid-ignoring-return-values
-    store.ref(path).putFile(
+    FirebaseStorage.instance.ref(path).putFile(
           damageForm.image!,
         );
 

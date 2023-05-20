@@ -5,12 +5,12 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_show_widg
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 
 class DamagesShowPage extends StatelessWidget {
-  final String id;
+  final String damageDocumentId;
   final String reservationObjectId;
 
   const DamagesShowPage({
     Key? key,
-    required this.id,
+    required this.damageDocumentId,
     required this.reservationObjectId,
   }) : super(key: key);
 
@@ -28,7 +28,7 @@ class DamagesShowPage extends StatelessWidget {
       body: FutureWrapper(
         future: getDamage(
           reservationObjectId,
-          id,
+          damageDocumentId,
         ),
         success: (data) => DamageShowWidget(
           damage: data.data(),

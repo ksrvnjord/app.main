@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
 final CollectionReference<ReservationObject> reservationObjectsRef =
-    db.collection('reservationObjects').withConverter<ReservationObject>(
+    FirebaseFirestore.instance
+        .collection('reservationObjects')
+        .withConverter<ReservationObject>(
           fromFirestore: (snapshot, _) =>
               ReservationObject.fromJson(snapshot.data()!),
           toFirestore: (reservation, _) => reservation.toJson(),

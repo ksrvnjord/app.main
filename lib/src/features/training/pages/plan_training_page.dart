@@ -9,7 +9,6 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../settings/api/me.graphql.dart';
@@ -22,26 +21,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
-// HELP: What to do with these 'constants'. Maybe make a separate file to store them?
-final FirebaseFirestore db = FirebaseFirestore.instance;
-final FirebaseFunctions functions =
-    FirebaseFunctions.instanceFor(region: 'europe-west1');
-final CollectionReference<Reservation> reservationsRef = db
-    .collection('reservations')
-    .withConverter<Reservation>(
-      fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
-      toFirestore: (reservation, _) => reservation.toJson(),
-    );
-
-final CollectionReference<ReservationObject> reservationObjectsRef =
-    db.collection('reservationObjects').withConverter<ReservationObject>(
-          fromFirestore: (snapshot, _) =>
-              ReservationObject.fromJson(snapshot.data()!),
-          toFirestore: (reservation, _) => reservation.toJson(),
-        );
-
-final FirebaseAuth auth = FirebaseAuth.instance;
-
 class PlanTrainingPage extends ConsumerStatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
@@ -49,7 +28,7 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
   late final String objectName;
 
   PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
-      : reservationObject = db
+      : reservationObject = FirebaseFirestore.instance
             .collection('reservationObjects')
             .doc(queryParams['reservationObjectId']),
         startTime = DateTime.parse(queryParams['startTime']),
@@ -103,7 +82,13 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
-        future: reservationsRef
+        future: FirebaseFirestore.instance
+            .collection('reservations')
+            .withConverter<Reservation>(
+              fromFirestore: (snapshot, _) =>
+                  Reservation.fromJson(snapshot.data()!),
+              toFirestore: (reservation, _) => reservation.toJson(),
+            )
             .where('object', isEqualTo: widget.reservationObject)
             .where('startTime', isGreaterThanOrEqualTo: widget.date)
             .where(
@@ -122,7 +107,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   ) {
     CurrentUser curUser = GetIt.I.get<CurrentUser>();
     Query$Me$me? heimdallUser = curUser.user;
-    User? firebaseUser = auth.currentUser;
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
     if (heimdallUser == null ||
         heimdallUser.fullContact.private == null ||
         firebaseUser == null) {
@@ -349,7 +334,9 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
 Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {
   try {
-    final result = await functions.httpsCallable('createReservation').call({
+    final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
+        .httpsCallable('createReservation')
+        .call({
       'startTime': r.startTime.toUtc().toIso8601String(),
       'endTime': r.endTime.toUtc().toIso8601String(),
       'object': r.reservationObject.path,

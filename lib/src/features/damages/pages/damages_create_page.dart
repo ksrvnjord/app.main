@@ -38,9 +38,9 @@ class DamagesCreatePage extends ConsumerWidget {
             // ignore: prefer-extracting-callbacks
             () {
               final form = ref.read(damageFormProvider.notifier);
-              ReservationObject? o = data.data();
-              form.type = o!.type;
-              form.name = o.name;
+              ReservationObject? object = data.data();
+              form.type = object!.type;
+              form.name = object.name;
             },
           );
 

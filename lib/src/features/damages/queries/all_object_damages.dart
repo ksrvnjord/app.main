@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
-
 Future<List<DocumentSnapshot<Damage>>> allObjectDamages(
   String reservationObjectId,
 ) async {
-  return (await db
+  return (await FirebaseFirestore.instance
           .collection("reservationObjects")
           .doc(reservationObjectId)
           .collection("damages")

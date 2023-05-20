@@ -121,9 +121,11 @@ class AlmanakPloegPage extends ConsumerWidget {
 
   int comparePloegFunctie(PloegEntry a, PloegEntry b) {
     // sort based on role in ploeg
-    int iA = PloegRole.values.indexOf(a.role);
-    int iB = PloegRole.values.indexOf(b.role);
+    int indexA = PloegRole.values.indexOf(a.role);
+    int indexB = PloegRole.values.indexOf(b.role);
 
-    return iA == iB ? a.lastName.compareTo(b.lastName) : iA.compareTo(iB);
+    return indexA == indexB
+        ? a.lastName.compareTo(b.lastName)
+        : indexA.compareTo(indexB);
   }
 }

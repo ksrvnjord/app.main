@@ -9,7 +9,8 @@ class LoginDoneWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _ = ref.watch(
+    // ignore: avoid-ignoring-return-values
+    ref.watch(
       currentFirebaseUserProvider,
     ); // get currentUser details from firebase
     // ignore: avoid-non-ascii-symbols
