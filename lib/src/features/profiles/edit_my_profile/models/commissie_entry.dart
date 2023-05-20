@@ -9,10 +9,10 @@ class CommissieEntry extends GroupEntry {
   CommissieEntry({
     required this.startYear,
     required this.endYear,
-    required firstName,
-    required lastName,
-    required identifier,
-    required name,
+    required String firstName,
+    required String lastName,
+    required String identifier,
+    required String name,
     this.function,
   }) : super(
           year: startYear,
