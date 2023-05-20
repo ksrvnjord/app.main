@@ -29,8 +29,8 @@ class _AnnouncementPageState extends ConsumerState<AnnouncementPage> {
       loading: Scaffold(
         appBar: AppBar(
           title: const Text('Bericht'),
-          backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
           systemOverlayStyle:
               const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         ),
@@ -43,11 +43,10 @@ class _AnnouncementPageState extends ConsumerState<AnnouncementPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Aankondiging'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.lightBlue,
-        ),
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: (data != null)
           ? Padding(

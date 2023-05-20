@@ -126,14 +126,17 @@ class Application extends ConsumerWidget {
 
     return Builder(
       builder: (context) => MaterialApp.router(
+        routeInformationParser: const RoutemasterParser(),
+        routerDelegate: RoutemasterDelegate(
+          routesBuilder: (context) => getRoutes(ref),
+          observers: [
+            GlobalObserver(),
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+          ],
+        ),
         title: 'K.S.R.V. Njord',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: GoogleFonts.ibmPlexSansTextTheme(
-            Theme.of(context).textTheme,
-          ),
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
-            // this is to use swipe transitions on iOS
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
@@ -141,24 +144,17 @@ class Application extends ConsumerWidget {
             TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
             TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
           }),
+          primarySwatch: Colors.blue,
+          textTheme:
+              GoogleFonts.ibmPlexSansTextTheme(Theme.of(context).textTheme),
         ),
-        supportedLocales: const [
-          Locale('nl', 'NL'),
-        ],
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        supportedLocales: const [Locale('nl', 'NL')],
         debugShowCheckedModeBanner: false,
-        routeInformationParser: const RoutemasterParser(),
-        routerDelegate: RoutemasterDelegate(
-          observers: [
-            GlobalObserver(),
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-          ],
-          routesBuilder: (context) => getRoutes(ref),
-        ),
       ),
     );
   }

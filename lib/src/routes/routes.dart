@@ -54,7 +54,6 @@ import 'package:routemaster/routemaster.dart';
 // ignore: prefer-match-file-name
 
 final routeMap = RouteMap(
-  onUnknownRoute: (route) => const Redirect('/'),
   routes: {
     '/': (_) => const TabPage(
           child: MainPage(),
@@ -68,34 +67,30 @@ final routeMap = RouteMap(
           backBehavior: TabBackBehavior.none,
         ),
     '/home': (_) => const CupertinoPage(
-          name: 'Home',
           child: HomePage(),
+          name: 'Home',
         ),
     '/home/edit': (_) => const CupertinoPage(
-          name: "Edit Profile",
           child: EditAlmanakProfilePage(),
+          name: "Edit Profile",
         ),
     '/home/edit/:identifier': (route) => CupertinoPage(
-          name: "Preview my profile",
           child: AlmanakProfilePage(
             userId: route.pathParameters['identifier']!,
           ),
+          name: "Preview my profile",
         ),
-    '/home/edit/groups': (_) => const CupertinoPage(
-          name: "Edit my groups",
-          child: EditGroupsPage(),
-        ),
+    '/home/edit/groups': (_) =>
+        const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
     '/home/edit/groups/ploeg': (_) => const CupertinoPage(
-          name: "Select a ploeg to add",
           child: SelectPloegPage(),
+          name: "Select a ploeg to add",
         ),
-    '/home/edit/groups/ploeg/add': (_) => const CupertinoPage(
-          name: "Add a ploeg",
-          child: AddPloegPage(),
-        ),
+    '/home/edit/groups/ploeg/add': (_) =>
+        const CupertinoPage(child: AddPloegPage(), name: "Add a ploeg"),
     '/home/edit/commissies': (info) => const CupertinoPage(
-          name: "Edit my commissies",
           child: EditCommissiesPage(),
+          name: "Edit my commissies",
         ),
     '/home/edit/commissies/select': (info) => const CupertinoPage(
           name: "Select a commissie to add",
@@ -344,17 +339,18 @@ final routeMap = RouteMap(
           child: ContactPage(),
         ),
   },
+  onUnknownRoute: (route) => const Redirect('/'),
 );
 
 final authenticationRoutes = RouteMap(
-  onUnknownRoute: (route) => const Redirect('/'),
   routes: {
     '/': (_) => const MaterialPage(
-          name: 'Login',
           child: LoginPage(),
+          name: 'Login',
         ),
     '/forgot': (info) => const CupertinoPage(
           child: ForgotPasswordPage(),
         ),
   },
+  onUnknownRoute: (route) => const Redirect('/'),
 );
