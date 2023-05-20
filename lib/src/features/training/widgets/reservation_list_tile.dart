@@ -71,11 +71,7 @@ class ReservationListTile extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => FirebaseFirestore.instance
-                  .collection('reservations')
-                  .doc(snapshot.id)
-                  .delete()
-                  .then((_) => Navigator.of(context).pop()),
+              onPressed: () => deleteReservation(snapshot, context),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -88,5 +84,18 @@ class ReservationListTile extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> deleteReservation(
+    QueryDocumentSnapshot<Reservation> snapshot,
+    BuildContext context,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection('reservations')
+        .doc(snapshot.id)
+        .delete();
+
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop();
   }
 }

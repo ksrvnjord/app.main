@@ -82,36 +82,42 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     });
   }
 
-  void save(GraphQLClient client) {
+  void save(GraphQLClient client) async {
     setState(() {
       saving = true;
       buttonColor = Colors.blueGrey;
     });
 
-    updatePublicContact(
-      client,
-      listed,
-      Input$IBooleanContact.fromJson(checkboxes),
-    ).then((data) {
+    try {
       // ignore: avoid-ignoring-return-values
+      await updatePublicContact(
+        client,
+        listed,
+        Input$IBooleanContact.fromJson(checkboxes),
+      );
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Vindbaarheid aangepast'),
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.blue;
-      });
-    }).onError((error, stackTrace) {
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.blue;
+        });
+      }
+    } catch (e) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Aanpassen mislukt, melding gemaakt.'),
         backgroundColor: Colors.red,
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.red;
-      });
-    });
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.red;
+        });
+      }
+    }
   }
 
   @override

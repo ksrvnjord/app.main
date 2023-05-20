@@ -43,24 +43,26 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
 
   // Checks if the current user has permissions to
   // reserve this boat, runs once in initState
-  void checkPermission() {
+  Future<void> checkPermission() async {
     // 1: Get the ID token that contains the permission claims
-    FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
-      // 2: Check if the boat permissions are empty
-      final permissions = widget.boat.data().permissions;
-      if (permissions.isEmpty ||
-          // If not, 3: convert permissions to a set,
-          // get the permissions from the token
-          // and see if there is any overlap
-          permissions
-              .toSet()
-              .intersection((token.claims?['permissions'] ?? []).toSet())
-              .isNotEmpty) {
+    IdTokenResult? token =
+        await FirebaseAuth.instance.currentUser?.getIdTokenResult();
+    // 2: Check if the boat permissions are empty
+    final permissions = widget.boat.data().permissions;
+    if (permissions.isEmpty ||
+        // If not, 3: convert permissions to a set,
+        // get the permissions from the token
+        // and see if there is any overlap
+        permissions
+            .toSet()
+            .intersection((token?.claims?['permissions'] ?? []).toSet())
+            .isNotEmpty) {
+      if (mounted) {
         setState(() {
           hasPermission = true;
         });
       }
-    });
+    }
   }
 
   void handleTap(TapUpDetails details) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -62,17 +60,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: avoid-ignoring-return-values
-    widget.reservationObject.get().then((obj) {
-      if (obj['available'] == false) {
-        log('Reservation object is not available');
-
-        return const ErrorCardWidget(
-          errorMessage: 'Dit object is gemarkeerd als niet beschikbaar',
-        );
-      }
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
@@ -290,45 +277,45 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   void createReservation(
     String uid,
     String creatorName,
-  ) {
+  ) async {
     ref.read(reservationProgressProvider.notifier).inProgress();
-    createReservationCloud(Reservation(
+    final response = await createReservationCloud(Reservation(
       _startTime,
       _endTime,
       widget.reservationObject,
       uid,
       widget.objectName,
       creatorName: creatorName,
-    )).then((res) {
-      if (res['success'] == true) {
-        FirebaseAnalytics.instance.logEvent(
-          name: 'reservation_created',
-          parameters: <String, dynamic>{
-            'reservation_object_name': widget.objectName,
-          },
-        );
-        // ignore: avoid-ignoring-return-values
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Afschrijving gelukt!'),
-            backgroundColor: Colors.green,
-            showCloseIcon: true,
-          ),
-        );
-      } else {
-        // ignore: avoid-ignoring-return-values
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Afschrijving mislukt! ${res['error']}"),
-            backgroundColor: Colors.red,
-            showCloseIcon: true,
-          ),
-        );
-      }
-      ref.read(reservationProgressProvider.notifier).done();
-      // ignore: avoid-ignoring-return-values
-      Routemaster.of(context).pop();
-    });
+    ));
+
+    if (response['success'] == true) {
+      FirebaseAnalytics.instance.logEvent(
+        name: 'reservation_created',
+        parameters: <String, dynamic>{
+          'reservation_object_name': widget.objectName,
+        },
+      );
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Afschrijving gelukt!'),
+          backgroundColor: Colors.green,
+          showCloseIcon: true,
+        ),
+      );
+    } else {
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Afschrijving mislukt! ${response['error']}"),
+          backgroundColor: Colors.red,
+          showCloseIcon: true,
+        ),
+      );
+    }
+    ref.read(reservationProgressProvider.notifier).done();
+    // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+    Routemaster.of(context).pop();
   }
 }
 
