@@ -27,9 +27,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   CommissieEntry _formData = CommissieEntry(
     startYear: DateTime.now().year - 1,
     endYear: DateTime.now().year,
-    firstName: GetIt.I<CurrentUser>().user?.fullContact.public.first_name,
-    lastName: GetIt.I<CurrentUser>().user?.fullContact.public.last_name,
-    identifier: FirebaseAuth.instance.currentUser?.uid,
+    firstName: GetIt.I<CurrentUser>().user?.fullContact.public.first_name ?? "",
+    lastName: GetIt.I<CurrentUser>().user?.fullContact.public.last_name ?? "",
+    identifier: FirebaseAuth.instance.currentUser?.uid ?? "",
     name: "",
   );
 
@@ -147,7 +147,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         ),
       );
       Routemaster.of(context).replace(
-        '/almanak/edit/commissies',
+        '/home/edit/commissies',
       ); // Go to overzicht of commissies.
     }
   }
