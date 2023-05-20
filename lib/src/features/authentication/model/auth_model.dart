@@ -132,8 +132,9 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<bool> firebase() async {
+    final String? accessToken = client?.credentials.accessToken;
     // Only fire this if an access token is available
-    if (client == null || client?.credentials.accessToken == null) {
+    if (accessToken == null) {
       return false;
     }
 
@@ -142,7 +143,7 @@ class AuthModel extends ChangeNotifier {
       var response = await Dio().get(
         globalConstants.jwtEndpoint().toString(),
         options: Options(headers: {
-          'Authorization': 'Bearer ${client?.credentials.accessToken}',
+          'Authorization': 'Bearer $accessToken',
         }),
       );
 
