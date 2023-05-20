@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/my_ploegen_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -11,8 +13,6 @@ class EditGroupsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double titleFontSize = 20;
-
     final myPloegen = ref.watch(myPloegenProvider);
 
     return Scaffold(
@@ -30,29 +30,7 @@ class EditGroupsPage extends ConsumerWidget {
             ? const Text('Voeg een ploeg toe om te beginnen').center()
             : ListView(
                 children: [
-                  data.docs
-                      .map((doc) => ListTile(
-                            leading: [
-                              Text(
-                                "${doc.data().year}-${doc.data().year + 1}",
-                              ),
-                            ].toColumn(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            title: Text(
-                              doc.data().name,
-                              style: const TextStyle(
-                                fontSize: titleFontSize,
-                              ),
-                            ),
-                            subtitle: Text(doc.data().role.value),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () => doc.reference.delete(),
-                            ),
-                          ))
-                      .toList()
-                      .toColumn(),
+                  data.docs.map(toListTile).toList().toColumn(),
                 ],
               ),
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
@@ -63,6 +41,34 @@ class EditGroupsPage extends ConsumerWidget {
         label: const Text('Voeg een ploeg toe'),
         icon: const Icon(Icons.add),
         backgroundColor: Colors.blue,
+      ),
+    );
+  }
+
+  ListTile toListTile(
+    QueryDocumentSnapshot<PloegEntry> doc,
+  ) {
+    final PloegEntry entry = doc.data();
+    const double titleFontSize = 20;
+
+    return ListTile(
+      leading: [
+        Text(
+          "${entry.year}-${entry.year + 1}",
+        ),
+      ].toColumn(
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+      title: Text(
+        entry.name,
+        style: const TextStyle(
+          fontSize: titleFontSize,
+        ),
+      ),
+      subtitle: Text(entry.role.value),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete),
+        onPressed: () => doc.reference.delete(),
       ),
     );
   }

@@ -101,12 +101,7 @@ class AlmanakPloegPage extends ConsumerWidget {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          lidnummer: doc.data().identifier,
-          subtitle: doc.data().role.value,
-        ),
+        (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
         Text("Geen Leeden gevonden voor $ploegName gevonden")
@@ -114,6 +109,17 @@ class AlmanakPloegPage extends ConsumerWidget {
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
+  }
+
+  AlmanakUserTile toListTile(QueryDocumentSnapshot<PloegEntry> doc) {
+    final user = doc.data();
+
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      lidnummer: user.identifier,
+      subtitle: user.role.value,
+    );
   }
 
   int comparePloegFunctie(PloegEntry a, PloegEntry b) {

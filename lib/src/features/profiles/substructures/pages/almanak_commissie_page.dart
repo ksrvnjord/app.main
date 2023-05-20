@@ -145,12 +145,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          lidnummer: doc.data().identifier,
-          subtitle: doc.data().function,
-        ),
+        (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
         const Text("Geen Leeden gevonden voor deze commissie in dit jaar")
@@ -158,6 +153,17 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
+  }
+
+  AlmanakUserTile toListTile(QueryDocumentSnapshot<CommissieEntry> doc) {
+    final user = doc.data();
+
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      lidnummer: user.identifier,
+      subtitle: user.function,
+    );
   }
 
   /// Compare the bestuursfuncties op basis van constitutie

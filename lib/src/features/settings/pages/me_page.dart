@@ -70,8 +70,9 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
 
   @override
   void initState() {
-    final contact = widget.user.fullContact.private;
-    final updated = widget.user.fullContact.update;
+    var fullContact = widget.user.fullContact;
+    final contact = fullContact.private;
+    final updated = fullContact.update;
 
     // TODO: Size the fields dynamically?
     fields = [

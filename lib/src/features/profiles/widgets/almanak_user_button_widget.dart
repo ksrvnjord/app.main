@@ -11,6 +11,8 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
   const AlmanakUserButtonWidget(this.user, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final publicContact = user.fullContact.public;
+
     return Card(
       // add rounding of 16
       shape: const RoundedRectangleBorder(
@@ -20,7 +22,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
         // add rounding to list tile
         leading: ProfilePictureListTileWidget(profileId: user.identifier),
         title: Text(
-          '${user.fullContact.public.first_name ?? ''} ${user.fullContact.public.last_name ?? ''}',
+          '${publicContact.first_name ?? ''} ${publicContact.last_name ?? ''}',
         ),
         onTap: () => Routemaster.of(context).push(
           FirebaseAuth.instance.currentUser != null

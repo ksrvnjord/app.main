@@ -53,14 +53,22 @@ class AlmanakBestuurPage extends ConsumerWidget {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          subtitle: doc.data().bestuursFunctie!,
-          lidnummer: doc.data().identifier,
-        ),
+        (doc) => toListTile(doc),
       ),
     ].toColumn();
+  }
+
+  AlmanakUserTile toListTile(
+    QueryDocumentSnapshot<FirestoreAlmanakProfile> doc,
+  ) {
+    final user = doc.data();
+
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      subtitle: user.bestuursFunctie!,
+      lidnummer: user.identifier,
+    );
   }
 
   /// Compare the bestuursfuncties op basis van constitutie

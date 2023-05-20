@@ -39,6 +39,15 @@ class SelectPloegPage extends ConsumerWidget {
 
     const double menuMaxHeight = 240;
 
+    final buttonBgColor = MaterialStateProperty.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.blue
+            : Colors.blue.shade100);
+    final buttonFgColor = MaterialStateProperty.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.blueGrey);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies een ploeg'),
@@ -50,14 +59,8 @@ class SelectPloegPage extends ConsumerWidget {
       body: ListView(padding: const EdgeInsets.all(8), children: [
         SegmentedButton<PloegType>(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.blue
-                    : Colors.blue.shade100),
-            foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.white
-                    : Colors.blueGrey),
+            backgroundColor: buttonBgColor,
+            foregroundColor: buttonFgColor,
           ),
           segments: [
             for (final ploegType in PloegType.values)
@@ -77,14 +80,8 @@ class SelectPloegPage extends ConsumerWidget {
           [
             SegmentedButton<Gender>(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                    states.contains(MaterialState.selected)
-                        ? Colors.blue
-                        : Colors.blue.shade100),
-                foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                    states.contains(MaterialState.selected)
-                        ? Colors.white
-                        : Colors.blueGrey),
+                backgroundColor: buttonBgColor,
+                foregroundColor: buttonFgColor,
               ),
               segments: [
                 for (final gender in Gender.values)
