@@ -127,11 +127,6 @@ class AlmanakPloegPage extends ConsumerWidget {
     int iA = PloegRole.values.indexOf(a.role);
     int iB = PloegRole.values.indexOf(b.role);
 
-    if (iA == iB) {
-      // sort based on last name name
-      return a.lastName.compareTo(b.lastName);
-    } else {
-      return iA.compareTo(iB);
-    }
+    return iA == iB ? a.lastName.compareTo(b.lastName) : iA.compareTo(iB);
   }
 }

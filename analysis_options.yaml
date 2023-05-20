@@ -66,7 +66,6 @@ dart_code_metrics:
     - arguments-ordering: false
     - member-ordering: false
     - prefer-correct-identifier-length: false
-    - prefer-conditional-expressions: false
     - avoid-late-keyword: false
     - prefer-single-widget-per-file: false
     - avoid-nested-conditional-expressions: false

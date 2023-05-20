@@ -39,11 +39,9 @@ class ChipWidget extends StatelessWidget {
                     ),
                   ),
                   backgroundColor: () {
-                    if (colors != null && colors!.containsKey(permission)) {
-                      return colors![permission];
-                    } else {
-                      return Colors.grey;
-                    }
+                    return colors != null && colors!.containsKey(permission)
+                        ? colors![permission]
+                        : Colors.grey;
                   }(),
                 ))
             .toList(),

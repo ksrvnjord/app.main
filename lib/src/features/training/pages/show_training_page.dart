@@ -64,12 +64,8 @@ class ShowTrainingPage extends StatelessWidget {
                   String creatorName;
                   Map<String, dynamic> user =
                       snapshot.data!.data() as Map<String, dynamic>;
-                  if (reservation['creatorName'] != null) {
-                    creatorName = reservation['creatorName'];
-                  } else {
-                    creatorName = // added for compatibility with old reservations, this can be removed after a while
-                        user['first_name'] + ' ' + user['last_name'];
-                  }
+                  creatorName = reservation['creatorName'] ??
+                      user['first_name'] + ' ' + user['last_name'];
 
                   List<Widget> children = [
                     DataListTile(

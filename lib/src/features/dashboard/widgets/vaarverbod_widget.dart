@@ -38,11 +38,9 @@ class VaarverbodWidget extends ConsumerWidget {
       message =
           vaarverbod.status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod';
       status = vaarverbod.status;
-      if (vaarverbod.status) {
-        icon = FontAwesomeIcons.ban;
-      } else {
-        icon = FontAwesomeIcons.shieldHalved;
-      }
+      icon = vaarverbod.status
+          ? FontAwesomeIcons.ban
+          : FontAwesomeIcons.shieldHalved;
     }
     final Color backgroundColor =
         status ? Colors.red[300]! : Colors.green[300]!;
