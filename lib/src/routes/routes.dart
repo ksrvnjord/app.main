@@ -82,6 +82,10 @@ class Routes {
             ),
             name: "Preview my profile",
           ),
+      '/home/edit/sensitive-data': (info) => const CupertinoPage(
+            child: MePage(),
+            name: "Edit mijn persoonsgegevens",
+          ),
       '/home/edit/groups': (_) =>
           const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
       '/home/edit/groups/ploeg': (_) => const CupertinoPage(
@@ -205,8 +209,6 @@ class Routes {
                 AlmanakProfilePage(userId: route.pathParameters['identifier']!),
             name: 'Lid',
           ),
-      '/settings': (info) =>
-          const CupertinoPage(child: MePage(), name: "Settings"),
       '/training': (_) =>
           const CupertinoPage(child: TrainingPage(), name: 'Training'),
       '/training/damages': (route) =>

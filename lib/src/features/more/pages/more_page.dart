@@ -15,7 +15,6 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, String> optionMap = {
-      "Wijzig mijn persoonsgegevens": "/settings",
       "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "/contact",
       "Lees het beleid van het bestuur": "beleid",
