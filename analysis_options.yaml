@@ -45,24 +45,30 @@ dart_code_metrics:
   extends:
     - package:dart_code_metrics_presets/all.yaml
   metrics:
-    cyclomatic-complexity: 20
+    cyclomatic-complexity: 28
+    halstead-volume: 7000
+    lines-of-code: 250
+    maintainability-index: 20
+    maximum-nesting-level: 7
+    number-of-methods: 15
     number-of-parameters: 4
-    # maintainability-index: 50
-    # halstead-volume: 150
-    # lines-of-code: 100
-    # source-lines-of-code: 50
-    # number-of-methods: 10
-    maximum-nesting-level: 7 # GOAL value = 5
+    source-lines-of-code: 200
+    technical-debt:
+      threshold: 1000
+      todo-cost: 50
+      ignore-cost: 5
+      ignore-for-file-cost: 20
+      as-dynamic-cost: 100
+      deprecated-annotations-cost: 50
+      file-nullsafety-migration-cost: 200
+      unit-type: "EUR"
   metrics-exclude:
     - test/** # we don't have any tests yet
     - lib/**.graphql.dart # exclude generated files
   rules:
-    # ------ RULES WE AIM TO AVOID -----------------
-    # - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
-
     # ------ UNAVOIDABLE RULES -----------------
     - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
-    - prefer-correct-identifier-length: # i used in for loops
+    - prefer-correct-identifier-length: # i used in for-loops
         exceptions: [ 'i' ]
     - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
 

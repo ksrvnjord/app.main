@@ -10,7 +10,7 @@ class PostList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(newPostsProvider);
+    final posts = ref.watch(postsProvider);
 
     return ListView(padding: const EdgeInsets.only(bottom: 64), children: [
       posts.when(
