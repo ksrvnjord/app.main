@@ -11,6 +11,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _storage = FlutterSecureStorage();
@@ -91,12 +92,12 @@ class AuthModel extends ChangeNotifier {
 
       return false;
     }
-
-    if (client != null && client?.credentials != null) {
+    Credentials? credentials = client?.credentials;
+    if (credentials != null) {
       isBusy = false;
       await _storage.write(
         key: 'oauth2_credentials',
-        value: client?.credentials.toJson(),
+        value: credentials.toJson(),
       );
       notifyListeners();
 

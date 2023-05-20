@@ -22,10 +22,11 @@ Future<Map<String, List<ReservationObject>>> reservationObjectsByType() async {
 
   // Populate the map by type of the reservation object
   for (var e in listOfObjects) {
-    if (objects.containsKey(e.data().type)) {
-      objects[e.data().type]?.add(e.data());
+    ReservationObject o = e.data();
+    if (objects.containsKey(o.type)) {
+      objects[o.type]?.add(o);
     } else {
-      objects[e.data().type] = [e.data()];
+      objects[o.type] = [o];
     }
   }
 

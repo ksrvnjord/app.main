@@ -59,9 +59,8 @@ dart_code_metrics:
   rules:
     - prefer-commenting-analyzer-ignores: false
     - avoid-ignoring-return-values: false
-    - prefer-moving-to-variable: false
     - avoid-non-null-assertion: false
-    - prefer-static-class: false
+    - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
     - format-comment: false
     - prefer-async-await: false
     - arguments-ordering: false

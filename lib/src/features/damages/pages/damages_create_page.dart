@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_create_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
 class DamagesCreatePage extends ConsumerWidget {
   final String? reservationObjectId;
@@ -36,8 +37,10 @@ class DamagesCreatePage extends ConsumerWidget {
             const Duration(milliseconds: 1),
             // ignore: prefer-extracting-callbacks
             () {
-              ref.read(damageFormProvider.notifier).type = data.data()!.type;
-              ref.read(damageFormProvider.notifier).name = data.data()!.name;
+              final form = ref.read(damageFormProvider.notifier);
+              ReservationObject? o = data.data();
+              form.type = o!.type;
+              form.name = o.name;
             },
           );
 
