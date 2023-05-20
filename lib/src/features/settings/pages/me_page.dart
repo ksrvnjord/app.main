@@ -172,19 +172,27 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     const double onSaveButtonPadding = 8;
 
     return ListView(
-      padding: const EdgeInsets.all(paddingBody),
+      padding: const EdgeInsets.only(
+        left: paddingBody,
+        top: paddingBody,
+        // ignore: no-equal-arguments
+        right: paddingBody,
+        bottom: 80,
+      ),
       children: <Widget>[
-        Center(child: Container()),
-        const SizedBox(height: 10),
-        const SizedBox(height: 20),
+        const Text(
+          "Het bestuur beoordeelt deze wijzigingen om ervoor te zorgen dat jouw gegevens perfect worden bijgewerkt. Dit proces kan eventjes duren voordat je wijzigingen op magische wijze tevoorschijn komen.",
+        ).textColor(Colors.blueGrey),
         TextFormField(
           initialValue: widget.user.identifier,
           decoration: const InputDecoration(labelText: 'Lidnummer'),
+          readOnly: true,
           enabled: false,
         ).padding(all: fieldPadding),
         TextFormField(
           initialValue: widget.user.username,
           decoration: const InputDecoration(labelText: 'Njord-account'),
+          readOnly: true,
           enabled: false,
         ).padding(all: fieldPadding),
         ...fields.asMap().entries.map<Widget>((i) {
@@ -234,7 +242,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         ).padding(all: saveButtonPadding),
         const Text(
           '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-          style: TextStyle(color: Colors.blueGrey, fontSize: 11),
+          style: TextStyle(color: Colors.blueGrey, fontSize: 12),
         ),
         const Divider(
           height: 32,
