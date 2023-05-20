@@ -4,16 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/model/reservations_query.dart';
 import '../calendar_measurement.dart';
 
-final CollectionReference<Reservation> reservationRef = FirebaseFirestore
-    .instance
-    .collection('reservations')
-    .withConverter<Reservation>(
-      fromFirestore: (snapshot, _) =>
-          Reservation.fromJson(snapshot.data() ?? {}),
-      toFirestore: (reservation, _) => reservation.toJson(),
-    );
-
 // We use a StreamProvider so that if the user makes a reservation, we don't have to query the database again as we can just listen to the stream.
+// ignore: prefer-static-class
 final reservationsProvider =
     StreamProvider.family<QuerySnapshot<Reservation>, ReservationsQuery>((
   ref,
@@ -37,7 +29,13 @@ final reservationsProvider =
     0,
   );
 
-  return reservationRef
+  return FirebaseFirestore.instance
+      .collection('reservations')
+      .withConverter<Reservation>(
+        fromFirestore: (snapshot, _) =>
+            Reservation.fromJson(snapshot.data() ?? {}),
+        toFirestore: (reservation, _) => reservation.toJson(),
+      )
       .where('object', isEqualTo: query.docRef)
       .where('startTime', isGreaterThanOrEqualTo: start)
       .where('startTime', isLessThanOrEqualTo: end)

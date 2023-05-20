@@ -5,14 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-const double betweenFields = 20;
-const double marginContainer = 5;
-const double paddingBody = 15;
 
 class MePrivacyPage extends ConsumerWidget {
   const MePrivacyPage({Key? key}) : super(key: key);

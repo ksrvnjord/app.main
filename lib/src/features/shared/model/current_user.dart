@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
 
 class CurrentUser {
   Query$Me$me? user;

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 
+// ignore: prefer-static-class
 final pollAnswerProvider =
     StreamProvider.family<QuerySnapshot<PollAnswer>, DocumentReference>(
   (ref, docRef) {

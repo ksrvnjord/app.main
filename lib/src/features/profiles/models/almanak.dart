@@ -1,6 +1,7 @@
 import 'package:graphql/client.dart';
 import '../api/almanak.graphql.dart';
 
+// ignore: prefer-static-class
 Future<Query$Almanak$users?> almanakUsers(
   int first,
   int page,

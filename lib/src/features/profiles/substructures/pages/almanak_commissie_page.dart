@@ -15,14 +15,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
-final commissiesRef = FirebaseFirestore.instance
-    .collectionGroup('commissies')
-    .withConverter<CommissieEntry>(
-      fromFirestore: (snapshot, _) =>
-          CommissieEntry.fromJson(snapshot.data() ?? {}),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
-
 class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,

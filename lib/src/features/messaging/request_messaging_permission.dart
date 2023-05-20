@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+// ignore: prefer-static-class
 void requestMessagingPermission() async {
   final messaging = FirebaseMessaging.instance;
 

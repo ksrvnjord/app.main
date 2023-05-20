@@ -1,6 +1,7 @@
+// ignore_for_file: prefer-static-class
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
-import '../api/me.graphql.dart';
+import 'me.graphql.dart';
 
 Future<Query$Me$me?> me(GraphQLClient client) async {
   final result =

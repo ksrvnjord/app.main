@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-static-class
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';

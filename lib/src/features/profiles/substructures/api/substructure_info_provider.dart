@@ -5,6 +5,7 @@ import 'package:yaml/yaml.dart';
 
 /// A provider that fetches the substructure info for a given substructure name.
 /// We don't use Firestore, as this content is mostly static and Firestore Console doesn't support multiline strings.
+// ignore: prefer-static-class
 final substructureDescriptionProvider =
     FutureProvider.autoDispose.family<String?, String>((ref, name) async {
   String yaml = await rootBundle.loadString(AssetData.substructuren);

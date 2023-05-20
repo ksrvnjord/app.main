@@ -8,5 +8,6 @@ enum Gender {
   final String value;
 }
 
+// ignore: prefer-static-class
 final ploegGeslachtFilterProvider =
     StateProvider<Gender>((ref) => Gender.values.first);

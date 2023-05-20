@@ -6,16 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-final FirebaseMessaging messaging = FirebaseMessaging.instance;
-
+// ignore: prefer-static-class
 void saveMessagingToken() async {
-  String? token = await messaging.getToken();
+  String? token = await FirebaseMessaging.instance.getToken();
   if (token == null) {
     return;
   }
 
-  User? user = auth.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   if (user == null) {
     return;
   }

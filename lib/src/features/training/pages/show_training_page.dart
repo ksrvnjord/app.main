@@ -134,12 +134,12 @@ class ShowTrainingPage extends StatelessWidget {
       ),
     );
   }
-}
 
-String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
-  DateTime date =
-      DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
-  TimeOfDay time = TimeOfDay.fromDateTime(date);
+  String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
+    DateTime date =
+        DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
+    TimeOfDay time = TimeOfDay.fromDateTime(date);
 
-  return time.format(context);
+    return time.format(context);
+  }
 }

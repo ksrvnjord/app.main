@@ -1,3 +1,4 @@
+// ignore: prefer-static-class
 int getNjordYear() {
   const int startMonth = 9;
   final now = DateTime.now();

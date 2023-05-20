@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 
+// ignore: prefer-static-class
 final homeUsers =
     FutureProvider.family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
   (ref, houseName) => FirebaseFirestore.instance

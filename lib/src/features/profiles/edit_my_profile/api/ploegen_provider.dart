@@ -9,6 +9,7 @@ import 'package:tuple/tuple.dart';
 
 // Provides a list with names of the ploegen, given the filters.
 // Must be a future provider because the competitieploegen are fetched from the database.
+// ignore: prefer-static-class
 final ploegenProvider = FutureProvider<List<String>>((ref) async {
   final selectedType = ref.watch(ploegTypeProvider);
 

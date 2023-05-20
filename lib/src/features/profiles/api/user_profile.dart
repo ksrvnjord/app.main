@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-static-class
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

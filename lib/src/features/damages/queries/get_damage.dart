@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 
+// ignore: prefer-static-class
 Future<DocumentSnapshot<Damage>> getDamage(
   String reservationObjectId,
   String damageId,

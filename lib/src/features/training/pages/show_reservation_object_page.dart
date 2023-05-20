@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/queries/all_object_damages.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -12,17 +14,7 @@ import 'package:styled_widget/styled_widget.dart';
 import '../widgets/availability_header.dart';
 import '../widgets/calendar/widgets/chip_widget.dart';
 
-// Get reference to reservationObjects collection.
-final CollectionReference<ReservationObject>
-    reservationObjectsCollectionReference = FirebaseFirestore.instance
-        .collection('reservationObjects')
-        .withConverter<ReservationObject>(
-          fromFirestore: (snapshot, _) =>
-              ReservationObject.fromJson(snapshot.data() ?? {}),
-          toFirestore: (reservationObject, _) => reservationObject.toJson(),
-        );
-
-class ShowReservationObjectPage extends StatelessWidget {
+class ShowReservationObjectPage extends ConsumerWidget {
   final String documentId;
   final String name;
 
@@ -33,7 +25,7 @@ class ShowReservationObjectPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
@@ -49,8 +41,8 @@ class ShowReservationObjectPage extends StatelessWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
-        future: getReservationObject(documentId),
-        success: (snapshot) => showObjectDetails(snapshot, context),
+        future: ref.watch(reservationObjectProvider(documentId).future),
+        success: (snapshot) => showObjectDetails(snapshot, context, ref),
       ),
     );
   }
@@ -58,6 +50,7 @@ class ShowReservationObjectPage extends StatelessWidget {
   Widget showObjectDetails(
     DocumentSnapshot<ReservationObject> snapshot,
     BuildContext context,
+    WidgetRef ref,
   ) {
     const double verticalPadding = 16;
     const double horizontalPadding = 16;
@@ -133,22 +126,21 @@ class ShowReservationObjectPage extends StatelessWidget {
               bottom: gap,
             ),
           FutureWrapper(
-            future: allObjectDamages(snapshot.id),
+            future: ref
+                .watch(damagesForReservationObjectProvider(snapshot.id).future),
             success: (data) => data
                 .map<Widget>((e) {
-                  return e.data() != null
-                      ? DamageTileWidget(
-                          showDamage: () => navigator.push(
-                            'damage/show',
-                            queryParameters: {'id': e.id},
-                          ),
-                          editDamage: () => navigator.push(
-                            'damage/edit',
-                            queryParameters: {'id': e.id},
-                          ),
-                          damageSnapshot: e,
-                        )
-                      : Container();
+                  return DamageTileWidget(
+                    showDamage: () => navigator.push(
+                      'damage/show',
+                      queryParameters: {'id': e.id},
+                    ),
+                    editDamage: () => navigator.push(
+                      'damage/edit',
+                      queryParameters: {'id': e.id},
+                    ),
+                    damageSnapshot: e,
+                  );
                 })
                 .toList()
                 .toWrap(
@@ -162,11 +154,5 @@ class ShowReservationObjectPage extends StatelessWidget {
         ]),
       ),
     ].toColumn();
-  }
-
-  Future<DocumentSnapshot<ReservationObject>> getReservationObject(
-    String documentId,
-  ) {
-    return reservationObjectsCollectionReference.doc(documentId).get();
   }
 }

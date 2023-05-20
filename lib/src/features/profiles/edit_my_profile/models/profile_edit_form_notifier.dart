@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: prefer-static-class
 final profileEditFormNotifierProvider =
     StateNotifierProvider<ProfileEditFormNotifier, ProfileForm>(
   (ref) => ProfileEditFormNotifier(),

@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 
+// ignore: prefer-static-class
 final myPloegenProvider =
     StreamProvider.autoDispose<QuerySnapshot<PloegEntry>>((ref) async* {
   // We have to mark as async* because we need to await the future and lazily yield.

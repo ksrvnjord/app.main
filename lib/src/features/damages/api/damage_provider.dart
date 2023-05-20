@@ -36,3 +36,19 @@ final damagesProvider = FutureProvider<List<QueryDocumentSnapshot<Damage>>>(
           .get())
       .docs,
 );
+
+// ignore: prefer-static-class
+final damagesForReservationObjectProvider =
+    FutureProvider.family<List<QueryDocumentSnapshot<Damage>>, String>(
+  (ref, reservationObjectId) async => (await FirebaseFirestore.instance
+          .collection("reservationObjects")
+          .doc(reservationObjectId)
+          .collection("damages")
+          .withConverter<Damage>(
+            fromFirestore: (snapshot, _) =>
+                Damage.fromJson(snapshot.data() ?? {}),
+            toFirestore: (reservation, _) => reservation.toJson(),
+          )
+          .get())
+      .docs,
+);

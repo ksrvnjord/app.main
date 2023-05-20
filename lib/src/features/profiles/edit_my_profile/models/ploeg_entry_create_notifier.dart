@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 
+// ignore: prefer-static-class
 final ploegEntryCreateNotifierProvider =
     StateNotifierProvider<PloegEntryCreateNotifier, PloegEntryCreateForm>(
   (ref) {

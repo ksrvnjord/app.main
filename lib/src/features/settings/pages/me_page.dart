@@ -6,14 +6,10 @@ import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-const double betweenFields = 20;
-const double marginContainer = 5;
-const double paddingBody = 15;
 
 class MePage extends ConsumerWidget {
   const MePage({Key? key}) : super(key: key);
@@ -48,26 +44,26 @@ class MeWidget extends ConsumerStatefulWidget {
   createState() => _MeWidgetState();
 }
 
-Map<String, Object?> createInitialField({
-  required double width,
-  required String label,
-  required String initialValue,
-  required String? updatedValue,
-}) {
-  return {
-    'changed': false,
-    'width': width,
-    'controller': TextEditingController(text: initialValue),
-    'display': label,
-    'initial': initialValue,
-    'updated': updatedValue,
-  };
-}
-
 class _MeWidgetState extends ConsumerState<MeWidget> {
   List<Map<String, Map<String, dynamic>>> fields = [];
   bool saving = false;
   Color buttonColor = Colors.blue;
+
+  Map<String, Object?> createInitialField({
+    required double width,
+    required String label,
+    required String initialValue,
+    required String? updatedValue,
+  }) {
+    return {
+      'changed': false,
+      'width': width,
+      'controller': TextEditingController(text: initialValue),
+      'display': label,
+      'initial': initialValue,
+      'updated': updatedValue,
+    };
+  }
 
   @override
   void initState() {
@@ -166,6 +162,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    const double paddingBody = 15;
     final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
     final client = ref.watch(graphQLModelProvider).client;
 

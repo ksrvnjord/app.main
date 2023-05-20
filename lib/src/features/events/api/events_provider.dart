@@ -3,6 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
+// ignore: prefer-static-class
 final comingEventsProvider = FutureProvider<List<Event>>(
   (ref) async {
     final client = ref.watch(graphQLModelProvider).client;

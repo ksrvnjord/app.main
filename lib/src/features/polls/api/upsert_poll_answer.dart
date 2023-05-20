@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 
+// ignore: prefer-static-class
 void upsertPollAnswer(
   String? choice,
   QuerySnapshot<PollAnswer> snapshot,
