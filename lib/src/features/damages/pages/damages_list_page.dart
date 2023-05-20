@@ -21,25 +21,20 @@ class DamagesListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schademeldingen'),
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.lightBlue,
+        title: const Text('Schademeldingen'),
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: allDamages(),
         success: (data) => ListView.separated(
-          padding: EdgeInsets.symmetric(
-            vertical: paddingY,
-            horizontal: paddingX,
-          ),
-          itemCount: data.length,
-          separatorBuilder: (context, index) => SizedBox(height: gapY),
+          padding:
+              EdgeInsets.symmetric(vertical: paddingY, horizontal: paddingX),
           itemBuilder: (context, index) => data[index].data() != null
               ? DamageTileWidget(
-                  damageSnapshot: data[index],
                   showDamage: () => navigator.push('show', queryParameters: {
                     'id': data[index].id,
                     'reservationObjectId': data[index].data()!.parent.id,
@@ -48,15 +43,18 @@ class DamagesListPage extends StatelessWidget {
                     'id': data[index].id,
                     'reservationObjectId': data[index].data()!.parent.id,
                   }),
+                  damageSnapshot: data[index],
                 )
               : Container(),
+          separatorBuilder: (context, index) => SizedBox(height: gapY),
+          itemCount: data.length,
         ),
       ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // only show button if user is logged in
           ? FloatingActionButton.extended(
-              onPressed: () => navigator.push('create'),
               backgroundColor: Colors.blue,
+              onPressed: () => navigator.push('create'),
               icon: const Icon(Icons.add),
               label: const Text('Nieuwe schade melden'),
             )

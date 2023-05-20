@@ -58,44 +58,36 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     return Scaffold(
       appBar: PreferredSize(
-        // this is to make the body start below the status bar
+        // ignore: sort_child_properties_last
+        child: SizedBox(height: screenTopPadding),
         preferredSize: Size.fromHeight(screenTopPadding),
-        child: SizedBox(
-          height: screenTopPadding,
-        ),
       ),
       body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            [
-              Image.asset(
-                Images.appLogoBlue,
-                height: logoHeight,
-              ).padding(bottom: elementPadding),
-              FirebaseWidget(
-                onAuthenticated: IconButton(
-                  iconSize: myProfileSize,
-                  onPressed: () => Routemaster.of(context).push('edit'),
-                  icon: const MyProfilePicture(
-                    profileIconSize: 48,
-                  ),
-                ),
-              ),
-            ].toRow(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-            ),
-            const VaarverbodWidget().padding(vertical: elementPadding),
+        // ignore: sort_child_properties_last
+        child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
+          [
+            Image.asset(Images.appLogoBlue, height: logoHeight)
+                .padding(bottom: elementPadding),
             FirebaseWidget(
-              onAuthenticated:
-                  const FormsWidget().padding(vertical: elementPadding),
+              onAuthenticated: IconButton(
+                iconSize: myProfileSize,
+                onPressed: () => Routemaster.of(context).push('edit'),
+                icon: const MyProfilePicture(profileIconSize: 48),
+              ),
             ),
-            const ComingWeekEventsWidget().padding(vertical: elementPadding),
-            const AnnouncementsWidget().padding(vertical: elementPadding),
-          ],
-        ),
+          ].toRow(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+          ),
+          const VaarverbodWidget().padding(vertical: elementPadding),
+          FirebaseWidget(
+            onAuthenticated:
+                const FormsWidget().padding(vertical: elementPadding),
+          ),
+          const ComingWeekEventsWidget().padding(vertical: elementPadding),
+          const AnnouncementsWidget().padding(vertical: elementPadding),
+        ]),
+        onRefresh: _refresh,
       ),
     );
   }

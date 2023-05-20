@@ -28,12 +28,8 @@ class DamageEditWidget extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schademelding'),
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        title: const Text('Schademelding'),
         actions: [
           damageForm.complete
               ? IconButton(
@@ -41,82 +37,80 @@ class DamageEditWidget extends ConsumerWidget {
                       editDamage(id, reservationObjectId, damageForm).then(
                     (e) {
                       messenger.showSnackBar(SnackBar(
-                        backgroundColor: Colors.green[900],
                         content: const Text('Schademelding aangemaakt'),
+                        backgroundColor: Colors.green[900],
                       ));
                       navigator.pop();
                     },
                     onError: (e) {
                       messenger.showSnackBar(SnackBar(
-                        backgroundColor: Colors.red[900],
                         content: const Text(
                           'Schademelding kon niet aangemaakt worden',
                         ),
+                        backgroundColor: Colors.red[900],
                       ));
                     },
                   ),
                   icon: const Icon(Icons.save),
                 )
               : IconButton(
-                  onPressed: () => messenger.showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.red[900],
-                      content: const Text('Nog niet alle velden zijn ingevuld'),
-                    ),
-                  ),
+                  onPressed: () => messenger.showSnackBar(SnackBar(
+                    content: const Text('Nog niet alle velden zijn ingevuld'),
+                    backgroundColor: Colors.red[900],
+                  )),
                   icon: Icon(Icons.save, color: Colors.blue[900]),
                 ),
           IconButton(
             onPressed: () => deleteDamage(id, reservationObjectId).then(
               (e) {
                 messenger.showSnackBar(SnackBar(
-                  backgroundColor: Colors.green[900],
                   content: const Text('Schademelding verwijderd'),
+                  backgroundColor: Colors.green[900],
                 ));
                 navigator.pop();
               },
               onError: (e) {
                 messenger.showSnackBar(SnackBar(
-                  backgroundColor: Colors.red[900],
                   content: const Text(
                     'Schademelding kon niet verwijderd worden',
                   ),
+                  backgroundColor: Colors.red[900],
                 ));
               },
             ),
             icon: const Icon(Icons.delete),
           ),
         ],
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: [
         damageForm.type != null
             ? DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                value: damageForm.type,
                 items: [
                   DropdownMenuItem(
                     value: damageForm.type,
                     child: Text(damageForm.type ?? ''),
                   ),
                 ],
+                value: damageForm.type,
                 onChanged: null,
+                decoration: const InputDecoration(border: OutlineInputBorder()),
               )
             : Container(),
         damageForm.type != null
             ? DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                value: damageForm.name,
                 items: [
                   DropdownMenuItem(
                     value: damageForm.name,
                     child: Text(damageForm.name ?? ''),
                   ),
                 ],
+                value: damageForm.name,
                 onChanged: null,
+                decoration: const InputDecoration(border: OutlineInputBorder()),
               )
             : Container(),
         const DamageFormWidget(),

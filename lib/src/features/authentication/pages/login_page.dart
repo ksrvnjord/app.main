@@ -43,13 +43,11 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.lightBlue,
       body: <Widget>[
         const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
-        _LoginFormCard(
-          loginCallback: loginCallback,
-        ),
+        _LoginFormCard(loginCallback: loginCallback),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+      backgroundColor: Colors.lightBlue,
     );
   }
 }

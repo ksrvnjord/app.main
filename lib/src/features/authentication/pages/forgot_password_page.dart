@@ -17,17 +17,18 @@ class ForgotPasswordPage extends StatelessWidget {
 
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.lightBlue,
       body: <Widget>[
         const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
         FormCard(
           explanation:
               'Op dit moment kan een wachtwoord alleen gereset worden via de website',
           buttonText: 'Ga naar de website',
-          onPressed: () =>
-              launchUrl(Uri.parse('https://heimdall.njord.nl/forgot-password')),
+          onPressed: () => launchUrl(
+            Uri.parse('https://heimdall.njord.nl/forgot-password'),
+          ),
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+      backgroundColor: Colors.lightBlue,
     );
   }
 }

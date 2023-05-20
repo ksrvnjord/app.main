@@ -61,43 +61,43 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         child: <Widget>[
           TextFormField(
             controller: _username,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
-            ],
+            decoration: const InputDecoration(
+              icon: Icon(Icons.person),
+              labelText: 'Njord-account',
+              hintText: "james.cohen.stuart",
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+            ),
+            textCapitalization: TextCapitalization.none,
             obscureText: false,
             autocorrect: false,
             enableSuggestions: false,
-            textCapitalization: TextCapitalization.none,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              labelText: 'Njord-account',
-              hintText: "james.cohen.stuart",
-            ),
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
+            ],
           ).padding(all: textFormFieldPadding),
           TextFormField(
             controller: _password,
-            obscureText: true,
-            autocorrect: false,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
+              labelText: 'Wachtwoord',
+              hintText: "Trekeenbak@17:26",
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(Radius.circular(40)),
               ),
-              labelText: 'Wachtwoord',
-              hintText: "Trekeenbak@17:26",
             ),
+            obscureText: true,
+            autocorrect: false,
           ).padding(all: textFormFieldPadding),
         ].toColumn(mainAxisSize: MainAxisSize.min),
       ),
       <Widget>[
         RoundedElevatedButton(
-          color: Colors.lightBlue,
           onPressed: () => login(auth, graphql),
+          color: Colors.lightBlue,
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(

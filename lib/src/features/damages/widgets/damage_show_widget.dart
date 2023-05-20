@@ -44,8 +44,8 @@ class DamageShowWidget extends StatelessWidget {
                 'Foto',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontWeight: FontWeight.w300,
                   fontSize: 16,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
               subtitle: FutureWrapper(

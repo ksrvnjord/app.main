@@ -25,44 +25,42 @@ class DamageCreateWidget extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schade melden'),
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+        title: const Text('Schade melden'),
         actions: [
           formData.complete
               ? IconButton(
                   onPressed: () => newDamage(formData).then(
                     (e) {
                       messenger.showSnackBar(SnackBar(
-                        backgroundColor: Colors.green[900],
                         content: const Text('Schademelding aangemaakt'),
+                        backgroundColor: Colors.green[900],
                       ));
                       navigator.pop();
                     },
                     onError: (e) {
                       messenger.showSnackBar(SnackBar(
-                        backgroundColor: Colors.red[900],
                         content: const Text(
                           'Schademelding kon niet aangemaakt worden',
                         ),
+                        backgroundColor: Colors.red[900],
                       ));
                     },
                   ),
                   icon: const Icon(Icons.send),
                 )
               : IconButton(
-                  onPressed: () => messenger.showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.red[900],
-                      content: const Text('Nog niet alle velden zijn ingevuld'),
-                    ),
-                  ),
+                  onPressed: () => messenger.showSnackBar(SnackBar(
+                    content: const Text('Nog niet alle velden zijn ingevuld'),
+                    backgroundColor: Colors.red[900],
+                  )),
                   icon: Icon(Icons.send, color: Colors.blue[900]),
                 ),
         ],
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: <Widget>[
         const DamageSelectWidget(),

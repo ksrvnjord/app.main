@@ -18,10 +18,10 @@ class DamagesShowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Schademelding'),
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.lightBlue,
+        title: const Text('Schademelding'),
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

@@ -28,43 +28,28 @@ class DamageTileWidget extends StatelessWidget {
     const double trailingWidgetWidth = 80;
 
     return ListTile(
-      title: Text(damage.name),
-      subtitle: Text(damage.type),
-      onTap: showDamage,
-      leading: // report icon if critical else warning icon
-          [
+      leading: [
         damage.critical
-            ? Icon(
-                Icons.report,
-                color: Colors.red[900] ?? Colors.red,
-              )
+            ? Icon(Icons.report, color: Colors.red[900] ?? Colors.red)
             : Icon(
                 Icons.warning,
                 color: Colors.orange[900] ?? Colors.orange,
               ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+      title: Text(damage.name),
+      subtitle: Text(damage.type),
       trailing: SizedBox(
         width: trailingWidgetWidth,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (damage.creatorId == uid)
-              IconButton(
-                onPressed: editDamage,
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.grey,
-                ),
-              ),
-
-            // show arrow forward icon to navigate to damage details
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          if (damage.creatorId == uid)
+            IconButton(
+              onPressed: editDamage,
+              icon: const Icon(Icons.edit, color: Colors.grey),
             ),
-          ],
-        ),
+          const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+        ]),
       ),
+      onTap: showDamage,
     ).card(
       color: // if damage is critical show light red, else orange
           damage.critical ? Colors.red[100] : Colors.orange[100],

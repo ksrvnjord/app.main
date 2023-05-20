@@ -33,43 +33,32 @@ class DamageSelectWidget extends ConsumerWidget {
 
     return <Widget>[
       DropdownButtonFormField(
-        hint: const Text('Selecteer een type...'),
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-        ),
-        value: formData.type,
         items: data.keys
             .toSet()
             .toList()
             .map<DropdownMenuItem>(
-              (key) => DropdownMenuItem(
-                value: key,
-                child: Text(key),
-              ),
+              (key) => DropdownMenuItem(value: key, child: Text(key)),
             )
             .toList(),
+        value: formData.type,
+        hint: const Text('Selecteer een type...'),
         onChanged: (e) => formData.type = e,
+        decoration: const InputDecoration(border: OutlineInputBorder()),
       ),
       DropdownButtonFormField<String>(
-        hint: const Text('Selecteer een object...'),
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-        ),
-        value: formData.name,
         items: hasType
             ? data[formData.type]!
                 .map((e) => e.name)
                 .toSet()
-                .map<DropdownMenuItem<String>>(
-                  (item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  ),
-                )
+                .map<DropdownMenuItem<String>>((item) =>
+                    DropdownMenuItem<String>(value: item, child: Text(item)))
                 .toList()
             : [],
+        value: formData.name,
+        hint: const Text('Selecteer een object...'),
         disabledHint: const Text('Selecteer eerst een type...'),
         onChanged: hasType ? (e) => formData.name = e : null,
+        decoration: const InputDecoration(border: OutlineInputBorder()),
       ),
     ];
   }
