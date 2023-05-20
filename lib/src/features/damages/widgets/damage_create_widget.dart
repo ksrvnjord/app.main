@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/mutations/new_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
@@ -72,7 +72,7 @@ class DamageCreateWidget extends ConsumerWidget {
     Routemaster navigator,
   ) async {
     try {
-      await newDamage(formData);
+      await Damage.create(formData);
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
         content: const Text('Schademelding aangemaakt'),

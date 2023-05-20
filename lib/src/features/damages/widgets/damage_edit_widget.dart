@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/mutations/delete_damage.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/mutations/edit_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -94,7 +93,7 @@ class DamageEditWidget extends ConsumerWidget {
     Routemaster navigator,
   ) async {
     try {
-      await deleteDamage(damageDocumentId, reservationObjectId);
+      await Damage.deleteById(damageDocumentId, reservationObjectId);
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
         content: const Text('Schademelding verwijderd'),
@@ -119,7 +118,7 @@ class DamageEditWidget extends ConsumerWidget {
     Routemaster navigator,
   ) async {
     try {
-      await editDamage(
+      await Damage.edit(
         damageDocumentId,
         reservationObjectId,
         damageForm,

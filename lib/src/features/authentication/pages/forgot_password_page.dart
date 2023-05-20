@@ -6,10 +6,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  final void Function(bool) loginCallback;
-
-  const ForgotPasswordPage({Key? key, this.loginCallback = dontCall})
-      : super(key: key);
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +29,3 @@ class ForgotPasswordPage extends StatelessWidget {
     );
   }
 }
-
-// ignore: no-empty-block
-void dontCall(bool _) {}

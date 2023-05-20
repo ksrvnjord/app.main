@@ -14,8 +14,7 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-const _storage = FlutterSecureStorage();
-
+// ignore: prefer-static-class
 final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
 class AuthModel extends ChangeNotifier {
@@ -24,6 +23,7 @@ class AuthModel extends ChangeNotifier {
   String error = '';
   String storedUser = '';
   GlobalConstants globalConstants = GetIt.I.get<GlobalConstants>();
+  final _storage = const FlutterSecureStorage();
 
   AuthModel() {
     isBusy = true;
