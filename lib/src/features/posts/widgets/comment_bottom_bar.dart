@@ -20,11 +20,12 @@ class CommentBottomBar extends StatelessWidget {
 
     return [
       InkWell(
-          child: const Text("Zwaan")
-              .textColor(likedByMe ? Colors.blue : Colors.blueGrey)
-              .fontSize(bottomBarFontSize)
-              .fontWeight(FontWeight.bold),
-          onTap: () => CommentsService.like(snapshot)),
+        child: const Text("Zwaan")
+            .textColor(likedByMe ? Colors.blue : Colors.blueGrey)
+            .fontSize(bottomBarFontSize)
+            .fontWeight(FontWeight.bold),
+        onTap: () => CommentsService.like(snapshot),
+      ),
       Text(timeago.format(
         comment.createdTime.toDate(),
         locale: 'nl_short',

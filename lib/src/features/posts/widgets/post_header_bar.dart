@@ -52,22 +52,27 @@ class PostHeaderBar extends ConsumerWidget {
       if (firebaseUser != null &&
           (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
-            child: const Icon(Icons.delete_outlined),
-            onTap: () => showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                        title: const Text('Verwijderen'),
-                        content: const Text(
-                            'Weet je zeker dat je dit bericht wilt verwijderen?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Annuleren')),
-                          TextButton(
-                              onPressed: deletePost,
-                              child: const Text('Verwijderen')
-                                  .textColor(Colors.red))
-                        ]))),
+          child: const Icon(Icons.delete_outlined),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Verwijderen'),
+              content: const Text(
+                'Weet je zeker dat je dit bericht wilt verwijderen?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Annuleren'),
+                ),
+                TextButton(
+                  onPressed: deletePost,
+                  child: const Text('Verwijderen').textColor(Colors.red),
+                ),
+              ],
+            ),
+          ),
+        ),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
     );

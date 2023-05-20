@@ -135,6 +135,8 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
 
     final boat = widget.boat.data();
 
+    const double height1726 = 2;
+
     return SizedBox(
       width: CalendarMeasurement.slotWidth,
       // Stack the elements over eachother
@@ -143,19 +145,23 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
           // Horizontal bars of 32h, that are tappable
           // to make new reservations
           GestureDetector(
-              child: AbsorbPointer(
-                  child: CalendarBackground(
-                      available:
-                          (hasPermission && boat.available) && !boat.critical)),
-              onTapUp: handleTap),
+            // ignore: sort_child_properties_last
+            child: AbsorbPointer(
+              child: CalendarBackground(
+                available: (hasPermission && boat.available) && !boat.critical,
+              ),
+            ),
+            onTapUp: handleTap,
+          ),
           // Wrap the reservations
           reservations.when(
             // Shimmer entire screen on loading
             loading: () => const ShimmerWidget(
               child: SizedBox(
-                  width: CalendarMeasurement.slotWidth,
-                  height: CalendarMeasurement.slotHeight *
-                      CalendarMeasurement.amountOfSlots),
+                width: CalendarMeasurement.slotWidth,
+                height: CalendarMeasurement.slotHeight *
+                    CalendarMeasurement.amountOfSlots,
+              ),
             ),
             // Create a stack of the resulting reservations
             data: (reservations) {
@@ -173,21 +179,22 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
           Positioned(
-              left: 0,
-              top: CalendarMeasurement.amountOfPixelsTill1726FromTop() - 1,
-              child: Row(children: [
-                for (int i = 0;
-                    i <
-                        CalendarMeasurement.slotWidth ~/
-                            CalendarMeasurement.stripeWidth1726;
-                    i++)
-                  Container(
-                      color: i % 2 == 0
-                          ? const Color(0x6011436d)
-                          : Colors.transparent,
-                      width: CalendarMeasurement.stripeWidth1726,
-                      height: 2)
-              ])),
+            left: 0,
+            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() - 1,
+            child: Row(children: [
+              for (int i = 0;
+                  i <
+                      CalendarMeasurement.slotWidth ~/
+                          CalendarMeasurement.stripeWidth1726;
+                  i++)
+                Container(
+                  color:
+                      i.isEven ? const Color(0x6011436d) : Colors.transparent,
+                  width: CalendarMeasurement.stripeWidth1726,
+                  height: height1726,
+                ),
+            ]),
+          ),
         ],
       ),
     );

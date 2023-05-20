@@ -43,7 +43,8 @@ final almanakUserProvider =
               houseNumber: heimdallProfilePublic.housenumber,
               houseNumberAddition: heimdallProfilePublic.housenumber_addition,
               postalCode: heimdallProfilePublic.zipcode,
-              city: heimdallProfilePublic.city)
+              city: heimdallProfilePublic.city,
+            )
           : null,
     );
   },

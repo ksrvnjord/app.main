@@ -23,11 +23,12 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Edit Commissies'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Edit Commissies'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: ListView(children: [
         const Text('Mijn Commissies')
             .textColor(Colors.blueGrey)
@@ -42,10 +43,11 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
       ]),
       floatingActionButton: // button with a plus icon and the text "Commissie"
           FloatingActionButton.extended(
-              backgroundColor: Colors.lightBlue,
-              onPressed: () => Routemaster.of(context).push('select'),
-              icon: const Icon(Icons.add),
-              label: const Text('Voeg commissie toe')),
+        backgroundColor: Colors.lightBlue,
+        onPressed: () => Routemaster.of(context).push('select'),
+        icon: const Icon(Icons.add),
+        label: const Text('Voeg commissie toe'),
+      ),
     );
   }
 }

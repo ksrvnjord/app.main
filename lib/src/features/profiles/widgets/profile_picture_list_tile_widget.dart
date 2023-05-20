@@ -20,9 +20,10 @@ class ProfilePictureListTileWidget extends ConsumerWidget {
 
     return profilePicture.when(
       data: (data) => CircleAvatar(
-          backgroundColor: Colors.grey[300]!,
-          foregroundImage: data,
-          radius: radius),
+        backgroundColor: Colors.grey[300]!,
+        foregroundImage: data,
+        radius: radius,
+      ),
       loading: () => ShimmerWidget(
         child: CircleAvatar(
           radius: radius,

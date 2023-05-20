@@ -37,90 +37,97 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     const double submitButtonHPadding = 12;
 
     return GestureDetector(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Nieuwe post'),
-            shadowColor: Colors.transparent,
-            backgroundColor: Colors.lightBlue,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.lightBlue,
-            ),
-          ),
-          body: Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: <Widget>[
-                [
-                  DropdownButtonFormField<String>(
-                      items: ref
-                          .watch(postTopicsProvider)
-                          .map((topic) => DropdownMenuItem<String>(
-                              value: topic, child: Text(topic)))
-                          .toList(),
-                      value: selectedTopic,
-                      onChanged: (value) =>
-                          selectedTopic = value ?? 'Wandelgangen',
-                      decoration: const InputDecoration(
-                          labelText: 'Categorie',
-                          hintText: 'Selecteer een categorie'),
-                      onSaved: (newValue) =>
-                          selectedTopic = newValue ?? 'Wandelgangen',
-                      validator: (value) => value == null
-                          ? 'Kies alsjeblieft een onderwerp.'
-                          : null),
-                  TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Titel',
-                          hintText: 'Coach gezocht voor morgen om 7:00'),
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      maxLength: maxTitleLength,
-                      onSaved: (value) => title = value ?? '',
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Je titel mist!'
-                          : null),
-                  TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Inhoud',
-                          hintText:
-                              "Om 7:00 's ochtends heb je toch niks te doen"),
-                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                      maxLines: null,
-                      maxLength: maxContentLength,
-                      onSaved: (value) => content = value ?? '',
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Zonder inhoud kom je nergens.'
-                          : null),
-                  ElevatedButton(
-                      onPressed:
-                          postCreationInProgress ? null : () => submitForm(),
-                      style: ElevatedButton.styleFrom(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                          backgroundColor: Colors.blue),
-                      child: <Widget>[
-                        Icon(postCreationInProgress
-                                ? LucideIcons.loader
-                                : LucideIcons.send)
-                            .padding(bottom: 1),
-                        Text(
-                            postCreationInProgress
-                                ? "Zwanen voeren..."
-                                : 'Verstuur',
-                            style: const TextStyle(fontSize: 18))
-                      ]
-                          .toRow(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween)
-                          .padding(vertical: submitButtonHPadding))
-                ].toColumn(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    separator: const SizedBox(height: 16)),
-              ],
-            ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Nieuwe post'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.lightBlue,
           ),
         ),
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus());
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: <Widget>[
+              [
+                DropdownButtonFormField<String>(
+                  items: ref
+                      .watch(postTopicsProvider)
+                      .map((topic) => DropdownMenuItem<String>(
+                            value: topic,
+                            child: Text(topic),
+                          ))
+                      .toList(),
+                  value: selectedTopic,
+                  onChanged: (value) => selectedTopic = value ?? 'Wandelgangen',
+                  decoration: const InputDecoration(
+                    labelText: 'Categorie',
+                    hintText: 'Selecteer een categorie',
+                  ),
+                  onSaved: (newValue) =>
+                      selectedTopic = newValue ?? 'Wandelgangen',
+                  validator: (value) =>
+                      value == null ? 'Kies alsjeblieft een onderwerp.' : null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Titel',
+                    hintText: 'Coach gezocht voor morgen om 7:00',
+                  ),
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  maxLength: maxTitleLength,
+                  onSaved: (value) => title = value ?? '',
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Je titel mist!' : null,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Inhoud',
+                    hintText: "Om 7:00 's ochtends heb je toch niks te doen",
+                  ),
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  maxLines: null,
+                  maxLength: maxContentLength,
+                  onSaved: (value) => content = value ?? '',
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Zonder inhoud kom je nergens.'
+                      : null,
+                ),
+                ElevatedButton(
+                  onPressed: postCreationInProgress ? null : () => submitForm(),
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: <Widget>[
+                    Icon(postCreationInProgress
+                            ? LucideIcons.loader
+                            : LucideIcons.send)
+                        .padding(bottom: 1),
+                    Text(
+                      postCreationInProgress ? "Zwanen voeren..." : 'Verstuur',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ]
+                      .toRow(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      )
+                      .padding(vertical: submitButtonHPadding),
+                ),
+              ].toColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                separator: const SizedBox(height: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    );
   }
 
   void submitForm() async {

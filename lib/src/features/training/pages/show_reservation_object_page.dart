@@ -36,16 +36,18 @@ class ShowReservationObjectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(name),
-          actions: [
-            IconButton(
-                onPressed: () => Routemaster.of(context).push('damage/create'),
-                icon: const Icon(Icons.report))
-          ],
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: Text(name),
+        actions: [
+          IconButton(
+            onPressed: () => Routemaster.of(context).push('damage/create'),
+            icon: const Icon(Icons.report),
+          ),
+        ],
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: FutureWrapper(
         future: getReservationObject(documentId),
         success: (snapshot) => showObjectDetails(snapshot, context),
@@ -74,17 +76,23 @@ class ShowReservationObjectPage extends StatelessWidget {
         child: ListView(children: [
           if (obj.comment != null && obj.comment!.isNotEmpty)
             Card(
-                color: Colors.amber.shade100,
-                elevation: 0,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40))),
-                child: ListTile(
-                    leading: const Icon(Icons.comment),
-                    title: Text(obj.comment!,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.normal)))),
+              color: Colors.amber.shade100,
+              elevation: 0,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.comment),
+                title: Text(
+                  obj.comment!,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
           DataTextListTile(name: "Type", value: obj.type),
           if (obj.kind != null)
             DataTextListTile(name: "Categorie", value: obj.kind!),
@@ -109,9 +117,10 @@ class ShowReservationObjectPage extends StatelessWidget {
             const Text(
               'Schades',
               style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w300),
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              ),
             ).padding(
               horizontal: horizontalPadding,
               top: verticalPadding,
@@ -123,11 +132,16 @@ class ShowReservationObjectPage extends StatelessWidget {
                 .map<Widget>((e) {
                   return e.data() != null
                       ? DamageTileWidget(
-                          showDamage: () => navigator.push('damage/show',
-                              queryParameters: {'id': e.id}),
-                          editDamage: () => navigator.push('damage/edit',
-                              queryParameters: {'id': e.id}),
-                          damageSnapshot: e)
+                          showDamage: () => navigator.push(
+                            'damage/show',
+                            queryParameters: {'id': e.id},
+                          ),
+                          editDamage: () => navigator.push(
+                            'damage/edit',
+                            queryParameters: {'id': e.id},
+                          ),
+                          damageSnapshot: e,
+                        )
                       : Container();
                 })
                 .toList()

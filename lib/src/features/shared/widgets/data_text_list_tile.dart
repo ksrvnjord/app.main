@@ -18,12 +18,18 @@ class DataTextListTile extends StatelessWidget {
       title: Text(
         name,
         style: const TextStyle(
-            color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w300),
+          color: Colors.grey,
+          fontSize: 16,
+          fontWeight: FontWeight.w300,
+        ),
       ),
       subtitle: Text(
         value,
         style: const TextStyle(
-            color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.normal,
+        ),
       ),
     );
   }

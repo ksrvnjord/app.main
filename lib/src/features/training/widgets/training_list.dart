@@ -32,10 +32,12 @@ class TrainingList extends ConsumerWidget {
               : ListView.separated(
                   padding: const EdgeInsets.all(10),
                   itemBuilder: (BuildContext context, int index) => Center(
-                      child: ReservationListTile(snapshot: data.docs[index])),
+                    child: ReservationListTile(snapshot: data.docs[index]),
+                  ),
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(height: 4),
-                  itemCount: data.docs.length),
+                  itemCount: data.docs.length,
+                ),
         );
   }
 }

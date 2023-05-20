@@ -68,67 +68,82 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 // make list tile with lightblue background and white text
                 Center(
                   child: Card(
-                      color: Colors.lightBlue,
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(40))),
-                      child: Text(u.bestuursFunctie!)
-                          .textColor(Colors.white)
-                          .fontSize(bestuurFontSize)
-                          .fontWeight(FontWeight.bold)
-                          .padding(all: formFieldPadding)),
+                    color: Colors.lightBlue,
+                    elevation: 0,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                    ),
+                    child: Text(u.bestuursFunctie!)
+                        .textColor(Colors.white)
+                        .fontSize(bestuurFontSize)
+                        .fontWeight(FontWeight.bold)
+                        .padding(all: formFieldPadding),
+                  ),
                 ),
               [
                 if (u.email != null && u.email!.isNotEmpty)
                   ElevatedButton(
-                      onPressed: () =>
-                          launchUrl(Uri.parse("mailto:${u.email}")),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightBlue,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40)))),
-                      child: SizedBox(
-                          width: actionButtonSize,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text("Mail"),
-                                Icon(Icons.mail_outline_outlined,
-                                    color: Colors.white)
-                              ]))).padding(all: formFieldPadding),
+                    onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlue,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                      ),
+                    ),
+                    child: SizedBox(
+                      width: actionButtonSize,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Text("Mail"),
+                          Icon(
+                            Icons.mail_outline_outlined,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).padding(all: formFieldPadding),
                 if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
                   ElevatedButton(
-                      onPressed: () => showBottomActionSheet(
-                          context: context,
-                          children: const [
-                            Icon(Icons.phone, color: Colors.black),
-                            FaIcon(FontAwesomeIcons.whatsapp,
-                                color: Colors.black)
-                          ],
-                          actions: [
-                            () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
-                            () => launchUrl(Uri.parse(
-                                "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}"))
-                          ],
-                          descriptions: [
-                            const Text("Bel"),
-                            const Text("Whatsapp")
-                          ],
-                          widgetPositioning: WidgetPositioning.mainAxis),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40)))),
-                      child: SizedBox(
-                          width: actionButtonSize,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text("Telefoon"),
-                                Icon(Icons.phone_iphone, color: Colors.white)
-                              ]))).padding(all: formFieldPadding),
+                    onPressed: () => showBottomActionSheet(
+                      context: context,
+                      children: const [
+                        Icon(Icons.phone, color: Colors.black),
+                        FaIcon(
+                          FontAwesomeIcons.whatsapp,
+                          color: Colors.black,
+                        ),
+                      ],
+                      actions: [
+                        () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
+                        () => launchUrl(Uri.parse(
+                              "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
+                            )),
+                      ],
+                      descriptions: [
+                        const Text("Bel"),
+                        const Text("Whatsapp"),
+                      ],
+                      widgetPositioning: WidgetPositioning.mainAxis,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                      ),
+                    ),
+                    child: SizedBox(
+                      width: actionButtonSize,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Text("Telefoon"),
+                          Icon(Icons.phone_iphone, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ).padding(all: formFieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
               if (u.address != null) UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),

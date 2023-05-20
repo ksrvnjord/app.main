@@ -17,9 +17,15 @@ class ClickableProfilePictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        child: ProfilePictureWidget(
-            userId: userId, size: size, zoomable: false, thumbnail: true),
-        onTap: () => Navigator.of(context).push(CupertinoPageRoute(
-            builder: (context) => AlmanakProfilePage(userId: userId))));
+      child: ProfilePictureWidget(
+        userId: userId,
+        size: size,
+        zoomable: false,
+        thumbnail: true,
+      ),
+      onTap: () => Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => AlmanakProfilePage(userId: userId),
+      )),
+    );
   }
 }

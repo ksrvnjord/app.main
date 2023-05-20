@@ -28,83 +28,112 @@ class AllTrainingPage extends ConsumerWidget {
     const double filterLabelSize = 12;
 
     return DefaultTabController(
-        length: days.length,
-        child: Scaffold(
-            appBar: AppBar(
-                title: const Text('Afschrijven'),
-                bottom: TabBar(
-                    tabs: days
-                        .map<Widget>((e) => Tab(
-                            text: DateFormat('EEEE d MMM', 'nl_NL').format(e)))
-                        .toList(),
-                    isScrollable: true,
-                    indicatorWeight: 0,
-                    indicatorPadding: const EdgeInsets.all(4),
-                    indicator: const BoxDecoration(
-                        border: Border.fromBorderSide(
-                            BorderSide(color: Colors.white, width: 1)),
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                        shape: BoxShape.rectangle),
-                    labelColor: Colors.white,
-                    labelStyle: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                    unselectedLabelColor: Colors.white60,
-                    unselectedLabelStyle: const TextStyle(fontSize: 14)),
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.lightBlue,
-                systemOverlayStyle: const SystemUiOverlayStyle(
-                    statusBarColor: Colors.lightBlue)),
-            body: [
-              Container(
-                  alignment: Alignment.center,
-                  color: Colors.lightBlue,
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: GestureDetector(
-                          child: Row(children: [
-                            if (filterList.isNotEmpty)
-                              const Text('Je selectie:',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 14))
-                                  .padding(
-                                      right: yourFiltersRPadding,
-                                      left: yourFiltersLPadding),
-                            ...filterList
-                                .map<Widget>((filter) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 2),
-                                    child: Chip(
-                                        label: Text(filter),
-                                        labelStyle: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: filterLabelSize),
-                                        side: const BorderSide(
-                                            color: Colors.white, width: 1),
-                                        backgroundColor: Colors.lightBlue,
-                                        visualDensity: VisualDensity.compact)))
-                                .toList()
-                          ]),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => ShowFiltersPage()))))),
-              TabBarView(
-                      children: days
-                          .map<Widget>((date) => CalendarOverview(date: date))
-                          .toList(),
-                      physics: const NeverScrollableScrollPhysics())
-                  .expanded()
-            ].toColumn(),
-            floatingActionButton: Stack(children: [
-              FloatingActionButton(
-                  child: const Icon(Icons.filter_list_alt),
-                  tooltip: "Kies afschrijf filters",
-                  foregroundColor: filterList.isNotEmpty
-                      ? Colors.orangeAccent
-                      : Colors.white,
-                  backgroundColor: Colors.lightBlue,
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ShowFiltersPage())))
-            ])),
-        animationDuration: const Duration(milliseconds: 1726 ~/ 2));
+      length: days.length,
+      // ignore: sort_child_properties_last
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Afschrijven'),
+          bottom: TabBar(
+            tabs: days
+                .map<Widget>((e) => Tab(
+                      text: DateFormat('EEEE d MMM', 'nl_NL').format(e),
+                    ))
+                .toList(),
+            isScrollable: true,
+            indicatorWeight: 0,
+            indicatorPadding: const EdgeInsets.all(4),
+            indicator: const BoxDecoration(
+              border: Border.fromBorderSide(
+                BorderSide(color: Colors.white, width: 1),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+              shape: BoxShape.rectangle,
+            ),
+            labelColor: Colors.white,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelColor: Colors.white60,
+            unselectedLabelStyle: const TextStyle(fontSize: 14),
+          ),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.lightBlue,
+          ),
+        ),
+        body: [
+          Container(
+            alignment: Alignment.center,
+            color: Colors.lightBlue,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: GestureDetector(
+                child: Row(children: [
+                  if (filterList.isNotEmpty)
+                    const Text(
+                      'Je selectie:',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ).padding(
+                      right: yourFiltersRPadding,
+                      left: yourFiltersLPadding,
+                    ),
+                  ...filterList
+                      .map<Widget>((filter) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 2,
+                            ),
+                            child: Chip(
+                              label: Text(filter),
+                              labelStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: filterLabelSize,
+                              ),
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 1,
+                              ),
+                              backgroundColor: Colors.lightBlue,
+                              visualDensity: VisualDensity.compact,
+                            ),
+                          ))
+                      .toList(),
+                ]),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ShowFiltersPage(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          TabBarView(
+            // ignore: sort_child_properties_last
+            children: days
+                .map<Widget>((date) => CalendarOverview(date: date))
+                .toList(),
+            physics: const NeverScrollableScrollPhysics(),
+          ).expanded(),
+        ].toColumn(),
+        floatingActionButton: Stack(children: [
+          FloatingActionButton(
+            // ignore: sort_child_properties_last
+            child: const Icon(Icons.filter_list_alt),
+            tooltip: "Kies afschrijf filters",
+            foregroundColor:
+                filterList.isNotEmpty ? Colors.orangeAccent : Colors.white,
+            backgroundColor: Colors.lightBlue,
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ShowFiltersPage(),
+            )),
+          ),
+        ]),
+      ),
+      animationDuration: const Duration(milliseconds: 1726 ~/ 2),
+    );
   }
 }

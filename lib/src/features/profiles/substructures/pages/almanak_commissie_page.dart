@@ -75,11 +75,12 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.commissieName),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: Text(widget.commissieName),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: ListView(
         controller:
             scrollController, // for keeping scroll position when changing year
@@ -104,19 +105,20 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             [
               const Text('Kies een jaar: ').textColor(Colors.blueGrey),
               DropdownButton<Tuple2<int, int>>(
-                  items: years
-                      .map((year) => DropdownMenuItem<Tuple2<int, int>>(
+                items: years
+                    .map((year) => DropdownMenuItem<Tuple2<int, int>>(
                           value: year,
                           child: Text("${year.item1}-${year.item2}")
-                              .textColor(Colors.blueGrey)))
-                      .toList(),
-                  value: selectedYear,
-                  onChanged: (tuple) => setState(() {
-                        selectedYear = tuple!;
-                      }),
-                  icon:
-                      const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
-                  menuMaxHeight: menuMaxHeight),
+                              .textColor(Colors.blueGrey),
+                        ))
+                    .toList(),
+                value: selectedYear,
+                onChanged: (tuple) => setState(() {
+                  selectedYear = tuple!;
+                }),
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+                menuMaxHeight: menuMaxHeight,
+              ),
             ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 right: yearSelectorPadding,
@@ -155,10 +157,11 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     final user = doc.data();
 
     return AlmanakUserTile(
-        firstName: user.firstName,
-        lastName: user.lastName,
-        subtitle: user.function,
-        lidnummer: user.identifier);
+      firstName: user.firstName,
+      lastName: user.lastName,
+      subtitle: user.function,
+      lidnummer: user.identifier,
+    );
   }
 
   /// Compare the bestuursfuncties op basis van constitutie

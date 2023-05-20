@@ -30,12 +30,13 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     required PloegType ploegType,
     required int year,
   }) : super(PloegEntryCreateForm(
-            ploegType: ploegType,
-            year: year,
-            role: PloegRole.roeier,
-            firstName: firstName,
-            lastName: lastName,
-            identifier: identifier));
+          ploegType: ploegType,
+          year: year,
+          role: PloegRole.roeier,
+          firstName: firstName,
+          lastName: lastName,
+          identifier: identifier,
+        ));
 
   void setPloegType(PloegType ploegType) {
     state = state.copyWith(ploegType: ploegType);
@@ -88,13 +89,14 @@ class PloegEntryCreateForm {
 
   factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
     return PloegEntryCreateForm(
-        ploegType: PloegType.values.byName(json['ploegType']),
-        year: json['year'],
-        name: json['name'],
-        role: PloegRole.values.byName(json['role']),
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        identifier: json['identifier']);
+      ploegType: PloegType.values.byName(json['ploegType']),
+      year: json['year'],
+      name: json['name'],
+      role: PloegRole.values.byName(json['role']),
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      identifier: json['identifier'],
+    );
   }
 
   PloegEntryCreateForm copyWith({
@@ -104,13 +106,14 @@ class PloegEntryCreateForm {
     PloegRole? role,
   }) {
     return PloegEntryCreateForm(
-        ploegType: ploegType ?? this.ploegType,
-        year: year ?? this.year,
-        name: name ?? this.name,
-        role: role ?? this.role,
-        firstName: firstName,
-        lastName: lastName,
-        identifier: identifier);
+      ploegType: ploegType ?? this.ploegType,
+      year: year ?? this.year,
+      name: name ?? this.name,
+      role: role ?? this.role,
+      firstName: firstName,
+      lastName: lastName,
+      identifier: identifier,
+    );
   }
 
   Map<String, dynamic> toJson() {

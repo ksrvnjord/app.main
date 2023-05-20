@@ -10,11 +10,12 @@ class SelectCommissiePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Selecteer commissie'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Selecteer commissie'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: ListView(
         children: commissieEmailMap.keys
             .map(

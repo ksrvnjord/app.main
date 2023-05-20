@@ -13,7 +13,8 @@ class DefaultProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-        backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
-        radius: radius);
+      backgroundImage: Image.asset(Images.placeholderProfilePicture).image,
+      radius: radius,
+    );
   }
 }

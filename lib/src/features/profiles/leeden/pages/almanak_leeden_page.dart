@@ -13,11 +13,12 @@ class AlmanakLeedenPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Leeden"),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text("Leeden"),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: AlmanakSearchableListWidget(client: client),
     );
   }

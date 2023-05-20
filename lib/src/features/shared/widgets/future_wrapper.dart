@@ -31,19 +31,22 @@ class FutureWrapper<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
-        future: future,
-        initialData: initialData,
-        builder: (context, AsyncSnapshot<T> snapshot) {
-          if (snapshot.hasData) {
-            return success(snapshot.data!);
-          } else if (snapshot.hasError) {
-            log(snapshot.error.toString());
-            return error(snapshot.error!);
-          } else if (snapshot.data == null &&
-              snapshot.connectionState == ConnectionState.done) {
-            return onNoData();
-          }
-          return loading;
-        });
+      future: future,
+      initialData: initialData,
+      builder: (context, AsyncSnapshot<T> snapshot) {
+        if (snapshot.hasData) {
+          return success(snapshot.data as T);
+        } else if (snapshot.hasError) {
+          log(snapshot.error.toString());
+
+          return error(snapshot.error!);
+        } else if (snapshot.data == null &&
+            snapshot.connectionState == ConnectionState.done) {
+          return onNoData();
+        }
+
+        return loading;
+      },
+    );
   }
 }

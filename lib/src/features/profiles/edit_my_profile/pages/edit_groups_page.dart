@@ -17,11 +17,12 @@ class EditGroupsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Mijn ploegen'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Mijn ploegen'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: myPloegen.when(
         data: (data) => data.size == 0
             ? const Text('Voeg een ploeg toe om te beginnen').center()
@@ -34,10 +35,11 @@ class EditGroupsPage extends ConsumerWidget {
         loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.blue,
-          onPressed: () => Routemaster.of(context).push('ploeg'),
-          icon: const Icon(Icons.add),
-          label: const Text('Voeg een ploeg toe')),
+        backgroundColor: Colors.blue,
+        onPressed: () => Routemaster.of(context).push('ploeg'),
+        icon: const Icon(Icons.add),
+        label: const Text('Voeg een ploeg toe'),
+      ),
     );
   }
 
@@ -63,8 +65,9 @@ class EditGroupsPage extends ConsumerWidget {
       ),
       subtitle: Text(entry.role.value),
       trailing: IconButton(
-          onPressed: () => doc.reference.delete(),
-          icon: const Icon(Icons.delete)),
+        onPressed: () => doc.reference.delete(),
+        icon: const Icon(Icons.delete),
+      ),
     );
   }
 }

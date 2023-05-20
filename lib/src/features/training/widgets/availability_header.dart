@@ -16,19 +16,26 @@ class AvailabilityHeader extends StatelessWidget {
     return Row(children: [
       Expanded(
         child: Card(
-            color: color,
-            elevation: 0,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20))),
-            margin: const EdgeInsets.only(bottom: 4),
-            child: Text(text,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w300),
-                textAlign: TextAlign.center)),
+          color: color,
+          elevation: 0,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              // ignore: no-equal-arguments
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          margin: const EdgeInsets.only(bottom: 4),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     ]);
   }

@@ -49,25 +49,30 @@ class ReservationObjectNameBox extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               TextButton(
-                  onPressed: () => Routemaster.of(context).push(
-                      'reservationObject/${reservationObj.id}',
-                      queryParameters: {'name': reservationObject.name}),
-                  style: TextButton.styleFrom(
-                      alignment: Alignment.center,
-                      backgroundColor: reservationObject.critical
-                          ? Colors.orange[100]
-                          : isAvailable
-                              ? Colors.white
-                              : Colors.grey[100],
-                      elevation: boatButtonElevation,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)))),
-                  child: Text(reservationObj.data().name).textStyle(TextStyle(
-                      color: reservationObject.critical
-                          ? Colors.orange[900]
-                          : isAvailable
-                              ? Colors.black
-                              : Colors.grey[600]))),
+                onPressed: () => Routemaster.of(context).push(
+                  'reservationObject/${reservationObj.id}',
+                  queryParameters: {'name': reservationObject.name},
+                ),
+                style: TextButton.styleFrom(
+                  alignment: Alignment.center,
+                  backgroundColor: reservationObject.critical
+                      ? Colors.orange[100]
+                      : isAvailable
+                          ? Colors.white
+                          : Colors.grey[100],
+                  elevation: boatButtonElevation,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                ),
+                child: Text(reservationObj.data().name).textStyle(TextStyle(
+                  color: reservationObject.critical
+                      ? Colors.orange[900]
+                      : isAvailable
+                          ? Colors.black
+                          : Colors.grey[600],
+                )),
+              ),
             ],
           ),
         ),

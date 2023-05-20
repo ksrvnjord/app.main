@@ -27,25 +27,33 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
     final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 8;
 
     return InkWell(
-        child: [
-          ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-              child: Image(
-                  image: AssetImage(imagePath),
-                  width: double.infinity,
-                  height: imageHeight,
-                  fit: BoxFit.cover,
-                  isAntiAlias: true)),
-          Text(title)
-              .fontSize(cardTitleFontSize)
-              .textColor(Colors.white)
-              .alignment(Alignment.center)
-        ].toColumn().card(
+      child: [
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            // ignore: no-equal-arguments
+            topRight: Radius.circular(16),
+          ),
+          child: Image(
+            image: AssetImage(imagePath),
+            width: double.infinity,
+            height: imageHeight,
+            fit: BoxFit.cover,
+            isAntiAlias: true,
+          ),
+        ),
+        Text(title)
+            .fontSize(cardTitleFontSize)
+            .textColor(Colors.white)
+            .alignment(Alignment.center),
+      ].toColumn().card(
             color: Colors.lightBlue,
             elevation: 0,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)))),
-        onTap: () => Routemaster.of(context).push(pushRoute));
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+            ),
+          ),
+      onTap: () => Routemaster.of(context).push(pushRoute),
+    );
   }
 }

@@ -58,22 +58,30 @@ class CommentWidget extends ConsumerWidget {
             CupertinoContextMenu(
               actions: [
                 CupertinoContextMenuAction(
-                    child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
-                    onPressed: () => popAnd(context,
-                        onPop: () => CommentsService.like(snapshot)),
-                    trailingIcon:
-                        likedByMe ? Icons.heart_broken : Icons.favorite),
+                  // ignore: sort_child_properties_last
+                  child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
+                  onPressed: () => popAnd(
+                    context,
+                    onPop: () => CommentsService.like(snapshot),
+                  ),
+                  trailingIcon: likedByMe ? Icons.heart_broken : Icons.favorite,
+                ),
 
                 // only show delete button if the comment is from the current user
                 if (FirebaseAuth.instance.currentUser!.uid == comment.authorId)
                   CupertinoContextMenuAction(
-                      child: const Text('Verwijder'),
-                      isDestructiveAction: true,
-                      onPressed: () => popAnd(context,
-                          onPop: () => CommentsService.deleteComment(
-                              snapshot.reference.path),
-                          waitForPopAnimation: true),
-                      trailingIcon: Icons.delete),
+                    // ignore: sort_child_properties_last
+                    child: const Text('Verwijder'),
+                    isDestructiveAction: true,
+                    onPressed: () => popAnd(
+                      context,
+                      onPop: () => CommentsService.deleteComment(
+                        snapshot.reference.path,
+                      ),
+                      waitForPopAnimation: true,
+                    ),
+                    trailingIcon: Icons.delete,
+                  ),
               ],
               child: SingleChildScrollView(
                 // we need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435

@@ -31,14 +31,16 @@ class ProfilePictureWidget extends ConsumerWidget {
           ? ZoomableImage(
               imageProvider: imageProvider,
               image: CircleAvatar(
-                  backgroundColor: Colors.grey[300]!,
-                  foregroundImage: imageProvider,
-                  radius: size),
+                backgroundColor: Colors.grey[300]!,
+                foregroundImage: imageProvider,
+                radius: size,
+              ),
             )
           : CircleAvatar(
               backgroundColor: Colors.grey[300]!,
               foregroundImage: imageProvider,
-              radius: size),
+              radius: size,
+            ),
       loading: () => ShimmerWidget(child: CircleAvatar(radius: size)),
       error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,

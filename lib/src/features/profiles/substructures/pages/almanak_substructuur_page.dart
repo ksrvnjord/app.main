@@ -24,11 +24,12 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(name),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: Text(name),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: ListView(
         children: [
           AlmanakSubstructureCoverPicture(

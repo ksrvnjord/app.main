@@ -23,12 +23,13 @@ class MePrivacyPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: const Text('Zichtbaarheid aanpassen'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        automaticallyImplyLeading: true,
+        title: const Text('Zichtbaarheid aanpassen'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: FutureWrapper(
         future: result,
         success: (me) => MePrivacyWidget(me),
@@ -97,8 +98,9 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       });
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Aanpassen mislukt, melding gemaakt.'),
-          backgroundColor: Colors.red));
+        content: Text('Aanpassen mislukt, melding gemaakt.'),
+        backgroundColor: Colors.red,
+      ));
       setState(() {
         saving = false;
         buttonColor = Colors.red;
@@ -127,9 +129,10 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
               (key) {
                 return [
                   Checkbox(
-                      value: checkboxes[key],
-                      onChanged: (value) => toggleCheckBoxes(key, value!),
-                      checkColor: Colors.white),
+                    value: checkboxes[key],
+                    onChanged: (value) => toggleCheckBoxes(key, value!),
+                    checkColor: Colors.white,
+                  ),
                   Text(key),
                 ].toRow();
               },
@@ -137,21 +140,21 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
           : <Widget>[]),
       [
         ElevatedButton(
-                onPressed: () => save(client),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(buttonRounding))),
-                child: saving
-                    ? const SizedBox(
-                            width: 10,
-                            height: 10,
-                            child:
-                                CircularProgressIndicator(color: Colors.white))
-                        .center()
-                        .padding(all: saveButtonPadding)
-                    : const Text('Opslaan'))
-            .expanded(),
+          onPressed: () => save(client),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: buttonColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(buttonRounding),
+            ),
+          ),
+          child: saving
+              ? const SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ).center().padding(all: saveButtonPadding)
+              : const Text('Opslaan'),
+        ).expanded(),
       ].toRow(),
     ].toColumn().padding(all: pagePadding);
   }

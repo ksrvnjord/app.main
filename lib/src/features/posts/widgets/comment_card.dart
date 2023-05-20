@@ -21,19 +21,22 @@ class CommentCard extends StatelessWidget {
 
     return [
       AuthorWidget(
-          postAuthor: postAuthor,
-          authorName: comment.authorName,
-          fontSize: authorNameFontSize),
+        postAuthor: postAuthor,
+        authorName: comment.authorName,
+        fontSize: authorNameFontSize,
+      ),
       LimitedBox(
         maxWidth: MediaQuery.of(context).size.width,
-        child: ExpandableText(comment.content,
-            expandText: "meer",
-            linkColor: Colors.blueGrey,
-            linkEllipsis: false,
-            urlStyle: const TextStyle(color: Colors.blue),
-            onUrlTap: (url) => launchUrlString(url),
-            style: const TextStyle(fontSize: 16),
-            maxLines: contentMaxLines),
+        child: ExpandableText(
+          comment.content,
+          expandText: "meer",
+          linkColor: Colors.blueGrey,
+          linkEllipsis: false,
+          urlStyle: const TextStyle(color: Colors.blue),
+          onUrlTap: (url) => launchUrlString(url),
+          style: const TextStyle(fontSize: 16),
+          maxLines: contentMaxLines,
+        ),
       ),
     ]
         .toColumn(

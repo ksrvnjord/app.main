@@ -23,16 +23,17 @@ class CommissieEntry extends GroupEntry {
 
   factory CommissieEntry.fromJson(Map<String, dynamic> json) {
     return CommissieEntry(
-        startYear: json['startYear'],
-        endYear: json['endYear'],
-        firstName: json['user_first_name'],
-        lastName: json['user_last_name'],
-        identifier: json['user_identifier'],
-        name: json['name'],
-        function:
-            json['function'] != null && (json['function'] as String).isNotEmpty
-                ? json['function']
-                : null);
+      startYear: json['startYear'],
+      endYear: json['endYear'],
+      firstName: json['user_first_name'],
+      lastName: json['user_last_name'],
+      identifier: json['user_identifier'],
+      name: json['name'],
+      function:
+          json['function'] != null && (json['function'] as String).isNotEmpty
+              ? json['function']
+              : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -58,12 +59,13 @@ class CommissieEntry extends GroupEntry {
     required String name,
   }) {
     return CommissieEntry(
-        startYear: startYear ?? this.startYear,
-        endYear: endYear ?? this.endYear,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        identifier: identifier ?? this.identifier,
-        name: name,
-        function: function ?? this.function);
+      startYear: startYear ?? this.startYear,
+      endYear: endYear ?? this.endYear,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      identifier: identifier ?? this.identifier,
+      name: name,
+      function: function ?? this.function,
+    );
   }
 }

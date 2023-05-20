@@ -17,11 +17,12 @@ class ShowTrainingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Afschrijving'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Afschrijving'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: FutureBuilder<DocumentSnapshot>(
         future: reservations.doc(id).get(),
         builder: (

@@ -50,56 +50,65 @@ class PloegChoicePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Kies een ploeg'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Kies een ploeg'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: ListView(
         padding: const EdgeInsets.only(top: 8, bottom: 80),
         children: [
           [
             SegmentedButton<PloegType>(
-                segments: [
-                  for (final ploegType in PloegType.values)
-                    ButtonSegment(
-                        value: ploegType, label: Text(ploegType.value))
-                ],
-                selected: {
-                  ploegType
-                },
-                onSelectionChanged: (types) =>
-                    ref.read(ploegTypeProvider.notifier).state = types.first,
-                style: ButtonStyle(
-                    backgroundColor: buttonBackground,
-                    foregroundColor: buttonForeground)),
+              segments: [
+                for (final ploegType in PloegType.values)
+                  ButtonSegment(
+                    value: ploegType,
+                    label: Text(ploegType.value),
+                  ),
+              ],
+              selected: {
+                ploegType,
+              },
+              onSelectionChanged: (types) =>
+                  ref.read(ploegTypeProvider.notifier).state = types.first,
+              style: ButtonStyle(
+                backgroundColor: buttonBackground,
+                foregroundColor: buttonForeground,
+              ),
+            ),
             const SizedBox(height: 8),
             if (ploegType == PloegType.competitie)
               [
                 SegmentedButton<Gender>(
-                        segments: [
-                      for (final gender in Gender.values)
-                        ButtonSegment(value: gender, label: Text(gender.value))
-                    ],
-                        selected: {
-                      selectedGender
-                    },
-                        onSelectionChanged: (types) => ref
-                            .read(ploegGeslachtFilterProvider.notifier)
-                            .state = types.first,
-                        style: ButtonStyle(
-                            backgroundColor: buttonBackground,
-                            foregroundColor: buttonForeground))
-                    .expanded(),
+                  segments: [
+                    for (final gender in Gender.values)
+                      ButtonSegment(value: gender, label: Text(gender.value)),
+                  ],
+                  selected: {
+                    selectedGender,
+                  },
+                  onSelectionChanged: (types) => ref
+                      .read(ploegGeslachtFilterProvider.notifier)
+                      .state = types.first,
+                  style: ButtonStyle(
+                    backgroundColor: buttonBackground,
+                    foregroundColor: buttonForeground,
+                  ),
+                ).expanded(),
                 DropdownButton<int>(
-                    items: years
-                        .map((year) => DropdownMenuItem(
-                            value: year, child: Text("$year-${year + 1}")))
-                        .toList(),
-                    value: ploegYear,
-                    onChanged: (value) =>
-                        ref.read(ploegYearProvider.notifier).state = value!,
-                    menuMaxHeight: menuMaxHeight),
+                  items: years
+                      .map((year) => DropdownMenuItem(
+                            value: year,
+                            child: Text("$year-${year + 1}"),
+                          ))
+                      .toList(),
+                  value: ploegYear,
+                  onChanged: (value) =>
+                      ref.read(ploegYearProvider.notifier).state = value!,
+                  menuMaxHeight: menuMaxHeight,
+                ),
               ].toRow(
                 separator: const SizedBox(width: 48),
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,10 +145,12 @@ class PloegChoicePage extends ConsumerWidget {
               (index) => ListTile(
                 title: ShimmerWidget(
                   child: Container(
-                      decoration: ShapeDecoration(
-                          color: Colors.grey[300],
-                          shape: const RoundedRectangleBorder()),
-                      height: titleShimmerHeight),
+                    decoration: ShapeDecoration(
+                      color: Colors.grey[300],
+                      shape: const RoundedRectangleBorder(),
+                    ),
+                    height: titleShimmerHeight,
+                  ),
                 ).padding(right: titleShimmerPadding),
                 trailing: const ShimmerWidget(
                   child: Icon(Icons.arrow_forward_ios, color: Colors.grey),

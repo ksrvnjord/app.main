@@ -22,16 +22,18 @@ class _AlmanakSearchableListWidgetState
 
     return <Widget>[
       TextFormField(
-              controller: _search,
-              decoration: const InputDecoration(
-                  labelText: 'Zoeken',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)))),
-              textCapitalization: TextCapitalization.none,
-              obscureText: false,
-              autocorrect: false,
-              enableSuggestions: false)
-          .padding(all: searchBarPadding),
+        controller: _search,
+        decoration: const InputDecoration(
+          labelText: 'Zoeken',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+        ),
+        textCapitalization: TextCapitalization.none,
+        obscureText: false,
+        autocorrect: false,
+        enableSuggestions: false,
+      ).padding(all: searchBarPadding),
       AnimatedBuilder(
         animation: _search,
         builder: (_, __) => AlmanakScrollingWidget(

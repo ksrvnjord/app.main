@@ -25,12 +25,13 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   final _formKey = GlobalKey<FormState>();
 
   CommissieEntry _formData = CommissieEntry(
-      startYear: DateTime.now().year - 1,
-      endYear: DateTime.now().year,
-      firstName: GetIt.I<CurrentUser>().user!.fullContact.public.first_name!,
-      lastName: GetIt.I<CurrentUser>().user!.fullContact.public.last_name!,
-      identifier: FirebaseAuth.instance.currentUser!.uid,
-      name: "");
+    startYear: DateTime.now().year - 1,
+    endYear: DateTime.now().year,
+    firstName: GetIt.I<CurrentUser>().user!.fullContact.public.first_name!,
+    lastName: GetIt.I<CurrentUser>().user!.fullContact.public.last_name!,
+    identifier: FirebaseAuth.instance.currentUser!.uid,
+    name: "",
+  );
 
   @override
   void initState() {
@@ -55,11 +56,12 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Vul commissie info in'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        title: const Text('Vul commissie info in'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -67,42 +69,47 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
             DataTextListTile(name: "Commissie", value: widget.commissie),
             // create a year picker field that lets user select a year
             DropdownButtonFormField(
-                items: years
-                    .map((tuple) => DropdownMenuItem(
+              items: years
+                  .map((tuple) => DropdownMenuItem(
                         value: tuple,
-                        child: Text("${tuple.item1}-${tuple.item2}")))
-                    .toList(),
-                onChanged: (_) => {},
-                decoration: const InputDecoration(
-                    labelText: "Welk jaar?\*",
-                    hintText: 'Selecteer je commissiejaar'),
-                onSaved: (newValue) => {
-                      if (newValue != null)
-                        {
-                          _formData.startYear = newValue.item1,
-                          _formData.endYear = newValue.item2
-                        }
-                    },
-                validator: (value) =>
-                    value == null ? 'Dit veld is verplicht' : null),
+                        child: Text("${tuple.item1}-${tuple.item2}"),
+                      ))
+                  .toList(),
+              onChanged: (_) => {},
+              decoration: const InputDecoration(
+                labelText: "Welk jaar?*",
+                hintText: 'Selecteer je commissiejaar',
+              ),
+              onSaved: (newValue) => {
+                if (newValue != null)
+                  {
+                    _formData.startYear = newValue.item1,
+                    _formData.endYear = newValue.item2,
+                  },
+              },
+              validator: (value) =>
+                  value == null ? 'Dit veld is verplicht' : null,
+            ),
             TextFormField(
               decoration: const InputDecoration(
-                  labelText: 'Vervulde je een functie binnen de commissie?',
-                  helperText: "Kan je ook leeg laten",
-                  hintText: 'Praeses, Abactis, etc.'),
+                labelText: 'Vervulde je een functie binnen de commissie?',
+                helperText: "Kan je ook leeg laten",
+                hintText: 'Praeses, Abactis, etc.',
+              ),
               onSaved: (newValue) => newValue != null && newValue.isNotEmpty
                   ? _formData.function = newValue
                   : null,
             ),
             ElevatedButton(
-                    onPressed: () => submitForm(context),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlue,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16)))),
-                    child: const Text('Opslaan'))
-                .padding(vertical: saveButtonVerticalPadding),
+              onPressed: () => submitForm(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+              ),
+              child: const Text('Opslaan'),
+            ).padding(vertical: saveButtonVerticalPadding),
           ],
         ),
       ).padding(all: formPadding),
@@ -122,8 +129,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Er is iets fout gegaan met het opslaan'),
-            backgroundColor: Colors.red),
+          content: Text('Er is iets fout gegaan met het opslaan'),
+          backgroundColor: Colors.red,
+        ),
       );
 
       return;
@@ -131,8 +139,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Je commissie is opgeslagen'),
-            backgroundColor: Colors.green),
+          content: Text('Je commissie is opgeslagen'),
+          backgroundColor: Colors.green,
+        ),
       );
       Routemaster.of(context)
           .replace('/almanak/edit/commissies'); // go to overzicht of commissies

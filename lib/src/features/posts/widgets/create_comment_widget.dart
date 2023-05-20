@@ -30,24 +30,27 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
       key: _formKey,
       child: [
         TextFormField(
-            decoration: const InputDecoration(
-                hintText: 'Commenteer op deze post...',
-                hintStyle: TextStyle(color: Colors.black26),
-                contentPadding: EdgeInsets.all(8.0),
-                filled: true,
-                fillColor: Colors.white,
-                border: InputBorder.none),
-            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-            maxLines: null,
-            maxLength: inputMaxLength,
-            onSaved: (newValue) => _commentContent = newValue ?? '',
-            validator: (value) => value == null || value.isEmpty
-                ? 'Je hebt niks ingevoerd'
-                : null).expanded(),
+          decoration: const InputDecoration(
+            hintText: 'Commenteer op deze post...',
+            hintStyle: TextStyle(color: Colors.black26),
+            contentPadding: EdgeInsets.all(8.0),
+            filled: true,
+            fillColor: Colors.white,
+            border: InputBorder.none,
+          ),
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          maxLines: null,
+          maxLength: inputMaxLength,
+          onSaved: (newValue) => _commentContent = newValue ?? '',
+          validator: (value) =>
+              value == null || value.isEmpty ? 'Je hebt niks ingevoerd' : null,
+        ).expanded(),
         InkWell(
-            child: const Icon(Icons.send, color: Colors.lightBlue)
-                .padding(all: sendIconPadding),
-            onTap: submitForm), // expand in the cross axis
+          // ignore: sort_child_properties_last
+          child: const Icon(Icons.send, color: Colors.lightBlue)
+              .padding(all: sendIconPadding),
+          onTap: submitForm,
+        ), // expand in the cross axis
       ].toRow().backgroundColor(Colors.white),
     );
   }

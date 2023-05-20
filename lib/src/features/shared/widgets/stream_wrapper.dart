@@ -26,15 +26,17 @@ class StreamWrapper<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<T>(
-        initialData: initialData,
-        stream: stream,
-        builder: (context, AsyncSnapshot<T> snapshot) {
-          if (snapshot.hasData) {
-            return success(snapshot.data!);
-          } else if (snapshot.hasError) {
-            return error(snapshot.error!);
-          }
-          return loading;
-        });
+      initialData: initialData,
+      stream: stream,
+      builder: (context, AsyncSnapshot<T> snapshot) {
+        if (snapshot.hasData) {
+          return success(snapshot.data as T);
+        } else if (snapshot.hasError) {
+          return error(snapshot.error!);
+        }
+
+        return loading;
+      },
+    );
   }
 }

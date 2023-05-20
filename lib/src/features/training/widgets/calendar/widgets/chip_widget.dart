@@ -21,7 +21,10 @@ class ChipWidget extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-            color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w300),
+          color: Colors.grey,
+          fontSize: 16,
+          fontWeight: FontWeight.w300,
+        ),
       ),
       subtitle: Wrap(
         spacing: permissionChipSpacing,
@@ -30,9 +33,10 @@ class ChipWidget extends StatelessWidget {
                   label: Text(
                     permission,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal),
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                   backgroundColor: () {
                     return colors != null && colors!.containsKey(permission)

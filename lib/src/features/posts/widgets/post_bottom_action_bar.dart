@@ -30,22 +30,28 @@ class PostBottomActionBar extends StatelessWidget {
 
     return [
       InkWell(
-          child: [
-            SvgPicture.asset(Svgs.swanWhite,
-                width: likeIconSize,
-                height: likeIconSize,
-                color: likedByMe ? Colors.lightBlue : null),
-            const Text("Zwaan")
-                .textColor(likedByMe ? Colors.lightBlue : null)
-                .fontSize(fontSize)
-          ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
-          onTap: () => PostService.like(snapshot)),
+        child: [
+          SvgPicture.asset(
+            Svgs.swanWhite,
+            width: likeIconSize,
+            // ignore: no-equal-arguments
+            height: likeIconSize,
+            // ignore: deprecated_member_use
+            color: likedByMe ? Colors.lightBlue : null,
+          ),
+          const Text("Zwaan")
+              .textColor(likedByMe ? Colors.lightBlue : null)
+              .fontSize(fontSize),
+        ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
+        onTap: () => PostService.like(snapshot),
+      ),
       InkWell(
-          child: [
-            const Icon(Icons.mode_comment_outlined, size: iconSize),
-            const Text("Reageer").fontSize(fontSize)
-          ].toRow(separator: const SizedBox(width: 4)),
-          onTap: () => Routemaster.of(context).push('${snapshot.id}/comments')),
+        child: [
+          const Icon(Icons.mode_comment_outlined, size: iconSize),
+          const Text("Reageer").fontSize(fontSize),
+        ].toRow(separator: const SizedBox(width: 4)),
+        onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
+      ),
     ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);
   }
 }
