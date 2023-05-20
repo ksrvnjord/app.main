@@ -43,7 +43,7 @@ class _EditAlmanakProfilePageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wijzig mijn almanak profiel'),
+        title: const Text('Mijn profiel & instellingen'),
         shadowColor: Colors.transparent,
         backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
@@ -222,6 +222,18 @@ class _EditAlmanakProfilePageState
                 ),
               ],
             ),
+            FormSection(title: "Notificaties", children: [
+              ListTile(
+                title: const Text('Stel mijn notificatievoorkeuren in'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.lightBlue,
+                ),
+                onTap: () => Routemaster.of(context).push(
+                  'notification-preferences',
+                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
+            ]),
             FormSection(title: "Privacy", children: [
               ListTile(
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),

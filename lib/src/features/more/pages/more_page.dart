@@ -18,9 +18,8 @@ class MorePage extends ConsumerWidget {
       "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "/contact",
       "Lees het beleid van het bestuur": "beleid",
-      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature.
-        "Stel mijn notificatievoorkeuren in": "notifications",
-      'Geavanceerde instellingen': 'advanced-settings',
+      'Geavanceerde instellingen':
+          'advanced-settings', // TODO: plaats dit onder EditMyProfile, zodat alle instellingen etc bij elkaar staan.
     };
 
     return Scaffold(
