@@ -34,7 +34,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
     const double bestuurFontSize = 16;
     const double actionButtonSize = 96;
 
-    final String yearOfArrival = identifier.substring(
+    final Characters yearOfArrival = identifier.characters.getRange(
       0,
       2,
     ); // aankomstjaar is de eerste 2 cijfers van het lidnummer
@@ -133,7 +133,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       actions: [
                         () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
                         () => launchUrl(Uri.parse(
-                              "https://wa.me/31${u.phonePrimary?.substring(1)}", // 0612345678 -> 31612345678
+                              "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}", // 0612345678 -> 31612345678
                             )),
                       ],
                     ),
