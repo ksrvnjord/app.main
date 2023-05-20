@@ -53,6 +53,7 @@ import 'package:routemaster/routemaster.dart';
 // TODO: Use different file for this class?
 // ignore: prefer-match-file-name
 
+@immutable
 class Routes {
   static final authenticated = RouteMap(
     routes: {

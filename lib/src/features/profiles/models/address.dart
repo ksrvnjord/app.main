@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Address {
   final String? street;
   final String? houseNumber;
@@ -5,7 +8,7 @@ class Address {
   final String? postalCode;
   final String? city;
 
-  Address({
+  const Address({
     this.street,
     this.houseNumber,
     this.houseNumberAddition,

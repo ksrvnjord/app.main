@@ -7,6 +7,7 @@ Widget onEmpty<T>(T arg) {
   return Text(arg.toString());
 }
 
+@immutable
 class StreamWrapper<T> extends StatelessWidget {
   final Stream<T> stream;
   final Widget loading;

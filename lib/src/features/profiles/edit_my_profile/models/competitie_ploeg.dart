@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 
+@immutable
 class CompetitiePloeg {
   final String name;
   final Gender gender;

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.graphql.dart';
@@ -6,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 // Get first page of announcements.
 // For now we have one provider for announcements, when we have multiple consider putting them in a class.
 // ignore: prefer-static-class
+@immutable
 abstract class Announcements {
   static final firstPageProvider =
       FutureProvider<List<Query$Announcements$announcements$data>?>(

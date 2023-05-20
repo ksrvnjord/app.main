@@ -17,6 +17,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 // ignore: prefer-static-class
 final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
+// @immutable TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
   bool isBusy = false;

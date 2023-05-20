@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
+@immutable
 class FirestoreAlmanakProfile {
   final String firstName;
   final String lastName;
@@ -14,11 +16,11 @@ class FirestoreAlmanakProfile {
   final String? huis;
   final bool? dubbellid;
   final List<String>? substructures;
-  String? email;
-  Address? address;
-  String? phonePrimary;
+  final String? email;
+  final Address? address;
+  final String? phonePrimary;
 
-  FirestoreAlmanakProfile({
+  const FirestoreAlmanakProfile({
     required this.firstName,
     required this.lastName,
     required this.identifier,
@@ -122,17 +124,19 @@ class FirestoreAlmanakProfile {
     };
   }
 
-  void mergeWithHeimdallProfile(
+  FirestoreAlmanakProfile mergeWithHeimdallProfile(
     Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
   ) {
-    email = u.email;
-    phonePrimary = u.phone_primary;
-    address = Address(
-      street: u.street,
-      houseNumber: u.housenumber,
-      houseNumberAddition: u.housenumber_addition,
-      postalCode: u.zipcode,
-      city: u.city,
+    return copyWith(
+      email: u.email,
+      phonePrimary: u.phone_primary,
+      address: Address(
+        street: u.street,
+        houseNumber: u.housenumber,
+        houseNumberAddition: u.housenumber_addition,
+        postalCode: u.zipcode,
+        city: u.city,
+      ),
     );
   }
 }

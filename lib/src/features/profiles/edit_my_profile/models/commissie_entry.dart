@@ -1,5 +1,6 @@
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
+// @immutable // TODO: make immutable.
 class CommissieEntry extends GroupEntry {
   int startYear;
   int endYear;

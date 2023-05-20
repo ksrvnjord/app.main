@@ -9,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:path_provider/path_provider.dart';
 
+@immutable
 class HiveCache {
   static const String cachePath =
       'hive_cache'; // Relative to ApplicationDocumentsDirectory.

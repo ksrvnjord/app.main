@@ -9,6 +9,7 @@ Widget onEmpty<T>(T arg) {
   return Text(arg.toString());
 }
 
+@immutable
 class FutureWrapper<T> extends StatelessWidget {
   static Widget empty() => const SizedBox.shrink();
   final Future<T> future;

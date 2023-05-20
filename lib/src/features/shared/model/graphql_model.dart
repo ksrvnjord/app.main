@@ -13,6 +13,7 @@ final graphQLModelProvider = ChangeNotifierProvider((ref) {
   return GraphQLModel(auth);
 });
 
+// @immutable // TODO: Make immutable.
 class GraphQLModel extends ChangeNotifier {
   static final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
 

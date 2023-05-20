@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: prefer-static-class
 final damageFormProvider = ChangeNotifierProvider((ref) => DamageForm());
 
+// @immutable // TODO: make this class immutable.
 class DamageForm extends ChangeNotifier {
   String? _type;
   String? _name;

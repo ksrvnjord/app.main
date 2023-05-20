@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 
+@immutable
 class CachedProfilePicture {
   static const String placeholderImagePath = Images.placeholderProfilePicture;
   static const Duration maxAge = Duration(days: 7); // 1 week.

@@ -1,3 +1,4 @@
+// @immutable // TODO: make this immutable.
 abstract class GroupEntry {
   final int year;
   final String name;
@@ -5,7 +6,7 @@ abstract class GroupEntry {
   final String lastName;
   final String identifier; // Lidnummer.
 
-  GroupEntry({
+  const GroupEntry({
     required this.year,
     required this.name,
     required this.firstName,

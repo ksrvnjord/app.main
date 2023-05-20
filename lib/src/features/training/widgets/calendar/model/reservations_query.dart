@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
+@immutable
 class ReservationsQuery {
   final DateTime date;
   final DocumentReference<ReservationObject> docRef;
@@ -8,7 +10,7 @@ class ReservationsQuery {
   @override
   int get hashCode => date.hashCode ^ docRef.hashCode;
 
-  ReservationsQuery(this.date, this.docRef);
+  const ReservationsQuery(this.date, this.docRef);
 
   @override
   bool operator ==(Object other) =>

@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 
+@immutable
 class CachedImage {
   /// Fetches an image from the cache or Firebase Storage
   ///

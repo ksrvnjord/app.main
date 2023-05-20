@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 
+@immutable
 class CommentsService {
   static deleteComment(String path) {
     FirebaseFirestore.instance.doc(path).delete();

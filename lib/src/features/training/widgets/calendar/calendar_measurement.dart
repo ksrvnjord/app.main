@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+
+@immutable
 class CalendarMeasurement {
   static const double slotHeight = 40;
   static const double slotWidth = 128;
