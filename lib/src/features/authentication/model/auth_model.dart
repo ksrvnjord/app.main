@@ -127,7 +127,7 @@ class AuthModel extends ChangeNotifier {
       DateTime expiration =
           DateTime.fromMillisecondsSinceEpoch(credentials['expiration']);
       if (expiration.isAfter(DateTime.now())) {
-        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds!));
+        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
       }
     }
 

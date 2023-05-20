@@ -52,8 +52,8 @@ class DamageCreateWidget extends ConsumerWidget {
         (formData.type != null && formData.name != null)
             ? FutureWrapper(
                 future: objectByTypeAndName(
-                  formData.type!,
-                  formData.name!,
+                  formData.type ?? "",
+                  formData.name ?? "",
                 ),
                 success: (data) =>
                     data.isNotEmpty ? const DamageFormWidget() : Container(),

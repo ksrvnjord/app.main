@@ -22,50 +22,53 @@ class AnnouncementsWidget extends ConsumerWidget {
     return [
       const WidgetHeader(title: "Recente aankondigingen"),
       announcementsVal.when(
-        data: (announcements) => announcements
-            .map(
-              (announcement) => ListTile(
-                title: Text(announcement.title),
-                subtitle: Text.rich(TextSpan(children: [
-                  TextSpan(text: "${announcement.author} ")
-                      .textColor(Colors.black54)
-                      .fontSize(announcementSubtitleFontSize)
-                      .fontWeight(FontWeight.bold),
-                  TextSpan(
-                    text: timeago.format(announcement.created_at, locale: 'nl'),
-                  )
-                      .textColor(Colors.grey)
-                      .fontSize(announcementSubtitleFontSize),
-                ])),
-                trailing: [
-                  const Icon(Icons.chevron_right, color: Colors.blueGrey),
-                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                // ignore: prefer-extracting-callbacks
-                onTap: () {
-                  FirebaseAnalytics.instance.logEvent(
-                    name: 'announcement_opened',
-                    parameters: {
-                      'announcement_id': announcement.id,
-                      'announcement_title': announcement.title,
+        data: (announcements) => announcements == null
+            ? const Text("Geen aankondigingen gevonden")
+            : announcements
+                .map(
+                  (announcement) => ListTile(
+                    title: Text(announcement.title),
+                    subtitle: Text.rich(TextSpan(children: [
+                      TextSpan(text: "${announcement.author} ")
+                          .textColor(Colors.black54)
+                          .fontSize(announcementSubtitleFontSize)
+                          .fontWeight(FontWeight.bold),
+                      TextSpan(
+                        text: timeago.format(announcement.created_at,
+                            locale: 'nl'),
+                      )
+                          .textColor(Colors.grey)
+                          .fontSize(announcementSubtitleFontSize),
+                    ])),
+                    trailing: [
+                      const Icon(Icons.chevron_right, color: Colors.blueGrey),
+                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                    // ignore: prefer-extracting-callbacks
+                    onTap: () {
+                      FirebaseAnalytics.instance.logEvent(
+                        name: 'announcement_opened',
+                        parameters: {
+                          'announcement_id': announcement.id,
+                          'announcement_title': announcement.title,
+                        },
+                      );
+                      // ignore: avoid-ignoring-return-values
+                      Routemaster.of(context)
+                          .push('announcements/${announcement.id}');
                     },
-                  );
-                  // ignore: avoid-ignoring-return-values
-                  Routemaster.of(context)
-                      .push('announcements/${announcement.id}');
-                },
-                minLeadingWidth: minLeadingWidth,
-              ),
-            )
-            .toList()
-            .toColumn(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              separator: const Divider(
-                height: 1,
-              ),
-            ),
+                    minLeadingWidth: minLeadingWidth,
+                  ),
+                )
+                .toList()
+                .toColumn(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  separator: const Divider(
+                    height: 1,
+                  ),
+                ),
         error: (error, stackTrace) =>
             ErrorCardWidget(errorMessage: error.toString()),
         loading: () => ShimmerWidget(

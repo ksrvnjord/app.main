@@ -10,7 +10,7 @@ Future<DocumentSnapshot<Damage>> getDamage(
       .doc(reservationObjectId)
       .collection("damages")
       .withConverter<Damage>(
-        fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data() ?? {}),
         toFirestore: (reservation, _) => reservation.toJson(),
       )
       .doc(damageId)

@@ -5,7 +5,8 @@ Future<List<DocumentSnapshot<Damage>>> allDamages() async {
   return (await FirebaseFirestore.instance
           .collectionGroup("damages")
           .withConverter<Damage>(
-            fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data()!),
+            fromFirestore: (snapshot, _) =>
+                Damage.fromJson(snapshot.data() ?? {}),
             toFirestore: (reservation, _) => reservation.toJson(),
           )
           .get())

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,7 +20,8 @@ Future<void> newDamage(DamageForm damageForm) async {
   }
 
   // Get the objects with the given type and name.
-  final objects = await objectByTypeAndName(damageForm.type!, damageForm.name!);
+  final objects =
+      await objectByTypeAndName(damageForm.type ?? "", damageForm.name ?? "");
 
   // Check if we received any objects.
   if (objects.isEmpty) {
@@ -42,12 +45,13 @@ Future<void> newDamage(DamageForm damageForm) async {
       }).toJson());
 
   // Check if there's an image, if so, upload it.
-  if (damageForm.image != null) {
+  File? image = damageForm.image;
+  if (image != null) {
     final String path =
         '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
     // ignore: avoid-ignoring-return-values
     FirebaseStorage.instance.ref(path).putFile(
-          damageForm.image!,
+          image,
         );
 
     // Then, store it in the addedDamage.

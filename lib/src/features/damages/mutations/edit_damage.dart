@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
@@ -33,12 +35,13 @@ Future<void> editDamage(
   });
 
   // Check if there's an image, if so, upload it.
-  if (damageForm.image != null) {
+  File? image = damageForm.image;
+  if (image != null) {
     final String path =
         '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
     // ignore: avoid-ignoring-return-values
     FirebaseStorage.instance.ref(path).putFile(
-          damageForm.image!,
+          image,
         );
 
     // Then, store it in the addedDamage.

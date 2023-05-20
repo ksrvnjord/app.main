@@ -37,11 +37,11 @@ class DamagesListPage extends StatelessWidget {
               ? DamageTileWidget(
                   showDamage: () => navigator.push('show', queryParameters: {
                     'id': data[index].id,
-                    'reservationObjectId': data[index].data()!.parent.id,
+                    'reservationObjectId': data[index].data()?.parent.id ?? "",
                   }),
                   editDamage: () => navigator.push('edit', queryParameters: {
                     'id': data[index].id,
-                    'reservationObjectId': data[index].data()!.parent.id,
+                    'reservationObjectId': data[index].data()?.parent.id ?? "",
                   }),
                   damageSnapshot: data[index],
                 )

@@ -6,7 +6,7 @@ final CollectionReference<ReservationObject> reservationObjectsRef =
         .collection('reservationObjects')
         .withConverter<ReservationObject>(
           fromFirestore: (snapshot, _) =>
-              ReservationObject.fromJson(snapshot.data()!),
+              ReservationObject.fromJson(snapshot.data() ?? {}),
           toFirestore: (reservation, _) => reservation.toJson(),
         );
 

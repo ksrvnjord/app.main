@@ -23,7 +23,7 @@ class DamagesCreatePage extends ConsumerWidget {
     }
 
     final reservationObject =
-        ref.watch(reservationObjectProvider(reservationObjectId!));
+        ref.watch(reservationObjectProvider(reservationObjectId ?? ""));
 
     return Scaffold(
       body: reservationObject.when(
@@ -39,8 +39,8 @@ class DamagesCreatePage extends ConsumerWidget {
             () {
               final form = ref.read(damageFormProvider.notifier);
               ReservationObject? object = data.data();
-              form.type = object!.type;
-              form.name = object.name;
+              form.type = object?.type;
+              form.name = object?.name;
             },
           );
 
