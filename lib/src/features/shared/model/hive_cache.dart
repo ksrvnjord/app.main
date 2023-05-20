@@ -86,12 +86,7 @@ class HiveCache {
 
     await hiveImageCache.put(
       hashKeytoString(key),
-      ImageCacheItem(
-        expire: DateTime.now().add(
-          maxAge,
-        ),
-        data: value,
-      ),
+      ImageCacheItem(data: value, expire: DateTime.now().add(maxAge)),
     );
   }
 

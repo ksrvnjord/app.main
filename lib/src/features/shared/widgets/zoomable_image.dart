@@ -14,13 +14,8 @@ class ZoomableImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => showImageViewer(
-        context,
-        imageProvider,
-        swipeDismissible: true,
-        doubleTapZoomable: true,
-      ),
-      child: image,
-    );
+        child: image,
+        onTap: () => showImageViewer(context, imageProvider,
+            swipeDismissible: true, doubleTapZoomable: true));
   }
 }

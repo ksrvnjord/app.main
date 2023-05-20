@@ -24,13 +24,12 @@ class MePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jouw Njord-Account'),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        automaticallyImplyLeading: true,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          automaticallyImplyLeading: true,
+          title: const Text('Jouw Njord-Account'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: FutureWrapper(
         future: result,
         success: (me) => me != null ? MeWidget(me) : Container(),
@@ -180,15 +179,15 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         const SizedBox(height: 10),
         const SizedBox(height: 20),
         TextFormField(
-          decoration: const InputDecoration(labelText: 'Lidnummer'),
-          enabled: false,
-          initialValue: widget.user.identifier,
-        ).padding(all: fieldPadding),
+                initialValue: widget.user.identifier,
+                decoration: const InputDecoration(labelText: 'Lidnummer'),
+                enabled: false)
+            .padding(all: fieldPadding),
         TextFormField(
-          decoration: const InputDecoration(labelText: 'Njord-account'),
-          enabled: false,
-          initialValue: widget.user.username,
-        ).padding(all: fieldPadding),
+                initialValue: widget.user.username,
+                decoration: const InputDecoration(labelText: 'Njord-account'),
+                enabled: false)
+            .padding(all: fieldPadding),
         ...fields.asMap().entries.map<Widget>((i) {
           int idx = i.key;
           final Map<String, Map<String, dynamic>> row = i.value;
@@ -201,17 +200,16 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
                   width: label['width'] * rowWidth,
                   child: Builder(builder: (_) {
                     return TextFormField(
-                      style: labelTextStyle(label),
-                      decoration: InputDecoration(
-                        labelText: label['display'] ?? '',
-                        labelStyle: labelTextStyle(label),
-                      ),
-                      controller: label['controller'],
-                      onChanged: (value) => setState(() {
-                        fields[idx][key]?['changed'] =
-                            (label['initial'] != label['controller'].text);
-                      }),
-                    ).padding(all: fieldPadding);
+                        controller: label['controller'],
+                        decoration: InputDecoration(
+                            labelText: label['display'] ?? '',
+                            labelStyle: labelTextStyle(label)),
+                        style: labelTextStyle(label),
+                        onChanged: (value) => setState(() {
+                              fields[idx][key]?['changed'] =
+                                  (label['initial'] !=
+                                      label['controller'].text);
+                            })).padding(all: fieldPadding);
                   }),
                 );
               })
@@ -219,21 +217,21 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               .toRow();
         }).toList(),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: buttonColor,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-          ),
-          onPressed: () => save(context, client),
-          child: saving
-              ? const SizedBox(
-                  height: 10,
-                  width: 10,
-                  child: CircularProgressIndicator(color: Colors.white),
-                ).center().padding(all: onSaveButtonPadding)
-              : const Text('Opslaan'),
-        ).padding(all: saveButtonPadding),
+                onPressed: () => save(context, client),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)))),
+                child: saving
+                    ? const SizedBox(
+                            width: 10,
+                            height: 10,
+                            child:
+                                CircularProgressIndicator(color: Colors.white))
+                        .center()
+                        .padding(all: onSaveButtonPadding)
+                    : const Text('Opslaan'))
+            .padding(all: saveButtonPadding),
         const Text(
           '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
           style: TextStyle(color: Colors.blueGrey, fontSize: 11),
@@ -242,19 +240,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           height: 32,
         ),
         GestureDetector(
-          onTap: () => ref.read(authModelProvider).logout(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.logout,
-                color: Colors.red,
-              ),
-              Text('Uitloggen', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-        ),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Icon(Icons.logout, color: Colors.red),
+                  Text('Uitloggen', style: TextStyle(color: Colors.red))
+                ]),
+            onTap: () => ref.read(authModelProvider).logout()),
       ],
     );
   }
@@ -267,17 +260,16 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     updateMe(
       client,
       Input$IContact(
-        first_name: fields.first['first_name']?['controller'].text,
-        last_name: fields.first['last_name']?['controller'].text,
-        email: fields[1]['email']?['controller'].text,
-        phone_primary: fields[2]['phone_primary']?['controller'].text,
-        street: fields[3]['street']?['controller'].text,
-        housenumber: fields[3]['housenumber']?['controller'].text,
-        housenumber_addition:
-            fields[3]['housenumber_addition']?['controller'].text,
-        zipcode: fields[3]['zipcode']?['controller'].text,
-        city: fields[3]['city']?['controller'].text,
-      ),
+          first_name: fields.first['first_name']?['controller'].text,
+          last_name: fields.first['last_name']?['controller'].text,
+          zipcode: fields[3]['zipcode']?['controller'].text,
+          street: fields[3]['street']?['controller'].text,
+          housenumber: fields[3]['housenumber']?['controller'].text,
+          housenumber_addition:
+              fields[3]['housenumber_addition']?['controller'].text,
+          city: fields[3]['city']?['controller'].text,
+          email: fields[1]['email']?['controller'].text,
+          phone_primary: fields[2]['phone_primary']?['controller'].text),
     ).then((data) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Updateverzoek verstuurd')),
@@ -288,9 +280,8 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
       });
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Updateverzoek mislukt, melding gemaakt.'),
-      ));
+          content: Text('Updateverzoek mislukt, melding gemaakt.'),
+          backgroundColor: Colors.red));
       setState(() {
         saving = false;
         buttonColor = Colors.red;

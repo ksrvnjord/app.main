@@ -17,14 +17,11 @@ class EditGroupsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        title: const Text(
-          'Mijn ploegen',
-        ), // TODO: in the future make this My groups as this page will serve as a hub for all groups
-      ),
+          title: const Text('Mijn ploegen'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: myPloegen.when(
         data: (data) => data.size == 0
             ? const Text('Voeg een ploeg toe om te beginnen').center()
@@ -37,11 +34,10 @@ class EditGroupsPage extends ConsumerWidget {
         loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Routemaster.of(context).push('ploeg'),
-        label: const Text('Voeg een ploeg toe'),
-        icon: const Icon(Icons.add),
-        backgroundColor: Colors.blue,
-      ),
+          backgroundColor: Colors.blue,
+          onPressed: () => Routemaster.of(context).push('ploeg'),
+          icon: const Icon(Icons.add),
+          label: const Text('Voeg een ploeg toe')),
     );
   }
 
@@ -67,9 +63,8 @@ class EditGroupsPage extends ConsumerWidget {
       ),
       subtitle: Text(entry.role.value),
       trailing: IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () => doc.reference.delete(),
-      ),
+          onPressed: () => doc.reference.delete(),
+          icon: const Icon(Icons.delete)),
     );
   }
 }

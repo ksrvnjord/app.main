@@ -20,12 +20,11 @@ class AlmanakHuisPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(houseName),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: Text(houseName),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [

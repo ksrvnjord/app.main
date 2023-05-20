@@ -26,38 +26,25 @@ class CalendarTime extends StatelessWidget {
       width: timeWidth,
       child: timestamps
           .map<Widget>((timestamp) => SizedBox(
-                height: CalendarMeasurement.slotHeight,
-                width: timeWidth,
-                child: Stack(children: [
-                  Container(
+              width: timeWidth,
+              height: CalendarMeasurement.slotHeight,
+              child: Stack(children: [
+                Container(
                     padding: EdgeInsets.only(
-                      left: timestamp.minute == 0 ? bigTicks : smallTicks,
-                    ),
+                        left: timestamp.minute == 0 ? bigTicks : smallTicks),
                     height: CalendarMeasurement.slotHeight,
-                    child: const Divider(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  if (timestamp.minute ==
-                      0) // only show the time if it's a full hour
-                    [
-                      Text(
-                        DateFormat('H:mm').format(timestamp),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ).center(),
-                    ]
-                        .toRow(
+                    child: const Divider(color: Colors.grey)),
+                if (timestamp.minute == 0)
+                  [
+                    Text(DateFormat('H:mm').format(timestamp),
+                            style: const TextStyle(fontWeight: FontWeight.bold))
+                        .center()
+                  ]
+                      .toRow(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                        )
-                        .padding(
-                          left: leftPaddingOfTime,
-                          right: timeRightPadding,
-                        ),
-                ]),
-              ))
+                          mainAxisAlignment: MainAxisAlignment.end)
+                      .padding(left: leftPaddingOfTime, right: timeRightPadding)
+              ])))
           .toList()
           .toColumn(
             mainAxisAlignment: MainAxisAlignment.center,

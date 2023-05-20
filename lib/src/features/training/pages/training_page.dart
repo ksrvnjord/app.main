@@ -16,34 +16,30 @@ class TrainingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mijn afschrijvingen'),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          automaticallyImplyLeading: false,
+          title: const Text('Mijn afschrijvingen'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: const TrainingList(),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: Wrap(
-          spacing: spacingFloatingButtons,
-          runSpacing: runSpacingFloatingButtons,
-          alignment: WrapAlignment.end,
-          children: [
-            FloatingActionButton.extended(
-              onPressed: () => navigator.push('damages'),
-              backgroundColor: Colors.blue,
-              icon: const Icon(Icons.report),
-              label: const Text('Schademeldingen'),
-            ),
-            FloatingActionButton.extended(
-              onPressed: () => navigator.push('all'),
-              backgroundColor: Colors.lightBlue,
-              icon: const Icon(Icons.add),
-              label: const Text('Afschrijven'),
-            ),
-          ],
-        ),
+            alignment: WrapAlignment.end,
+            spacing: spacingFloatingButtons,
+            runSpacing: runSpacingFloatingButtons,
+            children: [
+              FloatingActionButton.extended(
+                  backgroundColor: Colors.blue,
+                  onPressed: () => navigator.push('damages'),
+                  icon: const Icon(Icons.report),
+                  label: const Text('Schademeldingen')),
+              FloatingActionButton.extended(
+                  backgroundColor: Colors.lightBlue,
+                  onPressed: () => navigator.push('all'),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Afschrijven'))
+            ]),
       ),
     );
   }

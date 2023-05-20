@@ -56,24 +56,19 @@ class CalendarReservation extends StatelessWidget {
 
     return [
       GestureDetector(
-        onTap: () => Routemaster.of(context).push(reservationDocumentId),
-        child: Container(
-          width: CalendarMeasurement.slotWidth,
-          height: reservationHeight,
-          decoration: const BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Text(
-            data['creatorName'] ?? 'Afschrijving',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ).padding(all: reservationPadding),
-        ),
-      ),
+          child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.blueGrey,
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              width: CalendarMeasurement.slotWidth,
+              height: reservationHeight,
+              child: Text(data['creatorName'] ?? 'Afschrijving',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold))
+                  .padding(all: reservationPadding)),
+          onTap: () => Routemaster.of(context).push(reservationDocumentId)),
     ].toColumn().padding(top: reservationOffset);
   }
 }

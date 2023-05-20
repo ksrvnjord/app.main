@@ -22,55 +22,33 @@ class ErrorCardWidget extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
-        height: errorCardHeight,
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: BoxDecoration(
-          border: Border.all(width: cardBorderWidth, color: errorColor),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Row(children: [
-          Expanded(
-            flex: 0,
-            child: Image.asset(Images.deadSwan),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Er is iets misgegaan",
-                    style: TextStyle(
-                      color: errorColor,
-                      fontSize: errorTitleFontSize,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Melding: $errorMessage",
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  // const Expanded(
-                  //   flex: 1,
-                  //   child: Text(
-                  //     "Tik hier om een foutrapport te verzenden",
-                  //     style: TextStyle(fontSize: 10),
-                  //   )
-                  // )
-                ],
-              ),
-            ),
-          ),
-        ]),
-      ),
+          decoration: BoxDecoration(
+              border: Border.all(color: errorColor, width: cardBorderWidth),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          height: errorCardHeight,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: Row(children: [
+            Expanded(flex: 0, child: Image.asset(Images.deadSwan)),
+            Expanded(
+                flex: 1,
+                child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("Er is iets misgegaan",
+                              style: TextStyle(
+                                  color: errorColor,
+                                  fontSize: errorTitleFontSize)),
+                          Expanded(
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text("Melding: $errorMessage",
+                                      style: const TextStyle(fontSize: 14))))
+                        ])))
+          ]),
+          clipBehavior: Clip.antiAlias),
     );
   }
 }

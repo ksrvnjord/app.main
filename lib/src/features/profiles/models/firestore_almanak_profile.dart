@@ -59,19 +59,17 @@ class FirestoreAlmanakProfile {
         user.fullContact.public;
 
     return FirestoreAlmanakProfile(
-      identifier: user.identifier,
-      firstName: publicContact.first_name!,
-      lastName: publicContact.last_name!,
-      email: publicContact.email,
-      phonePrimary: publicContact.phone_primary,
-      address: Address(
-        street: publicContact.street,
-        houseNumber: publicContact.housenumber,
-        houseNumberAddition: publicContact.housenumber_addition,
-        postalCode: publicContact.zipcode,
-        city: publicContact.city,
-      ),
-    );
+        firstName: publicContact.first_name!,
+        lastName: publicContact.last_name!,
+        identifier: user.identifier,
+        email: publicContact.email,
+        address: Address(
+            street: publicContact.street,
+            houseNumber: publicContact.housenumber,
+            houseNumberAddition: publicContact.housenumber_addition,
+            postalCode: publicContact.zipcode,
+            city: publicContact.city),
+        phonePrimary: publicContact.phone_primary);
   }
 
   FirestoreAlmanakProfile copyWith({
@@ -127,11 +125,10 @@ class FirestoreAlmanakProfile {
     email = u.email;
     phonePrimary = u.phone_primary;
     address = Address(
-      city: u.city,
-      postalCode: u.zipcode,
-      street: u.street,
-      houseNumber: u.housenumber,
-      houseNumberAddition: u.housenumber_addition,
-    );
+        street: u.street,
+        houseNumber: u.housenumber,
+        houseNumberAddition: u.housenumber_addition,
+        postalCode: u.zipcode,
+        city: u.city);
   }
 }

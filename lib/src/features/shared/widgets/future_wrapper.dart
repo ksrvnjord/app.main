@@ -31,24 +31,19 @@ class FutureWrapper<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
-      future: future,
-      builder: (context, AsyncSnapshot<T> snapshot) {
-        if (snapshot.hasData) {
-          // data can't be null, but the type system doesn't know that
-          // ignore: null_check_on_nullable_type_parameter
-          return success(snapshot.data!);
-        } else if (snapshot.hasError) {
-          log(snapshot.error.toString()); // show error in console aswell
-
-          return error(snapshot.error!);
-        } else if (snapshot.data == null &&
-            snapshot.connectionState == ConnectionState.done) {
-          return onNoData();
-        }
-
-        return loading;
-      },
-      initialData: initialData,
-    );
+        future: future,
+        initialData: initialData,
+        builder: (context, AsyncSnapshot<T> snapshot) {
+          if (snapshot.hasData) {
+            return success(snapshot.data!);
+          } else if (snapshot.hasError) {
+            log(snapshot.error.toString());
+            return error(snapshot.error!);
+          } else if (snapshot.data == null &&
+              snapshot.connectionState == ConnectionState.done) {
+            return onNoData();
+          }
+          return loading;
+        });
   }
 }

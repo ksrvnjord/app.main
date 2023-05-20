@@ -16,9 +16,8 @@ Future<Mutation$Me$updateContactDetails?> updateMe(
   Input$IContact contact,
 ) async {
   final result = await client.mutate$Me(Options$Mutation$Me(
-    fetchPolicy: FetchPolicy.noCache,
-    variables: Variables$Mutation$Me(contact: contact),
-  ));
+      variables: Variables$Mutation$Me(contact: contact),
+      fetchPolicy: FetchPolicy.noCache));
   final parsedData = result.parsedData;
 
   return parsedData?.updateContactDetails;
@@ -31,12 +30,9 @@ Future<Mutation$UpdateVisibility$updatePublicContact?> updatePublicContact(
 ) async {
   final result = await client.mutate$UpdateVisibility(
     Options$Mutation$UpdateVisibility(
-      fetchPolicy: FetchPolicy.noCache,
-      variables: Variables$Mutation$UpdateVisibility(
-        listed: listed,
-        contact: contact,
-      ),
-    ),
+        variables: Variables$Mutation$UpdateVisibility(
+            listed: listed, contact: contact),
+        fetchPolicy: FetchPolicy.noCache),
   );
   final parsedData = result.parsedData;
 

@@ -36,18 +36,16 @@ class ShowReservationObjectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.report),
-            onPressed: () => Routemaster.of(context).push('damage/create'),
-          ),
-        ],
-      ),
+          title: Text(name),
+          actions: [
+            IconButton(
+                onPressed: () => Routemaster.of(context).push('damage/create'),
+                icon: const Icon(Icons.report))
+          ],
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: FutureWrapper(
         future: getReservationObject(documentId),
         success: (snapshot) => showObjectDetails(snapshot, context),
@@ -76,23 +74,17 @@ class ShowReservationObjectPage extends StatelessWidget {
         child: ListView(children: [
           if (obj.comment != null && obj.comment!.isNotEmpty)
             Card(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              elevation: 0,
-              color: Colors.amber.shade100,
-              child: ListTile(
-                leading: const Icon(Icons.comment),
-                title: Text(
-                  obj.comment!,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
+                color: Colors.amber.shade100,
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40))),
+                child: ListTile(
+                    leading: const Icon(Icons.comment),
+                    title: Text(obj.comment!,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal)))),
           DataTextListTile(name: "Type", value: obj.type),
           if (obj.kind != null)
             DataTextListTile(name: "Categorie", value: obj.kind!),
@@ -117,10 +109,9 @@ class ShowReservationObjectPage extends StatelessWidget {
             const Text(
               'Schades',
               style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w300,
-                fontSize: 16,
-              ),
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300),
             ).padding(
               horizontal: horizontalPadding,
               top: verticalPadding,
@@ -132,16 +123,11 @@ class ShowReservationObjectPage extends StatelessWidget {
                 .map<Widget>((e) {
                   return e.data() != null
                       ? DamageTileWidget(
-                          damageSnapshot: e,
-                          showDamage: () =>
-                              navigator.push('damage/show', queryParameters: {
-                            'id': e.id,
-                          }),
-                          editDamage: () =>
-                              navigator.push('damage/edit', queryParameters: {
-                            'id': e.id,
-                          }),
-                        )
+                          showDamage: () => navigator.push('damage/show',
+                              queryParameters: {'id': e.id}),
+                          editDamage: () => navigator.push('damage/edit',
+                              queryParameters: {'id': e.id}),
+                          damageSnapshot: e)
                       : Container();
                 })
                 .toList()

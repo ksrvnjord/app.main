@@ -95,25 +95,20 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nieuwe Afschrijving'),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: const Text('Nieuwe Afschrijving'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: FutureWrapper(
-        future:
-            reservationsRef // query all afschrijvingen van die dag van die boot
-                .where('object', isEqualTo: widget.reservationObject)
-                .where('startTime', isGreaterThanOrEqualTo: widget.date)
-                .where(
-                  'startTime',
-                  isLessThanOrEqualTo: widget.date.add(const Duration(days: 1)),
-                )
-                .get(),
-        error: (error) => ErrorCardWidget(errorMessage: error.toString()),
-        success: (snapshot) => renderPage(snapshot),
-      ),
+          future: reservationsRef
+              .where('object', isEqualTo: widget.reservationObject)
+              .where('startTime', isGreaterThanOrEqualTo: widget.date)
+              .where('startTime',
+                  isLessThanOrEqualTo: widget.date.add(const Duration(days: 1)))
+              .get(),
+          success: (snapshot) => renderPage(snapshot),
+          error: (error) => ErrorCardWidget(errorMessage: error.toString())),
     );
   }
 
@@ -215,52 +210,48 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             ),
           ),
           IconButton(
-            onPressed: () => {
-              // TODO: make a nicer time selector
-              showTimeRangePicker(
-                strokeColor: Colors.lightBlue,
-                // ignore: no-equal-arguments
-                handlerColor: Colors.lightBlue,
-                context: context,
-                fromText: 'Starttijd',
-                toText: 'Eindtijd',
-                interval: intervalOfSelector,
-                start: _startTimeOfDay,
-                end: _endTimeOfDay,
-                disabledTime: TimeRange(
-                  startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                  endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
-                ),
-                disabledColor: Colors.grey,
-                use24HourFormat: true,
-                handlerRadius: timeSelectorDialogHandlerRadius,
-                minDuration: minimumReservationDuration,
-              ).then((value) {
-                if (value != null && mounted) {
-                  setState(() {
-                    _endTimeOfDay = value.endTime;
-                    _startTimeOfDay = value.startTime;
-                    _endTime = DateTime(
-                      widget.date.year,
-                      widget.date.month,
-                      widget.date.day,
-                      _endTimeOfDay.hour,
-                      _endTimeOfDay.minute,
-                    );
-                    _startTime = DateTime(
-                      widget.date.year,
-                      widget.date.month,
-                      widget.date.day,
-                      _startTimeOfDay.hour,
-                      _startTimeOfDay.minute,
-                    );
-                  });
-                }
-              }),
-            },
-            icon: const Icon(Icons.tune, size: 40),
-            color: Colors.blue,
-          ),
+              color: Colors.blue,
+              onPressed: () => {
+                    showTimeRangePicker(
+                            context: context,
+                            start: _startTimeOfDay,
+                            end: _endTimeOfDay,
+                            disabledTime: TimeRange(
+                                startTime:
+                                    TimeOfDay.fromDateTime(latestPossibleTime),
+                                endTime: TimeOfDay.fromDateTime(
+                                    earliestPossibleTime)),
+                            disabledColor: Colors.grey,
+                            interval: intervalOfSelector,
+                            fromText: 'Starttijd',
+                            toText: 'Eindtijd',
+                            use24HourFormat: true,
+                            strokeColor: Colors.lightBlue,
+                            handlerRadius: timeSelectorDialogHandlerRadius,
+                            handlerColor: Colors.lightBlue,
+                            minDuration: minimumReservationDuration)
+                        .then((value) {
+                      if (value != null && mounted) {
+                        setState(() {
+                          _endTimeOfDay = value.endTime;
+                          _startTimeOfDay = value.startTime;
+                          _endTime = DateTime(
+                              widget.date.year,
+                              widget.date.month,
+                              widget.date.day,
+                              _endTimeOfDay.hour,
+                              _endTimeOfDay.minute);
+                          _startTime = DateTime(
+                              widget.date.year,
+                              widget.date.month,
+                              widget.date.day,
+                              _startTimeOfDay.hour,
+                              _startTimeOfDay.minute);
+                        });
+                      }
+                    })
+                  },
+              icon: const Icon(Icons.tune, size: 40)),
         ],
       ),
       buildReservationButton(
@@ -325,18 +316,16 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            showCloseIcon: true,
-            backgroundColor: Colors.green,
-            content: Text('Afschrijving gelukt!'),
-          ),
+              content: Text('Afschrijving gelukt!'),
+              backgroundColor: Colors.green,
+              showCloseIcon: true),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            showCloseIcon: true,
-            backgroundColor: Colors.red,
-            content: Text("Afschrijving mislukt! ${res['error']}"),
-          ),
+              content: Text("Afschrijving mislukt! ${res['error']}"),
+              backgroundColor: Colors.red,
+              showCloseIcon: true),
         );
       }
       ref.read(reservationProgressProvider.notifier).done();

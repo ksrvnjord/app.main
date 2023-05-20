@@ -30,14 +30,12 @@ class TrainingList extends ConsumerWidget {
                       .textColor(Colors.blueGrey),
                 )
               : ListView.separated(
-                  itemCount: data.docs.length,
                   padding: const EdgeInsets.all(10),
+                  itemBuilder: (BuildContext context, int index) => Center(
+                      child: ReservationListTile(snapshot: data.docs[index])),
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(height: 4),
-                  itemBuilder: (BuildContext context, int index) => Center(
-                    child: ReservationListTile(snapshot: data.docs[index]),
-                  ),
-                ),
+                  itemCount: data.docs.length),
         );
   }
 }

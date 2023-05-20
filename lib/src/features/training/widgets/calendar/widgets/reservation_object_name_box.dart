@@ -44,35 +44,30 @@ class ReservationObjectNameBox extends StatelessWidget {
         width: boatButtonWidth,
         height: boatButtonHeight,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           child: Stack(
             fit: StackFit.expand,
             children: [
               TextButton(
-                style: TextButton.styleFrom(
-                  alignment: Alignment.center,
-                  backgroundColor: reservationObject.critical
-                      ? Colors.orange[100]
-                      : isAvailable
-                          ? Colors.white
-                          : Colors.grey[100],
-                  elevation: boatButtonElevation,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
-                onPressed: () => Routemaster.of(context).push(
-                  'reservationObject/${reservationObj.id}',
-                  queryParameters: {'name': reservationObject.name},
-                ),
-                child: Text(reservationObj.data().name).textStyle(TextStyle(
-                  color: reservationObject.critical
-                      ? Colors.orange[900]
-                      : isAvailable
-                          ? Colors.black
-                          : Colors.grey[600],
-                )),
-              ),
+                  onPressed: () => Routemaster.of(context).push(
+                      'reservationObject/${reservationObj.id}',
+                      queryParameters: {'name': reservationObject.name}),
+                  style: TextButton.styleFrom(
+                      alignment: Alignment.center,
+                      backgroundColor: reservationObject.critical
+                          ? Colors.orange[100]
+                          : isAvailable
+                              ? Colors.white
+                              : Colors.grey[100],
+                      elevation: boatButtonElevation,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)))),
+                  child: Text(reservationObj.data().name).textStyle(TextStyle(
+                      color: reservationObject.critical
+                          ? Colors.orange[900]
+                          : isAvailable
+                              ? Colors.black
+                              : Colors.grey[600]))),
             ],
           ),
         ),

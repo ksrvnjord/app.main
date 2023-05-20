@@ -46,23 +46,19 @@ class AlmanakUserTile extends ConsumerWidget {
         leading: const ShimmerWidget(child: DefaultProfilePicture()),
         title: ShimmerWidget(
           child: Container(
-            height: titleShimmerHeight,
-            decoration: ShapeDecoration(
-              shape: const RoundedRectangleBorder(),
-              color: Colors.grey[300],
-            ),
-          ),
+              decoration: ShapeDecoration(
+                  color: Colors.grey[300],
+                  shape: const RoundedRectangleBorder()),
+              height: titleShimmerHeight),
         ).padding(right: titleShimmerPadding),
         subtitle: subtitle == null
             ? null
             : ShimmerWidget(
                 child: Container(
-                  height: subtitleShimmerHeight,
-                  decoration: ShapeDecoration(
-                    shape: const RoundedRectangleBorder(),
-                    color: Colors.grey[300],
-                  ),
-                ),
+                    decoration: ShapeDecoration(
+                        color: Colors.grey[300],
+                        shape: const RoundedRectangleBorder()),
+                    height: subtitleShimmerHeight),
               ).padding(right: subtitleShimmerPadding),
       ),
       error: (error, stackTrace) =>

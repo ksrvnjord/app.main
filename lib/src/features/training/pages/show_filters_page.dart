@@ -48,12 +48,11 @@ class ShowFiltersPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kies filters'),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: const Text('Kies filters'),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView(
         padding: const EdgeInsets.all(pagePadding),
         children: [
@@ -62,33 +61,28 @@ class ShowFiltersPage extends ConsumerWidget {
               .map(
                 (String key) => [
                   MultiSelectChipField<String?>(
-                    scroll: false,
-                    decoration: const BoxDecoration(),
-                    items: availableFilters[key] ?? [],
-                    title: Text(key)
-                        .fontSize(headerFontSize)
-                        .fontWeight(FontWeight.bold),
-                    headerColor: Colors.transparent,
-                    chipShape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    selectedChipColor: categoryColors[key],
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                    ),
-                    selectedTextStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    // chipWidth: 80,
-                    showHeader: true,
-                    initialValue: activeFilters[key] ?? [],
-                    onTap: (values) => ref
-                        .read(reservationTypeFiltersProvider.notifier)
-                        .updateFiltersForCategory(
-                          key,
-                          values.whereType<String>().toList(),
-                        ),
-                  ).padding(bottom: categoryPadding).card(
+                          items: availableFilters[key] ?? [],
+                          decoration: const BoxDecoration(),
+                          selectedChipColor: categoryColors[key],
+                          textStyle: const TextStyle(color: Colors.black),
+                          selectedTextStyle:
+                              const TextStyle(color: Colors.white),
+                          chipShape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          onTap: (values) => ref
+                              .read(reservationTypeFiltersProvider.notifier)
+                              .updateFiltersForCategory(
+                                  key, values.whereType<String>().toList()),
+                          title: Text(key)
+                              .fontSize(headerFontSize)
+                              .fontWeight(FontWeight.bold),
+                          scroll: false,
+                          headerColor: Colors.transparent,
+                          initialValue: activeFilters[key] ?? [],
+                          showHeader: true)
+                      .padding(bottom: categoryPadding)
+                      .card(
                         elevation: 0,
                         color: categoryColors[key]!
                             .withAlpha(cardBackgroundColorAlpha),

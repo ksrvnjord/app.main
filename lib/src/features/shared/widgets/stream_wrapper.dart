@@ -26,19 +26,15 @@ class StreamWrapper<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<T>(
-      stream: stream,
-      builder: (context, AsyncSnapshot<T> snapshot) {
-        if (snapshot.hasData) {
-          // data can't be null, but the type system doesn't know that
-          // ignore: null_check_on_nullable_type_parameter
-          return success(snapshot.data!);
-        } else if (snapshot.hasError) {
-          return error(snapshot.error!);
-        }
-
-        return loading;
-      },
-      initialData: initialData,
-    );
+        initialData: initialData,
+        stream: stream,
+        builder: (context, AsyncSnapshot<T> snapshot) {
+          if (snapshot.hasData) {
+            return success(snapshot.data!);
+          } else if (snapshot.hasError) {
+            return error(snapshot.error!);
+          }
+          return loading;
+        });
   }
 }

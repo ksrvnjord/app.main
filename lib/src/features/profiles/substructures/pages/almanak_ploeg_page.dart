@@ -38,12 +38,11 @@ class AlmanakPloegPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(ploegName),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: Text(ploegName),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
         children: [
@@ -60,23 +59,17 @@ class AlmanakPloegPage extends ConsumerWidget {
                     : Colors.grey,
               ),
               DropdownButton<int>(
-                value: selectedYear,
-                icon: const Icon(Icons.arrow_drop_down),
-                // iconDisabledColor: ,
-                menuMaxHeight: menuMaxHeight,
-                items: years
-                    .map(
-                      (year) => DropdownMenuItem<int>(
-                        value: year,
-                        child: Text("$year-${year + 1}"),
-                      ),
-                    )
-                    .toList(),
-                onChanged: selectedPloegType == PloegType.wedstrijd
-                    ? (value) =>
-                        ref.read(ploegYearProvider.notifier).state = value!
-                    : null,
-              ),
+                  items: years
+                      .map((year) => DropdownMenuItem<int>(
+                          value: year, child: Text("$year-${year + 1}")))
+                      .toList(),
+                  value: selectedYear,
+                  onChanged: selectedPloegType == PloegType.wedstrijd
+                      ? (value) =>
+                          ref.read(ploegYearProvider.notifier).state = value!
+                      : null,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  menuMaxHeight: menuMaxHeight),
             ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 horizontal: headerHPadding,
@@ -115,11 +108,10 @@ class AlmanakPloegPage extends ConsumerWidget {
     final user = doc.data();
 
     return AlmanakUserTile(
-      firstName: user.firstName,
-      lastName: user.lastName,
-      lidnummer: user.identifier,
-      subtitle: user.role.value,
-    );
+        firstName: user.firstName,
+        lastName: user.lastName,
+        subtitle: user.role.value,
+        lidnummer: user.identifier);
   }
 
   int comparePloegFunctie(PloegEntry a, PloegEntry b) {

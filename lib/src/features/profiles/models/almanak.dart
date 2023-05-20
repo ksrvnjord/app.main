@@ -9,10 +9,7 @@ Future<Query$Almanak$users?> almanakUsers(
 ) async {
   final result = await client.query$Almanak(Options$Query$Almanak(
     variables: Variables$Query$Almanak(
-      page: page,
-      first: first,
-      search: search != '' ? search : null,
-    ),
+        search: search != '' ? search : null, first: first, page: page),
   ));
 
   final parsedData = result.parsedData;

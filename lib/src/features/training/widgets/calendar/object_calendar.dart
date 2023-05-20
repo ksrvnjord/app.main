@@ -143,25 +143,19 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
           // Horizontal bars of 32h, that are tappable
           // to make new reservations
           GestureDetector(
-            // Handle the taps with a defined function
-            onTapUp: handleTap,
-            // Wrap the background in an AbsorbPointer, so that
-            // it does not pass gestures through to the background
-            child: AbsorbPointer(
-              child: CalendarBackground(
-                available: (hasPermission && boat.available) && !boat.critical,
-              ),
-            ),
-          ),
+              child: AbsorbPointer(
+                  child: CalendarBackground(
+                      available:
+                          (hasPermission && boat.available) && !boat.critical)),
+              onTapUp: handleTap),
           // Wrap the reservations
           reservations.when(
             // Shimmer entire screen on loading
             loading: () => const ShimmerWidget(
               child: SizedBox(
-                height: CalendarMeasurement.slotHeight *
-                    CalendarMeasurement.amountOfSlots,
-                width: CalendarMeasurement.slotWidth,
-              ),
+                  width: CalendarMeasurement.slotWidth,
+                  height: CalendarMeasurement.slotHeight *
+                      CalendarMeasurement.amountOfSlots),
             ),
             // Create a stack of the resulting reservations
             data: (reservations) {
@@ -179,29 +173,21 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
           Positioned(
-            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() -
-                1, // -1, because the line is 2px high
-            left: 0,
-            child: Row(
-              children: [
+              left: 0,
+              top: CalendarMeasurement.amountOfPixelsTill1726FromTop() - 1,
+              child: Row(children: [
                 for (int i = 0;
                     i <
                         CalendarMeasurement.slotWidth ~/
                             CalendarMeasurement.stripeWidth1726;
                     i++)
                   Container(
-                    color: // use hex color code
-                        // ignore: no-magic-number
-                        i % 2 == 0
-                            ? const Color(0x6011436d)
-                            : Colors.transparent,
-                    // ignore: no-magic-number
-                    height: 2,
-                    width: CalendarMeasurement.stripeWidth1726,
-                  ),
-              ],
-            ),
-          ),
+                      color: i % 2 == 0
+                          ? const Color(0x6011436d)
+                          : Colors.transparent,
+                      width: CalendarMeasurement.stripeWidth1726,
+                      height: 2)
+              ])),
         ],
       ),
     );

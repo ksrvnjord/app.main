@@ -18,42 +18,24 @@ class ReservationListTile extends StatelessWidget {
     final reservation = snapshot.data();
 
     return ListTile(
-      title: Text(reservation.objectName),
-      subtitle: Text(
-        '${DateFormat('E d MMM HH:mm', 'nl_NL').format(reservation.startTime)}-${DateFormat.Hm().format(reservation.endTime)}',
-      ),
-      leading: const [
-        Icon(
-          Icons.fitness_center,
-          color: Colors.blueGrey,
-        ),
-      ].toColumn(
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
-      trailing: <Widget>[
-        IconButton(
-          onPressed: () => Routemaster.of(context).push(
-            '/training/createdamage',
-            queryParameters: {
-              'reservationObjectId': reservation.reservationObject.id,
-            },
-          ),
-          icon: const Icon(
-            Icons.report,
-            color: Colors.orange,
-          ),
-        ),
-        IconButton(
-          onPressed: () => showDeleteReservationDialog(context, snapshot),
-          icon: const Icon(
-            Icons.cancel,
-            color: Colors.red,
-          ),
-        ),
-      ].toWrap(
-        direction: Axis.horizontal,
-      ),
-    ).card(
+            leading: const [Icon(Icons.fitness_center, color: Colors.blueGrey)]
+                .toColumn(mainAxisAlignment: MainAxisAlignment.center),
+            title: Text(reservation.objectName),
+            subtitle: Text(
+                '${DateFormat('E d MMM HH:mm', 'nl_NL').format(reservation.startTime)}-${DateFormat.Hm().format(reservation.endTime)}'),
+            trailing: <Widget>[
+              IconButton(
+                  onPressed: () => Routemaster.of(context)
+                          .push('/training/createdamage', queryParameters: {
+                        'reservationObjectId': reservation.reservationObject.id
+                      }),
+                  icon: const Icon(Icons.report, color: Colors.orange)),
+              IconButton(
+                  onPressed: () =>
+                      showDeleteReservationDialog(context, snapshot),
+                  icon: const Icon(Icons.cancel, color: Colors.red))
+            ].toWrap(direction: Axis.horizontal))
+        .card(
       color: // if damage is critical show light red, else orange
           Colors.white,
       elevation: 0,

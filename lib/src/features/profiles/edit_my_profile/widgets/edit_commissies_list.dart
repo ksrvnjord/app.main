@@ -40,9 +40,8 @@ class EditCommissiesList extends StatelessWidget {
       title: Text(entry.name),
       subtitle: entry.function != null ? Text(entry.function!) : null,
       trailing: IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () => doc.reference.delete(),
-      ),
+          onPressed: () => doc.reference.delete(),
+          icon: const Icon(Icons.delete)),
     );
   }
 }

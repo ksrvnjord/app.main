@@ -13,33 +13,30 @@ class AlmanakPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Almanak"),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: const Text("Almanak"),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
           const AlmanakStructureChoiceWidget(
-            title: "Leeden",
-            pushRoute: "leeden",
-            imagePath: 'assets/images/leeden.png',
-          ),
+              pushRoute: "leeden",
+              title: "Leeden",
+              imagePath: 'assets/images/leeden.png'),
           FirebaseWidget(
             onAuthenticated: [
               const AlmanakStructureChoiceWidget(
-                title: "Bestuur",
-                pushRoute: "bestuur",
-                imagePath: 'assets/images/bestuur.jpeg',
-              ),
+                  pushRoute: "bestuur",
+                  title: "Bestuur",
+                  imagePath: 'assets/images/bestuur.jpeg'),
               [
                 const AlmanakStructureChoiceWidget(
-                  title: "Commissies",
-                  pushRoute: "commissies",
-                  imagePath: 'assets/images/commissies.jpeg',
-                ).expanded(),
+                        pushRoute: "commissies",
+                        title: "Commissies",
+                        imagePath: 'assets/images/commissies.jpeg')
+                    .expanded(),
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "ploegen",
                   title: "Ploegen",
@@ -53,10 +50,10 @@ class AlmanakPage extends StatelessWidget {
                   imagePath: 'assets/images/huizen.jpeg',
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
-                  title: "Substructuren",
-                  pushRoute: "substructuren",
-                  imagePath: 'assets/images/substructures.jpeg',
-                ).expanded(),
+                        pushRoute: "substructuren",
+                        title: "Substructuren",
+                        imagePath: 'assets/images/substructures.jpeg')
+                    .expanded(),
               ].toRow(),
             ].toColumn(
               separator: const SizedBox(

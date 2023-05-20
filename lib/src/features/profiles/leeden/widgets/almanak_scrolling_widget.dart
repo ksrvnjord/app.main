@@ -61,25 +61,20 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
     _pagingController.refresh();
 
     return RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
-      child: PagedListView<int, Query$Almanak$users$data>.separated(
-        pagingController: _pagingController,
-        padding: const EdgeInsets.all(0),
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 0,
-        ),
-        builderDelegate: PagedChildBuilderDelegate<Query$Almanak$users$data>(
-          itemBuilder: (context, item, index) => AlmanakUserButtonWidget(item),
-          firstPageErrorIndicatorBuilder: (context) => const LoadingWidget(),
-          noItemsFoundIndicatorBuilder: (context) => Column(
-            children: const [
-              Text('Geen Leeden gevonden met deze zoekterm.'),
-            ],
-          ),
-        ),
-      ),
-    );
+        child: PagedListView<int, Query$Almanak$users$data>.separated(
+            pagingController: _pagingController,
+            builderDelegate:
+                PagedChildBuilderDelegate<Query$Almanak$users$data>(
+                    itemBuilder: (context, item, index) =>
+                        AlmanakUserButtonWidget(item),
+                    firstPageErrorIndicatorBuilder: (context) =>
+                        const LoadingWidget(),
+                    noItemsFoundIndicatorBuilder: (context) => Column(
+                            children: const [
+                              Text('Geen Leeden gevonden met deze zoekterm.')
+                            ])),
+            separatorBuilder: (context, index) => const SizedBox(height: 0),
+            padding: const EdgeInsets.all(0)),
+        onRefresh: () => Future.sync(() => _pagingController.refresh()));
   }
 }

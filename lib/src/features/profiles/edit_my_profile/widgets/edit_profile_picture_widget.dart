@@ -28,26 +28,23 @@ class _EditProfilePictureWidgetState
 
     return myProfilePicture.when(
       data: (image) => ImagePickerWidget(
-        diameter: profilePictureSize,
-        initialImage: image,
-        shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
-        isEditable: true,
-        shouldCrop: true,
-        onChange: ref
-            .read(profileEditFormNotifierProvider.notifier)
-            .setProfilePicture, // update form,
-      ),
+          diameter: profilePictureSize,
+          initialImage: image,
+          isEditable: true,
+          shouldCrop: true,
+          onChange: ref
+              .read(profileEditFormNotifierProvider.notifier)
+              .setProfilePicture,
+          shape: ImagePickerWidgetShape.circle),
       error: (error, stk) => ImagePickerWidget(
-        // error means that the user has no profle picture set
-        diameter: profilePictureSize,
-        shape: ImagePickerWidgetShape.circle, // ImagePickerWidgetShape.square
-        initialImage: Image.asset(Images.placeholderProfilePicture).image,
-        isEditable: true,
-        shouldCrop: true,
-        onChange: ref
-            .read(profileEditFormNotifierProvider.notifier)
-            .setProfilePicture,
-      ),
+          diameter: profilePictureSize,
+          initialImage: Image.asset(Images.placeholderProfilePicture).image,
+          isEditable: true,
+          shouldCrop: true,
+          onChange: ref
+              .read(profileEditFormNotifierProvider.notifier)
+              .setProfilePicture,
+          shape: ImagePickerWidgetShape.circle),
       loading: () => const ShimmerWidget(
         child: DefaultProfilePicture(
           radius: profilePictureSize / 2,
