@@ -58,9 +58,13 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(CurrentUser());
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  await FirebaseAnalytics.instance.setDefaultEventParameters(
-    {'version': packageInfo.version},
-  ); // Log app version with every event.
+
+  if (!kIsWeb) {
+    // DefaultEventParameters are not supported on web.
+    await FirebaseAnalytics.instance.setDefaultEventParameters(
+      {'version': packageInfo.version},
+    ); // Log app version with every event.
+  }
 
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
     kReleaseMode,
