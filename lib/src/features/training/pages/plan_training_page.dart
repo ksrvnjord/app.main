@@ -77,7 +77,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             .collection('reservations')
             .withConverter<Reservation>(
               fromFirestore: (snapshot, _) =>
-                  Reservation.fromJson(snapshot.data()!),
+                  Reservation.fromJson(snapshot.data() ?? {}),
               toFirestore: (reservation, _) => reservation.toJson(),
             )
             .where('object', isEqualTo: widget.reservationObject)
@@ -103,7 +103,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         heimdallUser.fullContact.private == null ||
         firebaseUser == null) {
       return const ErrorCardWidget(
-        errorMessage: 'Er is iets misgegaan met het inloggen',
+        errorMessage:
+            'Er is iets misgegaan met het inloggen, probeer in- en uit te loggen.',
       );
     }
 
@@ -113,10 +114,10 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         errorMessage: 'Er is iets misgegaan met het inloggen',
       );
     }
-    Query$Me$me$fullContact$private privateContact = fullContact.private!;
+    final privateContact = fullContact.private;
 
     String creatorName =
-        '${privateContact.first_name} ${privateContact.last_name}';
+        '${privateContact?.first_name ?? "Onbekend"} ${privateContact?.last_name}';
     const int timeRowItems = 3;
     List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 

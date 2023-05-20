@@ -37,7 +37,7 @@ class AlmanakUserTile extends ConsumerWidget {
           : ListTile(
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text("$firstName $lastName"),
-              subtitle: subtitle != null ? Text(subtitle!) : null,
+              subtitle: subtitle != null ? Text(subtitle as String) : null,
               trailing:
                   const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
               onTap: () => Routemaster.of(context).push(user.identifier),

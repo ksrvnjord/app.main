@@ -8,7 +8,7 @@ final substructureUsersProvider =
       .collection("people")
       .withConverter(
         fromFirestore: (snapshot, _) =>
-            FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
       .where("substructuren", arrayContains: substructuurName)

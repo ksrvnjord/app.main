@@ -24,7 +24,7 @@ class _EditProfilePictureWidgetState
     const double profilePictureSize = 240;
 
     final myProfilePicture =
-        ref.watch(profilePictureProvider(getCurrentUserId()));
+        ref.watch(profilePictureProvider(getCurrentUserId() ?? ""));
 
     return myProfilePicture.when(
       data: (image) => ImagePickerWidget(

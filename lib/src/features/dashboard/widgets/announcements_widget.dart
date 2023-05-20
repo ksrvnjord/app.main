@@ -34,8 +34,10 @@ class AnnouncementsWidget extends ConsumerWidget {
                           .fontSize(announcementSubtitleFontSize)
                           .fontWeight(FontWeight.bold),
                       TextSpan(
-                        text: timeago.format(announcement.created_at,
-                            locale: 'nl'),
+                        text: timeago.format(
+                          announcement.created_at,
+                          locale: 'nl',
+                        ),
                       )
                           .textColor(Colors.grey)
                           .fontSize(announcementSubtitleFontSize),

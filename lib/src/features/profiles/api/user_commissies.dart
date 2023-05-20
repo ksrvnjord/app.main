@@ -7,13 +7,13 @@ final peopleRef = FirebaseFirestore.instance.collection("people");
 
 Future<void> addMyCommissie(CommissieEntry commissie) {
   return getCommissieCollectionRefWithConverter(
-    peopleRef.doc(FirebaseAuth.instance.currentUser!.uid),
+    peopleRef.doc(FirebaseAuth.instance.currentUser?.uid),
   ).add(commissie);
 }
 
 final myCommissiesProvider =
     StreamProvider.autoDispose<QuerySnapshot<CommissieEntry>>((ref) {
-  final userId = FirebaseAuth.instance.currentUser!.uid;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
 
   return getCommissieCollectionRefWithConverter(
     peopleRef.doc(userId),
@@ -33,7 +33,7 @@ CollectionReference<CommissieEntry> getCommissieCollectionRefWithConverter(
 ) {
   return ref.collection('commissies').withConverter<CommissieEntry>(
         fromFirestore: (snapshot, _) =>
-            CommissieEntry.fromJson(snapshot.data()!),
+            CommissieEntry.fromJson(snapshot.data() ?? {}),
         toFirestore: (commissie, _) => commissie.toJson(),
       );
 }

@@ -34,7 +34,7 @@ class GroupInfoTile extends StatelessWidget {
           backgroundColor: Colors.blueGrey[200],
         ),
         if (tags != null)
-          ...tags!
+          ...(tags as List<Tag>)
               .map((tag) => Chip(
                     avatar: Icon(tag.icon, size: iconSize, color: Colors.white),
                     label: Text(tag.label),

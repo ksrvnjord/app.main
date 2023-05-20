@@ -8,7 +8,7 @@ final bestuurUsersProvider =
       .collection("people")
       .withConverter(
         fromFirestore: (snapshot, _) =>
-            FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
       .where("bestuurs_functie", isNull: false)

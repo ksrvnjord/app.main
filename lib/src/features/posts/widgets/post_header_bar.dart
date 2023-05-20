@@ -21,7 +21,9 @@ class PostHeaderBar extends ConsumerWidget {
     const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
-    final postAuthor = ref.watch(firestoreUserProvider(post?.authorId ?? ""));
+    final postAuthorId = post?.authorId ?? "";
+
+    final postAuthor = ref.watch(firestoreUserProvider(postAuthorId));
 
     final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
@@ -34,7 +36,7 @@ class PostHeaderBar extends ConsumerWidget {
     return [
       [
         ClickableProfilePictureWidget(
-          userId: post?.authorId ?? "",
+          userId: postAuthorId,
           size: profilePictureIconSize,
         ),
         [
@@ -55,7 +57,7 @@ class PostHeaderBar extends ConsumerWidget {
       // Three dots for more options, show if user is author.
 
       if (firebaseUser != null &&
-          (post?.authorId == firebaseUser.uid || firebaseUser.isBestuur))
+          (postAuthorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
           child: const Icon(Icons.delete_outlined),
           onTap: () => showDialog(

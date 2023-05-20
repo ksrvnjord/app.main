@@ -9,7 +9,8 @@ final ploegenForUserProvider = FutureProvider.family
       .doc(userId)
       .collection("groups")
       .withConverter<PloegEntry>(
-        fromFirestore: (snapshot, _) => PloegEntry.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) =>
+            PloegEntry.fromJson(snapshot.data() ?? {}),
         toFirestore: (ploeg, _) => ploeg.toJson(),
       )
       .where('type', isEqualTo: 'ploeg')

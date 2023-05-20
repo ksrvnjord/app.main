@@ -41,7 +41,8 @@ class CommissieEntry extends GroupEntry {
       'name': name,
       'startYear': startYear,
       'endYear': endYear,
-      'function': function != null && function!.isNotEmpty ? function : null,
+      'function':
+          function != null && (function as String).isNotEmpty ? function : null,
       'user_first_name': firstName,
       'user_last_name': lastName,
       'user_identifier': identifier,

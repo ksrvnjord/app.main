@@ -43,7 +43,7 @@ class HiveCache {
     if (item != null && DateTime.now().isBefore(item.expire)) {
       return item.data == null
           ? imageOnCacheHitWithNoData
-          : MemoryImage(item.data!);
+          : MemoryImage(item.data as Uint8List);
     }
 
     return null; // No cached image found.

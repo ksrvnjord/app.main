@@ -82,14 +82,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 1 / 2,
           label: 'Voornaam',
-          initialValue: contact!.first_name ?? '',
+          initialValue: contact?.first_name ?? '',
           updatedValue: updated?.first_name,
         ),
         'last_name': createInitialField(
           // ignore: no-magic-number
           width: 1 / 2,
           label: 'Achternaam',
-          initialValue: contact.last_name ?? '',
+          initialValue: contact?.last_name ?? '',
           updatedValue: updated?.last_name,
         ),
       },
@@ -97,7 +97,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         'email': createInitialField(
           width: 1,
           label: 'E-mailadres',
-          initialValue: contact.email ?? '',
+          initialValue: contact?.email ?? '',
           updatedValue: updated?.email,
         ),
       },
@@ -105,7 +105,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         'phone_primary': createInitialField(
           width: 1,
           label: 'Telefoonnummer',
-          initialValue: contact.phone_primary ?? '',
+          initialValue: contact?.phone_primary ?? '',
           updatedValue: updated?.phone_primary,
         ),
       },
@@ -114,21 +114,21 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 2 / 4,
           label: 'Straat',
-          initialValue: contact.street ?? '',
+          initialValue: contact?.street ?? '',
           updatedValue: updated?.street,
         ),
         'housenumber': createInitialField(
           // ignore: no-magic-number
           width: 1 / 4,
           label: 'Huisnummer',
-          initialValue: contact.housenumber ?? '',
+          initialValue: contact?.housenumber ?? '',
           updatedValue: updated?.housenumber,
         ),
         'housenumber_addition': createInitialField(
           // ignore: no-magic-number
           width: 1 / 4,
           label: 'Toevoeging',
-          initialValue: contact.housenumber_addition ?? '',
+          initialValue: contact?.housenumber_addition ?? '',
           updatedValue: updated?.housenumber_addition,
         ),
       },
@@ -137,14 +137,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 1 / 3,
           label: 'Postcode',
-          initialValue: contact.zipcode ?? '',
+          initialValue: contact?.zipcode ?? '',
           updatedValue: updated?.zipcode,
         ),
         'city': createInitialField(
           // ignore: no-magic-number
           width: 2 / 3,
           label: 'Plaats',
-          initialValue: contact.city ?? '',
+          initialValue: contact?.city ?? '',
           updatedValue: updated?.city,
         ),
       },

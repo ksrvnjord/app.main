@@ -57,23 +57,25 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   void initState() {
     super.initState();
     if (widget.user != null) {
-      var keys = widget.user!.fullContact.public.toJson().keys.toSet();
-      // User can't change visibility of these fields.
+      final keys = widget.user?.fullContact.public.toJson().keys.toSet();
+      if (keys != null) {
+        // User can't change visibility of these fields.
 
-      // ignore: avoid-ignoring-return-values
-      keys.remove('first_name');
-      // ignore: avoid-ignoring-return-values
-      keys.remove('last_name');
-      // ignore: avoid-ignoring-return-values
-      keys.remove('__typename');
+        // ignore: avoid-ignoring-return-values
+        keys.remove('first_name');
+        // ignore: avoid-ignoring-return-values
+        keys.remove('last_name');
+        // ignore: avoid-ignoring-return-values
+        keys.remove('__typename');
 
-      final public = widget.user!.fullContact.public.toJson();
+        final public = widget.user?.fullContact.public.toJson();
 
-      for (String key in keys) {
-        checkboxes[key] = !(public[key] == '');
+        for (String key in keys) {
+          checkboxes[key] = !(public?[key] == '');
+        }
       }
 
-      listed = widget.user!.listed;
+      listed = widget.user?.listed ?? false;
     }
   }
 
@@ -143,7 +145,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
                 return [
                   Checkbox(
                     value: checkboxes[key],
-                    onChanged: (value) => toggleCheckBoxes(key, value!),
+                    onChanged: (value) => toggleCheckBoxes(key, value ?? false),
                     checkColor: Colors.white,
                   ),
                   Text(key),
@@ -172,9 +174,9 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     ].toColumn().padding(all: pagePadding);
   }
 
-  void toggleCheckBox(bool? value) {
+  void toggleCheckBox(bool value) {
     setState(() {
-      listed = value!;
+      listed = value;
     });
   }
 }

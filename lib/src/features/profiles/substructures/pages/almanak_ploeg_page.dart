@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
@@ -68,8 +69,8 @@ class AlmanakPloegPage extends ConsumerWidget {
                     .toList(),
                 value: selectedYear,
                 onChanged: selectedPloegType == PloegType.wedstrijd
-                    ? (value) =>
-                        ref.read(ploegYearProvider.notifier).state = value!
+                    ? (value) => ref.read(ploegYearProvider.notifier).state =
+                        value ?? getNjordYear()
                     : null,
                 icon: const Icon(Icons.arrow_drop_down),
                 menuMaxHeight: menuMaxHeight,

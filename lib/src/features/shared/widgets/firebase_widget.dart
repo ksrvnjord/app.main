@@ -21,7 +21,7 @@ class FirebaseWidget extends ConsumerWidget {
     return user == null
         ? onUnauthenticated == null
             ? const SizedBox.shrink()
-            : onUnauthenticated!
+            : onUnauthenticated as Widget
         : onAuthenticated;
   }
 }

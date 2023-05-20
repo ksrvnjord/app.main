@@ -8,7 +8,7 @@ final homeUsers =
       .collection("people")
       .withConverter(
         fromFirestore: (snapshot, _) =>
-            FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
       .where("huis", isEqualTo: houseName)

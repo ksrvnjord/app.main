@@ -27,17 +27,17 @@ class UserGroupsListWidget extends StatelessWidget {
           startYear: doc.data().year,
           endYear: doc.data().year + 1,
           tags: (commissieEntry.function == null ||
-                  commissieEntry.function!.isEmpty)
+                  (commissieEntry.function as String).isEmpty)
               ? null
               : [
                   Tag(
-                    label: commissieEntry.function!,
+                    label: commissieEntry.function as String,
                     backgroundColor: {
-                          "Praeses": Colors.lightBlue[300]!,
-                          "Ab-actis": Colors.red[300]!,
-                          "Quaestor": Colors.lightGreen[300]!,
-                        }[commissieEntry.function!] ??
-                        Colors.blueGrey[300]!,
+                          "Praeses": Colors.lightBlue.shade300,
+                          "Ab-actis": Colors.red.shade300,
+                          "Quaestor": Colors.lightGreen.shade300,
+                        }[commissieEntry.function as String] ??
+                        Colors.blueGrey.shade300,
                     icon: Icons.person,
                   ),
                 ],
@@ -51,7 +51,7 @@ class UserGroupsListWidget extends StatelessWidget {
           tags: [
             Tag(
               label: ploegEntry.role.value,
-              backgroundColor: Colors.blueGrey[300]!,
+              backgroundColor: Colors.blueGrey.shade300,
               icon: Icons.person,
             ),
           ],

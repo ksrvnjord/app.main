@@ -66,7 +66,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
     return AlmanakUserTile(
       firstName: user.firstName,
       lastName: user.lastName,
-      subtitle: user.bestuursFunctie!,
+      subtitle: user.bestuursFunctie,
       lidnummer: user.identifier,
     );
   }
@@ -77,6 +77,6 @@ class AlmanakBestuurPage extends ConsumerWidget {
     FirestoreAlmanakProfile b,
   ) =>
       bestuurVolgorde
-          .indexOf(a.bestuursFunctie!)
-          .compareTo(bestuurVolgorde.indexOf(b.bestuursFunctie!));
+          .indexOf(a.bestuursFunctie ?? "")
+          .compareTo(bestuurVolgorde.indexOf(b.bestuursFunctie ?? ""));
 }

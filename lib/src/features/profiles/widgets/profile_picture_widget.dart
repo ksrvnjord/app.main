@@ -25,19 +25,21 @@ class ProfilePictureWidget extends ConsumerWidget {
         ? profilePictureThumbnailProvider(userId)
         : profilePictureProvider(userId));
 
+    final backgroundColor = Colors.grey.shade300;
+
     return profilePicture.when(
       // First check if the image is already cached.
       data: (imageProvider) => zoomable
           ? ZoomableImage(
               imageProvider: imageProvider,
               image: CircleAvatar(
-                backgroundColor: Colors.grey[300]!,
+                backgroundColor: backgroundColor,
                 foregroundImage: imageProvider,
                 radius: size,
               ),
             )
           : CircleAvatar(
-              backgroundColor: Colors.grey[300]!,
+              backgroundColor: backgroundColor,
               foregroundImage: imageProvider,
               radius: size,
             ),

@@ -34,8 +34,9 @@ class _EditAlmanakProfilePageState
 
   @override
   Widget build(BuildContext context) {
-    final userVal = ref.watch(firestoreUserFutureProvider(getCurrentUserId()));
-    final userId = ref.watch(firebaseAuthUserProvider)!.uid;
+    final userVal =
+        ref.watch(firestoreUserFutureProvider(getCurrentUserId() ?? ""));
+    final userId = ref.watch(firebaseAuthUserProvider)?.uid;
 
     const double floatingActionButtonSpacing = 16;
 
@@ -65,7 +66,7 @@ class _EditAlmanakProfilePageState
           [
         FloatingActionButton.extended(
           backgroundColor: Colors.blueGrey,
-          onPressed: () => Routemaster.of(context).push(userId),
+          onPressed: () => Routemaster.of(context).push(userId ?? ""),
           label: const Text("Publiek profiel bekijken"),
         ),
         FloatingActionButton.extended(
@@ -227,8 +228,9 @@ class _EditAlmanakProfilePageState
   }
 
   void submitForm() async {
+    final formState = _formKey.currentState;
     // FORM VALIDATION.
-    if (!_formKey.currentState!.validate()) {
+    if (formState != null && !formState.validate()) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -247,7 +249,7 @@ class _EditAlmanakProfilePageState
         .collection('people')
         .withConverter<FirestoreAlmanakProfile>(
           fromFirestore: (snapshot, _) =>
-              FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+              FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
           toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
         )
         .where('identifier', isEqualTo: getCurrentUserId())
@@ -273,7 +275,7 @@ class _EditAlmanakProfilePageState
         // ignore: avoid-ignoring-return-values
         CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
         // ignore: avoid-ignoring-return-values
-        profilePictureProvider(getCurrentUserId())
+        profilePictureProvider(getCurrentUserId() ?? "")
             .overrideWith((ref) => Image.file(newprofilePicture).image);
       } on FirebaseException catch (_) {
         success = false;

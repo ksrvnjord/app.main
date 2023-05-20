@@ -7,14 +7,16 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart'
 final myPloegenProvider =
     StreamProvider.autoDispose<QuerySnapshot<PloegEntry>>((ref) async* {
   // We have to mark as async* because we need to await the future and lazily yield.
-  final uid = ref.watch(currentFirebaseUserProvider)!.uid;
+  final uid = ref.watch(currentFirebaseUserProvider)?.uid;
 
-  final userDoc = await ref.watch(firestoreUserFutureProvider(uid).future);
+  final userDoc =
+      await ref.watch(firestoreUserFutureProvider(uid ?? "").future);
 
   yield* userDoc.reference
       .collection('groups')
       .withConverter(
-        fromFirestore: (snapshot, _) => PloegEntry.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) =>
+            PloegEntry.fromJson(snapshot.data() ?? {}),
         toFirestore: (ploegEntry, _) => ploegEntry.toJson(),
       )
       .where('type', isEqualTo: 'ploeg')

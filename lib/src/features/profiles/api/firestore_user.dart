@@ -7,7 +7,7 @@ final CollectionReference<FirestoreAlmanakProfile> people = FirebaseFirestore
     .collection('people')
     .withConverter<FirestoreAlmanakProfile>(
       fromFirestore: (snapshot, _) =>
-          FirestoreAlmanakProfile.fromFirestore(snapshot.data()!),
+          FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
       toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
     );
 

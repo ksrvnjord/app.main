@@ -34,7 +34,7 @@ class AddPloegPage extends ConsumerWidget {
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        DataTextListTile(name: "Ploeg", value: ploegEntryForm.name!),
+        DataTextListTile(name: "Ploeg", value: ploegEntryForm.name ?? ""),
         const SizedBox(height: 32),
         const Text("Ik ben een").fontSize(labelFontSize),
         const SizedBox(height: 8),

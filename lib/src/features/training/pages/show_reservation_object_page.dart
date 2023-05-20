@@ -18,7 +18,7 @@ final CollectionReference<ReservationObject>
         .collection('reservationObjects')
         .withConverter<ReservationObject>(
           fromFirestore: (snapshot, _) =>
-              ReservationObject.fromJson(snapshot.data()!),
+              ReservationObject.fromJson(snapshot.data() ?? {}),
           toFirestore: (reservationObject, _) => reservationObject.toJson(),
         );
 
@@ -67,14 +67,22 @@ class ShowReservationObjectPage extends StatelessWidget {
     if (!snapshot.exists) {
       return const Center(child: Text('No data'));
     }
-    ReservationObject obj = snapshot.data()!;
+    final obj = snapshot.data();
+    final isVisible = obj?.available ?? false;
+    final isCritical = obj?.critical ?? false;
+    final comment = obj?.comment ?? '';
+    final type = obj?.type ?? '';
+    final permissions = obj?.permissions ?? [];
+    final year = obj?.year;
+    final brand = obj?.brand;
+    final kind = obj?.kind;
 
     // Show the reservationObject data in a ListView.
     return [
-      AvailabilityHeader(isAvailable: obj.available && !obj.critical),
+      AvailabilityHeader(isAvailable: isVisible && !isCritical),
       Expanded(
         child: ListView(children: [
-          if (obj.comment != null && obj.comment!.isNotEmpty)
+          if (comment.isNotEmpty)
             Card(
               color: Colors.amber.shade100,
               elevation: 0,
@@ -84,7 +92,7 @@ class ShowReservationObjectPage extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.comment),
                 title: Text(
-                  obj.comment!,
+                  comment,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -93,13 +101,12 @@ class ShowReservationObjectPage extends StatelessWidget {
                 ),
               ),
             ),
-          DataTextListTile(name: "Type", value: obj.type),
-          if (obj.kind != null)
-            DataTextListTile(name: "Categorie", value: obj.kind!),
-          if (obj.permissions.isNotEmpty)
+          DataTextListTile(name: "Type", value: type),
+          if (kind != null) DataTextListTile(name: "Categorie", value: kind),
+          if (permissions.isNotEmpty)
             ChipWidget(
               title: "Permissies",
-              values: obj.permissions,
+              values: permissions,
               colors: const {
                 'Coachcatamaran': Colors.greenAccent,
                 'Speciaal': Colors.redAccent,
@@ -109,11 +116,10 @@ class ShowReservationObjectPage extends StatelessWidget {
                 'Specifiek': Colors.pinkAccent,
               },
             ),
-          if (obj.year != null)
-            DataTextListTile(name: "Jaar", value: obj.year!.toString()),
-          if (obj.brand != null)
-            DataTextListTile(name: "Merk", value: obj.brand!),
-          if (obj.critical)
+          if (year != null)
+            DataTextListTile(name: "Jaar", value: year.toString()),
+          if (brand != null) DataTextListTile(name: "Merk", value: brand),
+          if (isCritical)
             const Text(
               'Schades',
               style: TextStyle(

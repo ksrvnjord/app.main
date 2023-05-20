@@ -54,23 +54,24 @@ class FirestoreAlmanakProfile {
     );
   }
 
-  factory FirestoreAlmanakProfile.fromHeimdall(Query$AlmanakProfile$user user) {
-    Query$AlmanakProfile$user$fullContact$public publicContact =
-        user.fullContact.public;
+  factory FirestoreAlmanakProfile.fromHeimdall(
+    Query$AlmanakProfile$user? user,
+  ) {
+    final publicContact = user?.fullContact.public;
 
     return FirestoreAlmanakProfile(
-      firstName: publicContact.first_name!,
-      lastName: publicContact.last_name!,
-      identifier: user.identifier,
-      email: publicContact.email,
+      firstName: publicContact?.first_name ?? "Onbekend",
+      lastName: publicContact?.last_name ?? "Onbekend",
+      identifier: user?.identifier ?? "",
+      email: publicContact?.email,
       address: Address(
-        street: publicContact.street,
-        houseNumber: publicContact.housenumber,
-        houseNumberAddition: publicContact.housenumber_addition,
-        postalCode: publicContact.zipcode,
-        city: publicContact.city,
+        street: publicContact?.street,
+        houseNumber: publicContact?.housenumber,
+        houseNumberAddition: publicContact?.housenumber_addition,
+        postalCode: publicContact?.zipcode,
+        city: publicContact?.city,
       ),
-      phonePrimary: publicContact.phone_primary,
+      phonePrimary: publicContact?.phone_primary,
     );
   }
 

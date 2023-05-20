@@ -38,7 +38,7 @@ class EditCommissiesList extends StatelessWidget {
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(entry.name),
-      subtitle: entry.function != null ? Text(entry.function!) : null,
+      subtitle: entry.function != null ? Text(entry.function as String) : null,
       trailing: IconButton(
         onPressed: () => doc.reference.delete(),
         icon: const Icon(Icons.delete),

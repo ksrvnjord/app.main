@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_pro
 import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -61,7 +62,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   .padding(top: elementPadding)
                   .center(),
               if (u.study != null)
-                Text(u.study!)
+                Text(u.study ?? "")
                     .textColor(Colors.blueGrey)
                     .alignment(Alignment.center),
               if (u.bestuursFunctie != null)
@@ -73,7 +74,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(40)),
                     ),
-                    child: Text(u.bestuursFunctie!)
+                    child: Text(u.bestuursFunctie ?? "")
                         .textColor(Colors.white)
                         .fontSize(bestuurFontSize)
                         .fontWeight(FontWeight.bold)
@@ -81,7 +82,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   ),
                 ),
               [
-                if (u.email != null && u.email!.isNotEmpty)
+                if (u.email != null && (u.email as String).isNotEmpty)
                   ElevatedButton(
                     onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
                     style: ElevatedButton.styleFrom(
@@ -104,7 +105,8 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ),
                     ),
                   ).padding(all: formFieldPadding),
-                if (u.phonePrimary != null && u.phonePrimary!.isNotEmpty)
+                if (u.phonePrimary != null &&
+                    (u.phonePrimary as String).isNotEmpty)
                   ElevatedButton(
                     onPressed: () => showBottomActionSheet(
                       context: context,
@@ -145,36 +147,49 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     ),
                   ).padding(all: formFieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-              if (u.address != null) UserAddressWidget(address: u.address!),
+              if (u.address != null)
+                UserAddressWidget(address: u.address as Address),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
               FirebaseWidget(
                 onAuthenticated: userPloegen.when(
                   data: (ploegenSnapshot) => (u.ploeg == null ||
-                          u.ploeg!.isEmpty ||
+                          (u.ploeg as String).isEmpty ||
                           ploegenSnapshot.size > 0)
                       ? const SizedBox
                           .shrink() // User has filled in new ploegen widget, so don't show old ploegen widget.
-                      : DataTextListTile(name: "Ploeg", value: u.ploeg!),
+                      : DataTextListTile(
+                          name: "Ploeg",
+                          value: u.ploeg as String,
+                        ),
                   error: (err, __) =>
                       ErrorCardWidget(errorMessage: err.toString()),
                   loading: () => const SizedBox.shrink(),
                 ),
               ),
-              if (u.board != null && u.board!.isNotEmpty)
-                DataTextListTile(name: "Voorkeurs boord", value: u.board!),
-              if (u.substructures != null && u.substructures!.isNotEmpty)
-                ChipWidget(title: "Substructuren", values: u.substructures!),
+              if (u.board != null && (u.board as String).isNotEmpty)
+                DataTextListTile(
+                  name: "Voorkeurs boord",
+                  value: u.board as String,
+                ),
+              if (u.substructures != null &&
+                  (u.substructures as List<String>).isNotEmpty)
+                ChipWidget(
+                  title: "Substructuren",
+                  values: u.substructures as List<String>,
+                ),
               if (u.huis != null)
-                DataTextListTile(name: "Huis", value: u.huis!),
-              if (u.dubbellid != null && u.dubbellid!) // Only show if true.
+                DataTextListTile(name: "Huis", value: u.huis as String),
+              if (u.dubbellid != null &&
+                  u.dubbellid as bool) // Only show if true.
                 DataTextListTile(
                   name: "Dubbellid",
-                  value: u.dubbellid! ? "Ja" : "Nee",
+                  value: u.dubbellid as bool ? "Ja" : "Nee",
                 ),
-              if (u.otherAssociation != null && u.otherAssociation!.isNotEmpty)
+              if (u.otherAssociation != null &&
+                  (u.otherAssociation as String).isNotEmpty)
                 DataTextListTile(
                   name: "Andere vereniging(en)",
-                  value: u.otherAssociation!,
+                  value: u.otherAssociation as String,
                 ),
               FirebaseWidget(
                 onAuthenticated: userGroups.when(

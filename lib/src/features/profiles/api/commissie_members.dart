@@ -6,7 +6,8 @@ import 'package:tuple/tuple.dart';
 final commissiesRef = FirebaseFirestore.instance
     .collectionGroup('commissies')
     .withConverter<CommissieEntry>(
-      fromFirestore: (snapshot, _) => CommissieEntry.fromJson(snapshot.data()!),
+      fromFirestore: (snapshot, _) =>
+          CommissieEntry.fromJson(snapshot.data() ?? {}),
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 

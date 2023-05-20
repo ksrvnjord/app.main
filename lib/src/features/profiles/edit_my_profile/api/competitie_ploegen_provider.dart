@@ -15,7 +15,7 @@ final competitiePloegenProvider =
         .collection('group_info')
         .withConverter(
           fromFirestore: (snapshot, _) =>
-              CompetitiePloeg.fromFirestore(snapshot.data()!),
+              CompetitiePloeg.fromFirestore(snapshot.data() ?? {}),
           toFirestore: (ploeg, _) => ploeg.toFirestore(),
         )
         .where('year', isEqualTo: selectedYear)

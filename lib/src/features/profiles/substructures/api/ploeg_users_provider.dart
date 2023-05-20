@@ -12,7 +12,8 @@ final ploegUsersProvider =
     return FirebaseFirestore.instance
         .collectionGroup('groups')
         .withConverter(
-          fromFirestore: (snapshot, _) => PloegEntry.fromJson(snapshot.data()!),
+          fromFirestore: (snapshot, _) =>
+              PloegEntry.fromJson(snapshot.data() ?? {}),
           toFirestore: (entry, _) => entry.toJson(),
         )
         .where('name', isEqualTo: name)

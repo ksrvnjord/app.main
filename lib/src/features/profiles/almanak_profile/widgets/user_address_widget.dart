@@ -13,7 +13,7 @@ class UserAddressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return address.street != null &&
-            address.street!
+            (address.street as String)
                 .isNotEmpty // It makes no sense to show an address without a street.
         ? ListTile(
             leading: const [
@@ -30,7 +30,7 @@ class UserAddressWidget extends StatelessWidget {
                 // If postalcode and city are null, don't show anything.
                 address.postalCode != null &&
                         address.city != null &&
-                        address.city!.isNotEmpty
+                        (address.city as String).isNotEmpty
                     ? Text(
                         "${address.postalCode != null ? "${address.postalCode} " : ""}${address.city != null ? "${address.city}" : ""}",
                       )

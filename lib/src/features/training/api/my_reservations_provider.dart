@@ -15,7 +15,8 @@ final myReservationsProvider =
       .instance
       .collection('reservations')
       .withConverter<Reservation>(
-        fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) =>
+            Reservation.fromJson(snapshot.data() ?? {}),
         toFirestore: (reservation, _) => reservation.toJson(),
       );
 

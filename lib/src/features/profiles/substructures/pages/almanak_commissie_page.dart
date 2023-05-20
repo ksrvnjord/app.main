@@ -18,7 +18,8 @@ import 'package:tuple/tuple.dart';
 final commissiesRef = FirebaseFirestore.instance
     .collectionGroup('commissies')
     .withConverter<CommissieEntry>(
-      fromFirestore: (snapshot, _) => CommissieEntry.fromJson(snapshot.data()!),
+      fromFirestore: (snapshot, _) =>
+          CommissieEntry.fromJson(snapshot.data() ?? {}),
       toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
     );
 
@@ -114,7 +115,8 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                     .toList(),
                 value: selectedYear,
                 onChanged: (tuple) => setState(() {
-                  selectedYear = tuple!;
+                  selectedYear =
+                      tuple ?? Tuple2(getNjordYear(), getNjordYear() + 1);
                 }),
                 icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
                 menuMaxHeight: menuMaxHeight,

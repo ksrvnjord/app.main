@@ -8,7 +8,7 @@ Future<DocumentSnapshot<ReservationObject?>> getReservationObject(
       .collection('reservationObjects')
       .withConverter<ReservationObject>(
         fromFirestore: (snapshot, _) =>
-            ReservationObject.fromJson(snapshot.data()!),
+            ReservationObject.fromJson(snapshot.data() ?? {}),
         toFirestore: (reservationObject, _) => reservationObject.toJson(),
       )
       .doc(reservationObjectId)

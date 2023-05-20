@@ -16,9 +16,11 @@ class MyProfilePicture extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(firebaseAuthUserProvider);
 
-    return ProfilePictureListTileWidget(
-      profileId: currentUser!.uid,
-      radius: profileIconSize,
-    );
+    return currentUser == null
+        ? const SizedBox.shrink()
+        : ProfilePictureListTileWidget(
+            profileId: currentUser.uid,
+            radius: profileIconSize,
+          );
   }
 }

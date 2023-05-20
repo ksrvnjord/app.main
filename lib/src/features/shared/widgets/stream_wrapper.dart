@@ -32,6 +32,7 @@ class StreamWrapper<T> extends StatelessWidget {
         if (snapshot.hasData) {
           return success(snapshot.data as T);
         } else if (snapshot.hasError) {
+          // ignore: avoid-non-null-assertion
           return error(snapshot.error!);
         }
 

@@ -61,7 +61,7 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
         .collection('groups')
         .withConverter<PloegEntryCreateForm>(
           fromFirestore: (snapshot, _) =>
-              PloegEntryCreateForm.fromJson(snapshot.data()!),
+              PloegEntryCreateForm.fromJson(snapshot.data() ?? {}),
           toFirestore: (ploegEntry, _) => ploegEntry.toJson(),
         )
         .add(state);

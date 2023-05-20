@@ -32,10 +32,10 @@ class CachedProfilePicture {
       "$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
 // 21203/thumbnails/profile_picture_200x200.png.
   static Future<ImageProvider<Object>> getMyProfilePicture() =>
-      get(FirebaseAuth.instance.currentUser!.uid);
+      get(FirebaseAuth.instance.currentUser?.uid ?? "");
 
   static UploadTask uploadMyProfilePicture(File file) {
-    final String uid = FirebaseAuth.instance.currentUser!.uid;
+    final uid = FirebaseAuth.instance.currentUser?.uid ?? "";
     String originalPath = CachedProfilePicture.path(uid);
     HiveCache.delete(originalPath); // Invalidate cache for my profile picture.
     String thumbnailPath = CachedProfilePicture.thumbnailPath(uid);

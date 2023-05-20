@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
@@ -105,8 +106,9 @@ class PloegChoicePage extends ConsumerWidget {
                           ))
                       .toList(),
                   value: ploegYear,
-                  onChanged: (value) =>
-                      ref.read(ploegYearProvider.notifier).state = value!,
+                  onChanged: (value) => ref
+                      .read(ploegYearProvider.notifier)
+                      .state = value ?? getNjordYear(),
                   menuMaxHeight: menuMaxHeight,
                 ),
               ].toRow(

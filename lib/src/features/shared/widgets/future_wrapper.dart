@@ -39,6 +39,7 @@ class FutureWrapper<T> extends StatelessWidget {
         } else if (snapshot.hasError) {
           log(snapshot.error.toString());
 
+          // ignore: avoid-non-null-assertion
           return error(snapshot.error!);
         } else if (snapshot.data == null &&
             snapshot.connectionState == ConnectionState.done) {

@@ -17,7 +17,7 @@ final almanakUserProvider =
       final profile =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
-      return FirestoreAlmanakProfile.fromHeimdall(profile!);
+      return FirestoreAlmanakProfile.fromHeimdall(profile);
     }
 
     // Call both queries in parallel.
@@ -29,21 +29,27 @@ final almanakUserProvider =
     final heimdallProfileData = await heimdallProfile;
 
     // Merge the data.
-    final heimdallProfilePublic = heimdallProfileData!.fullContact.public;
+    final heimdallProfilePublic = heimdallProfileData?.fullContact.public;
+
+    final street = heimdallProfilePublic?.street;
+    final houseNumber = heimdallProfilePublic?.housenumber;
+    final houseNumberAddition = heimdallProfilePublic?.housenumber_addition;
+    final postalCode = heimdallProfilePublic?.zipcode;
+    final city = heimdallProfilePublic?.city;
 
     return profile.copyWith(
-      email: heimdallProfilePublic.email,
-      phonePrimary: heimdallProfilePublic.phone_primary,
-      address: heimdallProfilePublic.street != null ||
-              heimdallProfilePublic.housenumber != null ||
-              heimdallProfilePublic.city != null ||
-              heimdallProfilePublic.zipcode != null
+      email: heimdallProfilePublic?.email,
+      phonePrimary: heimdallProfilePublic?.phone_primary,
+      address: street != null ||
+              houseNumber != null ||
+              city != null ||
+              postalCode != null
           ? Address(
-              street: heimdallProfilePublic.street,
-              houseNumber: heimdallProfilePublic.housenumber,
-              houseNumberAddition: heimdallProfilePublic.housenumber_addition,
-              postalCode: heimdallProfilePublic.zipcode,
-              city: heimdallProfilePublic.city,
+              street: street,
+              houseNumber: houseNumber,
+              houseNumberAddition: houseNumberAddition,
+              postalCode: postalCode,
+              city: city,
             )
           : null,
     );

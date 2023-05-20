@@ -35,14 +35,15 @@ class ShowTrainingPage extends StatelessWidget {
               errorMessage: "We konden geen verbinding maken met de database",
             );
           }
-          if (snapshot.hasData && !snapshot.data!.exists) {
+          if (snapshot.hasData &&
+              !(snapshot.data as DocumentSnapshot<Object?>).exists) {
             return const ErrorCardWidget(
               errorMessage: "Er is geen afschrijving gevonden",
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> reservation =
-                snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data?.data() as Map<String, dynamic>;
 
             return FutureBuilder<DocumentSnapshot>(
               future: users.doc(reservation['creatorId']).get(),
@@ -55,7 +56,8 @@ class ShowTrainingPage extends StatelessWidget {
                     errorMessage: "We konden de afschrijver niet ophalen",
                   );
                 }
-                if (snapshot.hasData && !snapshot.data!.exists) {
+                if (snapshot.hasData &&
+                    !(snapshot.data as DocumentSnapshot<Object?>).exists) {
                   return const ErrorCardWidget(
                     errorMessage: "We konden de afschrijver niet ophalen",
                   );
@@ -63,7 +65,7 @@ class ShowTrainingPage extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   String creatorName;
                   Map<String, dynamic> user =
-                      snapshot.data!.data() as Map<String, dynamic>;
+                      snapshot.data?.data() as Map<String, dynamic>;
                   creatorName = reservation['creatorName'] ??
                       user['first_name'] + ' ' + user['last_name'];
 

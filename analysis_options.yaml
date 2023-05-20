@@ -57,8 +57,6 @@ dart_code_metrics:
     - test/** # we don't have any tests yet
     - lib/**.graphql.dart # exclude generated files
   rules:
-    # - avoid-non-null-assertion: false
-
     # ------ RULES WE AIM TO AVOID -----------------
     - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
 
