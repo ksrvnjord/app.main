@@ -42,12 +42,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double logoHeight = 64;
     const double myProfileSize = 48;
 
+    double screenTopPadding = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       appBar: PreferredSize(
         // this is to make the body start below the status bar
-        preferredSize: Size.fromHeight(MediaQuery.of(context).padding.top),
+        preferredSize: Size.fromHeight(screenTopPadding),
         child: SizedBox(
-          height: MediaQuery.of(context).padding.top,
+          height: screenTopPadding,
         ),
       ),
       body: RefreshIndicator(

@@ -31,7 +31,8 @@ class PostService {
     required String title,
     required String content,
   }) async {
-    final me = GetIt.I<CurrentUser>().user!.fullContact.private!;
+    final CurrentUser current = GetIt.I<CurrentUser>();
+    final me = current.user!.fullContact.private!;
 
     await postsCollection.add(Post(
       topic: topic,

@@ -49,8 +49,9 @@ class Comment {
     required String content,
     required String postId,
   }) {
+    final current = GetIt.I<CurrentUser>();
     Query$Me$me$fullContact$private private =
-        GetIt.I<CurrentUser>().user!.fullContact.private!;
+        current.user!.fullContact.private!;
     String firstName = private.first_name!;
     String lastName = private.last_name!;
 
