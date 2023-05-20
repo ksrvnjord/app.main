@@ -27,7 +27,7 @@ class WidgetHeader extends StatelessWidget {
           .alignment(Alignment.center),
       if (onTap != null)
         GestureDetector(
-          onTap: onTap,
+          // ignore: sort_child_properties_last
           child: [
             if (onTapName != null) Text(onTapName!).textColor(Colors.blueGrey),
             const Icon(
@@ -35,9 +35,8 @@ class WidgetHeader extends StatelessWidget {
               size: 16,
               color: Colors.blueGrey,
             ),
-          ].toRow(
-            mainAxisAlignment: MainAxisAlignment.end,
-          ),
+          ].toRow(mainAxisAlignment: MainAxisAlignment.end),
+          onTap: onTap,
         ).alignment(Alignment.centerRight),
     ].toStack(
       alignment: Alignment.center,

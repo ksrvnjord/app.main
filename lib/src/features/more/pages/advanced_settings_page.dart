@@ -23,20 +23,19 @@ class AdvancedSettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Geavanceerde instellingen'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
         // create a button to clear the cache
         ListTile(
-          visualDensity: VisualDensity.standard,
           title: const Text('Cache verwijderen'),
           subtitle: const Text(
             "Alle opgeslagen data op je telefoon wordt verwijderd. Dit sluit je app af.",
           ),
           trailing: const Icon(Icons.delete_outline, color: Colors.red),
-          onTap: () => // show dialog
-              showDialog(
+          visualDensity: VisualDensity.standard,
+          onTap: () => showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: const Text('Cache verwijderen'),
@@ -45,13 +44,13 @@ class AdvancedSettingsPage extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  child: const Text('Annuleren').textColor(Colors.lightBlue),
                   onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Annuleren').textColor(Colors.lightBlue),
                 ),
                 TextButton(
+                  onPressed: () => clearCache(),
                   child: const Text('Verwijder de cache en sluit mijn app af')
                       .textColor(Colors.red),
-                  onPressed: () => clearCache(),
                 ),
               ],
             ),

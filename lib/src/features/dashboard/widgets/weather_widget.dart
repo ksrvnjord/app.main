@@ -87,10 +87,10 @@ class WeatherWidget extends ConsumerWidget {
                     windspeedCss,
                     fallback: WeatherIcons.na,
                   ),
-                  color: Colors.white,
                   size: 32,
+                  color: Colors.white,
                 ),
-                WindIcon(degree: winddirection, color: Colors.white, size: 32),
+                WindIcon(degree: winddirection, size: 32, color: Colors.white),
               ].toRow(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,

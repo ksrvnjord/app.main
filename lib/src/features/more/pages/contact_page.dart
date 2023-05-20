@@ -23,43 +23,38 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
         // TODO: add linkje naar interne Njord Insta
         ExpansionTile(
-          initiallyExpanded: true,
           title: const Text("Bestuur")
               .fontSize(expansionTileFontSize)
               .fontWeight(FontWeight.w500),
+          // ignore: sort_child_properties_last
           children: [
-            // create a DataTable, with two columns: function and email
             DataTable(
               columns: const [
                 DataColumn(label: Text("Functie")),
                 DataColumn(label: Text("Email")),
               ],
               rows: [
-                ...bestuurEmailMap.entries.map(
-                  (entry) => DataRow(cells: [
-                    DataCell(Text(entry.key)),
-                    DataCell(
-                      InkWell(
-                        onTap: () => launchUrl(
-                          Uri.parse('mailto:${entry.value}'),
-                        ),
+                ...bestuurEmailMap.entries.map((entry) => DataRow(cells: [
+                      DataCell(Text(entry.key)),
+                      DataCell(InkWell(
                         child: const FaIcon(
                           FontAwesomeIcons.envelope,
                           color: Colors.blue,
                         ).padding(all: emailIconPadding),
-                      ),
-                    ),
-                  ]),
-                ),
+                        onTap: () =>
+                            launchUrl(Uri.parse('mailto:${entry.value}')),
+                      )),
+                    ])),
               ],
             ),
           ],
+          initiallyExpanded: true,
         ),
         ExpansionTile(
           title: const Text("Commissies")
@@ -78,13 +73,12 @@ class ContactPage extends StatelessWidget {
                     DataCell(
                       // create a link to the email
                       InkWell(
-                        onTap: () => launchUrl(
-                          Uri.parse('mailto:${entry.value}'),
-                        ),
                         child: const FaIcon(
                           FontAwesomeIcons.envelope,
                           color: Colors.blue,
                         ).padding(all: emailIconPadding),
+                        onTap: () =>
+                            launchUrl(Uri.parse('mailto:${entry.value}')),
                       ),
                     ),
                   ]),
@@ -126,17 +120,15 @@ class ContactPage extends StatelessWidget {
         [
           const Text("Vragen over de app?").fontSize(fontSizeSingleText),
           InkWell(
-            onTap: () => launchUrl(
-              Uri.parse('mailto:app@njord.nl'),
-            ),
             child: const Text(
               "app@njord.nl",
               style: TextStyle(
-                fontSize: 16,
                 color: Colors.blue,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            onTap: () => launchUrl(Uri.parse('mailto:app@njord.nl')),
           ).padding(horizontal: horizontalPadding),
         ].toRow().padding(vertical: widgetPadding, horizontal: padding),
       ]),
@@ -160,17 +152,15 @@ class InstagramRowWidget extends StatelessWidget {
     return Row(children: [
       const Icon(FontAwesomeIcons.instagram, color: Colors.white),
       InkWell(
-        onTap: () => launchUrl(
-          Uri.parse(url),
-        ),
         child: Text(
           handle,
           style: const TextStyle(
-            fontSize: 16,
             color: Colors.white,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
+        onTap: () => launchUrl(Uri.parse(url)),
       ).padding(left: horizontalPadding),
     ]);
   }

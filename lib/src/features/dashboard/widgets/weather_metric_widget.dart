@@ -33,11 +33,7 @@ class WeatherMetricWidget extends StatelessWidget {
       child: [
         [
           [
-            BoxedIcon(
-              icon,
-              color: Colors.white,
-              size: headerIconSize,
-            ),
+            BoxedIcon(icon, size: headerIconSize, color: Colors.white),
             Text(title)
                 .textColor(Colors.white)
                 .fontSize(headerTextSize)

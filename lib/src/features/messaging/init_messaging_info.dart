@@ -25,8 +25,8 @@ void initMessagingInfo() {
       'dbfood',
       'dbfood',
       importance: Importance.high,
-      styleInformation: bigTextStyleInformation,
       priority: Priority.high,
+      styleInformation: bigTextStyleInformation,
       playSound: true,
     );
 

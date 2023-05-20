@@ -38,13 +38,6 @@ class VaarverbodWidget extends ConsumerWidget {
     const double headerFontSize = 16;
 
     return ExpandablePanel(
-      theme: const ExpandableThemeData(
-        hasIcon: true,
-        iconColor: Colors.white,
-        tapHeaderToExpand: true,
-        headerAlignment: ExpandablePanelHeaderAlignment.center,
-      ),
-      // leading: Icon(icon, color: Colors.white),
       header: [
         Icon(icon, color: Colors.white),
         Text(message).fontSize(headerFontSize).textColor(Colors.white),
@@ -60,9 +53,13 @@ class VaarverbodWidget extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             separator: const SizedBox(height: descriptionPadding),
           )
-          .paddingDirectional(
-            all: descriptionPadding,
-          ), // padding for expanded widget
+          .paddingDirectional(all: descriptionPadding),
+      theme: const ExpandableThemeData(
+        iconColor: Colors.white,
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
+        tapHeaderToExpand: true,
+        hasIcon: true,
+      ),
     ).card(
       color: backgroundColor,
       elevation: 0,

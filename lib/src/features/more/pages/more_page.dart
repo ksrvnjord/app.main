@@ -27,8 +27,8 @@ class MorePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meer'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(
         children: [
@@ -83,9 +83,9 @@ class MorePage extends ConsumerWidget {
             height: 0,
           ),
           ListTile(
-            visualDensity: VisualDensity.standard,
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
+            visualDensity: VisualDensity.standard,
             onTap: () => ref.read(authModelProvider).logout(),
           ),
         ],

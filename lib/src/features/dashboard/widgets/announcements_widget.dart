@@ -26,47 +26,36 @@ class AnnouncementsWidget extends ConsumerWidget {
             .map(
               (announcement) => ListTile(
                 title: Text(announcement.title),
-                subtitle: Text.rich(
+                subtitle: Text.rich(TextSpan(children: [
+                  TextSpan(text: "${announcement.author} ")
+                      .textColor(Colors.black54)
+                      .fontSize(announcementSubtitleFontSize)
+                      .fontWeight(FontWeight.bold),
                   TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "${announcement.author} ",
-                      )
-                          .textColor(Colors.black54)
-                          .fontSize(announcementSubtitleFontSize)
-                          .fontWeight(FontWeight.bold),
-                      TextSpan(
-                        text: timeago.format(
-                          announcement.created_at,
-                          locale: 'nl',
-                        ),
-                      )
-                          .textColor(Colors.grey)
-                          .fontSize(announcementSubtitleFontSize),
-                    ],
-                  ),
-                ),
-                shape: // circular border
-                    const RoundedRectangleBorder(
+                    text: timeago.format(announcement.created_at, locale: 'nl'),
+                  )
+                      .textColor(Colors.grey)
+                      .fontSize(announcementSubtitleFontSize),
+                ])),
+                trailing: [
+                  const Icon(Icons.chevron_right, color: Colors.blueGrey),
+                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                trailing: [
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Colors.blueGrey,
-                  ),
-                ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                minLeadingWidth: minLeadingWidth,
                 // ignore: prefer-extracting-callbacks
                 onTap: () {
-                  FirebaseAnalytics.instance
-                      .logEvent(name: 'announcement_opened', parameters: {
-                    'announcement_id': announcement.id,
-                    'announcement_title': announcement.title,
-                  });
+                  FirebaseAnalytics.instance.logEvent(
+                    name: 'announcement_opened',
+                    parameters: {
+                      'announcement_id': announcement.id,
+                      'announcement_title': announcement.title,
+                    },
+                  );
                   Routemaster.of(context)
                       .push('announcements/${announcement.id}');
                 },
+                minLeadingWidth: minLeadingWidth,
               ),
             )
             .toList()
@@ -80,12 +69,11 @@ class AnnouncementsWidget extends ConsumerWidget {
             ErrorCardWidget(errorMessage: error.toString()),
         loading: () => ShimmerWidget(
           child: Container(
-            height: shimmerContainerHeight,
-            decoration: // circle border
-                const BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
+            height: shimmerContainerHeight,
           ),
         ),
       ),
