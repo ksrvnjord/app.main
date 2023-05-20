@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
@@ -32,7 +32,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.invalidate(openPollsProvider);
     ref.invalidate(pollAnswerProvider);
     ref.invalidate(comingEventsProvider);
-    ref.invalidate(announcementsProvider);
+    ref.invalidate(Announcements.firstPageProvider);
 
     // Wait for all providers to be updated.
     // ignore: avoid-ignoring-return-values
@@ -40,7 +40,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.watch(vaarverbodProvider.future),
       ref.watch(openPollsProvider.future),
       ref.watch(comingEventsProvider.future),
-      ref.watch(announcementsProvider.future),
+      ref.watch(Announcements.firstPageProvider.future),
     ]);
   }
 

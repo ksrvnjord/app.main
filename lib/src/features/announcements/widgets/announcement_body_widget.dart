@@ -18,6 +18,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
     const double spacingBetweenTitleAndText = 8;
 
     return ListView(
+      padding: const EdgeInsets.all(8),
       children: [
         // Show title of announcement emphasized.
         Text(

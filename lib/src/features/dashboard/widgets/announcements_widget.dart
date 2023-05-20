@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
@@ -14,7 +14,7 @@ class AnnouncementsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcementsVal = ref.watch(announcementsProvider);
+    final announcementsVal = ref.watch(Announcements.firstPageProvider);
     const double minLeadingWidth = 8;
     const double announcementSubtitleFontSize = 12;
     const double shimmerContainerHeight = 320;
