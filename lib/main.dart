@@ -52,8 +52,13 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(CurrentUser());
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  await FirebaseAnalytics.instance
-      .setDefaultEventParameters({'version': packageInfo.version});
+  await FirebaseAnalytics.instance.setDefaultEventParameters(
+    {'version': packageInfo.version},
+  ); // log app version with every event
+
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+    kReleaseMode,
+  ); // don't collect analytics in debug mode
 
   final container =
       ProviderContainer(); // used to initialize always active providers
