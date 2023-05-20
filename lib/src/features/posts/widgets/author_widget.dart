@@ -17,14 +17,17 @@ class AuthorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool? authorIsAppCo = postAuthor?.isAppCo;
+    bool? authorIsBestuur = postAuthor?.isBestuur;
+
     return [
       Text(authorName).fontWeight(FontWeight.bold).fontSize(fontSize),
       // twitter checkmark
-      if (postAuthor != null && (postAuthor!.isBestuur || postAuthor!.isAppCo))
+      if (postAuthor != null && (authorIsBestuur! || authorIsAppCo!))
         Icon(
           Icons.verified,
           size: fontSize,
-          color: postAuthor!.isAppCo ? Colors.amber : Colors.lightBlue,
+          color: authorIsAppCo! ? Colors.amber : Colors.lightBlue,
         ),
     ].toRow(
       separator: const SizedBox(width: 4),

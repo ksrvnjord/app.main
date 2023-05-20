@@ -15,6 +15,7 @@ class PostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topics = ref.watch(postTopicsProvider);
+    final selectedTopic = ref.watch(selectedTopicProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +37,7 @@ class PostsPage extends ConsumerWidget {
                     RadioListTile<String?>(
                       title: const Text("Alle posts"),
                       value: null,
-                      groupValue: ref.watch(selectedTopicProvider),
+                      groupValue: selectedTopic,
                       onChanged: (value) => ref
                           .read(selectedTopicProvider.notifier)
                           .state = value,
@@ -45,7 +46,7 @@ class PostsPage extends ConsumerWidget {
                       RadioListTile<String>(
                         title: Text(topic),
                         value: topic,
-                        groupValue: ref.watch(selectedTopicProvider),
+                        groupValue: selectedTopic,
                         onChanged: (value) => ref
                             .read(selectedTopicProvider.notifier)
                             .state = value,
