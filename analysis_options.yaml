@@ -58,7 +58,7 @@ dart_code_metrics:
     - lib/**.graphql.dart # exclude generated files
   rules:
     # ------ RULES WE AIM TO AVOID -----------------
-    - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
+    # - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
 
     # ------ UNAVOIDABLE RULES -----------------
     - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget

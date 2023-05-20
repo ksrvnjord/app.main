@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-static-class
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'firebase_options.dart';
@@ -126,7 +127,7 @@ class Application extends ConsumerWidget {
     final auth = ref.watch(authModelProvider);
     final loggedIn = auth.client != null;
 
-    return loggedIn ? routeMap : authenticationRoutes;
+    return loggedIn ? Routes.authenticated : Routes.unauthenticated;
   }
 
   @override
