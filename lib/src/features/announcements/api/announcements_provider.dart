@@ -12,9 +12,5 @@ final announcementsProvider =
     ),
   ));
 
-  await Future.delayed(
-    const Duration(milliseconds: 1726 ~/ 2),
-  ); // add delay so people believe it's loading
-
   return result.parsedData!.announcements!.data;
 });

@@ -68,6 +68,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
 
     // Check if the boat is in-de-vaart
     if (!boatData.available) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Dit object is uit de vaart.')),
       );
@@ -79,6 +80,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     checkPermission();
 
     if (!hasPermission) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Je hebt geen permissies voor dit object.'),
       ));
@@ -87,6 +89,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     }
 
     if (boatData.critical) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Dit object is uit de vaart.'),
       ));
@@ -119,7 +122,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
             .add(Duration(minutes: offsetMinutes));
 
     // TODO: calculate here from when till when the user can make a reservation
-
+    // ignore: avoid-ignoring-return-values
     Routemaster.of(context).push('plan', queryParameters: {
       'reservationObjectId': widget.boat.id,
       'reservationObjectName': widget.boat.get('name'),

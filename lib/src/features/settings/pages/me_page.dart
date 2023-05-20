@@ -276,6 +276,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         phone_primary: fields[2]['phone_primary']?['controller'].text,
       ),
     ).then((data) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Updateverzoek verstuurd')),
       );
@@ -284,6 +285,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         buttonColor = Colors.blue;
       });
     }).onError((error, stackTrace) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Updateverzoek mislukt, melding gemaakt.'),
         backgroundColor: Colors.red,

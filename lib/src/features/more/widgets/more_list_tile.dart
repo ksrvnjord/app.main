@@ -17,11 +17,7 @@ class MoreListTile extends StatelessWidget {
       title: Text(label),
       trailing: const Icon(Icons.chevron_right, color: Colors.lightBlue),
       visualDensity: VisualDensity.standard,
-      onTap: () => navigateToPathIn(context),
+      onTap: () => Routemaster.of(context).push(routePath),
     );
-  }
-
-  void navigateToPathIn(BuildContext context) {
-    Routemaster.of(context).push(routePath);
   }
 }

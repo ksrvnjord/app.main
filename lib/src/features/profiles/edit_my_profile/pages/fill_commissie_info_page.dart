@@ -127,6 +127,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     try {
       await addMyCommissie(_formData);
     } catch (e) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Er is iets fout gegaan met het opslaan'),
@@ -137,6 +138,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
       return;
     }
     if (mounted) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Je commissie is opgeslagen'),

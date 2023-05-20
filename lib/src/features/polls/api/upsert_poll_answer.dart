@@ -7,7 +7,7 @@ void upsertPollAnswer(
   String? choice,
   QuerySnapshot<PollAnswer> snapshot,
   QueryDocumentSnapshot<Poll> pollDoc,
-) {
+) async {
   final Poll poll = pollDoc.data();
   if (DateTime.now().isAfter(poll.openUntil)) {
     throw Exception('Poll is closed');
@@ -21,13 +21,14 @@ void upsertPollAnswer(
         toFirestore: (answer, _) => answer.toJson(),
       );
   if (snapshot.size == 0) {
-    answersOfPoll.add(PollAnswer(
+    // ignore: avoid-ignoring-return-values
+    await answersOfPoll.add(PollAnswer(
       userId: FirebaseAuth.instance.currentUser!.uid,
       answer: choice,
       answeredAt: DateTime.now(),
     ));
   } else {
-    snapshot.docs.first.reference.update({
+    await snapshot.docs.first.reference.update({
       'answer': choice,
       'answeredAt': Timestamp.now(),
     });

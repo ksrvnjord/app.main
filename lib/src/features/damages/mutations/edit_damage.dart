@@ -40,7 +40,8 @@ Future<void> editDamage(
   if (damageForm.image != null) {
     final String path =
         '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
-    await store.ref(path).putFile(
+    // ignore: avoid-ignoring-return-values
+    store.ref(path).putFile(
           damageForm.image!,
         );
 

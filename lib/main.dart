@@ -31,8 +31,10 @@ import 'package:stack_trace/stack_trace.dart' as stack_trace;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage _) async {}
 
 Future<void> appRunner() async {
+  // ignore: avoid-ignoring-return-values
   WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
+  // ignore: avoid-ignoring-return-values
   await Firebase.initializeApp(
     // name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228
     options: DefaultFirebaseOptions.currentPlatform,
@@ -44,11 +46,15 @@ Future<void> appRunner() async {
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
   );
 
+  // ignore: avoid-ignoring-return-values
   await FirebaseMessaging.instance.getInitialMessage();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(GlobalObserverService());
+  // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(GlobalConstants());
+  // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(CurrentUser());
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -62,7 +68,10 @@ Future<void> appRunner() async {
 
   final container =
       ProviderContainer(); // used to initialize always active providers
+
+  // ignore: avoid-ignoring-return-values
   container.read(authModelProvider); // initialize the authModelProvider
+  // ignore: avoid-ignoring-return-values
   container.read(graphQLModelProvider); // initialize the graphQLModelProvider
 
   runApp(BetterFeedback(
@@ -86,6 +95,7 @@ Future<void> main() async {
     HiveCache.cachePath,
   ); // store the cache in a separate folder
   Hive.registerAdapter(ImageCacheItemAdapter()); // for image caching
+  // ignore: avoid-ignoring-return-values
   await Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());

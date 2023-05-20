@@ -36,13 +36,16 @@ class DamageEditWidget extends ConsumerWidget {
                   onPressed: () =>
                       editDamage(id, reservationObjectId, damageForm).then(
                     (e) {
+                      // ignore: avoid-ignoring-return-values
                       messenger.showSnackBar(SnackBar(
                         content: const Text('Schademelding aangemaakt'),
                         backgroundColor: Colors.green[900],
                       ));
+                      // ignore: avoid-ignoring-return-values
                       navigator.pop();
                     },
                     onError: (e) {
+                      // ignore: avoid-ignoring-return-values
                       messenger.showSnackBar(SnackBar(
                         content: const Text(
                           'Schademelding kon niet aangemaakt worden',
@@ -63,13 +66,16 @@ class DamageEditWidget extends ConsumerWidget {
           IconButton(
             onPressed: () => deleteDamage(id, reservationObjectId).then(
               (e) {
+                // ignore: avoid-ignoring-return-values
                 messenger.showSnackBar(SnackBar(
                   content: const Text('Schademelding verwijderd'),
                   backgroundColor: Colors.green[900],
                 ));
+                // ignore: avoid-ignoring-return-values
                 navigator.pop();
               },
               onError: (e) {
+                // ignore: avoid-ignoring-return-values
                 messenger.showSnackBar(SnackBar(
                   content: const Text(
                     'Schademelding kon niet verwijderd worden',

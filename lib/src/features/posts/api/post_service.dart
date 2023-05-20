@@ -11,8 +11,8 @@ class PostService {
             toFirestore: (post, _) => post.toJson(),
           );
 
-  static deletePost(String path) {
-    FirebaseFirestore.instance.doc(path).delete();
+  static deletePost(String path) async {
+    await FirebaseFirestore.instance.doc(path).delete();
   }
 
   static like(DocumentSnapshot<Post> snapshot) {
@@ -34,6 +34,7 @@ class PostService {
     final CurrentUser current = GetIt.I<CurrentUser>();
     final me = current.user!.fullContact.private!;
 
+    // ignore: avoid-ignoring-return-values
     await postsCollection.add(Post(
       title: title,
       content: content,

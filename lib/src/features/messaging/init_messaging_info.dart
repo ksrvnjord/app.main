@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-void initMessagingInfo() {
+void initMessagingInfo() async {
   AndroidInitializationSettings androidInitialize =
       const AndroidInitializationSettings('@mipmap/ic_launcher');
   DarwinInitializationSettings iOSInitialize =
@@ -11,8 +11,11 @@ void initMessagingInfo() {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // TODO: provide implementation for when initialize fails
+  // ignore: avoid-ignoring-return-values
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
+  // ignore: avoid-ignoring-return-values
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
       message.notification!.body.toString(),

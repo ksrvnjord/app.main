@@ -85,6 +85,7 @@ class AddPloegPage extends ConsumerWidget {
           ref
               .read(ploegEntryCreateNotifierProvider.notifier)
               .createPloegEntry();
+          // ignore: avoid-ignoring-return-values
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Ploeg succesvol toegevoegd'),
             backgroundColor: Colors.green,

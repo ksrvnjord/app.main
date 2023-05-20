@@ -25,9 +25,10 @@ class PostHeaderBar extends ConsumerWidget {
 
     final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
-    void deletePost() {
+    void deletePost() async {
       Navigator.of(context, rootNavigator: true).pop();
-      PostService.deletePost(snapshot.reference.path);
+      // ignore: avoid-ignoring-return-values
+      await PostService.deletePost(snapshot.reference.path);
     }
 
     return [

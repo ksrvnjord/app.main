@@ -34,7 +34,15 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.invalidate(pollAnswerProvider);
     ref.invalidate(comingEventsProvider);
     ref.invalidate(announcementsProvider);
-    await Future.delayed(const Duration(milliseconds: 500));
+
+    // wait for all providers to be updated
+    // ignore: avoid-ignoring-return-values
+    await Future.wait([
+      ref.watch(vaarverbodProvider.future),
+      ref.watch(openPollsProvider.future),
+      ref.watch(comingEventsProvider.future),
+      ref.watch(announcementsProvider.future),
+    ]);
   }
 
   // override didCHangeDependencies
@@ -42,6 +50,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // ignore: avoid-ignoring-return-values
     ref.watch(
       currentFirebaseUserProvider,
     ); // init the current user with data from Firestore

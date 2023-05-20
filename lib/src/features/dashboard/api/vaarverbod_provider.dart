@@ -6,9 +6,6 @@ final vaarverbodProvider = FutureProvider<Vaarverbod>(
   (ref) async {
     final Response<Map<String, dynamic>> response =
         await Dio().get('https://heimdall.njord.nl/api/v1/vaarverbod/');
-    await Future.delayed(
-      const Duration(milliseconds: 1726 ~/ 2),
-    ); // add delay so people believe it's loading
 
     return Vaarverbod.fromJson(response.data!);
   },

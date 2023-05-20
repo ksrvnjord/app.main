@@ -147,11 +147,12 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     if (!mounted) {
       return;
     }
-
+    // ignore: avoid-ignoring-return-values
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Niewe post aangemaakt!')),
     );
 
+    // ignore: avoid-ignoring-return-values
     Routemaster.of(context).pop();
   }
 }

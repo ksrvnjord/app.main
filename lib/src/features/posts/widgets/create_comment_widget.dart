@@ -55,13 +55,17 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
     );
   }
 
-  void submitForm() {
+  void submitForm() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save(); // save the form
 
-    Comment.createComment(content: _commentContent, postId: widget.postDocId);
+    // ignore: avoid-ignoring-return-values
+    await Comment.createComment(
+      content: _commentContent,
+      postId: widget.postDocId,
+    );
 
     _formKey.currentState!.reset(); // reset the form
   }

@@ -48,7 +48,8 @@ Future<void> newDamage(DamageForm damageForm) async {
   if (damageForm.image != null) {
     final String path =
         '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
-    await store.ref(path).putFile(
+    // ignore: avoid-ignoring-return-values
+    store.ref(path).putFile(
           damageForm.image!,
         );
 

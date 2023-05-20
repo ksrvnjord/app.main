@@ -40,6 +40,7 @@ class AuthModel extends ChangeNotifier {
     for (String key in box.keys) {
       await FirebaseMessaging.instance.unsubscribeFromTopic(key);
     }
+    // ignore: avoid-ignoring-return-values
     await box.clear();
   }
 
@@ -154,6 +155,7 @@ class AuthModel extends ChangeNotifier {
       // If we have data && we have the token in our data, proceed
       // to login
       if (data != null && data['token'] != null) {
+        // ignore: avoid-ignoring-return-values
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
         notifyListeners();
 
@@ -166,6 +168,7 @@ class AuthModel extends ChangeNotifier {
     } catch (e, st) {
       // If it fails, we don't want to die just yet - but do send
       // the exception to Sentry for further research.
+      // ignore: avoid-ignoring-return-values
       Sentry.captureException(error, stackTrace: st);
     }
 

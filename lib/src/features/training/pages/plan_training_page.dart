@@ -83,6 +83,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid-ignoring-return-values
     widget.reservationObject.get().then((obj) {
       if (obj['available'] == false) {
         log('Reservation object is not available');
@@ -321,6 +322,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             'reservation_object_name': widget.objectName,
           },
         );
+        // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Afschrijving gelukt!'),
@@ -329,6 +331,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           ),
         );
       } else {
+        // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Afschrijving mislukt! ${res['error']}"),
@@ -338,6 +341,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         );
       }
       ref.read(reservationProgressProvider.notifier).done();
+      // ignore: avoid-ignoring-return-values
       Routemaster.of(context).pop();
     });
   }

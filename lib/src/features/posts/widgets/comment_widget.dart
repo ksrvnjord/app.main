@@ -32,6 +32,7 @@ class CommentWidget extends ConsumerWidget {
       );
     } else {
       // delay delete, because otherwise the context menu will not be able to pop
+      // ignore: avoid-ignoring-return-values
       onPop.call();
     }
   }

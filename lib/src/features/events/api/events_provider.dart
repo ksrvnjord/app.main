@@ -30,12 +30,9 @@ final comingEventsProvider = FutureProvider<List<Event>>(
         ));
       }
     }
-    // sort events by start time
-    events.sort((a, b) => a.startTime.compareTo(b.startTime));
-    await Future.delayed(const Duration(
-      milliseconds: 1726 ~/ 2,
-    )); // let user feel that data is being loaded
 
-    return events;
+    return events
+      ..sort((a, b) =>
+          a.startTime.compareTo(b.startTime)); // sort events by start time
   },
 );

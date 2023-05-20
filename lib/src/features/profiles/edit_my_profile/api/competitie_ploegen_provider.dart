@@ -11,10 +11,6 @@ final competitiePloegenProvider =
     final int selectedYear = yearAndGender.item1;
     final selectedGender = yearAndGender.item2;
 
-    await Future.delayed(const Duration(
-      milliseconds: 1726,
-    )); // on first load, make user believe that the app is working hard
-
     final snapshot = await FirebaseFirestore.instance
         .collection('group_info')
         .withConverter(

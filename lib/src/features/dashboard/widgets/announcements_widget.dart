@@ -52,6 +52,7 @@ class AnnouncementsWidget extends ConsumerWidget {
                       'announcement_title': announcement.title,
                     },
                   );
+                  // ignore: avoid-ignoring-return-values
                   Routemaster.of(context)
                       .push('announcements/${announcement.id}');
                 },

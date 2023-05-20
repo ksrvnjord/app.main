@@ -58,8 +58,12 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     if (widget.user != null) {
       var keys = widget.user!.fullContact.public.toJson().keys.toSet();
       // User can't change visibility of these fields
+
+      // ignore: avoid-ignoring-return-values
       keys.remove('first_name');
+      // ignore: avoid-ignoring-return-values
       keys.remove('last_name');
+      // ignore: avoid-ignoring-return-values
       keys.remove('__typename');
 
       final public = widget.user!.fullContact.public.toJson();
@@ -89,6 +93,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       listed,
       Input$IBooleanContact.fromJson(checkboxes),
     ).then((data) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Vindbaarheid aangepast'),
       ));
@@ -97,6 +102,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
         buttonColor = Colors.blue;
       });
     }).onError((error, stackTrace) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Aanpassen mislukt, melding gemaakt.'),
         backgroundColor: Colors.red,

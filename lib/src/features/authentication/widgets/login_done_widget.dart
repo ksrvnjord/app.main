@@ -9,7 +9,7 @@ class LoginDoneWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(
+    final _ = ref.watch(
       currentFirebaseUserProvider,
     ); // get currentUser details from firebase
     // ignore: avoid-non-ascii-symbols
@@ -20,17 +20,13 @@ class LoginDoneWidget extends ConsumerWidget {
     const double cardElevation = 8;
     const double cardOuterPadding = 16;
 
-    void navigateToHomePage() {
-      Routemaster.of(context).push('/');
-    }
-
     return <Widget>[
       <Widget>[const Text(swanEmoji, style: TextStyle(fontSize: 40))]
           .toRow(mainAxisAlignment: MainAxisAlignment.center),
       const Text('Je bent ingelogd.').padding(top: textPadding),
       <Widget>[
         ElevatedButton(
-          onPressed: navigateToHomePage,
+          onPressed: () => Routemaster.of(context).push('/'),
           child: const Text('Doorgaan'),
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),

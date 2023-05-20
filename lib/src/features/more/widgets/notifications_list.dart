@@ -23,6 +23,7 @@ class _NotificationsListState extends State<NotificationsList> {
     String title,
   ) {
     toggleTopicFCM(topic: topic, value: value).then((_) {
+      // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
         content: Text('${value ? 'Aangemeld' : 'Afgemeld'} voor $title'),
         backgroundColor: Colors.green[900],
@@ -32,6 +33,7 @@ class _NotificationsListState extends State<NotificationsList> {
         return;
       });
     }).onError((_, __) {
+      // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
         content: const Text('Er is iets misgegaan'),
         backgroundColor: Colors.red[900],

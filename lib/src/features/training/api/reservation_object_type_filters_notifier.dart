@@ -35,6 +35,7 @@ class ReservationObjectTypeFiltersNotifier
       allFilters.addAll(entry.value);
     }
     final prefs = await SharedPreferences.getInstance();
+    // ignore: avoid-ignoring-return-values
     prefs.setStringList('afschrijf_filters', allFilters);
   }
 }

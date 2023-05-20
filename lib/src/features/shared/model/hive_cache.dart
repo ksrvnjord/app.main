@@ -21,6 +21,7 @@ class HiveCache {
 
   static Future<ImageCacheItem?> get(String key) async {
     if (!hiveImageCache.isOpen) {
+      // ignore: avoid-ignoring-return-values
       await Hive.openLazyBox(imageCacheBoxName);
     }
 
@@ -81,6 +82,7 @@ class HiveCache {
     Duration maxAge = defaultMaxAge,
   }) async {
     if (!hiveImageCache.isOpen) {
+      // ignore: avoid-ignoring-return-values
       await Hive.openLazyBox(imageCacheBoxName);
     }
 
@@ -108,10 +110,12 @@ class HiveCache {
     await Hive.close(); // close all open lazyBoxes
     Directory appDir = await getApplicationDocumentsDirectory();
     Directory hiveDir = Directory('${appDir.path}/$cachePath');
+    // ignore: avoid-ignoring-return-values
     await hiveDir.delete(recursive: true);
     await Hive.initFlutter(
       HiveCache.cachePath,
     ); // store the cache in a separate folder
+    // ignore: avoid-ignoring-return-values
     await Hive.openLazyBox(imageCacheBoxName);
   }
 }

@@ -44,6 +44,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
       // convert url to URI
       final uri = Uri.parse(url);
       // launch url in separate browser
+      // ignore: avoid-ignoring-return-values
       launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }

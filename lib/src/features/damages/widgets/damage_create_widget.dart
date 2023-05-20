@@ -32,13 +32,16 @@ class DamageCreateWidget extends ConsumerWidget {
               ? IconButton(
                   onPressed: () => newDamage(formData).then(
                     (e) {
+                      // ignore: avoid-ignoring-return-values
                       messenger.showSnackBar(SnackBar(
                         content: const Text('Schademelding aangemaakt'),
                         backgroundColor: Colors.green[900],
                       ));
+                      // ignore: avoid-ignoring-return-values
                       navigator.pop();
                     },
                     onError: (e) {
+                      // ignore: avoid-ignoring-return-values
                       messenger.showSnackBar(SnackBar(
                         content: const Text(
                           'Schademelding kon niet aangemaakt worden',

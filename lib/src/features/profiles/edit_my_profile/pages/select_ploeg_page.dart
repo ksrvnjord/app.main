@@ -125,6 +125,7 @@ class SelectPloegPage extends ConsumerWidget {
                       ref
                           .read(ploegEntryCreateNotifierProvider.notifier)
                           .setPloegName(ploeg);
+                      // ignore: avoid-ignoring-return-values
                       Routemaster.of(context).push("add");
                     },
                   ),

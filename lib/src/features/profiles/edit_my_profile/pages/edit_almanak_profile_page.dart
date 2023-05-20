@@ -229,6 +229,7 @@ class _EditAlmanakProfilePageState
   void submitForm() async {
     // FORM VALIDATION
     if (!_formKey.currentState!.validate()) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Sommige velden zijn niet juist ingevuld'),
@@ -269,7 +270,9 @@ class _EditAlmanakProfilePageState
     final File? newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {
+        // ignore: avoid-ignoring-return-values
         CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
+        // ignore: avoid-ignoring-return-values
         profilePictureProvider(getCurrentUserId())
             .overrideWith((ref) => Image.file(newprofilePicture).image);
       } on FirebaseException catch (_) {
@@ -280,6 +283,7 @@ class _EditAlmanakProfilePageState
     // SHOW CONFIRMATION TO USER
     if (context.mounted) {
       if (success) {
+        // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Je profiel is succesvol gewijzigd'),
@@ -287,6 +291,7 @@ class _EditAlmanakProfilePageState
           ),
         );
       } else {
+        // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Er ging iets mis bij het wijzigen van je profiel'),
