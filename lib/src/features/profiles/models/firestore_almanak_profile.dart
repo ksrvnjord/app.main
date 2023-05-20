@@ -35,6 +35,45 @@ class FirestoreAlmanakProfile {
     this.substructures,
   });
 
+  // fromJson
+  factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
+    return FirestoreAlmanakProfile(
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      identifier: json['identifier'],
+      ploeg: json['ploeg'],
+      board: json['board'],
+      study: json['study'],
+      otherAssociation: json['other_association'],
+      bestuursFunctie: json['bestuurs_functie'],
+      huis: json['huis'],
+      dubbellid: json['dubbellid'],
+      substructures: json['substructures'] != null
+          ? List<String>.from(json['substructures'])
+          : null,
+    );
+  }
+
+  factory FirestoreAlmanakProfile.fromHeimdall(Query$AlmanakProfile$user user) {
+    Query$AlmanakProfile$user$fullContact$public publicContact =
+        user.fullContact.public;
+
+    return FirestoreAlmanakProfile(
+      identifier: user.identifier,
+      firstName: publicContact.first_name!,
+      lastName: publicContact.last_name!,
+      email: publicContact.email,
+      phonePrimary: publicContact.phone_primary,
+      address: Address(
+        street: publicContact.street,
+        houseNumber: publicContact.housenumber,
+        houseNumberAddition: publicContact.housenumber_addition,
+        postalCode: publicContact.zipcode,
+        city: publicContact.city,
+      ),
+    );
+  }
+
   FirestoreAlmanakProfile copyWith({
     String? firstName,
     String? lastName,
@@ -69,25 +108,6 @@ class FirestoreAlmanakProfile {
     );
   }
 
-  // fromJson
-  factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
-    return FirestoreAlmanakProfile(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      identifier: json['identifier'],
-      ploeg: json['ploeg'],
-      board: json['board'],
-      study: json['study'],
-      otherAssociation: json['other_association'],
-      bestuursFunctie: json['bestuurs_functie'],
-      huis: json['huis'],
-      dubbellid: json['dubbellid'],
-      substructures: json['substructures'] != null
-          ? List<String>.from(json['substructures'])
-          : null,
-    );
-  }
-
   // toJson
   Map<String, dynamic> toFirestore() {
     return {
@@ -112,26 +132,6 @@ class FirestoreAlmanakProfile {
       street: u.street,
       houseNumber: u.housenumber,
       houseNumberAddition: u.housenumber_addition,
-    );
-  }
-
-  factory FirestoreAlmanakProfile.fromHeimdall(Query$AlmanakProfile$user user) {
-    Query$AlmanakProfile$user$fullContact$public publicContact =
-        user.fullContact.public;
-
-    return FirestoreAlmanakProfile(
-      identifier: user.identifier,
-      firstName: publicContact.first_name!,
-      lastName: publicContact.last_name!,
-      email: publicContact.email,
-      phonePrimary: publicContact.phone_primary,
-      address: Address(
-        street: publicContact.street,
-        houseNumber: publicContact.housenumber,
-        houseNumberAddition: publicContact.housenumber_addition,
-        postalCode: publicContact.zipcode,
-        city: publicContact.city,
-      ),
     );
   }
 }

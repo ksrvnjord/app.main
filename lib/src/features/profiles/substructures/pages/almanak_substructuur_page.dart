@@ -17,7 +17,6 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
   }) : super(key: key);
 
   final String name;
-  static const widgetPadding = 16.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

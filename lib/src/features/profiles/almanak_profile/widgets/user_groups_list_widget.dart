@@ -16,6 +16,53 @@ class UserGroupsListWidget extends StatelessWidget {
 
   final List<QueryDocumentSnapshot<GroupEntry>> snapshot;
 
+  Widget _buildGroupInfoTile(QueryDocumentSnapshot<GroupEntry> doc) {
+    final GroupEntry entry = doc.data();
+
+    switch (entry.runtimeType) {
+      case CommissieEntry:
+        final commissieEntry = entry as CommissieEntry;
+        return GroupInfoTile(
+          header: doc.data().name,
+          startYear: doc.data().year,
+          endYear: doc.data().year + 1,
+          tags: (commissieEntry.function == null ||
+                  commissieEntry.function!.isEmpty)
+              ? null
+              : [
+                  Tag(
+                    label: commissieEntry.function!,
+                    backgroundColor: {
+                          "Praeses": Colors.lightBlue[300]!,
+                          "Ab-actis": Colors.red[300]!,
+                          "Quaestor": Colors.lightGreen[300]!,
+                        }[commissieEntry.function!] ??
+                        Colors.blueGrey[300]!,
+                    icon: Icons.person,
+                  ),
+                ],
+        );
+      case PloegEntry:
+        final ploegEntry = entry as PloegEntry;
+        return GroupInfoTile(
+          header: doc.data().name,
+          startYear: doc.data().year,
+          endYear: doc.data().year + 1,
+          tags: [
+            Tag(
+              label: ploegEntry.role.value,
+              backgroundColor: Colors.blueGrey[300]!,
+              icon: Icons.person,
+            ),
+          ],
+        );
+      default:
+        throw UnimplementedError(
+          "GroupInfoTile for ${entry.runtimeType} is not implemented",
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<QueryDocumentSnapshot<GroupEntry>> docs = snapshot;
@@ -63,52 +110,5 @@ class UserGroupsListWidget extends StatelessWidget {
             ],
           )
         : const SizedBox.shrink();
-  }
-
-  Widget _buildGroupInfoTile(QueryDocumentSnapshot<GroupEntry> doc) {
-    final GroupEntry entry = doc.data();
-
-    switch (entry.runtimeType) {
-      case CommissieEntry:
-        final commissieEntry = entry as CommissieEntry;
-        return GroupInfoTile(
-          header: doc.data().name,
-          startYear: doc.data().year,
-          endYear: doc.data().year + 1,
-          tags: (commissieEntry.function == null ||
-                  commissieEntry.function!.isEmpty)
-              ? null
-              : [
-                  Tag(
-                    label: commissieEntry.function!,
-                    backgroundColor: {
-                          "Praeses": Colors.lightBlue[300]!,
-                          "Ab-actis": Colors.red[300]!,
-                          "Quaestor": Colors.lightGreen[300]!,
-                        }[commissieEntry.function!] ??
-                        Colors.blueGrey[300]!,
-                    icon: Icons.person,
-                  ),
-                ],
-        );
-      case PloegEntry:
-        final ploegEntry = entry as PloegEntry;
-        return GroupInfoTile(
-          header: doc.data().name,
-          startYear: doc.data().year,
-          endYear: doc.data().year + 1,
-          tags: [
-            Tag(
-              label: ploegEntry.role.value,
-              backgroundColor: Colors.blueGrey[300]!,
-              icon: Icons.person,
-            ),
-          ],
-        );
-      default:
-        throw UnimplementedError(
-          "GroupInfoTile for ${entry.runtimeType} is not implemented",
-        );
-    }
   }
 }

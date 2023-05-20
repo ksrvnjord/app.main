@@ -20,11 +20,12 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
 
   final _formKey = GlobalKey<FormState>();
 
-  static const inputMaxLength = 1726;
   String _commentContent = '';
 
   @override
   Widget build(BuildContext context) {
+    const inputMaxLength = 1726;
+
     return Form(
       key: _formKey,
       child: [

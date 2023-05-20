@@ -13,17 +13,6 @@ class VaarverbodWidget extends ConsumerWidget {
     super.key,
   });
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(vaarverbodProvider).when(
-          data: (data) => _buildVaarverbodCard(vaarverbod: data),
-          loading: () => ShimmerWidget(
-            child: _buildVaarverbodCard(),
-          ),
-          error: (error, stack) => _buildVaarverbodCard(),
-        );
-  }
-
   Widget _buildVaarverbodCard({
     Vaarverbod? vaarverbod,
   }) {
@@ -82,5 +71,16 @@ class VaarverbodWidget extends ConsumerWidget {
       ),
       margin: const EdgeInsets.all(0),
     );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(vaarverbodProvider).when(
+          data: (data) => _buildVaarverbodCard(vaarverbod: data),
+          loading: () => ShimmerWidget(
+            child: _buildVaarverbodCard(),
+          ),
+          error: (error, stack) => _buildVaarverbodCard(),
+        );
   }
 }

@@ -10,14 +10,14 @@ class FirebaseUser {
   final String firstName;
   final String lastName;
 
+  bool get isAppCo => ['21203', '18031', '18257'].contains(uid);
+
   const FirebaseUser({
     required this.uid,
     required this.isBestuur,
     required this.firstName,
     required this.lastName,
   });
-
-  bool get isAppCo => ['21203', '18031', '18257'].contains(uid);
 
   FirebaseUser copyWith({
     String? uid,

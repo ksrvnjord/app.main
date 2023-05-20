@@ -6,6 +6,15 @@ import '../widgets/calendar/filters/model/boat_types.dart';
 
 class ReservationObjectTypeFiltersNotifier
     extends StateNotifier<Map<String, List<String>>> {
+  // has no filters
+  bool get isEmpty {
+    for (final entry in state.entries) {
+      if (entry.value.isNotEmpty) return false;
+    }
+
+    return true;
+  }
+
   ReservationObjectTypeFiltersNotifier(Map<String, List<String>> filters)
       : super(filters);
 
@@ -17,15 +26,6 @@ class ReservationObjectTypeFiltersNotifier
   void updateFiltersForCategory(String category, List<String> filters) {
     state = {...state, category: filters};
     _saveToSharedPrefs();
-  }
-
-  // has no filters
-  bool get isEmpty {
-    for (final entry in state.entries) {
-      if (entry.value.isNotEmpty) return false;
-    }
-
-    return true;
   }
 
   // create private method that saves state to shared preferences

@@ -11,11 +11,11 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
 
   final AsyncValue<String?> descriptionAsyncVal;
 
-  static const double fontSize = 14;
-  static const double widgetPadding = 16.0;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const double widgetPadding = 16.0;
+    const double fontSize = 14;
+
     return descriptionAsyncVal.when(
       data: (data) => data == null
           ? const SizedBox.shrink()

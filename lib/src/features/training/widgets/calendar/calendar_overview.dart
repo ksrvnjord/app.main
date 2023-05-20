@@ -23,12 +23,6 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
   late final ScrollController timesController;
 
   @override
-  void dispose() {
-    boatsController.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     boatsController = ScrollController();
     timesController = ScrollController();
@@ -42,11 +36,16 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
     super.initState();
   }
 
-  static const double iconPadding = 8;
+  @override
+  void dispose() {
+    boatsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<String> filters = ref.watch(reservationTypeFiltersListProvider);
+    const double iconPadding = 8;
 
     return filters.isEmpty
         ? <Widget>[

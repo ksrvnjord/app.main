@@ -64,7 +64,6 @@ dart_code_metrics:
     - format-comment: false
     - prefer-async-await: false
     - arguments-ordering: false
-    - member-ordering: false
     - prefer-correct-identifier-length: false
     - avoid-late-keyword: false
     - prefer-single-widget-per-file: false

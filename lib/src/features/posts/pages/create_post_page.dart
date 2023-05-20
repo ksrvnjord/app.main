@@ -22,8 +22,6 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   String title = '';
   String content = '';
 
-  static const int maxTitleLength = 40;
-
   bool postCreationInProgress = false;
 
   @override

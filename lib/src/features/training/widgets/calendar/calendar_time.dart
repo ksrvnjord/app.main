@@ -14,14 +14,13 @@ class CalendarTime extends StatelessWidget {
         .add(Duration(minutes: index * CalendarMeasurement.minutesInSlot)),
   );
 
-  static const double smallTicks = 56;
-  static const double bigTicks = 50;
-  static const double leftPaddingOfTime = 8;
-  static const double timeRightPadding = 18;
-
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
+    const double smallTicks = 56;
+    const double bigTicks = 50;
+    const double leftPaddingOfTime = 8;
+    const double timeRightPadding = 18;
 
     return SizedBox(
       width: timeWidth,

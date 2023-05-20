@@ -17,13 +17,12 @@ class CommentsPage extends ConsumerWidget {
 
   final String postDocId;
 
-  static const double commentHPadding = 8;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(postProvider(postDocId));
     final commentsVal = ref.watch(commentsProvider(postDocId));
     const double commentSpacing = 12;
+    const double commentHPadding = 8;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

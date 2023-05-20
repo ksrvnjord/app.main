@@ -16,8 +16,6 @@ class PostBottomActionBar extends StatelessWidget {
 
   final DocumentSnapshot<Post> snapshot;
 
-  static const likeIconSize = 20.0;
-
   @override
   Widget build(BuildContext context) {
     final post = snapshot.data()!;
@@ -28,6 +26,7 @@ class PostBottomActionBar extends StatelessWidget {
     const iconSize = 20.0;
 
     const double fontSize = 16;
+    const likeIconSize = 20.0;
 
     return [
       InkWell(

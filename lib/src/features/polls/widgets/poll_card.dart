@@ -15,7 +15,6 @@ class PollCard extends ConsumerWidget {
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Poll> pollDoc;
-  static const double descriptionHPadding = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +22,8 @@ class PollCard extends ConsumerWidget {
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));
 
     final bool pollIsOpen = DateTime.now().isBefore(poll.openUntil);
+
+    const double descriptionHPadding = 16;
 
     return [
       ListTile(

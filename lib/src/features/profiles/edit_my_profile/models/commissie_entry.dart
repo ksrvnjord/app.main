@@ -21,18 +21,6 @@ class CommissieEntry extends GroupEntry {
           identifier: identifier,
         );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'startYear': startYear,
-      'endYear': endYear,
-      'function': function != null && function!.isNotEmpty ? function : null,
-      'user_first_name': firstName,
-      'user_last_name': lastName,
-      'user_identifier': identifier,
-    };
-  }
-
   factory CommissieEntry.fromJson(Map<String, dynamic> json) {
     return CommissieEntry(
       name: json['name'],
@@ -46,6 +34,18 @@ class CommissieEntry extends GroupEntry {
       lastName: json['user_last_name'],
       identifier: json['user_identifier'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'startYear': startYear,
+      'endYear': endYear,
+      'function': function != null && function!.isNotEmpty ? function : null,
+      'user_first_name': firstName,
+      'user_last_name': lastName,
+      'user_identifier': identifier,
+    };
   }
 
   // copy with

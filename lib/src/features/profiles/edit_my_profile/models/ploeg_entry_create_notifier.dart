@@ -87,6 +87,18 @@ class PloegEntryCreateForm {
     required this.identifier,
   });
 
+  factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
+    return PloegEntryCreateForm(
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      identifier: json['identifier'],
+      ploegType: PloegType.values.byName(json['ploegType']),
+      year: json['year'],
+      name: json['name'],
+      role: PloegRole.values.byName(json['role']),
+    );
+  }
+
   PloegEntryCreateForm copyWith({
     PloegType? ploegType,
     int? year,
@@ -101,18 +113,6 @@ class PloegEntryCreateForm {
       year: year ?? this.year,
       name: name ?? this.name,
       role: role ?? this.role,
-    );
-  }
-
-  factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
-    return PloegEntryCreateForm(
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      identifier: json['identifier'],
-      ploegType: PloegType.values.byName(json['ploegType']),
-      year: json['year'],
-      name: json['name'],
-      role: PloegRole.values.byName(json['role']),
     );
   }
 

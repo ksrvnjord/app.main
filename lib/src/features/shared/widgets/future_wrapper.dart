@@ -10,6 +10,7 @@ Widget onEmpty<T>(T arg) {
 }
 
 class FutureWrapper<T> extends StatelessWidget {
+  static Widget empty() => const SizedBox.shrink();
   final Future<T> future;
   final Widget loading;
   final Widget Function(Object error) error;
@@ -26,8 +27,6 @@ class FutureWrapper<T> extends StatelessWidget {
     this.onNoData = empty,
     this.initialData,
   }) : super(key: key);
-
-  static Widget empty() => const SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {

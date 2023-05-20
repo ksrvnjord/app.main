@@ -19,14 +19,13 @@ class AllTrainingPage extends ConsumerWidget {
     (index) => DateTime.now().add(Duration(days: index)),
   );
 
-  static const double yourFiltersLPadding = 8;
-  static const double yourFiltersRPadding = 4;
-  static const double filterLabelSize = 12;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<String> filterList =
         ref.watch(reservationTypeFiltersListProvider);
+    const double yourFiltersLPadding = 8;
+    const double yourFiltersRPadding = 4;
+    const double filterLabelSize = 12;
 
     return DefaultTabController(
       length: days.length,

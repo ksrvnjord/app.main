@@ -72,8 +72,6 @@ class FormsWidget extends ConsumerWidget {
     ].toColumn();
   }
 
-  static const double headerFontSize = 16;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openPolls = ref.watch(openPollsProvider);

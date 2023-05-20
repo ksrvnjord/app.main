@@ -263,7 +263,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           ),
         ],
       ),
-      _buildReservateButton(
+      buildReservationButton(
         firebaseUser,
         creatorName,
         fieldPadding,
@@ -271,7 +271,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     ]);
   }
 
-  ElevatedButton _buildReservateButton(
+  ElevatedButton buildReservationButton(
     User firebaseUser,
     String creatorName,
     double fieldPadding,
