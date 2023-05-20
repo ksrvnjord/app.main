@@ -30,26 +30,8 @@ class DamageCreateWidget extends ConsumerWidget {
         actions: [
           formData.complete
               ? IconButton(
-                  onPressed: () => newDamage(formData).then(
-                    (e) {
-                      // ignore: avoid-ignoring-return-values
-                      messenger.showSnackBar(SnackBar(
-                        content: const Text('Schademelding aangemaakt'),
-                        backgroundColor: Colors.green[900],
-                      ));
-                      // ignore: avoid-ignoring-return-values
-                      navigator.pop();
-                    },
-                    onError: (e) {
-                      // ignore: avoid-ignoring-return-values
-                      messenger.showSnackBar(SnackBar(
-                        content: const Text(
-                          'Schademelding kon niet aangemaakt worden',
-                        ),
-                        backgroundColor: Colors.red[900],
-                      ));
-                    },
-                  ),
+                  onPressed: () =>
+                      createNewDamage(formData, messenger, navigator),
                   icon: const Icon(Icons.send),
                 )
               : IconButton(
@@ -82,5 +64,31 @@ class DamageCreateWidget extends ConsumerWidget {
           .scrollable(scrollDirection: Axis.vertical)
           .padding(all: padding),
     );
+  }
+
+  Future<void> createNewDamage(
+    DamageForm formData,
+    ScaffoldMessengerState messenger,
+    Routemaster navigator,
+  ) async {
+    try {
+      await newDamage(formData);
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text('Schademelding aangemaakt'),
+        backgroundColor: Colors.green[900],
+      ));
+    } catch (err) {
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text(
+          'Schademelding kon niet aangemaakt worden',
+        ),
+        backgroundColor: Colors.red[900],
+      ));
+    }
+
+    // ignore: avoid-ignoring-return-values
+    navigator.pop();
   }
 }

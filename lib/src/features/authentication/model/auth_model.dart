@@ -27,6 +27,7 @@ class AuthModel extends ChangeNotifier {
 
   AuthModel() {
     isBusy = true;
+    // ignore: prefer-async-await
     boot().then((value) {
       client = value;
     }).whenComplete(() {
@@ -175,14 +176,12 @@ class AuthModel extends ChangeNotifier {
     return true;
   }
 
-  void logout() {
+  void logout() async {
     unsubscribeAllTopics().whenComplete(() => null);
 
-    _storage.delete(key: 'oauth2_credentials').then((value) {
-      client = null;
-      notifyListeners();
-    });
-
+    await _storage.delete(key: 'oauth2_credentials');
+    client = null;
     FirebaseAuth.instance.signOut();
+    notifyListeners();
   }
 }

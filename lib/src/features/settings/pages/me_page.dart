@@ -256,44 +256,50 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     );
   }
 
-  void save(BuildContext context, GraphQLClient client) {
+  void save(BuildContext context, GraphQLClient client) async {
     setState(() {
       saving = true;
       buttonColor = Colors.blueGrey;
     });
-    updateMe(
-      client,
-      Input$IContact(
-        first_name: fields.first['first_name']?['controller'].text,
-        last_name: fields.first['last_name']?['controller'].text,
-        zipcode: fields[3]['zipcode']?['controller'].text,
-        street: fields[3]['street']?['controller'].text,
-        housenumber: fields[3]['housenumber']?['controller'].text,
-        housenumber_addition:
-            fields[3]['housenumber_addition']?['controller'].text,
-        city: fields[3]['city']?['controller'].text,
-        email: fields[1]['email']?['controller'].text,
-        phone_primary: fields[2]['phone_primary']?['controller'].text,
-      ),
-    ).then((data) {
+    try {
       // ignore: avoid-ignoring-return-values
+      await updateMe(
+        client,
+        Input$IContact(
+          first_name: fields.first['first_name']?['controller'].text,
+          last_name: fields.first['last_name']?['controller'].text,
+          zipcode: fields[3]['zipcode']?['controller'].text,
+          street: fields[3]['street']?['controller'].text,
+          housenumber: fields[3]['housenumber']?['controller'].text,
+          housenumber_addition:
+              fields[3]['housenumber_addition']?['controller'].text,
+          city: fields[3]['city']?['controller'].text,
+          email: fields[1]['email']?['controller'].text,
+          phone_primary: fields[2]['phone_primary']?['controller'].text,
+        ),
+      );
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Updateverzoek verstuurd')),
       );
-      setState(() {
-        saving = false;
-        buttonColor = Colors.blue;
-      });
-    }).onError((error, stackTrace) {
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.blue;
+        });
+      }
+    } catch (e) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Updateverzoek mislukt, melding gemaakt.'),
         backgroundColor: Colors.red,
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.red;
-      });
-    });
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.red;
+        });
+      }
+    }
   }
 }

@@ -33,30 +33,8 @@ class DamageEditWidget extends ConsumerWidget {
         actions: [
           damageForm.complete
               ? IconButton(
-                  onPressed: () => editDamage(
-                    damageDocumentId,
-                    reservationObjectId,
-                    damageForm,
-                  ).then(
-                    (e) {
-                      // ignore: avoid-ignoring-return-values
-                      messenger.showSnackBar(SnackBar(
-                        content: const Text('Schademelding aangemaakt'),
-                        backgroundColor: Colors.green[900],
-                      ));
-                      // ignore: avoid-ignoring-return-values
-                      navigator.pop();
-                    },
-                    onError: (e) {
-                      // ignore: avoid-ignoring-return-values
-                      messenger.showSnackBar(SnackBar(
-                        content: const Text(
-                          'Schademelding kon niet aangemaakt worden',
-                        ),
-                        backgroundColor: Colors.red[900],
-                      ));
-                    },
-                  ),
+                  onPressed: () =>
+                      editDamageForm(damageForm, messenger, navigator),
                   icon: const Icon(Icons.save),
                 )
               : IconButton(
@@ -67,27 +45,7 @@ class DamageEditWidget extends ConsumerWidget {
                   icon: Icon(Icons.save, color: Colors.blue[900]),
                 ),
           IconButton(
-            onPressed: () =>
-                deleteDamage(damageDocumentId, reservationObjectId).then(
-              (e) {
-                // ignore: avoid-ignoring-return-values
-                messenger.showSnackBar(SnackBar(
-                  content: const Text('Schademelding verwijderd'),
-                  backgroundColor: Colors.green[900],
-                ));
-                // ignore: avoid-ignoring-return-values
-                navigator.pop();
-              },
-              onError: (e) {
-                // ignore: avoid-ignoring-return-values
-                messenger.showSnackBar(SnackBar(
-                  content: const Text(
-                    'Schademelding kon niet verwijderd worden',
-                  ),
-                  backgroundColor: Colors.red[900],
-                ));
-              },
-            ),
+            onPressed: () => deleteDamageForm(messenger, navigator),
             icon: const Icon(Icons.delete),
           ),
         ],
@@ -129,5 +87,59 @@ class DamageEditWidget extends ConsumerWidget {
           .padding(all: padding)
           .scrollable(scrollDirection: Axis.vertical),
     );
+  }
+
+  Future<void> deleteDamageForm(
+    ScaffoldMessengerState messenger,
+    Routemaster navigator,
+  ) async {
+    try {
+      await deleteDamage(damageDocumentId, reservationObjectId);
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text('Schademelding verwijderd'),
+        backgroundColor: Colors.green[900],
+      ));
+    } catch (e) {
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text(
+          'Schademelding kon niet verwijderd worden',
+        ),
+        backgroundColor: Colors.red[900],
+      ));
+    }
+    // ignore: avoid-ignoring-return-values
+    navigator.pop();
+  }
+
+  Future<void> editDamageForm(
+    DamageForm damageForm,
+    ScaffoldMessengerState messenger,
+    Routemaster navigator,
+  ) async {
+    try {
+      await editDamage(
+        damageDocumentId,
+        reservationObjectId,
+        damageForm,
+      );
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text('Schademelding aangemaakt'),
+        backgroundColor: Colors.green[900],
+      ));
+    } catch (e) {
+      // ignore: avoid-ignoring-return-values
+      messenger.showSnackBar(SnackBar(
+        content: const Text(
+          'Schademelding kon niet aangemaakt worden',
+        ),
+        backgroundColor: Colors.red[900],
+      ));
+    }
+
+    // ignore: avoid-ignoring-return-values
+    navigator.pop();
   }
 }

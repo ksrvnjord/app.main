@@ -22,11 +22,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void login(AuthModel auth, GraphQLModel _) {
-    auth.login(_username.text, _password.text).then((result) {
-      // Also login to firebase.
-      auth.firebase().then((_) => widget.loginCallback(result));
-    });
+  void login(AuthModel auth, GraphQLModel _) async {
+    final result = await auth.login(_username.text, _password.text);
+    // ignore: avoid-ignoring-return-values
+    await auth.firebase();
+    widget.loginCallback(result);
   }
 
   @override
