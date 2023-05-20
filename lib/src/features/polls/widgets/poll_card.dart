@@ -47,8 +47,20 @@ class PollCard extends ConsumerWidget {
                   value: option,
                   groupValue: answerOfUser,
                   onChanged: pollIsOpen
-                      ? (String? choice) =>
-                          upsertPollAnswer(choice, snapshot, pollDoc)
+                      ? (String? choice) {
+                          upsertPollAnswer(choice, snapshot, pollDoc);
+                          // ignore: avoid-ignoring-return-values
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(choice != null
+                                  ? 'Je keuze is opgeslagen'
+                                  : 'Je keuze is verwijderd'),
+                              backgroundColor: choice != null
+                                  ? Colors.green
+                                  : Colors.blueGrey,
+                            ),
+                          );
+                        }
                       : null,
                   toggleable: true,
                   title: Text(option),

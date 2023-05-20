@@ -16,7 +16,11 @@ class FormsWidget extends ConsumerWidget {
     super.key,
   });
 
-  Widget _buildOpenPollsList(QuerySnapshot<Poll> polls, WidgetRef ref) {
+  Widget _buildOpenPollsList(
+    QuerySnapshot<Poll> polls,
+    WidgetRef ref,
+    BuildContext context,
+  ) {
     if (polls.size == 0) {
       return const Text("Geen open forms op dit moment").textColor(Colors.grey);
     }
@@ -51,8 +55,21 @@ class FormsWidget extends ConsumerWidget {
                   ...poll.options.map((option) => RadioListTile(
                         value: option,
                         groupValue: answerOfUser,
-                        onChanged: (String? choice) =>
-                            upsertPollAnswer(choice, snapshot, doc),
+                        // ignore: prefer-extracting-callbacks
+                        onChanged: (String? choice) {
+                          upsertPollAnswer(choice, snapshot, doc);
+                          // ignore: avoid-ignoring-return-values
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(choice != null
+                                  ? 'Je keuze is opgeslagen'
+                                  : 'Je keuze is verwijderd'),
+                              backgroundColor: choice != null
+                                  ? Colors.green
+                                  : Colors.blueGrey,
+                            ),
+                          );
+                        },
                         toggleable: true,
                         title: Text(option),
                       )),
@@ -85,7 +102,7 @@ class FormsWidget extends ConsumerWidget {
         onTap: () => Routemaster.of(context).push('polls'),
       ),
       openPolls.when(
-        data: (data) => _buildOpenPollsList(data, ref),
+        data: (data) => _buildOpenPollsList(data, ref, context),
         loading: () => const CircularProgressIndicator(),
         error: (error, stack) => Text(
           error.toString(),
