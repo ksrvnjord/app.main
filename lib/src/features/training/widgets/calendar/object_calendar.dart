@@ -47,13 +47,12 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     // 1: Get the ID token that contains the permission claims
     FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
       // 2: Check if the boat permissions are empty
-      if (widget.boat.data().permissions.isEmpty ||
+      final permissions = widget.boat.data().permissions;
+      if (permissions.isEmpty ||
           // If not, 3: convert permissions to a set,
           // get the permissions from the token
           // and see if there is any overlap
-          widget.boat
-              .data()
-              .permissions
+          permissions
               .toSet()
               .intersection((token.claims?['permissions'] ?? []).toSet())
               .isNotEmpty) {
@@ -134,6 +133,8 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
       reservationsQuery,
     ));
 
+    final boat = widget.boat.data();
+
     return SizedBox(
       width: CalendarMeasurement.slotWidth,
       // Stack the elements over eachother
@@ -148,8 +149,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
             // it does not pass gestures through to the background
             child: AbsorbPointer(
               child: CalendarBackground(
-                available: (hasPermission && widget.boat.data().available) &&
-                    !widget.boat.data().critical,
+                available: (hasPermission && boat.available) && !boat.critical,
               ),
             ),
           ),

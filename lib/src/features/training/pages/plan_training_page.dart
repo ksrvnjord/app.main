@@ -151,12 +151,13 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
     for (QueryDocumentSnapshot<Reservation> document in documents) {
       // determine earliest/latest possible time for slider
-
       Reservation reservation = document.data();
+      final reservationsHaveSameStartTime =
+          reservation.startTime.isAtSameMomentAs(_startTime);
+
       if ((reservation.startTime.isBefore(_startTime) ||
-              reservation.startTime.isAtSameMomentAs(_startTime)) &&
+              reservationsHaveSameStartTime) &&
           reservation.endTime.isAfter(_startTime)) {
-        log('Time is not available');
         if (reservation.creator == firebaseUser.uid) {
           return Container();
         }
@@ -173,7 +174,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       }
 
       if ((reservation.startTime.isAfter(_startTime) ||
-              reservation.startTime.isAtSameMomentAs(_startTime)) &&
+              reservationsHaveSameStartTime) &&
           reservation.startTime.isBefore(latestPossibleTime)) {
         latestPossibleTime = reservation.startTime;
       }
@@ -189,6 +190,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     const double fieldPadding = 16;
     const double timeSelectorDialogHandlerRadius = 8;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return ListView(children: <Widget>[
       DataTextListTile(name: 'Boot', value: widget.objectName),
       DataTextListTile(
@@ -198,14 +201,14 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       Row(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width / timeRowItems,
+            width: screenWidth / timeRowItems,
             child: DataTextListTile(
               name: "Starttijd",
               value: DateFormat.Hm().format(_startTime),
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width / timeRowItems,
+            width: screenWidth / timeRowItems,
             child: DataTextListTile(
               name: "Eindtijd",
               value: DateFormat.Hm().format(_endTime),

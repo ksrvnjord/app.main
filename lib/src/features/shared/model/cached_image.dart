@@ -34,16 +34,17 @@ class CachedImage {
     required String placeholderImagePath,
     Duration maxAge = const Duration(days: 7),
   }) async {
+    final placeholderImage = Image.asset(placeholderImagePath).image;
     ImageProvider<Object>? cachedImage = await HiveCache.getHiveCachedImage(
       firebaseStoragePath,
-      imageOnCacheHitWithNoData: Image.asset(placeholderImagePath).image,
+      imageOnCacheHitWithNoData: placeholderImage,
     );
     if (cachedImage != null) {
       return cachedImage;
     }
     // Image is not cached, so we need to fetch it from the network
     String? url = await getUrl(firebaseStoragePath);
-    ImageProvider<Object> placeholder = Image.asset(placeholderImagePath).image;
+    ImageProvider<Object> placeholder = placeholderImage;
     if (url == null) {
       // there is no image at this path in Firebase Storage
       HiveCache.putEmpty(firebaseStoragePath);
