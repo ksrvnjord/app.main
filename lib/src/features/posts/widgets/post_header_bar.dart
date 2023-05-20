@@ -37,7 +37,7 @@ class PostHeaderBar extends ConsumerWidget {
           size: profilePictureIconSize,
         ),
         [
-          AuthorWidget(authorName: post.authorName, postAuthor: postAuthor),
+          AuthorWidget(postAuthor: postAuthor, authorName: post.authorName),
           Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
               .textColor(Colors.blueGrey)
               .fontSize(postTimeFontSize),
@@ -52,29 +52,22 @@ class PostHeaderBar extends ConsumerWidget {
       if (firebaseUser != null &&
           (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
-          onTap: () => showDialog(
-            context: context,
-            builder:
-                // create dialog to delete post
-                (context) => AlertDialog(
-              title: const Text('Verwijderen'),
-              content: const Text(
-                'Weet je zeker dat je dit bericht wilt verwijderen?',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Annuleren'),
-                ),
-                TextButton(
-                  onPressed: deletePost,
-                  child: const Text('Verwijderen').textColor(Colors.red),
-                ),
-              ],
-            ),
-          ),
-          child: const Icon(Icons.delete_outlined),
-        ),
+            child: const Icon(Icons.delete_outlined),
+            onTap: () => showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                        title: const Text('Verwijderen'),
+                        content: const Text(
+                            'Weet je zeker dat je dit bericht wilt verwijderen?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('Annuleren')),
+                          TextButton(
+                              onPressed: deletePost,
+                              child: const Text('Verwijderen')
+                                  .textColor(Colors.red))
+                        ]))),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
     );

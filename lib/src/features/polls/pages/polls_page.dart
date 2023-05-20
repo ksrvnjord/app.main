@@ -16,8 +16,8 @@ class PollsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forms'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -26,12 +26,11 @@ class PollsPage extends ConsumerWidget {
             ? const Center(child: Text('Geen polls gevonden'))
             : ListView.separated(
                 padding: const EdgeInsets.all(8),
+                itemBuilder: (context, index) =>
+                    PollCard(pollDoc: snapshot.docs[index]),
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 10),
                 itemCount: snapshot.size,
-                itemBuilder: (context, index) => PollCard(
-                  pollDoc: snapshot.docs[index],
-                ),
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>

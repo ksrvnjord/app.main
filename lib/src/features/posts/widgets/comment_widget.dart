@@ -58,32 +58,26 @@ class CommentWidget extends ConsumerWidget {
             CupertinoContextMenu(
               actions: [
                 CupertinoContextMenuAction(
-                  onPressed: () => popAnd(
-                    context,
-                    onPop: () => CommentsService.like(snapshot),
-                  ),
-                  trailingIcon: likedByMe ? Icons.heart_broken : Icons.favorite,
-                  child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
-                ),
+                    child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
+                    onPressed: () => popAnd(context,
+                        onPop: () => CommentsService.like(snapshot)),
+                    trailingIcon:
+                        likedByMe ? Icons.heart_broken : Icons.favorite),
 
                 // only show delete button if the comment is from the current user
                 if (FirebaseAuth.instance.currentUser!.uid == comment.authorId)
                   CupertinoContextMenuAction(
-                    isDestructiveAction: true,
-                    onPressed: () => popAnd(
-                      context,
-                      onPop: () => CommentsService.deleteComment(
-                        snapshot.reference.path,
-                      ),
-                      waitForPopAnimation: true,
-                    ),
-                    trailingIcon: Icons.delete,
-                    child: const Text('Verwijder'),
-                  ),
+                      child: const Text('Verwijder'),
+                      isDestructiveAction: true,
+                      onPressed: () => popAnd(context,
+                          onPop: () => CommentsService.deleteComment(
+                              snapshot.reference.path),
+                          waitForPopAnimation: true),
+                      trailingIcon: Icons.delete),
               ],
               child: SingleChildScrollView(
                 // we need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435
-                child: CommentCard(comment: comment, postAuthor: postAuthor),
+                child: CommentCard(postAuthor: postAuthor, comment: comment),
               ),
             ),
             // create positioned red circle

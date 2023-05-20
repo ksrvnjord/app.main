@@ -15,12 +15,11 @@ class AlmanakProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Almanakprofiel"),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: const Text("Almanakprofiel"),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: AlmanakUserProfileView(identifier: userId),
     );
   }

@@ -37,101 +37,90 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     const double submitButtonHPadding = 12;
 
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Nieuwe post'),
-          backgroundColor: Colors.lightBlue,
-          shadowColor: Colors.transparent,
-          systemOverlayStyle:
-              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-        ),
-        body: Form(
-          key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: <Widget>[
-              [
-                DropdownButtonFormField<String>(
-                  // no point in showing it for now if there's only one option
-                  decoration: const InputDecoration(
-                    hintText: 'Selecteer een categorie',
-                    labelText: 'Categorie',
-                  ),
-                  items: ref
-                      .watch(postTopicsProvider)
-                      .map(
-                        (topic) => DropdownMenuItem<String>(
-                          value: topic,
-                          child: Text(topic),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) => selectedTopic = value ?? 'Wandelgangen',
-                  onSaved: (newValue) =>
-                      selectedTopic = newValue ?? 'Wandelgangen',
-                  value: selectedTopic,
-                  validator: (value) =>
-                      value == null ? 'Kies alsjeblieft een onderwerp.' : null,
-                ),
-                TextFormField(
-                  maxLength: maxTitleLength,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  // The validator receives the text that the user has entered.
-                  decoration: const InputDecoration(
-                    hintText: 'Coach gezocht voor morgen om 7:00',
-                    labelText: 'Titel',
-                  ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Je titel mist!' : null,
-                  onSaved: (value) => title = value ?? '',
-                ),
-                TextFormField(
-                  maxLines: null,
-                  maxLength: maxContentLength,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  decoration: const InputDecoration(
-                    hintText: "Om 7:00 's ochtends heb je toch niks te doen",
-                    labelText: 'Inhoud',
-                  ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Zonder inhoud kom je nergens.'
-                      : null,
-                  onSaved: (value) => content = value ?? '',
-                ),
-                ElevatedButton(
-                  onPressed: postCreationInProgress ? null : () => submitForm(),
-                  style: ElevatedButton.styleFrom(
-                    // add rounding
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                  child: <Widget>[
-                    Icon(postCreationInProgress
-                            ? LucideIcons.loader
-                            : LucideIcons.send)
-                        .padding(bottom: 1),
-                    Text(
-                      postCreationInProgress ? "Zwanen voeren..." : 'Verstuur',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  ]
-                      .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween)
-                      .padding(vertical: submitButtonHPadding),
-                ),
-              ].toColumn(
-                // use column inside listview so we can specify separator
-                crossAxisAlignment: CrossAxisAlignment.start,
-                separator: const SizedBox(height: 16),
-              ),
-            ],
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Nieuwe post'),
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.lightBlue,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.lightBlue,
+            ),
+          ),
+          body: Form(
+            key: _formKey,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: <Widget>[
+                [
+                  DropdownButtonFormField<String>(
+                      items: ref
+                          .watch(postTopicsProvider)
+                          .map((topic) => DropdownMenuItem<String>(
+                              value: topic, child: Text(topic)))
+                          .toList(),
+                      value: selectedTopic,
+                      onChanged: (value) =>
+                          selectedTopic = value ?? 'Wandelgangen',
+                      decoration: const InputDecoration(
+                          labelText: 'Categorie',
+                          hintText: 'Selecteer een categorie'),
+                      onSaved: (newValue) =>
+                          selectedTopic = newValue ?? 'Wandelgangen',
+                      validator: (value) => value == null
+                          ? 'Kies alsjeblieft een onderwerp.'
+                          : null),
+                  TextFormField(
+                      decoration: const InputDecoration(
+                          labelText: 'Titel',
+                          hintText: 'Coach gezocht voor morgen om 7:00'),
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      maxLength: maxTitleLength,
+                      onSaved: (value) => title = value ?? '',
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Je titel mist!'
+                          : null),
+                  TextFormField(
+                      decoration: const InputDecoration(
+                          labelText: 'Inhoud',
+                          hintText:
+                              "Om 7:00 's ochtends heb je toch niks te doen"),
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      maxLines: null,
+                      maxLength: maxContentLength,
+                      onSaved: (value) => content = value ?? '',
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Zonder inhoud kom je nergens.'
+                          : null),
+                  ElevatedButton(
+                      onPressed:
+                          postCreationInProgress ? null : () => submitForm(),
+                      style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                          backgroundColor: Colors.blue),
+                      child: <Widget>[
+                        Icon(postCreationInProgress
+                                ? LucideIcons.loader
+                                : LucideIcons.send)
+                            .padding(bottom: 1),
+                        Text(
+                            postCreationInProgress
+                                ? "Zwanen voeren..."
+                                : 'Verstuur',
+                            style: const TextStyle(fontSize: 18))
+                      ]
+                          .toRow(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween)
+                          .padding(vertical: submitButtonHPadding))
+                ].toColumn(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    separator: const SizedBox(height: 16)),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus());
   }
 
   void submitForm() async {

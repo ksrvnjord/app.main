@@ -18,63 +18,46 @@ class PostsPage extends ConsumerWidget {
     final selectedTopic = ref.watch(selectedTopicProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Prikbord"),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.lightBlue,
-        ),
-        actions: [
-          // filter button
-          IconButton(
-            onPressed: () => showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => Consumer(
-                builder: (_, ref, __) => Wrap(
-                  children: [
-                    RadioListTile<String?>(
-                      title: const Text("Alle posts"),
-                      value: null,
-                      groupValue: selectedTopic,
-                      onChanged: (value) => ref
-                          .read(selectedTopicProvider.notifier)
-                          .state = value,
-                    ),
-                    for (final topic in topics)
-                      RadioListTile<String>(
-                        title: Text(topic),
-                        value: topic,
-                        groupValue: selectedTopic,
-                        onChanged: (value) => ref
-                            .read(selectedTopicProvider.notifier)
-                            .state = value,
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            icon: const Icon(Icons.filter_list),
-          ),
-        ],
-      ),
-      floatingActionButton: FirebaseWidget(
-        onAuthenticated: FloatingActionButton.extended(
-          // small function so we can use the ignore comment
-          // ignore: prefer-extracting-callbacks
-          onPressed: () => Routemaster.of(context).push('new'),
-          backgroundColor: Colors.blue,
-          icon: const Icon(Icons.add),
-          label: const Text('Nieuw bericht'),
-        ),
-      ),
-      body: const FirebaseWidget(
-        onAuthenticated: PostList(),
-        onUnauthenticated: Center(
-          child: Text("Er zijn geen nieuwe berichten"),
-        ),
-      ),
-    );
+        appBar: AppBar(
+            title: const Text("Prikbord"),
+            actions: [
+              IconButton(
+                  onPressed: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Consumer(
+                          builder: (_, ref, __) => Wrap(children: [
+                                RadioListTile<String?>(
+                                    value: null,
+                                    groupValue: selectedTopic,
+                                    onChanged: (value) => ref
+                                        .read(selectedTopicProvider.notifier)
+                                        .state = value,
+                                    title: const Text("Alle posts")),
+                                for (final topic in topics)
+                                  RadioListTile<String>(
+                                      value: topic,
+                                      groupValue: selectedTopic,
+                                      onChanged: (value) => ref
+                                          .read(selectedTopicProvider.notifier)
+                                          .state = value,
+                                      title: Text(topic))
+                              ])),
+                      isScrollControlled: true),
+                  icon: const Icon(Icons.filter_list))
+            ],
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.lightBlue,
+            systemOverlayStyle:
+                const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
+        body: const FirebaseWidget(
+            onAuthenticated: PostList(),
+            onUnauthenticated:
+                Center(child: Text("Er zijn geen nieuwe berichten"))),
+        floatingActionButton: FirebaseWidget(
+            onAuthenticated: FloatingActionButton.extended(
+                backgroundColor: Colors.blue,
+                onPressed: () => Routemaster.of(context).push('new'),
+                icon: const Icon(Icons.add),
+                label: const Text('Nieuw bericht'))));
   }
 }

@@ -17,11 +17,8 @@ class UserAddressWidget extends StatelessWidget {
                 .isNotEmpty // it makes no sense to show an address without a street
         ? ListTile(
             leading: const [
-              Icon(
-                Icons.location_on_outlined,
-                color: Colors.lightBlue,
-                size: 32,
-              ),
+              Icon(Icons.location_on_outlined,
+                  size: 32, color: Colors.lightBlue),
             ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
             title: Text(
               "${address.street != null ? "${address.street} " : ""}${address.houseNumber != null ? "${address.houseNumber}" : ""}${address.houseNumberAddition != null ? "${address.houseNumberAddition}" : ""}",

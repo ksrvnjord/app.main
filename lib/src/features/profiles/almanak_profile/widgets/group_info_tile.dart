@@ -23,46 +23,25 @@ class GroupInfoTile extends StatelessWidget {
     const double chipSpacing = 8;
 
     return ListTile(
-      tileColor: Colors.white,
-      title: Text(header).fontSize(commissieNameFontSize),
-      subtitle: <Widget>[
-        Chip(
-          label: Text(
-            "$startYear-$endYear",
-          ),
-          avatar: const Icon(
-            Icons.date_range,
-            color: Colors.white,
-            size: 14,
-          ),
-          backgroundColor: Colors.blueGrey[200],
-          labelPadding: const EdgeInsets.only(left: 2, right: 8),
-          labelStyle: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        if (tags != null)
-          ...tags!
-              .map((tag) => Chip(
+        title: Text(header).fontSize(commissieNameFontSize),
+        subtitle: <Widget>[
+          Chip(
+              avatar:
+                  const Icon(Icons.date_range, size: 14, color: Colors.white),
+              label: Text("$startYear-$endYear"),
+              labelStyle: const TextStyle(color: Colors.white),
+              labelPadding: const EdgeInsets.only(left: 2, right: 8),
+              backgroundColor: Colors.blueGrey[200]),
+          if (tags != null)
+            ...tags!
+                .map((tag) => Chip(
+                    avatar: Icon(tag.icon, size: iconSize, color: Colors.white),
                     label: Text(tag.label),
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    // show avatar
-                    avatar: Icon(
-                      tag.icon,
-                      color: Colors.white,
-                      size: iconSize,
-                    ),
+                    labelStyle: const TextStyle(color: Colors.white),
                     labelPadding: const EdgeInsets.only(right: 8),
-                    backgroundColor: tag.backgroundColor,
-                  ))
-              .toList(),
-      ].toWrap(
-        spacing: chipSpacing,
-        // ignore: no-equal-arguments
-        runSpacing: chipSpacing,
-      ),
-    );
+                    backgroundColor: tag.backgroundColor))
+                .toList()
+        ].toWrap(spacing: chipSpacing, runSpacing: chipSpacing),
+        tileColor: Colors.white);
   }
 }

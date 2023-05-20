@@ -47,33 +47,23 @@ class PostWidget extends ConsumerWidget {
           .alignment(Alignment.centerLeft),
       [
         Flexible(
-          child: ExpandableText(
-            post.content,
-            expandText: "meer",
-            maxLines: contentMaxLines,
-            linkColor: Colors.blueGrey,
-            linkEllipsis: false,
-            expanded: expanded,
-            onUrlTap: (url) => launchUrlString(url),
-            urlStyle: // show links as blue underlined
-                const TextStyle(
-              color: Colors.blue,
-            ),
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
+          child: ExpandableText(post.content,
+              expandText: "meer",
+              expanded: expanded,
+              linkColor: Colors.blueGrey,
+              linkEllipsis: false,
+              urlStyle: const TextStyle(color: Colors.blue),
+              onUrlTap: (url) => launchUrlString(url),
+              style: const TextStyle(fontSize: 16),
+              maxLines: contentMaxLines),
         ),
       ].toRow(),
       Chip(
-        label: Text(post.topic),
-        labelStyle: TextStyle(
-          color: Colors.blueGrey.shade900,
-        ),
-        visualDensity: VisualDensity.compact,
-        backgroundColor: topicColors[post.topic],
-        padding: EdgeInsets.zero,
-      ),
+          label: Text(post.topic),
+          labelStyle: TextStyle(color: Colors.blueGrey.shade900),
+          backgroundColor: topicColors[post.topic],
+          padding: EdgeInsets.zero,
+          visualDensity: VisualDensity.compact),
       PostStatisticsBar(snapshot: snapshot)
           .padding(top: postStatisticsTopPadding),
       const Divider(),

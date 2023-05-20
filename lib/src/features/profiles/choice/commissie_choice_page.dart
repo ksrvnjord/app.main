@@ -22,29 +22,20 @@ class CommissieChoicePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: Text(title),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView.builder(
-        itemCount: choices.length,
-        itemBuilder: (context, index) => [
-          SubstructureChoiceListTile(
-            name: choices[index],
-            imageProvider: ref.watch(
-              commissieThumbnailProvider(
-                Tuple2(choices[index], getNjordYear()),
-              ),
-            ),
-          ),
-          const Divider(
-            thickness: 0.5,
-            height: 0,
-          ),
-        ].toColumn(),
-      ),
+          itemBuilder: (context, index) => [
+                SubstructureChoiceListTile(
+                    name: choices[index],
+                    imageProvider: ref.watch(commissieThumbnailProvider(
+                        Tuple2(choices[index], getNjordYear())))),
+                const Divider(height: 0, thickness: 0.5)
+              ].toColumn(),
+          itemCount: choices.length),
     );
   }
 }

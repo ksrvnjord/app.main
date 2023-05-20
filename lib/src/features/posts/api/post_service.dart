@@ -35,12 +35,12 @@ class PostService {
     final me = current.user!.fullContact.private!;
 
     await postsCollection.add(Post(
-      topic: topic,
       title: title,
       content: content,
-      createdTime: Timestamp.now(),
       authorId: FirebaseAuth.instance.currentUser!.uid,
       authorName: "${me.first_name} ${me.last_name}",
+      createdTime: Timestamp.now(),
+      topic: topic,
     ));
   }
 }

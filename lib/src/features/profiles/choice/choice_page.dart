@@ -17,12 +17,11 @@ class ChoicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
-      ),
+          title: Text(title),
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
+          systemOverlayStyle:
+              const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue)),
       body: ListView(
         children: choices
             .map(
@@ -36,10 +35,7 @@ class ChoicePage extends StatelessWidget {
                     ),
                     onTap: () => Routemaster.of(context).push(choice),
                   ),
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                  ),
+                  const Divider(height: 1, thickness: 1),
                 ],
               ),
             )

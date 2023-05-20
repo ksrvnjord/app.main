@@ -43,14 +43,14 @@ class PollCard extends ConsumerWidget {
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             ...poll.options.map((option) => RadioListTile(
-                  toggleable: true,
                   value: option,
-                  title: Text(option),
+                  groupValue: answerOfUser,
                   onChanged: pollIsOpen
                       ? (String? choice) =>
                           upsertPollAnswer(choice, snapshot, pollDoc)
                       : null,
-                  groupValue: answerOfUser,
+                  toggleable: true,
+                  title: Text(option),
                 )),
           ].toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,

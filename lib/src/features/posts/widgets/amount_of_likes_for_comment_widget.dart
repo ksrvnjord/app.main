@@ -21,27 +21,18 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
     return Container(
       // make edges round
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(40)),
-        color: Colors.lightBlue.shade300,
-        // add shadow
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(shadowOpacity),
-            spreadRadius: 1,
-            blurRadius: shadowBlurRadius,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
+          color: Colors.lightBlue.shade300,
+          borderRadius: const BorderRadius.all(Radius.circular(40)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(shadowOpacity),
+                offset: const Offset(0, 1),
+                blurRadius: shadowBlurRadius,
+                spreadRadius: 1)
+          ]),
       child: [
-        SvgPicture.asset(
-          Svgs.swanWhite,
-          width: iconSize,
-          // ignore: deprecated_member_use
-          color: Colors.white,
-          // ignore: no-equal-arguments
-          height: iconSize,
-        ),
+        SvgPicture.asset(Svgs.swanWhite,
+            width: iconSize, height: iconSize, color: Colors.white),
         Text(amountOfLikes.toString())
             .fontWeight(FontWeight.bold)
             .fontSize(textFontSize)
