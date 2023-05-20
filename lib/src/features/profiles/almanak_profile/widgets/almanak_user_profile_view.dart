@@ -153,7 +153,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     ),
                   ).padding(all: formFieldPadding),
               ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-              UserAddressWidget(address: u.address!),
+              if (u.address != null) UserAddressWidget(address: u.address!),
               DataTextListTile(name: "Aankomstjaar", value: "20$yearOfArrival"),
               FirebaseWidget(
                 onAuthenticated: userPloegen.when(
