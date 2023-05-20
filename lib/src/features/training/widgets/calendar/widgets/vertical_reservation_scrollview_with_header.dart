@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widget
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
-  const VerticalReservationScrollViewWithStickyHeader({
+class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
+  const VerticalReservationScrollViewWithHeader({
     super.key,
     required this.boatsController,
     required this.date,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_sticky_header.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 // Shows all available objects for a given day and filters
@@ -61,7 +61,7 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
               SingleChildScrollView(
                 key: UniqueKey(),
                 scrollDirection: Axis.horizontal,
-                child: VerticalReservationScrollViewWithStickyHeader(
+                child: VerticalReservationScrollViewWithHeader(
                   boatsController: boatsController,
                   date: widget.date,
                 ),

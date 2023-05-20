@@ -66,7 +66,6 @@ dart_code_metrics:
     - prefer-correct-identifier-length: false
     - avoid-late-keyword: false
     - prefer-single-widget-per-file: false
-    - prefer-correct-type-name: false
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests
