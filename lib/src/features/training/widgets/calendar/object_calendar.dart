@@ -29,15 +29,13 @@ class ObjectCalendar extends ConsumerStatefulWidget {
 
 class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
   // Date is passed by parent
-  late DateTime? reservation;
+
   bool hasPermission = false;
-  late ReservationsQuery reservationsQuery;
 
   @override
   void initState() {
     super.initState();
-    reservation = null;
-    reservationsQuery = ReservationsQuery(widget.date, widget.boat.reference);
+
     checkPermission();
   }
 
@@ -135,7 +133,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
   @override
   Widget build(BuildContext context) {
     final reservations = ref.watch(reservationsProvider(
-      reservationsQuery,
+      ReservationsQuery(widget.date, widget.boat.reference),
     ));
 
     final boat = widget.boat.data();

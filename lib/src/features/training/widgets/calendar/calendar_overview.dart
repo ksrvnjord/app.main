@@ -19,14 +19,11 @@ class CalendarOverview extends ConsumerStatefulWidget {
 }
 
 class _CalendarOverview extends ConsumerState<CalendarOverview> {
-  late final ScrollController boatsController;
-  late final ScrollController timesController;
+  final ScrollController boatsController = ScrollController();
+  final ScrollController timesController = ScrollController();
 
   @override
   void initState() {
-    boatsController = ScrollController();
-    timesController = ScrollController();
-
     boatsController.addListener(() {
       if (boatsController.offset != timesController.offset) {
         timesController.jumpTo(boatsController.offset);

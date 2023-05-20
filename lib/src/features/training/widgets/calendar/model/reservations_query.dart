@@ -5,5 +5,17 @@ class ReservationsQuery {
   final DateTime date;
   final DocumentReference<ReservationObject> docRef;
 
+  // override equality
+  @override
+  int get hashCode => date.hashCode ^ docRef.hashCode;
+
   ReservationsQuery(this.date, this.docRef);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReservationsQuery &&
+          runtimeType == other.runtimeType &&
+          date == other.date &&
+          docRef == other.docRef;
 }

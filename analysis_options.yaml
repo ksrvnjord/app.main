@@ -61,12 +61,11 @@ dart_code_metrics:
     - avoid-non-null-assertion: false
     - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
     - format-comment: false
-    # - prefer-async-await: false
-    - avoid-late-keyword: false
+    # - avoid-late-keyword: false
     - prefer-single-widget-per-file: false
 
       # ------ UNAVOIDABLE RULES -----------------
-    - avoid-nested-conditional-expressions: false # in Flutter, this is unavoidable
+    - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
     - prefer-correct-identifier-length: # i used in for loops
         exceptions: [ 'i' ]
 

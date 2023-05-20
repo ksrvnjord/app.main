@@ -22,8 +22,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 class PlanTrainingPage extends ConsumerStatefulWidget {
   final DocumentReference reservationObject;
   final DateTime startTime;
-  late final DateTime date;
-  late final String objectName;
+  final DateTime date;
+  final String objectName;
 
   PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
       : reservationObject = FirebaseFirestore.instance
@@ -31,19 +31,23 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
             .doc(queryParams['reservationObjectId']),
         startTime = DateTime.parse(queryParams['startTime']),
         objectName = queryParams['reservationObjectName'],
-        super(key: key) {
-    date = DateTime(startTime.year, startTime.month, startTime.day);
-  }
+        date = DateTime(
+          DateTime.parse(queryParams['startTime']).year,
+          DateTime.parse(queryParams['startTime']).month,
+          DateTime.parse(queryParams['startTime']).day,
+        ),
+        super(key: key);
 
   @override
   createState() => _PlanTrainingPageState();
 }
 
 class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
-  late DateTime _startTime; // Selected start time of the slider
-  late DateTime _endTime; // Selected end time of the slider
-  late TimeOfDay _startTimeOfDay; // Selected start time of the slider
-  late TimeOfDay _endTimeOfDay; // Selected end time of the slider
+  DateTime _startTime = DateTime.now(); // Selected start time of the slider
+  DateTime _endTime = DateTime.now(); // Selected end time of the slider
+  TimeOfDay _startTimeOfDay =
+      TimeOfDay.now(); // Selected start time of the slider
+  TimeOfDay _endTimeOfDay = TimeOfDay.now(); // Selected end time of the slider
 
   static const intervalOfSelector = Duration(minutes: 15);
   static const minimumReservationDuration = Duration(minutes: 15);
@@ -286,6 +290,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       uid,
       widget.objectName,
       creatorName: creatorName,
+      createdAt: DateTime.now(),
     ));
 
     if (response['success'] == true) {
