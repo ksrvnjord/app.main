@@ -9,8 +9,7 @@ import 'package:styled_widget/styled_widget.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
   static const routename = '/login';
-  const LoginForm({Key? key, required this.loginCallback}) : super(key: key);
-  final void Function(bool) loginCallback;
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   createState() => _LoginFormState();
@@ -23,10 +22,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _password = TextEditingController();
 
   void login(AuthModel auth, GraphQLModel _) async {
-    final result = await auth.login(_username.text, _password.text);
+    // ignore: avoid-ignoring-return-values
+    await auth.login(_username.text, _password.text);
     // ignore: avoid-ignoring-return-values
     await auth.firebase();
-    widget.loginCallback(result);
   }
 
   @override

@@ -59,12 +59,13 @@ dart_code_metrics:
   rules:
     - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments
     - avoid-non-null-assertion: false
-    - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
     - format-comment: false
-    # - avoid-late-keyword: false
-    - prefer-single-widget-per-file: false
+    # - prefer-single-widget-per-file: false
 
-      # ------ UNAVOIDABLE RULES -----------------
+    # ------ RULES WE AIM TO AVOID -----------------
+    - prefer-static-class: false # Riverpod prefers global providers, but in the future we may want to use this if we have too many globals
+
+    # ------ UNAVOIDABLE RULES -----------------
     - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
     - prefer-correct-identifier-length: # i used in for loops
         exceptions: [ 'i' ]
