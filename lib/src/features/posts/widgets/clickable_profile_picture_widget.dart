@@ -17,17 +17,15 @@ class ClickableProfilePictureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => // push AlmanakProfilePage with Navigator
-          Navigator.of(context).push(CupertinoPageRoute(
-        // don't make separate route in Routemap because it would not make sense to make a /posts/:userId route
-        builder: (context) => AlmanakProfilePage(userId: userId),
-      )),
       child: ProfilePictureWidget(
         userId: userId,
         size: size,
         zoomable: false,
         thumbnail: true,
       ),
+      onTap: () => Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => AlmanakProfilePage(userId: userId),
+      )),
     );
   }
 }

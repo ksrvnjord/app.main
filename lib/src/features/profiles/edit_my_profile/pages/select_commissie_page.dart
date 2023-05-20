@@ -11,8 +11,8 @@ class SelectCommissiePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Selecteer commissie'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

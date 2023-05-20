@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReservationProgressNotifier extends StateNotifier<bool> {
-  ReservationProgressNotifier() : super(false);
-
   get isInProgress => state;
   get isDone => !state;
   get isNotInProgress => !state;
+
+  ReservationProgressNotifier() : super(false);
 
   void inProgress() {
     state = true;
@@ -16,6 +16,7 @@ class ReservationProgressNotifier extends StateNotifier<bool> {
   }
 }
 
+// ignore: prefer-static-class
 final reservationProgressProvider =
     StateNotifierProvider<ReservationProgressNotifier, bool>((ref) {
   return ReservationProgressNotifier();

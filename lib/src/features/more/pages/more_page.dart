@@ -19,7 +19,7 @@ class MorePage extends ConsumerWidget {
       "Agenda": "events",
       "Contact": "/contact",
       "Beleid van het bestuur": "beleid",
-      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
+      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature.
         "Notificatie-instellingen": "notifications",
       'Geavanceerde instellingen': 'advanced-settings',
     };
@@ -27,14 +27,14 @@ class MorePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meer'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(
         children: [
           ...optionMap.entries.map(
-            // Make a list of options to display and navigate to
-            // Each option is a tile with a divider below it
+            // Make a list of options to display and navigate to.
+            // Each option is a tile with a divider below it.
             (entry) => [
               MoreListTile(
                 label: entry.key,
@@ -52,7 +52,7 @@ class MorePage extends ConsumerWidget {
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
               name: GetIt.I<CurrentUser>()
                       .user
-                      ?.username ?? // CurrentUser might not be filled yet
+                      ?.username ?? // CurrentUser might not be filled yet.
                   FirebaseAuth.instance.currentUser?.uid ??
                   "Anoniem",
             ),
@@ -83,9 +83,9 @@ class MorePage extends ConsumerWidget {
             height: 0,
           ),
           ListTile(
-            visualDensity: VisualDensity.standard,
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
+            visualDensity: VisualDensity.standard,
             onTap: () => ref.read(authModelProvider).logout(),
           ),
         ],

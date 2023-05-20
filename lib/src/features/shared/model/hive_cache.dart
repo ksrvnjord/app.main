@@ -9,9 +9,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:path_provider/path_provider.dart';
 
+@immutable
 class HiveCache {
   static const String cachePath =
-      'hive_cache'; // relative to ApplicationDocumentsDirectory
+      'hive_cache'; // Relative to ApplicationDocumentsDirectory.
 
   static const String imageCacheBoxName = 'imageCache';
   static final LazyBox<ImageCacheItem> hiveImageCache =
@@ -21,6 +22,7 @@ class HiveCache {
 
   static Future<ImageCacheItem?> get(String key) async {
     if (!hiveImageCache.isOpen) {
+      // ignore: avoid-ignoring-return-values
       await Hive.openLazyBox(imageCacheBoxName);
     }
 
@@ -34,18 +36,18 @@ class HiveCache {
     if (key == '') {
       throw Exception('Key cannot be empty');
     }
-    // Check if we have an item in our cache,
-    // and then check if we should use it
+    // Check if we have an item in our cache.
+    // Then check if we should use it.
     ImageCacheItem? item = await HiveCache.get(key);
 
     // We have it, so return it.
     if (item != null && DateTime.now().isBefore(item.expire)) {
       return item.data == null
           ? imageOnCacheHitWithNoData
-          : MemoryImage(item.data!);
+          : MemoryImage(item.data as Uint8List);
     }
 
-    return null; // no cached image found
+    return null; // No cached image found.
   }
 
   static Future<Uint8List?> getHttpImageAndCache(
@@ -81,17 +83,13 @@ class HiveCache {
     Duration maxAge = defaultMaxAge,
   }) async {
     if (!hiveImageCache.isOpen) {
+      // ignore: avoid-ignoring-return-values
       await Hive.openLazyBox(imageCacheBoxName);
     }
 
     await hiveImageCache.put(
       hashKeytoString(key),
-      ImageCacheItem(
-        expire: DateTime.now().add(
-          maxAge,
-        ),
-        data: value,
-      ),
+      ImageCacheItem(data: value, expire: DateTime.now().add(maxAge)),
     );
   }
 
@@ -110,13 +108,15 @@ class HiveCache {
       sha512.convert(utf8.encode(key)).toString();
 
   static Future<void> deleteAll() async {
-    await Hive.close(); // close all open lazyBoxes
+    await Hive.close(); // Close all open lazyBoxes.
     Directory appDir = await getApplicationDocumentsDirectory();
     Directory hiveDir = Directory('${appDir.path}/$cachePath');
+    // ignore: avoid-ignoring-return-values
     await hiveDir.delete(recursive: true);
     await Hive.initFlutter(
       HiveCache.cachePath,
-    ); // store the cache in a separate folder
+    ); // Store the cache in a separate folder.
+    // ignore: avoid-ignoring-return-values
     await Hive.openLazyBox(imageCacheBoxName);
   }
 }

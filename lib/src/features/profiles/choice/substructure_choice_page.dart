@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_pictur
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_choice_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-/// Page that shows a list of choices, and pushes a new page when a choice is chosen
+/// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class SubstructureChoicePage extends ConsumerWidget {
   const SubstructureChoicePage({
     Key? key,
@@ -21,25 +21,21 @@ class SubstructureChoicePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView.builder(
-        itemCount: choices.length,
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
             name: choices[index],
-            imageProvider: ref.watch(
-              substructureThumbnailProvider(choices[index]),
-            ),
+            imageProvider:
+                ref.watch(substructureThumbnailProvider(choices[index])),
           ),
-          const Divider(
-            thickness: 0.5,
-            height: 0,
-          ),
+          const Divider(height: 0, thickness: 0.5),
         ].toColumn(),
+        itemCount: choices.length,
       ),
     );
   }

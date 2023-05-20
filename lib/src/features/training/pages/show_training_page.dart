@@ -6,8 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_list_tile.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class ShowTrainingPage extends StatelessWidget {
-  final String id;
-  const ShowTrainingPage({Key? key, required this.id}) : super(key: key);
+  final String reservationDocumentId;
+  const ShowTrainingPage({Key? key, required this.reservationDocumentId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +19,13 @@ class ShowTrainingPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Afschrijving'),
-        // automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: reservations.doc(id).get(),
+        future: reservations.doc(reservationDocumentId).get(),
         builder: (
           BuildContext context,
           AsyncSnapshot<DocumentSnapshot> snapshot,
@@ -35,14 +35,15 @@ class ShowTrainingPage extends StatelessWidget {
               errorMessage: "We konden geen verbinding maken met de database",
             );
           }
-          if (snapshot.hasData && !snapshot.data!.exists) {
+          if (snapshot.hasData &&
+              !(snapshot.data as DocumentSnapshot<Object?>).exists) {
             return const ErrorCardWidget(
               errorMessage: "Er is geen afschrijving gevonden",
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> reservation =
-                snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data?.data() as Map<String, dynamic>;
 
             return FutureBuilder<DocumentSnapshot>(
               future: users.doc(reservation['creatorId']).get(),
@@ -55,7 +56,8 @@ class ShowTrainingPage extends StatelessWidget {
                     errorMessage: "We konden de afschrijver niet ophalen",
                   );
                 }
-                if (snapshot.hasData && !snapshot.data!.exists) {
+                if (snapshot.hasData &&
+                    !(snapshot.data as DocumentSnapshot<Object?>).exists) {
                   return const ErrorCardWidget(
                     errorMessage: "We konden de afschrijver niet ophalen",
                   );
@@ -63,13 +65,9 @@ class ShowTrainingPage extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   String creatorName;
                   Map<String, dynamic> user =
-                      snapshot.data!.data() as Map<String, dynamic>;
-                  if (reservation['creatorName'] != null) {
-                    creatorName = reservation['creatorName'];
-                  } else {
-                    creatorName = // added for compatibility with old reservations, this can be removed after a while
-                        user['first_name'] + ' ' + user['last_name'];
-                  }
+                      snapshot.data?.data() as Map<String, dynamic>;
+                  creatorName = reservation['creatorName'] ??
+                      user['first_name'] + ' ' + user['last_name'];
 
                   List<Widget> children = [
                     DataListTile(
@@ -93,7 +91,7 @@ class ShowTrainingPage extends StatelessWidget {
                       DateFormat.yMMMMEEEEd('nl_NL').format(date);
 
                   children.addAll([
-                    // add ListTile with the date
+                    // Add ListTile with the date.
                     DataListTile(
                       icon: const Icon(Icons.calendar_today),
                       data: formattedDate,
@@ -136,12 +134,12 @@ class ShowTrainingPage extends StatelessWidget {
       ),
     );
   }
-}
 
-String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
-  DateTime date =
-      DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
-  TimeOfDay time = TimeOfDay.fromDateTime(date);
+  String timestampToTimeOfDay(Timestamp timestamp, BuildContext context) {
+    DateTime date =
+        DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
+    TimeOfDay time = TimeOfDay.fromDateTime(date);
 
-  return time.format(context);
+    return time.format(context);
+  }
 }

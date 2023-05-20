@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 
 import '../model/reservation.dart';
 
+// ignore: prefer-static-class
 final myReservationsProvider =
     StreamProvider<QuerySnapshot<Reservation>>((ref) {
   final String? uid = ref.watch(firebaseAuthUserProvider)?.uid;
@@ -15,7 +16,8 @@ final myReservationsProvider =
       .instance
       .collection('reservations')
       .withConverter<Reservation>(
-        fromFirestore: (snapshot, _) => Reservation.fromJson(snapshot.data()!),
+        fromFirestore: (snapshot, _) =>
+            Reservation.fromJson(snapshot.data() ?? {}),
         toFirestore: (reservation, _) => reservation.toJson(),
       );
 
@@ -35,7 +37,7 @@ final myReservationsProvider =
         isEqualTo: uid,
       )
       .where(
-        // show reservations booked for today and later
+        // Show reservations booked for today and later.
         'startTime',
         isGreaterThanOrEqualTo: startOfToday,
       )

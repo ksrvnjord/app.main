@@ -17,7 +17,6 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
   }) : super(key: key);
 
   final String name;
-  static const widgetPadding = 16.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,8 +25,8 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

@@ -33,11 +33,11 @@ class AlmanakUserTile extends ConsumerWidget {
 
     return heimdallAlmanakProfile.when(
       data: (user) => user == null
-          ? const SizedBox() // no user found, show nothing
+          ? const SizedBox() // No user found, show nothing.
           : ListTile(
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text("$firstName $lastName"),
-              subtitle: subtitle != null ? Text(subtitle!) : null,
+              subtitle: subtitle != null ? Text(subtitle as String) : null,
               trailing:
                   const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
               onTap: () => Routemaster.of(context).push(user.identifier),
@@ -46,27 +46,27 @@ class AlmanakUserTile extends ConsumerWidget {
         leading: const ShimmerWidget(child: DefaultProfilePicture()),
         title: ShimmerWidget(
           child: Container(
-            height: titleShimmerHeight,
             decoration: ShapeDecoration(
-              shape: const RoundedRectangleBorder(),
               color: Colors.grey[300],
+              shape: const RoundedRectangleBorder(),
             ),
+            height: titleShimmerHeight,
           ),
         ).padding(right: titleShimmerPadding),
         subtitle: subtitle == null
             ? null
             : ShimmerWidget(
                 child: Container(
-                  height: subtitleShimmerHeight,
                   decoration: ShapeDecoration(
-                    shape: const RoundedRectangleBorder(),
                     color: Colors.grey[300],
+                    shape: const RoundedRectangleBorder(),
                   ),
+                  height: subtitleShimmerHeight,
                 ),
               ).padding(right: subtitleShimmerPadding),
       ),
       error: (error, stackTrace) =>
           ErrorCardWidget(errorMessage: error.toString()),
-    ); // show nothing if no heimdall user is found
+    ); // Show nothing if no heimdall user is found.
   }
 }

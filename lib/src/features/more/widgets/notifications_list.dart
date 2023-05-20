@@ -21,30 +21,26 @@ class _NotificationsListState extends State<NotificationsList> {
     bool value,
     ScaffoldMessengerState messenger,
     String title,
-  ) {
-    toggleTopicFCM(topic: topic, value: value).then((_) {
+  ) async {
+    try {
+      await toggleTopicFCM(topic: topic, value: value);
+      // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
+        content: Text('${value ? 'Aangemeld' : 'Afgemeld'} voor $title'),
         backgroundColor: Colors.green[900],
-        content: Text(
-          '${value ? 'Aangemeld' : 'Afgemeld'} voor $title',
-        ),
       ));
-
-      setState(() {
-        return;
-      });
-    }).onError((_, __) {
+    } catch (e) {
+      // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
+        content: const Text('Er is iets misgegaan'),
         backgroundColor: Colors.red[900],
-        content: const Text(
-          'Er is iets misgegaan',
-        ),
       ));
-
+    }
+    if (mounted) {
       setState(() {
         return;
       });
-    });
+    }
   }
 
   final topics = [
@@ -57,29 +53,25 @@ class _NotificationsListState extends State<NotificationsList> {
 
     return ListView(children: <Widget>[
       const SwitchListTile(
-        visualDensity: VisualDensity.standard,
-        title: Text('Bestuursnotificaties'),
         value: true,
         onChanged: null,
+        title: Text('Bestuursnotificaties'),
+        visualDensity: VisualDensity.standard,
       ),
       const SwitchListTile(
-        visualDensity: VisualDensity.standard,
-        title: Text('Persoonlijke notificaties'),
         value: true,
         onChanged: null,
+        title: Text('Persoonlijke notificaties'),
+        visualDensity: VisualDensity.standard,
       ),
       const Divider(height: 0),
       ...topics
           .map((e) => SwitchListTile(
-                visualDensity: VisualDensity.standard,
-                title: Text(e['title']!),
                 value: widget.topics.get(e['topic']!) ?? false,
-                onChanged: (value) => toggleTopic(
-                  e['topic']!,
-                  value,
-                  messenger,
-                  e['title']!,
-                ),
+                onChanged: (value) =>
+                    toggleTopic(e['topic']!, value, messenger, e['title']!),
+                title: Text(e['title']!),
+                visualDensity: VisualDensity.standard,
               ))
           .toList(),
     ]);

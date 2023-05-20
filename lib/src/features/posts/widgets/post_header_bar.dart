@@ -16,47 +16,53 @@ class PostHeaderBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = snapshot.data()!;
+    final post = snapshot.data();
     const double profilePictureIconSize = 20;
     const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
-    final postAuthor = ref.watch(firestoreUserProvider(post.authorId));
+    final postAuthorId = post?.authorId ?? "";
+
+    final postAuthor = ref.watch(firestoreUserProvider(postAuthorId));
 
     final firebaseUser = ref.watch(currentFirebaseUserProvider);
 
-    void deletePost() {
+    void deletePost() async {
       Navigator.of(context, rootNavigator: true).pop();
-      PostService.deletePost(snapshot.reference.path);
+      // ignore: avoid-ignoring-return-values
+      await PostService.deletePost(snapshot.reference.path);
     }
 
     return [
       [
         ClickableProfilePictureWidget(
-          userId: post.authorId,
+          userId: postAuthorId,
           size: profilePictureIconSize,
         ),
         [
-          AuthorWidget(authorName: post.authorName, postAuthor: postAuthor),
-          Text(timeago.format(post.createdTime.toDate(), locale: 'nl'))
-              .textColor(Colors.blueGrey)
-              .fontSize(postTimeFontSize),
+          AuthorWidget(
+            postAuthor: postAuthor,
+            authorName: post?.authorName ?? "Onbekend",
+          ),
+          Text(timeago.format(
+            post?.createdTime.toDate() ?? DateTime.now(),
+            locale: 'nl',
+          )).textColor(Colors.blueGrey).fontSize(postTimeFontSize),
         ]
             .toColumn(
               crossAxisAlignment: CrossAxisAlignment.start,
             )
             .padding(left: titleLeftPadding),
       ].toRow(),
-      // three dots for more options, show if user is author
+      // Three dots for more options, show if user is author.
 
       if (firebaseUser != null &&
-          (post.authorId == firebaseUser.uid || firebaseUser.isBestuur))
+          (postAuthorId == firebaseUser.uid || firebaseUser.isBestuur))
         InkWell(
+          child: const Icon(Icons.delete_outlined),
           onTap: () => showDialog(
             context: context,
-            builder:
-                // create dialog to delete post
-                (context) => AlertDialog(
+            builder: (context) => AlertDialog(
               title: const Text('Verwijderen'),
               content: const Text(
                 'Weet je zeker dat je dit bericht wilt verwijderen?',
@@ -73,7 +79,6 @@ class PostHeaderBar extends ConsumerWidget {
               ],
             ),
           ),
-          child: const Icon(Icons.delete_outlined),
         ),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: prefer-static-class
 final weatherProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   const double latitude = 52.1585;
   const double longitude = 4.4729;
-  // do api request
 
   const dailyParams = ['sunrise', 'sunset'];
 

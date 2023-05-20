@@ -3,13 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
-// No other idea than to use this function
-// ignore: avoid-returning-widgets
+// No other idea than to use this function.
+// ignore: prefer-static-class, avoid-returning-widgets
 Widget onEmpty<T>(T arg) {
   return Text(arg.toString());
 }
 
+@immutable
 class FutureWrapper<T> extends StatelessWidget {
+  static Widget empty() => const SizedBox.shrink();
   final Future<T> future;
   final Widget loading;
   final Widget Function(Object error) error;
@@ -27,20 +29,18 @@ class FutureWrapper<T> extends StatelessWidget {
     this.initialData,
   }) : super(key: key);
 
-  static Widget empty() => const SizedBox.shrink();
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
       future: future,
+      initialData: initialData,
       builder: (context, AsyncSnapshot<T> snapshot) {
         if (snapshot.hasData) {
-          // data can't be null, but the type system doesn't know that
-          // ignore: null_check_on_nullable_type_parameter
-          return success(snapshot.data!);
+          return success(snapshot.data as T);
         } else if (snapshot.hasError) {
-          log(snapshot.error.toString()); // show error in console aswell
+          log(snapshot.error.toString());
 
+          // ignore: avoid-non-null-assertion
           return error(snapshot.error!);
         } else if (snapshot.data == null &&
             snapshot.connectionState == ConnectionState.done) {
@@ -49,7 +49,6 @@ class FutureWrapper<T> extends StatelessWidget {
 
         return loading;
       },
-      initialData: initialData,
     );
   }
 }

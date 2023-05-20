@@ -12,9 +12,6 @@ class ReservationObject {
   final String? brand;
   final bool critical;
 
-  // const ReservationObject(this.reference, this.name, this.permissions,
-  //     this.type, this.available, this.comment,
-  //     [this.kind]);
   const ReservationObject({
     this.reference,
     required this.name,

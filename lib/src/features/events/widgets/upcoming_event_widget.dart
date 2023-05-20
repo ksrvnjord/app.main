@@ -42,8 +42,8 @@ class UpcomingEventWidget extends StatelessWidget {
         Expanded(
           child: Text(
             event.title,
-            maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
+            maxLines: maxLines,
           )
               .fontSize(eventFontSize)
               .paddingDirectional(horizontal: elementPadding),

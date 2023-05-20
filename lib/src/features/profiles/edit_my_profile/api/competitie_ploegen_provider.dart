@@ -4,22 +4,19 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:tuple/tuple.dart';
 
-// we give year and gender to this provider, so we can save the state for a selected filter combination
+// We give year and gender to this provider, so we can save the state for a selected filter combination.
+// ignore: prefer-static-class
 final competitiePloegenProvider =
     FutureProvider.family<List<String>, Tuple2<int, Gender>>(
   (ref, yearAndGender) async {
     final int selectedYear = yearAndGender.item1;
     final selectedGender = yearAndGender.item2;
 
-    await Future.delayed(const Duration(
-      milliseconds: 1726,
-    )); // on first load, make user believe that the app is working hard
-
     final snapshot = await FirebaseFirestore.instance
         .collection('group_info')
         .withConverter(
           fromFirestore: (snapshot, _) =>
-              CompetitiePloeg.fromFirestore(snapshot.data()!),
+              CompetitiePloeg.fromFirestore(snapshot.data() ?? {}),
           toFirestore: (ploeg, _) => ploeg.toFirestore(),
         )
         .where('year', isEqualTo: selectedYear)

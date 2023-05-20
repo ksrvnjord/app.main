@@ -7,8 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:tuple/tuple.dart';
 
-// provides a list with names of the ploegen, given the filters
-// must be a future provider because the competitieploegen are fetched from the database
+// Provides a list with names of the ploegen, given the filters.
+// Must be a future provider because the competitieploegen are fetched from the database.
+// ignore: prefer-static-class
 final ploegenProvider = FutureProvider<List<String>>((ref) async {
   final selectedType = ref.watch(ploegTypeProvider);
 

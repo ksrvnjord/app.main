@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widget
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
-  const VerticalReservationScrollViewWithStickyHeader({
+class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
+  const VerticalReservationScrollViewWithHeader({
     super.key,
     required this.boatsController,
     required this.date,
@@ -28,7 +28,7 @@ class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: StickyHeader(
-            header: data.docs // this builds the header with the boat names
+            header: data.docs // This builds the header with the boat names.
                 .map<Widget>(
                   (doc) => ReservationObjectNameBox(reservationObj: doc),
                 )
@@ -36,7 +36,7 @@ class VerticalReservationScrollViewWithStickyHeader extends ConsumerWidget {
                 .toRow(),
             content: Stack(
               children: [
-                data.docs // this builds the content with the slots
+                data.docs // This builds the content with the slots.
                     .map<Widget>((e) {
                       return ObjectCalendar(date: date, boat: e).border(
                         left: 1,

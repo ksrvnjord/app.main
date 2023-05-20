@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_pr
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
+// ignore: prefer-static-class
 final groupsForUserProvider = FutureProvider.autoDispose
     .family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
   (ref, userId) async {
@@ -11,17 +12,17 @@ final groupsForUserProvider = FutureProvider.autoDispose
 
     final ploegen = ref.watch(ploegenForUserProvider(userId).future);
 
-    // await for both futures to complete
+    // Await for both futures to complete.
     final snapshots = await Future.wait([commissies, ploegen]);
 
-    return snapshots // [ snapshot, snapshot]
+    return snapshots // [ snapshot, snapshot].
         .map(
           (querySnapshot) => querySnapshot.docs,
-        ) // [ [doc, doc], [doc, doc] ]
-        .expand((element) => element) // [ doc, doc, doc, doc ]
+        ) // [ [doc, doc], [doc, doc] ].
+        .expand((element) => element) // [ doc, doc, doc, doc ].
         .toList()
       ..sort((a, b) => b.data().year.compareTo(a
           .data()
-          .year)); // docs is a combination of multiple queries so must be sorted
+          .year)); // Docs is a combination of multiple queries so must be sorted.
   },
 );

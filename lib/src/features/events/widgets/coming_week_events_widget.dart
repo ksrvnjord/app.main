@@ -27,15 +27,13 @@ class ComingWeekEventsWidget extends ConsumerWidget {
           onTap: () => Routemaster.of(context).push('events'),
         ),
         InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          onTap: () => Routemaster.of(context).push('events'),
+          // ignore: sort_child_properties_last
           child: SizedBox(
             height: cardHeight,
             child: comingEvents.when(
               data: (events) => FadeBottomWidget(
                 parentHeight: cardHeight,
                 child: ListView.builder(
-                  itemCount: events.length,
                   itemBuilder: (context, index) {
                     Event event = events[index];
                     const double elementPadding = 4;
@@ -45,16 +43,16 @@ class ComingWeekEventsWidget extends ConsumerWidget {
                       event: event,
                     ).paddingDirectional(horizontal: elementPadding);
                   },
+                  itemCount: events.length,
                 ),
               ),
               loading: () => ShimmerWidget(
                 child: Container(
-                  height: cardHeight,
-                  // circular border radius
                   decoration: BoxDecoration(
-                    color: Colors.grey[300]!,
+                    color: Colors.grey.shade300,
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
                   ),
+                  height: cardHeight,
                 ),
               ),
               error: (error, stackTrace) =>
@@ -66,6 +64,8 @@ class ComingWeekEventsWidget extends ConsumerWidget {
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
+          onTap: () => Routemaster.of(context).push('events'),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
       ],
     );

@@ -12,7 +12,7 @@ class TrainingList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (ref.watch(firebaseAuthUserProvider) == null) {
-      // this should show to the user that there are no reservations
+      // This should show to the user that there are no reservations.
       return const Center(
         child: Text('Je hebt geen afschrijvingen'),
       );
@@ -30,13 +30,13 @@ class TrainingList extends ConsumerWidget {
                       .textColor(Colors.blueGrey),
                 )
               : ListView.separated(
-                  itemCount: data.docs.length,
                   padding: const EdgeInsets.all(10),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 4),
                   itemBuilder: (BuildContext context, int index) => Center(
                     child: ReservationListTile(snapshot: data.docs[index]),
                   ),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(height: 4),
+                  itemCount: data.docs.length,
                 ),
         );
   }

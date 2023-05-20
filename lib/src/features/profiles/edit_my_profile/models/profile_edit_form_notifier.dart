@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: prefer-static-class
 final profileEditFormNotifierProvider =
     StateNotifierProvider<ProfileEditFormNotifier, ProfileForm>(
   (ref) => ProfileEditFormNotifier(),
@@ -86,7 +87,7 @@ class ProfileForm {
     );
   }
 
-  // toJson
+  // ToJson.
   Map<String, dynamic> toJson() {
     return {
       if (study != null) 'study': study,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
@@ -25,14 +25,34 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  // override didCHangeDependencies
+  Future<void> _refresh() async {
+    // Invalidate all providers for the widgets on the home page.
+    ref.invalidate(firebaseAuthUserProvider);
+    ref.invalidate(vaarverbodProvider);
+    ref.invalidate(openPollsProvider);
+    ref.invalidate(pollAnswerProvider);
+    ref.invalidate(comingEventsProvider);
+    ref.invalidate(Announcements.firstPageProvider);
+
+    // Wait for all providers to be updated.
+    // ignore: avoid-ignoring-return-values
+    await Future.wait([
+      ref.watch(vaarverbodProvider.future),
+      ref.watch(openPollsProvider.future),
+      ref.watch(comingEventsProvider.future),
+      ref.watch(Announcements.firstPageProvider.future),
+    ]);
+  }
+
+  // Override didCHangeDependencies.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // ignore: avoid-ignoring-return-values
     ref.watch(
       currentFirebaseUserProvider,
-    ); // init the current user with data from Firestore
+    ); // Init the current user with data from Firestore.
   }
 
   @override
@@ -42,59 +62,41 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double logoHeight = 64;
     const double myProfileSize = 48;
 
+    double screenTopPadding = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       appBar: PreferredSize(
-        // this is to make the body start below the status bar
-        preferredSize: Size.fromHeight(MediaQuery.of(context).padding.top),
-        child: SizedBox(
-          height: MediaQuery.of(context).padding.top,
-        ),
+        // ignore: sort_child_properties_last
+        child: SizedBox(height: screenTopPadding),
+        preferredSize: Size.fromHeight(screenTopPadding),
       ),
       body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: ListView(
-          padding: const EdgeInsets.all(8),
-          children: <Widget>[
-            [
-              Image.asset(
-                Images.appLogoBlue,
-                height: logoHeight,
-              ).padding(bottom: elementPadding),
-              FirebaseWidget(
-                onAuthenticated: IconButton(
-                  iconSize: myProfileSize,
-                  onPressed: () => Routemaster.of(context).push('edit'),
-                  icon: const MyProfilePicture(
-                    profileIconSize: 48,
-                  ),
-                ),
-              ),
-            ].toRow(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-            ),
-            const VaarverbodWidget().padding(vertical: elementPadding),
+        // ignore: sort_child_properties_last
+        child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
+          [
+            Image.asset(Images.appLogoBlue, height: logoHeight)
+                .padding(bottom: elementPadding),
             FirebaseWidget(
-              onAuthenticated:
-                  const FormsWidget().padding(vertical: elementPadding),
+              onAuthenticated: IconButton(
+                iconSize: myProfileSize,
+                onPressed: () => Routemaster.of(context).push('edit'),
+                icon: const MyProfilePicture(profileIconSize: 48),
+              ),
             ),
-            const ComingWeekEventsWidget().padding(vertical: elementPadding),
-            const AnnouncementsWidget().padding(vertical: elementPadding),
-          ],
-        ),
+          ].toRow(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+          ),
+          const VaarverbodWidget().padding(vertical: elementPadding),
+          FirebaseWidget(
+            onAuthenticated:
+                const FormsWidget().padding(vertical: elementPadding),
+          ),
+          const ComingWeekEventsWidget().padding(vertical: elementPadding),
+          const AnnouncementsWidget().padding(vertical: elementPadding),
+        ]),
+        onRefresh: _refresh,
       ),
     );
-  }
-
-  // refresh function
-  Future<void> _refresh() async {
-    // invalidate all providers for the widgets on the home page
-    ref.invalidate(firebaseAuthUserProvider);
-    ref.invalidate(vaarverbodProvider);
-    ref.invalidate(openPollsProvider);
-    ref.invalidate(pollAnswerProvider);
-    ref.invalidate(comingEventsProvider);
-    ref.invalidate(announcementsProvider);
-    await Future.delayed(const Duration(milliseconds: 500));
   }
 }

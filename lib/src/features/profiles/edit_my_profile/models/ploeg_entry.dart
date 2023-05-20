@@ -1,7 +1,9 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
+@immutable
 class PloegEntry extends GroupEntry {
   final PloegType ploegType;
   final PloegRole role;
@@ -11,12 +13,12 @@ class PloegEntry extends GroupEntry {
         'wedstrijd': PloegType.wedstrijd,
       };
 
-  // reverse of typemap
+  // Reverse of typemap.
   static Map<PloegType, String> get typeMapReverse => LinkedHashMap.fromEntries(
         typeMap.entries.map((entry) => MapEntry(entry.value, entry.key)),
       );
 
-  PloegEntry({
+  const PloegEntry({
     required int year,
     required String name,
     required String firstName,

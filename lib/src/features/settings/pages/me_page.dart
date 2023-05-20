@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-single-widget-per-file
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,14 +6,10 @@ import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-const double betweenFields = 20;
-const double marginContainer = 5;
-const double paddingBody = 15;
 
 class MePage extends ConsumerWidget {
   const MePage({Key? key}) : super(key: key);
@@ -24,10 +21,10 @@ class MePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jouw Njord-Account'),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
         automaticallyImplyLeading: true,
+        title: const Text('Jouw Njord-Account'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -47,31 +44,32 @@ class MeWidget extends ConsumerStatefulWidget {
   createState() => _MeWidgetState();
 }
 
-Map<String, Object?> createInitialField({
-  required double width,
-  required String label,
-  required String initialValue,
-  required String? updatedValue,
-}) {
-  return {
-    'changed': false,
-    'width': width,
-    'controller': TextEditingController(text: initialValue),
-    'display': label,
-    'initial': initialValue,
-    'updated': updatedValue,
-  };
-}
-
 class _MeWidgetState extends ConsumerState<MeWidget> {
   List<Map<String, Map<String, dynamic>>> fields = [];
   bool saving = false;
   Color buttonColor = Colors.blue;
 
+  Map<String, Object?> createInitialField({
+    required double width,
+    required String label,
+    required String initialValue,
+    required String? updatedValue,
+  }) {
+    return {
+      'changed': false,
+      'width': width,
+      'controller': TextEditingController(text: initialValue),
+      'display': label,
+      'initial': initialValue,
+      'updated': updatedValue,
+    };
+  }
+
   @override
   void initState() {
-    final contact = widget.user.fullContact.private;
-    final updated = widget.user.fullContact.update;
+    var fullContact = widget.user.fullContact;
+    final contact = fullContact.private;
+    final updated = fullContact.update;
 
     // TODO: Size the fields dynamically?
     fields = [
@@ -80,14 +78,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 1 / 2,
           label: 'Voornaam',
-          initialValue: contact!.first_name ?? '',
+          initialValue: contact?.first_name ?? '',
           updatedValue: updated?.first_name,
         ),
         'last_name': createInitialField(
           // ignore: no-magic-number
           width: 1 / 2,
           label: 'Achternaam',
-          initialValue: contact.last_name ?? '',
+          initialValue: contact?.last_name ?? '',
           updatedValue: updated?.last_name,
         ),
       },
@@ -95,7 +93,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         'email': createInitialField(
           width: 1,
           label: 'E-mailadres',
-          initialValue: contact.email ?? '',
+          initialValue: contact?.email ?? '',
           updatedValue: updated?.email,
         ),
       },
@@ -103,7 +101,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         'phone_primary': createInitialField(
           width: 1,
           label: 'Telefoonnummer',
-          initialValue: contact.phone_primary ?? '',
+          initialValue: contact?.phone_primary ?? '',
           updatedValue: updated?.phone_primary,
         ),
       },
@@ -112,21 +110,21 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 2 / 4,
           label: 'Straat',
-          initialValue: contact.street ?? '',
+          initialValue: contact?.street ?? '',
           updatedValue: updated?.street,
         ),
         'housenumber': createInitialField(
           // ignore: no-magic-number
           width: 1 / 4,
           label: 'Huisnummer',
-          initialValue: contact.housenumber ?? '',
+          initialValue: contact?.housenumber ?? '',
           updatedValue: updated?.housenumber,
         ),
         'housenumber_addition': createInitialField(
           // ignore: no-magic-number
           width: 1 / 4,
           label: 'Toevoeging',
-          initialValue: contact.housenumber_addition ?? '',
+          initialValue: contact?.housenumber_addition ?? '',
           updatedValue: updated?.housenumber_addition,
         ),
       },
@@ -135,14 +133,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           // ignore: no-magic-number
           width: 1 / 3,
           label: 'Postcode',
-          initialValue: contact.zipcode ?? '',
+          initialValue: contact?.zipcode ?? '',
           updatedValue: updated?.zipcode,
         ),
         'city': createInitialField(
           // ignore: no-magic-number
           width: 2 / 3,
           label: 'Plaats',
-          initialValue: contact.city ?? '',
+          initialValue: contact?.city ?? '',
           updatedValue: updated?.city,
         ),
       },
@@ -164,6 +162,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    const double paddingBody = 15;
     final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
     final client = ref.watch(graphQLModelProvider).client;
 
@@ -179,14 +178,14 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         const SizedBox(height: 10),
         const SizedBox(height: 20),
         TextFormField(
+          initialValue: widget.user.identifier,
           decoration: const InputDecoration(labelText: 'Lidnummer'),
           enabled: false,
-          initialValue: widget.user.identifier,
         ).padding(all: fieldPadding),
         TextFormField(
+          initialValue: widget.user.username,
           decoration: const InputDecoration(labelText: 'Njord-account'),
           enabled: false,
-          initialValue: widget.user.username,
         ).padding(all: fieldPadding),
         ...fields.asMap().entries.map<Widget>((i) {
           int idx = i.key;
@@ -200,12 +199,12 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
                   width: label['width'] * rowWidth,
                   child: Builder(builder: (_) {
                     return TextFormField(
-                      style: labelTextStyle(label),
+                      controller: label['controller'],
                       decoration: InputDecoration(
                         labelText: label['display'] ?? '',
                         labelStyle: labelTextStyle(label),
                       ),
-                      controller: label['controller'],
+                      style: labelTextStyle(label),
                       onChanged: (value) => setState(() {
                         fields[idx][key]?['changed'] =
                             (label['initial'] != label['controller'].text);
@@ -218,17 +217,17 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               .toRow();
         }).toList(),
         ElevatedButton(
+          onPressed: () => save(context, client),
           style: ElevatedButton.styleFrom(
             backgroundColor: buttonColor,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
-          onPressed: () => save(context, client),
           child: saving
               ? const SizedBox(
-                  height: 10,
                   width: 10,
+                  height: 10,
                   child: CircularProgressIndicator(color: Colors.white),
                 ).center().padding(all: onSaveButtonPadding)
               : const Text('Opslaan'),
@@ -241,59 +240,64 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           height: 32,
         ),
         GestureDetector(
-          onTap: () => ref.read(authModelProvider).logout(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: const [
-              Icon(
-                Icons.logout,
-                color: Colors.red,
-              ),
+              Icon(Icons.logout, color: Colors.red),
               Text('Uitloggen', style: TextStyle(color: Colors.red)),
             ],
           ),
+          onTap: () => ref.read(authModelProvider).logout(),
         ),
       ],
     );
   }
 
-  void save(BuildContext context, GraphQLClient client) {
+  void save(BuildContext context, GraphQLClient client) async {
     setState(() {
       saving = true;
       buttonColor = Colors.blueGrey;
     });
-    updateMe(
-      client,
-      Input$IContact(
-        first_name: fields.first['first_name']?['controller'].text,
-        last_name: fields.first['last_name']?['controller'].text,
-        email: fields[1]['email']?['controller'].text,
-        phone_primary: fields[2]['phone_primary']?['controller'].text,
-        street: fields[3]['street']?['controller'].text,
-        housenumber: fields[3]['housenumber']?['controller'].text,
-        housenumber_addition:
-            fields[3]['housenumber_addition']?['controller'].text,
-        zipcode: fields[3]['zipcode']?['controller'].text,
-        city: fields[3]['city']?['controller'].text,
-      ),
-    ).then((data) {
+    try {
+      // ignore: avoid-ignoring-return-values
+      await updateMe(
+        client,
+        Input$IContact(
+          first_name: fields.first['first_name']?['controller'].text,
+          last_name: fields.first['last_name']?['controller'].text,
+          zipcode: fields[3]['zipcode']?['controller'].text,
+          street: fields[3]['street']?['controller'].text,
+          housenumber: fields[3]['housenumber']?['controller'].text,
+          housenumber_addition:
+              fields[3]['housenumber_addition']?['controller'].text,
+          city: fields[3]['city']?['controller'].text,
+          email: fields[1]['email']?['controller'].text,
+          phone_primary: fields[2]['phone_primary']?['controller'].text,
+        ),
+      );
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Updateverzoek verstuurd')),
       );
-      setState(() {
-        saving = false;
-        buttonColor = Colors.blue;
-      });
-    }).onError((error, stackTrace) {
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.blue;
+        });
+      }
+    } catch (e) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.red,
         content: Text('Updateverzoek mislukt, melding gemaakt.'),
+        backgroundColor: Colors.red,
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.red;
-      });
-    });
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.red;
+        });
+      }
+    }
   }
 }

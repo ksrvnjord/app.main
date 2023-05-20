@@ -23,7 +23,7 @@ class PostCard extends StatelessWidget {
     const double postPadding = 8;
 
     return Container(
-      // white background
+      // White background.
       color: Colors.white,
       child: [
         PostWidget(

@@ -20,27 +20,29 @@ class EditCommissiesList extends StatelessWidget {
 
     return Column(
       children: docs.isNotEmpty
-          ? docs
-              .map((doc) => ListTile(
-                    leading: [
-                      Text(
-                        "${doc.data().startYear}-${doc.data().endYear}",
-                      ),
-                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                    title: Text(doc.data().name),
-                    subtitle: doc.data().function != null
-                        ? Text(doc.data().function!)
-                        : null,
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => doc.reference.delete(),
-                    ),
-                  ))
-              .toList()
+          ? docs.map(toListTile).toList()
           : [
               const Text('Geen commissies gevonden, voeg een commissie toe.')
                   .padding(all: fieldPadding),
             ],
+    );
+  }
+
+  ListTile toListTile(QueryDocumentSnapshot<CommissieEntry> doc) {
+    final entry = doc.data();
+
+    return ListTile(
+      leading: [
+        Text(
+          "${entry.startYear}-${entry.endYear}",
+        ),
+      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+      title: Text(entry.name),
+      subtitle: entry.function != null ? Text(entry.function as String) : null,
+      trailing: IconButton(
+        onPressed: () => doc.reference.delete(),
+        icon: const Icon(Icons.delete),
+      ),
     );
   }
 }

@@ -6,17 +6,21 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
-final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
-final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
-
+// ignore: prefer-static-class
 final graphQLModelProvider = ChangeNotifierProvider((ref) {
-  final auth = ref.watch(authModelProvider); // we need auth for the client
+  final auth = ref.watch(authModelProvider); // We need auth for the client.
 
   return GraphQLModel(auth);
 });
 
+// @immutable // TODO: Make immutable.
 class GraphQLModel extends ChangeNotifier {
-  GraphQLClient client = GraphQLClient(link: httpLink, cache: cache);
+  static final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
+
+  GraphQLClient client = GraphQLClient(
+    link: HttpLink('https://heimdall.njord.nl/graphql'),
+    cache: cache,
+  );
 
   GraphQLModel(AuthModel auth) {
     client = boot(auth);
@@ -27,7 +31,7 @@ class GraphQLModel extends ChangeNotifier {
     final HttpLink httpLink = HttpLink('${globalConstants.baseURL}/graphql/');
 
     final AuthLink authLink = AuthLink(
-      getToken: () async => 'Bearer ${auth.client!.credentials.accessToken}',
+      getToken: () async => 'Bearer ${auth.client?.credentials.accessToken}',
     );
 
     final Link link = authLink.concat(httpLink);
@@ -36,7 +40,7 @@ class GraphQLModel extends ChangeNotifier {
       cache: cache,
     );
 
-    // Fill contact details
+    // Fill contact details.
     GetIt.I.get<CurrentUser>().fillContact(client);
 
     return client;

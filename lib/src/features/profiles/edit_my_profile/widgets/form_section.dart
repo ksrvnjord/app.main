@@ -31,11 +31,8 @@ class FormSection extends StatelessWidget {
           .card(
             elevation: 0,
             shape: const RoundedRectangleBorder(
+              side: BorderSide(color: Colors.grey, width: 0.5),
               borderRadius: BorderRadius.all(Radius.circular(16)),
-              side: BorderSide(
-                color: Colors.grey,
-                width: 0.5,
-              ),
             ),
           ),
     ].toColumn(

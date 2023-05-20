@@ -14,8 +14,8 @@ class AlmanakPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -23,21 +23,21 @@ class AlmanakPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: [
           const AlmanakStructureChoiceWidget(
-            title: "Leeden",
             pushRoute: "leeden",
+            title: "Leeden",
             imagePath: 'assets/images/leeden.png',
           ),
           FirebaseWidget(
             onAuthenticated: [
               const AlmanakStructureChoiceWidget(
-                title: "Bestuur",
                 pushRoute: "bestuur",
+                title: "Bestuur",
                 imagePath: 'assets/images/bestuur.jpeg',
               ),
               [
                 const AlmanakStructureChoiceWidget(
-                  title: "Commissies",
                   pushRoute: "commissies",
+                  title: "Commissies",
                   imagePath: 'assets/images/commissies.jpeg',
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
@@ -53,8 +53,8 @@ class AlmanakPage extends StatelessWidget {
                   imagePath: 'assets/images/huizen.jpeg',
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
-                  title: "Substructuren",
                   pushRoute: "substructuren",
+                  title: "Substructuren",
                   imagePath: 'assets/images/substructures.jpeg',
                 ).expanded(),
               ].toRow(),

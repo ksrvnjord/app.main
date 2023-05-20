@@ -10,14 +10,14 @@ class FirebaseUser {
   final String firstName;
   final String lastName;
 
+  bool get isAppCo => ['21203', '18031', '18257'].contains(uid);
+
   const FirebaseUser({
     required this.uid,
     required this.isBestuur,
     required this.firstName,
     required this.lastName,
   });
-
-  bool get isAppCo => ['21203', '18031', '18257'].contains(uid);
 
   FirebaseUser copyWith({
     String? uid,
@@ -38,6 +38,7 @@ class FirebaseUserNotififier extends StateNotifier<FirebaseUser?> {
   FirebaseUserNotififier(FirebaseUser? user) : super(user);
 }
 
+// ignore: prefer-static-class
 final currentFirebaseUserProvider =
     StateNotifierProvider<FirebaseUserNotififier, FirebaseUser?>(
   (ref) {
@@ -60,6 +61,7 @@ final currentFirebaseUserProvider =
   },
 );
 
+// ignore: prefer-static-class
 final firestoreUserProvider =
     StateNotifierProvider.family<FirebaseUserNotififier, FirebaseUser?, String>(
   (ref, userId) {

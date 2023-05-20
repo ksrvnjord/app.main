@@ -5,11 +5,12 @@ import 'package:yaml/yaml.dart';
 
 /// A provider that fetches the substructure info for a given substructure name.
 /// We don't use Firestore, as this content is mostly static and Firestore Console doesn't support multiline strings.
+// ignore: prefer-static-class
 final commissieInfoProvider =
     FutureProvider.autoDispose.family<String?, String>((ref, name) async {
   String yaml = await rootBundle.loadString(AssetData.commissies);
   final YamlMap doc = loadYaml(yaml);
-  // check if the name exists in the yaml file
+  // Check if the name exists in the yaml file.
   if (!doc.containsKey(name)) {
     return null;
   }

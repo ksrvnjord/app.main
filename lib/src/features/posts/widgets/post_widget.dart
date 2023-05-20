@@ -21,7 +21,7 @@ class PostWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post post = snapshot.data()!;
+    final post = snapshot.data();
     const int contentMaxLines = 12;
 
     const double titleFontSize = 20;
@@ -35,11 +35,12 @@ class PostWidget extends ConsumerWidget {
       "Coach gezocht": Colors.orange.shade100,
       "Gevonden voorwerpen": Colors.green.shade100,
     };
+    final postTopic = post?.topic ?? "";
 
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
-        post.title,
+        post?.title ?? "",
         overflow: TextOverflow.ellipsis,
       )
           .fontSize(titleFontSize)
@@ -48,31 +49,24 @@ class PostWidget extends ConsumerWidget {
       [
         Flexible(
           child: ExpandableText(
-            post.content,
+            post?.content ?? "",
             expandText: "meer",
-            maxLines: contentMaxLines,
+            expanded: expanded,
             linkColor: Colors.blueGrey,
             linkEllipsis: false,
-            expanded: expanded,
+            urlStyle: const TextStyle(color: Colors.blue),
             onUrlTap: (url) => launchUrlString(url),
-            urlStyle: // show links as blue underlined
-                const TextStyle(
-              color: Colors.blue,
-            ),
-            style: const TextStyle(
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontSize: 16),
+            maxLines: contentMaxLines,
           ),
         ),
       ].toRow(),
       Chip(
-        label: Text(post.topic),
-        labelStyle: TextStyle(
-          color: Colors.blueGrey.shade900,
-        ),
-        visualDensity: VisualDensity.compact,
-        backgroundColor: topicColors[post.topic],
+        label: Text(postTopic),
+        labelStyle: TextStyle(color: Colors.blueGrey.shade900),
+        backgroundColor: topicColors[postTopic],
         padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
       ),
       PostStatisticsBar(snapshot: snapshot)
           .padding(top: postStatisticsTopPadding),

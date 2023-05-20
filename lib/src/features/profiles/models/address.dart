@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Address {
   final String? street;
   final String? houseNumber;
@@ -5,7 +8,7 @@ class Address {
   final String? postalCode;
   final String? city;
 
-  Address({
+  const Address({
     this.street,
     this.houseNumber,
     this.houseNumberAddition,
@@ -13,7 +16,7 @@ class Address {
     this.city,
   });
 
-  // Add a factory constructor that takes a Map<String, dynamic> and returns an Address
+  // Add a factory constructor that takes a Map<String, dynamic> and returns an Address.
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'] as String?,
@@ -24,7 +27,7 @@ class Address {
     );
   }
 
-  // Add a toJson method that returns a Map<String, dynamic>
+  // Add a toJson method that returns a Map<String, dynamic>.
   Map<String, dynamic> toJson() {
     return {
       'street': street,

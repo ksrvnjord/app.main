@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: prefer-static-class
 final wedstrijdPloegenProvider = Provider<List<String>>(
   (ref) {
     return [

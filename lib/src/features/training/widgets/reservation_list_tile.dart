@@ -18,43 +18,27 @@ class ReservationListTile extends StatelessWidget {
     final reservation = snapshot.data();
 
     return ListTile(
+      leading: const [Icon(Icons.fitness_center, color: Colors.blueGrey)]
+          .toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(reservation.objectName),
       subtitle: Text(
         '${DateFormat('E d MMM HH:mm', 'nl_NL').format(reservation.startTime)}-${DateFormat.Hm().format(reservation.endTime)}',
       ),
-      leading: const [
-        Icon(
-          Icons.fitness_center,
-          color: Colors.blueGrey,
-        ),
-      ].toColumn(
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
       trailing: <Widget>[
         IconButton(
-          onPressed: () => Routemaster.of(context).push(
-            '/training/createdamage',
-            queryParameters: {
-              'reservationObjectId': reservation.reservationObject.id,
-            },
-          ),
-          icon: const Icon(
-            Icons.report,
-            color: Colors.orange,
-          ),
+          onPressed: () => Routemaster.of(context)
+              .push('/training/createdamage', queryParameters: {
+            'reservationObjectId': reservation.reservationObject.id,
+          }),
+          icon: const Icon(Icons.report, color: Colors.orange),
         ),
         IconButton(
           onPressed: () => showDeleteReservationDialog(context, snapshot),
-          icon: const Icon(
-            Icons.cancel,
-            color: Colors.red,
-          ),
+          icon: const Icon(Icons.cancel, color: Colors.red),
         ),
-      ].toWrap(
-        direction: Axis.horizontal,
-      ),
+      ].toWrap(direction: Axis.horizontal),
     ).card(
-      color: // if damage is critical show light red, else orange
+      color: // If damage is critical show light red, else orange.
           Colors.white,
       elevation: 0,
       shape: const RoundedRectangleBorder(
@@ -87,11 +71,7 @@ class ReservationListTile extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => FirebaseFirestore.instance
-                  .collection('reservations')
-                  .doc(snapshot.id)
-                  .delete()
-                  .then((_) => Navigator.of(context).pop()),
+              onPressed: () => deleteReservation(snapshot, context),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
@@ -104,5 +84,18 @@ class ReservationListTile extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> deleteReservation(
+    QueryDocumentSnapshot<Reservation> snapshot,
+    BuildContext context,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection('reservations')
+        .doc(snapshot.id)
+        .delete();
+
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop();
   }
 }

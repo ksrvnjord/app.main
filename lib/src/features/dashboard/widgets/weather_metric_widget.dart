@@ -33,11 +33,7 @@ class WeatherMetricWidget extends StatelessWidget {
       child: [
         [
           [
-            BoxedIcon(
-              icon,
-              color: Colors.white,
-              size: headerIconSize,
-            ),
+            BoxedIcon(icon, size: headerIconSize, color: Colors.white),
             Text(title)
                 .textColor(Colors.white)
                 .fontSize(headerTextSize)
@@ -54,12 +50,14 @@ class WeatherMetricWidget extends StatelessWidget {
               .fontWeight(
                 FontWeight.bold,
               ),
-          main != null ? main! : const SizedBox(),
+          main ?? const SizedBox(),
         ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         if (bottomText != null)
-          Text(bottomText!).textColor(Colors.white).fontSize(bottomTextSize),
+          Text(bottomText ?? "")
+              .textColor(Colors.white)
+              .fontSize(bottomTextSize),
       ]
           .toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,

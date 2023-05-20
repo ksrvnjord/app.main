@@ -6,10 +6,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  final void Function(bool) loginCallback;
-
-  const ForgotPasswordPage({Key? key, this.loginCallback = dontCall})
-      : super(key: key);
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +14,18 @@ class ForgotPasswordPage extends StatelessWidget {
 
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.lightBlue,
       body: <Widget>[
         const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
         FormCard(
           explanation:
               'Op dit moment kan een wachtwoord alleen gereset worden via de website',
           buttonText: 'Ga naar de website',
-          onPressed: () =>
-              launchUrl(Uri.parse('https://heimdall.njord.nl/forgot-password')),
+          onPressed: () => launchUrl(
+            Uri.parse('https://heimdall.njord.nl/forgot-password'),
+          ),
         ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+      backgroundColor: Colors.lightBlue,
     );
   }
 }
-
-// ignore: no-empty-block
-void dontCall(bool _) {}

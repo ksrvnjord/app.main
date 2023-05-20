@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// ignore: prefer-static-class
 final damageFormProvider = ChangeNotifierProvider((ref) => DamageForm());
 
+// @immutable // TODO: make this class immutable.
 class DamageForm extends ChangeNotifier {
   String? _type;
   String? _name;
@@ -12,22 +14,6 @@ class DamageForm extends ChangeNotifier {
   String? _description;
   String? _cause;
   bool _critical = false;
-
-  DamageForm({
-    String? type,
-    String? name,
-    String? cause,
-    File? image,
-    String? description,
-    bool critical = false,
-  }) {
-    _type = type;
-    _name = name;
-    _cause = cause;
-    _image = image;
-    _description = description;
-    _critical = critical;
-  }
 
   String? get type => _type;
   String? get name => _name;
@@ -82,5 +68,21 @@ class DamageForm extends ChangeNotifier {
       _critical = e ?? false;
       notifyListeners();
     }
+  }
+
+  DamageForm({
+    String? type,
+    String? name,
+    String? cause,
+    File? image,
+    String? description,
+    bool critical = false,
+  }) {
+    _type = type;
+    _name = name;
+    _cause = cause;
+    _image = image;
+    _description = description;
+    _critical = critical;
   }
 }

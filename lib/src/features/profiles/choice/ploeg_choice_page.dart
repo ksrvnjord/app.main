@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
@@ -39,11 +40,20 @@ class PloegChoicePage extends ConsumerWidget {
     const double menuMaxHeight = 240;
     const double filtersHorizontalPadding = 8;
 
+    final buttonBackground = MaterialStateProperty.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.blue
+            : Colors.blue.shade100);
+    final buttonForeground = MaterialStateProperty.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.white
+            : Colors.blueGrey);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies een ploeg'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -52,21 +62,11 @@ class PloegChoicePage extends ConsumerWidget {
         children: [
           [
             SegmentedButton<PloegType>(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                    states.contains(MaterialState.selected)
-                        ? Colors.blue
-                        : Colors.blue.shade100),
-                foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                    states.contains(MaterialState.selected)
-                        ? Colors.white
-                        : Colors.blueGrey),
-              ),
               segments: [
                 for (final ploegType in PloegType.values)
                   ButtonSegment(
-                    label: Text(ploegType.value),
                     value: ploegType,
+                    label: Text(ploegType.value),
                   ),
               ],
               selected: {
@@ -74,29 +74,18 @@ class PloegChoicePage extends ConsumerWidget {
               },
               onSelectionChanged: (types) =>
                   ref.read(ploegTypeProvider.notifier).state = types.first,
+              style: ButtonStyle(
+                backgroundColor: buttonBackground,
+                foregroundColor: buttonForeground,
+              ),
             ),
             const SizedBox(height: 8),
             if (ploegType == PloegType.competitie)
               [
                 SegmentedButton<Gender>(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) => states.contains(MaterialState.selected)
-                          ? Colors.blue
-                          : Colors.blue.shade100,
-                    ),
-                    foregroundColor: MaterialStateProperty.resolveWith(
-                      (states) => states.contains(MaterialState.selected)
-                          ? Colors.white
-                          : Colors.blueGrey,
-                    ),
-                  ),
                   segments: [
                     for (final gender in Gender.values)
-                      ButtonSegment(
-                        label: Text(gender.value),
-                        value: gender,
-                      ),
+                      ButtonSegment(value: gender, label: Text(gender.value)),
                   ],
                   selected: {
                     selectedGender,
@@ -104,22 +93,23 @@ class PloegChoicePage extends ConsumerWidget {
                   onSelectionChanged: (types) => ref
                       .read(ploegGeslachtFilterProvider.notifier)
                       .state = types.first,
-                  // ignore: no-magic-number
+                  style: ButtonStyle(
+                    backgroundColor: buttonBackground,
+                    foregroundColor: buttonForeground,
+                  ),
                 ).expanded(),
                 DropdownButton<int>(
-                  menuMaxHeight: menuMaxHeight,
-                  // isExpanded: true,
-                  value: ploegYear,
-                  onChanged: (value) =>
-                      ref.read(ploegYearProvider.notifier).state = value!,
                   items: years
                       .map((year) => DropdownMenuItem(
                             value: year,
                             child: Text("$year-${year + 1}"),
-                            // alignment: AlignmentDirectional.center,
                           ))
                       .toList(),
-                  // ignore: no-magic-number
+                  value: ploegYear,
+                  onChanged: (value) => ref
+                      .read(ploegYearProvider.notifier)
+                      .state = value ?? getNjordYear(),
+                  menuMaxHeight: menuMaxHeight,
                 ),
               ].toRow(
                 separator: const SizedBox(width: 48),
@@ -157,11 +147,11 @@ class PloegChoicePage extends ConsumerWidget {
               (index) => ListTile(
                 title: ShimmerWidget(
                   child: Container(
-                    height: titleShimmerHeight,
                     decoration: ShapeDecoration(
-                      shape: const RoundedRectangleBorder(),
                       color: Colors.grey[300],
+                      shape: const RoundedRectangleBorder(),
                     ),
+                    height: titleShimmerHeight,
                   ),
                 ).padding(right: titleShimmerPadding),
                 trailing: const ShimmerWidget(

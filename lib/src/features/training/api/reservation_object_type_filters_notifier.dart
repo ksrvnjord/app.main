@@ -6,6 +6,15 @@ import '../widgets/calendar/filters/model/boat_types.dart';
 
 class ReservationObjectTypeFiltersNotifier
     extends StateNotifier<Map<String, List<String>>> {
+  // Has no filters.
+  bool get isEmpty {
+    for (final entry in state.entries) {
+      if (entry.value.isNotEmpty) return false;
+    }
+
+    return true;
+  }
+
   ReservationObjectTypeFiltersNotifier(Map<String, List<String>> filters)
       : super(filters);
 
@@ -19,26 +28,19 @@ class ReservationObjectTypeFiltersNotifier
     _saveToSharedPrefs();
   }
 
-  // has no filters
-  bool get isEmpty {
-    for (final entry in state.entries) {
-      if (entry.value.isNotEmpty) return false;
-    }
-
-    return true;
-  }
-
-  // create private method that saves state to shared preferences
+  // Create private method that saves state to shared preferences.
   void _saveToSharedPrefs() async {
     List<String> allFilters = [];
     for (final entry in state.entries) {
       allFilters.addAll(entry.value);
     }
     final prefs = await SharedPreferences.getInstance();
+    // ignore: avoid-ignoring-return-values
     prefs.setStringList('afschrijf_filters', allFilters);
   }
 }
 
+// ignore: prefer-static-class
 final reservationTypeFiltersProvider = StateNotifierProvider<
     ReservationObjectTypeFiltersNotifier, Map<String, List<String>>>(
   (ref) {
@@ -68,6 +70,7 @@ final reservationTypeFiltersProvider = StateNotifierProvider<
   },
 );
 
+// ignore: prefer-static-class
 final reservationTypeFiltersListProvider = Provider<List<String>>((ref) {
   final filters = ref.watch(reservationTypeFiltersProvider);
 

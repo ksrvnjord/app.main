@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
@@ -39,8 +40,8 @@ class AlmanakPloegPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(ploegName),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -60,22 +61,19 @@ class AlmanakPloegPage extends ConsumerWidget {
                     : Colors.grey,
               ),
               DropdownButton<int>(
-                value: selectedYear,
-                icon: const Icon(Icons.arrow_drop_down),
-                // iconDisabledColor: ,
-                menuMaxHeight: menuMaxHeight,
                 items: years
-                    .map(
-                      (year) => DropdownMenuItem<int>(
-                        value: year,
-                        child: Text("$year-${year + 1}"),
-                      ),
-                    )
+                    .map((year) => DropdownMenuItem<int>(
+                          value: year,
+                          child: Text("$year-${year + 1}"),
+                        ))
                     .toList(),
+                value: selectedYear,
                 onChanged: selectedPloegType == PloegType.wedstrijd
-                    ? (value) =>
-                        ref.read(ploegYearProvider.notifier).state = value!
+                    ? (value) => ref.read(ploegYearProvider.notifier).state =
+                        value ?? getNjordYear()
                     : null,
+                icon: const Icon(Icons.arrow_drop_down),
+                menuMaxHeight: menuMaxHeight,
               ),
             ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
@@ -101,12 +99,7 @@ class AlmanakPloegPage extends ConsumerWidget {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          lidnummer: doc.data().identifier,
-          subtitle: doc.data().role.value,
-        ),
+        (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
         Text("Geen Leeden gevonden voor $ploegName gevonden")
@@ -116,16 +109,24 @@ class AlmanakPloegPage extends ConsumerWidget {
     ].toColumn();
   }
 
-  int comparePloegFunctie(PloegEntry a, PloegEntry b) {
-    // sort based on role in ploeg
-    int iA = PloegRole.values.indexOf(a.role);
-    int iB = PloegRole.values.indexOf(b.role);
+  AlmanakUserTile toListTile(QueryDocumentSnapshot<PloegEntry> doc) {
+    final user = doc.data();
 
-    if (iA == iB) {
-      // sort based on last name name
-      return a.lastName.compareTo(b.lastName);
-    } else {
-      return iA.compareTo(iB);
-    }
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      subtitle: user.role.value,
+      lidnummer: user.identifier,
+    );
+  }
+
+  int comparePloegFunctie(PloegEntry a, PloegEntry b) {
+    // Sort based on role in ploeg.
+    int indexA = PloegRole.values.indexOf(a.role);
+    int indexB = PloegRole.values.indexOf(b.role);
+
+    return indexA == indexB
+        ? a.lastName.compareTo(b.lastName)
+        : indexA.compareTo(indexB);
   }
 }

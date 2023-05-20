@@ -27,15 +27,14 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: null,
       body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: tabPage.controller,
+        // ignore: sort_child_properties_last
         children: [
           for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
         ],
+        controller: tabPage.controller,
+        physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: tabPage.controller.index,
-        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
@@ -49,16 +48,12 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.edit_calendar),
             label: 'Afschrijven',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Almanak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'Meer',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
         onTap: (value) => animateTo(value, tabPage),
+        currentIndex: tabPage.controller.index,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

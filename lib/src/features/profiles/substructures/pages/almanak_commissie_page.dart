@@ -15,13 +15,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
-final commissiesRef = FirebaseFirestore.instance
-    .collectionGroup('commissies')
-    .withConverter<CommissieEntry>(
-      fromFirestore: (snapshot, _) => CommissieEntry.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
-
 class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
@@ -48,7 +41,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
   final ScrollController scrollController = ScrollController(
     keepScrollOffset: true,
-  ); // for keeping scroll position when changing year
+  ); // For keeping scroll position when changing year.
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +69,14 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.commissieName),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         controller:
-            scrollController, // for keeping scroll position when changing year
+            scrollController, // For keeping scroll position when changing year.
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           AlmanakSubstructureCoverPicture(
@@ -105,21 +98,20 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             [
               const Text('Kies een jaar: ').textColor(Colors.blueGrey),
               DropdownButton<Tuple2<int, int>>(
+                items: years
+                    .map((year) => DropdownMenuItem<Tuple2<int, int>>(
+                          value: year,
+                          child: Text("${year.item1}-${year.item2}")
+                              .textColor(Colors.blueGrey),
+                        ))
+                    .toList(),
                 value: selectedYear,
+                onChanged: (tuple) => setState(() {
+                  selectedYear =
+                      tuple ?? Tuple2(getNjordYear(), getNjordYear() + 1);
+                }),
                 icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
                 menuMaxHeight: menuMaxHeight,
-                items: years
-                    .map(
-                      (year) => DropdownMenuItem<Tuple2<int, int>>(
-                        value: year,
-                        child: Text("${year.item1}-${year.item2}")
-                            .textColor(Colors.blueGrey),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (tuple) => setState(() {
-                  selectedYear = tuple!;
-                }),
               ),
             ].toRow(),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
@@ -145,12 +137,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     return <Widget>[
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          lidnummer: doc.data().identifier,
-          subtitle: doc.data().function,
-        ),
+        (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
         const Text("Geen Leeden gevonden voor deze commissie in dit jaar")
@@ -160,11 +147,22 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     ].toColumn();
   }
 
-  /// Compare the bestuursfuncties op basis van constitutie
+  AlmanakUserTile toListTile(QueryDocumentSnapshot<CommissieEntry> doc) {
+    final user = doc.data();
+
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      subtitle: user.function,
+      lidnummer: user.identifier,
+    );
+  }
+
+  /// Compare the bestuursfuncties op basis van constitutie.
   int compareCommissieFunctie(CommissieEntry a, CommissieEntry b) {
     int aPos = substructuurVolgorde.indexOf(a.function ?? "");
     int bPos = substructuurVolgorde.indexOf(b.function ?? "");
-    // Order the ones that are not in the list at the end
+    // Order the ones that are not in the list at the end.
     if (aPos == -1) aPos = substructuurVolgorde.length;
     if (bPos == -1) bPos = substructuurVolgorde.length;
 

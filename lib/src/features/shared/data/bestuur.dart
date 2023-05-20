@@ -1,3 +1,4 @@
+// ignore: prefer-static-class
 final Map<String, String> bestuurEmailMap = {
   "Praeses": "praeses@njord.nl",
   "Ab-actis": "abactis@njord.nl",

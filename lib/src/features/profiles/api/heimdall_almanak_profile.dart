@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
+// ignore: prefer-static-class
 final heimdallAlmanakProfileProvider = FutureProvider.family<
     Query$AlmanakProfileByIdentifier$userByIdentifier?,
     String>((ref, profileId) async {

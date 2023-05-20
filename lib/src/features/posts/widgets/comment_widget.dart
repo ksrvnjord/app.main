@@ -17,13 +17,13 @@ class CommentWidget extends ConsumerWidget {
 
   const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
 
-  // wrapper function for usage in the CupertinoContextMenu
+  // Wrapper function for usage in the CupertinoContextMenu.
   void popAnd(
     BuildContext context, {
     required Function onPop,
     bool waitForPopAnimation = false,
   }) {
-    Navigator.of(context, rootNavigator: true).pop(); // pop the context menu
+    Navigator.of(context, rootNavigator: true).pop(); // Pop the context menu.
 
     if (waitForPopAnimation) {
       Future.delayed(
@@ -31,7 +31,8 @@ class CommentWidget extends ConsumerWidget {
         () => onPop.call(),
       );
     } else {
-      // delay delete, because otherwise the context menu will not be able to pop
+      // Delay delete, because otherwise the context menu will not be able to pop.
+      // ignore: avoid-ignoring-return-values
       onPop.call();
     }
   }
@@ -52,23 +53,26 @@ class CommentWidget extends ConsumerWidget {
         size: profilePictureSize,
       ),
       Flexible(
-        // so that the comment can be as long as it wants
+        // So that the comment can be as long as it wants.
         child: [
           [
             CupertinoContextMenu(
               actions: [
                 CupertinoContextMenuAction(
+                  // ignore: sort_child_properties_last
+                  child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
                   onPressed: () => popAnd(
                     context,
                     onPop: () => CommentsService.like(snapshot),
                   ),
                   trailingIcon: likedByMe ? Icons.heart_broken : Icons.favorite,
-                  child: Text(likedByMe ? "Anti-Zwaan" : "Zwaan"),
                 ),
 
-                // only show delete button if the comment is from the current user
-                if (FirebaseAuth.instance.currentUser!.uid == comment.authorId)
+                // Only show delete button if the comment is from the current user.
+                if (FirebaseAuth.instance.currentUser?.uid == comment.authorId)
                   CupertinoContextMenuAction(
+                    // ignore: sort_child_properties_last
+                    child: const Text('Verwijder'),
                     isDestructiveAction: true,
                     onPressed: () => popAnd(
                       context,
@@ -78,18 +82,17 @@ class CommentWidget extends ConsumerWidget {
                       waitForPopAnimation: true,
                     ),
                     trailingIcon: Icons.delete,
-                    child: const Text('Verwijder'),
                   ),
               ],
               child: SingleChildScrollView(
-                // we need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435
-                child: CommentCard(comment: comment, postAuthor: postAuthor),
+                // We need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435.
+                child: CommentCard(postAuthor: postAuthor, comment: comment),
               ),
             ),
-            // create positioned red circle
+            // Create positioned red circle.
             if (comment.likedBy.isNotEmpty)
               Positioned(
-                // these values are hardcoded because they are based on the design
+                // These values are hardcoded because they are based on the design.
                 // ignore: no-magic-number
                 right: -4,
                 // ignore: no-magic-number
@@ -100,7 +103,7 @@ class CommentWidget extends ConsumerWidget {
               ),
           ].toStack(
             clipBehavior: Clip
-                .none, // because of the amount of likes that clips outside the comment card
+                .none, // Because of the amount of likes that clips outside the comment card.
           ),
           CommentBottomBar(snapshot: snapshot).padding(left: cardPadding),
         ].toColumn(

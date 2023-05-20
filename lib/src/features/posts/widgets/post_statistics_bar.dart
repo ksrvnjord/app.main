@@ -18,14 +18,14 @@ class PostStatisticsBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post post = snapshot.data()!;
+    final post = snapshot.data();
     final commentsVal = ref.watch(commentsProvider(snapshot.id));
     const swanIconSize = 16.0;
 
     const double fontSize = 16;
 
     return [
-      if (post.likedBy.isNotEmpty)
+      if (post != null && post.likedBy.isNotEmpty)
         [
           Text(
             // ignore: avoid-non-ascii-symbols
@@ -34,20 +34,20 @@ class PostStatisticsBar extends ConsumerWidget {
           SvgPicture.asset(
             Svgs.swanWhite,
             width: swanIconSize,
-            // ignore: deprecated_member_use
-            color: Colors.lightBlue,
             // ignore: no-equal-arguments
             height: swanIconSize,
+            // ignore: deprecated_member_use
+            color: Colors.lightBlue,
           ),
         ].toRow(),
       commentsVal.when(
         data: (data) => data.size > 0
             ? InkWell(
+                child: Text("${data.size} reactie${data.size > 1 ? 's' : ''}")
+                    .textColor(Colors.blueGrey)
+                    .fontSize(fontSize),
                 onTap: () =>
                     Routemaster.of(context).push('${snapshot.id}/comments'),
-                child: Text(
-                  "${data.size} reactie${data.size > 1 ? 's' : ''}",
-                ).textColor(Colors.blueGrey).fontSize(fontSize),
               )
             : const SizedBox.shrink(),
         loading: () => const SizedBox.shrink(),

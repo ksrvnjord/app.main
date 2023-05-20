@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-static-class
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -8,19 +9,19 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
-// retrieves all data from firestore and heimdall for a given user
+// Retrieves all data from firestore and heimdall for a given user.
 final almanakUserProvider =
     FutureProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async {
     if (FirebaseAuth.instance.currentUser == null) {
-      // if in DEMO mode, the lidnummer is the heimdall id
+      // If in DEMO mode, the lidnummer is the heimdall id.
       final profile =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
-      return FirestoreAlmanakProfile.fromHeimdall(profile!);
+      return FirestoreAlmanakProfile.fromHeimdall(profile);
     }
 
-    // call both queries in parallel
+    // Call both queries in parallel.
     final heimdallProfile =
         ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
@@ -28,22 +29,28 @@ final almanakUserProvider =
         (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
     final heimdallProfileData = await heimdallProfile;
 
-    // merge the data
-    final heimdallProfilePublic = heimdallProfileData!.fullContact.public;
+    // Merge the data.
+    final heimdallProfilePublic = heimdallProfileData?.fullContact.public;
+
+    final street = heimdallProfilePublic?.street;
+    final houseNumber = heimdallProfilePublic?.housenumber;
+    final houseNumberAddition = heimdallProfilePublic?.housenumber_addition;
+    final postalCode = heimdallProfilePublic?.zipcode;
+    final city = heimdallProfilePublic?.city;
 
     return profile.copyWith(
-      email: heimdallProfilePublic.email,
-      phonePrimary: heimdallProfilePublic.phone_primary,
-      address: heimdallProfilePublic.street != null ||
-              heimdallProfilePublic.housenumber != null ||
-              heimdallProfilePublic.city != null ||
-              heimdallProfilePublic.zipcode != null
+      email: heimdallProfilePublic?.email,
+      phonePrimary: heimdallProfilePublic?.phone_primary,
+      address: street != null ||
+              houseNumber != null ||
+              city != null ||
+              postalCode != null
           ? Address(
-              street: heimdallProfilePublic.street,
-              houseNumber: heimdallProfilePublic.housenumber,
-              city: heimdallProfilePublic.city,
-              postalCode: heimdallProfilePublic.zipcode,
-              houseNumberAddition: heimdallProfilePublic.housenumber_addition,
+              street: street,
+              houseNumber: houseNumber,
+              houseNumberAddition: houseNumberAddition,
+              postalCode: postalCode,
+              city: city,
             )
           : null,
     );

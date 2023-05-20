@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 
+@immutable
 class CompetitiePloeg {
   final String name;
   final Gender gender;
@@ -13,7 +15,6 @@ class CompetitiePloeg {
     required this.year,
   });
 
-  // fromFirestore
   factory CompetitiePloeg.fromFirestore(Map<String, dynamic> json) {
     return CompetitiePloeg(
       name: json['name'],
@@ -23,7 +24,6 @@ class CompetitiePloeg {
     );
   }
 
-  // toFirestore
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,

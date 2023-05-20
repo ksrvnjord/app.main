@@ -15,7 +15,6 @@ class PollCard extends ConsumerWidget {
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Poll> pollDoc;
-  static const double descriptionHPadding = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +22,8 @@ class PollCard extends ConsumerWidget {
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));
 
     final bool pollIsOpen = DateTime.now().isBefore(poll.openUntil);
+
+    const double descriptionHPadding = 16;
 
     return [
       ListTile(
@@ -35,21 +36,22 @@ class PollCard extends ConsumerWidget {
         data: (snapshot) {
           final String? answerOfUser =
               snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
+          final description = poll.description;
 
           return [
-            if (poll.description != null && poll.description!.isNotEmpty)
-              Text(poll.description!)
+            if (description != null && description.isNotEmpty)
+              Text(description)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             ...poll.options.map((option) => RadioListTile(
-                  toggleable: true,
                   value: option,
-                  title: Text(option),
+                  groupValue: answerOfUser,
                   onChanged: pollIsOpen
                       ? (String? choice) =>
                           upsertPollAnswer(choice, snapshot, pollDoc)
                       : null,
-                  groupValue: answerOfUser,
+                  toggleable: true,
+                  title: Text(option),
                 )),
           ].toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +63,7 @@ class PollCard extends ConsumerWidget {
     ].toColumn().card(
           color: Colors.white,
           elevation: 0,
-          // add lightblue border
+          // Add lightblue border.
           shape: const RoundedRectangleBorder(
             side: BorderSide(color: Colors.blueGrey, width: 1),
             borderRadius: BorderRadius.all(Radius.circular(16)),

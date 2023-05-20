@@ -22,16 +22,16 @@ class DamageFormWidget extends ConsumerWidget {
         TextFormField(
           initialValue: formData.description,
           decoration: const InputDecoration(
-            border: OutlineInputBorder(),
             hintText: 'Beschrijving',
+            border: OutlineInputBorder(),
           ),
           onChanged: (e) => formData.description = e,
         ),
         TextFormField(
           initialValue: formData.cause,
           decoration: const InputDecoration(
-            border: OutlineInputBorder(),
             hintText: 'Oorzaak',
+            border: OutlineInputBorder(),
           ),
           onChanged: (e) => formData.cause = e,
         ),
@@ -44,10 +44,10 @@ class DamageFormWidget extends ConsumerWidget {
         ]),
         ImagePickerWidget(
           diameter: diameter,
-          onChange: (e) => formData.image = e,
-          shape: ImagePickerWidgetShape.square,
           isEditable: true,
           shouldCrop: true,
+          onChange: (e) => formData.image = e,
+          shape: ImagePickerWidgetShape.square,
         ).center(),
       ],
     );

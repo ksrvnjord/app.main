@@ -21,8 +21,8 @@ class CommentCard extends StatelessWidget {
 
     return [
       AuthorWidget(
-        authorName: comment.authorName,
         postAuthor: postAuthor,
+        authorName: comment.authorName,
         fontSize: authorNameFontSize,
       ),
       LimitedBox(
@@ -30,17 +30,12 @@ class CommentCard extends StatelessWidget {
         child: ExpandableText(
           comment.content,
           expandText: "meer",
-          maxLines: contentMaxLines,
           linkColor: Colors.blueGrey,
           linkEllipsis: false,
+          urlStyle: const TextStyle(color: Colors.blue),
           onUrlTap: (url) => launchUrlString(url),
-          urlStyle: // show links as blue underlined
-              const TextStyle(
-            color: Colors.blue,
-          ),
-          style: const TextStyle(
-            fontSize: 16,
-          ),
+          style: const TextStyle(fontSize: 16),
+          maxLines: contentMaxLines,
         ),
       ),
     ]

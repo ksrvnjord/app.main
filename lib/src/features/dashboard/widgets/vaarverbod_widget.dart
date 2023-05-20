@@ -13,17 +13,6 @@ class VaarverbodWidget extends ConsumerWidget {
     super.key,
   });
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(vaarverbodProvider).when(
-          data: (data) => _buildVaarverbodCard(vaarverbod: data),
-          loading: () => ShimmerWidget(
-            child: _buildVaarverbodCard(),
-          ),
-          error: (error, stack) => _buildVaarverbodCard(),
-        );
-  }
-
   Widget _buildVaarverbodCard({
     Vaarverbod? vaarverbod,
   }) {
@@ -38,26 +27,17 @@ class VaarverbodWidget extends ConsumerWidget {
       message =
           vaarverbod.status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod';
       status = vaarverbod.status;
-      if (vaarverbod.status) {
-        icon = FontAwesomeIcons.ban;
-      } else {
-        icon = FontAwesomeIcons.shieldHalved;
-      }
+      icon = vaarverbod.status
+          ? FontAwesomeIcons.ban
+          : FontAwesomeIcons.shieldHalved;
     }
     final Color backgroundColor =
-        status ? Colors.red[300]! : Colors.green[300]!;
+        status ? Colors.red.shade300 : Colors.green.shade300;
 
     const double descriptionPadding = 8;
     const double headerFontSize = 16;
 
     return ExpandablePanel(
-      theme: const ExpandableThemeData(
-        hasIcon: true,
-        iconColor: Colors.white,
-        tapHeaderToExpand: true,
-        headerAlignment: ExpandablePanelHeaderAlignment.center,
-      ),
-      // leading: Icon(icon, color: Colors.white),
       header: [
         Icon(icon, color: Colors.white),
         Text(message).fontSize(headerFontSize).textColor(Colors.white),
@@ -73,9 +53,13 @@ class VaarverbodWidget extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             separator: const SizedBox(height: descriptionPadding),
           )
-          .paddingDirectional(
-            all: descriptionPadding,
-          ), // padding for expanded widget
+          .paddingDirectional(all: descriptionPadding),
+      theme: const ExpandableThemeData(
+        iconColor: Colors.white,
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
+        tapHeaderToExpand: true,
+        hasIcon: true,
+      ),
     ).card(
       color: backgroundColor,
       elevation: 0,
@@ -84,5 +68,16 @@ class VaarverbodWidget extends ConsumerWidget {
       ),
       margin: const EdgeInsets.all(0),
     );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(vaarverbodProvider).when(
+          data: (data) => _buildVaarverbodCard(vaarverbod: data),
+          loading: () => ShimmerWidget(
+            child: _buildVaarverbodCard(),
+          ),
+          error: (error, stack) => _buildVaarverbodCard(),
+        );
   }
 }

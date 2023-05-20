@@ -1,4 +1,4 @@
-// create Stateful page that lists all available filters for a reservation
+// Create Stateful page that lists all available filters for a reservation.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +15,7 @@ class ShowFiltersPage extends ConsumerWidget {
   }) : super(key: key);
 
   final Map<String, List<MultiSelectItem<String?>>>
-      availableFilters = // build a map of categories and their types
+      availableFilters = // Build a map of categories and their types.
       reservationObjectTypes.map((category, types) => MapEntry(
             category,
             types
@@ -49,45 +49,40 @@ class ShowFiltersPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies filters'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         padding: const EdgeInsets.all(pagePadding),
         children: [
-          // Make a MultiSelectChipField for each category in availableFilters dynamically
+          // Make a MultiSelectChipField for each category in availableFilters dynamically.
           ...availableFilters.keys
               .map(
                 (String key) => [
                   MultiSelectChipField<String?>(
-                    scroll: false,
-                    decoration: const BoxDecoration(),
                     items: availableFilters[key] ?? [],
-                    title: Text(key)
-                        .fontSize(headerFontSize)
-                        .fontWeight(FontWeight.bold),
-                    headerColor: Colors.transparent,
+                    decoration: const BoxDecoration(),
+                    selectedChipColor: categoryColors[key],
+                    textStyle: const TextStyle(color: Colors.black),
+                    selectedTextStyle: const TextStyle(color: Colors.white),
                     chipShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
-                    selectedChipColor: categoryColors[key],
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                    ),
-                    selectedTextStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    // chipWidth: 80,
-                    showHeader: true,
-                    initialValue: activeFilters[key] ?? [],
                     onTap: (values) => ref
                         .read(reservationTypeFiltersProvider.notifier)
                         .updateFiltersForCategory(
                           key,
                           values.whereType<String>().toList(),
                         ),
+                    title: Text(key)
+                        .fontSize(headerFontSize)
+                        .fontWeight(FontWeight.bold),
+                    scroll: false,
+                    headerColor: Colors.transparent,
+                    initialValue: activeFilters[key] ?? [],
+                    showHeader: true,
                   ).padding(bottom: categoryPadding).card(
                         elevation: 0,
                         color: categoryColors[key]!

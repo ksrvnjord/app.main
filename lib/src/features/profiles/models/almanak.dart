@@ -1,6 +1,7 @@
 import 'package:graphql/client.dart';
 import '../api/almanak.graphql.dart';
 
+// ignore: prefer-static-class
 Future<Query$Almanak$users?> almanakUsers(
   int first,
   int page,
@@ -9,9 +10,9 @@ Future<Query$Almanak$users?> almanakUsers(
 ) async {
   final result = await client.query$Almanak(Options$Query$Almanak(
     variables: Variables$Query$Almanak(
-      page: page,
-      first: first,
       search: search != '' ? search : null,
+      first: first,
+      page: page,
     ),
   ));
 

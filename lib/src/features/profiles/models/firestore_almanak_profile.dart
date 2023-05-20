@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
+@immutable
 class FirestoreAlmanakProfile {
   final String firstName;
   final String lastName;
@@ -14,11 +16,11 @@ class FirestoreAlmanakProfile {
   final String? huis;
   final bool? dubbellid;
   final List<String>? substructures;
-  String? email;
-  Address? address;
-  String? phonePrimary;
+  final String? email;
+  final Address? address;
+  final String? phonePrimary;
 
-  FirestoreAlmanakProfile({
+  const FirestoreAlmanakProfile({
     required this.firstName,
     required this.lastName,
     required this.identifier,
@@ -34,6 +36,46 @@ class FirestoreAlmanakProfile {
     this.phonePrimary,
     this.substructures,
   });
+
+  // FromJson.
+  factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
+    return FirestoreAlmanakProfile(
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      identifier: json['identifier'],
+      ploeg: json['ploeg'],
+      board: json['board'],
+      study: json['study'],
+      otherAssociation: json['other_association'],
+      bestuursFunctie: json['bestuurs_functie'],
+      huis: json['huis'],
+      dubbellid: json['dubbellid'],
+      substructures: json['substructures'] != null
+          ? List<String>.from(json['substructures'])
+          : null,
+    );
+  }
+
+  factory FirestoreAlmanakProfile.fromHeimdall(
+    Query$AlmanakProfile$user? user,
+  ) {
+    final publicContact = user?.fullContact.public;
+
+    return FirestoreAlmanakProfile(
+      firstName: publicContact?.first_name ?? "Onbekend",
+      lastName: publicContact?.last_name ?? "Onbekend",
+      identifier: user?.identifier ?? "",
+      email: publicContact?.email,
+      address: Address(
+        street: publicContact?.street,
+        houseNumber: publicContact?.housenumber,
+        houseNumberAddition: publicContact?.housenumber_addition,
+        postalCode: publicContact?.zipcode,
+        city: publicContact?.city,
+      ),
+      phonePrimary: publicContact?.phone_primary,
+    );
+  }
 
   FirestoreAlmanakProfile copyWith({
     String? firstName,
@@ -69,26 +111,7 @@ class FirestoreAlmanakProfile {
     );
   }
 
-  // fromJson
-  factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
-    return FirestoreAlmanakProfile(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      identifier: json['identifier'],
-      ploeg: json['ploeg'],
-      board: json['board'],
-      study: json['study'],
-      otherAssociation: json['other_association'],
-      bestuursFunctie: json['bestuurs_functie'],
-      huis: json['huis'],
-      dubbellid: json['dubbellid'],
-      substructures: json['substructures'] != null
-          ? List<String>.from(json['substructures'])
-          : null,
-    );
-  }
-
-  // toJson
+  // ToJson.
   Map<String, dynamic> toFirestore() {
     return {
       'ploeg': ploeg,
@@ -101,36 +124,18 @@ class FirestoreAlmanakProfile {
     };
   }
 
-  void mergeWithHeimdallProfile(
+  FirestoreAlmanakProfile mergeWithHeimdallProfile(
     Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
   ) {
-    email = u.email;
-    phonePrimary = u.phone_primary;
-    address = Address(
-      city: u.city,
-      postalCode: u.zipcode,
-      street: u.street,
-      houseNumber: u.housenumber,
-      houseNumberAddition: u.housenumber_addition,
-    );
-  }
-
-  factory FirestoreAlmanakProfile.fromHeimdall(Query$AlmanakProfile$user user) {
-    Query$AlmanakProfile$user$fullContact$public publicContact =
-        user.fullContact.public;
-
-    return FirestoreAlmanakProfile(
-      identifier: user.identifier,
-      firstName: publicContact.first_name!,
-      lastName: publicContact.last_name!,
-      email: publicContact.email,
-      phonePrimary: publicContact.phone_primary,
+    return copyWith(
+      email: u.email,
+      phonePrimary: u.phone_primary,
       address: Address(
-        street: publicContact.street,
-        houseNumber: publicContact.housenumber,
-        houseNumberAddition: publicContact.housenumber_addition,
-        postalCode: publicContact.zipcode,
-        city: publicContact.city,
+        street: u.street,
+        houseNumber: u.housenumber,
+        houseNumberAddition: u.housenumber_addition,
+        postalCode: u.zipcode,
+        city: u.city,
       ),
     );
   }

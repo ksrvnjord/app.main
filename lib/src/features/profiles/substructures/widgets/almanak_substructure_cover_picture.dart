@@ -31,12 +31,12 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
         data: (data) => FadeInImage(
           placeholder: Image.asset(Images.placeholderProfilePicture).image,
           image: data,
-          fit: BoxFit.cover,
           width: width,
           height: height,
+          fit: BoxFit.cover,
         ),
         error: (err, stk) => Image.asset(Images.placeholderProfilePicture),
-        // loading show shimmer widget here
+        // Loading show shimmer widget here.
         loading: () => Image.asset(
           Images.placeholderProfilePicture,
           width: width,

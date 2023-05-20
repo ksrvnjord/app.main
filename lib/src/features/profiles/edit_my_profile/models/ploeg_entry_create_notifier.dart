@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 
+// ignore: prefer-static-class
 final ploegEntryCreateNotifierProvider =
     StateNotifierProvider<PloegEntryCreateNotifier, PloegEntryCreateForm>(
   (ref) {
@@ -30,12 +31,12 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
     required PloegType ploegType,
     required int year,
   }) : super(PloegEntryCreateForm(
+          ploegType: ploegType,
+          year: year,
+          role: PloegRole.roeier,
           firstName: firstName,
           lastName: lastName,
           identifier: identifier,
-          ploegType: ploegType,
-          role: PloegRole.roeier,
-          year: year,
         ));
 
   void setPloegType(PloegType ploegType) {
@@ -61,7 +62,7 @@ class PloegEntryCreateNotifier extends StateNotifier<PloegEntryCreateForm> {
         .collection('groups')
         .withConverter<PloegEntryCreateForm>(
           fromFirestore: (snapshot, _) =>
-              PloegEntryCreateForm.fromJson(snapshot.data()!),
+              PloegEntryCreateForm.fromJson(snapshot.data() ?? {}),
           toFirestore: (ploegEntry, _) => ploegEntry.toJson(),
         )
         .add(state);
@@ -87,6 +88,18 @@ class PloegEntryCreateForm {
     required this.identifier,
   });
 
+  factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
+    return PloegEntryCreateForm(
+      ploegType: PloegType.values.byName(json['ploegType']),
+      year: json['year'],
+      name: json['name'],
+      role: PloegRole.values.byName(json['role']),
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      identifier: json['identifier'],
+    );
+  }
+
   PloegEntryCreateForm copyWith({
     PloegType? ploegType,
     int? year,
@@ -94,25 +107,13 @@ class PloegEntryCreateForm {
     PloegRole? role,
   }) {
     return PloegEntryCreateForm(
-      firstName: firstName,
-      identifier: identifier,
-      lastName: lastName,
       ploegType: ploegType ?? this.ploegType,
       year: year ?? this.year,
       name: name ?? this.name,
       role: role ?? this.role,
-    );
-  }
-
-  factory PloegEntryCreateForm.fromJson(Map<String, dynamic> json) {
-    return PloegEntryCreateForm(
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      identifier: json['identifier'],
-      ploegType: PloegType.values.byName(json['ploegType']),
-      year: json['year'],
-      name: json['name'],
-      role: PloegRole.values.byName(json['role']),
+      firstName: firstName,
+      lastName: lastName,
+      identifier: identifier,
     );
   }
 

@@ -25,15 +25,15 @@ class CalendarReservation extends StatelessWidget {
         6,
         0,
         0,
-      ), // reservations start from 6:00
+      ), // Reservations start from 6:00.
     );
 
     /// ----- HEIGHT CALCULATION OF THE RESERVATION BLOCK -----
-    // Calculate the duration of the reservation, so we can calculate the height
+    // Calculate the duration of the reservation, so we can calculate the height.
     final double durationInMinutes = ((data['endTime'] as Timestamp).seconds -
             (data['startTime'] as Timestamp).seconds) /
         60;
-    // Calculate height of reservation block in pixels
+    // Calculate height of reservation block in pixels.
     final double reservationHeight =
         (durationInMinutes / CalendarMeasurement.minutesInSlot) *
             CalendarMeasurement.slotHeight;
@@ -42,10 +42,10 @@ class CalendarReservation extends StatelessWidget {
     /// We need to calculate the offset from the top of the column
     /// to the top of the reservation block.
 
-    // offset of first block, because the column starts before 6:00
+    // Offset of first block, because the column starts before 6:00.
     const double topOffset = CalendarMeasurement.topOffsetFirstSlot;
 
-    // Calculate the height of the block in slots
+    // Calculate the height of the block in slots.
     final amountOfSlotsOffset =
         diffFromEarliestTime.inMinutes / CalendarMeasurement.minutesInSlot;
     final double reservationOffset =
@@ -56,14 +56,13 @@ class CalendarReservation extends StatelessWidget {
 
     return [
       GestureDetector(
-        onTap: () => Routemaster.of(context).push(reservationDocumentId),
         child: Container(
-          width: CalendarMeasurement.slotWidth,
-          height: reservationHeight,
           decoration: const BoxDecoration(
             color: Colors.blueGrey,
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
+          width: CalendarMeasurement.slotWidth,
+          height: reservationHeight,
           child: Text(
             data['creatorName'] ?? 'Afschrijving',
             style: const TextStyle(
@@ -73,6 +72,7 @@ class CalendarReservation extends StatelessWidget {
             ),
           ).padding(all: reservationPadding),
         ),
+        onTap: () => Routemaster.of(context).push(reservationDocumentId),
       ),
     ].toColumn().padding(top: reservationOffset);
   }

@@ -28,20 +28,17 @@ class FormsWidget extends ConsumerWidget {
       ...docs.map((doc) {
         final Poll poll = doc.data();
         final answerStream = ref.watch(pollAnswerProvider(doc.reference));
+        final description = poll.description;
 
         return ExpansionTile(
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.transparent, width: 0),
-          ),
-          initiallyExpanded: doc == first, // expand first poll
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
           title: Text(poll.question),
           subtitle: Text(
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
           ).textColor(Colors.grey),
+          // ignore: sort_child_properties_last
           children: [
-            if (poll.description != null)
-              Text(poll.description!)
+            if (description != null)
+              Text(description)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             answerStream.when(
@@ -52,12 +49,12 @@ class FormsWidget extends ConsumerWidget {
 
                 return [
                   ...poll.options.map((option) => RadioListTile(
-                        toggleable: true,
                         value: option,
-                        title: Text(option),
+                        groupValue: answerOfUser,
                         onChanged: (String? choice) =>
                             upsertPollAnswer(choice, snapshot, doc),
-                        groupValue: answerOfUser,
+                        toggleable: true,
+                        title: Text(option),
                       )),
                 ].toColumn();
               },
@@ -67,12 +64,15 @@ class FormsWidget extends ConsumerWidget {
               loading: () => const CircularProgressIndicator(),
             ),
           ],
+          initiallyExpanded: doc == first,
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(color: Colors.transparent, width: 0),
+          ),
         );
       }),
     ].toColumn();
   }
-
-  static const double headerFontSize = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

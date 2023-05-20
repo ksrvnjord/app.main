@@ -20,14 +20,14 @@ class LeedenList extends StatelessWidget {
     QueryDocumentSnapshot<dynamic>,
     // ignore: avoid-dynamic
     QueryDocumentSnapshot<dynamic>,
-  )? compare; // comparator function for sorting the list
+  )? compare; // Comparator function for sorting the list.
 
   @override
   Widget build(BuildContext context) {
     List<QueryDocumentSnapshot<FirestoreAlmanakProfile>> docs =
         almanakProfileSnapshot.docs;
     if (compare != null) {
-      docs.sort(compare); // for ordering based on functions of the members
+      docs.sort(compare); // For ordering based on functions of the members.
     }
 
     const double notFoundPadding = 16;
@@ -43,11 +43,7 @@ class LeedenList extends StatelessWidget {
           .alignment(Alignment.centerLeft)
           .padding(horizontal: titleHPadding, bottom: titleVPadding),
       ...docs.map(
-        (doc) => AlmanakUserTile(
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          lidnummer: doc.data().identifier,
-        ),
+        (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
         Text("Geen Leeden gevonden voor $name")
@@ -55,5 +51,17 @@ class LeedenList extends StatelessWidget {
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
+  }
+
+  AlmanakUserTile toListTile(
+    QueryDocumentSnapshot<FirestoreAlmanakProfile> doc,
+  ) {
+    final user = doc.data();
+
+    return AlmanakUserTile(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      lidnummer: user.identifier,
+    );
   }
 }

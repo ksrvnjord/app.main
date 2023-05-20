@@ -13,12 +13,12 @@ class TimeScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double topLeftCornerHeight = 64;
-    // calculate amount of minutes between 17:26 and 22:00
+    // Calculate amount of minutes between 17:26 and 22:00.
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       physics:
-          const NeverScrollableScrollPhysics(), // who needs to scroll this anyways? you can't see the time if you scroll
+          const NeverScrollableScrollPhysics(), // Who needs to scroll this anyways? you can't see the time if you scroll.
       controller: timesController,
       child: Container(
         color: Colors.grey[50],

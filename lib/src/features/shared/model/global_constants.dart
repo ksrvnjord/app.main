@@ -1,3 +1,4 @@
+// @immutable // TODO: create a provider for this to introduce immutability.
 class GlobalConstants {
   static const String user = 'api/v1/user';
   static const String vaarverbod = 'api/v1/vaarverbod';

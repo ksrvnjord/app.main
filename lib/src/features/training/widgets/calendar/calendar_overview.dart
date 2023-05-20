@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_sticky_header.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-// Shows all available objects for a given day and filters
+// Shows all available objects for a given day and filters.
 class CalendarOverview extends ConsumerStatefulWidget {
   final DateTime date;
 
@@ -19,8 +19,19 @@ class CalendarOverview extends ConsumerStatefulWidget {
 }
 
 class _CalendarOverview extends ConsumerState<CalendarOverview> {
-  late final ScrollController boatsController;
-  late final ScrollController timesController;
+  final ScrollController boatsController = ScrollController();
+  final ScrollController timesController = ScrollController();
+
+  @override
+  void initState() {
+    boatsController.addListener(() {
+      if (boatsController.offset != timesController.offset) {
+        timesController.jumpTo(boatsController.offset);
+      }
+    }); // This makes the time column scroll with the boats.
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -29,24 +40,9 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
   }
 
   @override
-  void initState() {
-    boatsController = ScrollController();
-    timesController = ScrollController();
-
-    boatsController.addListener(() {
-      if (boatsController.offset != timesController.offset) {
-        timesController.jumpTo(boatsController.offset);
-      }
-    }); // this makes the time column scroll with the boats
-
-    super.initState();
-  }
-
-  static const double iconPadding = 8;
-
-  @override
   Widget build(BuildContext context) {
     final List<String> filters = ref.watch(reservationTypeFiltersListProvider);
+    const double iconPadding = 8;
 
     return filters.isEmpty
         ? <Widget>[
@@ -62,15 +58,14 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
               SingleChildScrollView(
                 key: UniqueKey(),
                 scrollDirection: Axis.horizontal,
-                child: VerticalReservationScrollViewWithStickyHeader(
+                child: VerticalReservationScrollViewWithHeader(
                   boatsController: boatsController,
                   date: widget.date,
                 ),
-              ), // this builds the columns with the boats and the slots
+              ), // This builds the columns with the boats and the slots.
               TimeScrollView(
                 timesController: timesController,
-              ), // this builds the time column on the left side
-              // I want to draw a line across the screen horizontally
+              ), // This builds the time column on the left side.
             ],
           );
   }

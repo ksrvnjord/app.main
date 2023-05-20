@@ -8,9 +8,10 @@ class ShimmerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      // ignore: sort_child_properties_last
       child: child,
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
     );
   }
 }

@@ -44,11 +44,15 @@ class ReservationObjectNameBox extends StatelessWidget {
         width: boatButtonWidth,
         height: boatButtonHeight,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           child: Stack(
             fit: StackFit.expand,
             children: [
               TextButton(
+                onPressed: () => Routemaster.of(context).push(
+                  'reservationObject/${reservationObj.id}',
+                  queryParameters: {'name': reservationObject.name},
+                ),
                 style: TextButton.styleFrom(
                   alignment: Alignment.center,
                   backgroundColor: reservationObject.critical
@@ -60,10 +64,6 @@ class ReservationObjectNameBox extends StatelessWidget {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                   ),
-                ),
-                onPressed: () => Routemaster.of(context).push(
-                  'reservationObject/${reservationObj.id}',
-                  queryParameters: {'name': reservationObject.name},
                 ),
                 child: Text(reservationObj.data().name).textStyle(TextStyle(
                   color: reservationObject.critical

@@ -1,3 +1,4 @@
+// ignore: prefer-static-class
 const Map<String, List<String>> reservationObjectTypes = {
   'Binnen': [
     'Ruimtes',

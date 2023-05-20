@@ -17,71 +17,62 @@ class CommentsPage extends ConsumerWidget {
 
   final String postDocId;
 
-  static const double commentHPadding = 8;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(postProvider(postDocId));
     final commentsVal = ref.watch(commentsProvider(postDocId));
     const double commentSpacing = 12;
+    const double commentHPadding = 8;
 
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Comments'),
-          backgroundColor: Colors.lightBlue,
           shadowColor: Colors.transparent,
+          backgroundColor: Colors.lightBlue,
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.lightBlue,
           ),
         ),
         body: [
-          ListView(
-            children: [
-              post.when(
-                data: (data) => PostCard(
-                  snapshot: data,
-                  elevation: false,
-                  squareBorder: true,
-                  expandContent: true,
-                ),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                error: (error, stack) =>
-                    ErrorCardWidget(errorMessage: error.toString()),
+          ListView(children: [
+            post.when(
+              data: (data) => PostCard(
+                snapshot: data,
+                elevation: false,
+                squareBorder: true,
+                expandContent: true,
               ),
-              const SizedBox(height: 8),
-              commentsVal.when(
-                data: (data) => data.size == 0
-                    ? const Center(
-                        child: Text('Er heeft nog niemand gereageerd'),
-                      )
-                    : data.docs
-                        .map(
-                          (e) => Align(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+            ),
+            const SizedBox(height: 8),
+            commentsVal.when(
+              data: (data) => data.size == 0
+                  ? const Center(
+                      child: Text('Er heeft nog niemand gereageerd'),
+                    )
+                  : data.docs
+                      .map((e) => Align(
                             alignment: Alignment.centerLeft,
                             child: CommentWidget(snapshot: e),
-                          ),
-                        )
-                        .toList()
-                        .toColumn(
-                          separator: const SizedBox(height: commentSpacing),
-                        )
-                        .padding(horizontal: commentHPadding),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                error: (error, stack) =>
-                    ErrorCardWidget(errorMessage: error.toString()),
-              ),
-              const SizedBox(height: 64),
-            ],
-          ).expanded(),
+                          ))
+                      .toList()
+                      .toColumn(
+                        separator: const SizedBox(height: commentSpacing),
+                      )
+                      .padding(horizontal: commentHPadding),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+            ),
+            const SizedBox(height: 64),
+          ]).expanded(),
           CreateCommentWidget(postDocId: postDocId),
-        ].toColumn(), // fill space between appbar and create comment widget
+        ].toColumn(),
       ),
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
     );
   }
 }
