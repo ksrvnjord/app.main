@@ -306,13 +306,13 @@ packages:
     source: hosted
     version: "5.7.3"
   dart_code_metrics_presets:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: dart_code_metrics_presets
-      sha256: "22e27f98e8c7d8b11cca43d2656a822935280747050ae65e8cd03c52d09c0d1c"
+      sha256: b71eadf02a3787ebd5c887623f83f6fdc204d45c75a081bd636c4104b3fd8b73
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   dart_style:
     dependency: transitive
     description:
