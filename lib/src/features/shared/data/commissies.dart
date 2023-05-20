@@ -1,6 +1,7 @@
 // ignore_for_file: avoid-non-ascii-symbols
 import 'dart:collection';
 
+// ignore: prefer-static-class
 final SplayTreeMap<String, String> commissieEmailMap = SplayTreeMap.from({
   "Afroeicommissie": "ac@njord.nl",
   "Almanakcommissie": "almanak@njord.nl",

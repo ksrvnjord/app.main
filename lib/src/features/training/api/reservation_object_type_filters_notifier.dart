@@ -40,6 +40,7 @@ class ReservationObjectTypeFiltersNotifier
   }
 }
 
+// ignore: prefer-static-class
 final reservationTypeFiltersProvider = StateNotifierProvider<
     ReservationObjectTypeFiltersNotifier, Map<String, List<String>>>(
   (ref) {
@@ -69,6 +70,7 @@ final reservationTypeFiltersProvider = StateNotifierProvider<
   },
 );
 
+// ignore: prefer-static-class
 final reservationTypeFiltersListProvider = Provider<List<String>>((ref) {
   final filters = ref.watch(reservationTypeFiltersProvider);
 

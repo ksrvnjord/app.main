@@ -38,6 +38,7 @@ class FirebaseUserNotififier extends StateNotifier<FirebaseUser?> {
   FirebaseUserNotififier(FirebaseUser? user) : super(user);
 }
 
+// ignore: prefer-static-class
 final currentFirebaseUserProvider =
     StateNotifierProvider<FirebaseUserNotififier, FirebaseUser?>(
   (ref) {
@@ -60,6 +61,7 @@ final currentFirebaseUserProvider =
   },
 );
 
+// ignore: prefer-static-class
 final firestoreUserProvider =
     StateNotifierProvider.family<FirebaseUserNotififier, FirebaseUser?, String>(
   (ref, userId) {

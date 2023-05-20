@@ -104,7 +104,9 @@ class Routes {
             name: "Fill commissie info",
           ),
       '/home/edit/visibility': (info) => const CupertinoPage(
-          child: MePrivacyPage(), name: "Edit my visibility"),
+            child: MePrivacyPage(),
+            name: "Edit my visibility",
+          ),
       '/home/polls': (_) =>
           const CupertinoPage(child: PollsPage(), name: 'Polls'),
       '/home/events': (info) =>
@@ -282,7 +284,9 @@ class Routes {
       '/more/beleid': (info) =>
           const CupertinoPage(child: BeleidPage(), name: 'Beleid'),
       '/more/notifications': (info) => const CupertinoPage(
-          child: NotificationsPage(), name: 'Notifications'),
+            child: NotificationsPage(),
+            name: 'Notifications',
+          ),
       '/more/advanced-settings': (_) => const CupertinoPage(
             child: AdvancedSettingsPage(),
             name: 'Advanced Settings',

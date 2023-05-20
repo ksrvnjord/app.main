@@ -6,9 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
-final HttpLink httpLink = HttpLink('https://heimdall.njord.nl/graphql');
-final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
-
+// ignore: prefer-static-class
 final graphQLModelProvider = ChangeNotifierProvider((ref) {
   final auth = ref.watch(authModelProvider); // We need auth for the client.
 
@@ -16,7 +14,12 @@ final graphQLModelProvider = ChangeNotifierProvider((ref) {
 });
 
 class GraphQLModel extends ChangeNotifier {
-  GraphQLClient client = GraphQLClient(link: httpLink, cache: cache);
+  static final GraphQLCache cache = GraphQLCache(store: InMemoryStore());
+
+  GraphQLClient client = GraphQLClient(
+    link: HttpLink('https://heimdall.njord.nl/graphql'),
+    cache: cache,
+  );
 
   GraphQLModel(AuthModel auth) {
     client = boot(auth);

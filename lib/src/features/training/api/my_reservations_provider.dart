@@ -4,6 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 
 import '../model/reservation.dart';
 
+// ignore: prefer-static-class
 final myReservationsProvider =
     StreamProvider<QuerySnapshot<Reservation>>((ref) {
   final String? uid = ref.watch(firebaseAuthUserProvider)?.uid;

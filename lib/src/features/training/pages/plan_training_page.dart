@@ -323,22 +323,22 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     // ignore: avoid-ignoring-return-values, use_build_context_synchronously
     Routemaster.of(context).pop();
   }
-}
 
-Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {
-  try {
-    final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
-        .httpsCallable('createReservation')
-        .call({
-      'startTime': r.startTime.toUtc().toIso8601String(),
-      'endTime': r.endTime.toUtc().toIso8601String(),
-      'object': r.reservationObject.path,
-      'objectName': r.objectName,
-      'creatorName': r.creatorName,
-    });
+  Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {
+    try {
+      final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
+          .httpsCallable('createReservation')
+          .call({
+        'startTime': r.startTime.toUtc().toIso8601String(),
+        'endTime': r.endTime.toUtc().toIso8601String(),
+        'object': r.reservationObject.path,
+        'objectName': r.objectName,
+        'creatorName': r.creatorName,
+      });
 
-    return result.data;
-  } on FirebaseFunctionsException catch (error) {
-    return {'success': false, 'error': error.message};
+      return result.data;
+    } on FirebaseFunctionsException catch (error) {
+      return {'success': false, 'error': error.message};
+    }
   }
 }

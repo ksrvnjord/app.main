@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/user_id.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
 import 'package:routemaster/routemaster.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
@@ -34,8 +34,9 @@ class _EditAlmanakProfilePageState
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentFirebaseUserProvider);
     final userVal =
-        ref.watch(firestoreUserFutureProvider(getCurrentUserId() ?? ""));
+        ref.watch(firestoreUserFutureProvider(currentUser?.uid ?? ""));
     final userId = ref.watch(firebaseAuthUserProvider)?.uid;
 
     const double floatingActionButtonSpacing = 16;
@@ -243,6 +244,7 @@ class _EditAlmanakProfilePageState
     }
     bool success = true; // On errors set to false.
     // Get user id from FirebaseAuth.
+    final currentUser = ref.watch(currentFirebaseUserProvider);
 
     // FIND DOCUMENT OF CURRENT USER.
     final querySnapshot = await FirebaseFirestore.instance
@@ -252,7 +254,7 @@ class _EditAlmanakProfilePageState
               FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
           toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
         )
-        .where('identifier', isEqualTo: getCurrentUserId())
+        .where('identifier', isEqualTo: currentUser?.uid ?? "")
         .get();
 
     // SAVE FORM.
@@ -275,7 +277,9 @@ class _EditAlmanakProfilePageState
         // ignore: avoid-ignoring-return-values
         CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
         // ignore: avoid-ignoring-return-values
-        profilePictureProvider(getCurrentUserId() ?? "")
+        final currentUser = ref.watch(currentFirebaseUserProvider);
+        // ignore: avoid-ignoring-return-values
+        profilePictureProvider(currentUser?.uid ?? "")
             .overrideWith((ref) => Image.file(newprofilePicture).image);
       } on FirebaseException catch (_) {
         success = false;

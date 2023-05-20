@@ -16,6 +16,7 @@ class ReservationProgressNotifier extends StateNotifier<bool> {
   }
 }
 
+// ignore: prefer-static-class
 final reservationProgressProvider =
     StateNotifierProvider<ReservationProgressNotifier, bool>((ref) {
   return ReservationProgressNotifier();
