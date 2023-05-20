@@ -15,12 +15,12 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, String> optionMap = {
-      "Mijn Njord-account": "/settings",
-      "Agenda": "events",
-      "Contact": "/contact",
-      "Beleid van het bestuur": "beleid",
+      "Wijzig mijn persoonsgegevens": "/settings",
+      "Bekijk de agenda": "events",
+      "Contacteer het bestuur / commissies": "/contact",
+      "Lees het beleid van het bestuur": "beleid",
       if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature.
-        "Notificatie-instellingen": "notifications",
+        "Stel mijn notificatievoorkeuren in": "notifications",
       'Geavanceerde instellingen': 'advanced-settings',
     };
 
@@ -46,7 +46,7 @@ class MorePage extends ConsumerWidget {
             ].toColumn(),
           ),
           ListTile(
-            title: const Text("Feedback geven"),
+            title: const Text("Geef feedback over de app"),
             trailing:
                 const Icon(Icons.feedback_outlined, color: Colors.lightBlue),
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
@@ -61,14 +61,14 @@ class MorePage extends ConsumerWidget {
             height: 0,
           ),
           const MoreLinkTile(
-            label: "Webshop",
+            label: "Ga naar de webshop",
             url: "https://k-s-r-v-njord.myshopify.com/",
           ),
           const Divider(
             height: 0,
           ),
           const MoreLinkTile(
-            label: 'Declareren',
+            label: 'Declareer kosten aan de Quaestor',
             url:
                 'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
           ),
