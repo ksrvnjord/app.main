@@ -70,18 +70,9 @@ Future<void> appRunner() async {
     kReleaseMode,
   ); // Don't collect analytics in debug mode.
 
-  final container =
-      ProviderContainer(); // Used to initialize always active providers.
-
-  // ignore: avoid-ignoring-return-values
-  container.read(authModelProvider); // Initialize the authModelProvider.
-  // ignore: avoid-ignoring-return-values
-  container.read(graphQLModelProvider); // Initialize the graphQLModelProvider.
-
-  runApp(BetterFeedback(
-    child: UncontrolledProviderScope(
-      container: container,
-      child: const Application(),
+  runApp(const BetterFeedback(
+    child: ProviderScope(
+      child: Application(),
     ),
   ));
 }
