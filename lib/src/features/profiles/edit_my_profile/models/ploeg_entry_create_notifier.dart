@@ -3,20 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 
 // ignore: prefer-static-class
 final ploegEntryCreateNotifierProvider =
     StateNotifierProvider<PloegEntryCreateNotifier, PloegEntryCreateForm>(
   (ref) {
-    final currentUser = ref.watch(currentFirebaseUserProvider);
+    final currentUser = ref.watch(currentFirestoreUserProvider);
     final ploegType = ref.watch(ploegTypeProvider);
     final selectedYear = ref.watch(ploegYearProvider);
 
     return PloegEntryCreateNotifier(
       firstName: currentUser?.firstName ?? '',
       lastName: currentUser?.lastName ?? '',
-      identifier: currentUser?.uid ?? '',
+      identifier: currentUser?.identifier ?? '',
       ploegType: ploegType,
       year: selectedYear,
     );

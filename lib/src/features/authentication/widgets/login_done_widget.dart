@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -11,7 +11,7 @@ class LoginDoneWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // ignore: avoid-ignoring-return-values
     ref.watch(
-      currentFirebaseUserProvider,
+      currentFirestoreUserProvider,
     ); // Get currentUser details from firebase.
     // ignore: avoid-non-ascii-symbols
     const String swanEmoji = "\uD83E\uDDA2";

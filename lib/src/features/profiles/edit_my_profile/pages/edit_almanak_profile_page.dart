@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
@@ -34,9 +34,9 @@ class _EditAlmanakProfilePageState
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(currentFirebaseUserProvider);
+    final currentUser = ref.watch(currentFirestoreUserProvider);
     final userVal =
-        ref.watch(firestoreUserFutureProvider(currentUser?.uid ?? ""));
+        ref.watch(firestoreUserFutureProvider(currentUser?.identifier ?? ""));
     final userId = ref.watch(firebaseAuthUserProvider)?.uid;
 
     const double floatingActionButtonSpacing = 16;
@@ -291,7 +291,7 @@ class _EditAlmanakProfilePageState
     }
     bool success = true; // On errors set to false.
     // Get user id from FirebaseAuth.
-    final currentUser = ref.watch(currentFirebaseUserProvider);
+    final currentUser = ref.watch(currentFirestoreUserProvider);
 
     // FIND DOCUMENT OF CURRENT USER.
     final querySnapshot = await FirebaseFirestore.instance
@@ -301,7 +301,7 @@ class _EditAlmanakProfilePageState
               FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
           toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
         )
-        .where('identifier', isEqualTo: currentUser?.uid ?? "")
+        .where('identifier', isEqualTo: currentUser?.identifier ?? "")
         .get();
 
     // SAVE FORM.
@@ -324,9 +324,9 @@ class _EditAlmanakProfilePageState
         // ignore: avoid-ignoring-return-values
         CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
         // ignore: avoid-ignoring-return-values
-        final currentUser = ref.watch(currentFirebaseUserProvider);
+        final currentUser = ref.watch(currentFirestoreUserProvider);
         // ignore: avoid-ignoring-return-values
-        profilePictureProvider(currentUser?.uid ?? "")
+        profilePictureProvider(currentUser?.identifier ?? "")
             .overrideWith((ref) => Image.file(newprofilePicture).image);
       } on FirebaseException catch (_) {
         success = false;

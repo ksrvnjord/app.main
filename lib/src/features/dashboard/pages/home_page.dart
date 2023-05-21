@@ -12,7 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -51,7 +51,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     // ignore: avoid-ignoring-return-values
     ref.watch(
-      currentFirebaseUserProvider,
+      currentFirestoreUserProvider,
     ); // Init the current user with data from Firestore.
   }
 

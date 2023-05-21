@@ -6,11 +6,13 @@ class PollAnswer {
   final String userId;
   final String? answer; // User can choose to not answer.
   final DateTime answeredAt;
+  final List<String>? allergies;
 
   const PollAnswer({
     required this.userId,
     required this.answer,
     required this.answeredAt,
+    this.allergies,
   });
 
   // Create fromJson method.
@@ -19,6 +21,9 @@ class PollAnswer {
       userId: json['userId'],
       answer: json['answer'],
       answeredAt: (json['answeredAt'] as Timestamp).toDate(),
+      allergies: json['allergies'] != null
+          ? List<String>.from(json['allergies'])
+          : null,
     );
   }
 
@@ -28,6 +33,7 @@ class PollAnswer {
       'userId': userId,
       'answer': answer,
       'answeredAt': Timestamp.fromDate(answeredAt),
+      if (allergies != null) 'allergies': allergies,
     };
   }
 
