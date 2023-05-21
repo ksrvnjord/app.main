@@ -16,7 +16,6 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
@@ -70,18 +69,9 @@ Future<void> appRunner() async {
     kReleaseMode,
   ); // Don't collect analytics in debug mode.
 
-  final container =
-      ProviderContainer(); // Used to initialize always active providers.
-
-  // ignore: avoid-ignoring-return-values
-  container.read(authModelProvider); // Initialize the authModelProvider.
-  // ignore: avoid-ignoring-return-values
-  container.read(graphQLModelProvider); // Initialize the graphQLModelProvider.
-
-  runApp(BetterFeedback(
-    child: UncontrolledProviderScope(
-      container: container,
-      child: const Application(),
+  runApp(const BetterFeedback(
+    child: ProviderScope(
+      child: Application(),
     ),
   ));
 }
