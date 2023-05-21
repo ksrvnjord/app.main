@@ -16,6 +16,7 @@ class FirestoreAlmanakProfile {
   final String? huis;
   final bool? dubbellid;
   final List<String>? substructures;
+  final List<String> allergies;
   final String? email;
   final Address? address;
   final String? phonePrimary;
@@ -35,6 +36,7 @@ class FirestoreAlmanakProfile {
     this.address,
     this.phonePrimary,
     this.substructures,
+    this.allergies = const <String>[],
   });
 
   // FromJson.
@@ -53,6 +55,7 @@ class FirestoreAlmanakProfile {
       substructures: json['substructures'] != null
           ? List<String>.from(json['substructures'])
           : null,
+      allergies: List<String>.from(json['allergies'] ?? const <String>[]),
     );
   }
 
@@ -92,6 +95,7 @@ class FirestoreAlmanakProfile {
     Address? address,
     String? phonePrimary,
     List<String>? substructures,
+    List<String>? allergies,
   }) {
     return FirestoreAlmanakProfile(
       firstName: firstName ?? this.firstName,
@@ -108,6 +112,7 @@ class FirestoreAlmanakProfile {
       address: address ?? this.address,
       phonePrimary: phonePrimary ?? this.phonePrimary,
       substructures: substructures ?? this.substructures,
+      allergies: allergies ?? this.allergies,
     );
   }
 
@@ -121,6 +126,7 @@ class FirestoreAlmanakProfile {
       'huis': huis,
       'dubbellid': dubbellid,
       'substructures': substructures,
+      'allergies': allergies,
     };
   }
 

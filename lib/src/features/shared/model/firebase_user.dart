@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 
 @immutable
@@ -60,6 +62,24 @@ final currentFirebaseUserProvider =
     return FirebaseUserNotififier(firebaseUser);
   },
 );
+
+// ignore: prefer-static-class
+final currentFirestoreUserStreamProvider =
+    StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>((ref) {
+  final user = ref.watch(firebaseAuthUserProvider);
+
+  return FirebaseFirestore.instance
+      .collection('people')
+      .withConverter<FirestoreAlmanakProfile>(
+        fromFirestore: (snapshot, _) =>
+            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
+        toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+      )
+      // ignore: avoid-non-null-assertion
+      .where('identifier', isEqualTo: user!.uid)
+      .limit(1)
+      .snapshots();
+});
 
 // ignore: prefer-static-class
 final firestoreUserProvider =

@@ -22,6 +22,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_pag
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
@@ -115,6 +116,10 @@ class Routes {
       '/home/edit/visibility': (info) => const CupertinoPage(
             child: MePrivacyPage(),
             name: "Edit my visibility",
+          ),
+      '/home/edit/allergies': (info) => const CupertinoPage(
+            child: EditAllergiesPage(),
+            name: "Edit my allergies",
           ),
       '/home/polls': (_) =>
           const CupertinoPage(child: PollsPage(), name: 'Polls'),

@@ -246,6 +246,25 @@ class _EditAlmanakProfilePageState
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "Voedselallergieën", children: [
+              [
+                const Text(
+                  "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
+                ),
+                ListTile(
+                  // ignore: avoid-non-ascii-symbols
+                  title: const Text('Geef mijn allergieën door'),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.lightBlue,
+                  ),
+                  onTap: () => Routemaster.of(context).push(
+                    'allergies',
+                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                ),
+              ].toColumn(),
+            ]),
             // Add a TextFormField for the team the user is in.
           ].toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
