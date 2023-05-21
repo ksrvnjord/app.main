@@ -57,7 +57,7 @@ class FormsWidget extends ConsumerWidget {
                         groupValue: answerOfUser,
                         // ignore: prefer-extracting-callbacks
                         onChanged: (String? choice) {
-                          upsertPollAnswer(choice, snapshot, doc);
+                          upsertPollAnswer(choice, snapshot, doc, ref);
                           // ignore: avoid-ignoring-return-values
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

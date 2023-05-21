@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
 class EditProfilePictureWidget extends ConsumerStatefulWidget {
@@ -22,10 +22,10 @@ class _EditProfilePictureWidgetState
   @override
   Widget build(BuildContext context) {
     const double profilePictureSize = 240;
-    final currentUser = ref.watch(currentFirebaseUserProvider);
+    final currentUser = ref.watch(currentFirestoreUserProvider);
 
     final myProfilePicture =
-        ref.watch(profilePictureProvider(currentUser?.uid ?? ""));
+        ref.watch(profilePictureProvider(currentUser?.identifier ?? ""));
 
     return myProfilePicture.when(
       data: (image) => ImagePickerWidget(

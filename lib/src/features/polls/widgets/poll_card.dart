@@ -48,7 +48,7 @@ class PollCard extends ConsumerWidget {
                   groupValue: answerOfUser,
                   onChanged: pollIsOpen
                       ? (String? choice) {
-                          upsertPollAnswer(choice, snapshot, pollDoc);
+                          upsertPollAnswer(choice, snapshot, pollDoc, ref);
                           // ignore: avoid-ignoring-return-values
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
