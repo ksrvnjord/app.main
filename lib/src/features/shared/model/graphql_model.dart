@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.da
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 // ignore: prefer-static-class
-final graphQLModelProvider = ChangeNotifierProvider((ref) {
+final graphQLModelProvider = ChangeNotifierProvider<GraphQLModel>((ref) {
   final auth = ref.watch(authModelProvider); // We need auth for the client.
 
   return GraphQLModel(auth);

@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_ti
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
-import '../../settings/api/me.graphql.dart';
 import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
@@ -97,27 +96,17 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     QuerySnapshot<Reservation> snapshot,
   ) {
     CurrentUser curUser = GetIt.I.get<CurrentUser>();
-    Query$Me$me? heimdallUser = curUser.user;
+    final privateContact = curUser.user?.fullContact.private;
     User? firebaseUser = FirebaseAuth.instance.currentUser;
-    if (heimdallUser == null ||
-        heimdallUser.fullContact.private == null ||
-        firebaseUser == null) {
+    if (privateContact == null || firebaseUser == null) {
       return const ErrorCardWidget(
         errorMessage:
             'Er is iets misgegaan met het inloggen, probeer in- en uit te loggen.',
       );
     }
 
-    final fullContact = heimdallUser.fullContact;
-    if (fullContact.private == null) {
-      return const ErrorCardWidget(
-        errorMessage: 'Er is iets misgegaan met het inloggen',
-      );
-    }
-    final privateContact = fullContact.private;
-
     String creatorName =
-        '${privateContact?.first_name ?? "Onbekend"} ${privateContact?.last_name}';
+        '${privateContact.first_name ?? "Onbekend"} ${privateContact.last_name}';
     const int timeRowItems = 3;
     List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
