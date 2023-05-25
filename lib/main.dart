@@ -1,5 +1,6 @@
 // ignore_for_file: prefer-static-class
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'firebase_options.dart';
 import 'package:feedback_sentry/feedback_sentry.dart';
@@ -45,9 +46,21 @@ Future<void> appRunner() async {
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
   );
 
-  // ignore: avoid-ignoring-return-values
-  await FirebaseMessaging.instance.getInitialMessage();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics.
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics.
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+
+    return true;
+  };
+
+  if (!kIsWeb) {
+    // FirebaseMessaging not implemented on Web yet.
+    // ignore: avoid-ignoring-return-values
+    await FirebaseMessaging.instance.getInitialMessage();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
 
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(GlobalObserverService());

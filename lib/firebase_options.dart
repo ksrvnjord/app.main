@@ -49,8 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '755032766973',
     projectId: 'ksrv-njord',
     authDomain: 'ksrv-njord.firebaseapp.com',
-    databaseURL:
-        'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL: 'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'ksrv-njord.appspot.com',
     measurementId: 'G-N451DV963D',
   );
@@ -60,8 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:755032766973:android:45155b9d8c89e6204e0194',
     messagingSenderId: '755032766973',
     projectId: 'ksrv-njord',
-    databaseURL:
-        'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL: 'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'ksrv-njord.appspot.com',
   );
 
@@ -70,11 +68,9 @@ class DefaultFirebaseOptions {
     appId: '1:755032766973:ios:c70e32ff733792ca4e0194',
     messagingSenderId: '755032766973',
     projectId: 'ksrv-njord',
-    databaseURL:
-        'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL: 'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'ksrv-njord.appspot.com',
-    iosClientId:
-        '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
+    iosClientId: '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
     iosBundleId: 'com.ksrvnjord.app',
   );
 
@@ -83,11 +79,9 @@ class DefaultFirebaseOptions {
     appId: '1:755032766973:ios:c70e32ff733792ca4e0194',
     messagingSenderId: '755032766973',
     projectId: 'ksrv-njord',
-    databaseURL:
-        'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL: 'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'ksrv-njord.appspot.com',
-    iosClientId:
-        '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
+    iosClientId: '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
     iosBundleId: 'com.ksrvnjord.app',
   );
 }
