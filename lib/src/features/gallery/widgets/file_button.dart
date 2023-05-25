@@ -32,7 +32,7 @@ class FileButton extends ConsumerWidget {
                 child: Image.network(snapshot.data!, fit: BoxFit.cover),
               )
             : const Icon(Icons.image, size: iconSize),
-      ).padding(all: padding).borderRadius(all: padding),
+      ).borderRadius(all: padding),
     );
   }
 }

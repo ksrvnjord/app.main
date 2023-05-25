@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/file_button.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_button.dart';
 
-const crossAxisCount = 4;
-
 class FolderList extends ConsumerWidget {
   final ListResult listResult;
 
@@ -29,9 +27,16 @@ class FolderList extends ConsumerWidget {
     prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
     items.sort((a, b) => -1 * a.name.compareTo(b.name));
 
+    const crossAxisCount = 3;
+    const double itemSpacing = 8;
+
     // Return navigation items for the folder (reversed for descending order)
     return GridView.count(
       crossAxisCount: crossAxisCount,
+      padding: const EdgeInsets.all(8),
+      mainAxisSpacing: itemSpacing,
+      // ignore: no-equal-arguments
+      crossAxisSpacing: itemSpacing,
       children: [
         ...prefixes.map((e) => FolderButton(item: e)),
         ...items.map((e) => FileButton(item: e)),
