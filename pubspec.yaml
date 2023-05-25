@@ -5,8 +5,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1726.2+13
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: ^3.7.7
+  sdk: ">=3.0.0 <3.10.0"
+  flutter: ^3.10.0
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
@@ -24,14 +24,14 @@ dependencies:
   google_fonts: ^4.0.4
   oauth2: ^2.0.0
   get_it: ^7.2.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   routemaster: ^1.0.1
   flutter_markdown: ^0.6.10+5
   flutter_secure_storage: ^8.0.0
   dio: ">=4.0.6 <6.0.0"
   shimmer: ^2.0.0
   infinite_scroll_pagination: ^3.2.0
-  syncfusion_flutter_calendar: ^21.2.3
+  syncfusion_flutter_calendar: ^21.2.5
   lucide_icons: ^0.216.0
   sticky_headers: ^0.3.0+2
   firebase_auth: '>=3.0.0'
