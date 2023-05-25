@@ -85,7 +85,7 @@ class Routes {
           ),
       '/home/edit/sensitive-data': (info) => const CupertinoPage(
             child: MePage(),
-            name: "Edit mijn persoonsgegevens",
+            name: "Edit mijn personal data",
           ),
       '/home/edit/groups': (_) =>
           const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
@@ -111,7 +111,7 @@ class Routes {
           ),
       '/home/edit/notification-preferences': (info) => const CupertinoPage(
             child: NotificationsPage(),
-            name: 'Notificatievoorkeuren',
+            name: 'Notification Preferences',
           ),
       '/home/edit/visibility': (info) => const CupertinoPage(
             child: MePrivacyPage(),
@@ -134,10 +134,8 @@ class Routes {
             child: CommentsPage(
               postDocId: Uri.decodeFull(route.pathParameters['postId']!),
             ),
-            name: "Comments",
+            name: "Post -> Comments",
           ),
-      '/calendar': (info) =>
-          const CupertinoPage(child: EventsPage(), name: "Calendar"),
       '/almanak': (_) =>
           const CupertinoPage(child: AlmanakPage(), name: 'Almanak'),
       '/almanak/leeden': (_) =>
@@ -292,7 +290,7 @@ class Routes {
               ),
       '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
       '/more/events': (info) =>
-          const CupertinoPage(child: EventsPage(), name: 'Events'),
+          const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
       '/more/beleid': (info) =>
           const CupertinoPage(child: BeleidPage(), name: 'Beleid'),
       '/more/advanced-settings': (_) => const CupertinoPage(
@@ -313,6 +311,7 @@ class Routes {
           ),
       '/forgot': (info) => const CupertinoPage(
             child: ForgotPasswordPage(),
+            name: "Forgot Password",
           ),
     },
     onUnknownRoute: (route) => const Redirect('/'),
