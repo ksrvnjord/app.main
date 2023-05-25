@@ -1,33 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AuthorWidget extends ConsumerWidget {
+class AuthorWidget extends StatelessWidget {
   final String authorName;
-  final String authorId;
+  final FirestoreAlmanakProfile? postAuthor;
   final double fontSize;
 
   const AuthorWidget({
     Key? key,
+    required this.postAuthor,
     required this.authorName,
-    required this.authorId,
     // ignore: no-magic-number
     this.fontSize = 18.0,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final postAuthor = ref.watch(firestoreUserProvider(authorId));
+  Widget build(BuildContext context) {
+    bool? authorIsAppCo = postAuthor?.isAppCo;
+    bool? authorIsBestuur = postAuthor?.isBestuur;
 
     return [
       Text(authorName).fontWeight(FontWeight.bold).fontSize(fontSize),
-      // twitter checkmark
-      if (postAuthor != null && (postAuthor.isBestuur || postAuthor.isAppCo))
+      // Twitter checkmark.
+      if ((authorIsBestuur != null && authorIsBestuur) ||
+          (authorIsAppCo != null && authorIsAppCo))
         Icon(
           Icons.verified,
           size: fontSize,
-          color: postAuthor.isAppCo ? Colors.amber : Colors.lightBlue,
+          color: authorIsAppCo != null
+              ? authorIsAppCo
+                  ? Colors.amber
+                  : Colors.lightBlue
+              : null,
         ),
     ].toRow(
       separator: const SizedBox(width: 4),

@@ -22,8 +22,8 @@ class ChipWidget extends StatelessWidget {
         title,
         style: const TextStyle(
           color: Colors.grey,
-          fontWeight: FontWeight.w300,
           fontSize: 16,
+          fontWeight: FontWeight.w300,
         ),
       ),
       subtitle: Wrap(
@@ -34,16 +34,16 @@ class ChipWidget extends StatelessWidget {
                     permission,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.normal,
                       fontSize: 16,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                   backgroundColor: () {
-                    if (colors != null && colors!.containsKey(permission)) {
-                      return colors![permission];
-                    } else {
-                      return Colors.grey;
-                    }
+                    return colors != null &&
+                            (colors as Map<String, Color>)
+                                .containsKey(permission)
+                        ? (colors as Map<String, Color>)[permission]
+                        : Colors.grey;
                   }(),
                 ))
             .toList(),

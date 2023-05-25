@@ -15,7 +15,7 @@ class Poll {
     this.description,
   });
 
-  // create fromJson method
+  // Create fromJson method.
   factory Poll.fromJson(Map<String, dynamic> json) {
     return Poll(
       question: json['question'],
@@ -25,7 +25,7 @@ class Poll {
     );
   }
 
-  // create toJson method
+  // Create toJson method.
   Map<String, dynamic> toJson() {
     return {
       'question': question,

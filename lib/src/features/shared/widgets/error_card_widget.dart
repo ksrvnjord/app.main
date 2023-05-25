@@ -17,29 +17,26 @@ class ErrorCardWidget extends StatelessWidget {
     const double errorCardHeight = 100;
     const double errorTitleFontSize = 18;
     const double cardBorderWidth = 2;
-    log(errorMessage);
+    // ignore: no-magic-number
+    log(errorMessage, level: 2000);
 
     return GestureDetector(
       child: Container(
-        height: errorCardHeight,
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
-          border: Border.all(width: cardBorderWidth, color: errorColor),
+          border: Border.all(color: errorColor, width: cardBorderWidth),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        clipBehavior: Clip.antiAlias,
+        height: errorCardHeight,
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        // ignore: sort_child_properties_last
         child: Row(children: [
-          Expanded(
-            flex: 0,
-            child: Image.asset(Images.deadSwan),
-          ),
+          Expanded(flex: 0, child: Image.asset(Images.deadSwan)),
           Expanded(
             flex: 1,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Er is iets misgegaan",
@@ -57,18 +54,12 @@ class ErrorCardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // const Expanded(
-                  //   flex: 1,
-                  //   child: Text(
-                  //     "Tik hier om een foutrapport te verzenden",
-                  //     style: TextStyle(fontSize: 10),
-                  //   )
-                  // )
                 ],
               ),
             ),
           ),
         ]),
+        clipBehavior: Clip.antiAlias,
       ),
     );
   }

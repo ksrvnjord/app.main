@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Vaarverbod {
   final bool status;
   final String message;
 
-  Vaarverbod({
+  const Vaarverbod({
     required this.status,
     required this.message,
   });

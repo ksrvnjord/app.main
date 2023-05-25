@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-static-class
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,13 +8,13 @@ final peopleRef = FirebaseFirestore.instance.collection("people");
 
 Future<void> addMyCommissie(CommissieEntry commissie) {
   return getCommissieCollectionRefWithConverter(
-    peopleRef.doc(FirebaseAuth.instance.currentUser!.uid),
+    peopleRef.doc(FirebaseAuth.instance.currentUser?.uid),
   ).add(commissie);
 }
 
 final myCommissiesProvider =
     StreamProvider.autoDispose<QuerySnapshot<CommissieEntry>>((ref) {
-  final userId = FirebaseAuth.instance.currentUser!.uid;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
 
   return getCommissieCollectionRefWithConverter(
     peopleRef.doc(userId),
@@ -21,19 +22,19 @@ final myCommissiesProvider =
 });
 
 final commissiesForUserProvider =
-    FutureProvider.family<QuerySnapshot<CommissieEntry>, String>(
+    FutureProvider.autoDispose.family<QuerySnapshot<CommissieEntry>, String>(
   (ref, userId) => getCommissieCollectionRefWithConverter(
     peopleRef.doc(userId),
-  ).get(),
+  ).orderBy('startYear', descending: true).get(),
 );
 
-// convenience method to get a reference to the commissies collection using the converter
+// Convenience method to get a reference to the commissies collection using the converter.
 CollectionReference<CommissieEntry> getCommissieCollectionRefWithConverter(
   DocumentReference<Map<String, dynamic>> ref,
 ) {
   return ref.collection('commissies').withConverter<CommissieEntry>(
         fromFirestore: (snapshot, _) =>
-            CommissieEntry.fromJson(snapshot.data()!),
+            CommissieEntry.fromJson(snapshot.data() ?? {}),
         toFirestore: (commissie, _) => commissie.toJson(),
       );
 }

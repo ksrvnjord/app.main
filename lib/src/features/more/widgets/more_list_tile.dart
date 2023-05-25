@@ -15,13 +15,9 @@ class MoreListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(label),
-      // add a trailing icon that indicates that the item is clickable
       trailing: const Icon(Icons.chevron_right, color: Colors.lightBlue),
-      onTap: () => navigateToPathIn(context),
+      visualDensity: VisualDensity.standard,
+      onTap: () => Routemaster.of(context).push(routePath),
     );
-  }
-
-  void navigateToPathIn(BuildContext context) {
-    Routemaster.of(context).push(routePath);
   }
 }

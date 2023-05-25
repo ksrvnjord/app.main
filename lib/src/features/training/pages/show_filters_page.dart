@@ -1,4 +1,4 @@
-// create Stateful page that lists all available filters for a reservation
+// Create Stateful page that lists all available filters for a reservation.
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +15,7 @@ class ShowFiltersPage extends ConsumerWidget {
   }) : super(key: key);
 
   final Map<String, List<MultiSelectItem<String?>>>
-      availableFilters = // build a map of categories and their types
+      availableFilters = // Build a map of categories and their types.
       reservationObjectTypes.map((category, types) => MapEntry(
             category,
             types
@@ -26,80 +26,77 @@ class ShowFiltersPage extends ConsumerWidget {
                     ))
                 .toList(),
           ));
-  static const Map<String, Color> categoryColors = {
-    'Binnen': Colors.blue,
-    '1 roeier': Colors.red,
-    '2 roeiers': Colors.orange,
-    '4 roeiers': Colors.green,
-    '8 roeiers': Colors.purple,
-    'Overig': Colors.grey,
-  };
-  static const double categoryPadding = 4;
-  static const double selectedChipOpacity = 0.5;
-
-  static const double categoryFontSize = 16;
-  static const double pagePadding = 8;
-  static const double headerFontSize = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, List<String>> activeFilters =
         ref.watch(reservationTypeFiltersProvider);
 
+    final Map<String, Color> categoryColors = {
+      'Binnen': Colors.blue,
+      '1 roeier': Colors.red,
+      '2 roeiers': Colors.orange,
+      '4 roeiers': Colors.green,
+      '8 roeiers': Colors.purple,
+      'Overig': Colors.grey,
+    };
+
+    const double categoryPadding = 8;
+    const double pagePadding = 8;
+    const double headerFontSize = 20;
+    const int cardBackgroundColorAlpha = 120;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies filters'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(pagePadding),
-        child: ListView(
-          children: [
-            // Make a MultiSelectChipField for each category in availableFilters dynamically
-            ...availableFilters.keys
-                .map(
-                  (String key) => Column(
-                    children: [
-                      Text(key)
-                          .fontSize(categoryFontSize)
-                          .fontWeight(FontWeight.bold),
-                      MultiSelectChipField<String?>(
-                        scroll: false,
-                        decoration: const BoxDecoration(),
-                        items: availableFilters[key] ?? [],
-                        icon: const Icon(Icons.check),
-                        title: Text(key)
-                            .textColor(Colors.white)
-                            .fontSize(headerFontSize),
-                        headerColor: categoryColors[key],
-                        chipShape: const RoundedRectangleBorder(
+        children: [
+          // Make a MultiSelectChipField for each category in availableFilters dynamically.
+          ...availableFilters.keys
+              .map(
+                (String key) => [
+                  MultiSelectChipField<String?>(
+                    items: availableFilters[key] ?? [],
+                    decoration: const BoxDecoration(),
+                    selectedChipColor: categoryColors[key],
+                    textStyle: const TextStyle(color: Colors.black),
+                    selectedTextStyle: const TextStyle(color: Colors.white),
+                    chipShape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    onTap: (values) => ref
+                        .read(reservationTypeFiltersProvider.notifier)
+                        .updateFiltersForCategory(
+                          key,
+                          values.whereType<String>().toList(),
+                        ),
+                    title: Text(key)
+                        .fontSize(headerFontSize)
+                        .fontWeight(FontWeight.bold),
+                    scroll: false,
+                    headerColor: Colors.transparent,
+                    initialValue: activeFilters[key] ?? [],
+                    showHeader: true,
+                  ).padding(bottom: categoryPadding).card(
+                        elevation: 0,
+                        color: categoryColors[key]!
+                            .withAlpha(cardBackgroundColorAlpha),
+                        margin: const EdgeInsets.all(0),
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
-                        // ignore: no-equal-arguments
-                        chipColor: categoryColors[key],
-                        selectedChipColor: categoryColors[key]!
-                            .withOpacity(selectedChipOpacity),
-                        textStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        showHeader: false,
-                        initialValue: activeFilters[key] ?? [],
-                        onTap: (values) => ref
-                            .read(reservationTypeFiltersProvider.notifier)
-                            .updateFiltersForCategory(
-                              key,
-                              values.whereType<String>().toList(),
-                            ),
-                      ).padding(vertical: categoryPadding),
-                    ],
-                  ),
-                )
-                .toList(),
-          ],
-        ),
+                      ),
+                  const SizedBox(height: categoryPadding),
+                ].toColumn(),
+              )
+              .toList(),
+        ],
       ),
     );
   }

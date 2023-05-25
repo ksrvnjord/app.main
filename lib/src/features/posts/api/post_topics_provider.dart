@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final postTopicsProvider = Provider<List<String>>((ref) {
-  // return the 'name' field of each document
+// ignore: prefer-static-class
+final postTopicsProvider = Provider.autoDispose<List<String>>((ref) {
+  // Return the 'name' field of each document.
   return [
     'Promotie',
     'Wandelgangen',

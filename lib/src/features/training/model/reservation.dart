@@ -5,9 +5,9 @@ class Reservation {
   final DateTime endTime;
   final DocumentReference reservationObject;
   final String creator;
-  late DateTime? createdAt;
-  late String objectName;
-  late String creatorName;
+  DateTime createdAt = DateTime.now();
+  String objectName;
+  String creatorName;
 
   Reservation(
     this.startTime,
@@ -16,7 +16,7 @@ class Reservation {
     this.creator,
     this.objectName, {
     required this.creatorName,
-    this.createdAt,
+    required this.createdAt,
   });
 
   static Reservation fromJson(Map<String, dynamic> json) {
@@ -36,7 +36,7 @@ class Reservation {
         'endTime': Timestamp.fromDate(endTime),
         'object': reservationObject,
         'creatorId': creator,
-        if (createdAt != null) 'createdTime': Timestamp.fromDate(createdAt!),
+        'createdTime': Timestamp.fromDate(createdAt),
         'objectName': objectName,
         'creatorName': creatorName,
       };

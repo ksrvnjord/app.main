@@ -1,3 +1,4 @@
+// ignore: prefer-static-class
 const List<String> houseNames = [
   't Zwanennest',
   'De Ballenbak',

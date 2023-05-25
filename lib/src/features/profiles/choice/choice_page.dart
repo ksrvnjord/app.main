@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:routemaster/routemaster.dart';
 
-/// Page that shows a list of choices, and pushes a new page when a choice is chosen
+/// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class ChoicePage extends StatelessWidget {
   const ChoicePage({
     Key? key,
@@ -18,8 +18,8 @@ class ChoicePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -36,10 +36,7 @@ class ChoicePage extends StatelessWidget {
                     ),
                     onTap: () => Routemaster.of(context).push(choice),
                   ),
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                  ),
+                  const Divider(height: 1, thickness: 1),
                 ],
               ),
             )

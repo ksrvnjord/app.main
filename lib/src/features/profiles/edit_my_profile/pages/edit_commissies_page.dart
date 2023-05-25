@@ -24,8 +24,8 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Commissies'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -35,18 +35,18 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
             .fontSize(titleFontSize)
             .padding(all: fieldPadding),
         StreamWrapper(
-          // use stream to show updates in real time
+          // Use stream to show updates in real time.
           stream: ref.watch(myCommissiesProvider.stream),
           success: (commissies) => EditCommissiesList(snapshot: commissies),
           error: (error) => ErrorCardWidget(errorMessage: error.toString()),
         ),
       ]),
-      floatingActionButton: // button with a plus icon and the text "Commissie"
+      floatingActionButton: // Button with a plus icon and the text "Commissie".
           FloatingActionButton.extended(
-        onPressed: () => Routemaster.of(context).push('select'),
-        label: const Text('Voeg commissie toe'),
-        icon: const Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
+        onPressed: () => Routemaster.of(context).push('select'),
+        icon: const Icon(Icons.add),
+        label: const Text('Voeg commissie toe'),
       ),
     );
   }

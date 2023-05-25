@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 
+// ignore: prefer-static-class
 final bestuurPictureProvider =
     FutureProvider.autoDispose.family<ImageProvider<Object>, int>(
   (ref, year) {

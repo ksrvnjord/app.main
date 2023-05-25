@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -10,16 +9,13 @@ class AlmanakPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double choiceWidgetPadding = 4;
+    const double choiceWidgetPadding = 8;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        actions: const <Widget>[
-          FirebaseWidget(MyProfilePicture(profileIconSize: 48.0)),
-        ],
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -27,34 +23,46 @@ class AlmanakPage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         children: [
           const AlmanakStructureChoiceWidget(
-            title: "Leeden",
             pushRoute: "leeden",
+            title: "Leeden",
             imagePath: 'assets/images/leeden.png',
-          ).padding(all: choiceWidgetPadding),
+          ),
           FirebaseWidget(
-            [
+            onAuthenticated: [
               const AlmanakStructureChoiceWidget(
-                title: "Bestuur",
                 pushRoute: "bestuur",
+                title: "Bestuur",
                 imagePath: 'assets/images/bestuur.jpeg',
-              ).padding(all: choiceWidgetPadding),
-              const AlmanakStructureChoiceWidget(
-                title: "Commissies",
-                pushRoute: "commissies",
-                imagePath: 'assets/images/commissies.jpeg',
-              ).padding(all: choiceWidgetPadding),
-              const AlmanakStructureChoiceWidget(
-                pushRoute: "huizen",
-                title: "Huizen",
-                imagePath: 'assets/images/huizen.jpeg',
-              ).padding(all: choiceWidgetPadding),
-              // TODO: Add ploegen
-              const AlmanakStructureChoiceWidget(
-                title: "Substructuren",
-                pushRoute: "substructuren",
-                imagePath: 'assets/images/substructures.jpeg',
-              ).padding(all: choiceWidgetPadding),
-            ].toColumn(),
+              ),
+              [
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "commissies",
+                  title: "Commissies",
+                  imagePath: 'assets/images/commissies.jpeg',
+                ).expanded(),
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "ploegen",
+                  title: "Ploegen",
+                  imagePath: 'assets/images/ploegen.jpg',
+                ).expanded(),
+              ].toRow(),
+              [
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "huizen",
+                  title: "Huizen",
+                  imagePath: 'assets/images/huizen.jpeg',
+                ).expanded(),
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "substructuren",
+                  title: "Substructuren",
+                  imagePath: 'assets/images/substructures.jpeg',
+                ).expanded(),
+              ].toRow(),
+            ].toColumn(
+              separator: const SizedBox(
+                height: choiceWidgetPadding,
+              ),
+            ),
           ),
         ],
       ),

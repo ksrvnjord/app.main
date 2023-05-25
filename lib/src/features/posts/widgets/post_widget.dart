@@ -21,17 +21,26 @@ class PostWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post post = snapshot.data()!;
+    final post = snapshot.data();
     const int contentMaxLines = 12;
 
     const double titleFontSize = 20;
     const double headerPadding = 4;
     const double postStatisticsTopPadding = 4;
 
+    Map<String, Color> topicColors = {
+      "Promotie": Colors.red.shade100,
+      "Wandelgangen": Colors.blue.shade100,
+      "Kaartjes": Colors.yellow.shade100,
+      "Coach gezocht": Colors.orange.shade100,
+      "Gevonden voorwerpen": Colors.green.shade100,
+    };
+    final postTopic = post?.topic ?? "";
+
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
-        post.title,
+        post?.title ?? "",
         overflow: TextOverflow.ellipsis,
       )
           .fontSize(titleFontSize)
@@ -40,29 +49,33 @@ class PostWidget extends ConsumerWidget {
       [
         Flexible(
           child: ExpandableText(
-            post.content,
+            post?.content ?? "",
             expandText: "meer",
-            maxLines: contentMaxLines,
+            expanded: expanded,
             linkColor: Colors.blueGrey,
             linkEllipsis: false,
-            expanded: expanded,
+            urlStyle: const TextStyle(color: Colors.blue),
             onUrlTap: (url) => launchUrlString(url),
-            urlStyle: // show links as blue underlined
-                const TextStyle(
-              color: Colors.blue,
-            ),
-            style: const TextStyle(
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontSize: 16),
+            maxLines: contentMaxLines,
           ),
         ),
       ].toRow(),
+      Chip(
+        label: Text(postTopic),
+        labelStyle: TextStyle(color: Colors.blueGrey.shade900),
+        backgroundColor: topicColors[postTopic],
+        padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+      ),
       PostStatisticsBar(snapshot: snapshot)
           .padding(top: postStatisticsTopPadding),
       const Divider(),
       PostBottomActionBar(
         snapshot: snapshot,
       ),
-    ].toColumn();
+    ].toColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
   }
 }

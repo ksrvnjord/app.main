@@ -1,9 +1,12 @@
-class Event {
-  String title;
-  DateTime startTime;
-  DateTime endTime;
+import 'package:flutter/foundation.dart';
 
-  Event({
+@immutable
+class Event {
+  final String title;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  const Event({
     required this.title,
     required this.startTime,
     required this.endTime,

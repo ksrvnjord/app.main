@@ -1,17 +1,17 @@
+// ignore_for_file: prefer-single-widget-per-file
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/models/me.dart';
+import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-const double betweenFields = 20;
-const double marginContainer = 5;
-const double paddingBody = 15;
 
 class MePrivacyPage extends ConsumerWidget {
   const MePrivacyPage({Key? key}) : super(key: key);
@@ -23,10 +23,10 @@ class MePrivacyPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Zichtbaarheid aanpassen'),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
         automaticallyImplyLeading: true,
+        title: const Text('Zichtbaarheid aanpassen'),
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -56,19 +56,25 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   void initState() {
     super.initState();
     if (widget.user != null) {
-      var keys = widget.user!.fullContact.public.toJson().keys.toSet();
-      // User can't change visibility of these fields
-      keys.remove('first_name');
-      keys.remove('last_name');
-      keys.remove('__typename');
+      final keys = widget.user?.fullContact.public.toJson().keys.toSet();
+      if (keys != null) {
+        // User can't change visibility of these fields.
 
-      final public = widget.user!.fullContact.public.toJson();
+        // ignore: avoid-ignoring-return-values
+        keys.remove('first_name');
+        // ignore: avoid-ignoring-return-values
+        keys.remove('last_name');
+        // ignore: avoid-ignoring-return-values
+        keys.remove('__typename');
 
-      for (String key in keys) {
-        checkboxes[key] = !(public[key] == '');
+        final public = widget.user?.fullContact.public.toJson();
+
+        for (String key in keys) {
+          checkboxes[key] = !(public?[key] == '');
+        }
       }
 
-      listed = widget.user!.listed;
+      listed = widget.user?.listed ?? false;
     }
   }
 
@@ -78,34 +84,47 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     });
   }
 
-  void save(GraphQLClient client) {
+  void save(GraphQLClient client) async {
+    final uid = ref.watch(currentFirestoreUserProvider)?.identifier;
+    ref.invalidate(heimdallUserByLidnummerProvider(
+      uid ?? "",
+    )); // Invalidate the cache for the user profile, so the user sees the changes immediately.
+
     setState(() {
       saving = true;
       buttonColor = Colors.blueGrey;
     });
 
-    updatePublicContact(
-      client,
-      listed,
-      Input$IBooleanContact.fromJson(checkboxes),
-    ).then((data) {
+    try {
+      // ignore: avoid-ignoring-return-values
+      await updatePublicContact(
+        client,
+        listed,
+        Input$IBooleanContact.fromJson(checkboxes),
+      );
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Vindbaarheid aangepast'),
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.blue;
-      });
-    }).onError((error, stackTrace) {
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.blue;
+        });
+      }
+    } catch (e) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.red,
         content: Text('Aanpassen mislukt, melding gemaakt.'),
+        backgroundColor: Colors.red,
       ));
-      setState(() {
-        saving = false;
-        buttonColor = Colors.red;
-      });
-    });
+      if (mounted) {
+        setState(() {
+          saving = false;
+          buttonColor = Colors.red;
+        });
+      }
+    }
   }
 
   @override
@@ -115,54 +134,68 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     const double pagePadding = 8;
     const double buttonRounding = 16;
 
+    const Map<String, String> checkboxReadableMap = {
+      "email": "Email",
+      "street": "Straatnaam",
+      "housenumber": "Huisnummer",
+      "housenumber_addition": "Toevoeging",
+      "city": "Woonplaats",
+      "zipcode": "Postcode",
+      "phone_primary": "Telefoonnummer",
+    };
+
     return [
       [
         Switch(
           value: listed,
           onChanged: toggleCheckBox,
         ),
-        const Text('Vindbaar in Almanak'),
+        const Text('Zichtbaar in de app'),
       ].toRow(),
       const Divider(),
-      ...(listed
-          ? checkboxes.keys.map<Widget>(
-              (key) {
-                return [
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: checkboxes[key],
-                    onChanged: (value) => toggleCheckBoxes(key, value!),
-                  ),
-                  Text(key),
-                ].toRow();
-              },
-            ).toList()
-          : <Widget>[]),
+      if (listed)
+        FormSection(title: "Zichtbaarheid per veld", children: [
+          ...(checkboxes.keys.map<Widget>(
+            (key) {
+              return [
+                Checkbox(
+                  value: checkboxes[key],
+                  onChanged: (value) => toggleCheckBoxes(key, value ?? false),
+                  checkColor: Colors.white,
+                ),
+                Text(checkboxReadableMap[key] ?? key),
+              ].toRow();
+            },
+          ).toList()),
+        ]),
       [
         ElevatedButton(
+          onPressed: () => save(client),
           style: ElevatedButton.styleFrom(
             backgroundColor: buttonColor,
-            // add rounding
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(buttonRounding),
             ),
           ),
-          onPressed: () => save(client),
           child: saving
               ? const SizedBox(
-                  height: 10,
                   width: 10,
+                  height: 10,
                   child: CircularProgressIndicator(color: Colors.white),
                 ).center().padding(all: saveButtonPadding)
               : const Text('Opslaan'),
         ).expanded(),
       ].toRow(),
-    ].toColumn().padding(all: pagePadding);
+    ]
+        .toColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+        )
+        .padding(all: pagePadding);
   }
 
-  void toggleCheckBox(bool? value) {
+  void toggleCheckBox(bool value) {
     setState(() {
-      listed = value!;
+      listed = value;
     });
   }
 }

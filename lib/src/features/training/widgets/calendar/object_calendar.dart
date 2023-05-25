@@ -28,47 +28,45 @@ class ObjectCalendar extends ConsumerStatefulWidget {
 }
 
 class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
-  // Date is passed by parent
-  late DateTime? reservation;
   bool hasPermission = false;
-  late ReservationsQuery reservationsQuery;
 
   @override
   void initState() {
     super.initState();
-    reservation = null;
-    reservationsQuery = ReservationsQuery(widget.date, widget.boat.reference);
+
     checkPermission();
   }
 
-  // Checks if the current user has permissions to
-  // reserve this boat, runs once in initState
-  void checkPermission() {
-    // 1: Get the ID token that contains the permission claims
-    FirebaseAuth.instance.currentUser?.getIdTokenResult().then((token) {
-      // 2: Check if the boat permissions are empty
-      if (widget.boat.data().permissions.isEmpty ||
-          // If not, 3: convert permissions to a set,
-          // get the permissions from the token
-          // and see if there is any overlap
-          widget.boat
-              .data()
-              .permissions
-              .toSet()
-              .intersection((token.claims?['permissions'] ?? []).toSet())
-              .isNotEmpty) {
+  /* Checks if the current user has permissions to reserve this boat, 
+  runs once in initState */
+  Future<void> checkPermission() async {
+    // 1: Get the ID token that contains the permission claims.
+    IdTokenResult? token =
+        await FirebaseAuth.instance.currentUser?.getIdTokenResult();
+    // 2: Check if the boat permissions are empty.
+    final permissions = widget.boat.data().permissions;
+    if (permissions.isEmpty ||
+        /* If not, 3: convert permissions to a set,
+        get the permissions from the token
+        and see if there is any overlap */
+        permissions
+            .toSet()
+            .intersection((token?.claims?['permissions'] ?? []).toSet())
+            .isNotEmpty) {
+      if (mounted) {
         setState(() {
           hasPermission = true;
         });
       }
-    });
+    }
   }
 
   void handleTap(TapUpDetails details) {
     final boatData = widget.boat.data();
 
-    // Check if the boat is in-de-vaart
+    // Check if the boat is in-de-vaart.
     if (!boatData.available) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Dit object is uit de vaart.')),
       );
@@ -76,10 +74,11 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
       return;
     }
 
-    // Re-check the permission
+    // Re-check the permission.
     checkPermission();
 
     if (!hasPermission) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Je hebt geen permissies voor dit object.'),
       ));
@@ -88,6 +87,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     }
 
     if (boatData.critical) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Dit object is uit de vaart.'),
       ));
@@ -111,16 +111,15 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
     final int slotNumber =
         tapLocationRelativeY ~/ CalendarMeasurement.slotHeight;
 
-    // Now we can calculate the offset in minutes from the start
+    // Now we can calculate the offset in minutes from the start.
     final int offsetMinutes = slotNumber * 30;
 
-    // Add offsetMinutes to 6:00 to get the time the user tapped
+    // Add offsetMinutes to 6:00 to get the time the user tapped.
     DateTime time =
         DateTime(widget.date.year, widget.date.month, widget.date.day, 6, 0, 0)
             .add(Duration(minutes: offsetMinutes));
 
-    // TODO: calculate here from when till when the user can make a reservation
-
+    // ignore: avoid-ignoring-return-values
     Routemaster.of(context).push('plan', queryParameters: {
       'reservationObjectId': widget.boat.id,
       'reservationObjectName': widget.boat.get('name'),
@@ -131,39 +130,40 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
   @override
   Widget build(BuildContext context) {
     final reservations = ref.watch(reservationsProvider(
-      reservationsQuery,
+      ReservationsQuery(widget.date, widget.boat.reference),
     ));
+
+    final boat = widget.boat.data();
+
+    const double height1726 = 2;
 
     return SizedBox(
       width: CalendarMeasurement.slotWidth,
-      // Stack the elements over eachother
+      // Stack the elements over eachother.
       child: Stack(
         children: [
-          // Horizontal bars of 32h, that are tappable
-          // to make new reservations
+          /* Horizontal bars of 32h, that are tappable
+           to make new reservations. */
           GestureDetector(
-            // Handle the taps with a defined function
-            onTapUp: handleTap,
-            // Wrap the background in an AbsorbPointer, so that
-            // it does not pass gestures through to the background
+            // ignore: sort_child_properties_last
             child: AbsorbPointer(
               child: CalendarBackground(
-                available: (hasPermission && widget.boat.data().available) &&
-                    !widget.boat.data().critical,
+                available: (hasPermission && boat.available) && !boat.critical,
               ),
             ),
+            onTapUp: handleTap,
           ),
-          // Wrap the reservations
+          // Wrap the reservations.
           reservations.when(
-            // Shimmer entire screen on loading
+            // Shimmer entire screen on loading.
             loading: () => const ShimmerWidget(
               child: SizedBox(
+                width: CalendarMeasurement.slotWidth,
                 height: CalendarMeasurement.slotHeight *
                     CalendarMeasurement.amountOfSlots,
-                width: CalendarMeasurement.slotWidth,
               ),
             ),
-            // Create a stack of the resulting reservations
+            // Create a stack of the resulting reservations.
             data: (reservations) {
               return reservations.docs
                   .map((reservation) {
@@ -179,28 +179,21 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
           Positioned(
-            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() -
-                1, // -1, because the line is 2px high
             left: 0,
-            child: Row(
-              children: [
-                for (int i = 0;
-                    i <
-                        CalendarMeasurement.slotWidth ~/
-                            CalendarMeasurement.stripeWidth1726;
-                    i++)
-                  Container(
-                    color: // use hex color code
-                        // ignore: no-magic-number
-                        i % 2 == 0
-                            ? const Color(0x6011436d)
-                            : Colors.transparent,
-                    // ignore: no-magic-number
-                    height: 2,
-                    width: CalendarMeasurement.stripeWidth1726,
-                  ),
-              ],
-            ),
+            top: CalendarMeasurement.amountOfPixelsTill1726FromTop() - 1,
+            child: Row(children: [
+              for (int i = 0;
+                  i <
+                      CalendarMeasurement.slotWidth ~/
+                          CalendarMeasurement.stripeWidth1726;
+                  i++)
+                Container(
+                  color:
+                      i.isEven ? const Color(0x6011436d) : Colors.transparent,
+                  width: CalendarMeasurement.stripeWidth1726,
+                  height: height1726,
+                ),
+            ]),
           ),
         ],
       ),

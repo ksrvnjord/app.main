@@ -14,8 +14,8 @@ class AlmanakLeedenPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Leeden"),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

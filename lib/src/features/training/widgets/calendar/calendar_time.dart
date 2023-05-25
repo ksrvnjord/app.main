@@ -14,39 +14,33 @@ class CalendarTime extends StatelessWidget {
         .add(Duration(minutes: index * CalendarMeasurement.minutesInSlot)),
   );
 
-  static const double smallTicks = 56;
-  static const double bigTicks = 50;
-  static const double leftPaddingOfTime = 8;
-  static const double timeRightPadding = 18;
-
   @override
   Widget build(BuildContext context) {
     const double timeWidth = 64;
+    const double smallTicks = 56;
+    const double bigTicks = 50;
+    const double leftPaddingOfTime = 8;
+    const double timeRightPadding = 18;
 
     return SizedBox(
       width: timeWidth,
       child: timestamps
           .map<Widget>((timestamp) => SizedBox(
-                height: CalendarMeasurement.slotHeight,
                 width: timeWidth,
+                height: CalendarMeasurement.slotHeight,
                 child: Stack(children: [
                   Container(
                     padding: EdgeInsets.only(
                       left: timestamp.minute == 0 ? bigTicks : smallTicks,
                     ),
                     height: CalendarMeasurement.slotHeight,
-                    child: const Divider(
-                      color: Colors.grey,
-                    ),
+                    child: const Divider(color: Colors.grey),
                   ),
-                  if (timestamp.minute ==
-                      0) // only show the time if it's a full hour
+                  if (timestamp.minute == 0)
                     [
                       Text(
                         DateFormat('H:mm').format(timestamp),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ).center(),
                     ]
                         .toRow(

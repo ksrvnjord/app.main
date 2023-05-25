@@ -8,7 +8,7 @@ import 'package:styled_widget/styled_widget.dart';
 class AdvancedSettingsPage extends StatelessWidget {
   const AdvancedSettingsPage({Key? key}) : super(key: key);
 
-  // create  a function that clear the cache and exits the app
+  // Create  a function that clear the cache and exits the app.
   Future<void> clearCache() async {
     await HiveCache.deleteAll();
     if (Platform.isAndroid) {
@@ -23,19 +23,19 @@ class AdvancedSettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Geavanceerde instellingen'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
-        // create a button to clear the cache
+        // Create a button to clear the cache.
         ListTile(
           title: const Text('Cache verwijderen'),
           subtitle: const Text(
             "Alle opgeslagen data op je telefoon wordt verwijderd. Dit sluit je app af.",
           ),
           trailing: const Icon(Icons.delete_outline, color: Colors.red),
-          onTap: () => // show dialog
-              showDialog(
+          visualDensity: VisualDensity.standard,
+          onTap: () => showDialog(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: const Text('Cache verwijderen'),
@@ -44,19 +44,21 @@ class AdvancedSettingsPage extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  child: const Text('Annuleren').textColor(Colors.lightBlue),
                   onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Annuleren').textColor(Colors.lightBlue),
                 ),
                 TextButton(
+                  onPressed: () => clearCache(),
                   child: const Text('Verwijder de cache en sluit mijn app af')
                       .textColor(Colors.red),
-                  onPressed: () => clearCache(),
                 ),
               ],
             ),
           ),
         ),
-        const Divider(),
+        const Divider(
+          height: 0,
+        ),
       ]),
     );
   }

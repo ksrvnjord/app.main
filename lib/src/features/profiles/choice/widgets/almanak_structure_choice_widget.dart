@@ -16,13 +16,18 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double cardTitleFontSize = 24;
-    const double imageHeight = 128;
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+
+    final double cardTitleFontSize = screenWidth < 480
+        ? 20
+        : screenWidth < 768
+            ? 24
+            : 28;
+    final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 8;
 
     return InkWell(
-      onTap: () => Routemaster.of(context).push(pushRoute),
       child: [
-        // load image from assets
         ClipRRect(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(16),
@@ -48,6 +53,7 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
+      onTap: () => Routemaster.of(context).push(pushRoute),
     );
   }
 }

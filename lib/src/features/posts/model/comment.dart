@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 @immutable
@@ -31,7 +30,7 @@ class Comment {
       createdTime: map['createdTime'] as Timestamp,
       likedBy: List<String>.from(map['likes']),
       likedByMe: List<String>.from(map['likes'])
-          .contains(FirebaseAuth.instance.currentUser!.uid),
+          .contains(FirebaseAuth.instance.currentUser?.uid),
     );
   }
 
@@ -49,21 +48,22 @@ class Comment {
     required String content,
     required String postId,
   }) {
-    Query$Me$me$fullContact$private private =
-        GetIt.I<CurrentUser>().user!.fullContact.private!;
-    String firstName = private.first_name!;
-    String lastName = private.last_name!;
+    final current = GetIt.I<CurrentUser>();
+    final private = current.user?.fullContact.private;
+    final firstName = private?.first_name;
+    final lastName = private?.last_name;
 
     return FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
         .collection('comments')
         .withConverter<Comment>(
-          fromFirestore: (snapshot, _) => Comment.fromMap(snapshot.data()!),
+          fromFirestore: (snapshot, _) =>
+              Comment.fromMap(snapshot.data() ?? {}),
           toFirestore: (comment, _) => comment.toJson(),
         )
         .add(Comment(
-          authorId: FirebaseAuth.instance.currentUser!.uid,
+          authorId: FirebaseAuth.instance.currentUser?.uid ?? "",
           authorName: "$firstName $lastName",
           content: content,
           createdTime: Timestamp.now(),

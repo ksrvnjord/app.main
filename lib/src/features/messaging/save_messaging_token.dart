@@ -6,16 +6,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-final FirebaseMessaging messaging = FirebaseMessaging.instance;
-
+// ignore: prefer-static-class
 void saveMessagingToken() async {
-  String? token = await messaging.getToken();
+  String? token = await FirebaseMessaging.instance.getToken();
   if (token == null) {
     return;
   }
 
-  User? user = auth.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   if (user == null) {
     return;
   }
@@ -39,11 +37,11 @@ void saveMessagingToken() async {
           'lastUsed': DateTime.now(),
         });
 
-  // Required topics to subscribe to
+  // Required topics to subscribe to.
   await FirebaseMessaging.instance.subscribeToTopic(userId);
   await FirebaseMessaging.instance.subscribeToTopic("all");
 
-  // Store the subscribed topics in a local cache
+  // Store the subscribed topics in a local cache.
   Box cache = await Hive.openBox<bool>('topics');
   await cache.put(userId, true);
   await cache.put('all', true);

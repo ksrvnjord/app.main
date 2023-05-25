@@ -1,69 +1,43 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list_item.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class TrainingList extends StatefulWidget {
-  const TrainingList({super.key});
+class TrainingList extends ConsumerWidget {
+  const TrainingList({Key? key}) : super(key: key);
 
   @override
-  State<TrainingList> createState() => TrainingListState();
-}
-
-class TrainingListState extends State<TrainingList> {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
-  @override
-  Widget build(BuildContext context) {
-    final CollectionReference<Reservation> reservationsRef =
-        db.collection('reservations').withConverter<Reservation>(
-              fromFirestore: (snapshot, _) =>
-                  Reservation.fromJson(snapshot.data()!),
-              toFirestore: (reservation, _) => reservation.toJson(),
-            );
-    if (FirebaseAuth.instance.currentUser == null) {
-      // this should show to the user that there are no reservations
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(firebaseAuthUserProvider) == null) {
+      // This should show to the user that there are no reservations.
       return const Center(
         child: Text('Je hebt geen afschrijvingen'),
       );
     }
 
-    return StreamWrapper(
-      stream: reservationsRef
-          .where(
-            'creatorId',
-            isEqualTo: FirebaseAuth.instance.currentUser!.uid,
-          )
-          .where(
-            'startTime',
-            isGreaterThanOrEqualTo:
-                DateTime.now().subtract(const Duration(days: 1)),
-          )
-          .orderBy('startTime', descending: false)
-          .snapshots(),
-      success: showMyReservations,
-    );
-  }
-
-  Widget showMyReservations(QuerySnapshot<Reservation> snapshot) {
-    if (snapshot.docs.isEmpty) {
-      return Center(
-        // ignore: avoid-non-ascii-symbols
-        child: const Text('Het is wel leeg hier...').textColor(Colors.blueGrey),
-      );
-    }
-
-    return ListView.separated(
-      itemCount: snapshot.docs.length,
-      padding: const EdgeInsets.all(10),
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 4),
-      itemBuilder: (BuildContext context, int index) => Center(
-        child: TrainingListItem(reservation: snapshot.docs[index]),
-      ),
-    );
+    return ref.watch(myReservationsProvider).when(
+          error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          data: (data) => data.docs.isEmpty
+              ? Center(
+                  // ignore: avoid-non-ascii-symbols
+                  child: const Text('Je hebt geen afschrijvingen op dit moment')
+                      .textColor(Colors.blueGrey),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(10),
+                  itemBuilder: (BuildContext context, int index) => Center(
+                    child: ReservationListTile(snapshot: data.docs[index]),
+                  ),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(height: 4),
+                  itemCount: data.docs.length,
+                ),
+        );
   }
 }

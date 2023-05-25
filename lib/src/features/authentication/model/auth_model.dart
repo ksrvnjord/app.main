@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,21 +12,24 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-const _storage = FlutterSecureStorage();
-
+// ignore: prefer-static-class
 final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
+// @immutable TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
   bool isBusy = false;
   String error = '';
   String storedUser = '';
   GlobalConstants globalConstants = GetIt.I.get<GlobalConstants>();
+  final _storage = const FlutterSecureStorage();
 
   AuthModel() {
     isBusy = true;
+    // ignore: prefer-async-await
     boot().then((value) {
       client = value;
     }).whenComplete(() {
@@ -36,18 +40,23 @@ class AuthModel extends ChangeNotifier {
 
   Future<void> unsubscribeAllTopics() async {
     final box = await Hive.openBox<bool>('topics');
-    for (String key in box.keys) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+    if (!kIsWeb) {
+      for (String key in box.keys) {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+      }
     }
+    // ignore: avoid-ignoring-return-values
     await box.clear();
   }
 
   Future<void> subscribeDefaultTopics(String userId) async {
-    // Required topics to subscribe to
-    await FirebaseMessaging.instance.subscribeToTopic(userId);
-    await FirebaseMessaging.instance.subscribeToTopic("all");
+    // Required topics to subscribe to.
+    if (!kIsWeb) {
+      await FirebaseMessaging.instance.subscribeToTopic(userId);
+      await FirebaseMessaging.instance.subscribeToTopic("all");
+    }
 
-    // Store the subscribed topics in a local cache
+    // Store the subscribed topics in a local cache.
     Box cache = await Hive.openBox<bool>('topics');
     await cache.put(userId, true);
     await cache.put('all', true);
@@ -91,12 +100,12 @@ class AuthModel extends ChangeNotifier {
 
       return false;
     }
-
-    if (client != null && client?.credentials != null) {
+    Credentials? credentials = client?.credentials;
+    if (credentials != null) {
       isBusy = false;
       await _storage.write(
         key: 'oauth2_credentials',
-        value: client?.credentials.toJson(),
+        value: credentials.toJson(),
       );
       notifyListeners();
 
@@ -124,7 +133,7 @@ class AuthModel extends ChangeNotifier {
       DateTime expiration =
           DateTime.fromMillisecondsSinceEpoch(credentials['expiration']);
       if (expiration.isAfter(DateTime.now())) {
-        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds!));
+        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
       }
     }
 
@@ -132,52 +141,55 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<bool> firebase() async {
-    // Only fire this if an access token is available
-    if (client == null || client?.credentials.accessToken == null) {
+    final String? accessToken = client?.credentials.accessToken;
+    // Only fire this if an access token is available.
+    if (accessToken == null) {
       return false;
     }
 
     try {
-      // Get the token for the configured (constant) endpoint JWT
+      // Get the token for the configured (constant) endpoint JWT.
       var response = await Dio().get(
         globalConstants.jwtEndpoint().toString(),
         options: Options(headers: {
-          'Authorization': 'Bearer ${client?.credentials.accessToken}',
+          'Authorization': 'Bearer $accessToken',
         }),
       );
 
-      // The token is returned as JSON, decode it
+      // The token is returned as JSON, decode it.
       var data = json.decode(response.data);
 
-      // If we have data && we have the token in our data, proceed
-      // to login
+      // If we have data and we have the token in our data, proceed to login.
       if (data != null && data['token'] != null) {
+        // ignore: avoid-ignoring-return-values
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
         notifyListeners();
 
-        // Subscribe the user to FirebaseMessaging as well
         String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
+          FirebaseCrashlytics.instance.setUserIdentifier(
+            uid,
+          ); // Link crashes to users, so we can reach out to them if needed.
+          // Subscribe the user to FirebaseMessaging as well.
           subscribeDefaultTopics(uid);
         }
       }
     } catch (e, st) {
       // If it fails, we don't want to die just yet - but do send
       // the exception to Sentry for further research.
+      // ignore: avoid-ignoring-return-values
       Sentry.captureException(error, stackTrace: st);
     }
 
     return true;
   }
 
-  void logout() {
+  void logout() async {
     unsubscribeAllTopics().whenComplete(() => null);
 
-    _storage.delete(key: 'oauth2_credentials').then((value) {
-      client = null;
-      notifyListeners();
-    });
-
+    await _storage.delete(key: 'oauth2_credentials');
+    client = null;
     FirebaseAuth.instance.signOut();
+    notifyListeners();
   }
 }

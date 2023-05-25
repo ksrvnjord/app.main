@@ -19,17 +19,16 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
     const double textFontSize = 12;
 
     return Container(
-      // make edges round
+      // Make edges round.
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(40)),
         color: Colors.lightBlue.shade300,
-        // add shadow
+        borderRadius: const BorderRadius.all(Radius.circular(40)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(shadowOpacity),
-            spreadRadius: 1,
+            offset: const Offset(0, 1),
             blurRadius: shadowBlurRadius,
-            offset: const Offset(0, 1), // changes position of shadow
+            spreadRadius: 1,
           ),
         ],
       ),
@@ -37,10 +36,10 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
         SvgPicture.asset(
           Svgs.swanWhite,
           width: iconSize,
-          // ignore: deprecated_member_use
-          color: Colors.white,
           // ignore: no-equal-arguments
           height: iconSize,
+          // ignore: deprecated_member_use
+          color: Colors.white,
         ),
         Text(amountOfLikes.toString())
             .fontWeight(FontWeight.bold)

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
@@ -15,9 +16,12 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    requestMessagingPermission();
-    saveMessagingToken();
-    initMessagingInfo();
+    if (!kIsWeb) {
+      // TODO: this should not be on the MainPage here, but on the Home Page, and only if the user is able to give permission, ie. not when user already gave permissies or denied them.
+      requestMessagingPermission();
+      saveMessagingToken();
+      initMessagingInfo();
+    }
   }
 
   @override
@@ -27,15 +31,14 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: null,
       body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: tabPage.controller,
+        // ignore: sort_child_properties_last
         children: [
           for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
         ],
+        controller: tabPage.controller,
+        physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: tabPage.controller.index,
-        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
@@ -49,16 +52,12 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.edit_calendar),
             label: 'Afschrijven',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Almanak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'Meer',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
         onTap: (value) => animateTo(value, tabPage),
+        currentIndex: tabPage.controller.index,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementBodyWidget extends StatelessWidget {
   const AnnouncementBodyWidget({
@@ -18,8 +18,9 @@ class AnnouncementBodyWidget extends StatelessWidget {
     const double spacingBetweenTitleAndText = 8;
 
     return ListView(
+      padding: const EdgeInsets.all(8),
       children: [
-        // show title of announcement emphasized
+        // Show title of announcement emphasized.
         Text(
           title,
           style: const TextStyle(
@@ -35,11 +36,17 @@ class AnnouncementBodyWidget extends StatelessWidget {
     );
   }
 
-  void launchUrlIfPossible(_, url, __) {
-    // Check if an URL is actually given
-    if (url?.isNotEmpty ?? false) {
-      // Launch the URL
-      launchUrlString(url!);
+  void launchUrlIfPossible(_, String? url, __) {
+    if (url == null) {
+      return;
+    }
+    // Check if an URL is actually given.
+    if (url.isNotEmpty) {
+      // Convert url to URI.
+      final uri = Uri.parse(url);
+      // Launch url in separate browser.
+      // ignore: avoid-ignoring-return-values
+      launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 }

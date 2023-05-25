@@ -5,23 +5,24 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_edit_widg
 import 'package:tuple/tuple.dart';
 
 class DamagesEditPage extends ConsumerWidget {
-  final String id;
+  final String damageDocumentId;
   final String reservationObjectId;
 
   const DamagesEditPage({
     Key? key,
-    required this.id,
+    required this.damageDocumentId,
     required this.reservationObjectId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final damage = ref.watch(damageProvider(Tuple2(reservationObjectId, id)));
+    final damage = ref
+        .watch(damageProvider(Tuple2(reservationObjectId, damageDocumentId)));
 
     return damage.when(
       data: (data) {
         return DamageEditWidget(
-          id: id,
+          damageDocumentId: damageDocumentId,
           reservationObjectId: reservationObjectId,
         );
       },

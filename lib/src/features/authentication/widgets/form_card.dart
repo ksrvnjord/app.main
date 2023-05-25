@@ -17,8 +17,8 @@ class FormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Implement in Heimdall
-    // return const ForgotForm();
+    // TODO: Implement in Heimdall.
+
     const double textPadding = 16;
 
     const double buttonHeight = 54;
@@ -40,8 +40,8 @@ class FormCard extends StatelessWidget {
           child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         RoundedElevatedButton(
-          child: const Icon(Icons.arrow_back),
           onPressed: () => Routemaster.of(context).pop(),
+          child: const Icon(Icons.arrow_back),
         ).height(buttonHeight),
       ].toRow(),
     ]

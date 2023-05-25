@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class FadeBottomWidget extends StatelessWidget {
   const FadeBottomWidget({
     Key? key,
-    required this.child,
     required this.parentHeight,
+    required this.child,
   }) : super(key: key);
 
-  final Widget child;
   final double parentHeight;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +19,13 @@ class FadeBottomWidget extends StatelessWidget {
       children: [
         child,
         Positioned(
-          bottom: 0,
           left: 0,
           right: 0,
+          bottom: 0,
           child: Container(
-            height: parentHeight / startAtHeight,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(16),
-              ),
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(16)),
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
@@ -37,6 +35,7 @@ class FadeBottomWidget extends StatelessWidget {
                 ],
               ),
             ),
+            height: parentHeight / startAtHeight,
           ),
         ),
       ],

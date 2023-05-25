@@ -11,23 +11,23 @@ class EventsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCalendar(
       view: CalendarView.schedule,
-      minDate: DateTime.now(),
-      maxDate: DateTime.now().add(const Duration(days: 365)),
       dataSource: MeetingDataSource(data),
       scheduleViewSettings: const ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
         monthHeaderSettings: MonthHeaderSettings(
           monthFormat: 'MMM yyyy',
-          backgroundColor: Colors.transparent,
           height: 60,
           textAlign: TextAlign.center,
+          backgroundColor: Colors.transparent,
           monthTextStyle: TextStyle(
-            fontSize: 18,
             color: Colors.black,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
+      minDate: DateTime.now(),
+      maxDate: DateTime.now().add(const Duration(days: 365)),
     );
   }
 }
@@ -58,6 +58,6 @@ class MeetingDataSource extends CalendarDataSource {
   }
 
   Event _meetingData(int index) {
-    return appointments![index];
+    return appointments?[index];
   }
 }

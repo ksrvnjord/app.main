@@ -15,8 +15,8 @@ class MoreLinkTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(label),
-      trailing: // icon that shows external link
-          const Icon(Icons.open_in_new, color: Colors.lightBlue),
+      trailing: const Icon(Icons.open_in_new, color: Colors.lightBlue),
+      visualDensity: VisualDensity.standard,
       onTap: () => launchUrl(Uri.parse(url)),
     );
   }

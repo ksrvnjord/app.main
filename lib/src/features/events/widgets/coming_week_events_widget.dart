@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/fade_bottom_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'upcoming_event_widget.dart';
@@ -26,15 +27,13 @@ class ComingWeekEventsWidget extends ConsumerWidget {
           onTap: () => Routemaster.of(context).push('events'),
         ),
         InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          onTap: () => Routemaster.of(context).push('events'),
+          // ignore: sort_child_properties_last
           child: SizedBox(
             height: cardHeight,
             child: comingEvents.when(
               data: (events) => FadeBottomWidget(
                 parentHeight: cardHeight,
                 child: ListView.builder(
-                  itemCount: events.length,
                   itemBuilder: (context, index) {
                     Event event = events[index];
                     const double elementPadding = 4;
@@ -44,17 +43,29 @@ class ComingWeekEventsWidget extends ConsumerWidget {
                       event: event,
                     ).paddingDirectional(horizontal: elementPadding);
                   },
+                  itemCount: events.length,
                 ),
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => ShimmerWidget(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  ),
+                  height: cardHeight,
+                ),
+              ),
               error: (error, stackTrace) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
           ).card(
+            elevation: 0,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
           ),
+          onTap: () => Routemaster.of(context).push('events'),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
       ],
     );

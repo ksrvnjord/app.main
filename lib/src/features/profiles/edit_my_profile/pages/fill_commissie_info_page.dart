@@ -21,21 +21,21 @@ class FillCommissieInfoPage extends StatefulWidget {
 }
 
 class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
-  // create a form key to identify the form
+  // Create a form key to identify the form.
   final _formKey = GlobalKey<FormState>();
 
-  final CommissieEntry _formData = CommissieEntry(
-    name: "",
+  CommissieEntry _formData = CommissieEntry(
     startYear: DateTime.now().year - 1,
     endYear: DateTime.now().year,
-    lidnummer: FirebaseAuth.instance.currentUser!.uid,
-    firstName: GetIt.I<CurrentUser>().user!.fullContact.private!.first_name!,
-    lastName: GetIt.I<CurrentUser>().user!.fullContact.private!.last_name!,
+    firstName: GetIt.I<CurrentUser>().user?.fullContact.public.first_name ?? "",
+    lastName: GetIt.I<CurrentUser>().user?.fullContact.public.last_name ?? "",
+    identifier: FirebaseAuth.instance.currentUser?.uid ?? "",
+    name: "",
   );
 
   @override
   void initState() {
-    _formData.name = widget.commissie;
+    _formData = _formData.copyWith(name: widget.commissie);
     super.initState();
   }
 
@@ -57,8 +57,8 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vul commissie info in'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
@@ -67,24 +67,8 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
         child: ListView(
           children: [
             DataTextListTile(name: "Commissie", value: widget.commissie),
-            // create a year picker field that lets user select a year
+            // Create a year picker field that lets user select a year.
             DropdownButtonFormField(
-              // make this field required
-              decoration: const InputDecoration(
-                // The asterisk is a hint to the user that this field is required
-                // ignore: unnecessary_string_escapes
-                labelText: "Welk jaar?\*",
-                hintText: 'Selecteer je commissiejaar',
-              ),
-              validator: (value) =>
-                  value == null ? 'Dit veld is verplicht' : null,
-              onSaved: (newValue) => {
-                if (newValue != null)
-                  {
-                    _formData.startYear = newValue.item1,
-                    _formData.endYear = newValue.item2,
-                  },
-              },
               items: years
                   .map((tuple) => DropdownMenuItem(
                         value: tuple,
@@ -92,24 +76,38 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                       ))
                   .toList(),
               onChanged: (_) => {},
+              decoration: const InputDecoration(
+                labelText: "Welk jaar?*",
+                hintText: 'Selecteer je commissiejaar',
+              ),
+              onSaved: (newValue) => {
+                if (newValue != null)
+                  {
+                    _formData.startYear = newValue.item1,
+                    _formData.endYear = newValue.item2,
+                  },
+              },
+              validator: (value) =>
+                  value == null ? 'Dit veld is verplicht' : null,
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Vervulde je een functie binnen de commissie?',
-                hintText: 'Praeses, Abactis, etc.',
                 helperText: "Kan je ook leeg laten",
+                hintText: 'Praeses, Abactis, etc.',
               ),
-              onSaved: (newValue) =>
-                  newValue != null ? _formData.function = newValue : null,
+              onSaved: (newValue) => newValue != null && newValue.isNotEmpty
+                  ? _formData.function = newValue
+                  : null,
             ),
             ElevatedButton(
+              onPressed: () => submitForm(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
               ),
-              onPressed: () => submitForm(context),
               child: const Text('Opslaan'),
             ).padding(vertical: saveButtonVerticalPadding),
           ],
@@ -118,35 +116,39 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     );
   }
 
-  // function that submits the form
+  // Function that submits the form.
   void submitForm(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) {
-      // don't submit if form is invalid
+    final formState = _formKey.currentState;
+    if (formState != null && !formState.validate()) {
+      // Don't submit if form is invalid.
       return;
     }
-    _formKey.currentState?.save();
+    formState?.save();
 
     try {
       await addMyCommissie(_formData);
     } catch (e) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.red,
           content: Text('Er is iets fout gegaan met het opslaan'),
+          backgroundColor: Colors.red,
         ),
       );
 
       return;
     }
     if (mounted) {
+      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          backgroundColor: Colors.green,
           content: Text('Je commissie is opgeslagen'),
+          backgroundColor: Colors.green,
         ),
       );
-      Routemaster.of(context)
-          .replace('/almanak/edit/commissies'); // go to overzicht of commissies
+      Routemaster.of(context).replace(
+        '/home/edit/commissies',
+      ); // Go to overzicht of commissies.
     }
   }
 }

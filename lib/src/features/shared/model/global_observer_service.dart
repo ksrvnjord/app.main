@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:routemaster/routemaster.dart';
 
+// @immutable // TODO: Make immutable.
 class GlobalObserverService extends ChangeNotifier {
   RouteData? routeData;
   Page? page;

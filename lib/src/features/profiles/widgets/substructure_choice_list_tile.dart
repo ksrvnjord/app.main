@@ -14,7 +14,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   const SubstructureChoiceListTile({
     Key? key,
     required this.name,
-    required this.imageProvider, // the imageProvider for the choice
+    required this.imageProvider, // The imageProvider for the choice.
   }) : super(key: key);
   final String name;
 
@@ -22,37 +22,34 @@ class SubstructureChoiceListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const int maxLines = 2;
+
     return InkWell(
-      onTap: () => Routemaster.of(context).push(name),
       child: [
-        [
-          FadeInImage(
-            placeholder: Image.asset(Images.placeholderProfilePicture).image,
-            image: imageProvider.when(
-              data: (data) => data,
-              error: (err, stk) =>
-                  Image.asset(Images.placeholderProfilePicture).image,
-              loading: () =>
-                  Image.asset(Images.placeholderProfilePicture).image,
-            ),
-            width: imageWidth,
-            height: imageHeight,
-            fadeInDuration: const Duration(milliseconds: 800),
-            fadeOutDuration: const Duration(milliseconds: 600),
-            fit: BoxFit.cover,
-            // ignore: no-equal-arguments
-            placeholderFit: BoxFit.cover,
-          ).padding(right: imageRightPadding),
-          Text(name).fontSize(titleFontSize),
-        ].toRow().alignment(Alignment.centerLeft),
-        const Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.lightBlue,
-        ).padding(horizontal: iconHorizontalPadding),
+        FadeInImage(
+          placeholder: Image.asset(Images.placeholderProfilePicture).image,
+          image: imageProvider.when(
+            data: (data) => data,
+            error: (err, stk) =>
+                Image.asset(Images.placeholderProfilePicture).image,
+            loading: () => Image.asset(Images.placeholderProfilePicture).image,
+          ),
+          fadeOutDuration: const Duration(milliseconds: 600),
+          fadeInDuration: const Duration(milliseconds: 800),
+          width: imageWidth,
+          height: imageHeight,
+          fit: BoxFit.cover,
+          // ignore: no-equal-arguments
+          placeholderFit: BoxFit.cover,
+        ).padding(right: imageRightPadding),
+        Text(name, maxLines: maxLines).fontSize(titleFontSize).expanded(),
+        const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue)
+            .padding(horizontal: iconHorizontalPadding),
       ].toRow(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
+      onTap: () => Routemaster.of(context).push(name),
     );
   }
 }

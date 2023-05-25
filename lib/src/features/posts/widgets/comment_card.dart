@@ -2,13 +2,16 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/author_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CommentCard extends StatelessWidget {
   final Comment comment;
+  final FirestoreAlmanakProfile? postAuthor;
 
-  const CommentCard({Key? key, required this.comment}) : super(key: key);
+  const CommentCard({Key? key, required this.postAuthor, required this.comment})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +21,8 @@ class CommentCard extends StatelessWidget {
 
     return [
       AuthorWidget(
+        postAuthor: postAuthor,
         authorName: comment.authorName,
-        authorId: comment.authorId,
         fontSize: authorNameFontSize,
       ),
       LimitedBox(
@@ -27,17 +30,12 @@ class CommentCard extends StatelessWidget {
         child: ExpandableText(
           comment.content,
           expandText: "meer",
-          maxLines: contentMaxLines,
           linkColor: Colors.blueGrey,
           linkEllipsis: false,
+          urlStyle: const TextStyle(color: Colors.blue),
           onUrlTap: (url) => launchUrlString(url),
-          urlStyle: // show links as blue underlined
-              const TextStyle(
-            color: Colors.blue,
-          ),
-          style: const TextStyle(
-            fontSize: 16,
-          ),
+          style: const TextStyle(fontSize: 16),
+          maxLines: contentMaxLines,
         ),
       ),
     ]

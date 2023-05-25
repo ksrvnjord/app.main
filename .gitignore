@@ -120,3 +120,4 @@ metrics/
 # End of https://www.toptal.com/developers/gitignore/api/flutter
 
 /old_structure/**
+.firebase/

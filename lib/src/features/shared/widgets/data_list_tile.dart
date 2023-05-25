@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// This is a generic list tile for displaying data
+// This is a generic list tile for displaying data.
 class DataListTile extends StatelessWidget {
   const DataListTile({
     Key? key,

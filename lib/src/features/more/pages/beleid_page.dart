@@ -19,8 +19,8 @@ class BeleidPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Beleid'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: FutureWrapper(
         future: loadAsset("assets/documents/beleid-149e-bestuur.pdf", context),

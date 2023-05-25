@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 
-final peopleRef = FirebaseFirestore.instance.collection("people").withConverter(
-      fromFirestore: (snapshot, _) => AlmanakProfile.fromJson(snapshot.data()!),
-      toFirestore: (almanakProfile, _) => almanakProfile.toJson(),
-    );
-
-final bestuurUsersProvider = FutureProvider<QuerySnapshot<AlmanakProfile>>(
-  (ref) => peopleRef.where("bestuurs_functie", isNull: false).get(),
+// ignore: prefer-static-class
+final bestuurUsersProvider =
+    FutureProvider<QuerySnapshot<FirestoreAlmanakProfile>>(
+  (ref) => FirebaseFirestore.instance
+      .collection("people")
+      .withConverter(
+        fromFirestore: (snapshot, _) =>
+            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
+        toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+      )
+      .where("bestuurs_functie", isNull: false)
+      .get(),
 );

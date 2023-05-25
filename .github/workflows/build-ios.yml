@@ -1,19 +1,38 @@
 name: Build iOS Application
 
 on:
-  push:
-    branches: [main]
+  pull_request_review:
+    types: [submitted] # on approval build iOS to be sure that it works
+  release:
+    types: [published]
+
+env:
+  flutter_version: "3.7.7"
 
 jobs:
   build_ios:
+    if: github.event.review.state == 'approved'
     runs-on: macos-latest
+    timeout-minutes: 20 # build should not take more than 20 minutes
     env:
       SHEME: Runner
       BUILD_CONFIGURATION: Release
 
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
+        with:
+          path: /Users/runner/hostedtoolcache/flutter # NOTE: This path differs from Linux
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+    
 
       - name: Restore packages
         run: flutter pub get

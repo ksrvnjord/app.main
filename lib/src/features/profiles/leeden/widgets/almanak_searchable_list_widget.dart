@@ -23,16 +23,16 @@ class _AlmanakSearchableListWidgetState
     return <Widget>[
       TextFormField(
         controller: _search,
-        obscureText: false,
-        autocorrect: false,
-        enableSuggestions: false,
-        textCapitalization: TextCapitalization.none,
         decoration: const InputDecoration(
+          labelText: 'Zoeken',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          labelText: 'Zoeken',
         ),
+        textCapitalization: TextCapitalization.none,
+        obscureText: false,
+        autocorrect: false,
+        enableSuggestions: false,
       ).padding(all: searchBarPadding),
       AnimatedBuilder(
         animation: _search,

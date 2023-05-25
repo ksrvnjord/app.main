@@ -12,23 +12,22 @@ class DataTextListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: dont use ListTile as it automatically expands to the full width
-    // of the screen, which is not what we want.
+    // TODO: dont use ListTile as it automatically expands to the full screenwidth.
     return ListTile(
       title: Text(
         name,
         style: const TextStyle(
           color: Colors.grey,
-          fontWeight: FontWeight.w300,
           fontSize: 16,
+          fontWeight: FontWeight.w300,
         ),
       ),
       subtitle: Text(
         value,
         style: const TextStyle(
           color: Colors.black,
-          fontWeight: FontWeight.normal,
           fontSize: 20,
+          fontWeight: FontWeight.normal,
         ),
       ),
     );

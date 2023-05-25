@@ -16,7 +16,11 @@ class FormsWidget extends ConsumerWidget {
     super.key,
   });
 
-  Widget _buildOpenPollsList(QuerySnapshot<Poll> polls, WidgetRef ref) {
+  Widget _buildOpenPollsList(
+    QuerySnapshot<Poll> polls,
+    WidgetRef ref,
+    BuildContext context,
+  ) {
     if (polls.size == 0) {
       return const Text("Geen open forms op dit moment").textColor(Colors.grey);
     }
@@ -28,20 +32,17 @@ class FormsWidget extends ConsumerWidget {
       ...docs.map((doc) {
         final Poll poll = doc.data();
         final answerStream = ref.watch(pollAnswerProvider(doc.reference));
+        final description = poll.description;
 
         return ExpansionTile(
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.transparent, width: 0),
-          ),
-          initiallyExpanded: doc == first, // expand first poll
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
           title: Text(poll.question),
           subtitle: Text(
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
           ).textColor(Colors.grey),
+          // ignore: sort_child_properties_last
           children: [
-            if (poll.description != null)
-              Text(poll.description!)
+            if (description != null)
+              Text(description)
                   .textColor(Colors.blueGrey)
                   .padding(horizontal: descriptionHPadding),
             answerStream.when(
@@ -52,12 +53,25 @@ class FormsWidget extends ConsumerWidget {
 
                 return [
                   ...poll.options.map((option) => RadioListTile(
-                        toggleable: true,
                         value: option,
-                        title: Text(option),
-                        onChanged: (String? choice) =>
-                            upsertPollAnswer(choice, snapshot, doc),
                         groupValue: answerOfUser,
+                        // ignore: prefer-extracting-callbacks
+                        onChanged: (String? choice) {
+                          upsertPollAnswer(choice, snapshot, doc, ref);
+                          // ignore: avoid-ignoring-return-values
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(choice != null
+                                  ? 'Je keuze is opgeslagen'
+                                  : 'Je keuze is verwijderd'),
+                              backgroundColor: choice != null
+                                  ? Colors.green
+                                  : Colors.blueGrey,
+                            ),
+                          );
+                        },
+                        toggleable: true,
+                        title: Text(option),
                       )),
                 ].toColumn();
               },
@@ -67,12 +81,15 @@ class FormsWidget extends ConsumerWidget {
               loading: () => const CircularProgressIndicator(),
             ),
           ],
+          initiallyExpanded: doc == first,
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          shape: const RoundedRectangleBorder(
+            side: BorderSide(color: Colors.transparent, width: 0),
+          ),
         );
       }),
     ].toColumn();
   }
-
-  static const double headerFontSize = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,7 +102,7 @@ class FormsWidget extends ConsumerWidget {
         onTap: () => Routemaster.of(context).push('polls'),
       ),
       openPolls.when(
-        data: (data) => _buildOpenPollsList(data, ref),
+        data: (data) => _buildOpenPollsList(data, ref, context),
         loading: () => const CircularProgressIndicator(),
         error: (error, stack) => Text(
           error.toString(),

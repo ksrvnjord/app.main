@@ -16,47 +16,41 @@ class PostBottomActionBar extends StatelessWidget {
 
   final DocumentSnapshot<Post> snapshot;
 
-  static const likeIconSize = 20.0;
-
   @override
   Widget build(BuildContext context) {
-    final post = snapshot.data()!;
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    final bool likedByMe = post.likedBy.contains(uid);
+    final post = snapshot.data();
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final likedByMe = post?.likedBy.contains(uid) ?? false;
 
     const double likeTextLeftPadding = 4;
     const iconSize = 20.0;
 
     const double fontSize = 16;
+    const likeIconSize = 20.0;
 
     return [
       InkWell(
-        onTap: () => PostService.like(snapshot),
         child: [
           SvgPicture.asset(
             Svgs.swanWhite,
             width: likeIconSize,
-            // ignore: deprecated_member_use
-            color: likedByMe ? Colors.lightBlue : null,
             // ignore: no-equal-arguments
             height: likeIconSize,
+            // ignore: deprecated_member_use
+            color: likedByMe ? Colors.lightBlue : null,
           ),
           const Text("Zwaan")
               .textColor(likedByMe ? Colors.lightBlue : null)
               .fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
+        onTap: () => PostService.like(snapshot),
       ),
       InkWell(
-        onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
         child: [
-          const Icon(
-            Icons.mode_comment_outlined,
-            size: iconSize,
-          ),
+          const Icon(Icons.mode_comment_outlined, size: iconSize),
           const Text("Reageer").fontSize(fontSize),
-        ].toRow(
-          separator: const SizedBox(width: 4),
-        ),
+        ].toRow(separator: const SizedBox(width: 4)),
+        onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
       ),
     ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);
   }

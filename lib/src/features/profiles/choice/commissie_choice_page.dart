@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_ch
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
-/// Page that shows a list of choices, and pushes a new page when a choice is chosen
+/// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class CommissieChoicePage extends ConsumerWidget {
   const CommissieChoicePage({
     Key? key,
@@ -23,27 +23,22 @@ class CommissieChoicePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView.builder(
-        itemCount: choices.length,
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
             name: choices[index],
-            imageProvider: ref.watch(
-              commissieThumbnailProvider(
-                Tuple2(choices[index], getNjordYear()),
-              ),
-            ),
+            imageProvider: ref.watch(commissieThumbnailProvider(
+              Tuple2(choices[index], getNjordYear()),
+            )),
           ),
-          const Divider(
-            thickness: 0.5,
-            height: 0,
-          ),
+          const Divider(height: 0, thickness: 0.5),
         ].toColumn(),
+        itemCount: choices.length,
       ),
     );
   }

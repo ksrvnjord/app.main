@@ -21,8 +21,8 @@ class AlmanakHuisPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(houseName),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

@@ -15,67 +15,76 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<String, String> optionMap = {
-      "Mijn Njord-account": "/settings",
-      "Agenda": "events",
-      "Contact": "/contact",
-      "Beleid van het bestuur": "beleid",
-      if (FirebaseAuth.instance.currentUser != null) // Firebase-only-Feature
-        "Notificatie-instellingen": "notifications",
-      'Geavanceerde instellingen': 'advanced-settings',
-      'Gallerij': 'gallery',
+      "Bekijk de agenda": "events",
+      "Contacteer het bestuur / commissies": "/contact",
+      "Lees het beleid van het bestuur": "beleid",
+      'Bekijk de fotogalerij': 'gallery',
+      'Geavanceerde instellingen':
+          'advanced-settings', // TODO: plaats dit onder EditMyProfile, zodat alle instellingen etc bij elkaar staan.
     };
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meer'),
-        backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(
         children: [
           ...optionMap.entries.map(
-            // Make a list of options to display and navigate to
-            // Each option is a tile with a divider below it
+            // Make a list of options to display and navigate to.
+            // Each option is a tile with a divider below it.
             (entry) => [
               MoreListTile(
                 label: entry.key,
                 routePath: entry.value,
               ),
-              const Divider(),
+              const Divider(
+                height: 0,
+              ),
             ].toColumn(),
           ),
           ListTile(
-            title: const Text("Feedback geven"),
+            title: const Text("Geef feedback over de app"),
             trailing:
                 const Icon(Icons.feedback_outlined, color: Colors.lightBlue),
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
               name: GetIt.I<CurrentUser>()
                       .user
-                      ?.username ?? // CurrentUser might not be filled yet
+                      ?.username ?? // CurrentUser might not be filled yet.
                   FirebaseAuth.instance.currentUser?.uid ??
                   "Anoniem",
             ),
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
-            label: "Webshop",
+            label: "Ga naar de webshop",
             url: "https://k-s-r-v-njord.myshopify.com/",
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
-            label: 'Declareren',
+            label: 'Declareer kosten aan de Quaestor',
             url:
                 'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           const MoreLinkTile(
             label: 'Handige linkjes - Linktree',
             url: 'https://linktr.ee/ksrvnjord_intern',
           ),
-          const Divider(),
+          const Divider(
+            height: 0,
+          ),
           ListTile(
             title: const Text('Uitloggen').textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
+            visualDensity: VisualDensity.standard,
             onTap: () => ref.read(authModelProvider).logout(),
           ),
         ],
