@@ -57,24 +57,25 @@ final almanakUserProvider =
   },
 );
 
-final heimdallUserByLidnummerProvider = FutureProvider.family<
-    Query$AlmanakProfileByIdentifier$userByIdentifier?,
-    String>((ref, identifier) async {
-  final client = ref.watch(graphQLModelProvider).client;
+final heimdallUserByLidnummerProvider = FutureProvider.autoDispose
+    .family<Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
+  (ref, identifier) async {
+    final client = ref.watch(graphQLModelProvider).client;
 
-  final result = await client.query$AlmanakProfileByIdentifier(
-    Options$Query$AlmanakProfileByIdentifier(
-      variables:
-          Variables$Query$AlmanakProfileByIdentifier(profileId: identifier),
-      fetchPolicy: FetchPolicy.cacheFirst,
-    ),
-  );
+    final result = await client.query$AlmanakProfileByIdentifier(
+      Options$Query$AlmanakProfileByIdentifier(
+        variables:
+            Variables$Query$AlmanakProfileByIdentifier(profileId: identifier),
+        fetchPolicy: FetchPolicy.cacheFirst,
+      ),
+    );
 
-  return result.parsedData?.userByIdentifier;
-});
+    return result.parsedData?.userByIdentifier;
+  },
+);
 
 final heimdallUserByIdProvider =
-    FutureProvider.family<Query$AlmanakProfile$user?, String>(
+    FutureProvider.autoDispose.family<Query$AlmanakProfile$user?, String>(
   (ref, heimdallId) async {
     final client = ref.watch(graphQLModelProvider).client;
 
