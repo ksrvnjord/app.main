@@ -1,7 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 const maxLines = 2;
@@ -18,10 +17,9 @@ class FolderButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigator = Navigator.of(context);
-
     return InkWell(
-      onTap: () => navigator.pushNamed(item.fullPath),
+      onTap: () =>
+          Navigator.of(context).pushNamed(item.name), // Push the folder name
       child: [
         const Icon(Icons.folder, size: iconSize),
         Text(

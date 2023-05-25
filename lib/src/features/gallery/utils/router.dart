@@ -13,7 +13,7 @@ Route onGenerateRoute(RouteSettings settings) {
   }
 
   return MaterialPageRoute(
-    builder: (_) => GalleryFolderPage(path: settings.name ?? 'galerij'),
+    builder: (_) => GalleryFolderPage(path: settings.name ?? ''),
     settings: settings,
   );
 }
