@@ -1,3 +1,4 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +35,15 @@ class GalleryFilePage extends ConsumerWidget {
       body: fileURL.when(
         data: (url) => ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(padding)),
-          child: Image.network(url, fit: BoxFit.cover),
+          child: InkWell(
+            child: Image.network(url, fit: BoxFit.cover),
+            onTap: () => showImageViewer(
+              context,
+              Image.network(url, fit: BoxFit.cover).image,
+              swipeDismissible: true,
+              doubleTapZoomable: true,
+            ),
+          ),
         ).padding(all: padding),
         error: (err, trace) => Text(err.toString()),
         loading: () => const LoadingWidget(),
