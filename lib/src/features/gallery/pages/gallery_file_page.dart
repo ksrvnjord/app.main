@@ -25,7 +25,7 @@ class GalleryFilePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fotoalbum'),
+        title: const Text("Foto"),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         systemOverlayStyle:

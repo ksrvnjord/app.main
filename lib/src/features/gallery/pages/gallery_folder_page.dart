@@ -19,7 +19,7 @@ class GalleryFolderPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fotoalbum'),
+        title: Text(path == '/' ? "Galerij" : path.replaceAll('-', ' ')),
         backgroundColor: Colors.lightBlue,
         shadowColor: Colors.transparent,
         actions: [
