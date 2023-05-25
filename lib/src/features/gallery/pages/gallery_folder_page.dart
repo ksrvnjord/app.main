@@ -20,22 +20,21 @@ class GalleryFolderPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: path ==
-                '/' // Lousy fix for having a Navigator in the GalleryMainPage so we can navigate back out of the gallery
+        leading: path == '/'
             ? IconButton(
                 onPressed: () => Routemaster.of(context).pop(),
                 icon: const Icon(Icons.arrow_back),
               )
             : null,
         title: Text(path == '/' ? "Galerij" : path.replaceAll('-', ' ')),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
         actions: [
           IconButton(
             onPressed: () => ref.refresh(galleryFolderRef(path)),
             icon: const Icon(Icons.refresh),
           ),
         ],
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),

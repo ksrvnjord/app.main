@@ -14,26 +14,26 @@ class FolderList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Copy the lists, so we can modify it in-build
+    // Copy the lists, so we can modify it in-build.
     var prefixes = listResult.prefixes.toList();
     var items = listResult.items.toList();
 
-    // Remove the sacred "thumbnails" folder
+    // Remove the sacred "thumbnails" folder.
     prefixes.retainWhere(
       (e) => !e.fullPath.contains('thumbnails'),
     );
 
-    // Sort everything name (currently prefixed by date) descending
+    // Sort everything name (currently prefixed by date) descending.
     prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
     items.sort((a, b) => -1 * a.name.compareTo(b.name));
 
     const crossAxisCount = 3;
     const double itemSpacing = 8;
 
-    // Return navigation items for the folder (reversed for descending order)
+    // Return navigation items for the folder (reversed for descending order).
     return GridView.count(
-      crossAxisCount: crossAxisCount,
       padding: const EdgeInsets.all(8),
+      crossAxisCount: crossAxisCount,
       mainAxisSpacing: itemSpacing,
       // ignore: no-equal-arguments
       crossAxisSpacing: itemSpacing,

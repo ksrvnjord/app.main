@@ -8,8 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.da
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-const double padding = 12;
-
 class GalleryFilePage extends ConsumerWidget {
   final String path;
 
@@ -22,13 +20,11 @@ class GalleryFilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final imageVal = ref.watch(galleryImageProvider(path));
 
+    const double padding = 12;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Foto"),
-        backgroundColor: Colors.lightBlue,
-        shadowColor: Colors.transparent,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
         actions: [
           imageVal.when(
             data: (image) => IconButton(
@@ -48,6 +44,10 @@ class GalleryFilePage extends ConsumerWidget {
             loading: () => const SizedBox.shrink(),
           ),
         ],
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.lightBlue,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: imageVal.when(
         data: (image) => ClipRRect(

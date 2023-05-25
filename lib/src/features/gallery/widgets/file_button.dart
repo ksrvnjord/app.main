@@ -4,11 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/utils/get_thumbnail_reference.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-const maxLines = 2;
-const padding = 12.0;
-const iconSize = 42.0;
-const imageHeight = 38.0;
-
 class FileButton extends ConsumerWidget {
   final Reference item;
   const FileButton({
@@ -21,18 +16,23 @@ class FileButton extends ConsumerWidget {
     final image = getThumbnailReference(item).getDownloadURL();
     final navigator = Navigator.of(context);
 
+    const padding = 12.0;
+    const iconSize = 42.0;
+
     return InkWell(
-      onTap: () => navigator.pushNamed("_file/${item.fullPath}"),
-      splashColor: Colors.blue,
+      // ignore: sort_child_properties_last
       child: FutureBuilder(
         future: image,
         builder: (_, snapshot) => snapshot.hasData
             ? ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(padding)),
+                // ignore: avoid-non-null-assertion
                 child: Image.network(snapshot.data!, fit: BoxFit.cover),
               )
             : const Icon(Icons.image, size: iconSize),
       ).borderRadius(all: padding),
+      onTap: () => navigator.pushNamed("_file/${item.fullPath}"),
+      splashColor: Colors.blue,
     );
   }
 }

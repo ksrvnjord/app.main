@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-const maxLines = 2;
-const padding = 12.0;
-const iconSize = 42.0;
-
 class FolderButton extends ConsumerWidget {
   final Reference item;
 
@@ -17,20 +13,20 @@ class FolderButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const maxLines = 2;
+    const padding = 12.0;
+    const iconSize = 42.0;
+
     return InkWell(
-      onTap: () =>
-          Navigator.of(context).pushNamed(item.name), // Push the folder name
       child: [
         const Icon(Icons.folder, size: iconSize),
         Text(
           item.name.replaceAll('-', ' '),
-          softWrap: true,
-          maxLines: maxLines,
+          style: const TextStyle(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
+          softWrap: true,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          maxLines: maxLines,
         ),
       ]
           .toColumn(
@@ -38,6 +34,7 @@ class FolderButton extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           )
           .padding(all: padding),
+      onTap: () => Navigator.of(context).pushNamed(item.name),
     );
   }
 }

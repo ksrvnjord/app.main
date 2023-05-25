@@ -1,12 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final FirebaseStorage store = FirebaseStorage.instance;
-
+// ignore: prefer-static-class
 final galleryFolderRef = FutureProvider.family<ListResult, String>((_, path) {
-  return store.ref().child("galerij/$path").listAll();
+  return FirebaseStorage.instance.ref().child("galerij/$path").listAll();
 });
 
+// ignore: prefer-static-class
 final galleryFileUrlProvider = FutureProvider.family<String, String>((_, path) {
-  return store.ref().child(path).getDownloadURL();
+  return FirebaseStorage.instance.ref().child(path).getDownloadURL();
 });
