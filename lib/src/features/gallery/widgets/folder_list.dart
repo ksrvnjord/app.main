@@ -25,16 +25,16 @@ class FolderList extends ConsumerWidget {
       (e) => !e.fullPath.contains('thumbnails'),
     );
 
-    // Sort everything name (currently prefixed by date)
-    prefixes.sort((a, b) => a.name.compareTo(b.name));
-    items.sort((a, b) => a.name.compareTo(b.name));
+    // Sort everything name (currently prefixed by date) descending
+    prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
+    items.sort((a, b) => -1 * a.name.compareTo(b.name));
 
     // Return navigation items for the folder (reversed for descending order)
     return GridView.count(
       crossAxisCount: crossAxisCount,
       children: [
-        ...prefixes.reversed.map((e) => FolderButton(item: e)),
-        ...items.reversed.map((e) => FileButton(item: e)),
+        ...prefixes.map((e) => FolderButton(item: e)),
+        ...items.map((e) => FileButton(item: e)),
       ],
     );
   }
