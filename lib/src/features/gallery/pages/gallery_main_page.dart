@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/utils/router.dart';
 
 final _galleryNavigatorKey = GlobalKey<NavigatorState>();
@@ -22,7 +21,6 @@ class _GalleryMainPageState extends State<GalleryMainPage> {
           : Future.value(false)),
       child: Navigator(
         key: _galleryNavigatorKey,
-        initialRoute: 'galerij',
         onGenerateRoute: onGenerateRoute,
       ),
     );
