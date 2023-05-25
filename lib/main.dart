@@ -35,6 +35,8 @@ Future<void> appRunner() async {
   // ignore: avoid-ignoring-return-values
   WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
+
+  // ----------------- FIREBASE / START -----------------. //
   // ignore: avoid-ignoring-return-values
   await Firebase.initializeApp(
     // Can't add name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228.
@@ -46,21 +48,35 @@ Future<void> appRunner() async {
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
   );
 
-  // Pass all uncaught "fatal" errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics.
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  if (!kDebugMode) {
+    // Pass all uncaught "fatal" errors from the framework to Crashlytics.
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics.
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
 
-    return true;
-  };
+      return true;
+    };
+  }
 
   if (!kIsWeb) {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // DefaultEventParameters are not supported on web.
+    await FirebaseAnalytics.instance.setDefaultEventParameters(
+      {'version': packageInfo.version},
+    ); // Log app version with every event.
+
     // FirebaseMessaging not implemented on Web yet.
     // ignore: avoid-ignoring-return-values
     await FirebaseMessaging.instance.getInitialMessage();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
+
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+    kReleaseMode,
+  ); // Don't collect analytics in debug mode.
+
+  // ----------------- FIREBASE / END -----------------. //
 
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(GlobalObserverService());
@@ -68,19 +84,6 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(GlobalConstants());
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(CurrentUser());
-
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-  if (!kIsWeb) {
-    // DefaultEventParameters are not supported on web.
-    await FirebaseAnalytics.instance.setDefaultEventParameters(
-      {'version': packageInfo.version},
-    ); // Log app version with every event.
-  }
-
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
-    kReleaseMode,
-  ); // Don't collect analytics in debug mode.
 
   runApp(const BetterFeedback(
     child: ProviderScope(
