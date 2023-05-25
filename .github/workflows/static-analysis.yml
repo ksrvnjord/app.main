@@ -21,13 +21,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
         with:
-          sdk: "stable"
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Check unused files
-        run: dart run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
+        run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
 
   check-nullable-params:
     name: Check unnecessary nullable parameters
@@ -37,13 +47,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
         with:
-          sdk: "stable"
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
       
       - name: Check unnecessary nullable parameters
-        run: dart run dart_code_metrics:metrics check-unnecessary-nullable lib
+        run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
 
   check-unused-code:
     name: Check unused code
@@ -53,13 +73,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
         with:
-          sdk: "stable"
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
       
       - name: Check unnecessary nullable parameters
-        run: dart run dart_code_metrics:metrics check-unused-code lib --fatal-unused --monorepo
+        run: flutter pub run dart_code_metrics:metrics check-unused-code lib --fatal-unused --monorepo
 
   dartcodemetrics-analyze:
     name: Dart code metrics analyze
@@ -69,15 +99,49 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
         with:
-          sdk: "stable"
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+    
+      - name: Install dependencies
+        run: flutter pub get
       
       - name: dart-code-metrics
-        run: dart run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
+        run: flutter pub run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
 
+  flutter-analyze:
+    name: Flutter analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
+    steps:
+      - uses: actions/checkout@v3 # Checkout the code in the main repo
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3.3.1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+    
+      - name: Install dependencies
+        run: flutter pub get
+      
+      - name: Analyze code
+        run: flutter analyze --fatal-warnings --fatal-infos .
 
   dart-format:
     name: Dart format
@@ -103,23 +167,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout the code in the main repo
 
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
-        with:
-          sdk: "stable"
-
-      - name: Validate dependencies
-        run: dart run dependency_validator
-
-
-  flutter-analyze: # Note: this is the only job that uses Flutter, so it's the only one that needs to cache it
-    name: Flutter analyze
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
-
       - name: Cache Flutter dependencies
         uses: actions/cache@v3.3.1
         with:
@@ -134,8 +181,8 @@ jobs:
     
       - name: Install dependencies
         run: flutter pub get
-      
-      - name: Analyze code
-        run: flutter analyze --fatal-warnings --fatal-infos .
+
+      - name: Validate dependencies
+        run: flutter pub run dependency_validator
     
 
