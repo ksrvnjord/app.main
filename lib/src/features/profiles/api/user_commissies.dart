@@ -22,7 +22,7 @@ final myCommissiesProvider =
 });
 
 final commissiesForUserProvider =
-    FutureProvider.family<QuerySnapshot<CommissieEntry>, String>(
+    FutureProvider.autoDispose.family<QuerySnapshot<CommissieEntry>, String>(
   (ref, userId) => getCommissieCollectionRefWithConverter(
     peopleRef.doc(userId),
   ).orderBy('startYear', descending: true).get(),

@@ -17,7 +17,7 @@ class ReservationProgressNotifier extends StateNotifier<bool> {
 }
 
 // ignore: prefer-static-class
-final reservationProgressProvider =
+final reservationProgressProvider = // TODO: Riverpod has a new kind of provider for this use case.
     StateNotifierProvider<ReservationProgressNotifier, bool>((ref) {
   return ReservationProgressNotifier();
 });

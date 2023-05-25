@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: prefer-static-class
 final reservationTypeFiltersFromSharedPrefsProvider =
     FutureProvider<List<String>>((ref) async {
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences
+      .getInstance(); // TODO: init shared prefs in main.dart, so we can use Shared Preference synchronously.
 
   return prefs.getStringList('afschrijf_filters') ?? [];
 });
