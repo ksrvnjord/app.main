@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,8 +40,10 @@ class AuthModel extends ChangeNotifier {
 
   Future<void> unsubscribeAllTopics() async {
     final box = await Hive.openBox<bool>('topics');
-    for (String key in box.keys) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+    if (!kIsWeb) {
+      for (String key in box.keys) {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+      }
     }
     // ignore: avoid-ignoring-return-values
     await box.clear();
@@ -48,8 +51,10 @@ class AuthModel extends ChangeNotifier {
 
   Future<void> subscribeDefaultTopics(String userId) async {
     // Required topics to subscribe to.
-    await FirebaseMessaging.instance.subscribeToTopic(userId);
-    await FirebaseMessaging.instance.subscribeToTopic("all");
+    if (!kIsWeb) {
+      await FirebaseMessaging.instance.subscribeToTopic(userId);
+      await FirebaseMessaging.instance.subscribeToTopic("all");
+    }
 
     // Store the subscribed topics in a local cache.
     Box cache = await Hive.openBox<bool>('topics');
@@ -160,9 +165,12 @@ class AuthModel extends ChangeNotifier {
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
         notifyListeners();
 
-        // Subscribe the user to FirebaseMessaging as well.
         String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
+          FirebaseCrashlytics.instance.setUserIdentifier(
+            uid,
+          ); // Link crashes to users, so we can reach out to them if needed.
+          // Subscribe the user to FirebaseMessaging as well.
           subscribeDefaultTopics(uid);
         }
       }

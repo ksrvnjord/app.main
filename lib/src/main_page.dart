@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
@@ -15,9 +16,12 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    requestMessagingPermission();
-    saveMessagingToken();
-    initMessagingInfo();
+    if (!kIsWeb) {
+      // TODO: this should not be on the MainPage here, but on the Home Page, and only if the user is able to give permission, ie. not when user already gave permissies or denied them.
+      requestMessagingPermission();
+      saveMessagingToken();
+      initMessagingInfo();
+    }
   }
 
   @override
