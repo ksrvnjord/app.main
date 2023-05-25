@@ -5,8 +5,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1726.2+13
 
 environment:
-  sdk: ">=3.0.0 <3.10.0"
-  flutter: ^3.10.0
+  sdk: "^2.19.4" # Dart SDK version: https://dart.dev/get-dart/archive
+  flutter: ^3.10.0 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
