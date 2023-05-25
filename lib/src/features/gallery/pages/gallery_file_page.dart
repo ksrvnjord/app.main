@@ -1,12 +1,8 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:share_plus/share_plus.dart';
