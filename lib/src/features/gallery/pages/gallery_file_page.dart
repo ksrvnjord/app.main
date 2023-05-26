@@ -33,7 +33,7 @@ class GalleryFilePage extends ConsumerWidget {
                   XFile.fromData(
                     image.bytes,
                     mimeType: "image/jpeg",
-                    name: "image",
+                    name: "foto.jpg",
                   ),
                 ],
                 subject: "Foto",
