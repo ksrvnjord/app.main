@@ -1,10 +1,10 @@
 PODS:
-  - cloud_firestore (4.6.0):
+  - cloud_firestore (4.7.1):
     - Firebase/Firestore (= 10.9.0)
     - firebase_core
     - Flutter
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - cloud_functions (4.2.0):
+  - cloud_functions (4.3.1):
     - Firebase/Functions (= 10.9.0)
     - firebase_core
     - Flutter
@@ -40,12 +40,12 @@ PODS:
     - Firebase/Analytics (= 10.9.0)
     - firebase_core
     - Flutter
-  - firebase_app_check (0.1.3):
+  - firebase_app_check (0.1.4-1):
     - Firebase/CoreOnly (~> 10.9.0)
     - firebase_core
     - FirebaseAppCheck (~> 10.9.0-beta)
     - Flutter
-  - firebase_auth (4.5.0):
+  - firebase_auth (4.6.1):
     - Firebase/Auth (= 10.9.0)
     - firebase_core
     - Flutter
@@ -56,11 +56,11 @@ PODS:
     - Firebase/Crashlytics (= 10.9.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.5.0):
+  - firebase_messaging (14.6.1):
     - Firebase/Messaging (= 10.9.0)
     - firebase_core
     - Flutter
-  - firebase_storage (11.1.2):
+  - firebase_storage (11.2.1):
     - Firebase/Storage (= 10.9.0)
     - firebase_core
     - Flutter
@@ -226,13 +226,15 @@ PODS:
   - PromisesSwift (2.2.0):
     - PromisesObjC (= 2.2.0)
   - ReachabilitySwift (5.0.0)
-  - Sentry/HybridSDK (8.7.1):
-    - SentryPrivate (= 8.7.1)
+  - Sentry/HybridSDK (8.7.2):
+    - SentryPrivate (= 8.7.2)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.7.1)
-  - SentryPrivate (8.7.1)
+    - Sentry/HybridSDK (= 8.7.2)
+  - SentryPrivate (8.7.2)
+  - share_plus (0.0.1):
+    - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -260,9 +262,10 @@ DEPENDENCIES:
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -335,11 +338,13 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   sentry_flutter:
     :path: ".symlinks/plugins/sentry_flutter/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -349,17 +354,17 @@ CHECKOUT OPTIONS:
     :tag: 10.9.0
 
 SPEC CHECKSUMS:
-  cloud_firestore: 11485a78e43ad3adb875636e515a98a1174e26a3
-  cloud_functions: 3a22d518412a391ac893c2c05686d6a708928c79
+  cloud_firestore: f9951b7475ab483af80514228921edbef7109fff
+  cloud_functions: 2fd58452a1f640ccd5f9b5df1d5f42342f403efd
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   Firebase: bd152f0f3d278c4060c5c71359db08ebcfd5a3e2
   firebase_analytics: 24c9089f960ea2255654488d219cb15a913adf8e
-  firebase_app_check: 654ecba02d2b242b5d4d402619ec1c4bf4a84fe8
-  firebase_auth: b3a7b565278033fdc66b6e5cec9e43192270f450
+  firebase_app_check: 5d7b6b5b32bf17f999e214eaecbeca96d84d80b8
+  firebase_auth: 202fb0b14e267d2a91d83b75d0ce064ef2063383
   firebase_core: fc68c0f9eec4e800b9418deff14a7e0a504016f3
   firebase_crashlytics: 6c82b5f80f225b2429ebc5fdadde5b7e7735ed4e
-  firebase_messaging: 5c3c0f4fed6a3a67639461a5233af769b1988931
-  firebase_storage: f571f193de1bfcb9a6331455a05d6eac73b49cc2
+  firebase_messaging: ffb4e7c95d4daca8cef4eca0283f0ddd2b365d40
+  firebase_storage: 09fe224b1ae65ffb74241f2e3e89c8ebabbaa5cb
   FirebaseAnalytics: 5ea0db4893825e7b0149d575352cd838236313dc
   FirebaseAppCheck: ad3a99d0e14dd153eb54d11bdd7e702e396ee505
   FirebaseAppCheckInterop: e69dde5cd51b88ee1b4339d6766b691272256f9b
@@ -393,9 +398,10 @@ SPEC CHECKSUMS:
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  Sentry: 11776f6a25a128808d793d0d41bb7ad873b5ae4f
-  sentry_flutter: 886dbeb2674ba1232f540c54311a774bb50fda42
-  SentryPrivate: b3c448eacdabe9eab7679a2e0af609c608f91572
+  Sentry: c43b6d1d51bf96edbaeac7772c4178aa54f4f450
+  sentry_flutter: 354c51276054f9f8a9b276967172aeb2e91d8a69
+  SentryPrivate: 760a9fd5d134c4d926c4c0afe9c4deceadbf4557
+  share_plus: 599aa54e4ea31d4b4c0e9c911bcc26c55e791028
   shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4

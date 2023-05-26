@@ -248,10 +248,10 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
           height: 32,
         ),
         GestureDetector(
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children: [
               Icon(Icons.logout, color: Colors.red),
               Text('Uitloggen', style: TextStyle(color: Colors.red)),
             ],

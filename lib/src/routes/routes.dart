@@ -48,6 +48,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_pag
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -296,6 +297,9 @@ class Routes {
       '/more/advanced-settings': (_) => const CupertinoPage(
             child: AdvancedSettingsPage(),
             name: 'Advanced Settings',
+          ),
+      '/more/gallery': (route) => const CupertinoPage(
+            child: GalleryMainPage(),
           ),
       '/contact': (route) =>
           const CupertinoPage(child: ContactPage(), name: 'Contact'),

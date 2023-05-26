@@ -18,6 +18,7 @@ class MorePage extends ConsumerWidget {
       "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "/contact",
       "Lees het beleid van het bestuur": "beleid",
+      'Bekijk de fotogalerij': 'gallery',
       'Geavanceerde instellingen':
           'advanced-settings', // TODO: plaats dit onder EditMyProfile, zodat alle instellingen etc bij elkaar staan.
     };

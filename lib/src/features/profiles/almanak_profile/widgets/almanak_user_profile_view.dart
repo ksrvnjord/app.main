@@ -91,11 +91,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                         borderRadius: BorderRadius.all(Radius.circular(40)),
                       ),
                     ),
-                    child: SizedBox(
+                    child: const SizedBox(
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
+                        children: [
                           Text("Mail"),
                           Icon(
                             Icons.mail_outline_outlined,
@@ -135,11 +135,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                         borderRadius: BorderRadius.all(Radius.circular(40)),
                       ),
                     ),
-                    child: SizedBox(
+                    child: const SizedBox(
                       width: actionButtonSize,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
+                        children: [
                           Text("Telefoon"),
                           Icon(Icons.phone_iphone, color: Colors.white),
                         ],

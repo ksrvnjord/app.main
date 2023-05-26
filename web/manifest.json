@@ -1,11 +1,11 @@
 {
-    "name": "app_main",
-    "short_name": "app_main",
+    "name": "K.S.R.V. Njord",
+    "short_name": "Njord",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Roeien dus Njord, sinds 1874",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
