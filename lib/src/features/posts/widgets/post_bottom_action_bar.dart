@@ -28,6 +28,8 @@ class PostBottomActionBar extends StatelessWidget {
     const double fontSize = 16;
     const likeIconSize = 20.0;
 
+    final color = Theme.of(context).colorScheme.primary;
+
     return [
       InkWell(
         child: [
@@ -37,10 +39,10 @@ class PostBottomActionBar extends StatelessWidget {
             // ignore: no-equal-arguments
             height: likeIconSize,
             // ignore: deprecated_member_use
-            color: likedByMe ? Colors.lightBlue : null,
+            color: likedByMe ? color : null,
           ),
           const Text("Zwaan")
-              .textColor(likedByMe ? Colors.lightBlue : null)
+              .textColor(likedByMe ? color : null)
               .fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: likeTextLeftPadding)),
         onTap: () => PostService.like(snapshot),
