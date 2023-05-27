@@ -31,7 +31,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
     const double profilePictureSize = 96;
     const double elementPadding = 8;
     const double formFieldPadding = 8;
-    const double bestuurFontSize = 16;
     const double actionButtonSize = 96;
 
     final Characters yearOfArrival = identifier.characters.getRange(
@@ -139,7 +138,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 if (u.address != null)
                   UserAddressWidget(address: u.address as Address),
                 DataTextListTile(
-                    name: "Aankomstjaar", value: "20$yearOfArrival"),
+                  name: "Aankomstjaar",
+                  value: "20$yearOfArrival",
+                ),
                 FirebaseWidget(
                   onAuthenticated: userPloegen.when(
                     data: (ploegenSnapshot) => (u.ploeg == null ||

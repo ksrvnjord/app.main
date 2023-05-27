@@ -15,14 +15,14 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double headerFontSize = 24;
     const double fieldVPadding = 16;
     const double cardInnerPadding = 16;
 
     return [
       Text(
         title,
-      ).fontSize(headerFontSize),
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
       children
           .toColumn(
             separator: const SizedBox(height: fieldVPadding),
@@ -30,9 +30,11 @@ class FormSection extends StatelessWidget {
           .padding(all: cardInnerPadding)
           .card(
             elevation: 0,
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(color: Colors.grey, width: 0.5),
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.outline,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
             ),
           ),
     ].toColumn(
