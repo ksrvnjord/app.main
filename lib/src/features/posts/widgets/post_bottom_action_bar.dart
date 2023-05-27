@@ -52,6 +52,9 @@ class PostBottomActionBar extends StatelessWidget {
         ].toRow(separator: const SizedBox(width: 4)),
         onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
       ),
-    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);
+    ].toRow(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      separator: const SizedBox(width: 32),
+    );
   }
 }
