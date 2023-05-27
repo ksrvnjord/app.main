@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -11,10 +10,6 @@ class SelectCommissiePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Selecteer commissie'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         children: commissieEmailMap.keys

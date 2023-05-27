@@ -12,8 +12,6 @@ class NotificationsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notificaties'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
       ),
       body: FutureWrapper(
         future: Hive.openBox<bool>('topics'),

@@ -40,14 +40,11 @@ class _EditAlmanakProfilePageState
     final userId = ref.watch(firebaseAuthUserProvider)?.uid;
 
     const double floatingActionButtonSpacing = 16;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mijn profiel & instellingen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: userVal.when(
         data: (user) => buildForm(
@@ -60,11 +57,12 @@ class _EditAlmanakProfilePageState
       floatingActionButton: // Floating action button with save icon.
           [
         FloatingActionButton.extended(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: colorScheme.secondaryContainer,
           onPressed: () => Routemaster.of(context).push(userId ?? ""),
           label: const Text("Publiek profiel bekijken"),
         ),
         FloatingActionButton.extended(
+          backgroundColor: colorScheme.primaryContainer,
           onPressed: submitForm,
           icon: const Icon(Icons.save),
           label: const Text('Opslaan'),
@@ -138,7 +136,6 @@ class _EditAlmanakProfilePageState
                 title: const Text('Wijzig mijn persoonsgegevens'),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.lightBlue,
                 ),
                 onTap: () => Routemaster.of(context).push(
                   'sensitive-data',
@@ -152,7 +149,6 @@ class _EditAlmanakProfilePageState
                   title: const Text('Beheer mijn ploegen'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.lightBlue,
                   ),
                   onTap: () => Routemaster.of(context).push(
                     'groups',
@@ -162,7 +158,6 @@ class _EditAlmanakProfilePageState
                   title: const Text('Beheer mijn commissies'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.lightBlue,
                   ),
                   onTap: () => Routemaster.of(context).push('commissies'),
                 ),
@@ -227,7 +222,6 @@ class _EditAlmanakProfilePageState
                 title: const Text('Stel mijn notificatievoorkeuren in'),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.lightBlue,
                 ),
                 onTap: () => Routemaster.of(context).push(
                   'notification-preferences',
@@ -239,7 +233,6 @@ class _EditAlmanakProfilePageState
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.lightBlue,
                 ),
                 onTap: () => Routemaster.of(context).push(
                   'visibility',
@@ -257,7 +250,6 @@ class _EditAlmanakProfilePageState
                   title: const Text('Geef mijn allergieën door'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
-                    color: Colors.lightBlue,
                   ),
                   onTap: () => Routemaster.of(context).push(
                     'allergies',

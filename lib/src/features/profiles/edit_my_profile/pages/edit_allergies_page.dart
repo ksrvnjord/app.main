@@ -18,10 +18,6 @@ class EditAllergiesPage extends ConsumerWidget {
       appBar: AppBar(
         // ignore: avoid-non-ascii-symbols
         title: const Text('Wijzig mijn allergiëen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),

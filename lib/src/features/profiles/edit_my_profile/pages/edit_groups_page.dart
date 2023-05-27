@@ -18,10 +18,6 @@ class EditGroupsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mijn ploegen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: myPloegen.when(
         data: (data) => data.size == 0
@@ -35,7 +31,6 @@ class EditGroupsPage extends ConsumerWidget {
         loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
         onPressed: () => Routemaster.of(context).push('ploeg'),
         icon: const Icon(Icons.add),
         label: const Text('Voeg een ploeg toe'),

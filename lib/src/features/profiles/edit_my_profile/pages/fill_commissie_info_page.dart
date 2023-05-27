@@ -57,10 +57,6 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vul commissie info in'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: Form(
         key: _formKey,
@@ -100,19 +96,14 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                   ? _formData.function = newValue
                   : null,
             ),
-            ElevatedButton(
-              onPressed: () => submitForm(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-              ),
-              child: const Text('Opslaan'),
-            ).padding(vertical: saveButtonVerticalPadding),
           ],
         ),
       ).padding(all: formPadding),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => submitForm(context),
+        icon: const Icon(Icons.save),
+        label: const Text("Opslaan"),
+      ),
     );
   }
 

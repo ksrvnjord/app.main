@@ -25,10 +25,6 @@ class MePrivacyPage extends ConsumerWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: const Text('Zichtbaarheid aanpassen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: result,
@@ -49,7 +45,6 @@ class MePrivacyWidget extends ConsumerStatefulWidget {
 class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   Map<String, bool> checkboxes = {};
   bool listed = false;
-  bool saving = false;
   Color buttonColor = Colors.lightBlue;
 
   @override
@@ -90,11 +85,6 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       uid ?? "",
     )); // Invalidate the cache for the user profile, so the user sees the changes immediately.
 
-    setState(() {
-      saving = true;
-      buttonColor = Colors.blueGrey;
-    });
-
     try {
       // ignore: avoid-ignoring-return-values
       await updatePublicContact(
@@ -106,33 +96,20 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Vindbaarheid aangepast'),
       ));
-      if (mounted) {
-        setState(() {
-          saving = false;
-          buttonColor = Colors.blue;
-        });
-      }
     } catch (e) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Aanpassen mislukt, melding gemaakt.'),
+        content:
+            Text('Er is iets misgegaan bij het aanpassen van je vindbaarheid'),
         backgroundColor: Colors.red,
       ));
-      if (mounted) {
-        setState(() {
-          saving = false;
-          buttonColor = Colors.red;
-        });
-      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final client = ref.watch(graphQLModelProvider).client;
-    const double saveButtonPadding = 8;
     const double pagePadding = 8;
-    const double buttonRounding = 16;
 
     const Map<String, String> checkboxReadableMap = {
       "email": "Email",
@@ -171,19 +148,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       [
         ElevatedButton(
           onPressed: () => save(client),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: buttonColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(buttonRounding),
-            ),
-          ),
-          child: saving
-              ? const SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: CircularProgressIndicator(color: Colors.white),
-                ).center().padding(all: saveButtonPadding)
-              : const Text('Opslaan'),
+          child: const Text('Opslaan'),
         ).expanded(),
       ].toRow(),
     ]

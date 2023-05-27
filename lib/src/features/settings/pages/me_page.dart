@@ -1,6 +1,5 @@
 // ignore_for_file: prefer-single-widget-per-file
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql/client.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
@@ -21,12 +20,7 @@ class MePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         title: const Text('Jouw Njord-Account'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: result,
@@ -171,6 +165,8 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     const double saveButtonPadding = 8;
     const double onSaveButtonPadding = 8;
 
+    final textTheme = Theme.of(context).textTheme;
+
     return ListView(
       padding: const EdgeInsets.only(
         left: paddingBody,
@@ -180,9 +176,10 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         bottom: 80,
       ),
       children: <Widget>[
-        const Text(
+        Text(
           "Het bestuur beoordeelt deze wijzigingen om ervoor te zorgen dat jouw gegevens perfect worden bijgewerkt. Dit proces kan eventjes duren voordat je wijzigingen op magische wijze tevoorschijn komen.",
-        ).textColor(Colors.blueGrey),
+          style: textTheme.labelMedium,
+        ),
         TextFormField(
           initialValue: widget.user.identifier,
           decoration: const InputDecoration(labelText: 'Lidnummer'),
@@ -226,23 +223,17 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         }).toList(),
         ElevatedButton(
           onPressed: () => save(context, client),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: buttonColor,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
-          ),
           child: saving
               ? const SizedBox(
                   width: 10,
                   height: 10,
                   child: CircularProgressIndicator(color: Colors.white),
                 ).center().padding(all: onSaveButtonPadding)
-              : const Text('Opslaan'),
+              : const Text('Verstuur wijzigingsverzoek'),
         ).padding(all: saveButtonPadding),
-        const Text(
+        Text(
           '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-          style: TextStyle(color: Colors.blueGrey, fontSize: 12),
+          style: textTheme.labelMedium,
         ),
         const Divider(
           height: 32,
