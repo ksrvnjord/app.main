@@ -164,7 +164,9 @@ class Application extends ConsumerWidget {
             TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
             TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
           }),
-          primarySwatch: Colors.blue,
+          useMaterial3: true,
+          colorSchemeSeed: Colors
+              .lightBlue, // Creates a Material3 color scheme based on the given color.
           textTheme:
               GoogleFonts.ibmPlexSansTextTheme(Theme.of(context).textTheme),
         ),
