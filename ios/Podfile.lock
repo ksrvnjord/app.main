@@ -11,6 +11,8 @@ PODS:
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/Analytics (10.9.0):
     - Firebase/Core
   - Firebase/Auth (10.9.0):
@@ -246,6 +248,7 @@ DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_app_check (from `.symlinks/plugins/firebase_app_check/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -306,6 +309,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_functions/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_app_check:
@@ -357,6 +362,7 @@ SPEC CHECKSUMS:
   cloud_firestore: f9951b7475ab483af80514228921edbef7109fff
   cloud_functions: 2fd58452a1f640ccd5f9b5df1d5f42342f403efd
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
+  device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   Firebase: bd152f0f3d278c4060c5c71359db08ebcfd5a3e2
   firebase_analytics: 24c9089f960ea2255654488d219cb15a913adf8e
   firebase_app_check: 5d7b6b5b32bf17f999e214eaecbeca96d84d80b8
