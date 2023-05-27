@@ -100,7 +100,7 @@ class FormsWidget extends ConsumerWidget {
 
     return [
       WidgetHeader(
-        title: "Open forms",
+        title: "Forms",
         onTapName: "Alle forms",
         onTap: () => Routemaster.of(context).push('polls'),
       ),

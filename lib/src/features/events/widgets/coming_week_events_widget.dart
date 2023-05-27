@@ -22,8 +22,8 @@ class ComingWeekEventsWidget extends ConsumerWidget {
     return Column(
       children: [
         WidgetHeader(
-          title: "Opkomende evenementen",
-          onTapName: "Agenda",
+          title: "Evenementen",
+          onTapName: "Volledige agenda",
           onTap: () => Routemaster.of(context).push('events'),
         ),
         InkWell(

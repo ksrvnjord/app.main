@@ -20,7 +20,7 @@ class AnnouncementsWidget extends ConsumerWidget {
     const double shimmerContainerHeight = 320;
 
     return [
-      const WidgetHeader(title: "Recente aankondigingen"),
+      const WidgetHeader(title: "Aankondigingen"),
       announcementsVal.when(
         data: (announcements) => announcements == null
             ? const Text("Geen aankondigingen gevonden")

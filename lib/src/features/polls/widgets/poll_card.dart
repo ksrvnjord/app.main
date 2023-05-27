@@ -26,6 +26,13 @@ class PollCard extends ConsumerWidget {
     const double descriptionHPadding = 16;
 
     return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+      ),
       child: [
         ListTile(
           title: Text(poll.question),

@@ -20,7 +20,7 @@ class WidgetHeader extends StatelessWidget {
     return [
       Text(
         title,
-        style: textTheme.titleLarge,
+        style: textTheme.headlineSmall,
       ).alignment(Alignment.centerLeft),
       if (onTap != null)
         GestureDetector(
