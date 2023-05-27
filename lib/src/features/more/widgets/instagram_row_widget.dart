@@ -17,15 +17,10 @@ class InstagramRowWidget extends StatelessWidget {
     const double horizontalPadding = 8;
 
     return Row(children: [
-      const Icon(FontAwesomeIcons.instagram, color: Colors.white),
+      const Icon(FontAwesomeIcons.instagram),
       InkWell(
         child: Text(
           handle,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         onTap: () => launchUrl(Uri.parse(url)),
       ).padding(left: horizontalPadding),

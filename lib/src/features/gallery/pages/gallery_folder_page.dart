@@ -33,10 +33,6 @@ class GalleryFolderPage extends ConsumerWidget {
             icon: const Icon(Icons.refresh),
           ),
         ],
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: rootFolder.when(
         data: (listResult) => FolderList(

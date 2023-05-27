@@ -14,8 +14,11 @@ class MoreLinkTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(label),
-      trailing: const Icon(Icons.open_in_new, color: Colors.lightBlue),
+      title: Text(
+        label,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      trailing: const Icon(Icons.open_in_new),
       visualDensity: VisualDensity.standard,
       onTap: () => launchUrl(Uri.parse(url)),
     );

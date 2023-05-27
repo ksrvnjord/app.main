@@ -23,8 +23,6 @@ class AdvancedSettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Geavanceerde instellingen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
         // Create a button to clear the cache.
@@ -45,7 +43,7 @@ class AdvancedSettingsPage extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Annuleren').textColor(Colors.lightBlue),
+                  child: const Text('Annuleren'),
                 ),
                 TextButton(
                   onPressed: () => clearCache(),
@@ -55,9 +53,6 @@ class AdvancedSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        const Divider(
-          height: 0,
         ),
       ]),
     );

@@ -14,8 +14,11 @@ class MoreListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(label),
-      trailing: const Icon(Icons.chevron_right, color: Colors.lightBlue),
+      title: Text(
+        label,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios),
       visualDensity: VisualDensity.standard,
       onTap: () => Routemaster.of(context).push(routePath),
     );

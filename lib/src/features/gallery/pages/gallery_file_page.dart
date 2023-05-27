@@ -44,10 +44,6 @@ class GalleryFilePage extends ConsumerWidget {
             loading: () => const SizedBox.shrink(),
           ),
         ],
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: imageVal.when(
         data: (image) => ClipRRect(
