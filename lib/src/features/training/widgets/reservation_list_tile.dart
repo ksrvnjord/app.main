@@ -27,7 +27,7 @@ class ReservationListTile extends StatelessWidget {
       trailing: <Widget>[
         IconButton(
           onPressed: () => Routemaster.of(context)
-              .push('/training/createdamage', queryParameters: {
+              .push('/training/damages/create', queryParameters: {
             'reservationObjectId': reservation.reservationObject.id,
           }),
           icon: const Icon(Icons.report, color: Colors.orange),
