@@ -30,10 +30,13 @@ class DamageTileWidget extends StatelessWidget {
     return ListTile(
       leading: [
         damage.critical
-            ? Icon(Icons.report, color: Colors.red[900] ?? Colors.red)
+            ? Icon(
+                Icons.report,
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              )
             : Icon(
                 Icons.warning,
-                color: Colors.orange[900] ?? Colors.orange,
+                color: Colors.orange.shade900,
               ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(damage.name),
@@ -44,15 +47,21 @@ class DamageTileWidget extends StatelessWidget {
           if (damage.creatorId == uid)
             IconButton(
               onPressed: editDamage,
-              icon: const Icon(Icons.edit, color: Colors.grey),
+              icon: const Icon(
+                Icons.edit,
+              ),
             ),
-          const Icon(Icons.arrow_forward_ios, color: Colors.grey),
+          const Icon(
+            Icons.arrow_forward_ios,
+          ),
         ]),
       ),
       onTap: showDamage,
     ).card(
       color: // If damage is critical show light red, else orange.
-          damage.critical ? Colors.red[100] : Colors.orange[100],
+          damage.critical
+              ? Theme.of(context).colorScheme.errorContainer
+              : Colors.orange.shade100,
       elevation: 0,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),

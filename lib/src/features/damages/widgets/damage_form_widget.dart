@@ -16,40 +16,44 @@ class DamageFormWidget extends ConsumerWidget {
     final formData = ref.watch(damageFormProvider);
     final diameter = MediaQuery.of(context).size.width;
 
-    return Wrap(
-      runSpacing: padding,
-      children: [
-        TextFormField(
-          initialValue: formData.description,
-          decoration: const InputDecoration(
-            hintText: 'Beschrijving',
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (e) => formData.description = e,
+    return [
+      TextFormField(
+        initialValue: formData.description,
+        decoration: const InputDecoration(
+          hintText: 'Beschrijving',
+          border: OutlineInputBorder(),
         ),
-        TextFormField(
-          initialValue: formData.cause,
-          decoration: const InputDecoration(
-            hintText: 'Oorzaak',
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (e) => formData.cause = e,
+        onChanged: (e) => formData.description = e,
+      ),
+      TextFormField(
+        initialValue: formData.cause,
+        decoration: const InputDecoration(
+          hintText: 'Oorzaak',
+          border: OutlineInputBorder(),
         ),
-        Row(children: [
-          Checkbox(
-            value: formData.critical,
-            onChanged: (e) => formData.critical = e,
-          ),
-          const Text('Direct uit de vaart halen?'),
-        ]),
-        ImagePickerWidget(
-          diameter: diameter,
-          isEditable: true,
-          shouldCrop: true,
-          onChange: (e) => formData.image = e,
-          shape: ImagePickerWidgetShape.square,
-        ).center(),
-      ],
+        onChanged: (e) => formData.cause = e,
+      ),
+      CheckboxListTile(
+        value: formData.critical,
+        onChanged: (e) => formData.critical = e,
+        title: Text(
+          'De schade is kritiek, ${formData.name} kan niet meer normaal gebruikt worden',
+        ),
+      ),
+      Text(
+        "Upload een foto van de schade indien mogelijk",
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+      ImagePickerWidget(
+        diameter: diameter,
+        isEditable: true,
+        shouldCrop: true,
+        onChange: (e) => formData.image = e,
+        shape: ImagePickerWidgetShape.square,
+      ),
+    ].toColumn(
+      separator: SizedBox(height: padding),
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 }

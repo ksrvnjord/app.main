@@ -24,10 +24,6 @@ class DamagesListPage extends ConsumerWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: const Text('Schademeldingen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: ref.watch(damagesProvider.future),
@@ -52,7 +48,6 @@ class DamagesListPage extends ConsumerWidget {
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // Only show button if user is logged in.
           ? FloatingActionButton.extended(
-              backgroundColor: Colors.blue,
               onPressed: () => navigator.push('create'),
               icon: const Icon(Icons.add),
               label: const Text('Nieuwe schade melden'),
