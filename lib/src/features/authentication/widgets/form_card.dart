@@ -23,7 +23,6 @@ class FormCard extends StatelessWidget {
 
     const double buttonHeight = 54;
     const double buttonPadding = 16;
-    const double cardElevation = 8;
     const double cardOuterPadding = 16;
     const double cardInnerPadding = 24;
     const double textSize = 16;
@@ -36,7 +35,6 @@ class FormCard extends StatelessWidget {
       [
         RoundedElevatedButton(
           onPressed: onPressed,
-          color: Colors.lightBlue,
           child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         RoundedElevatedButton(
@@ -48,9 +46,12 @@ class FormCard extends StatelessWidget {
         .toColumn()
         .padding(all: cardInnerPadding)
         .card(
-          elevation: cardElevation,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
           ),
         )
         .padding(all: cardOuterPadding)

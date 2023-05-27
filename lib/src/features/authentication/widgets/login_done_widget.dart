@@ -18,7 +18,6 @@ class LoginDoneWidget extends ConsumerWidget {
 
     const double textPadding = 16;
     const double columnPadding = 16;
-    const double cardElevation = 8;
     const double cardOuterPadding = 16;
 
     return <Widget>[
@@ -35,9 +34,12 @@ class LoginDoneWidget extends ConsumerWidget {
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: columnPadding)
         .card(
-          elevation: cardElevation,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
           ),
         )
         .padding(all: cardOuterPadding)
