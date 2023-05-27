@@ -38,8 +38,10 @@ class AlmanakUserTile extends ConsumerWidget {
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text("$firstName $lastName"),
               subtitle: subtitle != null ? Text(subtitle as String) : null,
-              trailing:
-                  const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue),
+              trailing: Icon(
+                Icons.arrow_forward_ios,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               onTap: () => Routemaster.of(context).push(user.identifier),
             ),
       loading: () => ListTile(

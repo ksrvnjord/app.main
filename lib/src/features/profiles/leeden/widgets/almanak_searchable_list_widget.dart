@@ -23,14 +23,14 @@ class _AlmanakSearchableListWidgetState
     return <Widget>[
       TextFormField(
         controller: _search,
-        decoration: const InputDecoration(
-          labelText: 'Zoeken',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+        decoration: InputDecoration(
+          labelText: 'Zoek Leeden op naam',
+          labelStyle: Theme.of(context).textTheme.titleMedium,
+          hintText: "James Cohen Stuart",
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
         ),
-        textCapitalization: TextCapitalization.none,
-        obscureText: false,
         autocorrect: false,
         enableSuggestions: false,
       ).padding(all: searchBarPadding),

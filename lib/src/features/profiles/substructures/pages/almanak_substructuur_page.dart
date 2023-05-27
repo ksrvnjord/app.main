@@ -22,24 +22,27 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final substructureUsers = ref.watch(substructureUsersProvider(name));
 
+    const double pageHPadding = 12;
+    const double descriptionHPadding = pageHPadding + 4;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
+        padding: const EdgeInsets.only(bottom: 80),
         children: [
-          AlmanakSubstructureCoverPicture(
-            imageProvider: ref.watch(substructurePictureProvider(name)),
-          ),
+          ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: AlmanakSubstructureCoverPicture(
+              imageProvider: ref.watch(substructurePictureProvider(name)),
+            ),
+          ).padding(horizontal: pageHPadding),
           SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(
               substructureDescriptionProvider(name),
             ),
-          ),
+          ).padding(all: descriptionHPadding),
           substructureUsers.when(
             data: (snapshot) =>
                 LeedenList(name: name, almanakProfileSnapshot: snapshot),

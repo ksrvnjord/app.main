@@ -16,7 +16,10 @@ class UserGroupsListWidget extends StatelessWidget {
 
   final List<QueryDocumentSnapshot<GroupEntry>> snapshot;
 
-  Widget _buildGroupInfoTile(QueryDocumentSnapshot<GroupEntry> doc) {
+  Widget _buildGroupInfoTile(
+    BuildContext context,
+    QueryDocumentSnapshot<GroupEntry> doc,
+  ) {
     final GroupEntry entry = doc.data();
 
     switch (entry.runtimeType) {
@@ -33,11 +36,11 @@ class UserGroupsListWidget extends StatelessWidget {
                   Tag(
                     label: commissieEntry.function as String,
                     backgroundColor: {
-                          "Praeses": Colors.lightBlue.shade300,
-                          "Ab-actis": Colors.red.shade300,
-                          "Quaestor": Colors.lightGreen.shade300,
+                          "Praeses": Colors.lightBlue.shade100,
+                          "Ab-actis": Colors.red.shade100,
+                          "Quaestor": Colors.lightGreen.shade100,
                         }[commissieEntry.function as String] ??
-                        Colors.blueGrey.shade300,
+                        Theme.of(context).colorScheme.secondaryContainer,
                     icon: Icons.person,
                   ),
                 ],
@@ -51,7 +54,7 @@ class UserGroupsListWidget extends StatelessWidget {
           tags: [
             Tag(
               label: ploegEntry.role.value,
-              backgroundColor: Colors.blueGrey.shade300,
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               icon: Icons.person,
             ),
           ],
@@ -75,7 +78,6 @@ class UserGroupsListWidget extends StatelessWidget {
       }
     }
 
-    const double fieldTitleFontSize = 16;
     const double fieldTitlePadding = 16;
 
     const double headerBottomPadding = 8;
@@ -84,13 +86,13 @@ class UserGroupsListWidget extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Commissies${usedPloegFeature ? " & Ploegen" : ""}")
-                  .fontSize(fieldTitleFontSize)
-                  .textColor(Colors.grey)
-                  .padding(
-                    horizontal: fieldTitlePadding,
-                    bottom: headerBottomPadding,
-                  ),
+              Text(
+                "Commissies${usedPloegFeature ? " & Ploegen" : ""}",
+                style: Theme.of(context).textTheme.labelLarge,
+              ).padding(
+                horizontal: fieldTitlePadding,
+                bottom: headerBottomPadding,
+              ),
               const Divider(
                 height: 1,
                 thickness: 1,
@@ -98,7 +100,7 @@ class UserGroupsListWidget extends StatelessWidget {
               docs
                   .map(
                     (doc) => [
-                      _buildGroupInfoTile(doc),
+                      _buildGroupInfoTile(context, doc),
                       const Divider(
                         height: 1,
                         thickness: 1,

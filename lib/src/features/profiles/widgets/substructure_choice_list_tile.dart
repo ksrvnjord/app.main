@@ -42,9 +42,15 @@ class SubstructureChoiceListTile extends ConsumerWidget {
           // ignore: no-equal-arguments
           placeholderFit: BoxFit.cover,
         ).padding(right: imageRightPadding),
-        Text(name, maxLines: maxLines).fontSize(titleFontSize).expanded(),
-        const Icon(Icons.arrow_forward_ios, color: Colors.lightBlue)
-            .padding(horizontal: iconHorizontalPadding),
+        Text(
+          name,
+          style: Theme.of(context).textTheme.titleMedium,
+          maxLines: maxLines,
+        ).expanded(),
+        Icon(
+          Icons.arrow_forward_ios,
+          color: Theme.of(context).colorScheme.primary,
+        ).padding(horizontal: iconHorizontalPadding),
       ].toRow(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
