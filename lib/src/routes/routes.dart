@@ -1,3 +1,4 @@
+// ignore_for_file: prefer-match-file-name
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
@@ -50,10 +51,9 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_pag
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
+import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:routemaster/routemaster.dart';
-
-// TODO: Use different file for this class?
-// ignore: prefer-match-file-name
+import 'package:upgrader/upgrader.dart';
 
 @immutable
 class Routes {
@@ -70,8 +70,15 @@ class Routes {
             ],
             backBehavior: TabBackBehavior.none,
           ),
-      '/home': (_) => const CupertinoPage(
-            child: HomePage(),
+      '/home': (_) => CupertinoPage(
+            child: UpgradeAlert(
+              upgrader: Upgrader(
+                messages: DutchUpgradeMessages(),
+                countryCode: 'nl',
+                languageCode: 'nl',
+              ),
+              child: const HomePage(),
+            ), // Show upgrade alert on home page if new version is available.
             name: 'Home',
           ),
       '/home/edit': (_) => const CupertinoPage(
