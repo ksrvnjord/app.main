@@ -31,7 +31,7 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
       child: [
         TextFormField(
           decoration: const InputDecoration(
-            hintText: 'Commenteer op deze post...',
+            hintText: 'Schrijf een reactie...',
             hintStyle: TextStyle(color: Colors.black26),
             contentPadding: EdgeInsets.all(8.0),
             filled: true,

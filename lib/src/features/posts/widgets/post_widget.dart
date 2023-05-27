@@ -63,7 +63,7 @@ class PostWidget extends ConsumerWidget {
       ].toRow(),
       Chip(
         label: Text(postTopic),
-        labelStyle: TextStyle(color: Colors.blueGrey.shade900),
+        side: BorderSide.none,
         backgroundColor: topicColors[postTopic],
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,

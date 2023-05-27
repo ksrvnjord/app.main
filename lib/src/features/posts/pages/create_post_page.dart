@@ -34,17 +34,11 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   Widget build(BuildContext context) {
     const int maxTitleLength = 40;
     const int maxContentLength = 1726;
-    const double submitButtonHPadding = 12;
 
     return GestureDetector(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Nieuwe post'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.lightBlue,
-          ),
         ),
         body: Form(
           key: _formKey,
@@ -95,35 +89,17 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                       ? 'Zonder inhoud kom je nergens.'
                       : null,
                 ),
-                ElevatedButton(
-                  onPressed: postCreationInProgress ? null : () => submitForm(),
-                  style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                  child: <Widget>[
-                    Icon(postCreationInProgress
-                            ? LucideIcons.loader
-                            : LucideIcons.send)
-                        .padding(bottom: 1),
-                    Text(
-                      postCreationInProgress ? "Zwanen voeren..." : 'Verstuur',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  ]
-                      .toRow(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      )
-                      .padding(vertical: submitButtonHPadding),
-                ),
               ].toColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 separator: const SizedBox(height: 16),
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: submitForm,
+          icon: const Icon(LucideIcons.send),
+          label: const Text('Verstuur'),
         ),
       ),
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

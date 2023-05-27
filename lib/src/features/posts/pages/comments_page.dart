@@ -27,12 +27,7 @@ class CommentsPage extends ConsumerWidget {
     return GestureDetector(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Comments'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.lightBlue,
-          ),
+          title: const Text('Reacties'),
         ),
         body: [
           ListView(children: [
