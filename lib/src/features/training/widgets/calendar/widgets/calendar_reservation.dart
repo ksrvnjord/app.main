@@ -54,23 +54,23 @@ class CalendarReservation extends StatelessWidget {
     /// ----- OTHER STYLING -----
     const double reservationPadding = 4;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return [
       GestureDetector(
         child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+          decoration: BoxDecoration(
+            color: colorScheme.tertiaryContainer,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
           width: CalendarMeasurement.slotWidth,
           height: reservationHeight,
           child: Text(
             data['creatorName'] ?? 'Afschrijving',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ).padding(all: reservationPadding),
+            style: Theme.of(context).textTheme.labelMedium,
+          )
+              .textColor(colorScheme.onTertiaryContainer)
+              .padding(all: reservationPadding),
         ),
         onTap: () => Routemaster.of(context).push(reservationDocumentId),
       ),

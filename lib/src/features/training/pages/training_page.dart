@@ -17,7 +17,6 @@ class TrainingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Mijn afschrijvingen'),
       ),
       body: const TrainingList(),

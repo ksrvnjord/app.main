@@ -40,7 +40,7 @@ class CalendarTime extends StatelessWidget {
                     [
                       Text(
                         DateFormat('H:mm').format(timestamp),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.labelLarge,
                       ).center(),
                     ]
                         .toRow(

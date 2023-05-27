@@ -20,7 +20,6 @@ class ReservationObjectNameBox extends StatelessWidget {
 
     const double boatButtonWidth = 128;
     const double boatButtonHeight = 64;
-    const double boatButtonElevation = 4;
 
     Future<bool> boatPermitted() async {
       final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
@@ -38,42 +37,43 @@ class ReservationObjectNameBox extends StatelessWidget {
       return false;
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
+    const double textHPadding = 8;
+    const notAvailableBackgroundOpacity = 0.5;
+    const textOpacity = 0.4;
+
     return FutureWrapper(
       future: boatPermitted(),
-      success: (isAvailable) => SizedBox(
+      success: (bool isAvailable) => SizedBox(
         width: boatButtonWidth,
         height: boatButtonHeight,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              TextButton(
-                onPressed: () => Routemaster.of(context).push(
-                  'reservationObject/${reservationObj.id}',
-                  queryParameters: {'name': reservationObject.name},
-                ),
-                style: TextButton.styleFrom(
-                  alignment: Alignment.center,
-                  backgroundColor: reservationObject.critical
-                      ? Colors.orange[100]
-                      : isAvailable
-                          ? Colors.white
-                          : Colors.grey[100],
-                  elevation: boatButtonElevation,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                ),
-                child: Text(reservationObj.data().name).textStyle(TextStyle(
-                  color: reservationObject.critical
-                      ? Colors.orange[900]
-                      : isAvailable
-                          ? Colors.black
-                          : Colors.grey[600],
-                )),
-              ),
-            ],
+          child: InkWell(
+            child: Card(
+              color: reservationObject.critical
+                  ? Theme.of(context).colorScheme.errorContainer
+                  : isAvailable
+                      ? colorScheme.secondaryContainer
+                      : colorScheme.secondaryContainer
+                          .withOpacity(notAvailableBackgroundOpacity),
+              child: Text(
+                reservationObject.name,
+                style: Theme.of(context).textTheme.labelLarge,
+              )
+                  .textColor(
+                    reservationObject.critical
+                        ? colorScheme.onSecondaryContainer
+                            .withOpacity(textOpacity)
+                        : colorScheme.onSecondaryContainer,
+                  )
+                  .center()
+                  .padding(horizontal: textHPadding),
+            ),
+            onTap: () => Routemaster.of(context).push(
+              'reservationObject/${reservationObj.id}',
+              queryParameters: {'name': reservationObject.name},
+            ),
           ),
         ),
       ),

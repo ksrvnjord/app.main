@@ -27,12 +27,14 @@ class DamageTileWidget extends StatelessWidget {
 
     const double trailingWidgetWidth = 80;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return ListTile(
       leading: [
         damage.critical
             ? Icon(
                 Icons.report,
-                color: Theme.of(context).colorScheme.onErrorContainer,
+                color: colorScheme.onErrorContainer,
               )
             : Icon(
                 Icons.warning,
@@ -59,9 +61,7 @@ class DamageTileWidget extends StatelessWidget {
       onTap: showDamage,
     ).card(
       color: // If damage is critical show light red, else orange.
-          damage.critical
-              ? Theme.of(context).colorScheme.errorContainer
-              : Colors.orange.shade100,
+          damage.critical ? colorScheme.errorContainer : Colors.orange.shade100,
       elevation: 0,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),

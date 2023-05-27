@@ -20,11 +20,7 @@ class ChipWidget extends StatelessWidget {
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.grey,
-          fontSize: 16,
-          fontWeight: FontWeight.w300,
-        ),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
       subtitle: Wrap(
         spacing: permissionChipSpacing,
@@ -32,18 +28,13 @@ class ChipWidget extends StatelessWidget {
             .map((permission) => Chip(
                   label: Text(
                     permission,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                    ),
                   ),
                   backgroundColor: () {
                     return colors != null &&
                             (colors as Map<String, Color>)
                                 .containsKey(permission)
                         ? (colors as Map<String, Color>)[permission]
-                        : Colors.grey;
+                        : null;
                   }(),
                 ))
             .toList(),

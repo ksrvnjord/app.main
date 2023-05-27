@@ -226,6 +226,12 @@ class Routes {
           ),
       '/training': (_) =>
           const CupertinoPage(child: TrainingPage(), name: 'Training'),
+      '/training/create-damage': (route) => CupertinoPage(
+            child: DamagesCreatePage(
+              reservationObjectId: route.queryParameters['reservationObjectId'],
+            ),
+            name: "Create Damage",
+          ),
       '/training/damages': (route) =>
           const CupertinoPage(child: DamagesListPage(), name: 'Damages'),
       '/training/damages/create': (route) => CupertinoPage(

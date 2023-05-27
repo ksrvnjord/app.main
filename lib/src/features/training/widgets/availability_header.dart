@@ -11,28 +11,18 @@ class AvailabilityHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String text = isAvailable ? "Beschikbaar" : "Niet beschikbaar";
-    Color color = isAvailable ? Colors.lightGreen : Colors.red;
+    Color color = isAvailable
+        ? Colors.lightGreen.shade100
+        : Theme.of(context).colorScheme.errorContainer;
 
     return Row(children: [
       Expanded(
         child: Card(
           color: color,
           elevation: 0,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              // ignore: no-equal-arguments
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-          margin: const EdgeInsets.only(bottom: 4),
           child: Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
         ),

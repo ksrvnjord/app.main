@@ -46,9 +46,7 @@ class DamagesCreatePage extends ConsumerWidget {
 
           return const DamageCreateWidget();
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => null,
         error: (e, s) => Center(
           child: ErrorCardWidget(errorMessage: e.toString()),
         ),

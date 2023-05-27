@@ -1,7 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -66,10 +65,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: FirebaseFirestore.instance
@@ -181,7 +176,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             ),
           ),
           IconButton(
-            color: Colors.blue,
             onPressed: () => {
               showTimeRangePicker(
                 context: context,
@@ -250,13 +244,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                 firebaseUser.uid,
                 creatorName,
               ),
-      style: ElevatedButton.styleFrom(
-        // Add rounding.
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        backgroundColor: Colors.lightBlue,
-      ),
       child: <Widget>[
         Icon(reservationIsInProgress ? LucideIcons.loader : LucideIcons.check)
             .padding(bottom: 1),

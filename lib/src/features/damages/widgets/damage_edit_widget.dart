@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
@@ -27,31 +26,7 @@ class DamageEditWidget extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         title: const Text('Schademelding'),
-        actions: [
-          damageForm.complete
-              ? IconButton(
-                  onPressed: () =>
-                      editDamageForm(damageForm, messenger, navigator),
-                  icon: const Icon(Icons.save),
-                )
-              : IconButton(
-                  onPressed: () => messenger.showSnackBar(SnackBar(
-                    content: const Text('Nog niet alle velden zijn ingevuld'),
-                    backgroundColor: Colors.red[900],
-                  )),
-                  icon: Icon(Icons.save, color: Colors.blue[900]),
-                ),
-          IconButton(
-            onPressed: () => deleteDamageForm(messenger, navigator),
-            icon: const Icon(Icons.delete),
-          ),
-        ],
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: [
         damageForm.type != null
@@ -85,6 +60,16 @@ class DamageEditWidget extends ConsumerWidget {
           .toWrap(runSpacing: padding)
           .padding(all: padding)
           .scrollable(scrollDirection: Axis.vertical),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => damageForm.complete
+            ? editDamageForm(damageForm, messenger, navigator)
+            : messenger.showSnackBar(SnackBar(
+                content: const Text('Nog niet alle velden zijn ingevuld'),
+                backgroundColor: Colors.red[900],
+              )),
+        icon: const Icon(Icons.save),
+        label: const Text('Opslaan'),
+      ),
     );
   }
 
@@ -95,17 +80,16 @@ class DamageEditWidget extends ConsumerWidget {
     try {
       await Damage.deleteById(damageDocumentId, reservationObjectId);
       // ignore: avoid-ignoring-return-values
-      messenger.showSnackBar(SnackBar(
-        content: const Text('Schademelding verwijderd'),
-        backgroundColor: Colors.green[900],
+      messenger.showSnackBar(const SnackBar(
+        content: Text('Schademelding verwijderd'),
       ));
     } catch (e) {
       // ignore: avoid-ignoring-return-values
-      messenger.showSnackBar(SnackBar(
-        content: const Text(
+      messenger.showSnackBar(const SnackBar(
+        content: Text(
           'Schademelding kon niet verwijderd worden',
         ),
-        backgroundColor: Colors.red[900],
+        backgroundColor: Colors.red,
       ));
     }
     // ignore: avoid-ignoring-return-values
