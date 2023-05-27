@@ -34,17 +34,23 @@ class FormsWidget extends ConsumerWidget {
         final answerStream = ref.watch(pollAnswerProvider(doc.reference));
         final description = poll.description;
 
+        final textTheme = Theme.of(context).textTheme;
+
         return ExpansionTile(
-          title: Text(poll.question),
+          title: Text(
+            poll.question,
+          ),
           subtitle: Text(
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-          ).textColor(Colors.grey),
+            style: textTheme.bodySmall,
+          ),
           // ignore: sort_child_properties_last
           children: [
             if (description != null)
-              Text(description)
-                  .textColor(Colors.blueGrey)
-                  .padding(horizontal: descriptionHPadding),
+              Text(
+                description,
+                style: textTheme.bodyMedium,
+              ).padding(horizontal: descriptionHPadding),
             answerStream.when(
               data: (snapshot) {
                 final String? answerOfUser = snapshot.size != 0
@@ -64,9 +70,6 @@ class FormsWidget extends ConsumerWidget {
                               content: Text(choice != null
                                   ? 'Je keuze is opgeslagen'
                                   : 'Je keuze is verwijderd'),
-                              backgroundColor: choice != null
-                                  ? Colors.green
-                                  : Colors.blueGrey,
                             ),
                           );
                         },

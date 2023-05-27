@@ -15,26 +15,25 @@ class WidgetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double headerFontSize = 16;
+    final textTheme = Theme.of(context).textTheme;
 
     return [
       Text(
         title,
-      )
-          .fontSize(headerFontSize)
-          .fontWeight(FontWeight.w300)
-          .textColor(Colors.blueGrey)
-          .alignment(Alignment.center),
+        style: textTheme.titleLarge,
+      ).alignment(Alignment.centerLeft),
       if (onTap != null)
         GestureDetector(
           // ignore: sort_child_properties_last
           child: [
             if (onTapName != null)
-              Text(onTapName ?? "").textColor(Colors.blueGrey),
+              Text(
+                onTapName ?? "",
+                style: textTheme.labelLarge,
+              ),
             const Icon(
               Icons.arrow_forward_ios,
               size: 16,
-              color: Colors.blueGrey,
             ),
           ].toRow(mainAxisAlignment: MainAxisAlignment.end),
           onTap: onTap,

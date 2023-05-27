@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/events_widget.dart';
@@ -15,10 +14,6 @@ class EventsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Agenda'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: events.when(
         data: (data) => EventsWidget(data: data),

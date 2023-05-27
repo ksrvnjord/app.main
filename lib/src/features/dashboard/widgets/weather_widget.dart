@@ -68,14 +68,9 @@ class WeatherWidget extends ConsumerWidget {
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
         return [
-          const Text("K.S.R.V. Njord")
-              .textColor(Colors.white)
-              .fontSize(16)
-              .fontWeight(FontWeight.bold),
+          const Text("K.S.R.V. Njord").fontSize(16).fontWeight(FontWeight.bold),
           // ignore: avoid-non-ascii-symbols
-          Text("${currentTemperature.toString()}°")
-              .textColor(Colors.white)
-              .fontSize(32),
+          Text("${currentTemperature.toString()}°").fontSize(32),
           Wrap(children: [
             WeatherMetricWidget(
               icon: WeatherIcons.strong_wind,
@@ -88,9 +83,11 @@ class WeatherWidget extends ConsumerWidget {
                     fallback: WeatherIcons.na,
                   ),
                   size: 32,
-                  color: Colors.white,
                 ),
-                WindIcon(degree: winddirection, size: 32, color: Colors.white),
+                WindIcon(
+                  degree: winddirection,
+                  size: 32,
+                ),
               ].toRow(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -106,12 +103,14 @@ class WeatherWidget extends ConsumerWidget {
             ),
           ]),
 
-          Text("Laatste update om ${DateFormat('HH:mm').format(fetchTime)}")
-              .textColor(Colors.white70)
-              .fontSize(12)
-              .alignment(Alignment.centerRight),
+          Text(
+            "Laatste update om ${DateFormat(
+              'HH:mm',
+            ).format(fetchTime)}",
+            style: Theme.of(context).textTheme.labelMedium,
+          ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8).card(
-              color: Colors.blue[300],
+              color: Theme.of(context).colorScheme.primaryContainer,
               elevation: 0,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),

@@ -1,6 +1,5 @@
 // ignore_for_file: prefer-single-widget-per-file
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';

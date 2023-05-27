@@ -13,7 +13,8 @@ class VaarverbodWidget extends ConsumerWidget {
     super.key,
   });
 
-  Widget _buildVaarverbodCard({
+  Widget _buildVaarverbodCard(
+    BuildContext context, {
     Vaarverbod? vaarverbod,
   }) {
     IconData icon;
@@ -31,22 +32,28 @@ class VaarverbodWidget extends ConsumerWidget {
           ? FontAwesomeIcons.ban
           : FontAwesomeIcons.shieldHalved;
     }
-    final Color backgroundColor =
-        status ? Colors.red.shade300 : Colors.green.shade300;
+
+    final Color backgroundColor = status
+        ? Theme.of(context).colorScheme.errorContainer
+        : Colors.green.shade100;
 
     const double descriptionPadding = 8;
-    const double headerFontSize = 16;
 
     return ExpandablePanel(
       header: [
-        Icon(icon, color: Colors.white),
-        Text(message).fontSize(headerFontSize).textColor(Colors.white),
+        Icon(
+          icon,
+        ),
+        Text(
+          message,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ]
           .toRow(separator: const SizedBox(width: descriptionPadding))
           .paddingDirectional(start: descriptionPadding),
       collapsed: const SizedBox.shrink(),
       expanded: [
-        Text(vaarverbod?.message ?? 'Laden...').textColor(Colors.white),
+        Text(vaarverbod?.message ?? 'Laden...'),
         const WeatherWidget(),
       ]
           .toColumn(
@@ -55,7 +62,6 @@ class VaarverbodWidget extends ConsumerWidget {
           )
           .paddingDirectional(all: descriptionPadding),
       theme: const ExpandableThemeData(
-        iconColor: Colors.white,
         headerAlignment: ExpandablePanelHeaderAlignment.center,
         tapHeaderToExpand: true,
         hasIcon: true,
@@ -73,11 +79,11 @@ class VaarverbodWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(vaarverbodProvider).when(
-          data: (data) => _buildVaarverbodCard(vaarverbod: data),
+          data: (data) => _buildVaarverbodCard(context, vaarverbod: data),
           loading: () => ShimmerWidget(
-            child: _buildVaarverbodCard(),
+            child: _buildVaarverbodCard(context),
           ),
-          error: (error, stack) => _buildVaarverbodCard(),
+          error: (error, stack) => _buildVaarverbodCard(context),
         );
   }
 }

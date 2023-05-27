@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/commissie_entry.dart';
@@ -51,7 +50,6 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
       ),
     ).toList();
 
-    const double saveButtonVerticalPadding = 8;
     const double formPadding = 8;
 
     return Scaffold(

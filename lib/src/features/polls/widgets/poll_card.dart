@@ -25,62 +25,53 @@ class PollCard extends ConsumerWidget {
 
     const double descriptionHPadding = 16;
 
-    return [
-      ListTile(
-        title: Text(poll.question),
-        subtitle: Text(
-          '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-        ),
-      ),
-      answerStream.when(
-        data: (snapshot) {
-          final String? answerOfUser =
-              snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
-          final description = poll.description;
-
-          return [
-            if (description != null && description.isNotEmpty)
-              Text(description)
-                  .textColor(Colors.blueGrey)
-                  .padding(horizontal: descriptionHPadding),
-            ...poll.options.map((option) => RadioListTile(
-                  value: option,
-                  groupValue: answerOfUser,
-                  onChanged: pollIsOpen
-                      ? (String? choice) {
-                          upsertPollAnswer(choice, snapshot, pollDoc, ref);
-                          // ignore: avoid-ignoring-return-values
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(choice != null
-                                  ? 'Je keuze is opgeslagen'
-                                  : 'Je keuze is verwijderd'),
-                              backgroundColor: choice != null
-                                  ? Colors.green
-                                  : Colors.blueGrey,
-                            ),
-                          );
-                        }
-                      : null,
-                  toggleable: true,
-                  title: Text(option),
-                )),
-          ].toColumn(
-            crossAxisAlignment: CrossAxisAlignment.start,
-          );
-        },
-        error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-        loading: () => const Center(child: CircularProgressIndicator()),
-      ),
-    ].toColumn().card(
-          color: Colors.white,
-          elevation: 0,
-          // Add lightblue border.
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.blueGrey, width: 1),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+    return Card(
+      child: [
+        ListTile(
+          title: Text(poll.question),
+          subtitle: Text(
+            '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
           ),
-          margin: const EdgeInsets.symmetric(vertical: 5),
-        );
+        ),
+        answerStream.when(
+          data: (snapshot) {
+            final String? answerOfUser =
+                snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
+            final description = poll.description;
+
+            return [
+              if (description != null && description.isNotEmpty)
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ).padding(horizontal: descriptionHPadding),
+              ...poll.options.map((option) => RadioListTile(
+                    value: option,
+                    groupValue: answerOfUser,
+                    onChanged: pollIsOpen
+                        ? (String? choice) {
+                            upsertPollAnswer(choice, snapshot, pollDoc, ref);
+                            // ignore: avoid-ignoring-return-values
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(choice != null
+                                    ? 'Je keuze is opgeslagen'
+                                    : 'Je keuze is verwijderd'),
+                              ),
+                            );
+                          }
+                        : null,
+                    toggleable: true,
+                    title: Text(option),
+                  )),
+            ].toColumn(
+              crossAxisAlignment: CrossAxisAlignment.start,
+            );
+          },
+          error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        ),
+      ].toColumn(),
+    );
   }
 }
