@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/my_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
@@ -18,10 +17,6 @@ class EditGroupsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mijn ploegen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: myPloegen.when(
         data: (data) => data.size == 0
@@ -35,7 +30,6 @@ class EditGroupsPage extends ConsumerWidget {
         loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
         onPressed: () => Routemaster.of(context).push('ploeg'),
         icon: const Icon(Icons.add),
         label: const Text('Voeg een ploeg toe'),

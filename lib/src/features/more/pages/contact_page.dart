@@ -21,18 +21,16 @@ class ContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(children: [
-        // TODO: add linkje naar interne Njord Insta.
         ExpansionTile(
-          title: const Text("Bestuur")
-              .fontSize(expansionTileFontSize)
-              .fontWeight(FontWeight.w500),
+          title: Text("Bestuur", style: textTheme.titleLarge),
+
           // ignore: sort_child_properties_last
           children: [
             DataTable(
@@ -46,7 +44,6 @@ class ContactPage extends StatelessWidget {
                       DataCell(InkWell(
                         child: const FaIcon(
                           FontAwesomeIcons.envelope,
-                          color: Colors.blue,
                         ).padding(all: emailIconPadding),
                         onTap: () =>
                             launchUrl(Uri.parse('mailto:${entry.value}')),
@@ -58,9 +55,7 @@ class ContactPage extends StatelessWidget {
           initiallyExpanded: true,
         ),
         ExpansionTile(
-          title: const Text("Commissies")
-              .fontSize(expansionTileFontSize)
-              .fontWeight(FontWeight.w500),
+          title: Text("Commissies", style: textTheme.titleLarge),
           children: [
             DataTable(
               columns: const [
@@ -76,7 +71,6 @@ class ContactPage extends StatelessWidget {
                       InkWell(
                         child: const FaIcon(
                           FontAwesomeIcons.envelope,
-                          color: Colors.blue,
                         ).padding(all: emailIconPadding),
                         onTap: () =>
                             launchUrl(Uri.parse('mailto:${entry.value}')),
@@ -89,10 +83,7 @@ class ContactPage extends StatelessWidget {
           ],
         ),
         [
-          const Text("Volg je ons al op Instagram?")
-              .fontSize(fontSizeSingleText)
-              .fontWeight(FontWeight.bold)
-              .textColor(Colors.white)
+          Text("Volg je ons al op Instagram?", style: textTheme.titleLarge)
               .padding(all: widgetPadding),
           [
             [
@@ -107,11 +98,10 @@ class ContactPage extends StatelessWidget {
                 handle: "@ksrvnjord_intern",
               ).padding(all: padding),
             ].toColumn(),
-          ].toRow(),
+          ].toRow(mainAxisAlignment: MainAxisAlignment.center),
         ]
             .toColumn()
             .card(
-              color: Colors.lightBlue,
               elevation: cardElevation,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(cardRadius),
@@ -119,13 +109,12 @@ class ContactPage extends StatelessWidget {
             )
             .padding(all: widgetPadding),
         [
-          const Text("Vragen over de app?").fontSize(fontSizeSingleText),
+          const Text("Vragen over de app?"),
           InkWell(
             child: const Text(
               "app@njord.nl",
               style: TextStyle(
                 color: Colors.blue,
-                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),

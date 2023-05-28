@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
@@ -24,10 +23,6 @@ class DamagesListPage extends ConsumerWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: const Text('Schademeldingen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: ref.watch(damagesProvider.future),
@@ -52,7 +47,6 @@ class DamagesListPage extends ConsumerWidget {
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // Only show button if user is logged in.
           ? FloatingActionButton.extended(
-              backgroundColor: Colors.blue,
               onPressed: () => navigator.push('create'),
               icon: const Icon(Icons.add),
               label: const Text('Nieuwe schade melden'),

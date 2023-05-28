@@ -9,25 +9,33 @@ class EventsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    const double bodyMonthHeaderHeight = 56;
+
+    final textTheme = Theme.of(context).textTheme;
+
     return SfCalendar(
+      // TODO: on darkmode this doesn't look right yet.
       view: CalendarView.schedule,
+      backgroundColor: colorScheme.background,
       dataSource: MeetingDataSource(data),
-      scheduleViewSettings: const ScheduleViewSettings(
+      headerStyle: CalendarHeaderStyle(
+        backgroundColor: colorScheme.primaryContainer,
+        textStyle: textTheme.titleMedium ?? const TextStyle(),
+      ),
+      scheduleViewSettings: ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
         monthHeaderSettings: MonthHeaderSettings(
-          monthFormat: 'MMM yyyy',
-          height: 60,
-          textAlign: TextAlign.center,
-          backgroundColor: Colors.transparent,
-          monthTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          monthFormat: 'MMMM',
+          height: bodyMonthHeaderHeight,
+          backgroundColor: colorScheme.secondaryContainer,
+          monthTextStyle: textTheme.titleMedium ?? const TextStyle(),
         ),
       ),
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
+      appointmentTextStyle: textTheme.bodyMedium ?? const TextStyle(),
     );
   }
 }
@@ -50,11 +58,6 @@ class MeetingDataSource extends CalendarDataSource {
   @override
   String getSubject(int index) {
     return _meetingData(index).title;
-  }
-
-  @override
-  Color getColor(int index) {
-    return Colors.blue;
   }
 
   Event _meetingData(int index) {

@@ -28,12 +28,16 @@ class PostWidget extends ConsumerWidget {
     const double headerPadding = 4;
     const double postStatisticsTopPadding = 4;
 
+    bool darkMode = Theme.of(context).brightness == Brightness.dark;
+
     Map<String, Color> topicColors = {
-      "Promotie": Colors.red.shade100,
-      "Wandelgangen": Colors.blue.shade100,
-      "Kaartjes": Colors.yellow.shade100,
-      "Coach gezocht": Colors.orange.shade100,
-      "Gevonden voorwerpen": Colors.green.shade100,
+      "Promotie": darkMode ? Colors.red.shade900 : Colors.red.shade100,
+      "Wandelgangen": darkMode ? Colors.blue.shade900 : Colors.blue.shade100,
+      "Kaartjes": darkMode ? Colors.yellow.shade900 : Colors.yellow.shade100,
+      "Coach gezocht":
+          darkMode ? Colors.orange.shade900 : Colors.orange.shade100,
+      "Gevonden voorwerpen":
+          darkMode ? Colors.green.shade900 : Colors.green.shade100,
     };
     final postTopic = post?.topic ?? "";
 
@@ -63,7 +67,7 @@ class PostWidget extends ConsumerWidget {
       ].toRow(),
       Chip(
         label: Text(postTopic),
-        labelStyle: TextStyle(color: Colors.blueGrey.shade900),
+        side: BorderSide.none,
         backgroundColor: topicColors[postTopic],
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,

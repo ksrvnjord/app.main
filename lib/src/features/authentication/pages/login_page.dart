@@ -21,14 +21,14 @@ class LoginPage extends ConsumerWidget {
     return Scaffold(
       appBar: null,
       body: <Widget>[
-        const LogoWidget(image: Images.appLogo).padding(bottom: logoPadding),
+        const LogoWidget(image: Images.appLogoBlue)
+            .padding(bottom: logoPadding),
         auth.isBusy
             ? const LoginLoadingWidget()
             : auth.client != null
                 ? const LoginDoneWidget()
                 : const LoginForm(),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-      backgroundColor: Colors.lightBlue,
     );
   }
 }

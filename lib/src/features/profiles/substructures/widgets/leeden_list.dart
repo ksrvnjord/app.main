@@ -31,15 +31,14 @@ class LeedenList extends StatelessWidget {
     }
 
     const double notFoundPadding = 16;
-    const double titleFontSize = 20;
-    const double titleHPadding = 16;
+    const double titleHPadding = 12;
     const double titleVPadding = 8;
 
     return <Widget>[
-      const Text("Leeden")
-          .textColor(Colors.blueGrey)
-          .fontSize(titleFontSize)
-          .fontWeight(FontWeight.w500)
+      Text(
+        "Leeden",
+        style: Theme.of(context).textTheme.titleLarge,
+      )
           .alignment(Alignment.centerLeft)
           .padding(horizontal: titleHPadding, bottom: titleVPadding),
       ...docs.map(
@@ -47,7 +46,6 @@ class LeedenList extends StatelessWidget {
       ),
       if (docs.isEmpty)
         Text("Geen Leeden gevonden voor $name")
-            .textColor(Colors.grey)
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();

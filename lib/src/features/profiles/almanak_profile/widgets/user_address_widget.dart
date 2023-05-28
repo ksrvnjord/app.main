@@ -19,8 +19,6 @@ class UserAddressWidget extends StatelessWidget {
             leading: const [
               Icon(
                 Icons.location_on_outlined,
-                size: 32,
-                color: Colors.lightBlue,
               ),
             ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
             title: Text(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
@@ -20,19 +19,21 @@ class AlmanakBestuurPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bestuur = ref.watch(bestuurUsersProvider);
 
+    const double pageHPadding = 12;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bestuur"),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
+        padding: const EdgeInsets.only(bottom: 80),
         children: [
-          AlmanakSubstructureCoverPicture(
-            imageProvider: ref.watch(bestuurPictureProvider(getNjordYear())),
-          ),
+          ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: AlmanakSubstructureCoverPicture(
+              imageProvider: ref.watch(bestuurPictureProvider(getNjordYear())),
+            ),
+          ).padding(horizontal: pageHPadding),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),
             loading: () => const CircularProgressIndicator().center(),

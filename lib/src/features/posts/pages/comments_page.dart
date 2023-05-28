@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/comments_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
@@ -27,12 +26,7 @@ class CommentsPage extends ConsumerWidget {
     return GestureDetector(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Comments'),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.lightBlue,
-          ),
+          title: const Text('Reacties'),
         ),
         body: [
           ListView(children: [

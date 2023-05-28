@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
@@ -25,7 +24,6 @@ class AlmanakPloegPage extends ConsumerWidget {
     final selectedYear = ref.watch(ploegYearProvider);
     final selectedPloegType = ref.watch(ploegTypeProvider);
 
-    const double titleFontSize = 20;
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
 
@@ -40,25 +38,18 @@ class AlmanakPloegPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(ploegName),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
         children: [
           [
-            const Text("Leeden")
-                .textColor(Colors.blueGrey)
-                .fontSize(titleFontSize)
-                .fontWeight(FontWeight.w500)
-                .alignment(Alignment.centerLeft),
+            Text(
+              "Leeden",
+              style: Theme.of(context).textTheme.titleLarge,
+            ).alignment(Alignment.centerLeft),
             [
               const Text('Kies een jaar: ').textColor(
-                selectedPloegType == PloegType.wedstrijd
-                    ? Colors.blueGrey
-                    : Colors.grey,
+                selectedPloegType == PloegType.wedstrijd ? null : Colors.grey,
               ),
               DropdownButton<int>(
                 items: years
@@ -103,7 +94,6 @@ class AlmanakPloegPage extends ConsumerWidget {
       ),
       if (docs.isEmpty)
         Text("Geen Leeden gevonden voor $ploegName gevonden")
-            .textColor(Colors.grey)
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();

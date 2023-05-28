@@ -60,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double elementPadding = 8;
 
     const double logoHeight = 64;
-    const double myProfileSize = 48;
+    const double myProfileSize = 32;
 
     double screenTopPadding = MediaQuery.of(context).padding.top;
 
@@ -74,13 +74,19 @@ class _HomePageState extends ConsumerState<HomePage> {
         // ignore: sort_child_properties_last
         child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
           [
-            Image.asset(Images.appLogoBlue, height: logoHeight)
-                .padding(bottom: elementPadding),
+            Image.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? Images.appLogoBlue
+                  : Images.appLogo,
+              height: logoHeight,
+            ).padding(
+              bottom: elementPadding + 1,
+            ), // To align logo with the ProfileIcon.
             FirebaseWidget(
               onAuthenticated: IconButton(
                 iconSize: myProfileSize,
                 onPressed: () => Routemaster.of(context).push('edit'),
-                icon: const MyProfilePicture(profileIconSize: 48),
+                icon: const MyProfilePicture(profileIconSize: myProfileSize),
               ),
             ),
           ].toRow(

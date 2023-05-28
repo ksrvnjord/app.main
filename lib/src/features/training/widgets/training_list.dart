@@ -4,7 +4,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class TrainingList extends ConsumerWidget {
   const TrainingList({Key? key}) : super(key: key);
@@ -24,16 +23,14 @@ class TrainingList extends ConsumerWidget {
             child: CircularProgressIndicator(),
           ),
           data: (data) => data.docs.isEmpty
-              ? Center(
+              ? const Center(
                   // ignore: avoid-non-ascii-symbols
-                  child: const Text('Je hebt geen afschrijvingen op dit moment')
-                      .textColor(Colors.blueGrey),
+                  child: Text('Je hebt geen afschrijvingen op dit moment'),
                 )
               : ListView.separated(
-                  padding: const EdgeInsets.all(10),
-                  itemBuilder: (BuildContext context, int index) => Center(
-                    child: ReservationListTile(snapshot: data.docs[index]),
-                  ),
+                  padding: const EdgeInsets.all(8),
+                  itemBuilder: (BuildContext context, int index) =>
+                      ReservationListTile(snapshot: data.docs[index]),
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(height: 4),
                   itemCount: data.docs.length,

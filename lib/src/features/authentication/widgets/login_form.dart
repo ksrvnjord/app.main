@@ -41,7 +41,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
     const double columnPadding = 16;
     const double cardPadding = 16;
-    const double cardElevation = 8;
 
     return <Widget>[
       AnimatedBuilder(
@@ -96,7 +95,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       <Widget>[
         RoundedElevatedButton(
           onPressed: () => login(auth, graphql),
-          color: Colors.lightBlue,
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(
@@ -108,9 +106,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: columnPadding)
         .card(
-          elevation: cardElevation,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
           ),
         )
         .padding(all: cardPadding)

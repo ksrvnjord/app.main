@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
@@ -40,22 +39,9 @@ class SelectPloegPage extends ConsumerWidget {
 
     const double menuMaxHeight = 240;
 
-    final buttonBgColor = MaterialStateProperty.resolveWith((states) =>
-        states.contains(MaterialState.selected)
-            ? Colors.blue
-            : Colors.blue.shade100);
-    final buttonFgColor = MaterialStateProperty.resolveWith((states) =>
-        states.contains(MaterialState.selected)
-            ? Colors.white
-            : Colors.blueGrey);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kies een ploeg'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
         SegmentedButton<PloegType>(
@@ -68,10 +54,6 @@ class SelectPloegPage extends ConsumerWidget {
           },
           onSelectionChanged: (types) =>
               ref.read(ploegTypeProvider.notifier).state = types.first,
-          style: ButtonStyle(
-            backgroundColor: buttonBgColor,
-            foregroundColor: buttonFgColor,
-          ),
         ),
         const SizedBox(height: 8),
         if (ploegType == PloegType.competitie)
@@ -87,10 +69,6 @@ class SelectPloegPage extends ConsumerWidget {
               onSelectionChanged: (types) => ref
                   .read(ploegGeslachtFilterProvider.notifier)
                   .state = types.first,
-              style: ButtonStyle(
-                backgroundColor: buttonBgColor,
-                foregroundColor: buttonFgColor,
-              ),
             ).expanded(),
             DropdownButton<int>(
               items: years
@@ -119,8 +97,7 @@ class SelectPloegPage extends ConsumerWidget {
                 .map(
                   (ploeg) => ListTile(
                     title: Text(ploeg),
-                    trailing:
-                        const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     // ignore: prefer-extracting-callbacks
                     onTap: () {
                       ref

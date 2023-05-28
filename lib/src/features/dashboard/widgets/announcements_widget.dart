@@ -16,53 +16,54 @@ class AnnouncementsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final announcementsVal = ref.watch(Announcements.firstPageProvider);
     const double minLeadingWidth = 8;
-    const double announcementSubtitleFontSize = 12;
     const double shimmerContainerHeight = 320;
+    final textTheme = Theme.of(context).textTheme;
 
     return [
-      const WidgetHeader(title: "Recente aankondigingen"),
+      const WidgetHeader(title: "Aankondigingen"),
       announcementsVal.when(
         data: (announcements) => announcements == null
             ? const Text("Geen aankondigingen gevonden")
             : announcements
                 .map(
-                  (announcement) => ListTile(
-                    title: Text(announcement.title),
-                    subtitle: Text.rich(TextSpan(children: [
-                      TextSpan(text: "${announcement.author} ")
-                          .textColor(Colors.black54)
-                          .fontSize(announcementSubtitleFontSize)
-                          .fontWeight(FontWeight.bold),
-                      TextSpan(
-                        text: timeago.format(
-                          announcement.created_at,
-                          locale: 'nl',
+                  (announcement) {
+                    return ListTile(
+                      title: Text(announcement.title),
+                      subtitle: Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "${announcement.author} ",
+                          style: textTheme.labelLarge,
                         ),
-                      )
-                          .textColor(Colors.grey)
-                          .fontSize(announcementSubtitleFontSize),
-                    ])),
-                    trailing: [
-                      const Icon(Icons.chevron_right, color: Colors.blueGrey),
-                    ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    // ignore: prefer-extracting-callbacks
-                    onTap: () {
-                      FirebaseAnalytics.instance.logEvent(
-                        name: 'announcement_opened',
-                        parameters: {
-                          'announcement_id': announcement.id,
-                          'announcement_title': announcement.title,
-                        },
-                      );
-                      // ignore: avoid-ignoring-return-values
-                      Routemaster.of(context)
-                          .push('announcements/${announcement.id}');
-                    },
-                    minLeadingWidth: minLeadingWidth,
-                  ),
+                        TextSpan(
+                          text: timeago.format(
+                            announcement.created_at,
+                            locale: 'nl',
+                          ),
+                          style: textTheme.labelMedium,
+                        ),
+                      ])),
+                      trailing: [
+                        const Icon(Icons.chevron_right),
+                      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                      // ignore: prefer-extracting-callbacks
+                      onTap: () {
+                        FirebaseAnalytics.instance.logEvent(
+                          name: 'announcement_opened',
+                          parameters: {
+                            'announcement_id': announcement.id,
+                            'announcement_title': announcement.title,
+                          },
+                        );
+                        // ignore: avoid-ignoring-return-values
+                        Routemaster.of(context)
+                            .push('announcements/${announcement.id}');
+                      },
+                      minLeadingWidth: minLeadingWidth,
+                    );
+                  },
                 )
                 .toList()
                 .toColumn(

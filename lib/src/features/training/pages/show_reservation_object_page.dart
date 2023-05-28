@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
@@ -29,20 +28,15 @@ class ShowReservationObjectPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
-        actions: [
-          IconButton(
-            onPressed: () => Routemaster.of(context).push('damage/create'),
-            icon: const Icon(Icons.report),
-          ),
-        ],
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: FutureWrapper(
         future: ref.watch(reservationObjectProvider(documentId).future),
         success: (snapshot) => showObjectDetails(snapshot, context, ref),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Routemaster.of(context).push('damage/create'),
+        icon: const Icon(Icons.report),
+        label: Text('Meld schade voor "$name"'),
       ),
     );
   }
@@ -58,7 +52,11 @@ class ShowReservationObjectPage extends ConsumerWidget {
     final navigator = Routemaster.of(context);
 
     if (!snapshot.exists) {
-      return const Center(child: Text('No data'));
+      return const Center(
+        child: Text(
+          'We konden dit object niet vinden, neem contact op met de Appcommissie',
+        ),
+      );
     }
     final obj = snapshot.data();
     final isVisible = obj?.available ?? false;
@@ -72,9 +70,9 @@ class ShowReservationObjectPage extends ConsumerWidget {
 
     // Show the reservationObject data in a ListView.
     return [
-      AvailabilityHeader(isAvailable: isVisible && !isCritical),
       Expanded(
         child: ListView(children: [
+          AvailabilityHeader(isAvailable: isVisible && !isCritical),
           if (comment.isNotEmpty)
             Card(
               color: Colors.amber.shade100,
@@ -86,11 +84,6 @@ class ShowReservationObjectPage extends ConsumerWidget {
                 leading: const Icon(Icons.comment),
                 title: Text(
                   comment,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                  ),
                 ),
               ),
             ),
@@ -100,49 +93,42 @@ class ShowReservationObjectPage extends ConsumerWidget {
             ChipWidget(
               title: "Permissies",
               values: permissions,
-              colors: const {
-                'Coachcatamaran': Colors.greenAccent,
-                'Speciaal': Colors.redAccent,
-                '1e permissie': Colors.blueAccent,
-                '2e permissie': Colors.orangeAccent,
-                'Top C4+': Colors.purpleAccent,
-                'Specifiek': Colors.pinkAccent,
+              colors: {
+                'Coachcatamaran': Colors.greenAccent.shade100,
+                'Speciaal': Colors.redAccent.shade100,
+                '1e permissie': Colors.blueAccent.shade100,
+                '2e permissie': Colors.orangeAccent.shade100,
+                'Top C4+': Colors.purpleAccent.shade100,
+                'Specifiek': Colors.pinkAccent.shade100,
               },
             ),
           if (year != null)
             DataTextListTile(name: "Jaar", value: year.toString()),
           if (brand != null) DataTextListTile(name: "Merk", value: brand),
-          if (isCritical)
-            const Text(
-              'Schades',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
-                fontWeight: FontWeight.w300,
-              ),
-            ).padding(
-              horizontal: horizontalPadding,
-              top: verticalPadding,
-              bottom: gap,
-            ),
           FutureWrapper(
-            future: ref
-                .watch(damagesForReservationObjectProvider(snapshot.id).future),
-            success: (data) => data
-                .map<Widget>((e) {
-                  return DamageTileWidget(
-                    showDamage: () => navigator.push(
-                      'damage/show',
-                      queryParameters: {'id': e.id},
-                    ),
-                    editDamage: () => navigator.push(
-                      'damage/edit',
-                      queryParameters: {'id': e.id},
-                    ),
-                    damageSnapshot: e,
-                  );
-                })
-                .toList()
+            future: ref.watch(
+              damagesForReservationObjectProvider(snapshot.id).future,
+            ),
+            success: (data) => [
+              if (data.isNotEmpty)
+                Text(
+                  'Schades',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ).padding(top: gap),
+              ...data.map<Widget>((e) {
+                return DamageTileWidget(
+                  showDamage: () => navigator.push(
+                    'damage/show',
+                    queryParameters: {'id': e.id},
+                  ),
+                  editDamage: () => navigator.push(
+                    'damage/edit',
+                    queryParameters: {'id': e.id},
+                  ),
+                  damageSnapshot: e,
+                );
+              }),
+            ]
                 .toWrap(
                   runSpacing: gap,
                 )

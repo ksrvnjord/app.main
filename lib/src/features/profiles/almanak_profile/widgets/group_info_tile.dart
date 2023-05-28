@@ -19,7 +19,6 @@ class GroupInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double commissieNameFontSize = 20;
-    const double iconSize = 14;
     const double chipSpacing = 8;
     const double runSpacing = 8;
 
@@ -27,24 +26,24 @@ class GroupInfoTile extends StatelessWidget {
       title: Text(header).fontSize(commissieNameFontSize),
       subtitle: <Widget>[
         Chip(
-          avatar: const Icon(Icons.date_range, size: 14, color: Colors.white),
+          avatar: const Icon(
+            Icons.date_range,
+          ),
           label: Text("$startYear-$endYear"),
-          labelStyle: const TextStyle(color: Colors.white),
-          labelPadding: const EdgeInsets.only(left: 2, right: 8),
-          backgroundColor: Colors.blueGrey[200],
+          labelPadding: const EdgeInsets.symmetric(horizontal: 2),
         ),
         if (tags != null)
           ...(tags as List<Tag>)
               .map((tag) => Chip(
-                    avatar: Icon(tag.icon, size: iconSize, color: Colors.white),
+                    avatar: Icon(
+                      tag.icon,
+                    ),
                     label: Text(tag.label),
-                    labelStyle: const TextStyle(color: Colors.white),
-                    labelPadding: const EdgeInsets.only(right: 8),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 2),
                     backgroundColor: tag.backgroundColor,
                   ))
               .toList(),
       ].toWrap(spacing: chipSpacing, runSpacing: runSpacing),
-      tileColor: Colors.white,
     );
   }
 }

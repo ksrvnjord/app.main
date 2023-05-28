@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
@@ -23,10 +22,6 @@ class CommissieChoicePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView.builder(
         itemBuilder: (context, index) => [

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
@@ -66,43 +65,44 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       commissieLeedenProvider(commissieAndYear),
     );
 
+    const double pageHPadding = 12;
+    const double descriptionHPadding = pageHPadding + 4;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.commissieName),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         controller:
             scrollController, // For keeping scroll position when changing year.
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          AlmanakSubstructureCoverPicture(
-            imageProvider:
-                ref.watch(commissiePictureProvider(commissieAndYear)),
-          ),
+          ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: AlmanakSubstructureCoverPicture(
+              imageProvider:
+                  ref.watch(commissiePictureProvider(commissieAndYear)),
+            ),
+          ).padding(horizontal: pageHPadding),
           SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(
               commissieInfoProvider(widget.commissieName),
             ),
-          ),
+          ).padding(all: descriptionHPadding),
           [
-            const Text("Leeden")
-                .textColor(Colors.blueGrey)
-                .fontSize(titleFontSize)
-                .fontWeight(FontWeight.w500)
+            Text(
+              "Leeden",
+              style: Theme.of(context).textTheme.titleLarge,
+            )
                 .alignment(Alignment.centerLeft)
                 .padding(horizontal: titleHPadding),
             [
-              const Text('Kies een jaar: ').textColor(Colors.blueGrey),
+              const Text('Kies een jaar: '),
               DropdownButton<Tuple2<int, int>>(
                 items: years
                     .map((year) => DropdownMenuItem<Tuple2<int, int>>(
                           value: year,
-                          child: Text("${year.item1}-${year.item2}")
-                              .textColor(Colors.blueGrey),
+                          child: Text("${year.item1}-${year.item2}"),
                         ))
                     .toList(),
                 value: selectedYear,
@@ -110,7 +110,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                   selectedYear =
                       tuple ?? Tuple2(getNjordYear(), getNjordYear() + 1);
                 }),
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
                 menuMaxHeight: menuMaxHeight,
               ),
             ].toRow(),
@@ -141,7 +140,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       ),
       if (docs.isEmpty)
         const Text("Geen Leeden gevonden voor deze commissie in dit jaar")
-            .textColor(Colors.grey)
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();

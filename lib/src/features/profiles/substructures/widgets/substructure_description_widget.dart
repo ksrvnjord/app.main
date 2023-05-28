@@ -13,17 +13,15 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double widgetPadding = 16.0;
-    const double fontSize = 14;
-
     return descriptionAsyncVal.when(
       data: (data) => data == null
           ? const SizedBox.shrink()
           : [
-              Text(data).fontSize(fontSize).expanded(flex: 0),
-            ].toColumn().padding(
-                all: widgetPadding,
-              ), // Only add padding if there is a description.
+              Text(
+                data,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ).expanded(flex: 0),
+            ].toColumn(),
       loading: () => const CircularProgressIndicator().center(),
       error: (error, stack) => ErrorCardWidget(
         errorMessage: error.toString(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
@@ -25,7 +24,8 @@ class AllTrainingPage extends ConsumerWidget {
         ref.watch(reservationTypeFiltersListProvider);
     const double yourFiltersLPadding = 8;
     const double yourFiltersRPadding = 4;
-    const double filterLabelSize = 12;
+
+    final colorScheme = Theme.of(context).colorScheme;
 
     return DefaultTabController(
       length: days.length,
@@ -40,44 +40,19 @@ class AllTrainingPage extends ConsumerWidget {
                     ))
                 .toList(),
             isScrollable: true,
-            indicatorWeight: 0,
-            indicatorPadding: const EdgeInsets.all(4),
-            indicator: const BoxDecoration(
-              border: Border.fromBorderSide(
-                BorderSide(color: Colors.white, width: 1),
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(40)),
-              shape: BoxShape.rectangle,
-            ),
-            labelColor: Colors.white,
-            labelStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelColor: Colors.white60,
-            unselectedLabelStyle: const TextStyle(fontSize: 14),
-          ),
-          shadowColor: Colors.transparent,
-          backgroundColor: Colors.lightBlue,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.lightBlue,
           ),
         ),
         body: [
           Container(
             alignment: Alignment.center,
-            color: Colors.lightBlue,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: GestureDetector(
                 child: Row(children: [
                   if (filterList.isNotEmpty)
-                    const Text(
+                    Text(
                       'Je selectie:',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium,
                     ).padding(
                       right: yourFiltersRPadding,
                       left: yourFiltersLPadding,
@@ -89,15 +64,8 @@ class AllTrainingPage extends ConsumerWidget {
                             ),
                             child: Chip(
                               label: Text(filter),
-                              labelStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: filterLabelSize,
-                              ),
-                              side: const BorderSide(
-                                color: Colors.white,
-                                width: 1,
-                              ),
-                              backgroundColor: Colors.lightBlue,
+                              labelStyle:
+                                  Theme.of(context).textTheme.labelMedium,
                               visualDensity: VisualDensity.compact,
                             ),
                           ))
@@ -124,9 +92,7 @@ class AllTrainingPage extends ConsumerWidget {
             // ignore: sort_child_properties_last
             child: const Icon(Icons.filter_list_alt),
             tooltip: "Kies afschrijf filters",
-            foregroundColor:
-                filterList.isNotEmpty ? Colors.orangeAccent : Colors.white,
-            backgroundColor: Colors.lightBlue,
+            foregroundColor: colorScheme.onPrimaryContainer,
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ShowFiltersPage(),
             )),

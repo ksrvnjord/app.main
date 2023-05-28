@@ -27,7 +27,6 @@ class _NotificationsListState extends State<NotificationsList> {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
         content: Text('${value ? 'Aangemeld' : 'Afgemeld'} voor $title'),
-        backgroundColor: Colors.green[900],
       ));
     } catch (e) {
       // ignore: avoid-ignoring-return-values

@@ -46,11 +46,9 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
 
     return filters.isEmpty
         ? <Widget>[
-            const Icon(Icons.waves, color: Colors.blueGrey)
-                .padding(all: iconPadding),
+            const Icon(Icons.waves).padding(all: iconPadding),
             const Text(
-              'Selecteer een categorie om te beginnen',
-              style: TextStyle(color: Colors.blueGrey),
+              'Filter op een type om de beschikbaarheid te zien',
             ),
           ].toColumn(mainAxisAlignment: MainAxisAlignment.center)
         : Stack(

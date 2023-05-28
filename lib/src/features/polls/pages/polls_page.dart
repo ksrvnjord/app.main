@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
@@ -16,10 +15,6 @@ class PollsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forms'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: pollQuery.when(
         data: (snapshot) => snapshot.size == 0

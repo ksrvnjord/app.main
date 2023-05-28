@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/commissie_entry.dart';
@@ -51,16 +50,11 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
       ),
     ).toList();
 
-    const double saveButtonVerticalPadding = 8;
     const double formPadding = 8;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vul commissie info in'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: Form(
         key: _formKey,
@@ -100,19 +94,14 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
                   ? _formData.function = newValue
                   : null,
             ),
-            ElevatedButton(
-              onPressed: () => submitForm(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-              ),
-              child: const Text('Opslaan'),
-            ).padding(vertical: saveButtonVerticalPadding),
           ],
         ),
       ).padding(all: formPadding),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => submitForm(context),
+        icon: const Icon(Icons.save),
+        label: const Text("Opslaan"),
+      ),
     );
   }
 

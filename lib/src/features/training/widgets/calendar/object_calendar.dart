@@ -179,6 +179,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
           Positioned(
+            // Vier voor half 6 marker.
             left: 0,
             top: CalendarMeasurement.amountOfPixelsTill1726FromTop() - 1,
             child: Row(children: [

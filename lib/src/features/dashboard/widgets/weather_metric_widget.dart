@@ -23,41 +23,41 @@ class WeatherMetricWidget extends StatelessWidget {
     const double cardHeight = 128;
 
     const double headerIconSize = 14;
-    const double mainTextSize = 24;
-    const double headerTextSize = 14;
-    const double bottomTextSize = 12;
     const double innerPadding = 10;
+
+    final textTheme = Theme.of(context).textTheme;
+    const double cardElevation = 2;
 
     return SizedBox(
       height: cardHeight,
       child: [
         [
           [
-            BoxedIcon(icon, size: headerIconSize, color: Colors.white),
-            Text(title)
-                .textColor(Colors.white)
-                .fontSize(headerTextSize)
-                .fontWeight(
-                  FontWeight.w600,
-                ),
+            BoxedIcon(
+              icon,
+              size: headerIconSize,
+            ),
+            Text(
+              title,
+              style: textTheme.titleSmall,
+            ),
           ].toRow(
             mainAxisSize: MainAxisSize.min,
             separator: const SizedBox(width: 4),
           ),
-          Text(mainText)
-              .textColor(Colors.white)
-              .fontSize(mainTextSize)
-              .fontWeight(
-                FontWeight.bold,
-              ),
+          Text(
+            mainText,
+            style: textTheme.headlineSmall,
+          ),
           main ?? const SizedBox(),
         ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         if (bottomText != null)
-          Text(bottomText ?? "")
-              .textColor(Colors.white)
-              .fontSize(bottomTextSize),
+          Text(
+            bottomText ?? "",
+            style: textTheme.labelMedium,
+          ),
       ]
           .toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,8 +65,8 @@ class WeatherMetricWidget extends StatelessWidget {
           )
           .padding(all: innerPadding)
           .card(
-            color: Colors.blue[400],
-            elevation: 0,
+            color: Theme.of(context).colorScheme.primaryContainer,
+            elevation: cardElevation,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),

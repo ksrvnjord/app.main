@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
@@ -28,10 +27,6 @@ class AddPloegPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Voeg ploeg toe'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
         DataTextListTile(name: "Ploeg", value: ploegEntryForm.name ?? ""),
@@ -49,16 +44,6 @@ class AddPloegPage extends ConsumerWidget {
           onSelectionChanged: (types) => ref
               .read(ploegEntryCreateNotifierProvider.notifier)
               .setRole(types.first),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.blue
-                    : Colors.blue.shade100),
-            foregroundColor: MaterialStateProperty.resolveWith((states) =>
-                states.contains(MaterialState.selected)
-                    ? Colors.white
-                    : Colors.blueGrey),
-          ),
         ),
         const SizedBox(height: 32),
         DropdownButtonFormField(
@@ -79,7 +64,6 @@ class AddPloegPage extends ConsumerWidget {
         ),
       ]),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
         // ignore: prefer-extracting-callbacks
         onPressed: () {
           ref

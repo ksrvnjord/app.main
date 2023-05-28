@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
@@ -18,10 +17,6 @@ class EditAllergiesPage extends ConsumerWidget {
       appBar: AppBar(
         // ignore: avoid-non-ascii-symbols
         title: const Text('Wijzig mijn allergiëen'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),

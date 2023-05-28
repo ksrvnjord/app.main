@@ -23,10 +23,7 @@ class AnnouncementBodyWidget extends StatelessWidget {
         // Show title of announcement emphasized.
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.titleLarge,
         ).padding(bottom: spacingBetweenTitleAndText),
         MarkdownBody(
           data: text,

@@ -23,11 +23,11 @@ class MorePage extends ConsumerWidget {
           'advanced-settings', // TODO: plaats dit onder EditMyProfile, zodat alle instellingen etc bij elkaar staan.
     };
 
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meer'),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
       ),
       body: ListView(
         children: [
@@ -41,13 +41,18 @@ class MorePage extends ConsumerWidget {
               ),
               const Divider(
                 height: 0,
+                thickness: 0.5,
               ),
             ].toColumn(),
           ),
           ListTile(
-            title: const Text("Geef feedback over de app"),
-            trailing:
-                const Icon(Icons.feedback_outlined, color: Colors.lightBlue),
+            title: Text(
+              "Geef feedback over de app",
+              style: textTheme.titleMedium,
+            ),
+            trailing: const Icon(
+              Icons.feedback_outlined,
+            ),
             onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
               name: GetIt.I<CurrentUser>()
                       .user
@@ -58,6 +63,7 @@ class MorePage extends ConsumerWidget {
           ),
           const Divider(
             height: 0,
+            thickness: 0.5,
           ),
           const MoreLinkTile(
             label: "Ga naar de webshop",
@@ -65,6 +71,7 @@ class MorePage extends ConsumerWidget {
           ),
           const Divider(
             height: 0,
+            thickness: 0.5,
           ),
           const MoreLinkTile(
             label: 'Declareer kosten aan de Quaestor',
@@ -73,6 +80,7 @@ class MorePage extends ConsumerWidget {
           ),
           const Divider(
             height: 0,
+            thickness: 0.5,
           ),
           const MoreLinkTile(
             label: 'Handige linkjes - Linktree',
@@ -80,9 +88,13 @@ class MorePage extends ConsumerWidget {
           ),
           const Divider(
             height: 0,
+            thickness: 0.5,
           ),
           ListTile(
-            title: const Text('Uitloggen').textColor(Colors.red),
+            title: Text(
+              'Uitloggen',
+              style: textTheme.titleMedium,
+            ).textColor(Colors.red),
             trailing: const Icon(Icons.logout, color: Colors.red),
             visualDensity: VisualDensity.standard,
             onTap: () => ref.read(authModelProvider).logout(),

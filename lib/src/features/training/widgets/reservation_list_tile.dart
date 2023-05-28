@@ -17,8 +17,10 @@ class ReservationListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final reservation = snapshot.data();
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return ListTile(
-      leading: const [Icon(Icons.fitness_center, color: Colors.blueGrey)]
+      leading: const [Icon(Icons.fitness_center)]
           .toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(reservation.objectName),
       subtitle: Text(
@@ -27,23 +29,25 @@ class ReservationListTile extends StatelessWidget {
       trailing: <Widget>[
         IconButton(
           onPressed: () => Routemaster.of(context)
-              .push('/training/createdamage', queryParameters: {
+              .push('/training/create-damage', queryParameters: {
             'reservationObjectId': reservation.reservationObject.id,
           }),
-          icon: const Icon(Icons.report, color: Colors.orange),
+          tooltip: "Schade melden",
+          icon: Icon(Icons.report, color: colorScheme.error),
         ),
         IconButton(
           onPressed: () => showDeleteReservationDialog(context, snapshot),
-          icon: const Icon(Icons.cancel, color: Colors.red),
+          tooltip: "Afschrijving verwijderen",
+          icon: Icon(Icons.cancel, color: colorScheme.outline),
         ),
       ].toWrap(direction: Axis.horizontal),
     ).card(
-      color: // If damage is critical show light red, else orange.
-          Colors.white,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(color: Colors.lightBlue, width: 1),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: colorScheme.outline,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
     );
   }
@@ -67,17 +71,15 @@ class ReservationListTile extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: const Text(
                 'Nee',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
             TextButton(
               onPressed: () => deleteReservation(snapshot, context),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-              child: const Text(
+              child: Text(
                 'Verwijder mijn afschrijving',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
               ),
             ),
           ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -14,10 +13,6 @@ class AlmanakPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Almanak"),
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),

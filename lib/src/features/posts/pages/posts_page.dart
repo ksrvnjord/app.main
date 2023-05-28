@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
@@ -49,10 +48,6 @@ class PostsPage extends ConsumerWidget {
             icon: const Icon(Icons.filter_list),
           ),
         ],
-        shadowColor: Colors.transparent,
-        backgroundColor: Colors.lightBlue,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
       ),
       body: const FirebaseWidget(
         onAuthenticated: PostList(),
@@ -60,7 +55,6 @@ class PostsPage extends ConsumerWidget {
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: FloatingActionButton.extended(
-          backgroundColor: Colors.blue,
           onPressed: () => Routemaster.of(context).push('new'),
           icon: const Icon(Icons.add),
           label: const Text('Nieuw bericht'),

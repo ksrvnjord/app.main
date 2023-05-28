@@ -30,22 +30,30 @@ class PostStatisticsBar extends ConsumerWidget {
           Text(
             // ignore: avoid-non-ascii-symbols
             "${post.likedBy.length.toString()}x ",
-          ).textColor(Colors.blueGrey).fontSize(fontSize),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontSize: fontSize, color: Colors.blueGrey),
+          ),
           SvgPicture.asset(
             Svgs.swanWhite,
             width: swanIconSize,
             // ignore: no-equal-arguments
             height: swanIconSize,
             // ignore: deprecated_member_use
-            color: Colors.lightBlue,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ].toRow(),
       commentsVal.when(
         data: (data) => data.size > 0
             ? InkWell(
-                child: Text("${data.size} reactie${data.size > 1 ? 's' : ''}")
-                    .textColor(Colors.blueGrey)
-                    .fontSize(fontSize),
+                child: Text(
+                  "${data.size} reactie${data.size > 1 ? 's' : ''}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: fontSize, color: Colors.blueGrey),
+                ),
                 onTap: () =>
                     Routemaster.of(context).push('${snapshot.id}/comments'),
               )
