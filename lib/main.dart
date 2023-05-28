@@ -179,7 +179,8 @@ class Application extends ConsumerWidget {
           colorSchemeSeed: Colors.lightBlue,
           // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
         ),
-        themeMode: ThemeMode.dark,
+        themeMode: ThemeMode
+            .light, // TODO: provide option in settings where user can choose whether to use dark, light or system brightness.
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
