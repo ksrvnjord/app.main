@@ -144,7 +144,7 @@ class Application extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
 
-    const pageTransitionsTheme = const PageTransitionsTheme(builders: {
+    const pageTransitionsTheme = PageTransitionsTheme(builders: {
       TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),

@@ -30,7 +30,7 @@ class DamageTileWidget extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final darkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final orange = Colors.orange;
+    const orange = Colors.orange;
 
     return ListTile(
       leading: [

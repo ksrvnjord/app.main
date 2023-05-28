@@ -16,7 +16,6 @@ class AnnouncementsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final announcementsVal = ref.watch(Announcements.firstPageProvider);
     const double minLeadingWidth = 8;
-    const double announcementSubtitleFontSize = 12;
     const double shimmerContainerHeight = 320;
     final textTheme = Theme.of(context).textTheme;
 
