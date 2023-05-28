@@ -33,9 +33,9 @@ class VaarverbodWidget extends ConsumerWidget {
           : FontAwesomeIcons.shieldHalved;
     }
 
-    final Color backgroundColor = status
-        ? Theme.of(context).colorScheme.errorContainer
-        : Colors.green.shade100;
+    final colorScheme = Theme.of(context).colorScheme;
+    final Color backgroundColor =
+        status ? colorScheme.errorContainer : colorScheme.primaryContainer;
 
     const double descriptionPadding = 8;
 

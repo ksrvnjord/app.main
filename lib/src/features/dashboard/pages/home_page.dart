@@ -74,7 +74,12 @@ class _HomePageState extends ConsumerState<HomePage> {
         // ignore: sort_child_properties_last
         child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
           [
-            Image.asset(Images.appLogoBlue, height: logoHeight).padding(
+            Image.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? Images.appLogoBlue
+                  : Images.appLogo,
+              height: logoHeight,
+            ).padding(
               bottom: elementPadding + 1,
             ), // To align logo with the ProfileIcon.
             FirebaseWidget(

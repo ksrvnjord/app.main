@@ -16,12 +16,13 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
     const double innerSpacing = 2;
     const double outerHPadding = 4;
     const double iconSize = 12;
-    const double textFontSize = 12;
+
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       // Make edges round.
       decoration: BoxDecoration(
-        color: Colors.lightBlue.shade300,
+        color: colorScheme.secondaryContainer,
         borderRadius: const BorderRadius.all(Radius.circular(40)),
         boxShadow: [
           BoxShadow(
@@ -39,12 +40,14 @@ class AmountOfLikesForCommentWidget extends StatelessWidget {
           // ignore: no-equal-arguments
           height: iconSize,
           // ignore: deprecated_member_use
-          color: Colors.white,
+          color: colorScheme.onSecondaryContainer,
         ),
-        Text(amountOfLikes.toString())
-            .fontWeight(FontWeight.bold)
-            .fontSize(textFontSize)
-            .textColor(Colors.white),
+        Text(
+          amountOfLikes.toString(),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: colorScheme.onSecondaryContainer,
+              ),
+        ),
       ]
           .toRow(
             mainAxisSize: MainAxisSize.min,

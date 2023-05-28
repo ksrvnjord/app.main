@@ -16,37 +16,35 @@ class UpcomingEventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double topPadding = 8;
-    const double dayNumberFontSize = 24;
+
     DateFormat monthFormat = DateFormat('MMM EEE', 'nl_NL');
-    const double dateFontSize = 12;
     DateFormat timeFormat = DateFormat('HH:mm');
     const int maxLines = 2;
-    const double eventFontSize = 16;
     DateTime start = event.startTime;
+
+    final textTheme = Theme.of(context).textTheme;
 
     return Row(
       children: [
-        Text(start.day.toString())
-            .fontSize(dayNumberFontSize)
-            .paddingDirectional(horizontal: elementPadding),
+        Text(
+          start.day.toString(),
+          style: textTheme.headlineSmall,
+        ).paddingDirectional(horizontal: elementPadding),
         Text(
           monthFormat.format(start),
-        )
-            .fontSize(dateFontSize)
-            .textColor(Colors.blueGrey)
-            .padding(top: topPadding),
-        Text(timeFormat.format(start))
-            .fontSize(dateFontSize)
-            .textColor(Colors.blueGrey)
-            .padding(horizontal: elementPadding, top: topPadding),
+          style: textTheme.labelLarge,
+        ).padding(top: topPadding),
+        Text(
+          timeFormat.format(start),
+          style: textTheme.labelMedium,
+        ).padding(horizontal: elementPadding, top: topPadding),
         Expanded(
           child: Text(
             event.title,
+            style: textTheme.titleMedium,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines,
-          )
-              .fontSize(eventFontSize)
-              .paddingDirectional(horizontal: elementPadding),
+          ).paddingDirectional(horizontal: elementPadding),
         ),
       ],
     );

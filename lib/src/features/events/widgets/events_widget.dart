@@ -13,16 +13,16 @@ class EventsWidget extends StatelessWidget {
 
     const double bodyMonthHeaderHeight = 56;
 
+    final textTheme = Theme.of(context).textTheme;
+
     return SfCalendar(
+      // TODO: on darkmode this doesn't look right yet.
       view: CalendarView.schedule,
+      backgroundColor: colorScheme.background,
       dataSource: MeetingDataSource(data),
       headerStyle: CalendarHeaderStyle(
         backgroundColor: colorScheme.primaryContainer,
-        textStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+        textStyle: textTheme.titleMedium ?? const TextStyle(),
       ),
       scheduleViewSettings: ScheduleViewSettings(
         hideEmptyScheduleWeek: true,
@@ -30,15 +30,12 @@ class EventsWidget extends StatelessWidget {
           monthFormat: 'MMMM',
           height: bodyMonthHeaderHeight,
           backgroundColor: colorScheme.secondaryContainer,
-          monthTextStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          monthTextStyle: textTheme.titleMedium ?? const TextStyle(),
         ),
       ),
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
+      appointmentTextStyle: textTheme.bodyMedium ?? const TextStyle(),
     );
   }
 }

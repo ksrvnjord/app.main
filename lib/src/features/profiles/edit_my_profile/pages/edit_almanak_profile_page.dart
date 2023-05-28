@@ -79,7 +79,6 @@ class _EditAlmanakProfilePageState
   ) {
     final user = snapshot.data();
 
-    const double imageHelpTextSize = 12;
     const double imageHelpTextTopPadding = 4;
     const double groupSpacing = 32;
 
@@ -91,12 +90,10 @@ class _EditAlmanakProfilePageState
           child: <Widget>[
             [
               const EditProfilePictureWidget(),
-              const Text(
+              Text(
                 'Het kan even duren voordat iedereen je nieuwe foto ziet',
-              )
-                  .textColor(Colors.grey)
-                  .textAlignment(TextAlign.center)
-                  .fontSize(imageHelpTextSize),
+                style: Theme.of(context).textTheme.labelSmall,
+              ).textAlignment(TextAlign.center),
             ]
                 .toColumn(
                   separator: const SizedBox(height: imageHelpTextTopPadding),

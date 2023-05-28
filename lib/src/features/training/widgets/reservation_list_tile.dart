@@ -71,17 +71,15 @@ class ReservationListTile extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: const Text(
                 'Nee',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
             TextButton(
               onPressed: () => deleteReservation(snapshot, context),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-              child: const Text(
+              child: Text(
                 'Verwijder mijn afschrijving',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
               ),
             ),
           ],

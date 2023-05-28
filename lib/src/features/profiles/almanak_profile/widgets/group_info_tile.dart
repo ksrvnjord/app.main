@@ -44,7 +44,6 @@ class GroupInfoTile extends StatelessWidget {
                   ))
               .toList(),
       ].toWrap(spacing: chipSpacing, runSpacing: runSpacing),
-      tileColor: Colors.white,
     );
   }
 }

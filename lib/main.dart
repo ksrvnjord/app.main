@@ -144,6 +144,15 @@ class Application extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
 
+    const pageTransitionsTheme = const PageTransitionsTheme(builders: {
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+    });
+
     return Builder(
       builder: (context) => MaterialApp.router(
         routeInformationParser: const RoutemasterParser(),
@@ -156,20 +165,21 @@ class Application extends ConsumerWidget {
         ),
         title: 'K.S.R.V. Njord',
         theme: ThemeData(
-          pageTransitionsTheme: const PageTransitionsTheme(builders: {
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.fuchsia: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-            TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
-          }),
+          pageTransitionsTheme: pageTransitionsTheme,
           useMaterial3: true,
-          colorSchemeSeed: Colors
-              .lightBlue, // Creates a Material3 color scheme based on the given color.
+          brightness: Brightness.light,
+          colorSchemeSeed: Colors.lightBlue,
           textTheme:
               GoogleFonts.ibmPlexSansTextTheme(Theme.of(context).textTheme),
         ),
+        darkTheme: ThemeData(
+          pageTransitionsTheme: pageTransitionsTheme,
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          colorSchemeSeed: Colors.lightBlue,
+          // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
+        ),
+        themeMode: ThemeMode.dark,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

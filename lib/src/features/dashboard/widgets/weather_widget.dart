@@ -111,7 +111,7 @@ class WeatherWidget extends ConsumerWidget {
           ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8).card(
               color: Theme.of(context).colorScheme.primaryContainer,
-              elevation: 0,
+              elevation: 1,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),

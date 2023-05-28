@@ -26,16 +26,17 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
   Widget build(BuildContext context) {
     const inputMaxLength = 1726;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Form(
       key: _formKey,
       child: [
         TextFormField(
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Schrijf een reactie...',
-            hintStyle: TextStyle(color: Colors.black26),
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: colorScheme.surfaceVariant,
             border: InputBorder.none,
           ),
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -47,11 +48,10 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
         ).expanded(),
         InkWell(
           // ignore: sort_child_properties_last
-          child: const Icon(Icons.send, color: Colors.lightBlue)
-              .padding(all: sendIconPadding),
+          child: const Icon(Icons.send).padding(all: sendIconPadding),
           onTap: submitForm,
         ), // Expand in the cross axis.
-      ].toRow().backgroundColor(Colors.white),
+      ].toRow().backgroundColor(colorScheme.surfaceVariant),
     );
   }
 

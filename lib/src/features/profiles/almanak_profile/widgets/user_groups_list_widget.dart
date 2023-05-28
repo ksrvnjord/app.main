@@ -35,11 +35,7 @@ class UserGroupsListWidget extends StatelessWidget {
               : [
                   Tag(
                     label: commissieEntry.function as String,
-                    backgroundColor: {
-                          "Praeses": Colors.lightBlue.shade100,
-                          "Ab-actis": Colors.red.shade100,
-                          "Quaestor": Colors.lightGreen.shade100,
-                        }[commissieEntry.function as String] ??
+                    backgroundColor:
                         Theme.of(context).colorScheme.secondaryContainer,
                     icon: Icons.person,
                   ),

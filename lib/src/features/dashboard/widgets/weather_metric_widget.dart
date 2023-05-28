@@ -26,6 +26,7 @@ class WeatherMetricWidget extends StatelessWidget {
     const double innerPadding = 10;
 
     final textTheme = Theme.of(context).textTheme;
+    const double cardElevation = 2;
 
     return SizedBox(
       height: cardHeight,
@@ -65,7 +66,7 @@ class WeatherMetricWidget extends StatelessWidget {
           .padding(all: innerPadding)
           .card(
             color: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 1,
+            elevation: cardElevation,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),

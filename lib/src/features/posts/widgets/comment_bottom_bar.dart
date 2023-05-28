@@ -18,12 +18,20 @@ class CommentBottomBar extends StatelessWidget {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     bool likedByMe = comment.likedBy.contains(uid);
 
+    final colorScheme = Theme.of(context).colorScheme;
+
+    const double opacity = 0.5;
+
     return [
       InkWell(
-        child: const Text("Zwaan")
-            .textColor(likedByMe ? Colors.blue : Colors.blueGrey)
-            .fontSize(bottomBarFontSize)
-            .fontWeight(FontWeight.bold),
+        child: Text(
+          "Zwaan",
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: likedByMe
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurface.withOpacity(opacity),
+              ),
+        ),
         onTap: () => CommentsService.like(snapshot),
       ),
       Text(timeago.format(
