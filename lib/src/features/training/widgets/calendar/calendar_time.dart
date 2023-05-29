@@ -19,8 +19,8 @@ class CalendarTime extends StatelessWidget {
     const double timeWidth = 64;
     const double smallTicks = 56;
     const double bigTicks = 50;
-    const double leftPaddingOfTime = 8;
-    const double timeRightPadding = 18;
+    const double leftPaddingOfTime = 4;
+    const double timeRightPadding = 16;
 
     return SizedBox(
       width: timeWidth,
@@ -39,7 +39,7 @@ class CalendarTime extends StatelessWidget {
                   if (timestamp.minute == 0)
                     [
                       Text(
-                        DateFormat('H:mm').format(timestamp),
+                        DateFormat('HH:mm').format(timestamp),
                         style: Theme.of(context).textTheme.labelLarge,
                       ).center(),
                     ]
