@@ -28,9 +28,6 @@ class DamageTileWidget extends StatelessWidget {
     const double trailingWidgetWidth = 80;
 
     final colorScheme = Theme.of(context).colorScheme;
-    final darkMode = Theme.of(context).brightness == Brightness.dark;
-
-    const orange = Colors.orange;
 
     return ListTile(
       leading: [
@@ -41,7 +38,7 @@ class DamageTileWidget extends StatelessWidget {
               )
             : Icon(
                 Icons.warning,
-                color: darkMode ? orange.shade100 : orange.shade900,
+                color: colorScheme.onSecondaryContainer,
               ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(damage.name),
@@ -66,9 +63,7 @@ class DamageTileWidget extends StatelessWidget {
       color: // If damage is critical show light red, else orange.
           damage.critical
               ? colorScheme.errorContainer
-              : darkMode
-                  ? orange.shade900
-                  : orange.shade100,
+              : colorScheme.secondaryContainer,
       elevation: 0,
     );
   }
