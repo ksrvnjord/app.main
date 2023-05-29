@@ -29,11 +29,10 @@ class WidgetHeader extends StatelessWidget {
 
     return [
       [
-        if (titleIcon != null)
-          Icon(
-            titleIcon,
-            size: textTheme.titleLarge?.fontSize,
-          ),
+        Icon(
+          titleIcon,
+          size: textTheme.titleLarge?.fontSize,
+        ),
         Text(
           title,
           style: textTheme.titleLarge,
