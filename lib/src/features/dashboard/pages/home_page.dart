@@ -12,7 +12,6 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -44,28 +43,19 @@ class _HomePageState extends ConsumerState<HomePage> {
     ]);
   }
 
-  // Override didCHangeDependencies.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // ignore: avoid-ignoring-return-values
-    ref.watch(
-      currentFirestoreUserProvider,
-    ); // Init the current user with data from Firestore.
-  }
-
   @override
   Widget build(BuildContext context) {
-    const double elementPadding = 8;
+    const double elementVPadding = 16;
+    const double elementHPadding = 8;
 
     const double logoHeight = 56;
     const double myProfileSize = 26;
 
     double screenTopPadding = MediaQuery.of(context).padding.top;
 
-    const double logoBottomPadding = 2;
     const double logoLeftPadding = 8;
+
+    const double bottomPaddingLogo = 10; // To align logo with the ProfileIcon.
 
     return Scaffold(
       appBar: PreferredSize(
@@ -85,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     : Images.appLogo,
                 height: logoHeight,
               ).padding(
-                bottom: elementPadding + logoBottomPadding,
+                bottom: bottomPaddingLogo,
                 left: logoLeftPadding,
               ), // To align logo with the ProfileIcon.
               FirebaseWidget(
@@ -99,13 +89,17 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
-            const VaarverbodWidget().padding(all: elementPadding),
-            FirebaseWidget(
-              onAuthenticated:
-                  const FormsWidget().padding(vertical: elementPadding),
+            const VaarverbodWidget().padding(
+              vertical: elementVPadding,
+              horizontal: elementHPadding,
             ),
-            const ComingWeekEventsWidget().padding(vertical: elementPadding),
-            const AnnouncementsWidget().padding(vertical: elementPadding),
+            FirebaseWidget(
+              onAuthenticated: const FormsWidget().padding(
+                vertical: elementVPadding,
+              ),
+            ),
+            const ComingWeekEventsWidget().padding(vertical: elementVPadding),
+            const AnnouncementsWidget().padding(vertical: elementVPadding),
           ],
         ),
         onRefresh: _refresh,
