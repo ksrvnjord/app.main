@@ -19,6 +19,10 @@ class CommentCard extends StatelessWidget {
     const double cardPadding = 8;
     const double authorNameFontSize = 14;
 
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     return [
       AuthorWidget(
         postAuthor: postAuthor,
@@ -30,11 +34,14 @@ class CommentCard extends StatelessWidget {
         child: ExpandableText(
           comment.content,
           expandText: "meer",
-          linkColor: Colors.blueGrey,
+          linkColor: colorScheme.secondary,
           linkEllipsis: false,
-          urlStyle: const TextStyle(color: Colors.blue),
+          urlStyle: textTheme.bodyMedium?.copyWith(
+            color: colorScheme.secondary,
+            decoration: TextDecoration.underline,
+          ),
           onUrlTap: (url) => launchUrlString(url),
-          style: const TextStyle(fontSize: 16),
+          style: textTheme.bodyLarge,
           maxLines: contentMaxLines,
         ),
       ),
@@ -48,9 +55,6 @@ class CommentCard extends StatelessWidget {
           margin: EdgeInsets.zero,
           elevation: 0,
           color: Theme.of(context).colorScheme.surfaceVariant,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          ),
         );
   }
 }

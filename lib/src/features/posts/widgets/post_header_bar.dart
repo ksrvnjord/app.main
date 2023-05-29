@@ -18,7 +18,6 @@ class PostHeaderBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final post = snapshot.data();
     const double profilePictureIconSize = 20;
-    const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
     final postAuthorId = post?.authorId ?? "";
@@ -44,10 +43,15 @@ class PostHeaderBar extends ConsumerWidget {
             postAuthor: postAuthor,
             authorName: post?.authorName ?? "Onbekend",
           ),
-          Text(timeago.format(
-            post?.createdTime.toDate() ?? DateTime.now(),
-            locale: 'nl',
-          )).textColor(Colors.blueGrey).fontSize(postTimeFontSize),
+          Text(
+            timeago.format(
+              post?.createdTime.toDate() ?? DateTime.now(),
+              locale: 'nl',
+            ),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+          ),
         ]
             .toColumn(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -21,7 +21,7 @@ class AlmanakPage extends StatelessWidget {
             pushRoute: "leeden",
             title: "Leeden",
             imagePath: 'assets/images/leeden.png',
-          ),
+          ).padding(bottom: choiceWidgetPadding),
           FirebaseWidget(
             onAuthenticated: [
               const AlmanakStructureChoiceWidget(
@@ -40,7 +40,11 @@ class AlmanakPage extends StatelessWidget {
                   title: "Ploegen",
                   imagePath: 'assets/images/ploegen.jpg',
                 ).expanded(),
-              ].toRow(),
+              ].toRow(
+                separator: const SizedBox(
+                  width: choiceWidgetPadding,
+                ),
+              ),
               [
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "huizen",
@@ -52,7 +56,11 @@ class AlmanakPage extends StatelessWidget {
                   title: "Substructuren",
                   imagePath: 'assets/images/substructures.jpeg',
                 ).expanded(),
-              ].toRow(),
+              ].toRow(
+                separator: const SizedBox(
+                  width: choiceWidgetPadding,
+                ),
+              ),
             ].toColumn(
               separator: const SizedBox(
                 height: choiceWidgetPadding,

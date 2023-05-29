@@ -24,7 +24,6 @@ class PostWidget extends ConsumerWidget {
     final post = snapshot.data();
     const int contentMaxLines = 12;
 
-    const double titleFontSize = 20;
     const double headerPadding = 4;
     const double postStatisticsTopPadding = 4;
 
@@ -41,15 +40,15 @@ class PostWidget extends ConsumerWidget {
     };
     final postTopic = post?.topic ?? "";
 
+    final textTheme = Theme.of(context).textTheme;
+
     return [
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
         post?.title ?? "",
+        style: textTheme.titleLarge,
         overflow: TextOverflow.ellipsis,
-      )
-          .fontSize(titleFontSize)
-          .fontWeight(FontWeight.bold)
-          .alignment(Alignment.centerLeft),
+      ).alignment(Alignment.centerLeft),
       [
         Flexible(
           child: ExpandableText(
@@ -60,7 +59,7 @@ class PostWidget extends ConsumerWidget {
             linkEllipsis: false,
             urlStyle: const TextStyle(color: Colors.blue),
             onUrlTap: (url) => launchUrlString(url),
-            style: const TextStyle(fontSize: 16),
+            style: textTheme.bodyLarge,
             maxLines: contentMaxLines,
           ),
         ),

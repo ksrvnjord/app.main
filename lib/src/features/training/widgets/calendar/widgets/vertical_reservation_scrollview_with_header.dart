@@ -21,6 +21,8 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
     final availableReservationObjects =
         ref.watch(availableReservationObjectsProvider);
 
+    const double verticalLineWidth = 0.2;
+
     return availableReservationObjects.when(
       data: (data) => SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -39,8 +41,8 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
                 data.docs // This builds the content with the slots.
                     .map<Widget>((e) {
                       return ObjectCalendar(date: date, boat: e).border(
-                        left: 1,
-                        color: const Color.fromARGB(255, 223, 223, 223),
+                        left: verticalLineWidth,
+                        color: Theme.of(context).colorScheme.outline,
                       );
                     })
                     .toList()

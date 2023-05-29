@@ -21,7 +21,10 @@ class AuthorWidget extends StatelessWidget {
     bool? authorIsBestuur = postAuthor?.isBestuur;
 
     return [
-      Text(authorName).fontWeight(FontWeight.bold).fontSize(fontSize),
+      Text(
+        authorName,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       // Twitter checkmark.
       if ((authorIsBestuur != null && authorIsBestuur) ||
           (authorIsAppCo != null && authorIsAppCo))

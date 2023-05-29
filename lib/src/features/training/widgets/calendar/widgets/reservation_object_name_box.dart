@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -18,7 +19,7 @@ class ReservationObjectNameBox extends StatelessWidget {
   Widget build(BuildContext context) {
     ReservationObject reservationObject = reservationObj.data();
 
-    const double boatButtonWidth = 128;
+    const double boatButtonWidth = CalendarMeasurement.slotWidth;
     const double boatButtonHeight = 64;
 
     Future<bool> boatPermitted() async {
@@ -40,7 +41,7 @@ class ReservationObjectNameBox extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     const double textHPadding = 8;
     const notAvailableBackgroundOpacity = 0.5;
-    const textOpacity = 0.4;
+    const textOpacity = 0.8;
 
     return FutureWrapper(
       future: boatPermitted(),
@@ -55,20 +56,20 @@ class ReservationObjectNameBox extends StatelessWidget {
                   ? Theme.of(context).colorScheme.errorContainer
                   : isAvailable
                       ? colorScheme.secondaryContainer
-                      : colorScheme.secondaryContainer
+                      : colorScheme.surface
                           .withOpacity(notAvailableBackgroundOpacity),
+              margin: EdgeInsets.zero,
               child: Text(
                 reservationObject.name,
-                style: Theme.of(context).textTheme.labelLarge,
-              )
-                  .textColor(
-                    reservationObject.critical
-                        ? colorScheme.onSecondaryContainer
-                            .withOpacity(textOpacity)
-                        : colorScheme.onSecondaryContainer,
-                  )
-                  .center()
-                  .padding(horizontal: textHPadding),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: reservationObject.critical
+                          ? colorScheme.onErrorContainer
+                              .withOpacity(textOpacity)
+                          : isAvailable
+                              ? colorScheme.onSecondaryContainer
+                              : colorScheme.onSurface.withOpacity(textOpacity),
+                    ),
+              ).center().padding(horizontal: textHPadding),
             ),
             onTap: () => Routemaster.of(context).push(
               'reservationObject/${reservationObj.id}',

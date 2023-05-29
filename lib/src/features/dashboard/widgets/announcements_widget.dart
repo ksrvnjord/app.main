@@ -20,7 +20,10 @@ class AnnouncementsWidget extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return [
-      const WidgetHeader(title: "Aankondigingen"),
+      const WidgetHeader(
+        title: "Aankondigingen",
+        titleIcon: Icons.campaign,
+      ),
       announcementsVal.when(
         data: (announcements) => announcements == null
             ? const Text("Geen aankondigingen gevonden")
@@ -28,7 +31,9 @@ class AnnouncementsWidget extends ConsumerWidget {
                 .map(
                   (announcement) {
                     return ListTile(
-                      title: Text(announcement.title),
+                      title: Text(
+                        announcement.title,
+                      ),
                       subtitle: Text.rich(TextSpan(children: [
                         TextSpan(
                           text: "${announcement.author} ",
@@ -72,7 +77,7 @@ class AnnouncementsWidget extends ConsumerWidget {
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             height: shimmerContainerHeight,
           ),

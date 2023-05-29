@@ -20,13 +20,15 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
 
     final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 8;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return InkWell(
       child: [
         ClipRRect(
           borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(16),
+            topLeft: Radius.circular(12),
             // ignore: no-equal-arguments
-            topRight: Radius.circular(16),
+            topRight: Radius.circular(12),
           ),
           child: Image(
             image: AssetImage(imagePath),
@@ -38,11 +40,12 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
         ),
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: colorScheme.onPrimaryContainer,
+              ),
         ).alignment(Alignment.center),
       ].toColumn().card(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            elevation: 0,
+            color: colorScheme.primaryContainer,
           ),
       onTap: () => Routemaster.of(context).push(pushRoute),
     );
