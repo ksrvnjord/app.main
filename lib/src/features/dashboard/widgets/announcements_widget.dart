@@ -20,7 +20,10 @@ class AnnouncementsWidget extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return [
-      const WidgetHeader(title: "Aankondigingen"),
+      const WidgetHeader(
+        title: "Aankondigingen",
+        titleIcon: Icons.campaign,
+      ),
       announcementsVal.when(
         data: (announcements) => announcements == null
             ? const Text("Geen aankondigingen gevonden")

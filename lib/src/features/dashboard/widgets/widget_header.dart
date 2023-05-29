@@ -11,6 +11,7 @@ class WidgetHeader extends StatelessWidget {
   const WidgetHeader({
     Key? key,
     required this.title,
+    this.titleIcon,
     this.onTapName,
     this.onTap,
   }) : super(key: key);
@@ -18,6 +19,7 @@ class WidgetHeader extends StatelessWidget {
   final String title;
   final String? onTapName;
   final VoidCallback? onTap;
+  final IconData? titleIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,19 @@ class WidgetHeader extends StatelessWidget {
     const double headerHPadding = 8;
 
     return [
-      Text(
-        title,
-        style: textTheme.titleLarge,
-      ).alignment(Alignment.centerLeft),
+      [
+        if (titleIcon != null)
+          Icon(
+            titleIcon,
+            size: textTheme.titleLarge?.fontSize,
+          ),
+        Text(
+          title,
+          style: textTheme.titleLarge,
+        ).alignment(Alignment.centerLeft),
+      ].toRow(
+        separator: const SizedBox(width: 8),
+      ),
       if (onTap != null)
         GestureDetector(
           // ignore: sort_child_properties_last

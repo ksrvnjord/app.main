@@ -23,6 +23,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
       children: [
         WidgetHeader(
           title: "Evenementen",
+          titleIcon: Icons.event,
           onTapName: "Volledige agenda",
           onTap: () => Routemaster.of(context).push('events'),
         ),
