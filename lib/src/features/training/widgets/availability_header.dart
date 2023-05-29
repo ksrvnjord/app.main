@@ -11,9 +11,9 @@ class AvailabilityHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String text = isAvailable ? "Beschikbaar" : "Niet beschikbaar";
-    Color color = isAvailable
-        ? Colors.lightGreen.shade100
-        : Theme.of(context).colorScheme.errorContainer;
+    final colorScheme = Theme.of(context).colorScheme;
+    Color color =
+        isAvailable ? colorScheme.primaryContainer : colorScheme.errorContainer;
 
     return Row(children: [
       Expanded(
@@ -22,7 +22,11 @@ class AvailabilityHeader extends StatelessWidget {
           elevation: 0,
           child: Text(
             text,
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: isAvailable
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onErrorContainer,
+                ),
             textAlign: TextAlign.center,
           ),
         ),

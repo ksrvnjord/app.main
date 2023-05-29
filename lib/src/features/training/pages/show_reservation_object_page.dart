@@ -75,7 +75,6 @@ class ShowReservationObjectPage extends ConsumerWidget {
           AvailabilityHeader(isAvailable: isVisible && !isCritical),
           if (comment.isNotEmpty)
             Card(
-              color: Colors.amber.shade100,
               elevation: 0,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40)),

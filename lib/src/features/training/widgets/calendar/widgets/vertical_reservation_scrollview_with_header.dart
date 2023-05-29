@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_token_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/api/reservation_objects.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/object_calendar.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/reservation_object_name_box.dart';
