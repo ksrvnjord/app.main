@@ -1,12 +1,14 @@
 // ignore_for_file: prefer-single-widget-per-file
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -103,6 +105,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
         backgroundColor: Colors.red,
       ));
     }
+    GetIt.I<CurrentUser>().fillContact(client);
   }
 
   @override
@@ -126,7 +129,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
           value: listed,
           onChanged: toggleCheckBox,
         ),
-        const Text('Zichtbaar in de app'),
+        const Text('Zichtbaar in de almanak'),
       ].toRow(),
       const Divider(),
       if (listed)
