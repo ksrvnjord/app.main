@@ -24,7 +24,6 @@ class PostWidget extends ConsumerWidget {
     final post = snapshot.data();
     const int contentMaxLines = 12;
 
-    const double titleFontSize = 20;
     const double headerPadding = 4;
     const double postStatisticsTopPadding = 4;
 

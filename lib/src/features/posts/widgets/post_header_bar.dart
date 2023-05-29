@@ -18,7 +18,6 @@ class PostHeaderBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final post = snapshot.data();
     const double profilePictureIconSize = 20;
-    const double postTimeFontSize = 14;
     const double titleLeftPadding = 8;
 
     final postAuthorId = post?.authorId ?? "";
