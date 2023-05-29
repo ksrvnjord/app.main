@@ -57,6 +57,10 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     const double bottomPaddingLogo = 10; // To align logo with the ProfileIcon.
 
+    const double indent = 56;
+    const endIndent = indent;
+    const double vaarverbodTopPadding = 4;
+
     return Scaffold(
       appBar: PreferredSize(
         // ignore: sort_child_properties_last
@@ -90,7 +94,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
             const VaarverbodWidget().padding(
-              vertical: elementVPadding,
+              top: vaarverbodTopPadding,
               horizontal: elementHPadding,
             ),
             FirebaseWidget(
@@ -98,7 +102,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 vertical: elementVPadding,
               ),
             ),
+            const Divider(
+              indent: indent,
+              endIndent: endIndent,
+            ),
             const ComingWeekEventsWidget().padding(vertical: elementVPadding),
+            const Divider(
+              indent: indent,
+              endIndent: endIndent,
+            ),
             const AnnouncementsWidget().padding(vertical: elementVPadding),
           ],
         ),
