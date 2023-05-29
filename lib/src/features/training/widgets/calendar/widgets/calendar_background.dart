@@ -15,7 +15,7 @@ class CalendarBackground extends StatelessWidget {
     const int amountOfSlots = CalendarMeasurement.amountOfSlots;
     const double slotHeight = CalendarMeasurement.slotHeight;
     final colorScheme = Theme.of(context).colorScheme;
-    final Color availableColor = colorScheme.outline.withOpacity(0.5);
+    final Color availableColor = colorScheme.outline;
     final Color unavailableColor = availableColor.withOpacity(0.1);
 
     return [
