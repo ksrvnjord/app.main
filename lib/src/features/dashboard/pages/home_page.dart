@@ -59,10 +59,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     const double elementPadding = 8;
 
-    const double logoHeight = 64;
-    const double myProfileSize = 32;
+    const double logoHeight = 56;
+    const double myProfileSize = 26;
 
     double screenTopPadding = MediaQuery.of(context).padding.top;
+
+    const double logoBottomPadding = 2;
+    const double logoLeftPadding = 8;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -72,35 +75,39 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
       body: RefreshIndicator(
         // ignore: sort_child_properties_last
-        child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
-          [
-            Image.asset(
-              Theme.of(context).brightness == Brightness.light
-                  ? Images.appLogoBlue
-                  : Images.appLogo,
-              height: logoHeight,
-            ).padding(
-              bottom: elementPadding + 1,
-            ), // To align logo with the ProfileIcon.
-            FirebaseWidget(
-              onAuthenticated: IconButton(
-                iconSize: myProfileSize,
-                onPressed: () => Routemaster.of(context).push('edit'),
-                icon: const MyProfilePicture(profileIconSize: myProfileSize),
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 80),
+          children: <Widget>[
+            [
+              Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? Images.appLogoBlue
+                    : Images.appLogo,
+                height: logoHeight,
+              ).padding(
+                bottom: elementPadding + logoBottomPadding,
+                left: logoLeftPadding,
+              ), // To align logo with the ProfileIcon.
+              FirebaseWidget(
+                onAuthenticated: IconButton(
+                  iconSize: myProfileSize,
+                  onPressed: () => Routemaster.of(context).push('edit'),
+                  icon: const MyProfilePicture(profileIconSize: myProfileSize),
+                ),
               ),
+            ].toRow(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
             ),
-          ].toRow(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-          ),
-          const VaarverbodWidget().padding(vertical: elementPadding),
-          FirebaseWidget(
-            onAuthenticated:
-                const FormsWidget().padding(vertical: elementPadding),
-          ),
-          const ComingWeekEventsWidget().padding(vertical: elementPadding),
-          const AnnouncementsWidget().padding(vertical: elementPadding),
-        ]),
+            const VaarverbodWidget().padding(all: elementPadding),
+            FirebaseWidget(
+              onAuthenticated:
+                  const FormsWidget().padding(vertical: elementPadding),
+            ),
+            const ComingWeekEventsWidget().padding(vertical: elementPadding),
+            const AnnouncementsWidget().padding(vertical: elementPadding),
+          ],
+        ),
         onRefresh: _refresh,
       ),
     );

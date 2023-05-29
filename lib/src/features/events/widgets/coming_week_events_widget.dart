@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/fade_bottom_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,6 +16,8 @@ class ComingWeekEventsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final comingEvents = ref.watch(comingEventsProvider);
+    const amountOfEvents = 3;
+    const double hPadding = 12;
 
     return Column(
       children: [
@@ -28,44 +28,25 @@ class ComingWeekEventsWidget extends ConsumerWidget {
         ),
         InkWell(
           // ignore: sort_child_properties_last
-          child: SizedBox(
-            height: cardHeight,
-            child: comingEvents.when(
-              data: (events) => FadeBottomWidget(
-                parentHeight: cardHeight,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    Event event = events[index];
-                    const double elementPadding = 4;
-
-                    return UpcomingEventWidget(
-                      elementPadding: elementPadding,
-                      event: event,
-                    ).paddingDirectional(horizontal: elementPadding);
-                  },
-                  itemCount: events.length,
+          child: comingEvents.when(
+            data: (events) => [
+              for (final event in events.take(amountOfEvents))
+                UpcomingEventWidget(
+                  event: event,
                 ),
-              ),
-              loading: () => ShimmerWidget(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  ),
-                  height: cardHeight,
+            ].toColumn().padding(horizontal: hPadding),
+            loading: () => ShimmerWidget(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
                 ),
+                height: cardHeight,
               ),
-              error: (error, stackTrace) =>
-                  ErrorCardWidget(errorMessage: error.toString()),
             ),
-          ).card(
-            elevation: 0,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
+            error: (error, stackTrace) =>
+                ErrorCardWidget(errorMessage: error.toString()),
           ),
           onTap: () => Routemaster.of(context).push('events'),
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
       ],
     );

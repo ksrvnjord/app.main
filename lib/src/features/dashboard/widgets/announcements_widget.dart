@@ -32,7 +32,7 @@ class AnnouncementsWidget extends ConsumerWidget {
                       subtitle: Text.rich(TextSpan(children: [
                         TextSpan(
                           text: "${announcement.author} ",
-                          style: textTheme.labelLarge,
+                          style: textTheme.labelMedium,
                         ),
                         TextSpan(
                           text: timeago.format(
@@ -40,14 +40,11 @@ class AnnouncementsWidget extends ConsumerWidget {
                             locale: 'nl',
                           ),
                           style: textTheme.labelMedium,
-                        ),
+                        ).textColor(Theme.of(context).colorScheme.secondary),
                       ])),
                       trailing: [
                         const Icon(Icons.chevron_right),
                       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                      ),
                       // ignore: prefer-extracting-callbacks
                       onTap: () {
                         FirebaseAnalytics.instance.logEvent(
@@ -68,9 +65,6 @@ class AnnouncementsWidget extends ConsumerWidget {
                 .toList()
                 .toColumn(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  separator: const Divider(
-                    height: 1,
-                  ),
                 ),
         error: (error, stackTrace) =>
             ErrorCardWidget(errorMessage: error.toString()),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -20,11 +19,6 @@ class AllTrainingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> filterList =
-        ref.watch(reservationTypeFiltersListProvider);
-    const double yourFiltersLPadding = 8;
-    const double yourFiltersRPadding = 4;
-
     final colorScheme = Theme.of(context).colorScheme;
 
     return DefaultTabController(
@@ -43,42 +37,6 @@ class AllTrainingPage extends ConsumerWidget {
           ),
         ),
         body: [
-          Container(
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: GestureDetector(
-                child: Row(children: [
-                  if (filterList.isNotEmpty)
-                    Text(
-                      'Je selectie:',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ).padding(
-                      right: yourFiltersRPadding,
-                      left: yourFiltersLPadding,
-                    ),
-                  ...filterList
-                      .map<Widget>((filter) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 2,
-                            ),
-                            child: Chip(
-                              label: Text(filter),
-                              labelStyle:
-                                  Theme.of(context).textTheme.labelMedium,
-                              visualDensity: VisualDensity.compact,
-                            ),
-                          ))
-                      .toList(),
-                ]),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ShowFiltersPage(),
-                  ),
-                ),
-              ),
-            ),
-          ),
           TabBarView(
             // ignore: sort_child_properties_last
             children: days
