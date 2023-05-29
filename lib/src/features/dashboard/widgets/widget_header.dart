@@ -11,7 +11,7 @@ class WidgetHeader extends StatelessWidget {
   const WidgetHeader({
     Key? key,
     required this.title,
-    this.titleIcon,
+    required this.titleIcon,
     this.onTapName,
     this.onTap,
   }) : super(key: key);
@@ -19,7 +19,7 @@ class WidgetHeader extends StatelessWidget {
   final String title;
   final String? onTapName;
   final VoidCallback? onTap;
-  final IconData? titleIcon;
+  final IconData titleIcon;
 
   @override
   Widget build(BuildContext context) {
