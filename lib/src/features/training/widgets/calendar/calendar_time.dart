@@ -22,6 +22,10 @@ class CalendarTime extends StatelessWidget {
     const double leftPaddingOfTime = 4;
     const double timeRightPadding = 16;
 
+    final colorScheme = Theme.of(context).colorScheme;
+    final Color availableColor = colorScheme.outline.withOpacity(0.5);
+    const double thicknessSmallTicks = 0.25;
+
     return SizedBox(
       width: timeWidth,
       child: timestamps
@@ -34,7 +38,12 @@ class CalendarTime extends StatelessWidget {
                       left: timestamp.minute == 0 ? bigTicks : smallTicks,
                     ),
                     height: CalendarMeasurement.slotHeight,
-                    child: const Divider(color: Colors.grey),
+                    child: Divider(
+                      height: 1,
+                      thickness:
+                          timestamp.minute == 0 ? 1 : thicknessSmallTicks,
+                      color: availableColor,
+                    ),
                   ),
                   if (timestamp.minute == 0)
                     [

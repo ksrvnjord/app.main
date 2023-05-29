@@ -14,18 +14,25 @@ class CalendarBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     const int amountOfSlots = CalendarMeasurement.amountOfSlots;
     const double slotHeight = CalendarMeasurement.slotHeight;
+    final colorScheme = Theme.of(context).colorScheme;
+    final Color availableColor = colorScheme.outline.withOpacity(0.5);
+    final Color unavailableColor = availableColor.withOpacity(0.1);
 
-    final Color unavailableColor = Colors.grey.shade200;
-    const Color availableColor = Colors.grey;
-
-    return List.filled(
-      amountOfSlots,
-      SizedBox(
-        height: slotHeight,
-        child: Divider(
-          color: available ? availableColor : unavailableColor,
+    return [
+      for (int i = 0; i < amountOfSlots; i++)
+        SizedBox(
+          height: slotHeight,
+          child: Divider(
+            thickness: thickness(i),
+            color: available ? availableColor : unavailableColor,
+          ),
         ),
-      ),
-    ).toColumn();
+    ].toColumn();
+  }
+
+  double thickness(int index) {
+    const double unevenThickness = 0.25;
+
+    return index.isEven ? 1 : unevenThickness;
   }
 }
