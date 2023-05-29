@@ -44,10 +44,13 @@ class PostHeaderBar extends ConsumerWidget {
             postAuthor: postAuthor,
             authorName: post?.authorName ?? "Onbekend",
           ),
-          Text(timeago.format(
-            post?.createdTime.toDate() ?? DateTime.now(),
-            locale: 'nl',
-          )).textColor(Colors.blueGrey).fontSize(postTimeFontSize),
+          Text(
+            timeago.format(
+              post?.createdTime.toDate() ?? DateTime.now(),
+              locale: 'nl',
+            ),
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
         ]
             .toColumn(
               crossAxisAlignment: CrossAxisAlignment.start,
