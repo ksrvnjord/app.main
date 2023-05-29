@@ -22,7 +22,8 @@ class FormsWidget extends ConsumerWidget {
     BuildContext context,
   ) {
     if (polls.size == 0) {
-      return const Text("Geen open forms op dit moment").textColor(Colors.grey);
+      return const Text("Geen open forms op dit moment")
+          .textColor(Theme.of(context).colorScheme.secondary);
     }
     final docs = polls.docs;
     final first = docs.first;
