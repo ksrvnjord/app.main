@@ -1,31 +1,33 @@
 // ignore_for_file: prefer-static-class
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'firebase_options.dart';
 import 'package:feedback_sentry/feedback_sentry.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:routemaster/routemaster.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:stack_trace/stack_trace.dart' as stack_trace;
+
+import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
 // ignore: no-empty-block,avoid-redundant-async
@@ -153,6 +155,8 @@ class Application extends ConsumerWidget {
       TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
     });
 
+    final themeBrightness = ref.watch(themeBrightnessProvider);
+
     return Builder(
       builder: (context) => MaterialApp.router(
         routeInformationParser: const RoutemasterParser(),
@@ -169,8 +173,6 @@ class Application extends ConsumerWidget {
           useMaterial3: true,
           brightness: Brightness.light,
           colorSchemeSeed: Colors.lightBlue,
-          textTheme:
-              GoogleFonts.ibmPlexSansTextTheme(Theme.of(context).textTheme),
         ),
         darkTheme: ThemeData(
           pageTransitionsTheme: pageTransitionsTheme,
@@ -179,8 +181,7 @@ class Application extends ConsumerWidget {
           colorSchemeSeed: Colors.lightBlue,
           // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
         ),
-        themeMode: ThemeMode
-            .light, // TODO: provide option in settings where user can choose whether to use dark, light or system brightness.
+        themeMode: themeBrightness.whenOrNull(data: (themeMode) => themeMode),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

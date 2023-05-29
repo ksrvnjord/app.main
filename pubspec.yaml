@@ -21,7 +21,6 @@ dependencies:
   graphql_flutter: ^5.1.1
   gql: ^0.14.0
   styled_widget: ^0.4.0+3
-  google_fonts: ^4.0.4
   oauth2: ^2.0.0
   get_it: ^7.2.0
   intl: ^0.18.0
