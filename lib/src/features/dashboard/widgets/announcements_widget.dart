@@ -31,7 +31,9 @@ class AnnouncementsWidget extends ConsumerWidget {
                 .map(
                   (announcement) {
                     return ListTile(
-                      title: Text(announcement.title),
+                      title: Text(
+                        announcement.title,
+                      ),
                       subtitle: Text.rich(TextSpan(children: [
                         TextSpan(
                           text: "${announcement.author} ",

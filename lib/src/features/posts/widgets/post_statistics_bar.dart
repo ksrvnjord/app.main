@@ -49,10 +49,10 @@ class PostStatisticsBar extends ConsumerWidget {
             ? InkWell(
                 child: Text(
                   "${data.size} reactie${data.size > 1 ? 's' : ''}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: fontSize, color: Colors.blueGrey),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: fontSize,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
                 ),
                 onTap: () =>
                     Routemaster.of(context).push('${snapshot.id}/comments'),

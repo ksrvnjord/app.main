@@ -48,7 +48,9 @@ class PostHeaderBar extends ConsumerWidget {
               post?.createdTime.toDate() ?? DateTime.now(),
               locale: 'nl',
             ),
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                ),
           ),
         ]
             .toColumn(
