@@ -13,18 +13,24 @@ class EventsWidget extends StatelessWidget {
 
     const double bodyMonthHeaderHeight = 56;
 
+    // Set color for every event to the primary color.
+    final events = data
+        .map((e) => e.copyWith(color: colorScheme.primaryContainer))
+        .toList();
+
     final textTheme = Theme.of(context).textTheme;
 
     return SfCalendar(
-      // TODO: on darkmode this doesn't look right yet.
       view: CalendarView.schedule,
       backgroundColor: colorScheme.background,
-      dataSource: MeetingDataSource(data),
+      dataSource: MeetingDataSource(events),
       headerStyle: CalendarHeaderStyle(
-        backgroundColor: colorScheme.primaryContainer,
-        textStyle: textTheme.titleMedium ?? const TextStyle(),
+        textStyle: textTheme.titleLarge ?? const TextStyle(),
       ),
       scheduleViewSettings: ScheduleViewSettings(
+        appointmentTextStyle: textTheme.bodyMedium
+                ?.copyWith(color: colorScheme.onPrimaryContainer) ??
+            const TextStyle(),
         hideEmptyScheduleWeek: true,
         monthHeaderSettings: MonthHeaderSettings(
           monthFormat: 'MMMM',
@@ -35,7 +41,6 @@ class EventsWidget extends StatelessWidget {
       ),
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
-      appointmentTextStyle: textTheme.bodyMedium ?? const TextStyle(),
     );
   }
 }
@@ -53,6 +58,11 @@ class MeetingDataSource extends CalendarDataSource {
   @override
   DateTime getEndTime(int index) {
     return _meetingData(index).endTime;
+  }
+
+  @override
+  Color getColor(int index) {
+    return _meetingData(index).color ?? Colors.white;
   }
 
   @override
