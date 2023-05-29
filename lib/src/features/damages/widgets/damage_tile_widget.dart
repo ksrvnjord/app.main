@@ -70,9 +70,6 @@ class DamageTileWidget extends StatelessWidget {
                   ? orange.shade900
                   : orange.shade100,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
     );
   }
 }

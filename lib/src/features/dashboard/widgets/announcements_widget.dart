@@ -72,7 +72,7 @@ class AnnouncementsWidget extends ConsumerWidget {
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             height: shimmerContainerHeight,
           ),
