@@ -34,8 +34,12 @@ class VaarverbodWidget extends ConsumerWidget {
     }
 
     final colorScheme = Theme.of(context).colorScheme;
-    final Color backgroundColor =
-        status ? colorScheme.errorContainer : colorScheme.primaryContainer;
+    const opacity = 0.6;
+    final Color backgroundColor = status
+        ? colorScheme.errorContainer
+        : Theme.of(context).brightness == Brightness.light
+            ? Colors.green.shade100.withOpacity(opacity)
+            : Colors.green.shade900.withOpacity(opacity);
 
     const double descriptionPadding = 8;
 
@@ -69,9 +73,6 @@ class VaarverbodWidget extends ConsumerWidget {
     ).card(
       color: backgroundColor,
       elevation: 0,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
       margin: const EdgeInsets.all(0),
     );
   }

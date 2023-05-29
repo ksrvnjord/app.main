@@ -110,11 +110,8 @@ class WeatherWidget extends ConsumerWidget {
             style: Theme.of(context).textTheme.labelMedium,
           ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8).card(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.secondaryContainer,
               elevation: 1,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
             );
       },
       error: (err, stk) => Text(err.toString()),
