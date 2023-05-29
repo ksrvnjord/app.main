@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
@@ -213,28 +214,7 @@ class _EditAlmanakProfilePageState
                 ),
               ],
             ),
-            FormSection(title: "Notificaties", children: [
-              ListTile(
-                title: const Text('Stel mijn notificatievoorkeuren in'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => Routemaster.of(context).push(
-                  'notification-preferences',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-            ]),
-            FormSection(title: "Privacy", children: [
-              ListTile(
-                title: const Text('Wijzig mijn zichtbaarheid in de app'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => Routemaster.of(context).push(
-                  'visibility',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-            ]),
+
             // ignore: avoid-non-ascii-symbols
             FormSection(title: "Voedselallergieën", children: [
               [
@@ -252,6 +232,56 @@ class _EditAlmanakProfilePageState
                   ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
               ].toColumn(),
+            ]),
+
+            FormSection(title: "Privacy", children: [
+              ListTile(
+                title: const Text('Wijzig mijn zichtbaarheid in de app'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap: () => Routemaster.of(context).push(
+                  'visibility',
+                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
+            ]),
+            FormSection(title: "Notificaties", children: [
+              ListTile(
+                title: const Text('Stel mijn notificatievoorkeuren in'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap: () => Routemaster.of(context).push(
+                  'notification-preferences',
+                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
+            ]),
+            FormSection(title: "Weergave", children: [
+              DropdownButtonFormField<ThemeMode>(
+                items: ThemeMode.values
+                    .map((mode) => DropdownMenuItem(
+                          value: mode,
+                          child: Text(
+                            {
+                                  ThemeMode.system:
+                                      'Gebruik telefooninstellingen',
+                                  ThemeMode.light: 'Licht',
+                                  ThemeMode.dark: 'Donker',
+                                }[mode] ??
+                                'Onbekend',
+                          ),
+                        ))
+                    .toList(),
+                value: ref
+                    .watch(themeBrightnessProvider)
+                    .whenOrNull(data: (themeMode) => themeMode),
+                hint: const Text('Weergave modus'),
+                onChanged: (value) => ref
+                    .read(themeBrightnessProvider.notifier)
+                    .setThemeMode(value),
+                isExpanded: true,
+                decoration: const InputDecoration(labelText: 'Weergave modus'),
+              ),
             ]),
             // Add a TextFormField for the team the user is in.
           ].toColumn(
