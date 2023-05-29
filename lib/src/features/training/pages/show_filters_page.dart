@@ -31,18 +31,18 @@ class ShowFiltersPage extends ConsumerWidget {
     final Map<String, List<String>> activeFilters =
         ref.watch(reservationTypeFiltersProvider);
 
-    final Map<String, Color> categoryColors = {
-      'Binnen': Colors.blue.shade100,
-      '1 roeier': Colors.red.shade100,
-      '2 roeiers': Colors.orange.shade100,
-      '4 roeiers': Colors.green.shade100,
-      '8 roeiers': Colors.purple.shade100,
-      'Overig': Colors.grey.shade100,
+    final Map<String, MaterialColor> categoryColors = {
+      'Binnen': Colors.blue,
+      '1 roeier': Colors.red,
+      '2 roeiers': Colors.orange,
+      '4 roeiers': Colors.green,
+      '8 roeiers': Colors.purple,
+      'Overig': Colors.brown,
     };
 
     const double categoryPadding = 8;
     const double pagePadding = 8;
-    const double headerFontSize = 20;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,7 +58,13 @@ class ShowFiltersPage extends ConsumerWidget {
                   MultiSelectChipField<String?>(
                     items: availableFilters[key] ?? [],
                     decoration: const BoxDecoration(),
-                    selectedChipColor: categoryColors[key],
+                    chipColor: Theme.of(context).colorScheme.surface,
+                    selectedChipColor:
+                        Theme.of(context).brightness == Brightness.light
+                            ? categoryColors[key]?.shade100
+                            : categoryColors[key]?.shade900,
+                    textStyle: textTheme.bodyMedium,
+                    selectedTextStyle: Theme.of(context).textTheme.bodyMedium,
                     chipShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
@@ -68,9 +74,7 @@ class ShowFiltersPage extends ConsumerWidget {
                           key,
                           values.whereType<String>().toList(),
                         ),
-                    title: Text(key)
-                        .fontSize(headerFontSize)
-                        .fontWeight(FontWeight.bold),
+                    title: Text(key, style: textTheme.titleLarge),
                     scroll: false,
                     headerColor: Colors.transparent,
                     initialValue: activeFilters[key] ?? [],
