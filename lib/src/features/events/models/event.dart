@@ -30,13 +30,13 @@ class Event {
     String? title,
     DateTime? startTime,
     DateTime? endTime,
-    Color? color,
+    required Color color,
   }) {
     return Event(
       title: title ?? this.title,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
-      color: color ?? this.color,
+      color: color,
     );
   }
 }
