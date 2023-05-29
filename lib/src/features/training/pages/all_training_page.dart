@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -20,11 +19,6 @@ class AllTrainingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String> filterList =
-        ref.watch(reservationTypeFiltersListProvider);
-    const double yourFiltersLPadding = 8;
-    const double yourFiltersRPadding = 4;
-
     final colorScheme = Theme.of(context).colorScheme;
 
     return DefaultTabController(
