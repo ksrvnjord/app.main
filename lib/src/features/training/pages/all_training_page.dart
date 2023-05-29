@@ -43,42 +43,6 @@ class AllTrainingPage extends ConsumerWidget {
           ),
         ),
         body: [
-          Container(
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: GestureDetector(
-                child: Row(children: [
-                  if (filterList.isNotEmpty)
-                    Text(
-                      'Je selectie:',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ).padding(
-                      right: yourFiltersRPadding,
-                      left: yourFiltersLPadding,
-                    ),
-                  ...filterList
-                      .map<Widget>((filter) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 2,
-                            ),
-                            child: Chip(
-                              label: Text(filter),
-                              labelStyle:
-                                  Theme.of(context).textTheme.labelMedium,
-                              visualDensity: VisualDensity.compact,
-                            ),
-                          ))
-                      .toList(),
-                ]),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ShowFiltersPage(),
-                  ),
-                ),
-              ),
-            ),
-          ),
           TabBarView(
             // ignore: sort_child_properties_last
             children: days
