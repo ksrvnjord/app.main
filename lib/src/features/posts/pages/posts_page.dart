@@ -14,7 +14,6 @@ class PostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topics = ref.watch(postTopicsProvider);
-    final selectedTopic = ref.watch(selectedTopicProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,25 +22,40 @@ class PostsPage extends ConsumerWidget {
           IconButton(
             onPressed: () => showModalBottomSheet(
               context: context,
-              builder: (context) => Consumer(
-                builder: (_, ref, __) => Wrap(children: [
-                  RadioListTile<String?>(
-                    value: null,
-                    groupValue: selectedTopic,
-                    onChanged: (value) =>
-                        ref.read(selectedTopicProvider.notifier).state = value,
-                    title: const Text("Alle posts"),
-                  ),
-                  for (final topic in topics)
-                    RadioListTile<String>(
-                      value: topic,
-                      groupValue: selectedTopic,
-                      onChanged: (value) => ref
-                          .read(selectedTopicProvider.notifier)
-                          .state = value,
-                      title: Text(topic),
-                    ),
-                ]),
+              builder: (_) => ProviderScope(
+                // When using a provider inside a modal bottom sheet, you need to wrap it in a ProviderScope, because the sheet is placed at the top of the widget tree.
+
+                parent: ProviderScope.containerOf(
+                  context,
+                ), // The new provider scope will share the same providers as the parent scope.
+
+                child: Consumer(
+                  // We need a consumer to have access to the providers of the provider scope.
+                  builder: (_, ref, __) {
+                    final selectedTopic = ref.watch(selectedTopicProvider);
+
+                    return Wrap(children: [
+                      RadioListTile<String?>(
+                        // Add extra option to show all posts.
+                        value: null, // Null means no topic selected.
+                        groupValue: selectedTopic,
+                        onChanged: (value) => ref
+                            .read(selectedTopicProvider.notifier)
+                            .state = value,
+                        title: const Text("Alle posts"),
+                      ),
+                      for (final topic in topics)
+                        RadioListTile<String>(
+                          value: topic,
+                          groupValue: selectedTopic,
+                          onChanged: (value) => ref
+                              .read(selectedTopicProvider.notifier)
+                              .state = value,
+                          title: Text(topic),
+                        ),
+                    ]);
+                  },
+                ),
               ),
               isScrollControlled: true,
             ),
