@@ -5,5 +5,7 @@ class Images {
   static const placeholderProfilePicture =
       "assets/images/placeholder_profile_picture.png";
 
+  static const unknownRoute404 = "assets/images/404.png";
+
   Images._();
 }
