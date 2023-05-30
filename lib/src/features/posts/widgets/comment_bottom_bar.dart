@@ -20,16 +20,13 @@ class CommentBottomBar extends StatelessWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    const double opacity = 0.5;
-
     return [
       InkWell(
         child: Text(
           "Zwaan",
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: likedByMe
-                    ? colorScheme.onSurface
-                    : colorScheme.onSurface.withOpacity(opacity),
+                color:
+                    likedByMe ? colorScheme.primary : colorScheme.onBackground,
               ),
         ),
         onTap: () => CommentsService.like(snapshot),

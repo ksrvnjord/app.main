@@ -22,7 +22,7 @@ class PostStatisticsBar extends ConsumerWidget {
     final commentsVal = ref.watch(commentsProvider(snapshot.id));
     const swanIconSize = 16.0;
 
-    const double fontSize = 16;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return [
       if (post != null && post.likedBy.isNotEmpty)
@@ -32,8 +32,8 @@ class PostStatisticsBar extends ConsumerWidget {
             "${post.likedBy.length.toString()}x ",
             style: Theme.of(context)
                 .textTheme
-                .bodyMedium
-                ?.copyWith(fontSize: fontSize, color: Colors.blueGrey),
+                .bodyLarge
+                ?.copyWith(color: colorScheme.outline),
           ),
           SvgPicture.asset(
             Svgs.swanWhite,
@@ -41,7 +41,7 @@ class PostStatisticsBar extends ConsumerWidget {
             // ignore: no-equal-arguments
             height: swanIconSize,
             // ignore: deprecated_member_use
-            color: Theme.of(context).colorScheme.primary,
+            color: colorScheme.primary,
           ),
         ].toRow(),
       commentsVal.when(
@@ -49,9 +49,8 @@ class PostStatisticsBar extends ConsumerWidget {
             ? InkWell(
                 child: Text(
                   "${data.size} reactie${data.size > 1 ? 's' : ''}",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: fontSize,
-                        color: Theme.of(context).colorScheme.tertiary,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                 ),
                 onTap: () =>
