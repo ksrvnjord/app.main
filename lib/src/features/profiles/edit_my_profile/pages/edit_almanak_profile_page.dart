@@ -44,7 +44,13 @@ class _EditAlmanakProfilePageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mijn profiel & instellingen'),
+        title: const Text("Mijn profiel"),
+        actions: [
+          IconButton(
+            onPressed: () => Routemaster.of(context).push('settings'),
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: userVal.when(
         data: (user) => buildForm(
@@ -234,28 +240,6 @@ class _EditAlmanakProfilePageState
               ].toColumn(),
             ]),
 
-            FormSection(title: "Privacy", children: [
-              ListTile(
-                title: const Text('Wijzig mijn zichtbaarheid in de app'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => Routemaster.of(context).push(
-                  'visibility',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-            ]),
-            FormSection(title: "Notificaties", children: [
-              ListTile(
-                title: const Text('Stel mijn notificatievoorkeuren in'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => Routemaster.of(context).push(
-                  'notification-preferences',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-            ]),
             FormSection(title: "Afschrijven", children: [
               ListTile(
                 title: const Text('Bekijk mijn permissies'),
@@ -267,33 +251,7 @@ class _EditAlmanakProfilePageState
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
-            FormSection(title: "Weergave", children: [
-              DropdownButtonFormField<ThemeMode>(
-                items: ThemeMode.values
-                    .map((mode) => DropdownMenuItem(
-                          value: mode,
-                          child: Text(
-                            {
-                                  ThemeMode.system:
-                                      'Gebruik telefooninstellingen',
-                                  ThemeMode.light: 'Licht',
-                                  ThemeMode.dark: 'Donker',
-                                }[mode] ??
-                                'Onbekend',
-                          ),
-                        ))
-                    .toList(),
-                value: ref
-                    .watch(themeBrightnessProvider)
-                    .whenOrNull(data: (themeMode) => themeMode),
-                hint: const Text('Weergave modus'),
-                onChanged: (value) => ref
-                    .read(themeBrightnessProvider.notifier)
-                    .setThemeMode(value),
-                isExpanded: true,
-                decoration: const InputDecoration(labelText: 'Weergave modus'),
-              ),
-            ]),
+
             // Add a TextFormField for the team the user is in.
           ].toColumn(
             crossAxisAlignment: CrossAxisAlignment.start,

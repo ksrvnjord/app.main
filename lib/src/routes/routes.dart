@@ -27,6 +27,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/e
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/almanak_profile_page.dart';
@@ -87,6 +88,14 @@ class Routes {
             child: EditAlmanakProfilePage(),
             name: "Edit Profile",
           ),
+      '/home/my-profile/settings': (_) => const CupertinoPage(
+            child: SettingsPage(),
+            name: "Settings",
+          ),
+      '/home/my-profile/settings/advanced': (_) => const CupertinoPage(
+            child: AdvancedSettingsPage(),
+            name: 'Advanced Settings',
+          ),
       '/home/my-profile/:identifier': (route) => CupertinoPage(
             child: AlmanakProfilePage(
               userId: route.pathParameters['identifier']!,
@@ -123,12 +132,12 @@ class Routes {
             ),
             name: "Fill commissie info",
           ),
-      '/home/my-profile/notification-preferences': (info) =>
+      '/home/my-profile/settings/notification-preferences': (info) =>
           const CupertinoPage(
             child: NotificationsPage(),
             name: 'Notification Preferences',
           ),
-      '/home/my-profile/visibility': (info) => const CupertinoPage(
+      '/home/my-profile/settings/visibility': (info) => const CupertinoPage(
             child: MePrivacyPage(),
             name: "Edit my visibility",
           ),
@@ -314,10 +323,6 @@ class Routes {
           const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
       '/more/beleid': (info) =>
           const CupertinoPage(child: BeleidPage(), name: 'Beleid'),
-      '/more/advanced-settings': (_) => const CupertinoPage(
-            child: AdvancedSettingsPage(),
-            name: 'Advanced Settings',
-          ),
       '/more/gallery': (route) => const CupertinoPage(
             child: GalleryMainPage(),
           ),

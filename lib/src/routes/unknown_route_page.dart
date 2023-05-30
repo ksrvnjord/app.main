@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,13 @@ class UnknownRoutePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double padding = 16;
     final textTheme = Theme.of(context).textTheme;
+
+    log(
+      "404: ${Routemaster.of(context).currentRoute} not found)}",
+      // ignore: no-magic-number
+      level: 2000,
+      name: 'Unknown Route',
+    );
 
     return Scaffold(
       appBar: AppBar(
