@@ -53,6 +53,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dar
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
+import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -82,55 +83,56 @@ class Routes {
             ), // Show upgrade alert on home page if new version is available.
             name: 'Home',
           ),
-      '/home/edit': (_) => const CupertinoPage(
+      '/home/my-profile': (_) => const CupertinoPage(
             child: EditAlmanakProfilePage(),
             name: "Edit Profile",
           ),
-      '/home/edit/:identifier': (route) => CupertinoPage(
+      '/home/my-profile/:identifier': (route) => CupertinoPage(
             child: AlmanakProfilePage(
               userId: route.pathParameters['identifier']!,
             ),
             name: "Preview my profile",
           ),
-      '/home/edit/sensitive-data': (info) => const CupertinoPage(
+      '/home/my-profile/sensitive-data': (info) => const CupertinoPage(
             child: MePage(),
             name: "Edit mijn personal data",
           ),
-      '/home/edit/view-my-permissions': (_) => const CupertinoPage(
+      '/home/my-profile/view-my-permissions': (_) => const CupertinoPage(
             child: MyPermissionsPage(),
             name: "Mijn permissies",
           ),
-      '/home/edit/groups': (_) =>
+      '/home/my-profile/groups': (_) =>
           const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
-      '/home/edit/groups/ploeg': (_) => const CupertinoPage(
+      '/home/my-profile/groups/ploeg': (_) => const CupertinoPage(
             child: SelectPloegPage(),
             name: "Select a ploeg to add",
           ),
-      '/home/edit/groups/ploeg/add': (_) =>
+      '/home/my-profile/groups/ploeg/add': (_) =>
           const CupertinoPage(child: AddPloegPage(), name: "Add a ploeg"),
-      '/home/edit/commissies': (info) => const CupertinoPage(
+      '/home/my-profile/commissies': (info) => const CupertinoPage(
             child: EditCommissiesPage(),
             name: "Edit my commissies",
           ),
-      '/home/edit/commissies/select': (info) => const CupertinoPage(
+      '/home/my-profile/commissies/select': (info) => const CupertinoPage(
             child: SelectCommissiePage(),
             name: "Select a commissie to add",
           ),
-      '/home/edit/commissies/select/fill-info': (info) => CupertinoPage(
+      '/home/my-profile/commissies/select/fill-info': (info) => CupertinoPage(
             child: FillCommissieInfoPage(
               commissie: info.queryParameters['commissie']!,
             ),
             name: "Fill commissie info",
           ),
-      '/home/edit/notification-preferences': (info) => const CupertinoPage(
+      '/home/my-profile/notification-preferences': (info) =>
+          const CupertinoPage(
             child: NotificationsPage(),
             name: 'Notification Preferences',
           ),
-      '/home/edit/visibility': (info) => const CupertinoPage(
+      '/home/my-profile/visibility': (info) => const CupertinoPage(
             child: MePrivacyPage(),
             name: "Edit my visibility",
           ),
-      '/home/edit/allergies': (info) => const CupertinoPage(
+      '/home/my-profile/allergies': (info) => const CupertinoPage(
             child: EditAllergiesPage(),
             name: "Edit my allergies",
           ),
@@ -322,7 +324,7 @@ class Routes {
       '/contact': (route) =>
           const CupertinoPage(child: ContactPage(), name: 'Contact'),
     },
-    onUnknownRoute: (route) => const Redirect('/'),
+    onUnknownRoute: (route) => const CupertinoPage(child: UnknownRoutePage()),
   );
 
   static final unauthenticated = RouteMap(
