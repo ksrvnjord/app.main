@@ -328,7 +328,7 @@ class Routes {
       '/more/gallery': (route) => const CupertinoPage(
             child: GalleryMainPage(),
           ),
-      '/contact': (route) =>
+      '/more/contact': (route) =>
           const CupertinoPage(child: ContactPage(), name: 'Contact'),
     },
     onUnknownRoute: (route) => const CupertinoPage(child: UnknownRoutePage()),
