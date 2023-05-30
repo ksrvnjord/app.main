@@ -25,6 +25,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -94,6 +95,10 @@ class Routes {
       '/home/edit/sensitive-data': (info) => const CupertinoPage(
             child: MePage(),
             name: "Edit mijn personal data",
+          ),
+      '/home/edit/view-my-permissions': (_) => const CupertinoPage(
+            child: MyPermissionsPage(),
+            name: "Mijn permissies",
           ),
       '/home/edit/groups': (_) =>
           const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
