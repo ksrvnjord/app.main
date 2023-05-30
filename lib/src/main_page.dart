@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 
 class MainPage extends StatefulWidget {
@@ -64,5 +65,8 @@ class _MainPageState extends State<MainPage> {
 
   void animateTo(int index, TabPageState tabPage) {
     tabPage.controller.animateTo(index);
+    // ignore: avoid-ignoring-return-values
+    Routemaster.of(context).push(Routes.mainRoutes[
+        index]); // When the user taps on the bottom navigation bar item, we want to push the corresponding route, so that the user can 'reset' the page.
   }
 }

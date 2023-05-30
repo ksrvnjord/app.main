@@ -60,17 +60,19 @@ import 'package:upgrader/upgrader.dart';
 
 @immutable
 class Routes {
+  static const List<String> mainRoutes = [
+    '/home',
+    '/posts',
+    '/training',
+    '/almanak',
+    '/more',
+  ];
+
   static final authenticated = RouteMap(
     routes: {
       '/': (_) => const TabPage(
             child: MainPage(),
-            paths: [
-              '/home',
-              '/posts',
-              '/training',
-              '/almanak',
-              '/more',
-            ],
+            paths: mainRoutes,
             backBehavior: TabBackBehavior.none,
           ),
       '/home': (_) => CupertinoPage(
