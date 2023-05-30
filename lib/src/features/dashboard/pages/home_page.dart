@@ -85,7 +85,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               FirebaseWidget(
                 onAuthenticated: IconButton(
                   iconSize: myProfileSize,
-                  onPressed: () => Routemaster.of(context).push('edit'),
+                  onPressed: () => Routemaster.of(context).push('my-profile'),
                   icon: const MyProfilePicture(profileIconSize: myProfileSize),
                 ),
               ),
