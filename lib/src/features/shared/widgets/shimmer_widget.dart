@@ -7,11 +7,15 @@ class ShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    const double bgOpacity = 0.1;
+    const double highlightOpacity = 0.4;
+
     return Shimmer.fromColors(
       // ignore: sort_child_properties_last
       child: child,
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
+      baseColor: colorScheme.outline.withOpacity(bgOpacity),
+      highlightColor: colorScheme.outline.withOpacity(highlightOpacity),
     );
   }
 }

@@ -40,10 +40,11 @@ class ComingWeekEventsWidget extends ConsumerWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade300,
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
                 ),
                 height: cardHeight,
               ),
-            ),
+            ).padding(horizontal: hPadding),
             error: (error, stackTrace) =>
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
