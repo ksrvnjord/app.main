@@ -256,6 +256,17 @@ class _EditAlmanakProfilePageState
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
+            FormSection(title: "Afschrijven", children: [
+              ListTile(
+                title: const Text('Bekijk mijn permissies'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap: () => Routemaster.of(context).push(
+                  'view-my-permissions',
+                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
+            ]),
             FormSection(title: "Weergave", children: [
               DropdownButtonFormField<ThemeMode>(
                 items: ThemeMode.values
