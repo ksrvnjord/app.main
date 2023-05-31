@@ -22,6 +22,8 @@ class UnknownRoutePage extends StatelessWidget {
       name: 'Unknown Route',
     );
 
+    final navigationHistory = Routemaster.of(context).history;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pagina niet gevonden'),
@@ -55,11 +57,20 @@ class UnknownRoutePage extends StatelessWidget {
               reason: 'because of invalid route',
             );
           }
-          // ignore: avoid-ignoring-return-values
-          Routemaster.of(context).push('/');
+          if (navigationHistory.canGoBack) {
+            // Going back is preferred for UX, but not always possible.
+            // ignore: avoid-ignoring-return-values
+            navigationHistory.back();
+          } else {
+            Routemaster.of(context).replace('/');
+          }
         },
-        icon: const Icon(Icons.home),
-        label: const Text('Terug naar dashboard'),
+        icon: navigationHistory.canGoBack
+            ? const Icon(Icons.arrow_back)
+            : const Icon(Icons.home),
+        label: navigationHistory.canGoBack
+            ? const Text('Ga terug')
+            : const Text('Ga naar dashboard'),
       ),
     );
   }
