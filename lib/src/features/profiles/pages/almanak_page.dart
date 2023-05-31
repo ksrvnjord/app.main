@@ -28,8 +28,8 @@ class AlmanakPage extends StatelessWidget {
               content: const Text('Je bent niet zichtbaar in de almanak.'),
               actions: [
                 TextButton(
-                  onPressed: () =>
-                      Routemaster.of(context).push('/home/edit/visibility'),
+                  onPressed: () => Routemaster.of(context)
+                      .replace('/home/my-profile/settings/visibility'),
                   child: const Text('Wijzig'),
                 ),
               ],
