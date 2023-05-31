@@ -28,8 +28,9 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
       loading: () => ShimmerWidget(
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: const BorderRadius.all(Radius.circular(12))),
+            color: Colors.grey[300],
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+          ),
           height: loadingHeight,
         ),
       ),

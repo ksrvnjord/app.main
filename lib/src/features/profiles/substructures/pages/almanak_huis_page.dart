@@ -48,10 +48,9 @@ class AlmanakHuisPage extends ConsumerWidget {
                 ),
               ).padding(horizontal: pageHPadding),
               SubstructureDescriptionWidget(
-                // TODO: maybe add a header to this widget
                 descriptionAsyncVal:
                     ref.watch(huisDescriptionProvider(houseName)),
-              ).padding(horizontal: pageHPadding),
+              ).padding(all: pageHPadding),
               UserAddressWidget(
                 address: Address(
                   street: huisInfo.streetName,
@@ -61,11 +60,7 @@ class AlmanakHuisPage extends ConsumerWidget {
               DataTextListTile(
                 name: "Aantal huisgenoten",
                 value:
-                    "${huisInfo.numberOfHousemates.toString()} (${huisInfo.composition.value})",
-              ),
-              DataTextListTile(
-                name: "Iedereen is (oud) lid van Njord",
-                value: huisInfo.allNjord ? "Ja" : "Nee",
+                    "${huisInfo.numberOfHousemates.toString()} (${huisInfo.composition.value}, ${huisInfo.allNjord ? "volledig Njord" : "Njord/Niet-Njord"})",
               ),
               DataTextListTile(
                 name: "Jaar van oprichting",
