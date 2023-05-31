@@ -33,8 +33,8 @@ class PostWidget extends ConsumerWidget {
       "Promotie": darkMode ? Colors.red.shade900 : Colors.red.shade100,
       "Wandelgangen": darkMode ? Colors.blue.shade900 : Colors.blue.shade100,
       "Kaartjes": darkMode ? Colors.yellow.shade900 : Colors.yellow.shade100,
-      "Coach gezocht":
-          darkMode ? Colors.orange.shade900 : Colors.orange.shade100,
+      // ignore: prefer-moving-to-variable
+      "Gezocht": darkMode ? Colors.orange.shade900 : Colors.orange.shade100,
       "Gevonden voorwerpen":
           darkMode ? Colors.green.shade900 : Colors.green.shade100,
     };
@@ -67,7 +67,8 @@ class PostWidget extends ConsumerWidget {
       Chip(
         label: Text(postTopic),
         side: BorderSide.none,
-        backgroundColor: topicColors[postTopic],
+        backgroundColor: topicColors[postTopic] ??
+            Theme.of(context).colorScheme.secondaryContainer,
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
       ),

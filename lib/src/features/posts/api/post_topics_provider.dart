@@ -6,7 +6,7 @@ final postTopicsProvider = Provider.autoDispose<List<String>>((ref) {
   return [
     'Promotie',
     'Wandelgangen',
-    'Coach gezocht',
+    'Gezocht',
     'Gevonden voorwerpen',
     'Kaartjes',
   ];
