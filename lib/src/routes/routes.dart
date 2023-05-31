@@ -31,7 +31,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/s
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/choice_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
@@ -204,7 +204,7 @@ class Routes {
             name: 'Ploeglid',
           ),
       '/almanak/huizen': (_) => const CupertinoPage(
-            child: ChoicePage(title: "Huizen", choices: houseNames),
+            child: HuisChoicePage(title: "Huizen", choices: houseNames),
             name: 'Huizen',
           ),
       '/almanak/huizen/:huis': (route) => CupertinoPage(
