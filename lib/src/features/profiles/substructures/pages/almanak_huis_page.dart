@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/home_users.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/huis_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/leeden_list.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 import '../api/huis_info_provider.dart';
+import '../widgets/almanak_substructure_cover_picture.dart';
 
 class AlmanakHuisPage extends ConsumerWidget {
   const AlmanakHuisPage({
@@ -35,18 +39,25 @@ class AlmanakHuisPage extends ConsumerWidget {
         children: [
           huisInfo.when(
             data: (huisInfo) => [
-              // TODO: insert image
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                child: AlmanakSubstructureCoverPicture(
+                  imageProvider: ref.watch(huisPictureProvider(
+                    Tuple2<String, int>(houseName, getNjordYear()),
+                  )),
+                ),
+              ).padding(horizontal: pageHPadding),
+              SubstructureDescriptionWidget(
+                // TODO: maybe add a header to this widget
+                descriptionAsyncVal:
+                    ref.watch(huisDescriptionProvider(houseName)),
+              ).padding(horizontal: pageHPadding),
               UserAddressWidget(
                 address: Address(
                   street: huisInfo.streetName,
                   houseNumber: huisInfo.houseNumber,
                 ),
               ),
-              SubstructureDescriptionWidget(
-                // TODO: maybe add a header to this widget
-                descriptionAsyncVal:
-                    ref.watch(huisDescriptionProvider(houseName)),
-              ).padding(horizontal: pageHPadding),
               DataTextListTile(
                 name: "Aantal huisgenoten",
                 value:
