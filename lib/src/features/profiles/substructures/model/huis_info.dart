@@ -86,10 +86,6 @@ class HuisInfo extends GroupInfo {
   }
 }
 
-enum GroupType {
-  huis,
-}
-
 enum HouseComposition {
   male("Man"),
   female("Vrouw"),
