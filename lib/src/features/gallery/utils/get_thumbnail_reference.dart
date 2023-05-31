@@ -22,7 +22,7 @@ Reference getThumbnailReference(Reference ref) {
   //// Example: image.jpg -> image_200x200.jpg
   pathComponents.last = pathComponents.last.replaceFirst(
     '.',
-    '_200x200.',
+    '_400x400.',
     pathComponents.last.lastIndexOf('.'),
   );
 
