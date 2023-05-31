@@ -28,11 +28,14 @@ void upsertPollAnswer(
 
   ref.invalidate(
     currentfirestoreUserFutureProvider,
-  ); // Retrieve latest data, in case it changed.
+  ); // Retrieve latest allergies data, in case it changed.
   final userSnapshot =
       await ref.watch(currentfirestoreUserFutureProvider.future);
   final currentUser = userSnapshot.data();
-  if (snapshot.size == 0) {
+
+  final bool hasAnswered = snapshot.size != 0;
+  if (!hasAnswered) {
+    // On first answer, add the answer to the collection.
     // ignore: avoid-ignoring-return-values
     await answersOfPoll.add(PollAnswer(
       userId: FirebaseAuth.instance.currentUser?.uid ?? "",
@@ -42,7 +45,15 @@ void upsertPollAnswer(
       // ignore: avoid-non-null-assertion
       allergies: poll.question.contains("Eten") ? currentUser.allergies : null,
     ));
+
+    return;
+  } else if (hasAnswered && choice == null) {
+    // On undo, delete the answer from the collection.
+    await snapshot.docs.first.reference.delete();
+
+    return;
   } else {
+    // User picked a different answer.
     await snapshot.docs.first.reference.update({
       'answer': choice,
       'answeredAt': Timestamp.now(),

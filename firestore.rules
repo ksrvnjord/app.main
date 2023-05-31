@@ -69,6 +69,7 @@ match /polls/{poll} {
   match /answers/{answer} {
     allow read: if isLoggedIn();
     allow write: if request.auth.uid == request.resource.data['userId'];
+    allow delete: if request.auth.uid == resource.data['userId'];
   }
 }
 
