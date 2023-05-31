@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -14,11 +15,13 @@ class MorePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Map<String, String> optionMap = {
+    final currentUser = ref.watch(firebaseAuthUserProvider);
+
+    final Map<String, String> optionRouteMap = {
       "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "contact",
       "Lees het beleid van het bestuur": "beleid",
-      'Bekijk de fotogalerij': 'gallery',
+      if (currentUser != null) 'Bekijk de fotogalerij': 'gallery',
     };
 
     final textTheme = Theme.of(context).textTheme;
@@ -29,7 +32,7 @@ class MorePage extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          ...optionMap.entries.map(
+          ...optionRouteMap.entries.map(
             // Make a list of options to display and navigate to.
             // Each option is a tile with a divider below it.
             (entry) => [
