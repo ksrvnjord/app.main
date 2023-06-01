@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/hui
 
 // ignore: prefer-static-class
 final huisInfoProvider =
-    FutureProvider.autoDispose.family<HuisInfo, String>((ref, name) async {
+    FutureProvider.autoDispose.family<HuisInfo?, String>((ref, name) async {
   final snapshot = await FirebaseFirestore.instance
       .collection('group_info')
       .withConverter<HuisInfo>(
@@ -16,7 +16,7 @@ final huisInfoProvider =
       .where('name', isEqualTo: name)
       .get();
 
-  return snapshot.docs.first.data();
+  return snapshot.size == 0 ? null : snapshot.docs.first.data();
 });
 
 // ignore: prefer-static-class
@@ -24,5 +24,5 @@ final huisDescriptionProvider =
     FutureProvider.autoDispose.family<String?, String>((ref, name) async {
   final huis = await ref.watch(huisInfoProvider(name).future);
 
-  return huis.description;
+  return huis?.description;
 });
