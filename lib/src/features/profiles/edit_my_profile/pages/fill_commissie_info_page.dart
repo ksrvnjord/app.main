@@ -135,9 +135,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
           backgroundColor: Colors.green,
         ),
       );
-      Routemaster.of(context).replace(
-        '/home/edit/commissies',
-      ); // Go to overzicht of commissies.
+      Routemaster.of(context).replace("/home/my-profile/commissies");
     }
   }
 }
