@@ -275,7 +275,7 @@ class Routes {
             name: "Show Damage",
           ),
       '/training/all': (_) =>
-          CupertinoPage(child: AllTrainingPage(), name: 'All Training'),
+          const CupertinoPage(child: AllTrainingPage(), name: 'All Training'),
       '/training/all/plan': (route) => CupertinoPage(
             child: PlanTrainingPage(queryParams: route.queryParameters),
             name: 'Plan Training',
