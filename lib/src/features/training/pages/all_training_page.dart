@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_filters_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_overview.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AllTrainingPage extends ConsumerWidget {
-  AllTrainingPage({Key? key}) : super(key: key);
-
-  static const int amountOfDaysUserCanBookInAdvance =
-      4; // User can book x days in the advance.
+  const AllTrainingPage({Key? key}) : super(key: key);
 
   // Generate a list of the coming 14 days.
-  final List<DateTime> days = List.generate(
-    amountOfDaysUserCanBookInAdvance,
-    (index) => DateTime.now().add(Duration(days: index)),
-  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+
+    final currentUser = ref.watch(currentFirestoreUserProvider);
+
+    final int amountOfDaysUserCanBookInAdvance =
+        currentUser?.isBestuur == true || currentUser?.isAppCo == true
+            ? 28 // Bestuur and AppCo can book 28 days in the advance.
+            : 4; // User can book 4 days in the advance.
+
+    final List<DateTime> days = List.generate(
+      amountOfDaysUserCanBookInAdvance,
+      (index) => DateTime.now().add(Duration(days: index)),
+    );
 
     return DefaultTabController(
       length: days.length,
