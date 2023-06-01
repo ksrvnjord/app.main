@@ -89,7 +89,7 @@ class HuisInfo extends GroupInfo {
 enum HouseComposition {
   male("Man"),
   female("Vrouw"),
-  mixed("Gemengd");
+  mixed("Man/Vrouw");
 
   final String value;
 
