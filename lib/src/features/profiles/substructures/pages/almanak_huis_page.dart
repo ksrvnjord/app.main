@@ -27,6 +27,7 @@ class AlmanakHuisPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final huisInfo = ref.watch(huisInfoProvider(houseName)); //
     const double pageHPadding = 12;
+    const double descriptionHPadding = pageHPadding + 4;
 
     final users = ref.watch(homeUsers(houseName));
 
@@ -38,35 +39,37 @@ class AlmanakHuisPage extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 80),
         children: [
           huisInfo.when(
-            data: (huisInfo) => [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: AlmanakSubstructureCoverPicture(
-                  imageProvider: ref.watch(huisPictureProvider(
-                    Tuple2<String, int>(houseName, getNjordYear()),
-                  )),
-                ),
-              ).padding(horizontal: pageHPadding),
-              SubstructureDescriptionWidget(
-                descriptionAsyncVal:
-                    ref.watch(huisDescriptionProvider(houseName)),
-              ).padding(all: pageHPadding),
-              UserAddressWidget(
-                address: Address(
-                  street: huisInfo.streetName,
-                  houseNumber: huisInfo.houseNumber,
-                ),
-              ),
-              DataTextListTile(
-                name: "Aantal huisgenoten",
-                value:
-                    "${huisInfo.numberOfHousemates.toString()} (${huisInfo.composition.value}, ${huisInfo.allNjord ? "volledig Njord" : "Njord/Niet-Njord"})",
-              ),
-              DataTextListTile(
-                name: "Jaar van oprichting",
-                value: huisInfo.yearOfFoundation.toString(),
-              ),
-            ].toColumn(),
+            data: (huisInfo) => huisInfo == null
+                ? const SizedBox.shrink()
+                : [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      child: AlmanakSubstructureCoverPicture(
+                        imageProvider: ref.watch(huisPictureProvider(
+                          Tuple2<String, int>(houseName, getNjordYear()),
+                        )),
+                      ),
+                    ).padding(horizontal: pageHPadding),
+                    SubstructureDescriptionWidget(
+                      descriptionAsyncVal:
+                          ref.watch(huisDescriptionProvider(houseName)),
+                    ).padding(all: descriptionHPadding),
+                    UserAddressWidget(
+                      address: Address(
+                        street: huisInfo.streetName,
+                        houseNumber: huisInfo.houseNumber,
+                      ),
+                    ),
+                    DataTextListTile(
+                      name: "Aantal huisgenoten",
+                      value:
+                          "${huisInfo.numberOfHousemates.toString()} (${huisInfo.composition.value}, ${huisInfo.allNjord ? "volledig Njord" : "Njord/Niet-Njord"})",
+                    ),
+                    DataTextListTile(
+                      name: "Jaar van oprichting",
+                      value: huisInfo.yearOfFoundation.toString(),
+                    ),
+                  ].toColumn(),
             loading: () => const CircularProgressIndicator().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
