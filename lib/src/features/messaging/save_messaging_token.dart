@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // ignore: prefer-static-class
-void saveMessagingToken() async {
+Future<void> saveMessagingToken() async {
   String? token = await FirebaseMessaging.instance.getToken();
   if (token == null) {
     return;
