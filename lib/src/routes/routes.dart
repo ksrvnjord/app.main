@@ -112,8 +112,12 @@ class Routes {
             child: MyPermissionsPage(),
             name: "Mijn permissies",
           ),
-      '/home/my-profile/groups': (_) =>
-          const CupertinoPage(child: EditGroupsPage(), name: "Edit my groups"),
+      '/home/my-profile/groups':
+          (_) => // This will be the main page for editing groups (ie. ploegen, commissies, huizen, etc.).
+              const CupertinoPage(
+                child: EditGroupsPage(),
+                name: "Edit my groups",
+              ),
       '/home/my-profile/groups/ploeg': (_) => const CupertinoPage(
             child: SelectPloegPage(),
             name: "Select a ploeg to add",
