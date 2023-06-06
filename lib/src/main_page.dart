@@ -17,9 +17,7 @@ class MainPage extends ConsumerStatefulWidget {
 
 class _MainPageState extends ConsumerState<MainPage> {
   @override
-  void initState() {
-    super.initState();
-
+  void didChangeDependencies() {
     final user = ref.watch(firebaseAuthUserProvider);
 
     if (!kIsWeb && user != null) {
@@ -28,6 +26,7 @@ class _MainPageState extends ConsumerState<MainPage> {
       saveMessagingToken(); // FIXME: This should only happen when connected to internet.
       initMessagingInfo();
     }
+    super.didChangeDependencies();
   }
 
   @override
