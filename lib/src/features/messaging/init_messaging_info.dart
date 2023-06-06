@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // ignore: prefer-static-class
-void initMessagingInfo() async {
+Future<void> initMessagingInfo() async {
   AndroidInitializationSettings androidInitialize =
       const AndroidInitializationSettings('@mipmap/ic_launcher');
   DarwinInitializationSettings iOSInitialize =
