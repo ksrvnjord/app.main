@@ -74,7 +74,7 @@ class AddPloegPage extends ConsumerWidget {
             content: Text('Ploeg succesvol toegevoegd'),
             backgroundColor: Colors.green,
           ));
-          Routemaster.of(context).replace('/home/edit/groups');
+          Routemaster.of(context).replace('/home/my-profile/groups');
         },
         icon: const Icon(Icons.save),
         label: const Text('Opslaan'),
