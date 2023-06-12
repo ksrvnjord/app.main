@@ -123,41 +123,43 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
       "phone_primary": "Telefoonnummer",
     };
 
-    return [
-      [
-        Switch(
-          value: listed,
-          onChanged: toggleCheckBox,
-        ),
-        const Text('Zichtbaar in de almanak'),
-      ].toRow(),
-      const Divider(),
-      if (listed)
-        FormSection(title: "Zichtbaarheid per veld", children: [
-          ...(checkboxes.keys.map<Widget>(
-            (key) {
-              return [
-                Checkbox(
-                  value: checkboxes[key],
-                  onChanged: (value) => toggleCheckBoxes(key, value ?? false),
-                  checkColor: Colors.white,
-                ),
-                Text(checkboxReadableMap[key] ?? key),
-              ].toRow();
-            },
-          ).toList()),
-        ]),
-      [
-        ElevatedButton(
-          onPressed: () => save(client),
-          child: const Text('Opslaan'),
-        ).expanded(),
-      ].toRow(),
-    ]
-        .toColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-        )
-        .padding(all: pagePadding);
+    return SingleChildScrollView(
+      child: [
+        [
+          Switch(
+            value: listed,
+            onChanged: toggleCheckBox,
+          ),
+          const Text('Zichtbaar in de almanak'),
+        ].toRow(),
+        const Divider(),
+        if (listed)
+          FormSection(title: "Zichtbaarheid per veld", children: [
+            ...(checkboxes.keys.map<Widget>(
+              (key) {
+                return [
+                  Checkbox(
+                    value: checkboxes[key],
+                    onChanged: (value) => toggleCheckBoxes(key, value ?? false),
+                    checkColor: Colors.white,
+                  ),
+                  Text(checkboxReadableMap[key] ?? key),
+                ].toRow();
+              },
+            ).toList()),
+          ]),
+        [
+          ElevatedButton(
+            onPressed: () => save(client),
+            child: const Text('Opslaan'),
+          ).expanded(),
+        ].toRow(),
+      ]
+          .toColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )
+          .padding(all: pagePadding),
+    );
   }
 
   void toggleCheckBox(bool value) {
