@@ -12,6 +12,6 @@ final substructureUsersProvider = FutureProvider.autoDispose
             FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
-      .where("substructuren", arrayContains: substructuurName)
+      .where("substructures", arrayContains: substructuurName)
       .get(),
 );
