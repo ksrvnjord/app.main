@@ -1,8 +1,8 @@
 name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1726.4+13
+version: 1.1726.5+13
 
 environment:
   sdk: "^2.19.4" # Dart SDK version: https://dart.dev/get-dart/archive
@@ -33,7 +33,7 @@ dependencies:
   syncfusion_flutter_calendar: ^21.2.5
   lucide_icons: ^0.216.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: '>=3.0.0'
+  firebase_auth: ">=3.0.0"
   time_range_picker: ^2.2.0
   firebase_core: ^2.11.0
   shared_preferences: ^2.0.15
@@ -41,7 +41,7 @@ dependencies:
   flutter_local_notifications: ^14.0.0+1
   flutter_localizations:
     sdk: flutter
-  image_picker_widget: '>=2.0.0 <3.0.0'
+  image_picker_widget: ">=2.0.0 <3.0.0"
   firebase_storage: ^11.0.9
   cloud_functions: ^4.0.7
   multi_select_flutter: ^4.1.3
@@ -71,7 +71,6 @@ dependencies:
   firebase_crashlytics: ^3.3.1
   upgrader: ^7.0.1
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,8 +85,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-   - assets/icons/
-   - assets/images/
-   - assets/documents/
-   - assets/data/
-
+    - assets/icons/
+    - assets/images/
+    - assets/documents/
+    - assets/data/
