@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/instagram_row_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/bestuur.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/data/commissies.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ContactPage extends StatelessWidget {
+class ContactPage extends ConsumerWidget {
   const ContactPage({Key? key}) : super(key: key);
 
   final double padding = 16;
@@ -20,8 +22,10 @@ class ContactPage extends StatelessWidget {
   final double expansionTileFontSize = 20;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+
+    final commissieInfoVal = ref.watch(commissiesInfoProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,28 +61,46 @@ class ContactPage extends StatelessWidget {
         ExpansionTile(
           title: Text("Commissies", style: textTheme.titleLarge),
           children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text("Commissie")),
-                DataColumn(label: Text("Email")),
-              ],
-              rows: [
-                ...commissieEmailMap.entries.map(
-                  (entry) => DataRow(cells: [
-                    DataCell(Text(entry.key)),
-                    DataCell(
-                      // Create a link to the email.
-                      InkWell(
-                        child: const FaIcon(
-                          FontAwesomeIcons.envelope,
-                        ).padding(all: emailIconPadding),
-                        onTap: () =>
-                            launchUrl(Uri.parse('mailto:${entry.value}')),
+            commissieInfoVal.when(
+              data: (commissies) => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Commissie")),
+                  DataColumn(label: Text("Email")),
+                ],
+                rows: [
+                  ...commissies.map(
+                    (commissie) => DataRow(cells: [
+                      DataCell(Text(commissie.name)),
+                      DataCell(
+                        InkWell(
+                          child: const FaIcon(
+                            FontAwesomeIcons.envelope,
+                          ).padding(all: emailIconPadding),
+                          onTap: () => launchUrl(
+                            Uri.parse('mailto:${commissie.email}'),
+                          ),
+                        ),
                       ),
-                    ),
+                    ]),
+                  ),
+                ],
+              ),
+              loading: () => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Commissie")),
+                  DataColumn(label: Text("Email")),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(CircularProgressIndicator()),
+                    DataCell(CircularProgressIndicator()),
                   ]),
-                ),
-              ],
+                ],
+              ),
+              error: (error, stackTrace) => ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stackTrace,
+              ),
             ),
           ],
         ),

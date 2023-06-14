@@ -14,7 +14,7 @@ class HuisInfo extends GroupInfo {
 
   const HuisInfo({
     required String name,
-    required String description,
+    String? description,
     required this.allNjord,
     required this.composition,
     required this.houseNumber,
