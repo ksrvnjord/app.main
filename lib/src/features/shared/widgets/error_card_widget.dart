@@ -7,9 +7,11 @@ class ErrorCardWidget extends StatelessWidget {
   const ErrorCardWidget({
     Key? key,
     required this.errorMessage,
+    this.stackTrace,
   }) : super(key: key);
 
   final String errorMessage;
+  final StackTrace? stackTrace;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ErrorCardWidget extends StatelessWidget {
     const double errorTitleFontSize = 18;
     const double cardBorderWidth = 2;
     // ignore: no-magic-number
-    log(errorMessage, level: 2000);
+    log(errorMessage, level: 2000, stackTrace: stackTrace);
 
     return GestureDetector(
       child: Container(
