@@ -22,7 +22,6 @@ class MorePage extends ConsumerWidget {
       "Contacteer het bestuur / commissies": "contact",
       "Lees het beleid van het bestuur": "beleid",
       if (currentUser != null) 'Bekijk de fotogalerij': 'gallery',
-      if (currentUser != null) 'Documenten': 'documents',
     };
 
     final textTheme = Theme.of(context).textTheme;

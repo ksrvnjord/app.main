@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
-import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -328,9 +327,6 @@ class Routes {
           const CupertinoPage(child: BeleidPage(), name: 'Beleid'),
       '/more/gallery': (route) => const CupertinoPage(
             child: GalleryMainPage(),
-          ),
-      '/more/documents': (route) => const CupertinoPage(
-            child: DocumentsMainPage(),
           ),
       '/more/contact': (route) =>
           const CupertinoPage(child: ContactPage(), name: 'Contact'),
