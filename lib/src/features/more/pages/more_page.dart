@@ -20,9 +20,8 @@ class MorePage extends ConsumerWidget {
     final Map<String, String> optionRouteMap = {
       "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "contact",
-      "Lees het beleid van het bestuur": "beleid",
       if (currentUser != null) 'Bekijk de fotogalerij': 'gallery',
-      if (currentUser != null) 'Documenten': 'documents',
+      if (currentUser != null) 'Lees verenigingsdocumenten': 'documents',
     };
 
     final textTheme = Theme.of(context).textTheme;
