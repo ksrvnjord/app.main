@@ -26,8 +26,9 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
   CommissieEntry _formData = CommissieEntry(
     startYear: DateTime.now().year - 1,
     endYear: DateTime.now().year,
-    firstName: GetIt.I<CurrentUser>().user?.fullContact.public.first_name ?? "",
-    lastName: GetIt.I<CurrentUser>().user?.fullContact.public.last_name ?? "",
+    firstName:
+        GetIt.I<CurrentUser>().user?.fullContact.private?.first_name ?? "",
+    lastName: GetIt.I<CurrentUser>().user?.fullContact.private?.last_name ?? "",
     identifier: FirebaseAuth.instance.currentUser?.uid ?? "",
     name: "",
   );
@@ -88,7 +89,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
               decoration: const InputDecoration(
                 labelText: 'Vervulde je een functie binnen de commissie?',
                 helperText: "Kan je ook leeg laten",
-                hintText: 'Praeses, Abactis, etc.',
+                hintText: 'Praeses, Ab-actis, Quaestor, etc.',
               ),
               onSaved: (newValue) => newValue != null && newValue.isNotEmpty
                   ? _formData.function = newValue
