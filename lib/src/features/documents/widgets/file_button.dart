@@ -37,30 +37,22 @@ class FileButton extends ConsumerWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,
         ),
-        metadataVal.when(
-          data: (metadata) {
-            final DateTime? updated = metadata.updated;
+        Text(
+          metadataVal.when(
+            data: (metadata) {
+              final DateTime? updated = metadata.updated;
 
-            return Text(
-              updated != null ? DateFormat("dd/MM/yyyy").format(updated) : "",
-              style: Theme.of(context).textTheme.labelSmall,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              maxLines: maxLines,
-            );
-          },
-          loading: () => const Text(
-            "Laden...",
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines,
+              return updated != null
+                  ? DateFormat("dd/MM/yyyy").format(updated)
+                  : "";
+            },
+            loading: () => "Laden...",
+            error: (err, trace) => err.toString(),
           ),
-          error: (err, trace) => Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines,
-          ),
+          style: Theme.of(context).textTheme.labelSmall,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          maxLines: maxLines,
         ),
       ].toColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
