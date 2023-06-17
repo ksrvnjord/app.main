@@ -16,7 +16,7 @@ class FileButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const maxLines = 2;
-    const iconSize = 56.0;
+    const iconSize = 64.0;
 
     final metadataVal = ref.watch(fileMetadataProvider(item));
 
@@ -25,12 +25,29 @@ class FileButton extends ConsumerWidget {
       item.name.lastIndexOf('.'),
     );
 
+    final labelSmall = Theme.of(context).textTheme.labelSmall;
+
     return InkWell(
       child: [
-        const Icon(
-          Icons.insert_drive_file,
-          size: iconSize,
-        ),
+        [
+          const Icon(
+            Icons.insert_drive_file,
+            size: iconSize,
+          ),
+          // Add White text "PDF".
+          Text(
+            item.name.characters
+                .getRange(item.name.lastIndexOf('.') + 1, item.name.length)
+                .string
+                .toUpperCase(),
+            style: labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onInverseSurface,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: maxLines,
+          ),
+        ].toStack(alignment: Alignment.center),
         Text(
           fileName.string,
           textAlign: TextAlign.center,
@@ -49,14 +66,13 @@ class FileButton extends ConsumerWidget {
             loading: () => "Laden...",
             error: (err, trace) => err.toString(),
           ),
-          style: Theme.of(context).textTheme.labelSmall,
+          style: labelSmall,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,
         ),
       ].toColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
       ),
       onTap: () => Navigator.of(context).pushNamed("_file/${item.fullPath}"),
     );

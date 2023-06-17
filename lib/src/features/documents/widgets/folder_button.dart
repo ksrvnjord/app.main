@@ -15,7 +15,7 @@ class FolderButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const maxLines = 2;
-    const iconSize = 56.0;
+    const iconSize = 64.0;
 
     List<String> splitPath = item.fullPath.split('documents/');
 
