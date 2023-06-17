@@ -15,8 +15,8 @@ class FolderList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Copy the lists, so we can modify it in-build.
-    var prefixes = listResult.prefixes.toList();
-    var items = listResult.items.toList();
+    final prefixes = listResult.prefixes.toList();
+    final items = listResult.items.toList();
 
     // Remove the sacred "thumbnails" folder.
     prefixes.retainWhere(

@@ -87,5 +87,4 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
-    - assets/documents/
     - assets/data/
