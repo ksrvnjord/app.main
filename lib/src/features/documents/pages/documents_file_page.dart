@@ -3,6 +3,8 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/api/document_uint8_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class DocumentsFilePage extends ConsumerWidget {
   final String path;
@@ -16,17 +18,23 @@ class DocumentsFilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (path.endsWith('pdf')) {
       final pdfData = ref.watch(documentUint8Provider(path));
+      final fileNameFull = path.split('/').last;
+      final filename =
+          fileNameFull.characters.getRange(0, fileNameFull.lastIndexOf("."));
 
       return Scaffold(
         appBar: AppBar(
-          title: const Text("PDF File"),
+          title: Text(filename.string),
         ),
         body: pdfData.when(
           data: (pdf) => PDFView(
             pdfData: pdf,
+            nightMode: Theme.of(context).brightness == Brightness.dark,
+            autoSpacing: false,
+            pageSnap: false,
           ),
-          error: (err, _) => const SizedBox.shrink(),
-          loading: () => const SizedBox.shrink(),
+          error: (err, _) => ErrorCardWidget(errorMessage: err.toString()),
+          loading: () => const CircularProgressIndicator.adaptive().center(),
         ),
       );
     }

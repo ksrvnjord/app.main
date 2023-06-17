@@ -15,8 +15,8 @@ class FolderList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Copy the lists, so we can modify it in-build.
-    var prefixes = listResult.prefixes.toList();
-    var items = listResult.items.toList();
+    final prefixes = listResult.prefixes.toList();
+    final items = listResult.items.toList();
 
     // Remove the sacred "thumbnails" folder.
     prefixes.retainWhere(
@@ -27,16 +27,17 @@ class FolderList extends ConsumerWidget {
     prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
     items.sort((a, b) => -1 * a.name.compareTo(b.name));
 
-    const crossAxisCount = 3;
-    const double itemSpacing = 8;
+    const crossAxisCount = 2;
+
+    const double gridAspectRatio = 19.5 /
+        9 /
+        crossAxisCount; // The iPhone 14 Pro aspect ratio, considering the amount of items in cross-axis.
 
     // Return navigation items for the folder (reversed for descending order).
     return GridView.count(
       padding: const EdgeInsets.all(8),
       crossAxisCount: crossAxisCount,
-      mainAxisSpacing: itemSpacing,
-      // ignore: no-equal-arguments
-      crossAxisSpacing: itemSpacing,
+      childAspectRatio: gridAspectRatio,
       children: [
         ...prefixes.map((e) => FolderButton(item: e)),
         ...items.map((e) => FileButton(item: e)),

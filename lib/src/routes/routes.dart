@@ -14,7 +14,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_pag
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/advanced_settings_page.dart';
-import 'package:ksrvnjord_main_app/src/features/more/pages/beleid_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
@@ -324,8 +323,6 @@ class Routes {
       '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
       '/more/events': (info) =>
           const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
-      '/more/beleid': (info) =>
-          const CupertinoPage(child: BeleidPage(), name: 'Beleid'),
       '/more/gallery': (route) => const CupertinoPage(
             child: GalleryMainPage(),
           ),

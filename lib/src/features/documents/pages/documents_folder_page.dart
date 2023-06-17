@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/api/documents_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/widgets/folder_list.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -26,19 +27,17 @@ class DocumentsFolderPage extends ConsumerWidget {
               )
             : null,
         title: Text(path == '/' ? "Documenten" : path.replaceAll('-', ' ')),
-        actions: [
-          IconButton(
-            onPressed: () => ref.refresh(documentsFolderRef(path)),
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
       ),
-      body: rootFolder.when(
-        data: (listResult) => FolderList(
-          listResult: listResult,
+      body: RefreshIndicator(
+        child: rootFolder.when(
+          data: (listResult) => FolderList(listResult: listResult),
+          error: (err, trace) => ErrorCardWidget(
+            errorMessage: err.toString(),
+            stackTrace: trace,
+          ),
+          loading: () => const LoadingWidget(),
         ),
-        error: (err, trace) => Text(err.toString()),
-        loading: () => const LoadingWidget(),
+        onRefresh: () => ref.refresh(documentsFolderRef(path).future),
       ),
     );
   }
