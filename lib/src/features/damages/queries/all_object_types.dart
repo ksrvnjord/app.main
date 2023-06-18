@@ -21,7 +21,7 @@ Future<Map<String, List<ReservationObject>>> reservationObjectsByType() async {
       .docs;
 
   // Populate the map by type of the reservation object.
-  for (var e in listOfObjects) {
+  for (final e in listOfObjects) {
     ReservationObject object = e.data();
     if (objects.containsKey(object.type)) {
       objects[object.type]?.add(object);
