@@ -21,11 +21,14 @@ class FolderButton extends ConsumerWidget {
 
     final itemChildrenVal = ref.watch(storagePathChildrenProvider(item));
 
+    final textTheme = Theme.of(context).textTheme;
+
     return InkWell(
       child: [
         const Icon(Icons.folder, size: iconSize),
         Text(
           item.name,
+          style: textTheme.bodyLarge,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,
@@ -41,7 +44,7 @@ class FolderButton extends ConsumerWidget {
             loading: () => "Laden...",
             error: (err, trace) => "Niet gelukt om te laden",
           ),
-          style: Theme.of(context).textTheme.labelSmall,
+          style: textTheme.labelSmall,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,

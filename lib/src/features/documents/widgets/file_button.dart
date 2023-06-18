@@ -25,7 +25,8 @@ class FileButton extends ConsumerWidget {
       item.name.lastIndexOf('.'),
     );
 
-    final labelSmall = Theme.of(context).textTheme.labelSmall;
+    final textTheme = Theme.of(context).textTheme;
+    final labelSmall = textTheme.labelSmall;
 
     return InkWell(
       child: [
@@ -50,6 +51,7 @@ class FileButton extends ConsumerWidget {
         ].toStack(alignment: Alignment.center),
         Text(
           fileName.string,
+          style: textTheme.bodyLarge,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: maxLines,

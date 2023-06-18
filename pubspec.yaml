@@ -28,10 +28,10 @@ dependencies:
   flutter_markdown: ^0.6.10+5
   flutter_secure_storage: ^8.0.0
   dio: ">=4.0.6 <6.0.0"
-  shimmer: ^2.0.0
+  shimmer: ^3.0.0
   infinite_scroll_pagination: ^3.2.0
   syncfusion_flutter_calendar: ^21.2.5
-  lucide_icons: ^0.216.0
+  lucide_icons: ^0.244.0
   sticky_headers: ^0.3.0+2
   firebase_auth: ">=3.0.0"
   time_range_picker: ^2.2.0
@@ -55,21 +55,24 @@ dependencies:
   tuple: ^2.0.1
   path_provider: ^2.0.2
   flutter_riverpod: ^2.2.0
-  riverpod_generator: ^1.1.1
+  riverpod_generator: ^2.2.3
   timeago: ^3.3.0
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
   yaml: ^3.1.1
-  flutter_svg: ^2.0.5
-  share_plus: ^6.3.4
+  flutter_svg: any
+  share_plus: any
   expandable: ^5.0.1
   weather_icons: ^3.0.0
   stack_trace: ^1.11.0
   firebase_analytics: ^10.4.1
-  package_info_plus: ^1.4.3
+  package_info_plus: any
   firebase_crashlytics: ^3.3.1
-  upgrader: ^4.8.1
+  upgrader: any
   pdfx: ^2.3.0
+
+dependency_overrides:
+  package_info_plus: any
 
 dev_dependencies:
   flutter_test:
