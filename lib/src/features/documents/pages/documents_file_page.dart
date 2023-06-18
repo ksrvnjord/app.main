@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/api/document_uint8_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:pdfx/pdfx.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DocumentsFilePage extends ConsumerWidget {
@@ -27,11 +27,8 @@ class DocumentsFilePage extends ConsumerWidget {
           title: Text(filename.string),
         ),
         body: pdfData.when(
-          data: (pdf) => PDFView(
-            pdfData: pdf,
-            nightMode: Theme.of(context).brightness == Brightness.dark,
-            autoSpacing: false,
-            pageSnap: false,
+          data: (pdf) => PdfViewPinch(
+            controller: PdfControllerPinch(document: PdfDocument.openData(pdf)),
           ),
           error: (err, _) => ErrorCardWidget(errorMessage: err.toString()),
           loading: () => const CircularProgressIndicator.adaptive().center(),

@@ -63,20 +63,18 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<bool> login(String username, String password) async {
-    var loginState = false;
-
     if (username == '') {
       error = 'Please enter a username';
       notifyListeners();
 
-      return loginState;
+      return false;
     }
 
     if (password == '') {
       error = 'Please enter a password';
       notifyListeners();
 
-      return loginState;
+      return false;
     }
 
     isBusy = true;
@@ -149,7 +147,7 @@ class AuthModel extends ChangeNotifier {
 
     try {
       // Get the token for the configured (constant) endpoint JWT.
-      var response = await Dio().get(
+      final response = await Dio().get(
         globalConstants.jwtEndpoint().toString(),
         options: Options(headers: {
           'Authorization': 'Bearer $accessToken',
@@ -157,7 +155,7 @@ class AuthModel extends ChangeNotifier {
       );
 
       // The token is returned as JSON, decode it.
-      var data = json.decode(response.data);
+      final data = json.decode(response.data);
 
       // If we have data and we have the token in our data, proceed to login.
       if (data != null && data['token'] != null) {

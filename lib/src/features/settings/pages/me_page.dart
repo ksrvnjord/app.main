@@ -16,7 +16,7 @@ class MePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final client = ref.watch(graphQLModelProvider).client;
-    var result = me(client);
+    final result = me(client);
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +61,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
 
   @override
   void initState() {
-    var fullContact = widget.user.fullContact;
+    final fullContact = widget.user.fullContact;
     final contact = fullContact.private;
     final updated = fullContact.update;
 

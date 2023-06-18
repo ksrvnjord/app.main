@@ -29,14 +29,16 @@ class FolderList extends ConsumerWidget {
 
     const crossAxisCount = 2;
 
-    const double gridAspectRatio = 19.5 /
-        9 /
-        crossAxisCount; // The iPhone 14 Pro aspect ratio, considering the amount of items in cross-axis.
+    const double gridAspectRatio = 1 /
+        0.7; // The iPhone 14 Pro aspect ratio, considering the amount of items in cross-axis.
 
     // Return navigation items for the folder (reversed for descending order).
+    const double mainAxisSpacing = 32;
+
     return GridView.count(
       padding: const EdgeInsets.all(8),
       crossAxisCount: crossAxisCount,
+      mainAxisSpacing: mainAxisSpacing,
       childAspectRatio: gridAspectRatio,
       children: [
         ...prefixes.map((e) => FolderButton(item: e)),
