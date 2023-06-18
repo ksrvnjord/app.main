@@ -64,7 +64,7 @@ class HiveCache {
       HiveCache.put(key: key, value: output, maxAge: maxAge);
 
       return output;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // Something awful happened, check if it's 404 and if so, just
       // return null.
       const notFoundStatusCode = 404;

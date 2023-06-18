@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_commissies_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/stream_wrapper.dart';
 import 'package:routemaster/routemaster.dart';
 
 class EditCommissiesPage extends ConsumerStatefulWidget {
@@ -24,12 +23,15 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
         title: const Text('Edit Commissies'),
       ),
       body: ListView(children: [
-        StreamWrapper(
-          // Use stream to show updates in real time.
-          stream: ref.watch(myCommissiesProvider.stream),
-          success: (commissies) => EditCommissiesList(snapshot: commissies),
-          error: (error) => ErrorCardWidget(errorMessage: error.toString()),
-        ),
+        ref.watch(myCommissiesProvider).when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              // Use stream to show updates in real time.
+              data: (commissies) => EditCommissiesList(snapshot: commissies),
+              error: (error, stk) => ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stk,
+              ),
+            ),
       ]),
       floatingActionButton: // Button with a plus icon and the text "Commissie".
           FloatingActionButton.extended(

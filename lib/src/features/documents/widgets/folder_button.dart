@@ -52,6 +52,7 @@ class FolderButton extends ConsumerWidget {
       ].toColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
       ),
       onTap: () => Navigator.of(context)
           .pushNamed(splitPath.length > 1 ? splitPath[1] : ''),

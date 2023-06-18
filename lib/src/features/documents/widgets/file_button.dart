@@ -75,6 +75,7 @@ class FileButton extends ConsumerWidget {
         ),
       ].toColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
       ),
       onTap: () => Navigator.of(context).pushNamed("_file/${item.fullPath}"),
     );
