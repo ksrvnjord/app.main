@@ -22,17 +22,19 @@ class FirestoreAlmanakProfile {
   final String? phonePrimary;
 
   bool get isAppCo => ['21203', '18031', '18257'].contains(identifier);
-  bool get isBestuur => bestuursFunctie != null || [
-    '19147',
-    '19089',
-    '19212',
-    '19208',
-    '19221',
-    '18257',
-    '20085',
-    '19240',
-    '19280', 
-  ].contains(identifier);
+  bool get isBestuur =>
+      bestuursFunctie != null ||
+      [
+        '19147',
+        '19089',
+        '19212',
+        '19208',
+        '19221',
+        '18257',
+        '20085',
+        '19240',
+        '19280',
+      ].contains(identifier);
 
   const FirestoreAlmanakProfile({
     required this.firstName,
