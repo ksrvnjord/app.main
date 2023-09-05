@@ -75,6 +75,15 @@ class MorePage extends ConsumerWidget {
             thickness: 0.5,
           ),
           const MoreLinkTile(
+            label: "Ga naar de intekenlijst instaposts",
+            url:
+                "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
+          ),
+          const Divider(
+            height: 0,
+            thickness: 0.5,
+          ),
+          const MoreLinkTile(
             label: 'Declareer kosten aan de Quaestor',
             url:
                 'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
