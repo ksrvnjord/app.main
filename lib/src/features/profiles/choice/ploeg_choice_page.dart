@@ -6,10 +6,12 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
   const PloegChoicePage({Key? key})
@@ -27,13 +29,7 @@ class PloegChoicePage extends ConsumerWidget {
     const double titleShimmerPadding = 128;
     const double titleShimmerHeight = 18;
 
-    const int startYear = 1874;
-    final List<int> years = List.generate(
-      DateTime.now().year - startYear,
-      (index) =>
-          // '2022-2023', '2021-2022', ...
-          DateTime.now().year - index - 1,
-    );
+    final List<Tuple2<int, int>> years = yearsFrom1874;
 
     const double menuMaxHeight = 240;
     const double filtersHorizontalPadding = 8;
@@ -77,9 +73,10 @@ class PloegChoicePage extends ConsumerWidget {
                 ).expanded(),
                 DropdownButton<int>(
                   items: years
-                      .map((year) => DropdownMenuItem(
-                            value: year,
-                            child: Text("$year-${year + 1}"),
+                      .map((njordYear) => DropdownMenuItem(
+                            value: njordYear.item1,
+                            child:
+                                Text("${njordYear.item1}-${njordYear.item2}"),
                           ))
                       .toList(),
                   value: ploegYear,

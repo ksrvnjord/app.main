@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commi
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
@@ -44,15 +45,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
   @override
   Widget build(BuildContext context) {
-    const int startYear = 1874;
-    final List<Tuple2<int, int>> years = List.generate(
-      DateTime.now().year - startYear,
-      (index) => Tuple2<int, int>(
-        // '2022-2023', '2021-2022', ...
-        DateTime.now().year - index - 1,
-        DateTime.now().year - index,
-      ),
-    ).toList();
+    final List<Tuple2<int, int>> years = yearsFrom1874;
 
     const double menuMaxHeight = 256;
 
