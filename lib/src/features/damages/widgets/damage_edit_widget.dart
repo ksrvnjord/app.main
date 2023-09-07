@@ -27,6 +27,12 @@ class DamageEditWidget extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Schademelding'),
+        actions: [
+          IconButton(
+            onPressed: () => deleteDamageForm(messenger, navigator),
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: [
         damageForm.type != null
@@ -83,6 +89,8 @@ class DamageEditWidget extends ConsumerWidget {
       messenger.showSnackBar(const SnackBar(
         content: Text('Schademelding verwijderd'),
       ));
+      // ignore: avoid-ignoring-return-values
+      navigator.pop();
     } catch (e) {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(const SnackBar(
@@ -92,8 +100,6 @@ class DamageEditWidget extends ConsumerWidget {
         backgroundColor: Colors.red,
       ));
     }
-    // ignore: avoid-ignoring-return-values
-    navigator.pop();
   }
 
   Future<void> editDamageForm(
