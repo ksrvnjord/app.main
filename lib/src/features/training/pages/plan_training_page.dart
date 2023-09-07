@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/training/model/reservation_progress_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
 import 'package:routemaster/routemaster.dart';
 import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error_card_widget.dart';
@@ -235,7 +235,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     String creatorName,
     double fieldPadding,
   ) {
-    final reservationIsInProgress = ref.watch(reservationProgressProvider);
+    final reservationIsInProgress = ref.watch(progressProvider);
 
     return ElevatedButton(
       onPressed: reservationIsInProgress
@@ -259,7 +259,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     String uid,
     String creatorName,
   ) async {
-    ref.read(reservationProgressProvider.notifier).inProgress();
+    ref.read(progressProvider.notifier).inProgress();
     final response = await createReservationCloud(Reservation(
       _startTime,
       _endTime,
@@ -295,7 +295,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         ),
       );
     }
-    ref.read(reservationProgressProvider.notifier).done();
+    ref.read(progressProvider.notifier).done();
     // ignore: avoid-ignoring-return-values, use_build_context_synchronously
     Routemaster.of(context).pop();
   }
