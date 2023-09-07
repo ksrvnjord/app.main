@@ -7,8 +7,10 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakPloegPage extends ConsumerWidget {
   const AlmanakPloegPage({
@@ -27,13 +29,7 @@ class AlmanakPloegPage extends ConsumerWidget {
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
 
-    const int startYear = 1874;
-    final List<int> years = List.generate(
-      DateTime.now().year - startYear,
-      (index) =>
-          // '2022-2023', '2021-2022', ...
-          DateTime.now().year - index - 1,
-    );
+    final List<Tuple2<int, int>> years = yearsFrom1874;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,8 +50,8 @@ class AlmanakPloegPage extends ConsumerWidget {
               DropdownButton<int>(
                 items: years
                     .map((year) => DropdownMenuItem<int>(
-                          value: year,
-                          child: Text("$year-${year + 1}"),
+                          value: year.item1,
+                          child: Text("${year.item1}-${year.item2}"),
                         ))
                     .toList(),
                 value: selectedYear,
