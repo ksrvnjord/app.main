@@ -74,14 +74,16 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
     ScaffoldMessengerState messenger,
     Routemaster navigator,
   ) async {
+    ref.read(progressProvider.notifier).inProgress();
     try {
-      ref.read(progressProvider.notifier).inProgress();
       await Damage.create(formData);
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(const SnackBar(
         content: Text('Schademelding aangemaakt'),
       ));
       ref.read(progressProvider.notifier).done();
+      // ignore: avoid-ignoring-return-values
+      navigator.pop();
     } catch (err) {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
@@ -91,8 +93,5 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
       ));
     }
-
-    // ignore: avoid-ignoring-return-values
-    navigator.pop();
   }
 }
