@@ -68,22 +68,6 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     // TODO: Size the fields dynamically?
     fields = [
       {
-        'first_name': createInitialField(
-          // ignore: no-magic-number
-          width: 1 / 2,
-          label: 'Voornaam',
-          initialValue: contact?.first_name ?? '',
-          updatedValue: updated?.first_name,
-        ),
-        'last_name': createInitialField(
-          // ignore: no-magic-number
-          width: 1 / 2,
-          label: 'Achternaam',
-          initialValue: contact?.last_name ?? '',
-          updatedValue: updated?.last_name,
-        ),
-      },
-      {
         'email': createInitialField(
           width: 1,
           label: 'E-mailadres',
@@ -142,18 +126,6 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     super.initState();
   }
 
-  TextStyle labelTextStyle(Map<String, dynamic> label) {
-    if (label['changed']) {
-      return const TextStyle(color: Colors.blueAccent);
-    }
-
-    if (label['updated'] != null) {
-      return const TextStyle(color: Colors.blueGrey);
-    }
-
-    return const TextStyle();
-  }
-
   @override
   Widget build(BuildContext context) {
     const double paddingBody = 15;
@@ -165,7 +137,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     const double saveButtonPadding = 8;
     const double onSaveButtonPadding = 8;
 
-    final textTheme = Theme.of(context).textTheme;
+    final privateContact = widget.user.fullContact.private;
 
     return ListView(
       padding: const EdgeInsets.only(
@@ -176,10 +148,6 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         bottom: 80,
       ),
       children: <Widget>[
-        Text(
-          "Het bestuur beoordeelt deze wijzigingen om ervoor te zorgen dat jouw gegevens perfect worden bijgewerkt. Dit proces kan eventjes duren voordat je wijzigingen op magische wijze tevoorschijn komen.",
-          style: textTheme.labelMedium,
-        ),
         TextFormField(
           initialValue: widget.user.identifier,
           decoration: const InputDecoration(labelText: 'Lidnummer'),
@@ -189,6 +157,18 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         TextFormField(
           initialValue: widget.user.username,
           decoration: const InputDecoration(labelText: 'Njord-account'),
+          readOnly: true,
+          enabled: false,
+        ).padding(all: fieldPadding),
+        TextFormField(
+          initialValue: privateContact?.first_name,
+          decoration: const InputDecoration(labelText: 'Voornaam'),
+          readOnly: true,
+          enabled: false,
+        ).padding(all: fieldPadding),
+        TextFormField(
+          initialValue: privateContact?.last_name,
+          decoration: const InputDecoration(labelText: 'Achternaam'),
           readOnly: true,
           enabled: false,
         ).padding(all: fieldPadding),
@@ -207,9 +187,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
                       controller: label['controller'],
                       decoration: InputDecoration(
                         labelText: label['display'] ?? '',
-                        labelStyle: labelTextStyle(label),
                       ),
-                      style: labelTextStyle(label),
                       onChanged: (value) => setState(() {
                         fields[idx][key]?['changed'] =
                             (label['initial'] != label['controller'].text);
@@ -231,24 +209,6 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
                 ).center().padding(all: onSaveButtonPadding)
               : const Text('Verstuur wijzigingsverzoek'),
         ).padding(all: saveButtonPadding),
-        Text(
-          '* Grijs gedrukte velden zijn reeds gewijzigd en wachtend op goedkeuring.',
-          style: textTheme.labelMedium,
-        ),
-        const Divider(
-          height: 32,
-        ),
-        GestureDetector(
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.logout, color: Colors.red),
-              Text('Uitloggen', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-          onTap: () => ref.read(authModelProvider).logout(),
-        ),
       ],
     );
   }
@@ -277,7 +237,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
       );
       // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Updateverzoek verstuurd')),
+        const SnackBar(content: Text('Je gegevens zijn bijgewerkt!')),
       );
       if (mounted) {
         setState(() {
@@ -288,7 +248,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
     } catch (e) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Updateverzoek mislukt, melding gemaakt.'),
+        content: Text('Het is niet gelukt om je gegevens bij te werken.'),
         backgroundColor: Colors.red,
       ));
       if (mounted) {
