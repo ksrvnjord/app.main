@@ -1,37 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/events/api/events.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
+/// Returns all events that start today or later.
 // ignore: prefer-static-class
-final comingEventsProvider = FutureProvider<List<Event>>(
-  (ref) async {
-    final client = ref.watch(graphQLModelProvider).client;
-    final result = await client.query$CalendarItems();
-    final data = result.parsedData;
-    if (data == null) {
-      return [];
-    }
-    final maybeEvents = data.events;
+final comingEventsProvider = FutureProvider<QuerySnapshot<Event>>(
+  (ref) {
+    final eventsCollection = FirebaseFirestore.instance
+        .collection('events')
+        .withConverter<Event>(
+          fromFirestore: (snapshot, _) => Event.fromMap(snapshot.data() ?? {}),
+          toFirestore: (event, _) => event.toMap(),
+        );
 
-    final List<Event> events = [];
     final now = DateTime.now();
-    for (final Query$CalendarItems$events? event in maybeEvents) {
-      if (event != null) {
-        DateTime endTime = DateTime.parse(event.end_time ?? "");
-        if (endTime.isAfter(now)) {
-          // Only add events that are going on, or are going to happen.
-          events.add(Event(
-            title: event.title ?? "",
-            startTime: DateTime.parse(event.start_time ?? ""),
-            endTime: endTime,
-          ));
-        }
-      }
-    }
 
-    return events
-      ..sort((a, b) =>
-          a.startTime.compareTo(b.startTime)); // Sort events by start time.
+    return eventsCollection
+        .orderBy('start_time', descending: false)
+        .where(
+          'start_time',
+          isGreaterThanOrEqualTo: DateTime(now.year, now.month, now.day),
+        )
+        .get();
   },
 );

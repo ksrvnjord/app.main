@@ -30,10 +30,10 @@ class ComingWeekEventsWidget extends ConsumerWidget {
         InkWell(
           // ignore: sort_child_properties_last
           child: comingEvents.when(
-            data: (events) => [
-              for (final event in events.take(amountOfEvents))
+            data: (snapshot) => [
+              for (final doc in snapshot.docs.take(amountOfEvents))
                 UpcomingEventWidget(
-                  event: event,
+                  doc: doc,
                 ),
             ].toColumn().padding(horizontal: hPadding),
             loading: () => ShimmerWidget(

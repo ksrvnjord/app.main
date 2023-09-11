@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
@@ -6,10 +7,10 @@ import 'package:styled_widget/styled_widget.dart';
 class UpcomingEventWidget extends StatelessWidget {
   const UpcomingEventWidget({
     super.key,
-    required this.event,
+    required this.doc,
   });
 
-  final Event event;
+  final QueryDocumentSnapshot<Event> doc;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,9 @@ class UpcomingEventWidget extends StatelessWidget {
     DateFormat monthFormat = DateFormat('MMM EEE', 'nl_NL');
     DateFormat timeFormat = DateFormat('HH:mm');
     const int maxLines = 2;
-    DateTime start = event.startTime;
+
+    final event = doc.data();
+    final DateTime start = event.startTime.toDate();
 
     final textTheme = Theme.of(context).textTheme;
     const double elementPadding = 4;

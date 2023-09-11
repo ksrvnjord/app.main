@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class EventsWidget extends StatelessWidget {
-  const EventsWidget({super.key, required this.data});
+  const EventsWidget({super.key, required this.snapshot});
 
-  final List<Event> data;
+  final QuerySnapshot<Event> snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +14,11 @@ class EventsWidget extends StatelessWidget {
 
     const double bodyMonthHeaderHeight = 56;
 
-    // Set color for every event to the primary color.
-    final events = data
-        .map((e) => e.copyWith(color: colorScheme.primaryContainer))
+    final events = snapshot.docs
+        .map(
+          // Set color for every event to the primary color.
+          (snap) => snap.data().copyWith(color: colorScheme.primaryContainer),
+        )
         .toList();
 
     final textTheme = Theme.of(context).textTheme;
@@ -52,12 +55,12 @@ class MeetingDataSource extends CalendarDataSource {
 
   @override
   DateTime getStartTime(int index) {
-    return _meetingData(index).startTime;
+    return _meetingData(index).startTime.toDate();
   }
 
   @override
   DateTime getEndTime(int index) {
-    return _meetingData(index).endTime;
+    return _meetingData(index).endTime.toDate();
   }
 
   @override
