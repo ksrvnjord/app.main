@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
 class Event {
   final String title;
-  final DateTime startTime;
-  final DateTime endTime;
+  final Timestamp startTime;
+  final Timestamp endTime;
   final Color? color;
 
   const Event({
@@ -17,19 +19,22 @@ class Event {
     this.color,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) {
+  factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
-      title: json['title'],
-      startTime: DateTime.parse(json['start_time']),
-      endTime: DateTime.parse(json['end_time']),
-      color: json['color'] != null ? Color(json['color']) : null,
+      title: map['title'] as String,
+      startTime: map['start_time'] as Timestamp,
+      endTime: map['end_time'] as Timestamp,
+      color: map['color'] != null ? Color(map['color'] as int) : null,
     );
   }
 
+  factory Event.fromJson(String source) =>
+      Event.fromMap(json.decode(source) as Map<String, dynamic>);
+
   Event copyWith({
     String? title,
-    DateTime? startTime,
-    DateTime? endTime,
+    Timestamp? startTime,
+    Timestamp? endTime,
     required Color color,
   }) {
     return Event(
@@ -39,4 +44,15 @@ class Event {
       color: color,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'start_time': startTime.millisecondsSinceEpoch,
+      'end_time': endTime.millisecondsSinceEpoch,
+      'color': color?.value,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }

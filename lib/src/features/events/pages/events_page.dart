@@ -16,7 +16,7 @@ class EventsPage extends ConsumerWidget {
         title: const Text('Agenda'),
       ),
       body: events.when(
-        data: (data) => EventsWidget(data: data),
+        data: (data) => EventsWidget(snapshot: data),
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
