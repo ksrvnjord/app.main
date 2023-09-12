@@ -33,15 +33,19 @@ class PostService {
     required String content,
   }) async {
     final CurrentUser current = GetIt.I<CurrentUser>();
-    final currentUser = current.user?.fullContact.private;
+    final user = current.user;
+    if (user == null) {
+      throw Exception("User is null");
+    }
+
+    final currentUser = user.fullContact.public;
 
     // ignore: avoid-ignoring-return-values
     await postsCollection.add(Post(
       title: title,
       content: content,
-      authorId: FirebaseAuth.instance.currentUser?.uid ?? "",
-      authorName:
-          "${currentUser?.first_name ?? "Onbekend"} ${currentUser?.last_name}",
+      authorId: user.identifier,
+      authorName: "${currentUser.first_name} ${currentUser.last_name}",
       createdTime: Timestamp.now(),
       topic: topic,
     ));
