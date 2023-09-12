@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_choice_list_tile.dart';
@@ -28,7 +27,11 @@ class CommissieChoicePage extends ConsumerWidget {
             SubstructureChoiceListTile(
               name: choices.elementAt(index),
               imageProvider: ref.watch(commissieThumbnailProvider(
-                Tuple2(choices.elementAt(index), getNjordYear()),
+                Tuple2(
+                  choices.elementAt(index),
+                  // ignore: no-magic-number
+                  2022,
+                ), // # FIXME: hardcoded year, we keep this until commissies can edit their own info.
               )),
             ),
             const Divider(height: 0, thickness: 0.5),
