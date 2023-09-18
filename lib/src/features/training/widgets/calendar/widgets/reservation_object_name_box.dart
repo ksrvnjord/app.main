@@ -55,9 +55,8 @@ class ReservationObjectNameBox extends StatelessWidget {
               color: reservationObject.critical
                   ? Theme.of(context).colorScheme.errorContainer
                   : isAvailable
-                      ? colorScheme.secondaryContainer
-                      : colorScheme.surface
-                          .withOpacity(notAvailableBackgroundOpacity),
+                      ? colorScheme.primaryContainer
+                      : colorScheme.surface,
               margin: EdgeInsets.zero,
               child: Text(
                 reservationObject.name,
