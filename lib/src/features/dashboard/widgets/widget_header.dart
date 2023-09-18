@@ -24,6 +24,7 @@ class WidgetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     const double headerHPadding = 8;
 
@@ -32,6 +33,7 @@ class WidgetHeader extends StatelessWidget {
         Icon(
           titleIcon,
           size: textTheme.titleLarge?.fontSize,
+          color: colorScheme.primary,
         ),
         Text(
           title,
@@ -47,11 +49,14 @@ class WidgetHeader extends StatelessWidget {
             if (onTapName != null)
               Text(
                 onTapName ?? "",
-                style: textTheme.labelLarge,
+                style: textTheme.labelLarge?.copyWith(
+                  color: colorScheme.primary,
+                ),
               ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 16,
+              color: colorScheme.primary,
             ),
           ].toRow(mainAxisAlignment: MainAxisAlignment.end),
           onTap: onTap,

@@ -1,3 +1,5 @@
+// ignore_for_file: no-equal-arguments, prefer-static-class, arguments-ordering
+
 import 'package:flutter/material.dart';
 
 const lightColorScheme = ColorScheme(
@@ -6,7 +8,9 @@ const lightColorScheme = ColorScheme(
   onPrimary: Color(0xFFFFFFFF),
   primaryContainer: Color(0xFFDCE1FF),
   onPrimaryContainer: Color(0xFF00164F),
-  secondary: Color(0xFFA63C00),
+  secondary: Color(
+    0xFFA63C00,
+  ), // We used darker secondary color, because of the contrast with the background.
   onSecondary: Color(0xFFFFFFFF),
   secondaryContainer: Color(0xFFFFDBCE),
   onSecondaryContainer: Color(0xFF370E00),
@@ -55,7 +59,7 @@ const darkColorScheme = ColorScheme(
   background: Color(0xFF001F25),
   onBackground: Color(0xFFA6EEFF),
   surface: Color(0xFF001F25),
-  onSurface: Color(0xFFFFFFFF), // TODO: make white
+  onSurface: Color(0xFFFFFFFF),
   surfaceVariant: Color(0xFF45464F),
   onSurfaceVariant: Color(0xFFC6C6D0),
   outline: Color(0xFF90909A),
