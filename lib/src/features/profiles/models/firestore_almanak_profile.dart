@@ -20,21 +20,13 @@ class FirestoreAlmanakProfile {
   final String? email;
   final Address? address;
   final String? phonePrimary;
+  final bool?
+      canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
 
-  bool get isAppCo => ['21203', '18031', '18257'].contains(identifier);
+  bool get isAppCo => ['21203', '18031', '18257']
+      .contains(identifier); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
-      bestuursFunctie != null ||
-      [
-        '19147',
-        '19089',
-        '19212',
-        '19208',
-        '19221',
-        '18257',
-        '20085',
-        '19240',
-        '19280',
-      ].contains(identifier);
+      bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
   const FirestoreAlmanakProfile({
     required this.firstName,
@@ -52,6 +44,7 @@ class FirestoreAlmanakProfile {
     this.phonePrimary,
     this.substructures,
     this.allergies = const <String>[],
+    this.canBookTrainingFarInAdvance,
   });
 
   // FromJson.
@@ -71,6 +64,7 @@ class FirestoreAlmanakProfile {
           ? List<String>.from(json['substructures'])
           : null,
       allergies: List<String>.from(json['allergies'] ?? const <String>[]),
+      canBookTrainingFarInAdvance: json['canBookTrainingFarInAdvance'],
     );
   }
 
@@ -111,6 +105,7 @@ class FirestoreAlmanakProfile {
     String? phonePrimary,
     List<String>? substructures,
     List<String>? allergies,
+    bool? canBookTrainingFarInAdvance,
   }) {
     return FirestoreAlmanakProfile(
       firstName: firstName ?? this.firstName,
@@ -128,6 +123,8 @@ class FirestoreAlmanakProfile {
       phonePrimary: phonePrimary ?? this.phonePrimary,
       substructures: substructures ?? this.substructures,
       allergies: allergies ?? this.allergies,
+      canBookTrainingFarInAdvance:
+          canBookTrainingFarInAdvance ?? this.canBookTrainingFarInAdvance,
     );
   }
 
