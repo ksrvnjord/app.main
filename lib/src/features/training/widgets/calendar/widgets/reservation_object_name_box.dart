@@ -40,7 +40,6 @@ class ReservationObjectNameBox extends StatelessWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
     const double textHPadding = 8;
-    const notAvailableBackgroundOpacity = 0.5;
     const textOpacity = 0.8;
 
     return FutureWrapper(

@@ -28,6 +28,8 @@ class WidgetHeader extends StatelessWidget {
 
     const double headerHPadding = 8;
 
+    final labelStyle = textTheme.labelLarge;
+
     return [
       [
         Icon(
@@ -49,13 +51,14 @@ class WidgetHeader extends StatelessWidget {
             if (onTapName != null)
               Text(
                 onTapName ?? "",
-                style: textTheme.labelLarge?.copyWith(
+                style: labelStyle?.copyWith(
                   color: colorScheme.primary,
                 ),
               ),
             Icon(
               Icons.arrow_forward_ios,
-              size: 16,
+              // ignore: no-magic-number
+              size: labelStyle?.fontSize,
               color: colorScheme.primary,
             ),
           ].toRow(mainAxisAlignment: MainAxisAlignment.end),

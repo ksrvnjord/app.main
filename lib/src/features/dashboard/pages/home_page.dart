@@ -109,7 +109,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               thickness: dividerThickness,
               indent: indent,
               endIndent: endIndent,
-              // color: Color(0xFFFF6000),
               color: colorScheme.secondary,
             ),
             const ComingWeekEventsWidget().padding(vertical: elementVPadding),
