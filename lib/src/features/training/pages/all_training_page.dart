@@ -17,10 +17,13 @@ class AllTrainingPage extends ConsumerWidget {
 
     final currentUser = ref.watch(currentFirestoreUserProvider);
 
-    final int amountOfDaysUserCanBookInAdvance =
-        currentUser?.isBestuur == true || currentUser?.isAppCo == true
-            ? 28 // Bestuur and AppCo can book 28 days in the advance.
-            : 4; // User can book 4 days in the advance.
+    final int amountOfDaysUserCanBookInAdvance = currentUser
+                    ?.canBookTrainingFarInAdvance ==
+                true ||
+            currentUser?.isBestuur == true ||
+            currentUser?.isAppCo == true
+        ? 31 // Bestuur and AppCo and other users who are able to can book 28 days in the advance.
+        : 4; // User can book 4 days in the advance.
 
     final List<DateTime> days = List.generate(
       amountOfDaysUserCanBookInAdvance,
