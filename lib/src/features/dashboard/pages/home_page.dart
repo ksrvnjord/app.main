@@ -60,6 +60,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double indent = 56;
     const endIndent = indent;
     const double vaarverbodTopPadding = 4;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    const double dividerThickness = 8;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -102,14 +105,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                 vertical: elementVPadding,
               ),
             ),
-            const Divider(
+            Divider(
+              thickness: dividerThickness,
               indent: indent,
               endIndent: endIndent,
+              color: colorScheme.secondary,
             ),
             const ComingWeekEventsWidget().padding(vertical: elementVPadding),
-            const Divider(
+            Divider(
+              thickness: dividerThickness,
               indent: indent,
               endIndent: endIndent,
+              color: colorScheme.primary,
             ),
             const AnnouncementsWidget().padding(vertical: elementVPadding),
           ],
