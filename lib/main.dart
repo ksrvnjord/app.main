@@ -12,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ksrvnjord_main_app/color_schema.dart';
+import 'package:ksrvnjord_main_app/color_schemes.g.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';

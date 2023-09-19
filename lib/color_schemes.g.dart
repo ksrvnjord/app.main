@@ -1,6 +1,5 @@
-// ignore_for_file: no-equal-arguments, prefer-static-class, arguments-ordering
-
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/assets/lustrum_colors.dart';
 
 const lightColorScheme = ColorScheme(
   brightness: Brightness.light,
@@ -8,16 +7,15 @@ const lightColorScheme = ColorScheme(
   onPrimary: Color(0xFFFFFFFF),
   primaryContainer: Color(0xFFDCE1FF),
   onPrimaryContainer: Color(0xFF00164F),
-  secondary: Color(
-    0xFFA63C00,
-  ), // We used darker secondary color, because of the contrast with the background.
+  // secondary: Color(0xFFA63C00), // Original color from Schema.
+  secondary: LustrumColors.secondaryOrange,
   onSecondary: Color(0xFFFFFFFF),
   secondaryContainer: Color(0xFFFFDBCE),
   onSecondaryContainer: Color(0xFF370E00),
-  tertiary: Color(0xFF006973),
+  tertiary: Color(0xFF006A65),
   onTertiary: Color(0xFFFFFFFF),
-  tertiaryContainer: Color(0xFF91F1FF),
-  onTertiaryContainer: Color(0xFF001F23),
+  tertiaryContainer: Color(0xFF71F7ED),
+  onTertiaryContainer: Color(0xFF00201E),
   error: Color(0xFFBA1A1A),
   errorContainer: Color(0xFFFFDAD6),
   onError: Color(0xFFFFFFFF),
@@ -48,10 +46,10 @@ const darkColorScheme = ColorScheme(
   onSecondary: Color(0xFF591C00),
   secondaryContainer: Color(0xFF7E2C00),
   onSecondaryContainer: Color(0xFFFFDBCE),
-  tertiary: Color(0xFF4ED8E9),
-  onTertiary: Color(0xFF00363C),
-  tertiaryContainer: Color(0xFF004F57),
-  onTertiaryContainer: Color(0xFF91F1FF),
+  tertiary: Color(0xFF4FDBD1),
+  onTertiary: Color(0xFF003734),
+  tertiaryContainer: Color(0xFF00504C),
+  onTertiaryContainer: Color(0xFF71F7ED),
   error: Color(0xFFFFB4AB),
   errorContainer: Color(0xFF93000A),
   onError: Color(0xFF690005),
@@ -59,7 +57,8 @@ const darkColorScheme = ColorScheme(
   background: Color(0xFF001F25),
   onBackground: Color(0xFFA6EEFF),
   surface: Color(0xFF001F25),
-  onSurface: Color(0xFFFFFFFF),
+  onSurface: Color.fromARGB(255, 230, 250,
+      255), // Use slight off-white, instead of the generated blue-ish / teal-ish color.
   surfaceVariant: Color(0xFF45464F),
   onSurfaceVariant: Color(0xFFC6C6D0),
   outline: Color(0xFF90909A),
