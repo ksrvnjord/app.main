@@ -34,30 +34,41 @@ class VaarverbodWidget extends ConsumerWidget {
     }
 
     final colorScheme = Theme.of(context).colorScheme;
-    const opacity = 0.6;
+    const containerOpacity = 0.3;
     final Color backgroundColor = status
         ? colorScheme.errorContainer
-        : Theme.of(context).brightness == Brightness.light
-            ? Colors.green.shade100.withOpacity(opacity)
-            : Colors.green.shade900.withOpacity(opacity);
+        : colorScheme.tertiaryContainer.withOpacity(containerOpacity);
 
     const double descriptionPadding = 8;
 
+    final onContainerColor =
+        status ? colorScheme.onErrorContainer : colorScheme.onTertiaryContainer;
+
+    final textStyle = Theme.of(context).textTheme.bodyLarge;
+
+    final textStyleColored = textStyle?.copyWith(
+      color: onContainerColor,
+    );
+
+    final vaarverbodInternalMessage = vaarverbod?.message;
+
     return ExpandablePanel(
       header: [
-        Icon(
-          icon,
-        ),
+        Icon(icon, color: onContainerColor),
         Text(
           message,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: textStyleColored,
         ),
       ]
           .toRow(separator: const SizedBox(width: descriptionPadding))
           .paddingDirectional(start: descriptionPadding),
       collapsed: const SizedBox.shrink(),
       expanded: [
-        Text(vaarverbod?.message ?? 'Laden...'),
+        if (vaarverbodInternalMessage != null)
+          Text(
+            vaarverbodInternalMessage,
+            style: textStyleColored,
+          ),
         const WeatherWidget(),
       ]
           .toColumn(
