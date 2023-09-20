@@ -20,7 +20,7 @@ class ReservationListTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ListTile(
-      leading: const [Icon(Icons.fitness_center)]
+      leading: [Icon(Icons.fitness_center, color: colorScheme.primary)]
           .toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(reservation.objectName),
       subtitle: Text(
@@ -45,7 +45,7 @@ class ReservationListTile extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: colorScheme.outline,
+          color: colorScheme.primary,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),

@@ -25,11 +25,13 @@ class PollCard extends ConsumerWidget {
 
     const double descriptionHPadding = 16;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: Theme.of(context).colorScheme.outline,
+          color: colorScheme.primary,
         ),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
@@ -38,6 +40,9 @@ class PollCard extends ConsumerWidget {
           title: Text(poll.question),
           subtitle: Text(
             '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colorScheme.outline,
+                ),
           ),
         ),
         answerStream.when(
