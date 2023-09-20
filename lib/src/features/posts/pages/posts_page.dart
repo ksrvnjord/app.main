@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
@@ -33,6 +34,13 @@ class PostsPage extends ConsumerWidget {
                   // We need a consumer to have access to the providers of the provider scope.
                   builder: (_, ref, __) {
                     final selectedTopic = ref.watch(selectedTopicProvider);
+
+                    FirebaseAnalytics.instance.logEvent(
+                      name: 'filter_posts_button_pressed',
+                      parameters: {
+                        'selected_topic': selectedTopic,
+                      },
+                    );
 
                     return Wrap(children: [
                       RadioListTile<String?>(
