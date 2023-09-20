@@ -18,6 +18,7 @@ class AnnouncementsWidget extends ConsumerWidget {
     const double minLeadingWidth = 8;
     const double shimmerContainerHeight = 320;
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return [
       const WidgetHeader(
@@ -38,14 +39,16 @@ class AnnouncementsWidget extends ConsumerWidget {
                         TextSpan(
                           text: "${announcement.author} ",
                           style: textTheme.labelMedium,
-                        ),
+                        ).textColor(colorScheme.primary),
                         TextSpan(
                           text: timeago.format(
                             announcement.created_at,
                             locale: 'nl',
                           ),
-                          style: textTheme.labelMedium,
-                        ).textColor(Theme.of(context).colorScheme.secondary),
+                          style: textTheme.labelMedium?.copyWith(
+                            color: colorScheme.outline,
+                          ),
+                        ),
                       ])),
                       trailing: [
                         const Icon(Icons.chevron_right),

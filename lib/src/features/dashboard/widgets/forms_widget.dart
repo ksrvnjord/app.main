@@ -43,7 +43,9 @@ class FormsWidget extends ConsumerWidget {
           ),
           subtitle: Text(
             'Sluit op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-            style: textTheme.bodySmall,
+            style: textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.outline,
+            ),
           ),
           // ignore: sort_child_properties_last
           children: [
