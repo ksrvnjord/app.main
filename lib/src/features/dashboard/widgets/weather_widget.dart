@@ -110,7 +110,7 @@ class WeatherWidget extends ConsumerWidget {
             style: Theme.of(context).textTheme.labelMedium,
           ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8).card(
-              color: Theme.of(context).colorScheme.secondaryContainer,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
               elevation: 1,
             );
       },
