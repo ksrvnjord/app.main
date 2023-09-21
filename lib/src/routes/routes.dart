@@ -154,8 +154,12 @@ class Routes {
           const CupertinoPage(child: PollsPage(), name: 'Polls'),
       '/home/events': (info) =>
           const CupertinoPage(child: EventsPage(), name: "Events"),
-      '/home/announcements/:announcementId': (_) =>
-          const CupertinoPage(child: AnnouncementPage(), name: "Announcement"),
+      '/home/announcements/:announcementId': (route) => CupertinoPage(
+            child: AnnouncementPage(
+              announcementId: route.pathParameters['announcementId']!,
+            ),
+            name: "Announcement",
+          ),
       '/posts': (_) => const CupertinoPage(child: PostsPage(), name: "Posts"),
       '/posts/new': (_) =>
           const CupertinoPage(child: CreatePostPage(), name: "New Post"),

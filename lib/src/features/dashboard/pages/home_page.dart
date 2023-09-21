@@ -31,7 +31,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.invalidate(openPollsProvider);
     ref.invalidate(pollAnswerProvider);
     ref.invalidate(comingEventsProvider);
-    ref.invalidate(Announcements.firstPageProvider);
+    ref.invalidate(Announcements.firstTenProvider);
 
     // Wait for all providers to be updated.
     // ignore: avoid-ignoring-return-values
@@ -39,7 +39,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       ref.watch(vaarverbodProvider.future),
       ref.watch(openPollsProvider.future),
       ref.watch(comingEventsProvider.future),
-      ref.watch(Announcements.firstPageProvider.future),
+      ref.watch(Announcements.firstTenProvider.future),
     ]);
   }
 
