@@ -1,40 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
 
 // Get first page of announcements.
 // For now we have one provider for announcements, when we have multiple consider putting them in a class.
 // ignore: prefer-static-class
 @immutable
 abstract class Announcements {
-  static final firstPageProvider =
-      FutureProvider<List<Query$Announcements$announcements$data>?>(
-    (ref) async {
-      final client = ref.watch(graphQLModelProvider).client;
-      final result =
-          await client.query$Announcements(Options$Query$Announcements(
-        variables: Variables$Query$Announcements(
-          page: 0,
-        ),
-      ));
-
-      return result.parsedData?.announcements?.data;
+  static final firstTenProvider = FutureProvider<QuerySnapshot<Announcement>>(
+    (ref) {
+      return FirebaseFirestore.instance
+          .collection('announcements')
+          .withConverter<Announcement>(
+            fromFirestore: (snapshot, _) =>
+                Announcement.fromMap(snapshot.data() ?? {}),
+            toFirestore: (announcement, _) => announcement.toMap(),
+          )
+          .orderBy('created_at', descending: true)
+          .limit(10)
+          .get();
     },
   );
 
-  static final getByIdProvider =
-      FutureProvider.family<Query$Announcement$announcement, String>(
-    (ref, announcementId) async {
-      final client = ref.watch(graphQLModelProvider).client;
-      final result = await client.query$Announcement(Options$Query$Announcement(
-        variables: Variables$Query$Announcement(announcementId: announcementId),
-      ));
-
-      final parsedData = result.parsedData;
-
-      return parsedData?.announcement as Query$Announcement$announcement;
+  static final byIdProvider =
+      FutureProvider.family<DocumentSnapshot<Announcement>, String>(
+    (ref, announcementId) {
+      return FirebaseFirestore.instance
+          .collection('announcements')
+          .doc(announcementId)
+          .withConverter<Announcement>(
+            fromFirestore: (snapshot, _) =>
+                Announcement.fromMap(snapshot.data() ?? {}),
+            toFirestore: (announcement, _) => announcement.toMap(),
+          )
+          .get();
     },
   );
 }

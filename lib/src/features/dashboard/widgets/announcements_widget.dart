@@ -14,7 +14,7 @@ class AnnouncementsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcementsVal = ref.watch(Announcements.firstPageProvider);
+    final announcementsVal = ref.watch(Announcements.firstTenProvider);
     const double minLeadingWidth = 8;
     const double shimmerContainerHeight = 320;
     final textTheme = Theme.of(context).textTheme;
@@ -26,11 +26,13 @@ class AnnouncementsWidget extends ConsumerWidget {
         titleIcon: Icons.campaign,
       ),
       announcementsVal.when(
-        data: (announcements) => announcements == null
+        data: (snapshot) => snapshot.size == 0
             ? const Text("Geen aankondigingen gevonden")
-            : announcements
+            : snapshot.docs
                 .map(
-                  (announcement) {
+                  (doc) {
+                    final announcement = doc.data();
+
                     return ListTile(
                       title: Text(
                         announcement.title,
@@ -42,7 +44,7 @@ class AnnouncementsWidget extends ConsumerWidget {
                         ).textColor(colorScheme.primary),
                         TextSpan(
                           text: timeago.format(
-                            announcement.created_at,
+                            announcement.createdAt.toDate(),
                             locale: 'nl',
                           ),
                           style: textTheme.labelMedium?.copyWith(
@@ -58,13 +60,12 @@ class AnnouncementsWidget extends ConsumerWidget {
                         FirebaseAnalytics.instance.logEvent(
                           name: 'announcement_opened',
                           parameters: {
-                            'announcement_id': announcement.id,
+                            'announcement_id': doc.id,
                             'announcement_title': announcement.title,
                           },
                         );
                         // ignore: avoid-ignoring-return-values
-                        Routemaster.of(context)
-                            .push('announcements/${announcement.id}');
+                        Routemaster.of(context).push('announcements/${doc.id}');
                       },
                       minLeadingWidth: minLeadingWidth,
                     );
