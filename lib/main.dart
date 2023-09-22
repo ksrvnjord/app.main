@@ -46,7 +46,7 @@ Future<void> appRunner() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+    // TODO: add webprovider and apple provider so we can start to enforce app check for additional security.
     androidProvider:
         kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
   );
