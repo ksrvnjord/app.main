@@ -42,8 +42,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
+  cloud_functions: ^4.4.1
   firebase_storage: ^11.2.7
-  cloud_functions: ^4.0.7
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
