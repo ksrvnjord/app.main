@@ -1,8 +1,8 @@
 name: Build & Deploy to Web Preview
 
 on:
-  pull_request:
-    branches: [ "main" ]
+  pull_request_target:
+    branches: ["main"]
 
 env:
   flutter_version: "3.10.0"
@@ -24,13 +24,12 @@ jobs:
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
-    
+
       - name: Flutter action
         uses: subosito/flutter-action@v2.8.0
         with:
           flutter-version: ${{ env.flutter_version }}
-          channel: 'stable'
-    
+          channel: "stable"
 
       - name: Restore packages
         run: flutter pub get
@@ -45,4 +44,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           expires: 7d
           projectId: ksrv-njord
-
