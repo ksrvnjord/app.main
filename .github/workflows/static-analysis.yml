@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -74,7 +74,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -126,7 +126,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
@@ -168,7 +168,7 @@ jobs:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
