@@ -7,9 +7,12 @@ class LustrumColors {
   static const tertiaryGreen = Color(0xFF009F97);
 
   // Neutral colors.
-  static const lightBlue = Color(0xFFB7D7DC);
+  static const lightBlue = Color(0xFF4Ed8e9);
 
   // Accent.
   static const pink = Color(0xFFE3097E);
   static const purple = Color(0xFF6525DB);
+
+  // Special.
+  static const gold = Color(0xFFFFD700);
 }

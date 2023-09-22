@@ -92,6 +92,15 @@ class FormsWidget extends ConsumerWidget {
           shape: const RoundedRectangleBorder(
             side: BorderSide(color: Colors.transparent, width: 0),
           ),
+        ).card(
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          elevation: 0,
+          // Transparant color.
+          color: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+          ),
         );
       }),
     ].toColumn();

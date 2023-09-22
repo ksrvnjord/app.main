@@ -34,7 +34,7 @@ class DamageTileWidget extends StatelessWidget {
         damage.critical
             ? Icon(
                 Icons.report,
-                color: colorScheme.onSecondaryContainer,
+                color: colorScheme.onErrorContainer,
               )
             : Icon(
                 Icons.warning,
@@ -62,7 +62,7 @@ class DamageTileWidget extends StatelessWidget {
     ).card(
       color: // If damage is critical show light red, else orange.
           damage.critical
-              ? colorScheme.secondaryContainer
+              ? colorScheme.errorContainer
               : colorScheme.tertiaryContainer,
       elevation: 0,
     );

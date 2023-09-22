@@ -64,7 +64,7 @@ class ReservationObjectNameBox extends StatelessWidget {
                           ? colorScheme.onErrorContainer
                               .withOpacity(textOpacity)
                           : isAvailable
-                              ? colorScheme.onSecondaryContainer
+                              ? colorScheme.onPrimaryContainer
                               : colorScheme.onSurface.withOpacity(textOpacity),
                     ),
               ).center().padding(horizontal: textHPadding),
