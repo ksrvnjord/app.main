@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
   cloud_firestore:
   url_launcher: ^6.1.5
-  sentry_flutter: ^7.5.2
+  sentry_flutter: ^7.10.1
   graphql: ^5.1.3
   graphql_flutter: ^5.1.1
   gql: ^0.14.0
@@ -42,8 +42,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
-  firebase_storage: ^11.0.9
   cloud_functions: ^4.4.1
+  firebase_storage: ^11.2.7
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
