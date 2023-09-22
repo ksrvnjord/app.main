@@ -24,9 +24,16 @@ class _NotificationsListState extends State<NotificationsList> {
   ) async {
     try {
       await toggleTopicFCM(topic: topic, value: value);
-      // ignore: avoid-ignoring-return-values
-      messenger.showSnackBar(SnackBar(
-        content: Text('${value ? 'Aangemeld' : 'Afgemeld'} voor $title'),
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+      final colorScheme = Theme.of(context).colorScheme;
+      
+      messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          '${value ? 'Aangemeld' : 'Afgemeld'} voor $title',
+          selectionColor: colorScheme.onSecondaryContainer,
+          ),
+        backgroundColor: colorScheme.secondaryContainer,
       ));
     } catch (e) {
       // ignore: avoid-ignoring-return-values
