@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/lustrum_colors.dart';
 
