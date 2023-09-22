@@ -31,7 +31,7 @@ class TrainingPage extends StatelessWidget {
               backgroundColor: colorScheme.secondaryContainer,
               onPressed: () => navigator.push('damages'),
               icon: Icon(Icons.report, color: colorScheme.onSecondaryContainer),
-              label: Text(
+              label: const Text(
                 'Schademeldingen',
               ).textColor(colorScheme.onSecondaryContainer),
             ),

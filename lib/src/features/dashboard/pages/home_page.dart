@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/assets/lustrum_colors.dart';
-import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
@@ -18,7 +17,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:tuple/tuple.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -61,12 +59,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     const double bottomPaddingLogo = 10; // To align logo with the ProfileIcon.
 
-    const double indent = 56;
-    const endIndent = indent;
     const double vaarverbodTopPadding = 4;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    const double dividerThickness = 4;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -127,63 +120,42 @@ class _HomePageState extends ConsumerState<HomePage> {
 }
 
 class BackgroundPainter extends CustomPainter {
-  final double offset;
   BuildContext context;
 
   BackgroundPainter({
-    this.offset = 0,
     required this.context,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    var opacity = 0.16;
+    const opacity = 0.16;
     final orange = Paint()
       ..color = LustrumColors.secondaryOrange.withOpacity(opacity)
-      ..strokeWidth = 20.0;
+      ..strokeWidth = size.width * 0.05;
 
     final blue = Paint()
       ..color = LustrumColors.lightBlue.withOpacity(opacity)
-      ..strokeWidth = 20.0;
+      ..strokeWidth = size.width * 0.05;
 
-    canvas.drawLine(Offset(size.width * (1.0 + offset) + 10, 0),
-        Offset(0, size.height * (1.0 + offset)), orange);
+    final dxOrange = size.width + 10;
+    final dyOrange = size.height;
+    canvas.drawLine(
+      Offset(dxOrange, 0),
+      Offset(0, dyOrange),
+      orange,
+    );
 
-    canvas.drawLine(Offset(size.width * (1.0 + 0.1) + 10, 0),
-        Offset(0, size.height * (1.0 + 0.1)), blue);
+    final dxBlue = size.width * (1.1) + 10;
+    final dyBlue = size.height * (1.1);
+    canvas.drawLine(
+      Offset(dxBlue, 0),
+      Offset(0, dyBlue),
+      blue,
+    );
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
-  }
-}
-
-class SwanDivider extends StatelessWidget {
-  const SwanDivider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return [
-      for (final Tuple2<double, Color> color in [
-        Tuple2(12, colorScheme.tertiaryContainer),
-        Tuple2(16, colorScheme.primary),
-        Tuple2(12, colorScheme.secondaryContainer),
-      ])
-        SvgPicture.asset(
-          Svgs.swanWhite,
-          width: color.item1,
-          // ignore: deprecated_member_use
-          color: color.item2,
-        ),
-    ].toRow(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      separator: const SizedBox(width: 8),
-    );
   }
 }
