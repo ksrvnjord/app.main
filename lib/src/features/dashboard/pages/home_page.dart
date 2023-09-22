@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/assets/lustrum_colors.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
@@ -68,7 +68,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         preferredSize: Size.fromHeight(screenTopPadding),
       ),
       body: CustomPaint(
-        painter: BackgroundPainter(context: context),
+        painter: LustrumBackgroundWidget(),
         child: RefreshIndicator(
           // ignore: sort_child_properties_last
           child: ListView(
@@ -116,46 +116,5 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       ),
     );
-  }
-}
-
-class BackgroundPainter extends CustomPainter {
-  BuildContext context;
-
-  BackgroundPainter({
-    required this.context,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const opacity = 0.16;
-    final orange = Paint()
-      ..color = LustrumColors.secondaryOrange.withOpacity(opacity)
-      ..strokeWidth = size.width * 0.05;
-
-    final blue = Paint()
-      ..color = LustrumColors.lightBlue.withOpacity(opacity)
-      ..strokeWidth = size.width * 0.05;
-
-    final dxOrange = size.width + 10;
-    final dyOrange = size.height;
-    canvas.drawLine(
-      Offset(dxOrange, 0),
-      Offset(0, dyOrange),
-      orange,
-    );
-
-    final dxBlue = size.width * (1.1) + 10;
-    final dyBlue = size.height * (1.1);
-    canvas.drawLine(
-      Offset(dxBlue, 0),
-      Offset(0, dyBlue),
-      blue,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
   }
 }

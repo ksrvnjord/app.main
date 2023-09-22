@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
 import 'package:routemaster/routemaster.dart';
@@ -20,7 +21,11 @@ class TrainingPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mijn afschrijvingen'),
       ),
-      body: const TrainingList(),
+      body: CustomPaint(
+        // ignore: sort_child_properties_last
+        painter: LustrumBackgroundWidget(),
+        child: const TrainingList(),
+      ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: Wrap(
           alignment: WrapAlignment.end,
