@@ -52,14 +52,14 @@ class WidgetHeader extends StatelessWidget {
               Text(
                 onTapName ?? "",
                 style: labelStyle?.copyWith(
-                  color: colorScheme.primary,
+                  color: colorScheme.secondary,
                 ),
               ),
             Icon(
               Icons.arrow_forward_ios,
               // ignore: no-magic-number
               size: labelStyle?.fontSize,
-              color: colorScheme.primary,
+              color: colorScheme.secondary,
             ),
           ].toRow(mainAxisAlignment: MainAxisAlignment.end),
           onTap: onTap,

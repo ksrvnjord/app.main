@@ -15,6 +15,8 @@ class _MainPageState extends ConsumerState<MainPage> {
   Widget build(BuildContext context) {
     final tabPage = TabPage.of(context);
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: null,
       body: TabBarView(
@@ -32,19 +34,16 @@ class _MainPageState extends ConsumerState<MainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            label: 'Prikbord',
-          ),
+              icon: Icon(Icons.chat_outlined), label: 'Prikbord'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.edit_calendar),
-            label: 'Afschrijven',
-          ),
+              icon: Icon(Icons.edit_calendar), label: 'Afschrijven'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
         onTap: (value) => animateTo(value, tabPage),
         currentIndex: tabPage.controller.index,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: colorScheme.primary,
       ),
     );
   }

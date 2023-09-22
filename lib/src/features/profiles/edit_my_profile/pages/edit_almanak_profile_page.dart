@@ -64,7 +64,9 @@ class _EditAlmanakProfilePageState
         FloatingActionButton.extended(
           backgroundColor: colorScheme.secondaryContainer,
           onPressed: () => Routemaster.of(context).push(userId ?? ""),
-          label: const Text("Publiek profiel bekijken"),
+          label: const Text("Publiek profiel bekijken").textColor(
+            colorScheme.onSecondaryContainer,
+          ),
         ),
         FloatingActionButton.extended(
           backgroundColor: colorScheme.primaryContainer,

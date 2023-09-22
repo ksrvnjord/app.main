@@ -34,15 +34,15 @@ class VaarverbodWidget extends ConsumerWidget {
     }
 
     final colorScheme = Theme.of(context).colorScheme;
-    const containerOpacity = 0.3;
-    final Color backgroundColor = status
-        ? colorScheme.errorContainer
-        : colorScheme.tertiaryContainer.withOpacity(containerOpacity);
+    const containerOpacity = 0.6;
+    final Color backgroundColor =
+        status ? colorScheme.errorContainer : colorScheme.secondaryContainer;
 
     const double descriptionPadding = 8;
 
-    final onContainerColor =
-        status ? colorScheme.onErrorContainer : colorScheme.onTertiaryContainer;
+    final onContainerColor = status
+        ? colorScheme.onErrorContainer
+        : colorScheme.onSecondaryContainer;
 
     final textStyle = Theme.of(context).textTheme.bodyLarge;
 
@@ -82,7 +82,7 @@ class VaarverbodWidget extends ConsumerWidget {
         hasIcon: true,
       ),
     ).card(
-      color: backgroundColor,
+      color: backgroundColor.withOpacity(containerOpacity),
       elevation: 0,
       margin: const EdgeInsets.all(0),
     );

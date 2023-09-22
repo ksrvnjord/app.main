@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class TrainingPage extends StatelessWidget {
   const TrainingPage({Key? key}) : super(key: key);
@@ -29,8 +30,10 @@ class TrainingPage extends StatelessWidget {
             FloatingActionButton.extended(
               backgroundColor: colorScheme.secondaryContainer,
               onPressed: () => navigator.push('damages'),
-              icon: const Icon(Icons.report),
-              label: const Text('Schademeldingen'),
+              icon: Icon(Icons.report, color: colorScheme.onSecondaryContainer),
+              label: Text(
+                'Schademeldingen',
+              ).textColor(colorScheme.onSecondaryContainer),
             ),
             FloatingActionButton.extended(
               backgroundColor: colorScheme.primaryContainer,

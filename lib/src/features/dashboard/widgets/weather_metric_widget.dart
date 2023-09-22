@@ -65,7 +65,7 @@ class WeatherMetricWidget extends StatelessWidget {
           )
           .padding(all: innerPadding)
           .card(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
+            color: Theme.of(context).colorScheme.secondaryContainer,
             elevation: cardElevation,
           ),
     );

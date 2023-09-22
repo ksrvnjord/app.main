@@ -52,7 +52,7 @@ class SettingsPage extends ConsumerWidget {
                                   ThemeMode.system:
                                       'Gebruik telefooninstellingen',
                                   ThemeMode.light: 'Licht',
-                                  ThemeMode.dark: 'Donker',
+                                  ThemeMode.dark: 'Lustrum',
                                 }[mode] ??
                                 'Onbekend',
                           ),
