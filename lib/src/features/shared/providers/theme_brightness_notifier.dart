@@ -12,9 +12,18 @@ class ThemeBrightnessNotifier extends AsyncNotifier<ThemeMode> {
   @override
   build() async {
     final prefs = await SharedPreferences.getInstance();
+
+    final hasTriedLustrumColors = prefs.getBool('hasTriedLustrumColors');
+    if (hasTriedLustrumColors == null || !hasTriedLustrumColors) {
+      // ignore: avoid-ignoring-return-values
+      await prefs.setString('themeMode', 'dark');
+      // ignore: avoid-ignoring-return-values
+      await prefs.setBool('hasTriedLustrumColors', true);
+    }
+
     final themeStr = prefs.getString('themeMode');
     try {
-      return ThemeMode.values.byName(themeStr ?? 'system');
+      return ThemeMode.values.byName(themeStr ?? 'dark');
     } catch (e) {
       return ThemeMode.system;
     }
