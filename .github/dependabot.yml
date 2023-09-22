@@ -7,11 +7,15 @@ version: 2
 updates:
   - package-ecosystem: "pub" # Ecosystem of Dart packages
     directory: "/" # Location of package manifests
+    assignees:
+      - "alexanderserraris"
     schedule:
       interval: "weekly"
 
   # Enable version updates for Github Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    assignees:
+      - "alexanderserraris"
     schedule:
       interval: "weekly"
