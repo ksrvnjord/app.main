@@ -19,16 +19,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
@@ -45,16 +45,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
@@ -71,16 +71,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
@@ -97,16 +97,16 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
@@ -123,16 +123,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'
@@ -149,7 +149,7 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
       
       - name: Install Stable Dart
         uses: dart-lang/setup-dart@v1
@@ -165,16 +165,16 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
           channel: 'stable'

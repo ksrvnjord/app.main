@@ -1,8 +1,8 @@
 name: Build & Deploy to Web Preview
 
 on:
-  pull_request:
-    branches: [ "main" ]
+  pull_request_target:
+    branches: ["main"]
 
 env:
   flutter_version: "3.10.0"
@@ -17,20 +17,19 @@ jobs:
       BUILD_CONFIGURATION: Release
 
     steps:
-      - uses: actions/checkout@v3 # Checkout the code in the main repo
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
 
       - name: Cache Flutter dependencies
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
-    
+
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: ${{ env.flutter_version }}
-          channel: 'stable'
-    
+          channel: "stable"
 
       - name: Restore packages
         run: flutter pub get
@@ -45,4 +44,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           expires: 7d
           projectId: ksrv-njord
-
