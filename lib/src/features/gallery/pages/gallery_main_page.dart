@@ -16,6 +16,7 @@ class _GalleryMainPageState extends State<GalleryMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       child: Navigator(
         key: _galleryNavigatorKey,

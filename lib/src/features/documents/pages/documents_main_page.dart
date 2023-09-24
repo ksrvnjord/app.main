@@ -16,6 +16,7 @@ class _DocumentsMainPageState extends State<DocumentsMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       child: Navigator(
         key: _documentsNavigatorKey,

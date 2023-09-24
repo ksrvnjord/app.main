@@ -62,10 +62,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double vaarverbodTopPadding = 4;
 
     return Scaffold(
+      // ignore: arguments-ordering
       appBar: PreferredSize(
-        // ignore: sort_child_properties_last
-        child: SizedBox(height: screenTopPadding),
         preferredSize: Size.fromHeight(screenTopPadding),
+        child: SizedBox(height: screenTopPadding),
       ),
       body: CustomPaint(
         painter: LustrumBackgroundWidget(),

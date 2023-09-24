@@ -47,6 +47,13 @@ android {
         jvmTarget = '1.8'
     }
 
+    packagingOptions { // Fix for error "2 files found with path 'lib/arm64-v8a/libc++_shared.so' from inputs":https://stackoverflow.com/a/73385071 caused by some pdf library
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -92,5 +99,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.google.firebase:firebase-appcheck-debug:16.1.1'
+    implementation 'com.android.support:multidex:2.0.1'
 }
 

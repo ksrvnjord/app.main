@@ -90,6 +90,7 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
         content: const Text(
           'Schademelding kon niet aangemaakt worden',
         ),
+        // ignore: use_build_context_synchronously
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
       ));
     }
