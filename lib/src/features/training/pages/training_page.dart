@@ -14,7 +14,7 @@ class TrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Routemaster navigator = Routemaster.of(context);
-
+    const pageOffset = 0.0;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -23,7 +23,10 @@ class TrainingPage extends StatelessWidget {
       ),
       body: CustomPaint(
         // ignore: sort_child_properties_last
-        painter: LustrumBackgroundWidget(),
+        painter: LustrumBackgroundWidget(
+          screenSize: MediaQuery.of(context).size,
+          pageOffset: pageOffset,
+        ),
         child: const TrainingList(),
       ),
       floatingActionButton: FirebaseWidget(

@@ -17,6 +17,7 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(firebaseAuthUserProvider);
+    const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
       "Bekijk de agenda": "events",
@@ -32,7 +33,10 @@ class MorePage extends ConsumerWidget {
         title: const Text('Meer'),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(),
+        painter: LustrumBackgroundWidget(
+          screenSize: MediaQuery.of(context).size,
+          pageOffset: pageOffset,
+        ),
         child: ListView(
           children: [
             ...optionRouteMap.entries.map(

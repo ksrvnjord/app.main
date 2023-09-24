@@ -5,6 +5,13 @@ class LustrumBackgroundWidget extends CustomPainter {
   final double strokeSize = 0.03; // ignore: size height times this number
   final double offsetStripes =
       4.0; // ignore: value: 2.0 (stripes touching), value: 4.0 (stripe between)
+  final Size screenSize;
+  final double pageOffset;
+
+  LustrumBackgroundWidget({
+    required this.screenSize,
+    required this.pageOffset,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -22,7 +29,8 @@ class LustrumBackgroundWidget extends CustomPainter {
     // ignore: Or else adjust strokeSize and offsetStripes above.
 
     final dxOrangeStart = size.width * (1.04 + strokeSize * offsetStripes);
-    final dyOrangeStart = -size.height * (strokeSize * offsetStripes);
+    final dyOrangeStart =
+        -size.height * (strokeSize * offsetStripes) + pageOffset;
     final dxOrangeEnd = -size.width * (strokeSize * offsetStripes);
     final dyOrangeEnd = size.height * (1.03 + strokeSize * offsetStripes);
     canvas.drawLine(
@@ -32,9 +40,11 @@ class LustrumBackgroundWidget extends CustomPainter {
     );
 
     final dxBlueStart = dxOrangeStart * (1.0 + strokeSize * offsetStripes);
-    final dyBlueStart = dyOrangeStart * (1.0 + strokeSize * offsetStripes);
+    final dyBlueStart =
+        (dyOrangeStart - pageOffset) * (1.0 + strokeSize * offsetStripes) +
+            pageOffset;
     final dxBlueEnd = dxOrangeEnd * (1.0 + strokeSize * offsetStripes);
-    final dyBlueEnd = dyOrangeEnd * (1.0 + strokeSize * offsetStripes);
+    final dyBlueEnd = (dyOrangeEnd) * (1.0 + strokeSize * offsetStripes);
     canvas.drawLine(
       Offset(dxBlueStart, dyBlueStart),
       Offset(dxBlueEnd, dyBlueEnd),

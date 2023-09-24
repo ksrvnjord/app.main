@@ -16,6 +16,7 @@ class PostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topics = ref.watch(postTopicsProvider);
+    const pageOffset = 0.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +74,10 @@ class PostsPage extends ConsumerWidget {
         ],
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(),
+        painter: LustrumBackgroundWidget(
+          screenSize: MediaQuery.of(context).size,
+          pageOffset: pageOffset,
+        ),
         child: const FirebaseWidget(
           onAuthenticated: PostList(),
           onUnauthenticated:

@@ -13,6 +13,7 @@ class AlmanakPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double choiceWidgetPadding = 8;
+    const pageOffset = 0.0;
 
     final currentUser = GetIt.I<CurrentUser>();
     final bool isVisibleInAlmanak = currentUser.user?.listed ?? true;
@@ -22,7 +23,10 @@ class AlmanakPage extends StatelessWidget {
         title: const Text("Almanak"),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(),
+        painter: LustrumBackgroundWidget(
+          screenSize: MediaQuery.of(context).size,
+          pageOffset: pageOffset,
+        ),
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: [
