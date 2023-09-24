@@ -191,7 +191,6 @@ class _EditAlmanakProfilePageState
                   buttonText: const Text('Substructuren'),
                   selectedColor: colorScheme.primaryContainer,
                   backgroundColor: colorScheme.surface,
-                  unselectedColor: colorScheme.primaryContainer,
                   checkColor: colorScheme.onPrimaryContainer,
                   onSaved: (substructures) => ref
                       .read(profileEditFormNotifierProvider.notifier)
