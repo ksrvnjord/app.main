@@ -9,12 +9,12 @@ class DamageFormWidget extends ConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  final double padding = 16;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formData = ref.watch(damageFormProvider);
     final diameter = MediaQuery.of(context).size.width;
+
+    const double padding = 16;
 
     return [
       TextFormField(
@@ -52,7 +52,7 @@ class DamageFormWidget extends ConsumerWidget {
         shape: ImagePickerWidgetShape.square,
       ),
     ].toColumn(
-      separator: SizedBox(height: padding),
+      separator: const SizedBox(height: padding),
       crossAxisAlignment: CrossAxisAlignment.start,
     );
   }

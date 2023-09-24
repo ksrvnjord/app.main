@@ -7,10 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:routemaster/routemaster.dart';
 
 class DamagesListPage extends ConsumerWidget {
-  final double paddingY = 16;
-  final double paddingX = 8;
-  final double gapY = 8;
-
   const DamagesListPage({
     Key? key,
   }) : super(key: key);
@@ -18,6 +14,10 @@ class DamagesListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Routemaster navigator = Routemaster.of(context);
+
+    const double paddingY = 16;
+    const double paddingX = 8;
+    const double gapY = 8;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,8 +27,10 @@ class DamagesListPage extends ConsumerWidget {
       body: FutureWrapper(
         future: ref.watch(damagesProvider.future),
         success: (data) => ListView.separated(
-          padding:
-              EdgeInsets.symmetric(vertical: paddingY, horizontal: paddingX),
+          padding: const EdgeInsets.symmetric(
+            vertical: paddingY,
+            horizontal: paddingX,
+          ),
           itemBuilder: (context, index) => DamageTileWidget(
             showDamage: () => navigator.push('show', queryParameters: {
               'id': data[index].id,
@@ -40,7 +42,7 @@ class DamagesListPage extends ConsumerWidget {
             }),
             damageSnapshot: data[index],
           ),
-          separatorBuilder: (context, index) => SizedBox(height: gapY),
+          separatorBuilder: (context, index) => const SizedBox(height: gapY),
           itemCount: data.length,
         ),
       ),

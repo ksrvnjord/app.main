@@ -66,7 +66,6 @@ dependencies:
   weather_icons: ^3.0.0
   stack_trace: ^1.11.0
   firebase_analytics: ^10.5.0
-  device_info_plus: any
   firebase_crashlytics: ^3.3.1
   upgrader: any
   sliver_tools: ^0.2.12
