@@ -5,6 +5,7 @@ class LustrumBackgroundWidget extends CustomPainter {
   final double strokeSize = 0.03; // ignore: size height times this number
   final double offsetStripes =
       4.0; // ignore: value: 2.0 (stripes touching), value: 4.0 (stripe between)
+
   final Size screenSize;
   final double pageOffset;
 
@@ -12,6 +13,7 @@ class LustrumBackgroundWidget extends CustomPainter {
     required this.screenSize,
     required this.pageOffset,
   });
+
 
   @override
   void paint(Canvas canvas, Size size) {

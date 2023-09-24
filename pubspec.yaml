@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
   cloud_firestore:
   url_launcher: ^6.1.5
-  sentry_flutter: ^7.5.2
+  sentry_flutter: ^7.10.1
   graphql: ^5.1.3
   graphql_flutter: ^5.1.1
   gql: ^0.14.0
@@ -29,7 +29,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   dio: ">=4.0.6 <6.0.0"
   shimmer: ^3.0.0
-  infinite_scroll_pagination: ^3.2.0
+  infinite_scroll_pagination: ^4.0.0
   syncfusion_flutter_calendar: ^21.2.5
   lucide_icons: ^0.244.0
   sticky_headers: ^0.3.0+2
@@ -37,13 +37,13 @@ dependencies:
   time_range_picker: ^2.2.0
   firebase_core: ^2.11.0
   shared_preferences: ^2.0.15
-  firebase_messaging: ^14.2.1
+  firebase_messaging: ^14.6.8
   flutter_local_notifications: ^14.0.0+1
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
-  firebase_storage: ^11.0.9
-  cloud_functions: ^4.0.7
+  cloud_functions: ^4.4.1
+  firebase_storage: ^11.2.7
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
@@ -51,7 +51,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   crypto: ^3.0.2
-  firebase_app_check: ^0.1.2
+  firebase_app_check: ^0.2.0
   tuple: ^2.0.1
   path_provider: ^2.0.2
   flutter_riverpod: ^2.2.0
@@ -65,7 +65,7 @@ dependencies:
   expandable: ^5.0.1
   weather_icons: ^3.0.0
   stack_trace: ^1.11.0
-  firebase_analytics: ^10.4.1
+  firebase_analytics: ^10.5.0
   package_info_plus: any
   firebase_crashlytics: ^3.3.1
   upgrader: any
@@ -80,7 +80,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.1
   graphql_codegen: ^0.12.0-beta.1
-  build_runner: ^2.2.0
+  build_runner: ^2.4.6
   dart_code_metrics: # Dart Code Metrics became PAID-only, that's why we use our own forked version.
     git: # Visit https://dart-code-metrics.web.app/ for the docs.
       url: https://github.com/ksrvnjord/dart-code-metrics.git
