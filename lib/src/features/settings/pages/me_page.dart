@@ -245,7 +245,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
         });
       }
     } catch (e) {
-      // ignore: avoid-ignoring-return-values
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Het is niet gelukt om je gegevens bij te werken.'),
         backgroundColor: Colors.red,
