@@ -62,6 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double vaarverbodTopPadding = 4;
 
     return Scaffold(
+      // ignore: arguments-ordering
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(screenTopPadding),
         child: SizedBox(height: screenTopPadding),
