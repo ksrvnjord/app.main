@@ -14,7 +14,6 @@ class LustrumBackgroundWidget extends CustomPainter {
     required this.pageOffset,
   });
 
-
   @override
   void paint(Canvas canvas, Size size) {
     const opacity = 0.16;
