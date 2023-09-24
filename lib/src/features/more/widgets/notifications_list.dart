@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/more/mutations/toggle_topic_fcm.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class NotificationsList extends StatefulWidget {
   final Box topics;
@@ -22,6 +25,7 @@ class _NotificationsListState extends State<NotificationsList> {
     ScaffoldMessengerState messenger,
     String title,
   ) async {
+    final colorScheme = Theme.of(context).colorScheme;
     try {
       await toggleTopicFCM(topic: topic, value: value);
       // ignore: avoid-ignoring-return-values
@@ -31,8 +35,10 @@ class _NotificationsListState extends State<NotificationsList> {
     } catch (e) {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(
-        content: const Text('Er is iets misgegaan'),
-        backgroundColor: Colors.red[900],
+        content: const Text(
+          'Er is iets misgegaan',
+        ).textColor(colorScheme.onErrorContainer),
+        backgroundColor: colorScheme.errorContainer,
       ));
     }
     if (mounted) {

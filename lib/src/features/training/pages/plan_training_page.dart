@@ -259,6 +259,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     String uid,
     String creatorName,
   ) async {
+    final colorScheme = Theme.of(context).colorScheme;
     ref.read(progressProvider.notifier).inProgress();
     final response = await createReservationCloud(Reservation(
       _startTime,
@@ -289,8 +290,10 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Afschrijving mislukt! ${response['error']}"),
-          backgroundColor: Colors.red,
+          content: Text(
+            "Afschrijving mislukt! ${response['error']}",
+          ).textColor(colorScheme.onErrorContainer),
+          backgroundColor: colorScheme.errorContainer,
           showCloseIcon: true,
         ),
       );

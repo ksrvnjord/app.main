@@ -60,6 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double bottomPaddingLogo = 10; // To align logo with the ProfileIcon.
 
     const double vaarverbodTopPadding = 4;
+    const pageOffset = 57.0;
 
     return Scaffold(
       // ignore: arguments-ordering
@@ -68,7 +69,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: SizedBox(height: screenTopPadding),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(),
+        painter: LustrumBackgroundWidget(
+          screenSize: MediaQuery.of(context).size,
+          pageOffset: pageOffset,
+        ),
         child: RefreshIndicator(
           // ignore: sort_child_properties_last
           child: ListView(

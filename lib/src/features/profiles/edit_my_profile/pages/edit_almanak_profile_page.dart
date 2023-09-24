@@ -86,6 +86,7 @@ class _EditAlmanakProfilePageState
     BuildContext context,
   ) {
     final user = snapshot.data();
+    final colorScheme = Theme.of(context).colorScheme;
 
     const double imageHelpTextTopPadding = 4;
     const double groupSpacing = 32;
@@ -188,6 +189,9 @@ class _EditAlmanakProfilePageState
                   title: const Text('Substructuren'),
                   // ignore: no-equal-arguments
                   buttonText: const Text('Substructuren'),
+                  selectedColor: colorScheme.primaryContainer,
+                  backgroundColor: colorScheme.surface,
+                  checkColor: colorScheme.onPrimaryContainer,
                   onSaved: (substructures) => ref
                       .read(profileEditFormNotifierProvider.notifier)
                       .setSubstructuren(substructures),
@@ -265,13 +269,16 @@ class _EditAlmanakProfilePageState
 
   void submitForm() async {
     final formState = _formKey.currentState;
+    final colorScheme = Theme.of(context).colorScheme;
     // FORM VALIDATION.
     if (formState != null && !formState.validate()) {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sommige velden zijn niet juist ingevuld'),
-          backgroundColor: Colors.red,
+        SnackBar(
+          content: const Text(
+            'Sommige velden zijn niet juist ingevuld',
+          ).textColor(colorScheme.onErrorContainer),
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
 
@@ -334,9 +341,11 @@ class _EditAlmanakProfilePageState
       } else {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Er ging iets mis bij het wijzigen van je profiel'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text(
+              'Er ging iets mis bij het wijzigen van je profiel',
+            ).textColor(colorScheme.onErrorContainer),
+            backgroundColor: colorScheme.errorContainer,
           ),
         );
       }
