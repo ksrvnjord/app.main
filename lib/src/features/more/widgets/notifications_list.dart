@@ -37,7 +37,7 @@ class _NotificationsListState extends State<NotificationsList> {
       messenger.showSnackBar(SnackBar(
         content: const Text(
           'Er is iets misgegaan',
-          ).textColor(colorScheme.onErrorContainer),
+        ).textColor(colorScheme.onErrorContainer),
         backgroundColor: colorScheme.errorContainer,
       ));
     }

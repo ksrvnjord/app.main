@@ -292,7 +292,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         SnackBar(
           content: Text(
             "Afschrijving mislukt! ${response['error']}",
-            ).textColor(colorScheme.onErrorContainer),
+          ).textColor(colorScheme.onErrorContainer),
           backgroundColor: colorScheme.errorContainer,
           showCloseIcon: true,
         ),

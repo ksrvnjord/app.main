@@ -76,7 +76,8 @@ class PostsPage extends ConsumerWidget {
         painter: LustrumBackgroundWidget(),
         child: const FirebaseWidget(
           onAuthenticated: PostList(),
-          onUnauthenticated: Center(child: Text("Er zijn geen nieuwe berichten")),
+          onUnauthenticated:
+              Center(child: Text("Er zijn geen nieuwe berichten")),
         ),
       ),
       floatingActionButton: FirebaseWidget(

@@ -277,7 +277,7 @@ class _EditAlmanakProfilePageState
         SnackBar(
           content: const Text(
             'Sommige velden zijn niet juist ingevuld',
-            ).textColor(colorScheme.onErrorContainer),
+          ).textColor(colorScheme.onErrorContainer),
           backgroundColor: colorScheme.errorContainer,
         ),
       );
@@ -344,7 +344,7 @@ class _EditAlmanakProfilePageState
           SnackBar(
             content: const Text(
               'Er ging iets mis bij het wijzigen van je profiel',
-              ).textColor(colorScheme.onErrorContainer),
+            ).textColor(colorScheme.onErrorContainer),
             backgroundColor: colorScheme.errorContainer,
           ),
         );
