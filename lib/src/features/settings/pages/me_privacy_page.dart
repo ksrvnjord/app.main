@@ -98,7 +98,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
         content: Text('Vindbaarheid aangepast'),
       ));
     } catch (e) {
-      // ignore: avoid-ignoring-return-values
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content:
             Text('Er is iets misgegaan bij het aanpassen van je vindbaarheid'),

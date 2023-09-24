@@ -111,7 +111,7 @@ class FillCommissieInfoPageState extends State<FillCommissieInfoPage> {
     try {
       await addMyCommissie(_formData);
     } catch (e) {
-      // ignore: avoid-ignoring-return-values
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Er is iets fout gegaan met het opslaan'),

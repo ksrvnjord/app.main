@@ -63,6 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     const pageOffset = 57.0;
 
     return Scaffold(
+      // ignore: arguments-ordering
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(screenTopPadding),
         child: SizedBox(height: screenTopPadding),

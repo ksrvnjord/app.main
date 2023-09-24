@@ -12,13 +12,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ksrvnjord_main_app/color_schemes.g.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'package:ksrvnjord_main_app/color_schemes.g.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
@@ -63,12 +62,6 @@ Future<void> appRunner() async {
   }
 
   if (!kIsWeb) {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // DefaultEventParameters are not supported on web.
-    await FirebaseAnalytics.instance.setDefaultEventParameters(
-      {'version': packageInfo.version},
-    ); // Log app version with every event.
-
     // FirebaseMessaging not implemented on Web yet.
     // ignore: avoid-ignoring-return-values
     await FirebaseMessaging.instance.getInitialMessage();
