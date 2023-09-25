@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ksrvnjord.app">
 
-    <uses-feature
-        android:name="android.hardware.telephony"
+    <uses-feature android:name="android.hardware.telephony"
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,8 +11,11 @@
     <application android:label="K.S.R.V. Njord"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
-        >
+        android:roundIcon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_stat_ic_launcher_foreground" />
+
         <activity android:name="io.flutter.embedding.android.FlutterActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
