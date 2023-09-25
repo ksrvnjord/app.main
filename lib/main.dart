@@ -1,4 +1,5 @@
 // ignore_for_file: prefer-static-class
+
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -44,11 +45,14 @@ Future<void> appRunner() async {
     // Can't add name: 'ksrv-njord', // we can't pass name due to a bug: https://github.com/firebase/flutterfire/issues/10228.
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    // TODO: add webprovider and apple provider so we can start to enforce app check for additional security.
-    androidProvider:
-        kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
-  );
+  if (!kIsWeb) {
+    // TODO: add Apple App Check provider.
+    await FirebaseAppCheck.instance.activate(
+      // TODO: add webprovider and apple provider so we can start to enforce app check for additional security.
+      androidProvider:
+          kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+    );
+  }
 
   if (!kDebugMode) {
     // Pass all uncaught "fatal" errors from the framework to Crashlytics.
