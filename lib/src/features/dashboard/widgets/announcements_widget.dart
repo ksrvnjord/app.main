@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
@@ -20,83 +19,76 @@ class AnnouncementsWidget extends ConsumerWidget {
     const double shimmerContainerHeight = 320;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final user = ref.watch(firebaseAuthUserProvider);
-    final authenticated = (user != null);
 
     return [
       const WidgetHeader(
         title: "Aankondigingen",
         titleIcon: Icons.campaign,
       ),
-      authenticated
-          ? announcementsVal.when(
-              data: (snapshot) => snapshot.size == 0
-                  ? const Text("Geen aankondigingen gevonden")
-                  : snapshot.docs
-                      .map(
-                        (doc) {
-                          final announcement = doc.data();
+      announcementsVal.when(
+        data: (snapshot) => snapshot.size == 0
+            ? const Text("Geen aankondigingen gevonden")
+            : snapshot.docs
+                .map(
+                  (doc) {
+                    final announcement = doc.data();
 
-                          return ListTile(
-                            title: Text(
-                              announcement.title,
-                            ),
-                            subtitle: Text.rich(TextSpan(children: [
-                              TextSpan(
-                                text: "${announcement.author} ",
-                                style: textTheme.labelMedium,
-                              ).textColor(colorScheme.primary),
-                              TextSpan(
-                                text: timeago.format(
-                                  announcement.createdAt.toDate(),
-                                  locale: 'nl',
-                                ),
-                                style: textTheme.labelMedium?.copyWith(
-                                  color: colorScheme.outline,
-                                ),
-                              ),
-                            ])),
-                            trailing: [
-                              const Icon(Icons.chevron_right),
-                            ].toColumn(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            // ignore: prefer-extracting-callbacks
-                            onTap: () {
-                              FirebaseAnalytics.instance.logEvent(
-                                name: 'announcement_opened',
-                                parameters: {
-                                  'announcement_id': doc.id,
-                                  'announcement_title': announcement.title,
-                                },
-                              );
-                              // ignore: avoid-ignoring-return-values
-                              Routemaster.of(context)
-                                  .push('announcements/${doc.id}');
-                            },
-                            minLeadingWidth: minLeadingWidth,
-                          );
-                        },
-                      )
-                      .toList()
-                      .toColumn(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                    return ListTile(
+                      title: Text(
+                        announcement.title,
                       ),
-              error: (error, stackTrace) =>
-                  ErrorCardWidget(errorMessage: error.toString()),
-              loading: () => ShimmerWidget(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  height: shimmerContainerHeight,
+                      subtitle: Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "${announcement.author} ",
+                          style: textTheme.labelMedium,
+                        ).textColor(colorScheme.primary),
+                        TextSpan(
+                          text: timeago.format(
+                            announcement.createdAt.toDate(),
+                            locale: 'nl',
+                          ),
+                          style: textTheme.labelMedium?.copyWith(
+                            color: colorScheme.outline,
+                          ),
+                        ),
+                      ])),
+                      trailing: [
+                        const Icon(Icons.chevron_right),
+                      ].toColumn(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      // ignore: prefer-extracting-callbacks
+                      onTap: () {
+                        FirebaseAnalytics.instance.logEvent(
+                          name: 'announcement_opened',
+                          parameters: {
+                            'announcement_id': doc.id,
+                            'announcement_title': announcement.title,
+                          },
+                        );
+                        // ignore: avoid-ignoring-return-values
+                        Routemaster.of(context).push('announcements/${doc.id}');
+                      },
+                      minLeadingWidth: minLeadingWidth,
+                    );
+                  },
+                )
+                .toList()
+                .toColumn(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                 ),
-              ),
-            )
-          : const Text(
-              "Geen aankondigingen gevonden",
+        error: (error, stackTrace) =>
+            ErrorCardWidget(errorMessage: error.toString()),
+        loading: () => ShimmerWidget(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
+            height: shimmerContainerHeight,
+          ),
+        ),
+      ),
     ].toColumn();
   }
 }

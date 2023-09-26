@@ -110,27 +110,21 @@ class FormsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openPolls = ref.watch(openPollsProvider);
-    final user = ref.watch(firebaseAuthUserProvider);
-    final authenticated = (user != null);
 
     return [
       WidgetHeader(
         title: "Forms",
         titleIcon: Icons.edit_document,
         onTapName: "Alle forms",
-        onTap:
-            authenticated ? () => Routemaster.of(context).push('polls') : null,
+        onTap: () => Routemaster.of(context).push('polls'),
       ),
-      authenticated
-          ? openPolls.when(
-              data: (data) => _buildOpenPollsList(data, ref, context),
-              loading: () => const CircularProgressIndicator(),
-              error: (error, stack) => Text(
-                error.toString(),
-              ),
-            )
-          : const Text("Geen open forms op dit moment")
-              .textColor(Theme.of(context).colorScheme.secondary),
+      openPolls.when(
+        data: (data) => _buildOpenPollsList(data, ref, context),
+        loading: () => const CircularProgressIndicator(),
+        error: (error, stack) => Text(
+          error.toString(),
+        ),
+      ),
     ].toColumn();
   }
 }

@@ -104,17 +104,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                 top: vaarverbodTopPadding,
                 horizontal: elementHPadding,
               ),
-              const FormsWidget().padding(
-                vertical: elementVPadding,
-                horizontal: elementHPadding,
+              FirebaseWidget(
+                onAuthenticated: const FormsWidget().padding(
+                  vertical: elementVPadding,
+                  horizontal: elementHPadding,
+                ),
               ),
               const SwanDivider(),
-              const ComingWeekEventsWidget().padding(
-                vertical: elementVPadding,
+              FirebaseWidget(
+                onAuthenticated: const ComingWeekEventsWidget().padding(
+                  vertical: elementVPadding,
+                ),
               ),
               const SwanDivider(),
-              const AnnouncementsWidget().padding(
-                vertical: elementVPadding,
+              FirebaseWidget(
+                onAuthenticated: const AnnouncementsWidget().padding(
+                  vertical: elementVPadding,
+                ),
               ),
             ],
           ),
