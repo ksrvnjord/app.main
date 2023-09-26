@@ -104,16 +104,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                 top: vaarverbodTopPadding,
                 horizontal: elementHPadding,
               ),
-              FirebaseWidget(
-                onAuthenticated: const FormsWidget().padding(
-                  vertical: elementVPadding,
-                  horizontal: elementHPadding,
-                ),
+              const FormsWidget().padding(
+                vertical: elementVPadding,
+                horizontal: elementHPadding,
               ),
               const SwanDivider(),
-              const ComingWeekEventsWidget().padding(vertical: elementVPadding),
+              const ComingWeekEventsWidget().padding(
+                vertical: elementVPadding,
+              ),
               const SwanDivider(),
-              const AnnouncementsWidget().padding(vertical: elementVPadding),
+              const AnnouncementsWidget().padding(
+                vertical: elementVPadding,
+              ),
             ],
           ),
           onRefresh: _refresh,

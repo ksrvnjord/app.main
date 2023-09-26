@@ -7,7 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -109,21 +111,27 @@ class FormsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openPolls = ref.watch(openPollsProvider);
+    final user = ref.watch(firebaseAuthUserProvider);
+    final authenticated = (user != null);
 
     return [
       WidgetHeader(
         title: "Forms",
         titleIcon: Icons.edit_document,
         onTapName: "Alle forms",
-        onTap: () => Routemaster.of(context).push('polls'),
+        onTap:
+            authenticated ? () => Routemaster.of(context).push('polls') : null,
       ),
-      openPolls.when(
-        data: (data) => _buildOpenPollsList(data, ref, context),
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stack) => Text(
-          error.toString(),
-        ),
-      ),
+      authenticated
+          ? openPolls.when(
+              data: (data) => _buildOpenPollsList(data, ref, context),
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stack) => Text(
+                error.toString(),
+              ),
+            )
+          : const Text("Geen open forms op dit moment")
+              .textColor(Theme.of(context).colorScheme.secondary),
     ].toColumn();
   }
 }
