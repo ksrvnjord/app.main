@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 /// A widget that watches the current user from the database and only
 /// renders [child] when the user is non-null (and thus logged in).
@@ -18,13 +19,14 @@ class FirebaseWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(firebaseAuthUserProvider);
 
-    // ignore: avoid_print
-    print("USER: $user");
-
-    return user == null
-        ? onUnauthenticated == null
-            ? const SizedBox.shrink()
-            : onUnauthenticated as Widget
-        : onAuthenticated;
+    return [
+      Text("Is user null? ${user == null}"),
+      Text("What is user? ${user?.toString()}"),
+      user == null
+          ? onUnauthenticated == null
+              ? const SizedBox.shrink()
+              : onUnauthenticated as Widget
+          : onAuthenticated,
+    ].toColumn();
   }
 }
