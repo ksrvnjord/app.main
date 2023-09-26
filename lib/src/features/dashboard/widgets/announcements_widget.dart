@@ -54,7 +54,9 @@ class AnnouncementsWidget extends ConsumerWidget {
                       ])),
                       trailing: [
                         const Icon(Icons.chevron_right),
-                      ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
+                      ].toColumn(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
                       // ignore: prefer-extracting-callbacks
                       onTap: () {
                         FirebaseAnalytics.instance.logEvent(

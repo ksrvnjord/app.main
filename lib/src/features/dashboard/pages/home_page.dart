@@ -111,9 +111,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
               ),
               const SwanDivider(),
-              const ComingWeekEventsWidget().padding(vertical: elementVPadding),
+              FirebaseWidget(
+                onAuthenticated: const ComingWeekEventsWidget().padding(
+                  vertical: elementVPadding,
+                ),
+              ),
               const SwanDivider(),
-              const AnnouncementsWidget().padding(vertical: elementVPadding),
+              FirebaseWidget(
+                onAuthenticated: const AnnouncementsWidget().padding(
+                  vertical: elementVPadding,
+                ),
+              ),
             ],
           ),
           onRefresh: _refresh,
