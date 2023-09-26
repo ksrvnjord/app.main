@@ -18,6 +18,9 @@ class FirebaseWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(firebaseAuthUserProvider);
 
+    // ignore: avoid_print
+    print("USER: $user");
+
     return user == null
         ? onUnauthenticated == null
             ? const SizedBox.shrink()
