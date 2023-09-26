@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dar
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 

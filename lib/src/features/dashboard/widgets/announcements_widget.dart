@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -60,7 +59,8 @@ class AnnouncementsWidget extends ConsumerWidget {
                             trailing: [
                               const Icon(Icons.chevron_right),
                             ].toColumn(
-                                mainAxisAlignment: MainAxisAlignment.center),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
                             // ignore: prefer-extracting-callbacks
                             onTap: () {
                               FirebaseAnalytics.instance.logEvent(
