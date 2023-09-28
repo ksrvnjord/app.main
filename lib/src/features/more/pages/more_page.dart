@@ -20,7 +20,7 @@ class MorePage extends ConsumerWidget {
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
-      "Bekijk de agenda": "events",
+      if (currentUser != null) "Bekijk de agenda": "events",
       "Contacteer het bestuur / commissies": "contact",
       if (currentUser != null) 'Bekijk de fotogalerij': 'gallery',
       if (currentUser != null) 'Lees verenigingsdocumenten': 'documents',
