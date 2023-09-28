@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,13 +14,7 @@ class AddPloegPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ploegEntryForm = ref.watch(ploegEntryCreateNotifierProvider);
 
-    const int startYear = 1874;
-    final List<int> years = List.generate(
-      DateTime.now().year - startYear,
-      (index) =>
-          // '2022-2023', '2021-2022', ...
-          DateTime.now().year - index - 1,
-    );
+    final years = yearsFrom1874;
 
     const double dropdownMenuMaxHeight = 200;
     const double labelFontSize = 20;
@@ -46,17 +41,17 @@ class AddPloegPage extends ConsumerWidget {
               .setRole(types.first),
         ),
         const SizedBox(height: 32),
-        DropdownButtonFormField(
+        DropdownButtonFormField<int>(
           items: years
               .map((year) => DropdownMenuItem(
-                    value: year,
-                    child: Text("$year-${year + 1}"),
+                    value: year.item1,
+                    child: Text("${year.item1}-${year.item2}"),
                   ))
               .toList(),
           value: ploegEntryForm.year,
           onChanged: ploegEntryForm.ploegType == PloegType.competitie
               ? null
-              : (int? value) => ref
+              : (value) => ref
                   .read(ploegEntryCreateNotifierProvider.notifier)
                   .setYear(value),
           decoration: const InputDecoration(labelText: "Welk jaar?"),
