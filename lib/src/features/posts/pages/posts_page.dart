@@ -22,54 +22,56 @@ class PostsPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Prikbord"),
         actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (_) => ProviderScope(
-                // When using a provider inside a modal bottom sheet, you need to wrap it in a ProviderScope, because the sheet is placed at the top of the widget tree.
+          FirebaseWidget(
+            onAuthenticated: IconButton(
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (_) => ProviderScope(
+                  // When using a provider inside a modal bottom sheet, you need to wrap it in a ProviderScope, because the sheet is placed at the top of the widget tree.
 
-                parent: ProviderScope.containerOf(
-                  context,
-                ), // The new provider scope will share the same providers as the parent scope.
+                  parent: ProviderScope.containerOf(
+                    context,
+                  ), // The new provider scope will share the same providers as the parent scope.
 
-                child: Consumer(
-                  // We need a consumer to have access to the providers of the provider scope.
-                  builder: (_, ref, __) {
-                    final selectedTopic = ref.watch(selectedTopicProvider);
+                  child: Consumer(
+                    // We need a consumer to have access to the providers of the provider scope.
+                    builder: (_, ref, __) {
+                      final selectedTopic = ref.watch(selectedTopicProvider);
 
-                    FirebaseAnalytics.instance.logEvent(
-                      name: 'filter_posts_button_pressed',
-                      parameters: {
-                        'selected_topic': selectedTopic,
-                      },
-                    );
+                      FirebaseAnalytics.instance.logEvent(
+                        name: 'filter_posts_button_pressed',
+                        parameters: {
+                          'selected_topic': selectedTopic,
+                        },
+                      );
 
-                    return Wrap(children: [
-                      RadioListTile<String?>(
-                        // Add extra option to show all posts.
-                        value: null, // Null means no topic selected.
-                        groupValue: selectedTopic,
-                        onChanged: (value) => ref
-                            .read(selectedTopicProvider.notifier)
-                            .state = value,
-                        title: const Text("Alle posts"),
-                      ),
-                      for (final topic in topics)
-                        RadioListTile<String>(
-                          value: topic,
+                      return Wrap(children: [
+                        RadioListTile<String?>(
+                          // Add extra option to show all posts.
+                          value: null, // Null means no topic selected.
                           groupValue: selectedTopic,
                           onChanged: (value) => ref
                               .read(selectedTopicProvider.notifier)
                               .state = value,
-                          title: Text(topic),
+                          title: const Text("Alle posts"),
                         ),
-                    ]);
-                  },
+                        for (final topic in topics)
+                          RadioListTile<String>(
+                            value: topic,
+                            groupValue: selectedTopic,
+                            onChanged: (value) => ref
+                                .read(selectedTopicProvider.notifier)
+                                .state = value,
+                            title: Text(topic),
+                          ),
+                      ]);
+                    },
+                  ),
                 ),
+                isScrollControlled: true,
               ),
-              isScrollControlled: true,
+              icon: const Icon(Icons.filter_list),
             ),
-            icon: const Icon(Icons.filter_list),
           ),
         ],
       ),
