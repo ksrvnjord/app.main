@@ -1,5 +1,6 @@
 Afroeicommissie:
-  description: 'Commissaris alles, P Evenementen, Recordhouder rondje Njord, Bart
+  description:
+    "Commissaris alles, P Evenementen, Recordhouder rondje Njord, Bart
     Blik, Big Jolk, medium chest Mukan, Maumau het Zeedier, Clowntje Elton & Sophie
     pootjes gingen dit jaar de uitdaging aan om de nieuwe aanwas scholieren gespuis
     wat leidsche manieren bij te brengen. Deze reis ging, zoals het hoort te gaan
@@ -8,12 +9,13 @@ Afroeicommissie:
     zijn als we dit niet allemaal tot een prachtig einde hebben gebracht. Als ouders
     die kijken hoe hun kinderen het huis uit gaan, kijken ook wij hoe ons meesterwerk
     de vleugels uitslaat. We zijn enorm trots op de Lichting en we hebben er alle
-    vertrouwen in dat ze de komende jaren de fundering van Njord worden. '
+    vertrouwen in dat ze de komende jaren de fundering van Njord worden. "
   email: ac@njord.nl
 Almanakcommissie:
   email: almanak@njord.nl
 Appcommissie:
-  description: 'Wij willen u graag de aandacht vestigen op de illustere Appcommissie,
+  description:
+    "Wij willen u graag de aandacht vestigen op de illustere Appcommissie,
     welke in het jaar 2021 is opgericht. Deze groep van technisch vaardige studenten
     heeft zichzelf ten doel gesteld om de meest voortreffelijke app te ontwikkelen
     die ooit binnen een studentenvereniging is gerealiseerd.
@@ -34,12 +36,13 @@ Appcommissie:
 
 
     Moge de Appcommissie nog vele hoogstandjes bereiken en de K.S.R.V. Njord verrijken
-    met hun bijzondere vaardigheden en gezelligheid.'
+    met hun bijzondere vaardigheden en gezelligheid."
   email: app@njord.nl
 Archiefcommissie:
   email: archief@njord.nl
 Buffetcommissie:
-  description: "Roeien is Njord, maar er kan uiteraard goed ook worden geborreld.\
+  description:
+    "Roeien is Njord, maar er kan uiteraard goed ook worden geborreld.\
     \ Inmiddels is de BuCo niet meer weg te denken van Njord. De BuCo houdt zich bezig\
     \ met voorraadbeheer, evenementen, veiligheid op de borrels en tappers. Ook wordt\
     \ de zaal onderhouden en hopelijk snel het haardhout weer bijgevuld. Dit kunnen\
@@ -56,14 +59,16 @@ Buffetcommissie:
 Blasphemycommissie:
   email: cc@njord.nl
 Businesscommissie:
-  description: "Nu de Njord Business Commissie dit jaar in een nieuw jasje is gehesen,\
+  description:
+    "Nu de Njord Business Commissie dit jaar in een nieuw jasje is gehesen,\
     \ zijn wij meer dan klaar om n\xF3g meer mooie deals en inspirerende samenwerkingen\
     \ binnen te slepen en aan te gaan. Onze Unique Selling Points: toegankelijk, daadkrachtig,\
     \ en ruimte voor idee\xEBn en goed gelul. Verder verwijzen wij graag naar ons\
     \ commissiemotto!"
   email: business@njord.nl
 Carrierecommissie:
-  description: "De Carri\xE8re Commissie is een commissie opgezet voor en door een\
+  description:
+    "De Carri\xE8re Commissie is een commissie opgezet voor en door een\
     \ diverse groep studenten. Wij zijn samengekomen vanuit alle verschillende aspecten\
     \ van de K.S.R.V., van compo tot wedstrijd en van ouderejaars tot twaars. Wij\
     \ zijn er dan ook voor iedereen. Door het hele jaar organiseert deze ambitieuze\
@@ -74,7 +79,8 @@ Carrierecommissie:
     \ en activeren."
   email: carriere@njord.nl
 Competitiecommissie:
-  description: "De Competitiecommissie \u201822-\u201923 bestaat dit jaar opnieuw\
+  description:
+    "De Competitiecommissie \u201822-\u201923 bestaat dit jaar opnieuw\
     \ uit vier mannen en zeven vrouwen. \nWe hebben ons opgemaakt voor een onvergetelijk\
     \ eerste jaar voor de sjaarzen waarin wij ons sjaarzenjaar mogen herbeleven. Met\
     \ CCT\u2019s en sparsessies stomen we de nieuwe lichting klaar om vele taarten\
@@ -86,7 +92,8 @@ Competitiecommissie:
     \ vol taart en bier.\n"
   email: cc@njord.nl
 Duurzaamheidscommissie:
-  description: "Duurzaamheid is een maatschappelijk doel dat in grote lijnen betrekking\
+  description:
+    "Duurzaamheid is een maatschappelijk doel dat in grote lijnen betrekking\
     \ heeft op het vermogen van mensen om gedurende lange tijd veilig samen te leven\
     \ op aarde. Over de specifieke definitie van duurzaamheid is nog geen oveernstemming\
     \ gevonden en verschilt gezien de literatuur, context en tijd. Duurzaamheid wordt\
@@ -99,7 +106,8 @@ Duurzaamheidscommissie:
     \ nationaal en individueel niveau te sturen (bijvoorbeeld duurzaam leven). \n\
     In het kort #savetheturtles \nxoxox"
 Eerstejaarscommissie:
-  description: "September 2021. Een nieuwe lichting \u2018Doorstarters\u2019 vond\
+  description:
+    "September 2021. Een nieuwe lichting \u2018Doorstarters\u2019 vond\
     \ haar plek op de K.S.R.V. \u201CNjord\u201D. Van domme scholier tot jeugdroeiende\
     \ pre-fab, iedereen was vertegenwoordigd in dit veelbelovende jaar. En terwijl\
     \ menig sjaars zich voegde bij een wedstrijdploeg of zich in de compo-wereld een\
@@ -114,8 +122,11 @@ Eerstejaarscommissie:
     \ de dag na alle festiviteiten toch nog in het water. Dus trek een bak!\nLBG,\
     \ \nSjaCie 2021-2022\n"
   email: sjacie@njord.nl
+Externe Commissie:
+  email: externecommissie@njord.nl
 Extern Roeien Commissie:
-  description: Het wegwijs maken van middelbare scholieren en burgers is de taak van
+  description:
+    Het wegwijs maken van middelbare scholieren en burgers is de taak van
     de Extern Roeien Commissie. De commissie laat Leiden en omstreken kennis maken
     met de roeisport en het bijbehorende studentenroeien. Samen met onze (bijna) altijd
     aanwezige en enthousiaste supercrew weten we meermaals per week een leerzame clinic
@@ -126,7 +137,8 @@ Fotocommissie:
 Fuifroeicommissie:
   email: lsfg@njord.nl
 Galacommissie:
-  description: "Kostbare herinneringen ten overvloede\u2026waar moeten we beginnen?\
+  description:
+    "Kostbare herinneringen ten overvloede\u2026waar moeten we beginnen?\
     \ De eerste vergadering zonder Isabel? Het bezoek aan Berckt toen Noor tijdelijk\
     \ vermist leek te zijn? De photoshop kwaliteit waarmee Isa in de commissiefoto\
     \ is geplakt?  De gesneuvelde glazen en Hema-taart? De pepernoten en brie van\
@@ -150,7 +162,8 @@ Grautgilde:
   description: De matgroep van het gebouw. Voor al uw klusjes, reparaties en onderhoud van het gebouw.
   email: gebouw@njord.nl
 Hollandiacommissie:
-  description: "Deze commissie brengt Njord en Triton samen met het gezamenlijke doel\
+  description:
+    "Deze commissie brengt Njord en Triton samen met het gezamenlijke doel\
     \ om de Hollandia roeiwedstrijd te organiseren, die 21, 22 en 23 april plaats\
     \ zal vinden op de Bosbaan. Sinds oktober gaan wij aan de slag met een druk vergader\
     \ schema en een nog drukker borrel schema, want met wekelijkse uitstapjes naar\
@@ -162,7 +175,8 @@ Hollandiacommissie:
     \ een gezellige sfeer!"
   email: hollandia@njord.nl
 Introductiecommissie:
-  description: "Je bent IC en je wilt wat. Je wilt introductiecommissie zijn en absol\xFA\
+  description:
+    "Je bent IC en je wilt wat. Je wilt introductiecommissie zijn en absol\xFA\
     \xFAt geen introcommissie. Je wilt dat het druk is op het festival, maar niet\
     \ zo druk dat je geen munten meer kan halen. Je wilt een nieuw vet feest bedenken\
     \ terwijl je weet dat een bucketborrel altijd werkt. Je wilt een ICinema, een\
@@ -174,7 +188,8 @@ Introductiecommissie:
     \ P.S. Er is echt nog meer dan genoeg poedersuiker."
   email: ic@njord.nl
 Kalendercommissie:
-  description: "Wij hebben de afgelopen maanden een fantastische kalender gemaakt.\
+  description:
+    "Wij hebben de afgelopen maanden een fantastische kalender gemaakt.\
     \ Van zeer spannende locaties tot extreem saaie vergaderingen. Zonder de sublieme\
     \ inzet van de volgende mensen was de mooiste kalender ooit nooit tot stand gekomen.\
     \ \n\nIdse Termaat, de man met het Nederlandse record voor meest massieve billen\n\
@@ -189,7 +204,8 @@ Kalendercommissie:
     \ en enthousiaste Unit liefhebber.\n"
   email: kalender@njord.nl
 KookCluster:
-  description: 'Iedereen weet dat de grotere commissies vaak een sub-commissie hebben
+  description:
+    'Iedereen weet dat de grotere commissies vaak een sub-commissie hebben
     ter ondersteuning. Dit geldt ook voor de KoCo. Niet alleen Leden van voorgenoemde
     commissie staan iedere dinsdag en zaterdag in de keuken; ook het Kookcluster is
     onmisbaar in het kookproces. Hoewel we door bij ieder bekende omstandigheden de
@@ -201,7 +217,8 @@ KookCluster:
     Leeden en het eten op de dinsdag samen met de KoCo naar een nog hoger niveau tillen.
     Zoals Gandhi ooit zei: "koken is eigenlijk pas leuk als je met elkaar kunt zuipen"'
 Kookcommissie:
-  description: "Hier staan ze: de motor der K.S.R.V. \u201CNjord\u201D. Immers wat\
+  description:
+    "Hier staan ze: de motor der K.S.R.V. \u201CNjord\u201D. Immers wat\
     \ is een roeier zonder goede voeding en wat is een borrelaar zonder goede bodem?\
     \ Op het eerste gezicht zou je wellicht niet denken dat deze tien gezellige, maar\
     \ ietwat chaotische commissieleden op dinsdag heel gestructureerd hun handen in\
@@ -216,7 +233,8 @@ Kookcommissie:
 Magazinecommissie:
   email: magazine@njord.nl
 Matgroep:
-  description: Een oud lid zou de matgroep herkennen als een commissie gedomineerd
+  description:
+    Een oud lid zou de matgroep herkennen als een commissie gedomineerd
     door mannen. Menig oud matgroeper herinnerd zich ook dat de matgroep naar triton
     ging om met de MaCo te borrelen, want daar zaten de vrouwen (niks bleek minder
     waar). Toch is inmiddels de helft de matgroep samengesteld uit echte klusvrouwen,
@@ -227,7 +245,8 @@ Matgroep:
     naar hoger niveau.
   email: materieel@njord.nl
 Meerderejaarscommissie:
-  description: "\u201CBij wie eten we vanavond?\u201D luidt standaard de vraag op\
+  description:
+    "\u201CBij wie eten we vanavond?\u201D luidt standaard de vraag op\
     \ donderdag middag, als we moeten samenkomen om te vergaderen. Het Tl-licht van\
     \ het commissiehok wordt dan ook het liefst vervangen door gezelligheid in een\
     \ fusie. De meerderejaarscommissie ziet het dan ook als haar taak om zo veel mogelijk\
@@ -241,16 +260,18 @@ Meerderejaarscommissie:
     \ waarbij wij zowel op als buiten Njord nieuwe banden en vriendschappen sluiten."
   email: meerderejaars@njord.nl
 Merchandisecommissie:
-  description: 'Wij zijn als Merchandise Commissie verantwoordelijk voor al uw zwanetruien,
+  description:
+    "Wij zijn als Merchandise Commissie verantwoordelijk voor al uw zwanetruien,
     plokjes, dassen, wielerkleding, oproeijacks, leggings, ploegjassen, lichtingstruien,
     badslippers, manchetknopen, wedstrijdjassen, mokken, posters, badjassen, shirts,
     zwanesokken, mutsen, speelkaarten, sporttassen, wanten, zwaanstekers, composokken,
     bretels, wedstrijdscarfs, pockies, mondkapjes, scrunchies, clips, turtles, pakjes,
     dobbelstenen, fannypacks, bidons, compojassen, buckethats, petten, telefoonhoesjes,
-    joggingbroeken, kortom: EINDELOOS VEEL MERCH'
+    joggingbroeken, kortom: EINDELOOS VEEL MERCH"
   email: merchandise@njord.nl
 Najaarscommissie:
-  description: "De Njord Najaarscommissie heeft op 8 en 9 november 2022 de 2e editie\
+  description:
+    "De Njord Najaarscommissie heeft op 8 en 9 november 2022 de 2e editie\
     \ van de Njord Najaarswedstrijden georganiseerd. Na maanden van voorbereiding\
     \ vond er voor het eerst een Njord-wedstrijd op eigen water plaats! Onder het\
     \ genot van vele biertjes hebben tientallen leden zich ingezet voor een mooi roei-evenement\
@@ -263,7 +284,8 @@ Najaarscommissie:
     \ graag terug op de 3e editie van de Njord Najaars!"
   email: najaars@njord.nl
 Pascommissie:
-  description: "Elke dinsdagborrel kom je wel in aanraking met de systemen van de\
+  description:
+    "Elke dinsdagborrel kom je wel in aanraking met de systemen van de\
     \ PasCie. Je komt aan bij het buffet om lekker een pitcher te halen voor al je\
     \ ploegleden met de befaamde pitcherknop maar helaas heeft een TapCo lid je iets\
     \ vervelends mede te delen. Je pas is leeg, dus er komt geen bier uit de tap.\
@@ -276,7 +298,8 @@ Pascommissie:
     \ draaiende houdt: De PasCie."
   email: pascie@njord.nl
 "Petit Comit\xE9":
-  description: "Een paar lessen die wij tijdens de zomerweek hebben geleerd: \n- Niet\
+  description:
+    "Een paar lessen die wij tijdens de zomerweek hebben geleerd: \n- Niet\
     \ je eigen drank meenemen naar een club\n- Bedenk altijd: action = consequence\
     \ (helemaal als je 1000 liter schuim wilt gebruiken voor iets). \n- Verdam fixt\
     \ het wel voor ons. \n- Slapen is niet noodzakelijk\n- Zorg ervoor dat iedereen\
@@ -286,17 +309,19 @@ Pascommissie:
     \ <3 "
   email: petitcomite@njord.nl
 Promotiecommissie:
-  description: 'Nieuwe lichtingen kunnen het zich niet voorstellen, maar ooit had
+  description:
+    "Nieuwe lichtingen kunnen het zich niet voorstellen, maar ooit had
     elke commissie zijn eigen insta-account. De live-laugh-love spatte er vaak nog
     net niet af. Gelukkig was daar de promotiecommissie om orde in de chaos te scheppen.
     Ook dit jaar staan wij weer klaar om de influencers in jullie naar boven te halen.
     Schroom bovendien niet om hulp te vragen bij het maken van een poster - wij soggen
-    immers het liefst door te knutselen met Canva of Illustrator. '
+    immers het liefst door te knutselen met Canva of Illustrator. "
   email: promotie@njord.nl
 Ringvaartcommissie:
   email: ringvaart@njord.nl
 Rowing Blindcommissie:
-  description: "Beste deelnemer, \n\nMijn naam is Anouk. Ik stuur dit mailtje (inclusief\
+  description:
+    "Beste deelnemer, \n\nMijn naam is Anouk. Ik stuur dit mailtje (inclusief\
     \ weerbericht) om u te feliciteren met uw deelname aan het aankomende Rowing Blind\
     \ traject op de K.S.R.V. Njord. Wat leuk dat u via het item op de Radio en het\
     \ spotje op NOS.nl ge\xEBnthousiasmeerd bent geworden. Dat heeft Thijmen geweldig\
@@ -310,7 +335,8 @@ Rowing Blindcommissie:
     \ kans op de Varsity winst\n"
   email: leiden@rowingblind.nl
 Skireiscommissie:
-  description: "Wij introduceren onze commissie aan u. \nAllereerst onze Praeses van\
+  description:
+    "Wij introduceren onze commissie aan u. \nAllereerst onze Praeses van\
     \ Tets, de rots in de branding, die voor altijd trouw is aan zijn vergader-skimuts.\
     \ Onthoud lieve leden, zonder hem was er geen skireis geweest. \n\nOnze Ab-Actis,\
     \ Hannah de Doorstarter die de mores niet kent, en in wiens ogen het flonder het\
@@ -326,7 +352,8 @@ Skireiscommissie:
     \ zijn date af voor ons. "
   email: ski@njord.nl
 Talentwervingscommissie:
-  description: "Talentwervingscommissie of Talentenwervingscommissie, een existenti\xEB\
+  description:
+    "Talentwervingscommissie of Talentenwervingscommissie, een existenti\xEB\
     le crisis in de categorie to be or not to be. To be a jeugdroeier or not to be\
     \ a jeugdroeier, het is eigenlijk niet echt een vraag in dit gezelschap. Zij die\
     \ het zijn runnen de commissie, zij die het niet zijn mogen typen of koken. Hier\
@@ -338,7 +365,8 @@ Talentwervingscommissie:
     \ schone pand, de uitstekende vloot en de speeltuin om de hoek! De jeugd heeft\
     \ de toekomst; wij een pingpong tafel en boten waar iedereen in past. "
 Tapcommissie:
-  description: "De TapCo is \xE9\xE9n van de mooiste commissies die de K kent, waar\
+  description:
+    "De TapCo is \xE9\xE9n van de mooiste commissies die de K kent, waar\
     \ alle aspecten terug zijn te vinden: Van sjaarzen tot ouderejaars, van compo\
     \ tot wedstrijd en van disputen tot verbanden. De TapCo heeft het allemaal. Hiermee\
     \ zijn wij ook de grootste commissie die de K kent. Los hiervan staat er in onze\
@@ -351,20 +379,23 @@ Tapcommissie:
     \ aan te bieden als u zich aan het Buffet bevindt! "
   email: buco@njord.nl
 Tentroeicommissie:
-  description: 'De Tentroei Commissie zet zich elk jaar in om de band tussen Minerva
+  description:
+    "De Tentroei Commissie zet zich elk jaar in om de band tussen Minerva
     en Njord te versterken en behouden. Legendarische borrels op beide verenigingen
     voor leden van beide verenigingen, jaarlijkse Dubbelleeden-diners, het promoten
-    van de Varsity en binnenkort een Dubbelleedengezelschap vallen hier allemaal onder. '
+    van de Varsity en binnenkort een Dubbelleedengezelschap vallen hier allemaal onder. "
   email: tentroei@njord.nl
 Topcommissie:
-  description: Binnen en buiten de boot, het Topsport Ondersteunend Programma zal
+  description:
+    Binnen en buiten de boot, het Topsport Ondersteunend Programma zal
     alle leden van Njord ondersteunen om te kunnen floreren. Samen met professionele
     experts maken wij ons hard op het gebied van fysieke en mentale gezondheid, krachttraining
     en voeding. Het aanspreekpunt voor alle vragen over hoe jij het komende jaar het
     beste kan floreren!
   email: top@njord.nl
 Voorjaarsafroeicommissie:
-  description: 'De VAC, van april tot en met juni brachten wij weer leven in de zaal.
+  description:
+    "De VAC, van april tot en met juni brachten wij weer leven in de zaal.
     Na een gure, lange en eenzame winter met lockdowns en treurnis, begon het leven
     op de K weer te bloeien. Maar liefst 90 lenteleden betraden onze vereniging en
     begonnen onbezonnen aan hun lenteperiode. Door te trainen in de C4+, te borrelen
@@ -376,10 +407,11 @@ Voorjaarsafroeicommissie:
     ongelofelijk mooi gevierd werd op het aansluitende feest, waar ook het Njordlied
     mocht galmen. Maar ook het lentevent, waar menig driedeeldragend lid het Galgewater
     van dichtbij mocht inspecteren, was onvergetelijk. Als VAC zijn we trots en vereerd
-    dat wij het lenteroeien dit jaar weer mochten organiseren. '
+    dat wij het lenteroeien dit jaar weer mochten organiseren. "
   email: vac@njord.nl
 Zwanehalscommissie:
-  description: Waar kan een Njordlid terecht voor zowel diepgravende onderzoeksjournalistiek
+  description:
+    Waar kan een Njordlid terecht voor zowel diepgravende onderzoeksjournalistiek
     als ontroerend mooie proza en simpele achterklap? Juist ja, bij ons prachtige
     verenigingstijdschrift de 'Zwanehals'. Drie maal per jaar van A tot Z verzorgd
     door de Zwanehalscommissie, speciaal voor u, de Leden.
