@@ -15,23 +15,43 @@ class SwanDivider extends StatelessWidget {
 
     const double smallSwanSize = 12;
     const double largeSwanSize = 16;
+    const double horizontalPadding = 40;
 
     return [
-      for (final Tuple2<double, Color> color in [
-        Tuple2(smallSwanSize, colorScheme.tertiaryContainer),
-        Tuple2(largeSwanSize, colorScheme.primary),
-        Tuple2(smallSwanSize, colorScheme.secondaryContainer),
-      ])
-        SvgPicture.asset(
-          Svgs.swanWhite,
-          width: color.item1,
-          // ignore: deprecated_member_use
-          color: color.item2,
+      Expanded(
+        child: Divider(
+          color: colorScheme.primaryContainer,
         ),
-    ].toRow(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      separator: const SizedBox(width: 8),
-    );
+      ),
+      [
+        for (final Tuple2<double, Color> color in [
+          Tuple2(smallSwanSize, colorScheme.tertiaryContainer),
+          Tuple2(largeSwanSize, colorScheme.primary),
+          Tuple2(smallSwanSize, colorScheme.secondaryContainer),
+        ])
+          SvgPicture.asset(
+            Svgs.swanWhite,
+            width: color.item1,
+            // ignore: deprecated_member_use
+            color: color.item2,
+          ),
+      ].toRow(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        separator: const SizedBox(width: 8),
+      ),
+      Expanded(
+        child: Divider(
+          color: colorScheme.primaryContainer,
+        ),
+      ),
+    ]
+        .toRow(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          separator: const SizedBox(width: 8),
+        )
+        .padding(horizontal: horizontalPadding);
   }
 }
