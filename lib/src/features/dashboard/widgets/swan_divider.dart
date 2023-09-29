@@ -15,6 +15,7 @@ class SwanDivider extends StatelessWidget {
 
     const double smallSwanSize = 12;
     const double largeSwanSize = 16;
+    const double horizontalPadding = 40;
 
     return [
       Expanded(
@@ -51,6 +52,6 @@ class SwanDivider extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           separator: const SizedBox(width: 8),
         )
-        .padding(horizontal: 40);
+        .padding(horizontal: horizontalPadding);
   }
 }
