@@ -7,12 +7,14 @@ class Poll {
   final List<String> options;
   final DateTime openUntil;
   final String? description;
+  final String? imagePath;
 
   const Poll({
     required this.question,
     required this.options,
     required this.openUntil,
     this.description,
+    this.imagePath,
   });
 
   // Create fromJson method.
@@ -22,6 +24,7 @@ class Poll {
       options: json['options'].cast<String>(),
       openUntil: (json['openUntil'] as Timestamp).toDate(),
       description: json.containsKey('description') ? json['description'] : null,
+      imagePath: json['imagePath'],
     );
   }
 

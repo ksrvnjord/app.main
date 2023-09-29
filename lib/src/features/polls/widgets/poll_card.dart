@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/api/form_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
@@ -21,6 +22,8 @@ class PollCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Poll poll = pollDoc.data();
+
+    final String? imagePath = poll.imagePath;
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));
 
     final bool pollIsOpen = DateTime.now().isBefore(poll.openUntil);
@@ -33,23 +36,43 @@ class PollCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
+    const double maxHeight = 240;
+
+    // ignore: arguments-ordering
     return ExpansionTile(
-      title: Text(
-        poll.question,
-      ),
+      title: Text(poll.question),
       subtitle: Text(
         '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-        style: textTheme.bodySmall?.copyWith(
-          color: colorScheme.outline,
-        ),
+        style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
-      // ignore: sort_child_properties_last
+      // ignore: avoid-non-null-assertion
+      initiallyExpanded: isExpanded != null ? isExpanded! : pollIsOpen,
+      expandedCrossAxisAlignment: CrossAxisAlignment.center,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(color: Colors.transparent, width: 0),
+      ),
       children: [
+        if (imagePath != null)
+          ref.watch(formImageProvider(imagePath)).when(
+                data: (data) => data != null
+                    ? ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                          maxHeight: maxHeight,
+                        ),
+                        child:
+                            Image(image: MemoryImage(data), fit: BoxFit.cover),
+                      )
+                    : const SizedBox.shrink(),
+                error: (error, stackTrace) => const ErrorCardWidget(
+                  errorMessage:
+                      "Het is niet gelukt om de afbeelding te downloaden",
+                ),
+                loading: () => const CircularProgressIndicator(),
+              ),
         if (description != null)
-          Text(
-            description,
-            style: textTheme.bodyMedium,
-          ).padding(horizontal: descriptionHPadding),
+          Text(description, style: textTheme.bodyMedium)
+              .padding(horizontal: descriptionHPadding),
         answerStream.when(
           data: (snapshot) {
             final String? answerOfUser =
@@ -59,18 +82,15 @@ class PollCard extends ConsumerWidget {
               ...poll.options.map((option) => RadioListTile(
                     value: option,
                     groupValue: answerOfUser,
-                    // ignore: prefer-extracting-callbacks
                     onChanged: pollIsOpen
                         ? (String? choice) {
                             upsertPollAnswer(choice, snapshot, pollDoc, ref);
                             // ignore: avoid-ignoring-return-values
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(choice != null
-                                    ? 'Je keuze is opgeslagen'
-                                    : 'Je keuze is verwijderd'),
-                              ),
-                            );
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(choice != null
+                                  ? 'Je keuze is opgeslagen'
+                                  : 'Je keuze is verwijderd'),
+                            ));
                           }
                         : null,
                     toggleable: true,
@@ -84,12 +104,6 @@ class PollCard extends ConsumerWidget {
           loading: () => const CircularProgressIndicator(),
         ),
       ],
-      // ignore: avoid-non-null-assertion
-      initiallyExpanded: isExpanded != null ? isExpanded! : pollIsOpen,
-      expandedCrossAxisAlignment: CrossAxisAlignment.start,
-      shape: const RoundedRectangleBorder(
-        side: BorderSide(color: Colors.transparent, width: 0),
-      ),
     ).card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       elevation: 0,
