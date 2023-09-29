@@ -12,9 +12,11 @@ class PollCard extends ConsumerWidget {
   const PollCard({
     Key? key,
     required this.pollDoc,
+    this.isExpanded,
   }) : super(key: key);
 
   final QueryDocumentSnapshot<Poll> pollDoc;
+  final bool? isExpanded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,39 +29,37 @@ class PollCard extends ConsumerWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: colorScheme.primary,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
+    final description = poll.description;
+
+    final textTheme = Theme.of(context).textTheme;
+
+    return ExpansionTile(
+      title: Text(
+        poll.question,
       ),
-      child: [
-        ListTile(
-          title: Text(poll.question),
-          subtitle: Text(
-            '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: colorScheme.outline,
-                ),
-          ),
+      subtitle: Text(
+        '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
+        style: textTheme.bodySmall?.copyWith(
+          color: colorScheme.outline,
         ),
+      ),
+      // ignore: sort_child_properties_last
+      children: [
+        if (description != null)
+          Text(
+            description,
+            style: textTheme.bodyMedium,
+          ).padding(horizontal: descriptionHPadding),
         answerStream.when(
           data: (snapshot) {
             final String? answerOfUser =
                 snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
-            final description = poll.description;
 
             return [
-              if (description != null && description.isNotEmpty)
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ).padding(horizontal: descriptionHPadding),
               ...poll.options.map((option) => RadioListTile(
                     value: option,
                     groupValue: answerOfUser,
+                    // ignore: prefer-extracting-callbacks
                     onChanged: pollIsOpen
                         ? (String? choice) {
                             upsertPollAnswer(choice, snapshot, pollDoc, ref);
@@ -76,14 +76,29 @@ class PollCard extends ConsumerWidget {
                     toggleable: true,
                     title: Text(option),
                   )),
-            ].toColumn(
-              crossAxisAlignment: CrossAxisAlignment.start,
-            );
+            ].toColumn();
           },
-          error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => const ErrorCardWidget(
+            errorMessage: 'Het is mislukt om je antwoord te laden',
+          ),
+          loading: () => const CircularProgressIndicator(),
         ),
-      ].toColumn(),
+      ],
+      // ignore: avoid-non-null-assertion
+      initiallyExpanded: isExpanded != null ? isExpanded! : pollIsOpen,
+      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(color: Colors.transparent, width: 0),
+      ),
+    ).card(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      elevation: 0,
+      // Transparant color.
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: colorScheme.primary),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+      ),
     );
   }
 }
