@@ -25,7 +25,6 @@ class _MainPageState extends ConsumerState<MainPage> {
           for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
         ],
         controller: tabPage.controller,
-        physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
