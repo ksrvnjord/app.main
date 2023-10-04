@@ -133,13 +133,6 @@ Future<void> main() async {
 class Application extends ConsumerWidget {
   const Application({Key? key}) : super(key: key);
 
-  RouteMap getRoutes(WidgetRef ref) {
-    final auth = ref.watch(authModelProvider);
-    final loggedIn = auth.client != null;
-
-    return loggedIn ? Routes.authenticated : Routes.unauthenticated;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
@@ -155,16 +148,16 @@ class Application extends ConsumerWidget {
 
     final themeBrightness = ref.watch(themeBrightnessProvider);
 
+    final router = ref.watch(routerProvider);
+
     return Builder(
       builder: (context) => MaterialApp.router(
-        routeInformationParser: const RoutemasterParser(),
-        routerDelegate: RoutemasterDelegate(
-          routesBuilder: (context) => getRoutes(ref),
-          observers: [
-            GlobalObserver(),
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-          ],
-        ),
+        routerConfig: router,
+        // routeInformationParser: const RoutemasterParser(),
+        // routerDelegate: RoutemasterDelegate(
+        //   routesBuilder: (context) => getRoutes(ref),
+
+        // ),
         title: 'K.S.R.V. Njord',
         theme: ThemeData(
           pageTransitionsTheme: pageTransitionsTheme,

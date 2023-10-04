@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:go_router/go_router.dart';
 
-class MainPage extends ConsumerStatefulWidget {
-  const MainPage({super.key});
+class MainPage extends ConsumerWidget {
+  const MainPage({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
 
   @override
-  createState() => _MainPageState();
-}
-
-class _MainPageState extends ConsumerState<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    final tabPage = TabPage.of(context);
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: null,
-      body: TabBarView(
-        // ignore: sort_child_properties_last
-        children: [
-          for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
-        ],
-        controller: tabPage.controller,
-      ),
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -36,25 +23,29 @@ class _MainPageState extends ConsumerState<MainPage> {
             icon: Icon(Icons.chat_outlined),
             label: 'Prikbord',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit_calendar),
-            label: 'Afschrijven',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.edit_calendar),
+          //   label: 'Afschrijven',
+          // ),
+          // BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
+          // BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
-        onTap: (value) => animateTo(value, tabPage),
-        currentIndex: tabPage.controller.index,
-        type: BottomNavigationBarType.fixed,
+        onTap: (value) => animateTo(value),
+        currentIndex: navigationShell.currentIndex,
+        // type: BottomNavigationBarType.fixed,
         selectedItemColor: colorScheme.primary,
       ),
     );
   }
 
-  void animateTo(int index, TabPageState tabPage) {
-    tabPage.controller.animateTo(index);
-    // ignore: avoid-ignoring-return-values
-    Routemaster.of(context).push(Routes.mainRoutes[
-        index]); // When the user taps on the bottom navigation bar item, we want to push the corresponding route, so that the user can 'reset' the page.
+  void animateTo(int index) {
+    navigationShell.goBranch(
+      index,
+      // A common pattern when using bottom navigation bars is to support
+      // navigating to the initial location when tapping the item that is
+      // already active. This example demonstrates how to support this behavior,
+      // using the initialLocation parameter of goBranch.
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 }

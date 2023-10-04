@@ -1,7 +1,11 @@
 // ignore_for_file: prefer-match-file-name
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
@@ -45,6 +49,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -69,11 +74,11 @@ class Routes {
 
   static final authenticated = RouteMap(
     routes: {
-      '/': (_) => const TabPage(
-            child: MainPage(),
-            paths: mainRoutes,
-            backBehavior: TabBackBehavior.none,
-          ),
+      // '/': (_) => const TabPage(
+      //       child: MainPage(),
+      //       paths: mainRoutes,
+      //       backBehavior: TabBackBehavior.none,
+      //     ),
       '/home': (_) => CupertinoPage(
             child: UpgradeAlert(
               upgrader: Upgrader(
@@ -339,17 +344,114 @@ class Routes {
     onUnknownRoute: (route) => const CupertinoPage(child: UnknownRoutePage()),
   );
 
-  static final unauthenticated = RouteMap(
-    routes: {
-      '/': (_) => const MaterialPage(
-            child: LoginPage(),
-            name: 'Login',
-          ),
-      '/forgot': (info) => const CupertinoPage(
-            child: ForgotPasswordPage(),
-            name: "Forgot Password",
-          ),
+  static final unauthenticated = [
+    GoRoute(
+      path: '/login',
+      name: 'Login',
+      pageBuilder: (child, state) =>
+          getPage(child: const LoginPage(), name: "Login"),
+    ),
+    GoRoute(
+      path: '/forgot',
+      name: 'Forgot Password',
+      pageBuilder: (child, state) =>
+          getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+    ),
+  ];
+}
+
+// This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
+// ignore: prefer-static-class
+final _navigatorKey = GlobalKey<NavigatorState>();
+// We need to have access to the previous location of the router. Otherwise, we would start from '/' on rebuild.
+// ignore: prefer-static-class
+GoRouter? _previousRouter;
+
+// ignore: prefer-static-class
+final routerProvider = Provider((ref) {
+  final auth = ref.watch(authModelProvider);
+  final loggedIn = auth.client != null;
+
+  return GoRouter(
+    routes: [
+      // We divide the routes into branches, one for each bottom tab to keep stateful navigation.
+      StatefulShellRoute.indexedStack(
+        branches: [
+          StatefulShellBranch(routes: <RouteBase>[
+            GoRoute(
+              path: '/',
+              pageBuilder: (child, state) => getPage(
+                child: UpgradeAlert(
+                  upgrader: Upgrader(
+                    messages: DutchUpgradeMessages(),
+                    countryCode: 'nl',
+                    languageCode: 'nl',
+                  ),
+                  child: const HomePage(),
+                ),
+                name: "Home",
+              ),
+              routes: [
+                GoRoute(
+                  path: 'my-profile',
+                  pageBuilder: (child, state) => getPage(
+                    child: const EditAlmanakProfilePage(),
+                    name: "Edit Profile",
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'settings',
+                      name: "Settings",
+                      pageBuilder: (child, state) => getPage(
+                        child: const SettingsPage(),
+                        name: "Settings",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ]),
+          StatefulShellBranch(routes: <RouteBase>[
+            GoRoute(
+              path: '/posts',
+              pageBuilder: (child, state) =>
+                  getPage(child: const PostsPage(), name: "Posts"),
+            ),
+          ]),
+        ],
+        pageBuilder: (context, state, navigationShell) => getPage(
+          child: MainPage(navigationShell: navigationShell),
+          name: "Bottom Navigation Bar",
+        ),
+      ),
+      ...Routes.unauthenticated,
+    ],
+    redirect: (context, state) {
+      final bool loggingIn = state.matchedLocation == '/login';
+      if (!loggedIn) {
+        return loggingIn ? null : '/login';
+      }
+      if (loggingIn) {
+        return '/';
+      }
+
+      return null;
     },
-    onUnknownRoute: (route) => const Redirect('/'),
+    initialLocation: _previousRouter?.routeInformationProvider.value.location,
+    observers: [
+      GlobalObserver(),
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
+    navigatorKey: _navigatorKey,
   );
+});
+
+// ignore: prefer-static-class
+Page getPage({
+  required Widget child,
+  required String
+      name, // Used so we can view the page name in Firebase Analytics.
+}) {
+  return CupertinoPage(child: child, name: name);
 }

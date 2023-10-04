@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
@@ -46,7 +47,7 @@ class _EditAlmanakProfilePageState
         title: const Text("Mijn profiel"),
         actions: [
           IconButton(
-            onPressed: () => Routemaster.of(context).push('settings'),
+            onPressed: () => context.goNamed('Settings'),
             icon: const Icon(Icons.settings),
           ),
         ],
@@ -63,13 +64,14 @@ class _EditAlmanakProfilePageState
           [
         FloatingActionButton.extended(
           backgroundColor: colorScheme.secondaryContainer,
+          heroTag: null, // Prevents the hero animation from playing.
           onPressed: () => Routemaster.of(context).push(userId ?? ""),
-          label: const Text("Publiek profiel bekijken").textColor(
-            colorScheme.onSecondaryContainer,
-          ),
+          label: const Text("Publiek profiel bekijken")
+              .textColor(colorScheme.onSecondaryContainer),
         ),
         FloatingActionButton.extended(
           backgroundColor: colorScheme.primaryContainer,
+          heroTag: null, // Prevents the hero animation from playing.
           onPressed: submitForm,
           icon: const Icon(Icons.save),
           label: const Text('Opslaan'),
