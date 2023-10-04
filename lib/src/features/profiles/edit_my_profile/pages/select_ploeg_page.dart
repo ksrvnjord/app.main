@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
@@ -99,7 +100,7 @@ class SelectPloegPage extends ConsumerWidget {
                           .read(ploegEntryCreateNotifierProvider.notifier)
                           .setPloegName(ploeg);
                       // ignore: avoid-ignoring-return-values
-                      Routemaster.of(context).push("add");
+                      context.pushNamed("Add Ploeg");
                     },
                   ),
                 )

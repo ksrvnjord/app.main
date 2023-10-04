@@ -74,97 +74,6 @@ class Routes {
 
   static final authenticated = RouteMap(
     routes: {
-      // '/': (_) => const TabPage(
-      //       child: MainPage(),
-      //       paths: mainRoutes,
-      //       backBehavior: TabBackBehavior.none,
-      //     ),
-      '/home': (_) => CupertinoPage(
-            child: UpgradeAlert(
-              upgrader: Upgrader(
-                messages: DutchUpgradeMessages(),
-                countryCode: 'nl',
-                languageCode: 'nl',
-              ),
-              child: const HomePage(),
-            ), // Show upgrade alert on home page if new version is available.
-            name: 'Home',
-          ),
-      '/home/my-profile': (_) => const CupertinoPage(
-            child: EditAlmanakProfilePage(),
-            name: "Edit Profile",
-          ),
-      '/home/my-profile/settings': (_) => const CupertinoPage(
-            child: SettingsPage(),
-            name: "Settings",
-          ),
-      '/home/my-profile/settings/advanced': (_) => const CupertinoPage(
-            child: AdvancedSettingsPage(),
-            name: 'Advanced Settings',
-          ),
-      '/home/my-profile/:identifier': (route) => CupertinoPage(
-            child: AlmanakProfilePage(
-              userId: route.pathParameters['identifier']!,
-            ),
-            name: "Preview my profile",
-          ),
-      '/home/my-profile/sensitive-data': (info) => const CupertinoPage(
-            child: MePage(),
-            name: "Edit mijn personal data",
-          ),
-      '/home/my-profile/view-my-permissions': (_) => const CupertinoPage(
-            child: MyPermissionsPage(),
-            name: "Mijn permissies",
-          ),
-      '/home/my-profile/groups':
-          (_) => // This will be the main page for editing groups (ie. ploegen, commissies, huizen, etc.).
-              const CupertinoPage(
-                child: EditGroupsPage(),
-                name: "Edit my groups",
-              ),
-      '/home/my-profile/groups/ploeg': (_) => const CupertinoPage(
-            child: SelectPloegPage(),
-            name: "Select a ploeg to add",
-          ),
-      '/home/my-profile/groups/ploeg/add': (_) =>
-          const CupertinoPage(child: AddPloegPage(), name: "Add a ploeg"),
-      '/home/my-profile/commissies': (info) => const CupertinoPage(
-            child: EditCommissiesPage(),
-            name: "Edit my commissies",
-          ),
-      '/home/my-profile/commissies/select': (info) => const CupertinoPage(
-            child: SelectCommissiePage(),
-            name: "Select a commissie to add",
-          ),
-      '/home/my-profile/commissies/select/fill-info': (info) => CupertinoPage(
-            child: FillCommissieInfoPage(
-              commissie: info.queryParameters['commissie']!,
-            ),
-            name: "Fill commissie info",
-          ),
-      '/home/my-profile/settings/notification-preferences': (info) =>
-          const CupertinoPage(
-            child: NotificationsPage(),
-            name: 'Notification Preferences',
-          ),
-      '/home/my-profile/settings/visibility': (info) => const CupertinoPage(
-            child: MePrivacyPage(),
-            name: "Edit my visibility",
-          ),
-      '/home/my-profile/allergies': (info) => const CupertinoPage(
-            child: EditAllergiesPage(),
-            name: "Edit my allergies",
-          ),
-      '/home/polls': (_) =>
-          const CupertinoPage(child: PollsPage(), name: 'Polls'),
-      '/home/events': (info) =>
-          const CupertinoPage(child: EventsPage(), name: "Events"),
-      '/home/announcements/:announcementId': (route) => CupertinoPage(
-            child: AnnouncementPage(
-              announcementId: route.pathParameters['announcementId']!,
-            ),
-            name: "Announcement",
-          ),
       '/posts': (_) => const CupertinoPage(child: PostsPage(), name: "Posts"),
       '/posts/new': (_) =>
           const CupertinoPage(child: CreatePostPage(), name: "New Post"),
@@ -358,6 +267,147 @@ class Routes {
           getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
     ),
   ];
+
+  static final homeRoutes = [
+    route(
+      path: '/',
+      name: "Home",
+      child: UpgradeAlert(
+        upgrader: Upgrader(
+          messages: DutchUpgradeMessages(),
+          countryCode: 'nl',
+          languageCode: 'nl',
+        ),
+        child: const HomePage(),
+      ),
+      routes: [
+        // Route for viewing all forms.
+        route(
+          path: 'polls',
+          name: "Polls",
+          child: const PollsPage(),
+        ),
+        // Route for viewing all events.
+        route(
+          path: 'events',
+          name: "Events",
+          child: const EventsPage(),
+        ),
+        // Dynamic route for viewing one announcement.
+        route(
+          path: 'announcements/:id',
+          name: "Announcement",
+          pageBuilder: (context, state) => getPage(
+            child: AnnouncementPage(
+              announcementId: state.pathParameters['id']!,
+            ),
+            name: "Announcement",
+          ),
+        ),
+        route(
+          path: 'my-profile',
+          name: "Edit Profile",
+          child: const EditAlmanakProfilePage(),
+          routes: [
+            route(
+              path: 'public-profile/:identifier',
+              name: "Preview Profile",
+              pageBuilder: (context, state) => getPage(
+                child: AlmanakProfilePage(
+                  userId: state.pathParameters['identifier']!,
+                ),
+                name: "Preview Profile",
+              ),
+            ),
+            route(
+              path: 'sensitive-data',
+              name: "Sensitive Data",
+              child: const MePage(),
+            ),
+            route(
+              path: 'permissions',
+              name: "My Permissions",
+              child: const MyPermissionsPage(),
+            ),
+            // route for my allergies page
+            route(
+              path: 'allergies',
+              name: "My Allergies",
+              child: const EditAllergiesPage(),
+            ),
+            route(
+                path: 'groups',
+                name: "My Groups",
+                child: const EditGroupsPage(),
+                routes: [
+                  route(
+                    path: 'ploeg',
+                    name: "Select Ploeg",
+                    child: const SelectPloegPage(),
+                    routes: [
+                      route(
+                        path: 'add',
+                        name: "Add Ploeg",
+                        child: const AddPloegPage(),
+                      ),
+                    ],
+                  )
+                ]),
+            route(
+              path: 'commissies',
+              name: "My Commissies",
+              child: const EditCommissiesPage(),
+              routes: [
+                route(
+                  path: 'select',
+                  name: "Select Commissie",
+                  child: const SelectCommissiePage(),
+                  routes: [
+                    route(
+                      path: 'fill-info',
+                      name: "Fill Commissie Info",
+                      pageBuilder: (context, state) => getPage(
+                        child: FillCommissieInfoPage(
+                          commissie: state.uri.queryParameters['commissie']!,
+                        ),
+                        name: "Fill Commissie Info",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            route(
+              path: 'settings',
+              name: "Settings",
+              child: const SettingsPage(),
+              routes: [
+                route(
+                  path: 'advanced',
+                  name: "Advanced Settings",
+                  child: const AdvancedSettingsPage(),
+                ),
+                route(
+                  path: 'notification-preferences',
+                  name: "Notification Preferences",
+                  child: const NotificationsPage(),
+                ),
+                route(
+                  path: 'visibility',
+                  name: "Edit my visibility",
+                  child: const MePrivacyPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ];
+
+  static final postsRoutes = [
+    route(path: '/posts', name: 'Posts', child: const PostsPage()),
+  ];
 }
 
 // This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
@@ -373,78 +423,34 @@ final routerProvider = Provider((ref) {
   final loggedIn = auth.client != null;
 
   return GoRouter(
-    routes: [
-      // We divide the routes into branches, one for each bottom tab to keep stateful navigation.
-      StatefulShellRoute.indexedStack(
-        branches: [
-          StatefulShellBranch(routes: <RouteBase>[
-            GoRoute(
-              path: '/',
-              pageBuilder: (child, state) => getPage(
-                child: UpgradeAlert(
-                  upgrader: Upgrader(
-                    messages: DutchUpgradeMessages(),
-                    countryCode: 'nl',
-                    languageCode: 'nl',
-                  ),
-                  child: const HomePage(),
-                ),
-                name: "Home",
-              ),
-              routes: [
-                GoRoute(
-                  path: 'my-profile',
-                  pageBuilder: (child, state) => getPage(
-                    child: const EditAlmanakProfilePage(),
-                    name: "Edit Profile",
-                  ),
-                  routes: [
-                    GoRoute(
-                      path: 'settings',
-                      name: "Settings",
-                      pageBuilder: (child, state) => getPage(
-                        child: const SettingsPage(),
-                        name: "Settings",
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ]),
-          StatefulShellBranch(routes: <RouteBase>[
-            GoRoute(
-              path: '/posts',
-              pageBuilder: (child, state) =>
-                  getPage(child: const PostsPage(), name: "Posts"),
-            ),
-          ]),
-        ],
-        pageBuilder: (context, state, navigationShell) => getPage(
-          child: MainPage(navigationShell: navigationShell),
-          name: "Bottom Navigation Bar",
-        ),
-      ),
-      ...Routes.unauthenticated,
-    ],
-    redirect: (context, state) {
-      final bool loggingIn = state.matchedLocation == '/login';
-      if (!loggedIn) {
-        return loggingIn ? null : '/login';
-      }
-      if (loggingIn) {
-        return '/';
-      }
-
-      return null;
-    },
-    initialLocation: _previousRouter?.routeInformationProvider.value.location,
-    observers: [
-      GlobalObserver(),
-      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-    ],
-    navigatorKey: _navigatorKey,
-  );
+      routes: [
+        StatefulShellRoute.indexedStack(
+            branches: [
+              StatefulShellBranch(routes: Routes.homeRoutes),
+              StatefulShellBranch(routes: Routes.postsRoutes)
+            ],
+            pageBuilder: (context, state, navigationShell) => getPage(
+                child: MainPage(navigationShell: navigationShell),
+                name: "Bottom Navigation Bar")),
+        ...Routes.unauthenticated
+      ],
+      redirect: (context, state) {
+        final bool loggingIn = state.matchedLocation == '/login';
+        if (!loggedIn) {
+          return loggingIn ? null : '/login';
+        }
+        if (loggingIn) {
+          return '/';
+        }
+        return null;
+      },
+      initialLocation: _previousRouter?.routeInformationProvider.value.location,
+      observers: [
+        GlobalObserver(),
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+      ],
+      debugLogDiagnostics: true,
+      navigatorKey: _navigatorKey);
 });
 
 // ignore: prefer-static-class
@@ -454,4 +460,48 @@ Page getPage({
       name, // Used so we can view the page name in Firebase Analytics.
 }) {
   return CupertinoPage(child: child, name: name);
+}
+
+/// Creates a new [GoRoute] instance with the specified parameters.
+///
+/// The [path] parameter is a required string that represents the path of the route.
+///
+/// The [name] parameter is a required string that represents the name of the route.
+///
+/// The [child] parameter is an optional [Widget] that represents the child of the route.
+///
+/// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
+///
+/// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
+///
+/// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
+///
+/// Returns a new [GoRoute] instance with the specified parameters.
+// ignore: prefer-static-class
+GoRoute route({
+  required String path,
+  required String name,
+  Widget? child,
+  List<RouteBase>? routes,
+  Page Function(BuildContext, GoRouterState)? pageBuilder,
+}) {
+  if (child == null && pageBuilder == null) {
+    throw ArgumentError(
+      "You must specify either a child or a pageBuilder for a route.",
+    );
+  }
+
+  if (child != null && pageBuilder != null) {
+    throw ArgumentError(
+      "You can't specify both a child and a pageBuilder for a route.",
+    );
+  }
+
+  return GoRoute(
+    path: path,
+    name: name,
+    pageBuilder:
+        pageBuilder ?? (context, state) => getPage(child: child!, name: name),
+    routes: routes ?? [],
+  );
 }

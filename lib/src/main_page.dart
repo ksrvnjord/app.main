@@ -23,16 +23,16 @@ class MainPage extends ConsumerWidget {
             icon: Icon(Icons.chat_outlined),
             label: 'Prikbord',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.edit_calendar),
-          //   label: 'Afschrijven',
-          // ),
-          // BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
-          // BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.edit_calendar),
+            label: 'Afschrijven',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
         onTap: (value) => animateTo(value),
         currentIndex: navigationShell.currentIndex,
-        // type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: colorScheme.primary,
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_commissies_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -35,7 +36,7 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
       ]),
       floatingActionButton: // Button with a plus icon and the text "Commissie".
           FloatingActionButton.extended(
-        onPressed: () => Routemaster.of(context).push('select'),
+        onPressed: () => context.goNamed('Select Commissie'),
         icon: const Icon(Icons.add),
         label: const Text('Voeg commissie toe'),
       ),

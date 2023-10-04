@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -67,7 +68,10 @@ class AnnouncementsWidget extends ConsumerWidget {
                           },
                         );
                         // ignore: avoid-ignoring-return-values
-                        Routemaster.of(context).push('announcements/${doc.id}');
+                        context.goNamed(
+                          'Announcement',
+                          pathParameters: {'id': doc.id},
+                        );
                       },
                       minLeadingWidth: minLeadingWidth,
                     );
