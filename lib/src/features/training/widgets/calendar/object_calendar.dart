@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
@@ -120,7 +121,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
             .add(Duration(minutes: offsetMinutes));
 
     // ignore: avoid-ignoring-return-values
-    Routemaster.of(context).push('plan', queryParameters: {
+    context.goNamed('Plan Training', queryParameters: {
       'reservationObjectId': widget.boat.id,
       'reservationObjectName': widget.boat.get('name'),
       'startTime': time.toIso8601String(),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -34,7 +35,7 @@ class ShowReservationObjectPage extends ConsumerWidget {
         success: (snapshot) => showObjectDetails(snapshot, context, ref),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Routemaster.of(context).push('damage/create'),
+        onPressed: () => context.pushNamed('Create Damage'),
         icon: const Icon(Icons.report),
         label: Text('Meld schade voor "$name"'),
       ),
@@ -49,7 +50,6 @@ class ShowReservationObjectPage extends ConsumerWidget {
     const double verticalPadding = 16;
     const double horizontalPadding = 16;
     const double gap = 8;
-    final navigator = Routemaster.of(context);
 
     if (!snapshot.exists) {
       return const Center(
@@ -116,12 +116,15 @@ class ShowReservationObjectPage extends ConsumerWidget {
                 ).padding(top: gap),
               ...data.map<Widget>((e) {
                 return DamageTileWidget(
-                  showDamage: () => navigator.push(
-                    'damage/show',
-                    queryParameters: {'id': e.id},
+                  showDamage: () => context.pushNamed(
+                    'Show Damage',
+                    queryParameters: {
+                      'id': e.id,
+                      'reservationObjectId': e.data().parent.id,
+                    },
                   ),
-                  editDamage: () => navigator.push(
-                    'damage/edit',
+                  editDamage: () => context.pushNamed(
+                    'Edit Damage',
                     queryParameters: {'id': e.id},
                   ),
                   damageSnapshot: e,

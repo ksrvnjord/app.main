@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
@@ -300,7 +301,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     }
     ref.read(progressProvider.notifier).done();
     // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-    Routemaster.of(context).pop();
+    context.pop();
   }
 
   Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {

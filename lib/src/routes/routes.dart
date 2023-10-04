@@ -74,15 +74,6 @@ class Routes {
 
   static final authenticated = RouteMap(
     routes: {
-      '/posts': (_) => const CupertinoPage(child: PostsPage(), name: "Posts"),
-      '/posts/new': (_) =>
-          const CupertinoPage(child: CreatePostPage(), name: "New Post"),
-      '/posts/:postId/comments': (route) => CupertinoPage(
-            child: CommentsPage(
-              postDocId: Uri.decodeFull(route.pathParameters['postId']!),
-            ),
-            name: "Post -> Comments",
-          ),
       '/almanak': (_) =>
           const CupertinoPage(child: AlmanakPage(), name: 'Almanak'),
       '/almanak/leeden': (_) =>
@@ -160,84 +151,6 @@ class Routes {
                 AlmanakProfilePage(userId: route.pathParameters['identifier']!),
             name: 'Lid',
           ),
-      '/training': (_) =>
-          const CupertinoPage(child: TrainingPage(), name: 'Training'),
-      '/training/create-damage': (route) => CupertinoPage(
-            child: DamagesCreatePage(
-              reservationObjectId: route.queryParameters['reservationObjectId'],
-            ),
-            name: "Create Damage",
-          ),
-      '/training/damages': (route) =>
-          const CupertinoPage(child: DamagesListPage(), name: 'Damages'),
-      '/training/damages/create': (route) => CupertinoPage(
-            child: DamagesCreatePage(
-              reservationObjectId: route.queryParameters['reservationObjectId'],
-            ),
-            name: "Create Damage",
-          ),
-      '/training/damages/edit': (route) => CupertinoPage(
-            child: DamagesEditPage(
-              damageDocumentId: route.queryParameters['id']!,
-              reservationObjectId:
-                  route.queryParameters['reservationObjectId']!,
-            ),
-            name: "Edit Damage",
-          ),
-      '/training/damages/show': (route) => CupertinoPage(
-            child: DamagesShowPage(
-              damageDocumentId: route.queryParameters['id']!,
-              reservationObjectId:
-                  route.queryParameters['reservationObjectId']!,
-            ),
-            name: "Show Damage",
-          ),
-      '/training/all': (_) =>
-          const CupertinoPage(child: AllTrainingPage(), name: 'All Training'),
-      '/training/all/plan': (route) => CupertinoPage(
-            child: PlanTrainingPage(queryParams: route.queryParameters),
-            name: 'Plan Training',
-          ),
-      '/training/all/:id': (info) => CupertinoPage(
-            child: ShowTrainingPage(
-              reservationDocumentId: info.pathParameters['id']!,
-            ),
-            name: 'Show Training',
-          ),
-      '/training/all/reservationObject/:reservationObjectId': (route) =>
-          CupertinoPage(
-            child: ShowReservationObjectPage(
-              documentId: route.pathParameters['reservationObjectId']!,
-              name: route.queryParameters['name']!,
-            ),
-            name: 'Show Reservation Object',
-          ),
-      '/training/all/reservationObject/:reservationObjectId/damage/edit':
-          (route) => CupertinoPage(
-                child: DamagesEditPage(
-                  damageDocumentId: route.queryParameters['id']!,
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Edit Damage',
-              ),
-      '/training/all/reservationObject/:reservationObjectId/damage/show':
-          (route) => CupertinoPage(
-                child: DamagesShowPage(
-                  damageDocumentId: route.queryParameters['id']!,
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Show Damage',
-              ),
-      '/training/all/reservationObject/:reservationObjectId/damage/create':
-          (route) => CupertinoPage(
-                child: DamagesCreatePage(
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Create Damage',
-              ),
       '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
       '/more/events': (info) =>
           const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
@@ -424,6 +337,110 @@ class Routes {
       ),
     ]),
   ];
+
+  static final reservationRoutes = [
+    route(
+      path: "/training",
+      name: "Training",
+      child: const TrainingPage(),
+      routes: [
+        // route for viewing all damages
+        route(
+          path: 'damages',
+          name: "Damages",
+          child: const DamagesListPage(),
+          routes: [
+            route(
+              path: 'create',
+              name: "Create Damage",
+              child: const DamagesCreatePage(),
+            ),
+            route(
+              path: 'edit',
+              name: "Edit Damage",
+              pageBuilder: (context, state) => getPage(
+                child: DamagesEditPage(
+                  damageDocumentId: state.uri.queryParameters['id']!,
+                  reservationObjectId:
+                      state.uri.queryParameters['reservationObjectId']!,
+                ),
+                name: "Edit Damage",
+              ),
+            ),
+            route(
+              path: 'show',
+              name: "Show Damage",
+              pageBuilder: (context, state) => getPage(
+                child: DamagesShowPage(
+                  damageDocumentId: state.uri.queryParameters['id']!,
+                  reservationObjectId:
+                      state.uri.queryParameters['reservationObjectId']!,
+                ),
+                name: "Show Damage",
+              ),
+            ),
+          ],
+        ),
+        // route for view all training
+        route(
+          path: 'all',
+          name: "Planning Overview",
+          child: const AllTrainingPage(),
+          routes: [
+            route(
+              path: 'plan',
+              name: "Plan Training",
+              pageBuilder: (context, state) => getPage(
+                child: PlanTrainingPage(
+                  queryParams: state.uri.queryParameters,
+                ),
+                name: "Plan Training",
+              ),
+            ),
+            route(
+              path: ':id',
+              name: "Show Training",
+              pageBuilder: (context, state) => getPage(
+                child: ShowTrainingPage(
+                  reservationDocumentId: state.pathParameters['id']!,
+                ),
+                name: "Show Training",
+              ),
+            ),
+            route(
+              path: 'reservationObject/:id',
+              name: "Show Reservation Object",
+              pageBuilder: (context, state) => getPage(
+                child: ShowReservationObjectPage(
+                  documentId: state.pathParameters['id']!,
+                  name: state.uri.queryParameters['name']!,
+                ),
+                name: "Show Reservation Object",
+              ),
+              routes: [],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ];
+
+  static final almanakRoutes = [
+    // route for almanak
+    route(
+      path: "/almanak",
+      name: "Almanak",
+      child: const AlmanakPage(),
+    ),
+  ];
+
+  static final moreRoutes = [
+    route(
+      path: "/more",
+      name: "More",
+      child: const MorePage(),
+    )
+  ];
 }
 
 // This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
@@ -443,7 +460,10 @@ final routerProvider = Provider((ref) {
         StatefulShellRoute.indexedStack(
             branches: [
               StatefulShellBranch(routes: Routes.homeRoutes),
-              StatefulShellBranch(routes: Routes.postsRoutes)
+              StatefulShellBranch(routes: Routes.postsRoutes),
+              StatefulShellBranch(routes: Routes.reservationRoutes),
+              StatefulShellBranch(routes: Routes.almanakRoutes),
+              StatefulShellBranch(routes: Routes.moreRoutes),
             ],
             pageBuilder: (context, state, navigationShell) => getPage(
                 child: MainPage(navigationShell: navigationShell),

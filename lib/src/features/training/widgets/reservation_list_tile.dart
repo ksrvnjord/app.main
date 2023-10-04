@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
@@ -28,8 +29,7 @@ class ReservationListTile extends StatelessWidget {
       ),
       trailing: <Widget>[
         IconButton(
-          onPressed: () => Routemaster.of(context)
-              .push('/training/create-damage', queryParameters: {
+          onPressed: () => context.pushNamed('Create Damage', queryParameters: {
             'reservationObjectId': reservation.reservationObject.id,
           }),
           tooltip: "Schade melden",
