@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
@@ -52,7 +53,9 @@ class PostBottomActionBar extends StatelessWidget {
           const Icon(Icons.mode_comment_outlined, size: iconSize),
           const Text("Reageer").fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: 4)),
-        onTap: () => Routemaster.of(context).push('${snapshot.id}/comments'),
+        onTap: () => context.goNamed('Post -> Comments', pathParameters: {
+          'postId': snapshot.id,
+        }),
       ),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.spaceAround,

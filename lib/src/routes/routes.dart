@@ -406,7 +406,23 @@ class Routes {
   ];
 
   static final postsRoutes = [
-    route(path: '/posts', name: 'Posts', child: const PostsPage()),
+    route(path: '/posts', name: 'Posts', child: const PostsPage(), routes: [
+      route(
+        path: 'new',
+        name: 'New Post',
+        child: const CreatePostPage(),
+      ),
+      route(
+        path: ':postId/comments',
+        name: 'Post -> Comments',
+        pageBuilder: (context, state) => getPage(
+          child: CommentsPage(
+            postDocId: state.pathParameters['postId']!,
+          ),
+          name: "Post -> Comments",
+        ),
+      ),
+    ]),
   ];
 }
 

@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
@@ -88,7 +89,7 @@ class PostsPage extends ConsumerWidget {
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: FloatingActionButton.extended(
-          onPressed: () => Routemaster.of(context).push('new'),
+          onPressed: () => context.goNamed('New Post'),
           icon: const Icon(Icons.add),
           label: const Text('Nieuw bericht'),
         ),
