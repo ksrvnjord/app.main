@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
@@ -114,7 +115,8 @@ class PloegChoicePage extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       // ignore: prefer-extracting-callbacks
-                      onTap: () => Routemaster.of(context).push(ploeg),
+                      onTap: () => context
+                          .pushNamed("Ploeg", pathParameters: {"ploeg": ploeg}),
                     ),
                   )
                   .toList(),

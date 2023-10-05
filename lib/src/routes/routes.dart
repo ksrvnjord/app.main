@@ -371,11 +371,11 @@ class Routes {
           child: const CommissieChoicePage(),
           routes: [
             route(
-              path: ":commissie",
+              path: ":name",
               name: "Commissie",
               pageBuilder: (context, state) => getPage(
                 child: AlmanakCommissiePage(
-                  commissieName: state.pathParameters['commissie']!,
+                  commissieName: state.pathParameters['name']!,
                 ),
                 name: "Commissie",
               ),
@@ -405,11 +405,11 @@ class Routes {
           child: const HuisChoicePage(title: "Huizen", choices: houseNames),
           routes: [
             route(
-              path: ":huis",
+              path: ":name",
               name: "Huis",
               pageBuilder: (context, state) => getPage(
                 child: AlmanakHuisPage(
-                  houseName: state.pathParameters['huis']!,
+                  houseName: state.pathParameters['name']!,
                 ),
                 name: "Huis",
               ),
@@ -425,11 +425,11 @@ class Routes {
           ),
           routes: [
             route(
-              path: ":substructuur",
+              path: ":name",
               name: "Substructuur",
               pageBuilder: (context, state) => getPage(
                 child: AlmanakSubstructuurPage(
-                  name: state.pathParameters['substructuur']!,
+                  name: state.pathParameters['name']!,
                 ),
                 name: "Substructuur",
               ),
