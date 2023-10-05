@@ -67,113 +67,62 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 // ignore: prefer-static-class
 GoRouter? _previousRouter;
 
-// ignore: prefer-static-class
-final routerProvider = Provider((ref) {
-  final auth = ref.watch(authModelProvider);
-  final loggedIn = auth.client != null;
-
-  return GoRouter(
-    routes: [
-      StatefulShellRoute.indexedStack(
-        branches: [
-          StatefulShellBranch(routes: Routes.homeRoutes),
-          StatefulShellBranch(routes: Routes.postsRoutes),
-          StatefulShellBranch(routes: Routes.reservationRoutes),
-          StatefulShellBranch(routes: Routes.almanakRoutes),
-          StatefulShellBranch(routes: Routes.moreRoutes),
-        ],
-        pageBuilder: (context, state, navigationShell) => getPage(
-          child: MainPage(navigationShell: navigationShell),
-          name: "Bottom Navigation Bar",
-        ),
-      ),
-      ...Routes.unauthenticated,
-    ],
-    errorPageBuilder: (context, state) => getPage(
-      child: const UnknownRoutePage(),
-      name: "Unknown Route",
-    ),
-    redirect: (context, state) {
-      if (loggedIn) {
-        return null;
-      }
-
-      // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
-      for (final route in Routes.unauthenticated) {
-        if (route.path == state.matchedLocation) {
-          return null;
-        }
-      }
-
-      return '/login';
-    },
-    initialLocation: _previousRouter?.routeInformationProvider.value.location,
-    observers: [
-      GlobalObserver(),
-      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-    ],
-    debugLogDiagnostics: true,
-    navigatorKey: _navigatorKey,
-  );
-});
-
-// ignore: prefer-static-class
-Page getPage({
-  required Widget child,
-  required String
-      name, // Used so we can view the page name in Firebase Analytics.
-}) {
-  return CupertinoPage(child: child, name: name);
-}
-
-/// Creates a new [GoRoute] instance with the specified parameters.
-///
-/// The [path] parameter is a required string that represents the path of the route.
-///
-/// The [name] parameter is a required string that represents the name of the route.
-///
-/// The [child] parameter is an optional [Widget] that represents the child of the route.
-///
-/// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
-///
-/// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
-///
-/// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
-///
-/// Returns a new [GoRoute] instance with the specified parameters.
-// ignore: prefer-static-class
-GoRoute route({
-  required String path,
-  required String name,
-  Widget? child,
-  List<RouteBase>? routes,
-  Page Function(BuildContext, GoRouterState)? pageBuilder,
-}) {
-  if (child == null && pageBuilder == null) {
-    throw ArgumentError(
-      "You must specify either a child or a pageBuilder for a route.",
-    );
-  }
-
-  if (child != null && pageBuilder != null) {
-    throw ArgumentError(
-      "You can't specify both a child and a pageBuilder for a route.",
-    );
-  }
-
-  return GoRoute(
-    path: path,
-    name: name,
-    pageBuilder:
-        pageBuilder ?? (context, state) => getPage(child: child!, name: name),
-    routes: routes ?? [],
-  );
-}
-
 @immutable
 class Routes {
-  static final homeRoutes = [
-    route(
+  // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  // ignore: prefer-static-class
+  static final routerProvider = Provider((ref) {
+    final auth = ref.watch(authModelProvider);
+    final loggedIn = auth.client != null;
+
+    return GoRouter(
+      routes: [
+        // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
+        StatefulShellRoute.indexedStack(
+          branches: [
+            StatefulShellBranch(routes: Routes._homeRoutes),
+            StatefulShellBranch(routes: Routes._postsRoutes),
+            StatefulShellBranch(routes: Routes._reservationRoutes),
+            StatefulShellBranch(routes: Routes._almanakRoutes),
+            StatefulShellBranch(routes: Routes._moreRoutes),
+          ],
+          pageBuilder: (context, state, navigationShell) => _getPage(
+            child: MainPage(navigationShell: navigationShell),
+            name: "Bottom Navigation Bar",
+          ),
+        ),
+        ...Routes._unauthenticated,
+      ],
+      errorPageBuilder: (context, state) => _getPage(
+        child: const UnknownRoutePage(),
+        name: "Unknown Route",
+      ),
+      redirect: (context, state) {
+        // Redirect to requested page if logged in.
+        if (loggedIn) {
+          return null;
+        }
+
+        // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
+        if (Routes._unauthenticated
+            .any((route) => route.path == state.matchedLocation)) {
+          return null;
+        }
+
+        return '/login';
+      },
+      initialLocation: _previousRouter?.routeInformationProvider.value.location,
+      observers: [
+        GlobalObserver(),
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+      ],
+      debugLogDiagnostics: true,
+      navigatorKey: _navigatorKey,
+    );
+  });
+
+  static final _homeRoutes = [
+    _route(
       path: '/',
       name: "Home",
       child: UpgradeAlert(
@@ -186,91 +135,92 @@ class Routes {
       ),
       routes: [
         // Route for viewing all forms.
-        route(
+        _route(
           path: 'polls',
           name: "Polls",
           child: const PollsPage(),
         ),
         // Route for viewing all events.
-        route(
+        _route(
           path: 'events',
           name: "Events",
           child: const EventsPage(),
         ),
         // Dynamic route for viewing one announcement.
-        route(
+        _route(
           path: 'announcements/:id',
           name: "Announcement",
-          pageBuilder: (context, state) => getPage(
+          pageBuilder: (context, state) => _getPage(
             child: AnnouncementPage(
               announcementId: state.pathParameters['id']!,
             ),
             name: "Announcement",
           ),
         ),
-        route(
+        _route(
           path: 'my-profile',
           name: "Edit Profile",
           child: const EditAlmanakProfilePage(),
           routes: [
-            route(
+            _route(
               path: 'public-profile/:identifier',
               name: "Preview Profile",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: AlmanakProfilePage(
                   userId: state.pathParameters['identifier']!,
                 ),
                 name: "Preview Profile",
               ),
             ),
-            route(
+            _route(
               path: 'sensitive-data',
               name: "Sensitive Data",
               child: const MePage(),
             ),
-            route(
+            _route(
               path: 'permissions',
               name: "My Permissions",
               child: const MyPermissionsPage(),
             ),
-            // route for my allergies page
-            route(
+            // Route for my allergies page.
+            _route(
               path: 'allergies',
               name: "My Allergies",
               child: const EditAllergiesPage(),
             ),
-            route(
-                path: 'groups',
-                name: "My Groups",
-                child: const EditGroupsPage(),
-                routes: [
-                  route(
-                    path: 'ploeg',
-                    name: "Select Ploeg",
-                    child: const SelectPloegPage(),
-                    routes: [
-                      route(
-                        path: 'add',
-                        name: "Add Ploeg",
-                        child: const AddPloegPage(),
-                      ),
-                    ],
-                  )
-                ]),
-            route(
+            _route(
+              path: 'groups',
+              name: "My Groups",
+              child: const EditGroupsPage(),
+              routes: [
+                _route(
+                  path: 'ploeg',
+                  name: "Select Ploeg",
+                  child: const SelectPloegPage(),
+                  routes: [
+                    _route(
+                      path: 'add',
+                      name: "Add Ploeg",
+                      child: const AddPloegPage(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            _route(
               path: 'commissies',
               name: "My Commissies",
               child: const EditCommissiesPage(),
               routes: [
-                route(
+                _route(
                   path: 'select',
                   name: "Select Commissie",
                   child: const SelectCommissiePage(),
                   routes: [
-                    route(
+                    _route(
                       path: 'fill-info',
                       name: "Fill Commissie Info",
-                      pageBuilder: (context, state) => getPage(
+                      pageBuilder: (context, state) => _getPage(
                         child: FillCommissieInfoPage(
                           commissie: state.uri.queryParameters['commissie']!,
                         ),
@@ -281,22 +231,22 @@ class Routes {
                 ),
               ],
             ),
-            route(
+            _route(
               path: 'settings',
               name: "Settings",
               child: const SettingsPage(),
               routes: [
-                route(
+                _route(
                   path: 'advanced',
                   name: "Advanced Settings",
                   child: const AdvancedSettingsPage(),
                 ),
-                route(
+                _route(
                   path: 'notification-preferences',
                   name: "Notification Preferences",
                   child: const NotificationsPage(),
                 ),
-                route(
+                _route(
                   path: 'visibility',
                   name: "Edit my visibility",
                   child: const MePrivacyPage(),
@@ -309,47 +259,52 @@ class Routes {
     ),
   ];
 
-  static final postsRoutes = [
-    route(path: '/posts', name: 'Posts', child: const PostsPage(), routes: [
-      route(
-        path: 'new',
-        name: 'New Post',
-        child: const CreatePostPage(),
-      ),
-      route(
-        path: ':postId/comments',
-        name: 'Post -> Comments',
-        pageBuilder: (context, state) => getPage(
-          child: CommentsPage(
-            postDocId: state.pathParameters['postId']!,
-          ),
-          name: "Post -> Comments",
+  static final _postsRoutes = [
+    _route(
+      path: '/posts',
+      name: 'Posts',
+      child: const PostsPage(),
+      routes: [
+        _route(
+          path: 'new',
+          name: 'New Post',
+          child: const CreatePostPage(),
         ),
-      ),
-    ]),
+        _route(
+          path: ':postId/comments',
+          name: 'Post -> Comments',
+          pageBuilder: (context, state) => _getPage(
+            child: CommentsPage(
+              postDocId: state.pathParameters['postId']!,
+            ),
+            name: "Post -> Comments",
+          ),
+        ),
+      ],
+    ),
   ];
 
-  static final reservationRoutes = [
-    route(
+  static final _reservationRoutes = [
+    _route(
       path: "/training",
       name: "Training",
       child: const TrainingPage(),
       routes: [
-        // route for viewing all damages
-        route(
+        // Route for viewing all damages.
+        _route(
           path: 'damages',
           name: "Damages",
           child: const DamagesListPage(),
           routes: [
-            route(
+            _route(
               path: 'create',
               name: "Create Damage",
               child: const DamagesCreatePage(),
             ),
-            route(
+            _route(
               path: 'edit',
               name: "Edit Damage",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: DamagesEditPage(
                   damageDocumentId: state.uri.queryParameters['id']!,
                   reservationObjectId:
@@ -358,10 +313,10 @@ class Routes {
                 name: "Edit Damage",
               ),
             ),
-            route(
+            _route(
               path: 'show',
               name: "Show Damage",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: DamagesShowPage(
                   damageDocumentId: state.uri.queryParameters['id']!,
                   reservationObjectId:
@@ -372,36 +327,36 @@ class Routes {
             ),
           ],
         ),
-        // route for view all training
-        route(
+        // Route for view all training.
+        _route(
           path: 'all',
           name: "Planning Overview",
           child: const AllTrainingPage(),
           routes: [
-            route(
+            _route(
               path: 'plan',
               name: "Plan Training",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: PlanTrainingPage(
                   queryParams: state.uri.queryParameters,
                 ),
                 name: "Plan Training",
               ),
             ),
-            route(
+            _route(
               path: ':id',
               name: "Show Training",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: ShowTrainingPage(
                   reservationDocumentId: state.pathParameters['id']!,
                 ),
                 name: "Show Training",
               ),
             ),
-            route(
+            _route(
               path: 'reservationObject/:id',
               name: "Show Reservation Object",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: ShowReservationObjectPage(
                   documentId: state.pathParameters['id']!,
                   name: state.uri.queryParameters['name']!,
@@ -416,32 +371,32 @@ class Routes {
     ),
   ];
 
-  static final almanakRoutes = [
-    // route for almanak
-    route(
+  static final _almanakRoutes = [
+    // Route for almanak.
+    _route(
       path: "/almanak",
       name: "Almanak",
       child: const AlmanakPage(),
       routes: [
-        route(
+        _route(
           path: "leeden",
           name: "Leeden",
           child: const AlmanakLeedenPage(),
         ),
-        route(
+        _route(
           path: "bestuur",
           name: "Bestuur",
           child: const AlmanakBestuurPage(),
         ),
-        route(
+        _route(
           path: "commissies",
           name: "Commissies",
           child: const CommissieChoicePage(),
           routes: [
-            route(
+            _route(
               path: ":name",
               name: "Commissie",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
                   commissieName: state.pathParameters['name']!,
                 ),
@@ -450,15 +405,15 @@ class Routes {
             ),
           ],
         ),
-        route(
+        _route(
           path: "ploegen",
           name: "Ploegen",
           child: const PloegChoicePage(),
           routes: [
-            route(
+            _route(
               path: ":ploeg",
               name: "Ploeg",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
                   ploegName: state.pathParameters['ploeg']!,
                 ),
@@ -467,15 +422,15 @@ class Routes {
             ),
           ],
         ),
-        route(
+        _route(
           path: "huizen",
           name: "Huizen",
           child: const HuisChoicePage(title: "Huizen", choices: houseNames),
           routes: [
-            route(
+            _route(
               path: ":name",
               name: "Huis",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: AlmanakHuisPage(
                   houseName: state.pathParameters['name']!,
                 ),
@@ -484,7 +439,7 @@ class Routes {
             ),
           ],
         ),
-        route(
+        _route(
           path: "substructuren",
           name: "Substructuren",
           child: SubstructureChoicePage(
@@ -492,10 +447,10 @@ class Routes {
             choices: substructures.toList(),
           ),
           routes: [
-            route(
+            _route(
               path: ":name",
               name: "Substructuur",
-              pageBuilder: (context, state) => getPage(
+              pageBuilder: (context, state) => _getPage(
                 child: AlmanakSubstructuurPage(
                   name: state.pathParameters['name']!,
                 ),
@@ -506,36 +461,36 @@ class Routes {
         ),
       ],
     ),
-    route(
+    _route(
       path: "/lid/:id",
       name: "Lid",
-      pageBuilder: (context, state) => getPage(
+      pageBuilder: (context, state) => _getPage(
         child: AlmanakProfilePage(userId: state.pathParameters['id']!),
         name: "Lid",
       ),
     ),
   ];
 
-  static final moreRoutes = [
-    route(
+  static final _moreRoutes = [
+    _route(
       path: "/more",
       name: "More",
       child: const MorePage(),
       routes: [
         // Route for GalleryPage.
-        route(
+        _route(
           path: "gallery",
           name: "Gallery",
           child: const GalleryMainPage(),
         ),
         // Route for DocumentsPage.
-        route(
+        _route(
           path: "documents",
           name: "Documents",
           child: const DocumentsMainPage(),
         ),
         // Route for contact page.
-        route(
+        _route(
           path: "contact",
           name: "Contact",
           child: const ContactPage(),
@@ -544,18 +499,74 @@ class Routes {
     ),
   ];
 
-  static final unauthenticated = [
+  static final _unauthenticated = [
     GoRoute(
       path: '/login',
       name: 'Login',
       pageBuilder: (child, state) =>
-          getPage(child: const LoginPage(), name: "Login"),
+          _getPage(child: const LoginPage(), name: "Login"),
     ),
     GoRoute(
       path: '/forgot',
       name: 'Forgot Password',
       pageBuilder: (child, state) =>
-          getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+          _getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
     ),
   ];
+
+  /// Creates a new [GoRoute] instance with the specified parameters.
+  ///
+  /// The [path] parameter is a required string that represents the path of the route.
+  ///
+  /// The [name] parameter is a required string that represents the name of the route.
+  ///
+  /// The [child] parameter is an optional [Widget] that represents the child of the route.
+  ///
+  /// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
+  ///
+  /// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
+  ///
+  /// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
+  ///
+  /// Returns a new [GoRoute] instance with the specified parameters.
+  static GoRoute _route({
+    required String path,
+    required String name,
+    Widget? child,
+    List<RouteBase>? routes,
+    Page Function(BuildContext, GoRouterState)? pageBuilder,
+  }) {
+    if (child == null && pageBuilder == null) {
+      throw ArgumentError(
+        "You must specify either a child or a pageBuilder for a route.",
+      );
+    }
+
+    if (child != null && pageBuilder != null) {
+      throw ArgumentError(
+        "You can't specify both a child and a pageBuilder for a route.",
+      );
+    }
+
+    return GoRoute(
+      path: path,
+      name: name,
+      pageBuilder: pageBuilder ??
+          // ignore: avoid-non-null-assertion
+          (context, state) => _getPage(child: child!, name: name),
+      routes: routes ?? [],
+    );
+  }
+
+  /// A Wrapper for all app pages into a CupertinoPage.
+  ///
+  /// The [name] parameter is used to view the page name in Firebase Analytics.
+  ///
+  static Page _getPage({
+    required Widget child,
+    required String
+        name, // Used so we can view the page name in Firebase Analytics.
+  }) {
+    return CupertinoPage(child: child, name: name);
+  }
 }

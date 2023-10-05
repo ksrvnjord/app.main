@@ -147,16 +147,11 @@ class Application extends ConsumerWidget {
 
     final themeBrightness = ref.watch(themeBrightnessProvider);
 
-    final router = ref.watch(routerProvider);
+    final router = ref.watch(Routes.routerProvider);
 
     return Builder(
       builder: (context) => MaterialApp.router(
         routerConfig: router,
-        // routeInformationParser: const RoutemasterParser(),
-        // routerDelegate: RoutemasterDelegate(
-        //   routesBuilder: (context) => getRoutes(ref),
-
-        // ),
         title: 'K.S.R.V. Njord',
         theme: ThemeData(
           pageTransitionsTheme: pageTransitionsTheme,
