@@ -1,8 +1,5 @@
 name: Build & Deploy to Web Preview
 
-on:
-  pull_request_target:
-    branches: [] # TODO: this workflow should checkout the PR branch, and not the main branch
 
 env:
   flutter_version: "3.10.0"
