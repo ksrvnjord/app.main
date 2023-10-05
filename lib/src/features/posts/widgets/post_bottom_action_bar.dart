@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostBottomActionBar extends StatelessWidget {

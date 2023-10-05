@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ReservationObjectNameBox extends StatelessWidget {

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer-match-file-name
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
@@ -59,51 +58,120 @@ import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:upgrader/upgrader.dart';
+
+// This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
+// ignore: prefer-static-class
+final _navigatorKey = GlobalKey<NavigatorState>();
+// We need to have access to the previous location of the router. Otherwise, we would start from '/' on rebuild.
+// ignore: prefer-static-class
+GoRouter? _previousRouter;
+
+// ignore: prefer-static-class
+final routerProvider = Provider((ref) {
+  final auth = ref.watch(authModelProvider);
+  final loggedIn = auth.client != null;
+
+  return GoRouter(
+    routes: [
+      StatefulShellRoute.indexedStack(
+        branches: [
+          StatefulShellBranch(routes: Routes.homeRoutes),
+          StatefulShellBranch(routes: Routes.postsRoutes),
+          StatefulShellBranch(routes: Routes.reservationRoutes),
+          StatefulShellBranch(routes: Routes.almanakRoutes),
+          StatefulShellBranch(routes: Routes.moreRoutes),
+        ],
+        pageBuilder: (context, state, navigationShell) => getPage(
+          child: MainPage(navigationShell: navigationShell),
+          name: "Bottom Navigation Bar",
+        ),
+      ),
+      ...Routes.unauthenticated,
+    ],
+    errorPageBuilder: (context, state) => getPage(
+      child: const UnknownRoutePage(),
+      name: "Unknown Route",
+    ),
+    redirect: (context, state) {
+      if (loggedIn) {
+        return null;
+      }
+
+      // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
+      for (final route in Routes.unauthenticated) {
+        if (route.path == state.matchedLocation) {
+          return null;
+        }
+      }
+
+      return '/login';
+    },
+    initialLocation: _previousRouter?.routeInformationProvider.value.location,
+    observers: [
+      GlobalObserver(),
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
+    debugLogDiagnostics: true,
+    navigatorKey: _navigatorKey,
+  );
+});
+
+// ignore: prefer-static-class
+Page getPage({
+  required Widget child,
+  required String
+      name, // Used so we can view the page name in Firebase Analytics.
+}) {
+  return CupertinoPage(child: child, name: name);
+}
+
+/// Creates a new [GoRoute] instance with the specified parameters.
+///
+/// The [path] parameter is a required string that represents the path of the route.
+///
+/// The [name] parameter is a required string that represents the name of the route.
+///
+/// The [child] parameter is an optional [Widget] that represents the child of the route.
+///
+/// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
+///
+/// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
+///
+/// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
+///
+/// Returns a new [GoRoute] instance with the specified parameters.
+// ignore: prefer-static-class
+GoRoute route({
+  required String path,
+  required String name,
+  Widget? child,
+  List<RouteBase>? routes,
+  Page Function(BuildContext, GoRouterState)? pageBuilder,
+}) {
+  if (child == null && pageBuilder == null) {
+    throw ArgumentError(
+      "You must specify either a child or a pageBuilder for a route.",
+    );
+  }
+
+  if (child != null && pageBuilder != null) {
+    throw ArgumentError(
+      "You can't specify both a child and a pageBuilder for a route.",
+    );
+  }
+
+  return GoRoute(
+    path: path,
+    name: name,
+    pageBuilder:
+        pageBuilder ?? (context, state) => getPage(child: child!, name: name),
+    routes: routes ?? [],
+  );
+}
 
 @immutable
 class Routes {
-  static const List<String> mainRoutes = [
-    '/home',
-    '/posts',
-    '/training',
-    '/almanak',
-    '/more',
-  ];
-
-  static final authenticated = RouteMap(
-    routes: {
-      '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
-      '/more/events': (info) =>
-          const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
-      '/more/gallery': (route) => const CupertinoPage(
-            child: GalleryMainPage(),
-          ),
-      '/more/documents': (route) => const CupertinoPage(
-            child: DocumentsMainPage(),
-          ),
-      '/more/contact': (route) =>
-          const CupertinoPage(child: ContactPage(), name: 'Contact'),
-    },
-    onUnknownRoute: (route) => const CupertinoPage(child: UnknownRoutePage()),
-  );
-
-  static final unauthenticated = [
-    GoRoute(
-      path: '/login',
-      name: 'Login',
-      pageBuilder: (child, state) =>
-          getPage(child: const LoginPage(), name: "Login"),
-    ),
-    GoRoute(
-      path: '/forgot',
-      name: 'Forgot Password',
-      pageBuilder: (child, state) =>
-          getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
-    ),
-  ];
-
   static final homeRoutes = [
     route(
       path: '/',
@@ -475,103 +543,19 @@ class Routes {
       ],
     ),
   ];
-}
 
-// This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
-// ignore: prefer-static-class
-final _navigatorKey = GlobalKey<NavigatorState>();
-// We need to have access to the previous location of the router. Otherwise, we would start from '/' on rebuild.
-// ignore: prefer-static-class
-GoRouter? _previousRouter;
-
-// ignore: prefer-static-class
-final routerProvider = Provider((ref) {
-  final auth = ref.watch(authModelProvider);
-  final loggedIn = auth.client != null;
-
-  return GoRouter(
-      routes: [
-        StatefulShellRoute.indexedStack(
-            branches: [
-              StatefulShellBranch(routes: Routes.homeRoutes),
-              StatefulShellBranch(routes: Routes.postsRoutes),
-              StatefulShellBranch(routes: Routes.reservationRoutes),
-              StatefulShellBranch(routes: Routes.almanakRoutes),
-              StatefulShellBranch(routes: Routes.moreRoutes),
-            ],
-            pageBuilder: (context, state, navigationShell) => getPage(
-                child: MainPage(navigationShell: navigationShell),
-                name: "Bottom Navigation Bar")),
-        ...Routes.unauthenticated
-      ],
-      redirect: (context, state) {
-        final bool loggingIn = state.matchedLocation == '/login';
-        if (!loggedIn) {
-          return loggingIn ? null : '/login';
-        }
-        if (loggingIn) {
-          return '/';
-        }
-        return null;
-      },
-      initialLocation: _previousRouter?.routeInformationProvider.value.location,
-      observers: [
-        GlobalObserver(),
-        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-      ],
-      debugLogDiagnostics: true,
-      navigatorKey: _navigatorKey);
-});
-
-// ignore: prefer-static-class
-Page getPage({
-  required Widget child,
-  required String
-      name, // Used so we can view the page name in Firebase Analytics.
-}) {
-  return CupertinoPage(child: child, name: name);
-}
-
-/// Creates a new [GoRoute] instance with the specified parameters.
-///
-/// The [path] parameter is a required string that represents the path of the route.
-///
-/// The [name] parameter is a required string that represents the name of the route.
-///
-/// The [child] parameter is an optional [Widget] that represents the child of the route.
-///
-/// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
-///
-/// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
-///
-/// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
-///
-/// Returns a new [GoRoute] instance with the specified parameters.
-// ignore: prefer-static-class
-GoRoute route({
-  required String path,
-  required String name,
-  Widget? child,
-  List<RouteBase>? routes,
-  Page Function(BuildContext, GoRouterState)? pageBuilder,
-}) {
-  if (child == null && pageBuilder == null) {
-    throw ArgumentError(
-      "You must specify either a child or a pageBuilder for a route.",
-    );
-  }
-
-  if (child != null && pageBuilder != null) {
-    throw ArgumentError(
-      "You can't specify both a child and a pageBuilder for a route.",
-    );
-  }
-
-  return GoRoute(
-    path: path,
-    name: name,
-    pageBuilder:
-        pageBuilder ?? (context, state) => getPage(child: child!, name: name),
-    routes: routes ?? [],
-  );
+  static final unauthenticated = [
+    GoRoute(
+      path: '/login',
+      name: 'Login',
+      pageBuilder: (child, state) =>
+          getPage(child: const LoginPage(), name: "Login"),
+    ),
+    GoRoute(
+      path: '/forgot',
+      name: 'Forgot Password',
+      pageBuilder: (child, state) =>
+          getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+    ),
+  ];
 }

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:routemaster/routemaster.dart';
 
 class DamagesListPage extends ConsumerWidget {
   const DamagesListPage({

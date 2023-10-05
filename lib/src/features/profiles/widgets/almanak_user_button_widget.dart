@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AlmanakUserButtonWidget extends ConsumerWidget {
   final Query$Almanak$users$data user;

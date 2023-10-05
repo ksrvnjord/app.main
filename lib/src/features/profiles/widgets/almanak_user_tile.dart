@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakUserTile extends ConsumerWidget {

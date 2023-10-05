@@ -11,7 +11,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SelectPloegPage extends ConsumerWidget {

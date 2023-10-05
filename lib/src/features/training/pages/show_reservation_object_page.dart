@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 import '../widgets/availability_header.dart';

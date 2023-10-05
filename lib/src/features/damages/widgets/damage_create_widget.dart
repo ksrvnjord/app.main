@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widg
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageCreateWidget extends ConsumerStatefulWidget {

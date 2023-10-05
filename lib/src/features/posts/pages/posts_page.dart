@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.d
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class PostsPage extends ConsumerWidget {
   const PostsPage({

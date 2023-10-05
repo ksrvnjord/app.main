@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

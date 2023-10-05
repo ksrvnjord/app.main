@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
@@ -98,7 +98,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(
-          onPressed: () => Routemaster.of(context).push('/forgot'),
+          onPressed: () => context.goNamed('Forgot Password'),
           child: const Text("Vergeten"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),

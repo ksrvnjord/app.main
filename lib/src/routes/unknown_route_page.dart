@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -52,7 +53,7 @@ class UnknownRoutePage extends StatelessWidget {
           if (!kDebugMode) {
             // Report error in Routing to Crashlytics in production.
             FirebaseCrashlytics.instance.recordError(
-              "404: ${Routemaster.of(context).currentRoute} not found)}",
+              "404: ${GoRouter.of(context).routeInformationProvider.value.location} not found)}",
               StackTrace.empty,
               reason: 'because of invalid route',
             );

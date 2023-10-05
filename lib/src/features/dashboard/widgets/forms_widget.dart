@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormsWidget extends ConsumerWidget {

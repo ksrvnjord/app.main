@@ -20,10 +20,10 @@ class MorePage extends ConsumerWidget {
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
-      if (currentUser != null) "Bekijk de agenda": "events",
-      "Contacteer het bestuur / commissies": "contact",
-      if (currentUser != null) 'Bekijk de fotogalerij': 'gallery',
-      if (currentUser != null) 'Lees verenigingsdocumenten': 'documents',
+      if (currentUser != null) "Bekijk de agenda": "Events",
+      "Contacteer het bestuur / commissies": "Contact",
+      if (currentUser != null) 'Bekijk de fotogalerij': 'Gallery',
+      if (currentUser != null) 'Lees verenigingsdocumenten': 'Documents',
     };
 
     final textTheme = Theme.of(context).textTheme;
@@ -45,7 +45,7 @@ class MorePage extends ConsumerWidget {
               (entry) => [
                 MoreListTile(
                   label: entry.key,
-                  routePath: entry.value,
+                  routeName: entry.value,
                 ),
                 const Divider(
                   height: 0,

@@ -13,15 +13,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:ksrvnjord_main_app/color_schemes.g.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';

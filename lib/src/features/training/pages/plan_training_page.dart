@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
-import 'package:routemaster/routemaster.dart';
 import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
