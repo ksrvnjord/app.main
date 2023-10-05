@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:go_router/go_router.dart';
 
 class MoreListTile extends StatelessWidget {
   final String label;
-  final String routePath;
+  final String routeName;
 
   const MoreListTile({
     super.key,
     required this.label,
-    required this.routePath,
+    required this.routeName,
   });
 
   @override
@@ -20,7 +20,7 @@ class MoreListTile extends StatelessWidget {
       ),
       trailing: const Icon(Icons.arrow_forward_ios),
       visualDensity: VisualDensity.standard,
-      onTap: () => Routemaster.of(context).push(routePath),
+      onTap: () => context.pushNamed(routeName),
     );
   }
 }

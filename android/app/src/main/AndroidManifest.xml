@@ -23,8 +23,17 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
+
             <meta-data android:name="flutter_deeplinking_enabled"
                 android:value="true" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="njord"
+                    android:host="app.njord.nl" />
+                <data android:scheme="https" />
+            </intent-filter>
 
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -34,12 +43,7 @@
                 android:resource="@style/NormalTheme" />
 
 
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="ksrvnjord_app" />
-            </intent-filter>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

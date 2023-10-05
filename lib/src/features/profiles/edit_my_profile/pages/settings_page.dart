@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -26,8 +26,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => Routemaster.of(context).push(
-                  'visibility',
+                onTap: () => context.goNamed(
+                  'Edit my visibility',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
@@ -37,8 +37,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => Routemaster.of(context).push(
-                  'notification-preferences',
+                onTap: () => context.pushNamed(
+                  'Notification Preferences',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
@@ -75,8 +75,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => Routemaster.of(context).push(
-                  'advanced',
+                onTap: () => context.goNamed(
+                  'Advanced Settings',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),

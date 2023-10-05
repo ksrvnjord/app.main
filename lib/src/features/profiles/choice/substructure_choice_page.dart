@@ -24,6 +24,7 @@ class SubstructureChoicePage extends ConsumerWidget {
       body: ListView.builder(
         itemBuilder: (context, index) => [
           SubstructureChoiceListTile(
+            routeName: "Substructuur",
             name: choices[index],
             imageProvider:
                 ref.watch(substructureThumbnailProvider(choices[index])),

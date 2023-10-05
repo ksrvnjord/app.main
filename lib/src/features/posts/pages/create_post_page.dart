@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CreatePostPage extends ConsumerStatefulWidget {
@@ -130,6 +130,6 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     );
 
     // ignore: avoid-ignoring-return-values
-    Routemaster.of(context).pop();
+    context.goNamed("Posts");
   }
 }

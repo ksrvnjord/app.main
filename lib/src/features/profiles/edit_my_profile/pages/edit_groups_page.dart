@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/my_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EditGroupsPage extends ConsumerWidget {
@@ -30,7 +30,7 @@ class EditGroupsPage extends ConsumerWidget {
         loading: () => const CircularProgressIndicator().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Routemaster.of(context).push('ploeg'),
+        onPressed: () => context.goNamed('Select Ploeg'),
         icon: const Icon(Icons.add),
         label: const Text('Voeg een ploeg toe'),
       ),

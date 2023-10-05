@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
@@ -7,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widg
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_select_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageCreateWidget extends ConsumerStatefulWidget {
@@ -24,7 +24,6 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
   Widget build(BuildContext context) {
     final formData = ref.watch(damageFormProvider);
     final messenger = ScaffoldMessenger.of(context);
-    final navigator = Routemaster.of(context);
 
     final formSendInProgress = ref.watch(progressProvider);
     const double padding = 16;
@@ -51,7 +50,7 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
         onPressed: formSendInProgress
             ? null
             : () => formData.complete
-                ? createNewDamage(context, formData, messenger, navigator)
+                ? createNewDamage(context, formData, messenger)
                 : messenger.showSnackBar(SnackBar(
                     content: Text(
                       'Nog niet alle velden zijn ingevuld',
@@ -72,7 +71,6 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
     BuildContext context,
     DamageForm formData,
     ScaffoldMessengerState messenger,
-    Routemaster navigator,
   ) async {
     ref.read(progressProvider.notifier).inProgress();
     try {
@@ -83,7 +81,8 @@ class _DamageCreateWidgetState extends ConsumerState<DamageCreateWidget> {
       ));
       ref.read(progressProvider.notifier).done();
       // ignore: avoid-ignoring-return-values
-      navigator.pop();
+      // ignore: use_build_context_synchronously
+      context.pop();
     } catch (err) {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(SnackBar(

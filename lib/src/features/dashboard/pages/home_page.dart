@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
@@ -15,7 +16,6 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -91,7 +91,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 FirebaseWidget(
                   onAuthenticated: IconButton(
                     iconSize: myProfileSize,
-                    onPressed: () => Routemaster.of(context).push('my-profile'),
+                    onPressed: () => context.go('/my-profile'),
                     icon:
                         const MyProfilePicture(profileIconSize: myProfileSize),
                   ),

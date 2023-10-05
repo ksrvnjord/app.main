@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormsWidget extends ConsumerWidget {
@@ -43,7 +43,7 @@ class FormsWidget extends ConsumerWidget {
         title: "Forms",
         titleIcon: Icons.edit_document,
         onTapName: "Alle forms",
-        onTap: () => Routemaster.of(context).push('polls'),
+        onTap: () => context.goNamed('Polls'),
       ),
       openPolls.when(
         data: (data) => _buildOpenPollsList(data, context),

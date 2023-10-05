@@ -1,31 +1,43 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
-class MainPage extends ConsumerStatefulWidget {
-  const MainPage({super.key});
+class MainPage extends ConsumerWidget {
+  const MainPage({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
+
+  void onStartup(WidgetRef ref) {
+    // ignore: avoid-ignoring-return-values
+    ref.read(graphQLModelProvider);
+
+    final user = ref.read(
+      currentFirestoreUserProvider,
+    ); // Get currentUser details from firebase.
+
+    // ignore: avoid-ignoring-return-values
+
+    if (!kIsWeb && user != null) {
+      // Web does not support messaging, also user should be logged in to Firebase for it to work.
+      requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
+      saveMessagingToken(); // TODO: Retry on no internet connection.
+      initMessagingInfo();
+    }
+  }
 
   @override
-  createState() => _MainPageState();
-}
-
-class _MainPageState extends ConsumerState<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    final tabPage = TabPage.of(context);
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    onStartup(ref);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: null,
-      body: TabBarView(
-        // ignore: sort_child_properties_last
-        children: [
-          for (final stack in tabPage.stacks) PageStackNavigator(stack: stack),
-        ],
-        controller: tabPage.controller,
-      ),
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -43,18 +55,22 @@ class _MainPageState extends ConsumerState<MainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Almanak'),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Meer'),
         ],
-        onTap: (value) => animateTo(value, tabPage),
-        currentIndex: tabPage.controller.index,
+        onTap: (value) => animateTo(value),
+        currentIndex: navigationShell.currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: colorScheme.primary,
       ),
     );
   }
 
-  void animateTo(int index, TabPageState tabPage) {
-    tabPage.controller.animateTo(index);
-    // ignore: avoid-ignoring-return-values
-    Routemaster.of(context).push(Routes.mainRoutes[
-        index]); // When the user taps on the bottom navigation bar item, we want to push the corresponding route, so that the user can 'reset' the page.
+  void animateTo(int index) {
+    navigationShell.goBranch(
+      index,
+      // A common pattern when using bottom navigation bars is to support
+      // navigating to the initial location when tapping the item that is
+      // already active. This example demonstrates how to support this behavior,
+      // using the initialLocation parameter of goBranch.
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 }

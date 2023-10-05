@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -25,7 +26,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
           title: "Evenementen",
           titleIcon: Icons.event,
           onTapName: "Volledige agenda",
-          onTap: () => Routemaster.of(context).push('events'),
+          onTap: () => context.goNamed('Events'),
         ),
         InkWell(
           // ignore: sort_child_properties_last

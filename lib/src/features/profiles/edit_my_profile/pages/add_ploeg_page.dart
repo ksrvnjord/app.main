@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry_create_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AddPloegPage extends ConsumerWidget {
@@ -69,7 +69,7 @@ class AddPloegPage extends ConsumerWidget {
             content: Text('Ploeg succesvol toegevoegd'),
             backgroundColor: Colors.green,
           ));
-          Routemaster.of(context).replace('/home/my-profile/groups');
+          context.goNamed('My Groups');
         },
         icon: const Icon(Icons.save),
         label: const Text('Opslaan'),

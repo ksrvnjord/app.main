@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
@@ -8,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
-import 'package:routemaster/routemaster.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
@@ -46,7 +46,7 @@ class _EditAlmanakProfilePageState
         title: const Text("Mijn profiel"),
         actions: [
           IconButton(
-            onPressed: () => Routemaster.of(context).push('settings'),
+            onPressed: () => context.goNamed('Settings'),
             icon: const Icon(Icons.settings),
           ),
         ],
@@ -63,13 +63,14 @@ class _EditAlmanakProfilePageState
           [
         FloatingActionButton.extended(
           backgroundColor: colorScheme.secondaryContainer,
-          onPressed: () => Routemaster.of(context).push(userId ?? ""),
-          label: const Text("Publiek profiel bekijken").textColor(
-            colorScheme.onSecondaryContainer,
-          ),
+          heroTag: null, // Prevents the hero animation from playing.
+          onPressed: () => context.go('/my-profile/public-profile/$userId'),
+          label: const Text("Publiek profiel bekijken")
+              .textColor(colorScheme.onSecondaryContainer),
         ),
         FloatingActionButton.extended(
           backgroundColor: colorScheme.primaryContainer,
+          heroTag: null, // Prevents the hero animation from playing.
           onPressed: submitForm,
           icon: const Icon(Icons.save),
           label: const Text('Opslaan'),
@@ -142,8 +143,8 @@ class _EditAlmanakProfilePageState
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => Routemaster.of(context).push(
-                  'sensitive-data',
+                onTap: () => context.go(
+                  '/my-profile/sensitive-data',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
@@ -155,8 +156,8 @@ class _EditAlmanakProfilePageState
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
-                  onTap: () => Routemaster.of(context).push(
-                    'groups',
+                  onTap: () => context.goNamed(
+                    'My Groups',
                   ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
                 ListTile(
@@ -164,7 +165,7 @@ class _EditAlmanakProfilePageState
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
-                  onTap: () => Routemaster.of(context).push('commissies'),
+                  onTap: () => context.pushNamed('My Commissies'),
                 ),
                 DropdownButtonFormField<String?>(
                   items: ['Geen', ...houseNames]
@@ -238,8 +239,8 @@ class _EditAlmanakProfilePageState
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
-                  onTap: () => Routemaster.of(context).push(
-                    'allergies',
+                  onTap: () => context.pushNamed(
+                    'My Allergies',
                   ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
               ].toColumn(),
@@ -251,8 +252,8 @@ class _EditAlmanakProfilePageState
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => Routemaster.of(context).push(
-                  'view-my-permissions',
+                onTap: () => context.goNamed(
+                  'My Permissions',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer-match-file-name
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
@@ -45,6 +48,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -54,302 +58,515 @@ import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:upgrader/upgrader.dart';
+
+// This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
+// ignore: prefer-static-class
+final _navigatorKey = GlobalKey<NavigatorState>();
+// We need to have access to the previous location of the router. Otherwise, we would start from '/' on rebuild.
+// ignore: prefer-static-class
+GoRouter? _previousRouter;
 
 @immutable
 class Routes {
-  static const List<String> mainRoutes = [
-    '/home',
-    '/posts',
-    '/training',
-    '/almanak',
-    '/more',
-  ];
+  // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  // ignore: prefer-static-class
+  static final routerProvider = Provider((ref) {
+    final auth = ref.watch(authModelProvider);
+    final loggedIn = auth.client != null;
 
-  static final authenticated = RouteMap(
-    routes: {
-      '/': (_) => const TabPage(
-            child: MainPage(),
-            paths: mainRoutes,
-            backBehavior: TabBackBehavior.none,
+    return GoRouter(
+      routes: [
+        // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
+        StatefulShellRoute.indexedStack(
+          branches: [
+            StatefulShellBranch(routes: Routes._homeRoutes),
+            StatefulShellBranch(routes: Routes._postsRoutes),
+            StatefulShellBranch(routes: Routes._reservationRoutes),
+            StatefulShellBranch(routes: Routes._almanakRoutes),
+            StatefulShellBranch(routes: Routes._moreRoutes),
+          ],
+          pageBuilder: (context, state, navigationShell) => _getPage(
+            child: MainPage(navigationShell: navigationShell),
+            name: "Bottom Navigation Bar",
           ),
-      '/home': (_) => CupertinoPage(
-            child: UpgradeAlert(
-              upgrader: Upgrader(
-                messages: DutchUpgradeMessages(),
-                countryCode: 'nl',
-                languageCode: 'nl',
-              ),
-              child: const HomePage(),
-            ), // Show upgrade alert on home page if new version is available.
-            name: 'Home',
-          ),
-      '/home/my-profile': (_) => const CupertinoPage(
-            child: EditAlmanakProfilePage(),
-            name: "Edit Profile",
-          ),
-      '/home/my-profile/settings': (_) => const CupertinoPage(
-            child: SettingsPage(),
-            name: "Settings",
-          ),
-      '/home/my-profile/settings/advanced': (_) => const CupertinoPage(
-            child: AdvancedSettingsPage(),
-            name: 'Advanced Settings',
-          ),
-      '/home/my-profile/:identifier': (route) => CupertinoPage(
-            child: AlmanakProfilePage(
-              userId: route.pathParameters['identifier']!,
-            ),
-            name: "Preview my profile",
-          ),
-      '/home/my-profile/sensitive-data': (info) => const CupertinoPage(
-            child: MePage(),
-            name: "Edit mijn personal data",
-          ),
-      '/home/my-profile/view-my-permissions': (_) => const CupertinoPage(
-            child: MyPermissionsPage(),
-            name: "Mijn permissies",
-          ),
-      '/home/my-profile/groups':
-          (_) => // This will be the main page for editing groups (ie. ploegen, commissies, huizen, etc.).
-              const CupertinoPage(
-                child: EditGroupsPage(),
-                name: "Edit my groups",
-              ),
-      '/home/my-profile/groups/ploeg': (_) => const CupertinoPage(
-            child: SelectPloegPage(),
-            name: "Select a ploeg to add",
-          ),
-      '/home/my-profile/groups/ploeg/add': (_) =>
-          const CupertinoPage(child: AddPloegPage(), name: "Add a ploeg"),
-      '/home/my-profile/commissies': (info) => const CupertinoPage(
-            child: EditCommissiesPage(),
-            name: "Edit my commissies",
-          ),
-      '/home/my-profile/commissies/select': (info) => const CupertinoPage(
-            child: SelectCommissiePage(),
-            name: "Select a commissie to add",
-          ),
-      '/home/my-profile/commissies/select/fill-info': (info) => CupertinoPage(
-            child: FillCommissieInfoPage(
-              commissie: info.queryParameters['commissie']!,
-            ),
-            name: "Fill commissie info",
-          ),
-      '/home/my-profile/settings/notification-preferences': (info) =>
-          const CupertinoPage(
-            child: NotificationsPage(),
-            name: 'Notification Preferences',
-          ),
-      '/home/my-profile/settings/visibility': (info) => const CupertinoPage(
-            child: MePrivacyPage(),
-            name: "Edit my visibility",
-          ),
-      '/home/my-profile/allergies': (info) => const CupertinoPage(
-            child: EditAllergiesPage(),
-            name: "Edit my allergies",
-          ),
-      '/home/polls': (_) =>
-          const CupertinoPage(child: PollsPage(), name: 'Polls'),
-      '/home/events': (info) =>
-          const CupertinoPage(child: EventsPage(), name: "Events"),
-      '/home/announcements/:announcementId': (route) => CupertinoPage(
+        ),
+        ...Routes._unauthenticated,
+      ],
+      errorPageBuilder: (context, state) => _getPage(
+        child: const UnknownRoutePage(),
+        name: "Unknown Route",
+      ),
+      redirect: (context, state) {
+        // Redirect to requested page if logged in.
+        if (loggedIn) {
+          return null;
+        }
+
+        // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
+        if (Routes._unauthenticated
+            .any((route) => route.path == state.matchedLocation)) {
+          return null;
+        }
+
+        return '/login';
+      },
+      initialLocation: _previousRouter?.routeInformationProvider.value.location,
+      observers: [
+        GlobalObserver(),
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+      ],
+      debugLogDiagnostics: true,
+      navigatorKey: _navigatorKey,
+    );
+  });
+
+  static final _homeRoutes = [
+    _route(
+      path: '/',
+      name: "Home",
+      child: UpgradeAlert(
+        upgrader: Upgrader(
+          messages: DutchUpgradeMessages(),
+          countryCode: 'nl',
+          languageCode: 'nl',
+        ),
+        child: const HomePage(),
+      ),
+      routes: [
+        // Route for viewing all forms.
+        _route(
+          path: 'polls',
+          name: "Polls",
+          child: const PollsPage(),
+        ),
+        // Route for viewing all events.
+        _route(
+          path: 'events',
+          name: "Events",
+          child: const EventsPage(),
+        ),
+        // Dynamic route for viewing one announcement.
+        _route(
+          path: 'announcements/:id',
+          name: "Announcement",
+          pageBuilder: (context, state) => _getPage(
             child: AnnouncementPage(
-              announcementId: route.pathParameters['announcementId']!,
+              announcementId: state.pathParameters['id']!,
             ),
             name: "Announcement",
           ),
-      '/posts': (_) => const CupertinoPage(child: PostsPage(), name: "Posts"),
-      '/posts/new': (_) =>
-          const CupertinoPage(child: CreatePostPage(), name: "New Post"),
-      '/posts/:postId/comments': (route) => CupertinoPage(
+        ),
+        _route(
+          path: 'my-profile',
+          name: "Edit Profile",
+          child: const EditAlmanakProfilePage(),
+          routes: [
+            _route(
+              path: 'public-profile/:identifier',
+              name: "Preview Profile",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakProfilePage(
+                  userId: state.pathParameters['identifier']!,
+                ),
+                name: "Preview Profile",
+              ),
+            ),
+            _route(
+              path: 'sensitive-data',
+              name: "Sensitive Data",
+              child: const MePage(),
+            ),
+            _route(
+              path: 'permissions',
+              name: "My Permissions",
+              child: const MyPermissionsPage(),
+            ),
+            // Route for my allergies page.
+            _route(
+              path: 'allergies',
+              name: "My Allergies",
+              child: const EditAllergiesPage(),
+            ),
+            _route(
+              path: 'groups',
+              name: "My Groups",
+              child: const EditGroupsPage(),
+              routes: [
+                _route(
+                  path: 'ploeg',
+                  name: "Select Ploeg",
+                  child: const SelectPloegPage(),
+                  routes: [
+                    _route(
+                      path: 'add',
+                      name: "Add Ploeg",
+                      child: const AddPloegPage(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            _route(
+              path: 'commissies',
+              name: "My Commissies",
+              child: const EditCommissiesPage(),
+              routes: [
+                _route(
+                  path: 'select',
+                  name: "Select Commissie",
+                  child: const SelectCommissiePage(),
+                  routes: [
+                    _route(
+                      path: 'fill-info',
+                      name: "Fill Commissie Info",
+                      pageBuilder: (context, state) => _getPage(
+                        child: FillCommissieInfoPage(
+                          commissie: state.uri.queryParameters['commissie']!,
+                        ),
+                        name: "Fill Commissie Info",
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            _route(
+              path: 'settings',
+              name: "Settings",
+              child: const SettingsPage(),
+              routes: [
+                _route(
+                  path: 'advanced',
+                  name: "Advanced Settings",
+                  child: const AdvancedSettingsPage(),
+                ),
+                _route(
+                  path: 'notification-preferences',
+                  name: "Notification Preferences",
+                  child: const NotificationsPage(),
+                ),
+                _route(
+                  path: 'visibility',
+                  name: "Edit my visibility",
+                  child: const MePrivacyPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ];
+
+  static final _postsRoutes = [
+    _route(
+      path: '/posts',
+      name: 'Posts',
+      child: const PostsPage(),
+      routes: [
+        _route(
+          path: 'new',
+          name: 'New Post',
+          child: const CreatePostPage(),
+        ),
+        _route(
+          path: ':postId/comments',
+          name: 'Post -> Comments',
+          pageBuilder: (context, state) => _getPage(
             child: CommentsPage(
-              postDocId: Uri.decodeFull(route.pathParameters['postId']!),
+              postDocId: state.pathParameters['postId']!,
             ),
             name: "Post -> Comments",
           ),
-      '/almanak': (_) =>
-          const CupertinoPage(child: AlmanakPage(), name: 'Almanak'),
-      '/almanak/leeden': (_) =>
-          const CupertinoPage(child: AlmanakLeedenPage(), name: 'Leeden'),
-      '/almanak/bestuur': (_) =>
-          const CupertinoPage(child: AlmanakBestuurPage(), name: 'Bestuur'),
-      '/almanak/bestuur/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Bestuurslid',
-          ),
-      '/almanak/commissies': (_) => const CupertinoPage(
-            child: CommissieChoicePage(),
-            name: 'Commissies',
-          ),
-      '/almanak/commissies/:commissie': (route) => CupertinoPage(
-            child: AlmanakCommissiePage(
-              commissieName: Uri.decodeFull(route.pathParameters['commissie']!),
-            ),
-            name: 'Commissie',
-          ),
-      '/almanak/commissies/:commissie/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Commissielid',
-          ),
-      '/almanak/ploegen': (_) =>
-          const CupertinoPage(child: PloegChoicePage(), name: 'Ploegen'),
-      '/almanak/ploegen/:ploeg': (route) => CupertinoPage(
-            child: AlmanakPloegPage(
-              ploegName: Uri.decodeFull(route.pathParameters['ploeg']!),
-            ),
-            name: 'Ploeg',
-          ),
-      '/almanak/ploegen/:ploeg/:userId': (route) => CupertinoPage(
-            child: AlmanakProfilePage(userId: route.pathParameters['userId']!),
-            name: 'Ploeglid',
-          ),
-      '/almanak/huizen': (_) => const CupertinoPage(
-            child: HuisChoicePage(title: "Huizen", choices: houseNames),
-            name: 'Huizen',
-          ),
-      '/almanak/huizen/:huis': (route) => CupertinoPage(
-            child: AlmanakHuisPage(
-              houseName: Uri.decodeFull(route.pathParameters['huis']!),
-            ),
-            name: 'Huis',
-          ),
-      '/almanak/huizen/:huis/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Huisgenoot',
-          ),
-      '/almanak/substructuren': (_) => CupertinoPage(
-            child: SubstructureChoicePage(
-              title: "Substructuren",
-              choices: substructures.toList(),
-            ),
-            name: 'Substructuren',
-          ),
-      '/almanak/substructuren/:substructuur': (route) => CupertinoPage(
-            child: AlmanakSubstructuurPage(
-              name: Uri.decodeFull(route.pathParameters['substructuur']!),
-            ),
-            name: 'Substructuur',
-          ),
-      '/almanak/substructuren/:substructuur/:identifier': (route) =>
-          CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Substructuurlid',
-          ),
-      '/almanak/leeden/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Lid',
-          ),
-      '/training': (_) =>
-          const CupertinoPage(child: TrainingPage(), name: 'Training'),
-      '/training/create-damage': (route) => CupertinoPage(
-            child: DamagesCreatePage(
-              reservationObjectId: route.queryParameters['reservationObjectId'],
-            ),
-            name: "Create Damage",
-          ),
-      '/training/damages': (route) =>
-          const CupertinoPage(child: DamagesListPage(), name: 'Damages'),
-      '/training/damages/create': (route) => CupertinoPage(
-            child: DamagesCreatePage(
-              reservationObjectId: route.queryParameters['reservationObjectId'],
-            ),
-            name: "Create Damage",
-          ),
-      '/training/damages/edit': (route) => CupertinoPage(
-            child: DamagesEditPage(
-              damageDocumentId: route.queryParameters['id']!,
-              reservationObjectId:
-                  route.queryParameters['reservationObjectId']!,
-            ),
-            name: "Edit Damage",
-          ),
-      '/training/damages/show': (route) => CupertinoPage(
-            child: DamagesShowPage(
-              damageDocumentId: route.queryParameters['id']!,
-              reservationObjectId:
-                  route.queryParameters['reservationObjectId']!,
-            ),
-            name: "Show Damage",
-          ),
-      '/training/all': (_) =>
-          const CupertinoPage(child: AllTrainingPage(), name: 'All Training'),
-      '/training/all/plan': (route) => CupertinoPage(
-            child: PlanTrainingPage(queryParams: route.queryParameters),
-            name: 'Plan Training',
-          ),
-      '/training/all/:id': (info) => CupertinoPage(
-            child: ShowTrainingPage(
-              reservationDocumentId: info.pathParameters['id']!,
-            ),
-            name: 'Show Training',
-          ),
-      '/training/all/reservationObject/:reservationObjectId': (route) =>
-          CupertinoPage(
-            child: ShowReservationObjectPage(
-              documentId: route.pathParameters['reservationObjectId']!,
-              name: route.queryParameters['name']!,
-            ),
-            name: 'Show Reservation Object',
-          ),
-      '/training/all/reservationObject/:reservationObjectId/damage/edit':
-          (route) => CupertinoPage(
-                child: DamagesEditPage(
-                  damageDocumentId: route.queryParameters['id']!,
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Edit Damage',
-              ),
-      '/training/all/reservationObject/:reservationObjectId/damage/show':
-          (route) => CupertinoPage(
-                child: DamagesShowPage(
-                  damageDocumentId: route.queryParameters['id']!,
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Show Damage',
-              ),
-      '/training/all/reservationObject/:reservationObjectId/damage/create':
-          (route) => CupertinoPage(
-                child: DamagesCreatePage(
-                  reservationObjectId:
-                      route.pathParameters['reservationObjectId']!,
-                ),
-                name: 'Create Damage',
-              ),
-      '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
-      '/more/events': (info) =>
-          const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
-      '/more/gallery': (route) => const CupertinoPage(
-            child: GalleryMainPage(),
-          ),
-      '/more/documents': (route) => const CupertinoPage(
-            child: DocumentsMainPage(),
-          ),
-      '/more/contact': (route) =>
-          const CupertinoPage(child: ContactPage(), name: 'Contact'),
-    },
-    onUnknownRoute: (route) => const CupertinoPage(child: UnknownRoutePage()),
-  );
+        ),
+      ],
+    ),
+  ];
 
-  static final unauthenticated = RouteMap(
-    routes: {
-      '/': (_) => const MaterialPage(
-            child: LoginPage(),
-            name: 'Login',
+  static final _reservationRoutes = [
+    _route(
+      path: "/training",
+      name: "Training",
+      child: const TrainingPage(),
+      routes: [
+        // Route for viewing all damages.
+        _route(
+          path: 'damages',
+          name: "Damages",
+          child: const DamagesListPage(),
+          routes: [
+            _route(
+              path: 'create',
+              name: "Create Damage",
+              child: const DamagesCreatePage(),
+            ),
+            _route(
+              path: 'edit',
+              name: "Edit Damage",
+              pageBuilder: (context, state) => _getPage(
+                child: DamagesEditPage(
+                  damageDocumentId: state.uri.queryParameters['id']!,
+                  reservationObjectId:
+                      state.uri.queryParameters['reservationObjectId']!,
+                ),
+                name: "Edit Damage",
+              ),
+            ),
+            _route(
+              path: 'show',
+              name: "Show Damage",
+              pageBuilder: (context, state) => _getPage(
+                child: DamagesShowPage(
+                  damageDocumentId: state.uri.queryParameters['id']!,
+                  reservationObjectId:
+                      state.uri.queryParameters['reservationObjectId']!,
+                ),
+                name: "Show Damage",
+              ),
+            ),
+          ],
+        ),
+        // Route for view all training.
+        _route(
+          path: 'all',
+          name: "Planning Overview",
+          child: const AllTrainingPage(),
+          routes: [
+            _route(
+              path: 'plan',
+              name: "Plan Training",
+              pageBuilder: (context, state) => _getPage(
+                child: PlanTrainingPage(
+                  queryParams: state.uri.queryParameters,
+                ),
+                name: "Plan Training",
+              ),
+            ),
+            _route(
+              path: ':id',
+              name: "Show Training",
+              pageBuilder: (context, state) => _getPage(
+                child: ShowTrainingPage(
+                  reservationDocumentId: state.pathParameters['id']!,
+                ),
+                name: "Show Training",
+              ),
+            ),
+            _route(
+              path: 'reservationObject/:id',
+              name: "Show Reservation Object",
+              pageBuilder: (context, state) => _getPage(
+                child: ShowReservationObjectPage(
+                  documentId: state.pathParameters['id']!,
+                  name: state.uri.queryParameters['name']!,
+                ),
+                name: "Show Reservation Object",
+              ),
+              routes: [],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ];
+
+  static final _almanakRoutes = [
+    // Route for almanak.
+    _route(
+      path: "/almanak",
+      name: "Almanak",
+      child: const AlmanakPage(),
+      routes: [
+        _route(
+          path: "leeden",
+          name: "Leeden",
+          child: const AlmanakLeedenPage(),
+        ),
+        _route(
+          path: "bestuur",
+          name: "Bestuur",
+          child: const AlmanakBestuurPage(),
+        ),
+        _route(
+          path: "commissies",
+          name: "Commissies",
+          child: const CommissieChoicePage(),
+          routes: [
+            _route(
+              path: ":name",
+              name: "Commissie",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakCommissiePage(
+                  commissieName: state.pathParameters['name']!,
+                ),
+                name: "Commissie",
+              ),
+            ),
+          ],
+        ),
+        _route(
+          path: "ploegen",
+          name: "Ploegen",
+          child: const PloegChoicePage(),
+          routes: [
+            _route(
+              path: ":ploeg",
+              name: "Ploeg",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakPloegPage(
+                  ploegName: state.pathParameters['ploeg']!,
+                ),
+                name: "Ploeg",
+              ),
+            ),
+          ],
+        ),
+        _route(
+          path: "huizen",
+          name: "Huizen",
+          child: const HuisChoicePage(title: "Huizen", choices: houseNames),
+          routes: [
+            _route(
+              path: ":name",
+              name: "Huis",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakHuisPage(
+                  houseName: state.pathParameters['name']!,
+                ),
+                name: "Huis",
+              ),
+            ),
+          ],
+        ),
+        _route(
+          path: "substructuren",
+          name: "Substructuren",
+          child: SubstructureChoicePage(
+            title: "Substructuren",
+            choices: substructures.toList(),
           ),
-      '/forgot': (info) => const CupertinoPage(
-            child: ForgotPasswordPage(),
-            name: "Forgot Password",
-          ),
-    },
-    onUnknownRoute: (route) => const Redirect('/'),
-  );
+          routes: [
+            _route(
+              path: ":name",
+              name: "Substructuur",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakSubstructuurPage(
+                  name: state.pathParameters['name']!,
+                ),
+                name: "Substructuur",
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+    _route(
+      path: "/lid/:id",
+      name: "Lid",
+      pageBuilder: (context, state) => _getPage(
+        child: AlmanakProfilePage(userId: state.pathParameters['id']!),
+        name: "Lid",
+      ),
+    ),
+  ];
+
+  static final _moreRoutes = [
+    _route(
+      path: "/more",
+      name: "More",
+      child: const MorePage(),
+      routes: [
+        // Route for GalleryPage.
+        _route(
+          path: "gallery",
+          name: "Gallery",
+          child: const GalleryMainPage(),
+        ),
+        // Route for DocumentsPage.
+        _route(
+          path: "documents",
+          name: "Documents",
+          child: const DocumentsMainPage(),
+        ),
+        // Route for contact page.
+        _route(
+          path: "contact",
+          name: "Contact",
+          child: const ContactPage(),
+        ),
+      ],
+    ),
+  ];
+
+  static final _unauthenticated = [
+    GoRoute(
+      path: '/login',
+      name: 'Login',
+      pageBuilder: (child, state) =>
+          _getPage(child: const LoginPage(), name: "Login"),
+    ),
+    GoRoute(
+      path: '/forgot',
+      name: 'Forgot Password',
+      pageBuilder: (child, state) =>
+          _getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+    ),
+  ];
+
+  /// Creates a new [GoRoute] instance with the specified parameters.
+  ///
+  /// The [path] parameter is a required string that represents the path of the route.
+  ///
+  /// The [name] parameter is a required string that represents the name of the route.
+  ///
+  /// The [child] parameter is an optional [Widget] that represents the child of the route.
+  ///
+  /// The [routes] parameter is an optional list of [RouteBase] objects that represent the sub-routes of the route.
+  ///
+  /// The [pageBuilder] parameter is an optional function that takes a [BuildContext] and a [GoRouterState] and returns a [Page] object. If this parameter is not specified, a default page builder will be used that creates a page with the specified [child] and [name].
+  ///
+  /// Throws an [ArgumentError] if neither [child] nor [pageBuilder] is specified, or if both are specified.
+  ///
+  /// Returns a new [GoRoute] instance with the specified parameters.
+  static GoRoute _route({
+    required String path,
+    required String name,
+    Widget? child,
+    List<RouteBase>? routes,
+    Page Function(BuildContext, GoRouterState)? pageBuilder,
+  }) {
+    if (child == null && pageBuilder == null) {
+      throw ArgumentError(
+        "You must specify either a child or a pageBuilder for a route.",
+      );
+    }
+
+    if (child != null && pageBuilder != null) {
+      throw ArgumentError(
+        "You can't specify both a child and a pageBuilder for a route.",
+      );
+    }
+
+    return GoRoute(
+      path: path,
+      name: name,
+      pageBuilder: pageBuilder ??
+          // ignore: avoid-non-null-assertion
+          (context, state) => _getPage(child: child!, name: name),
+      routes: routes ?? [],
+    );
+  }
+
+  /// A Wrapper for all app pages into a CupertinoPage.
+  ///
+  /// The [name] parameter is used to view the page name in Firebase Analytics.
+  ///
+  static Page _getPage({
+    required Widget child,
+    required String
+        name, // Used so we can view the page name in Firebase Analytics.
+  }) {
+    return CupertinoPage(child: child, name: name);
+  }
 }

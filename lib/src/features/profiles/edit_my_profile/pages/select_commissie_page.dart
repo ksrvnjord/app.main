@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class SelectCommissiePage extends ConsumerWidget {
   const SelectCommissiePage({Key? key}) : super(key: key);
@@ -22,8 +22,8 @@ class SelectCommissiePage extends ConsumerWidget {
                 (commissie) => ListTile(
                   title: Text(commissie),
                   trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () => Routemaster.of(context).push(
-                    'fill-info',
+                  onTap: () => context.goNamed(
+                    'Fill Commissie Info',
                     queryParameters: {'commissie': commissie},
                   ),
                 ),

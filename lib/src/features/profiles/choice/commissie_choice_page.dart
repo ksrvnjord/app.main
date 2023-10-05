@@ -25,6 +25,7 @@ class CommissieChoicePage extends ConsumerWidget {
         data: (choices) => ListView.builder(
           itemBuilder: (context, index) => [
             SubstructureChoiceListTile(
+              routeName: "Commissie",
               name: choices.elementAt(index),
               imageProvider: ref.watch(commissieThumbnailProvider(
                 Tuple2(

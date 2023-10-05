@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingPage extends StatelessWidget {
@@ -13,7 +13,6 @@ class TrainingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Routemaster navigator = Routemaster.of(context);
     const pageOffset = 0.0;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -37,15 +36,16 @@ class TrainingPage extends StatelessWidget {
           children: [
             FloatingActionButton.extended(
               backgroundColor: colorScheme.secondaryContainer,
-              onPressed: () => navigator.push('damages'),
+              heroTag: null, // Prevents hero animation from playing.
+              onPressed: () => context.goNamed('Damages'),
               icon: Icon(Icons.report, color: colorScheme.onSecondaryContainer),
-              label: const Text(
-                'Schademeldingen',
-              ).textColor(colorScheme.onSecondaryContainer),
+              label: const Text('Schademeldingen')
+                  .textColor(colorScheme.onSecondaryContainer),
             ),
             FloatingActionButton.extended(
               backgroundColor: colorScheme.primaryContainer,
-              onPressed: () => navigator.push('all'),
+              heroTag: null, // Prevents hero animation from playing.
+              onPressed: () => context.goNamed('Planning Overview'),
               icon: const Icon(Icons.add),
               label: const Text('Afschrijven'),
             ),

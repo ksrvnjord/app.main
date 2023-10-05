@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AlmanakUserButtonWidget extends ConsumerWidget {
   final Query$Almanak$users$data user;
@@ -24,8 +24,13 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
         color: Theme.of(context).colorScheme.primary,
       ),
       visualDensity: VisualDensity.standard,
-      onTap: () => Routemaster.of(context).push(
-        FirebaseAuth.instance.currentUser != null ? user.identifier : user.id,
+      onTap: () => context.pushNamed(
+        "Lid",
+        pathParameters: {
+          "id": FirebaseAuth.instance.currentUser != null
+              ? user.identifier
+              : user.id,
+        },
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormCard extends StatelessWidget {
@@ -38,7 +38,7 @@ class FormCard extends StatelessWidget {
           child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         RoundedElevatedButton(
-          onPressed: () => Routemaster.of(context).pop(),
+          onPressed: () => context.go('/login'),
           child: const Icon(Icons.arrow_back),
         ).height(buttonHeight),
       ].toRow(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:go_router/go_router.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakStructureChoiceWidget extends StatelessWidget {
@@ -47,7 +47,7 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
       ].toColumn().card(
             color: colorScheme.primaryContainer,
           ),
-      onTap: () => Routemaster.of(context).push(pushRoute),
+      onTap: () => context.pushNamed(pushRoute),
     );
   }
 }

@@ -13,15 +13,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:ksrvnjord_main_app/color_schemes.g.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
@@ -133,13 +132,6 @@ Future<void> main() async {
 class Application extends ConsumerWidget {
   const Application({Key? key}) : super(key: key);
 
-  RouteMap getRoutes(WidgetRef ref) {
-    final auth = ref.watch(authModelProvider);
-    final loggedIn = auth.client != null;
-
-    return loggedIn ? Routes.authenticated : Routes.unauthenticated;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
@@ -155,16 +147,11 @@ class Application extends ConsumerWidget {
 
     final themeBrightness = ref.watch(themeBrightnessProvider);
 
+    final router = ref.watch(Routes.routerProvider);
+
     return Builder(
       builder: (context) => MaterialApp.router(
-        routeInformationParser: const RoutemasterParser(),
-        routerDelegate: RoutemasterDelegate(
-          routesBuilder: (context) => getRoutes(ref),
-          observers: [
-            GlobalObserver(),
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-          ],
-        ),
+        routerConfig: router,
         title: 'K.S.R.V. Njord',
         theme: ThemeData(
           pageTransitionsTheme: pageTransitionsTheme,
