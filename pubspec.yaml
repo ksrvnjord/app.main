@@ -23,7 +23,7 @@ dependencies:
   styled_widget: ^0.4.0+3
   oauth2: ^2.0.0
   get_it: ^7.2.0
-  intl: ^0.18.0
+  intl: ^0.18.1
   routemaster: ^1.0.1
   flutter_markdown: ^0.6.10+5
   flutter_secure_storage: ^8.0.0
