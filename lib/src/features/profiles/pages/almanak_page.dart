@@ -44,25 +44,25 @@ class AlmanakPage extends StatelessWidget {
                 dividerColor: Colors.transparent,
               ),
             const AlmanakStructureChoiceWidget(
-              pushRoute: "leeden",
+              pushRoute: "Leeden",
               title: "Leeden",
               imagePath: 'assets/images/leeden.png',
             ).padding(bottom: choiceWidgetPadding),
             FirebaseWidget(
               onAuthenticated: [
                 const AlmanakStructureChoiceWidget(
-                  pushRoute: "bestuur",
+                  pushRoute: "Bestuur",
                   title: "Bestuur",
                   imagePath: 'assets/images/bestuur.jpg',
                 ),
                 [
                   const AlmanakStructureChoiceWidget(
-                    pushRoute: "commissies",
+                    pushRoute: "Commissies",
                     title: "Commissies",
                     imagePath: 'assets/images/commissies.jpeg',
                   ).expanded(),
                   const AlmanakStructureChoiceWidget(
-                    pushRoute: "ploegen",
+                    pushRoute: "Ploegen",
                     title: "Ploegen",
                     imagePath: 'assets/images/ploegen.jpg',
                   ).expanded(),
@@ -73,12 +73,12 @@ class AlmanakPage extends StatelessWidget {
                 ),
                 [
                   const AlmanakStructureChoiceWidget(
-                    pushRoute: "huizen",
+                    pushRoute: "Huizen",
                     title: "Huizen",
                     imagePath: 'assets/images/huizen.jpeg',
                   ).expanded(),
                   const AlmanakStructureChoiceWidget(
-                    pushRoute: "substructuren",
+                    pushRoute: "Substructuren",
                     title: "Substructuren",
                     imagePath: 'assets/images/substructures.jpeg',
                   ).expanded(),

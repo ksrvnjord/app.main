@@ -74,83 +74,6 @@ class Routes {
 
   static final authenticated = RouteMap(
     routes: {
-      '/almanak': (_) =>
-          const CupertinoPage(child: AlmanakPage(), name: 'Almanak'),
-      '/almanak/leeden': (_) =>
-          const CupertinoPage(child: AlmanakLeedenPage(), name: 'Leeden'),
-      '/almanak/bestuur': (_) =>
-          const CupertinoPage(child: AlmanakBestuurPage(), name: 'Bestuur'),
-      '/almanak/bestuur/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Bestuurslid',
-          ),
-      '/almanak/commissies': (_) => const CupertinoPage(
-            child: CommissieChoicePage(),
-            name: 'Commissies',
-          ),
-      '/almanak/commissies/:commissie': (route) => CupertinoPage(
-            child: AlmanakCommissiePage(
-              commissieName: Uri.decodeFull(route.pathParameters['commissie']!),
-            ),
-            name: 'Commissie',
-          ),
-      '/almanak/commissies/:commissie/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Commissielid',
-          ),
-      '/almanak/ploegen': (_) =>
-          const CupertinoPage(child: PloegChoicePage(), name: 'Ploegen'),
-      '/almanak/ploegen/:ploeg': (route) => CupertinoPage(
-            child: AlmanakPloegPage(
-              ploegName: Uri.decodeFull(route.pathParameters['ploeg']!),
-            ),
-            name: 'Ploeg',
-          ),
-      '/almanak/ploegen/:ploeg/:userId': (route) => CupertinoPage(
-            child: AlmanakProfilePage(userId: route.pathParameters['userId']!),
-            name: 'Ploeglid',
-          ),
-      '/almanak/huizen': (_) => const CupertinoPage(
-            child: HuisChoicePage(title: "Huizen", choices: houseNames),
-            name: 'Huizen',
-          ),
-      '/almanak/huizen/:huis': (route) => CupertinoPage(
-            child: AlmanakHuisPage(
-              houseName: Uri.decodeFull(route.pathParameters['huis']!),
-            ),
-            name: 'Huis',
-          ),
-      '/almanak/huizen/:huis/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Huisgenoot',
-          ),
-      '/almanak/substructuren': (_) => CupertinoPage(
-            child: SubstructureChoicePage(
-              title: "Substructuren",
-              choices: substructures.toList(),
-            ),
-            name: 'Substructuren',
-          ),
-      '/almanak/substructuren/:substructuur': (route) => CupertinoPage(
-            child: AlmanakSubstructuurPage(
-              name: Uri.decodeFull(route.pathParameters['substructuur']!),
-            ),
-            name: 'Substructuur',
-          ),
-      '/almanak/substructuren/:substructuur/:identifier': (route) =>
-          CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Substructuurlid',
-          ),
-      '/almanak/leeden/:identifier': (route) => CupertinoPage(
-            child:
-                AlmanakProfilePage(userId: route.pathParameters['identifier']!),
-            name: 'Lid',
-          ),
       '/more': (route) => const CupertinoPage(child: MorePage(), name: 'More'),
       '/more/events': (info) =>
           const CupertinoPage(child: EventsPage(), name: 'More -> Events'),
@@ -431,6 +354,97 @@ class Routes {
       path: "/almanak",
       name: "Almanak",
       child: const AlmanakPage(),
+      routes: [
+        route(
+          path: "leeden",
+          name: "Leeden",
+          child: const AlmanakLeedenPage(),
+        ),
+        route(
+          path: "bestuur",
+          name: "Bestuur",
+          child: const AlmanakBestuurPage(),
+        ),
+        route(
+          path: "commissies",
+          name: "Commissies",
+          child: const CommissieChoicePage(),
+          routes: [
+            route(
+              path: ":commissie",
+              name: "Commissie",
+              pageBuilder: (context, state) => getPage(
+                child: AlmanakCommissiePage(
+                  commissieName: state.pathParameters['commissie']!,
+                ),
+                name: "Commissie",
+              ),
+            ),
+          ],
+        ),
+        route(
+          path: "ploegen",
+          name: "Ploegen",
+          child: const PloegChoicePage(),
+          routes: [
+            route(
+              path: ":ploeg",
+              name: "Ploeg",
+              pageBuilder: (context, state) => getPage(
+                child: AlmanakPloegPage(
+                  ploegName: state.pathParameters['ploeg']!,
+                ),
+                name: "Ploeg",
+              ),
+            ),
+          ],
+        ),
+        route(
+          path: "huizen",
+          name: "Huizen",
+          child: const HuisChoicePage(title: "Huizen", choices: houseNames),
+          routes: [
+            route(
+              path: ":huis",
+              name: "Huis",
+              pageBuilder: (context, state) => getPage(
+                child: AlmanakHuisPage(
+                  houseName: state.pathParameters['huis']!,
+                ),
+                name: "Huis",
+              ),
+            ),
+          ],
+        ),
+        route(
+          path: "substructuren",
+          name: "Substructuren",
+          child: SubstructureChoicePage(
+            title: "Substructuren",
+            choices: substructures.toList(),
+          ),
+          routes: [
+            route(
+              path: ":substructuur",
+              name: "Substructuur",
+              pageBuilder: (context, state) => getPage(
+                child: AlmanakSubstructuurPage(
+                  name: state.pathParameters['substructuur']!,
+                ),
+                name: "Substructuur",
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+    route(
+      path: "/lid/:id",
+      name: "Lid",
+      pageBuilder: (context, state) => getPage(
+        child: AlmanakProfilePage(userId: state.pathParameters['id']!),
+        name: "Lid",
+      ),
     ),
   ];
 
@@ -439,7 +453,27 @@ class Routes {
       path: "/more",
       name: "More",
       child: const MorePage(),
-    )
+      routes: [
+        // Route for GalleryPage.
+        route(
+          path: "gallery",
+          name: "Gallery",
+          child: const GalleryMainPage(),
+        ),
+        // Route for DocumentsPage.
+        route(
+          path: "documents",
+          name: "Documents",
+          child: const DocumentsMainPage(),
+        ),
+        // Route for contact page.
+        route(
+          path: "contact",
+          name: "Contact",
+          child: const ContactPage(),
+        ),
+      ],
+    ),
   ];
 }
 

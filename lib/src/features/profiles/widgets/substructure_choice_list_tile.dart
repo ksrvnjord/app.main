@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,10 +14,12 @@ class SubstructureChoiceListTile extends ConsumerWidget {
 
   const SubstructureChoiceListTile({
     Key? key,
+    required this.routeName,
     required this.name,
     required this.imageProvider, // The imageProvider for the choice.
   }) : super(key: key);
   final String name;
+  final String routeName;
 
   final AsyncValue<ImageProvider<Object>> imageProvider;
 
@@ -55,7 +58,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
-      onTap: () => Routemaster.of(context).push(name),
+      onTap: () => context.pushNamed("", pathParameters: {"name": name}),
     );
   }
 }
