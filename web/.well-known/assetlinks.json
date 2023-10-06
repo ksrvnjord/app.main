@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.ksrvnjord.app",
+    "sha256_cert_fingerprints":
+    ["EE:5C:55:BD:68:14:ED:B5:67:E2:85:09:07:15:C2:8B:3F:96:CD:15:2A:F2:33:03:CA:35:AC:5F:A8:B3:36:B8"]
+  }
+}]
