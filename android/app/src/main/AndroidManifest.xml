@@ -30,7 +30,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="njord"
+                <data android:scheme="http"
                     android:host="app.njord.nl" />
                 <data android:scheme="https" />
             </intent-filter>
