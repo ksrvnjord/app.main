@@ -186,14 +186,15 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     snapshot: snapshot,
                   ).padding(vertical: elementPadding),
                   loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(child: CircularProgressIndicator.adaptive()),
                   error: (error, stacktrace) =>
                       ErrorCardWidget(errorMessage: error.toString()),
                 ),
               ),
             ].toColumn();
           },
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
           error: (error, stacktrace) => ErrorCardWidget(
             errorMessage: "$error $stacktrace",
           ),

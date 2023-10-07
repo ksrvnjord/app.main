@@ -24,7 +24,8 @@ class EditAllergiesPage extends ConsumerWidget {
           currentUserStream.when(
             data: (snapshot) => buildAllergiesForm(snapshot, context),
             error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
           ),
         ],
       ),

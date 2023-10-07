@@ -73,7 +73,7 @@ class PollCard extends ConsumerWidget {
                   errorMessage:
                       "Het is niet gelukt om de afbeelding te downloaden",
                 ),
-                loading: () => const CircularProgressIndicator(),
+                loading: () => const CircularProgressIndicator.adaptive(),
               ),
         if (description != null)
           Text(description, style: textTheme.bodyMedium)
@@ -106,7 +106,7 @@ class PollCard extends ConsumerWidget {
           error: (error, stackTrace) => const ErrorCardWidget(
             errorMessage: 'Het is mislukt om je antwoord te laden',
           ),
-          loading: () => const CircularProgressIndicator(),
+          loading: () => const CircularProgressIndicator.adaptive(),
         ),
       ],
     ).card(

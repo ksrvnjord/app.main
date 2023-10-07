@@ -20,7 +20,7 @@ class TrainingList extends ConsumerWidget {
     return ref.watch(myReservationsProvider).when(
           error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
           loading: () => const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator.adaptive(),
           ),
           data: (data) => data.docs.isEmpty
               ? const Center(

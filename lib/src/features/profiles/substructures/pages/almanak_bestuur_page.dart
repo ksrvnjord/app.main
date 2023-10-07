@@ -36,7 +36,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
           ).padding(horizontal: pageHPadding),
           bestuur.when(
             data: (snapshot) => buildBestuurList(snapshot),
-            loading: () => const CircularProgressIndicator().center(),
+            loading: () => const CircularProgressIndicator.adaptive().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
             ),

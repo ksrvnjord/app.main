@@ -114,7 +114,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             error: (error, stk) =>
                 ErrorCardWidget(errorMessage: error.toString()),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ],

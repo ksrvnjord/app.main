@@ -41,7 +41,7 @@ class MyPermissionsPage extends ConsumerWidget {
                 ? const Text('Je hebt geen afschrijfpermissies').center()
                 : ChipWidget(values: permissions),
             error: (error, stack) => Text(error.toString()),
-            loading: () => const CircularProgressIndicator().center(),
+            loading: () => const CircularProgressIndicator.adaptive().center(),
           ),
         ],
       ),

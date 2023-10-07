@@ -204,7 +204,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               ? const SizedBox(
                   width: 10,
                   height: 10,
-                  child: CircularProgressIndicator(color: Colors.white),
+                  child: CircularProgressIndicator.adaptive(),
                 ).center().padding(all: onSaveButtonPadding)
               : const Text('Verstuur wijzigingsverzoek'),
         ).padding(all: saveButtonPadding),

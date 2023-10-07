@@ -70,7 +70,7 @@ class AlmanakHuisPage extends ConsumerWidget {
                       value: huisInfo.yearOfFoundation.toString(),
                     ),
                   ].toColumn(),
-            loading: () => const CircularProgressIndicator().center(),
+            loading: () => const CircularProgressIndicator.adaptive().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
             ),
@@ -78,7 +78,7 @@ class AlmanakHuisPage extends ConsumerWidget {
           users.when(
             data: (snapshot) =>
                 LeedenList(name: houseName, almanakProfileSnapshot: snapshot),
-            loading: () => const CircularProgressIndicator().center(),
+            loading: () => const CircularProgressIndicator.adaptive().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
             ),
