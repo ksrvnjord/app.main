@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -24,7 +24,7 @@ class AuthModel extends ChangeNotifier {
 
   String error = '';
   String storedUser = '';
-  GlobalConstants globalConstants = GetIt.I.get<GlobalConstants>();
+  AuthConstants globalConstants = GetIt.I.get<AuthConstants>();
 
   final _storage = const FlutterSecureStorage();
   bool _isBusy = false;
@@ -49,7 +49,9 @@ class AuthModel extends ChangeNotifier {
     // ignore: avoid-ignoring-return-values
     error = ""; // Reset error message.
     isBusy = true;
-    globalConstants.switchEnvironment(username);
+    globalConstants.environment =
+        username == "demo" ? Environment.demo : Environment.production;
+
     await _heimdallLogin(username, password);
     await _firebaseLogin();
     isBusy = false;
@@ -129,28 +131,32 @@ class AuthModel extends ChangeNotifier {
     // Get stored credentials.
     String? storedCreds = await _storage.read(key: 'oauth2_credentials');
     Map<String, dynamic> credentials = jsonDecode(storedCreds ?? '{}');
-
     // Change the environment based on the token endpoint.
-    if (credentials['tokenEndpoint'] ==
-        'https://heimdall-test.ksrv.nl/oauth/token') {
-      globalConstants.switchEnvironment('demo');
-    } else {
-      globalConstants.switchEnvironment('production.account');
-    }
+    globalConstants.environment = credentials['tokenEndpoint'] ==
+            AuthConstants.oauthEndpointFor(Environment.demo).path
+        ? Environment.demo
+        : Environment.production;
 
+    globalConstants.environment = Environment.demo;
     // If token doesn't exist or is expired, let user login again.
     if (credentials['expiration'] == null ||
         DateTime.fromMillisecondsSinceEpoch(credentials['expiration'])
             .isBefore(DateTime.now())) {
       return;
     }
-
     // Credentials not expired, try to login to Firebase.
     client = oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
     await _firebaseLogin();
   }
 
+  // Login to Firebase with the stored credentials.
+  // NOTE: The function will not do anything if the environment is set to demo.
   Future<void> _firebaseLogin() async {
+    if (globalConstants.environment == Environment.demo) {
+      // Don't login to Firebase in demo mode.
+      return;
+    }
+
     final String? accessToken = client?.credentials.accessToken;
     // Only fire this if an access token is available.
     if (accessToken == null) {
