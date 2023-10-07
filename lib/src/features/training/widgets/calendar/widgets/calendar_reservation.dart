@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarReservation extends StatelessWidget {

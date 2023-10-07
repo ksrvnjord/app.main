@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_backgr
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends StatelessWidget {
