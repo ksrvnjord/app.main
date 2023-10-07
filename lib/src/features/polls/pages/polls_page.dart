@@ -27,7 +27,8 @@ class PollsPage extends ConsumerWidget {
                     const SizedBox(height: 10),
                 itemCount: snapshot.size,
               ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) =>
             ErrorCardWidget(errorMessage: error.toString()),
       ),

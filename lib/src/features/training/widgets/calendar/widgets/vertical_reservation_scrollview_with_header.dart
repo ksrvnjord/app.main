@@ -55,7 +55,7 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
           ),
         ),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
       error: (error, stack) => Text(error.toString()).card(),
     );
   }

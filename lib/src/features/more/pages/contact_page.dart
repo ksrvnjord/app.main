@@ -92,8 +92,8 @@ class ContactPage extends ConsumerWidget {
                 ],
                 rows: const [
                   DataRow(cells: [
-                    DataCell(CircularProgressIndicator()),
-                    DataCell(CircularProgressIndicator()),
+                    DataCell(CircularProgressIndicator.adaptive()),
+                    DataCell(CircularProgressIndicator.adaptive()),
                   ]),
                 ],
               ),

@@ -27,7 +27,7 @@ class EditGroupsPage extends ConsumerWidget {
                 ],
               ),
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-        loading: () => const CircularProgressIndicator().center(),
+        loading: () => const CircularProgressIndicator.adaptive().center(),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.goNamed('Select Ploeg'),
