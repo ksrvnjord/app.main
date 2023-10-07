@@ -20,14 +20,18 @@ class PollPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Form'),
       ),
-      body: pollVal.when(
-        data: (poll) => PollCard(
-          pollDoc: poll,
-          isExpanded: true,
-        ).padding(all: cardPadding),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) =>
-            ErrorCardWidget(errorMessage: error.toString()),
+      body: ListView(
+        children: [
+          pollVal.when(
+            data: (poll) => PollCard(
+              pollDoc: poll,
+              isExpanded: true,
+            ).padding(all: cardPadding),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) =>
+                ErrorCardWidget(errorMessage: error.toString()),
+          ),
+        ],
       ),
     );
   }
