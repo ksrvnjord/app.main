@@ -56,7 +56,8 @@ class _EditAlmanakProfilePageState
           user,
           context,
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
       ),
       floatingActionButton: // Floating action button with save icon.

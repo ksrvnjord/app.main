@@ -13,7 +13,7 @@ class LoginLoadingWidget extends StatelessWidget {
 
     return <Widget>[
       <Widget>[
-        const CircularProgressIndicator(
+        const CircularProgressIndicator.adaptive(
           semanticsLabel: 'Trying to log in',
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),

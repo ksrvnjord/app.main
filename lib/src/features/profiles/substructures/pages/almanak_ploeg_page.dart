@@ -71,7 +71,7 @@ class AlmanakPloegPage extends ConsumerWidget {
             error: (error, stk) =>
                 ErrorCardWidget(errorMessage: error.toString()),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ],

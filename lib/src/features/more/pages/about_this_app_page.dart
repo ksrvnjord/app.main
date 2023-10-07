@@ -30,7 +30,7 @@ class AboutThisAppPage extends ConsumerWidget {
                   ),
                 ].toColumn(),
                 error: (error, stackTrace) => Text(error.toString()),
-                loading: () => const CircularProgressIndicator(),
+                loading: () => const CircularProgressIndicator.adaptive(),
               ),
           const DataTextListTile(
             name: "Met liefde gemaakt door",

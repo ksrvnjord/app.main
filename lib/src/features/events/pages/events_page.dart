@@ -18,7 +18,7 @@ class EventsPage extends ConsumerWidget {
       body: events.when(
         data: (data) => EventsWidget(snapshot: data),
         loading: () => const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         ),
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
       ),

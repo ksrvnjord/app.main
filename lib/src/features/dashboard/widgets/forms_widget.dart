@@ -48,7 +48,7 @@ class FormsWidget extends ConsumerWidget {
       ),
       openPolls.when(
         data: (data) => _buildOpenPollsList(data, context),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const CircularProgressIndicator.adaptive(),
         error: (error, stack) => Text(
           error.toString(),
         ),

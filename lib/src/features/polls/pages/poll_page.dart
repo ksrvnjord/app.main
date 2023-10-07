@@ -27,11 +27,12 @@ class PollPage extends ConsumerWidget {
               pollDoc: poll,
               isExpanded: true,
             ).padding(all: cardPadding),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CircularProgressIndicator.adaptive()),
             error: (error, stack) =>
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
         ],
+
       ),
     );
   }

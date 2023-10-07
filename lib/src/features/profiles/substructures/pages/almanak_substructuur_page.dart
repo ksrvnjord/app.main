@@ -45,7 +45,7 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
           substructureUsers.when(
             data: (snapshot) =>
                 LeedenList(name: name, almanakProfileSnapshot: snapshot),
-            loading: () => const CircularProgressIndicator().center(),
+            loading: () => const CircularProgressIndicator.adaptive().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
             ),

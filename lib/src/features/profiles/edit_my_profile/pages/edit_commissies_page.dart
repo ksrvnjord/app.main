@@ -24,7 +24,8 @@ class EditCommissiesPageState extends ConsumerState<EditCommissiesPage> {
       ),
       body: ListView(children: [
         ref.watch(myCommissiesProvider).when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
               // Use stream to show updates in real time.
               data: (commissies) => EditCommissiesList(snapshot: commissies),
               error: (error, stk) => ErrorCardWidget(
