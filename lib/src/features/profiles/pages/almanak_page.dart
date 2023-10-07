@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
@@ -35,8 +36,7 @@ class AlmanakPage extends StatelessWidget {
                 content: const Text('Je bent niet zichtbaar in de almanak.'),
                 actions: [
                   TextButton(
-                    onPressed: () => Routemaster.of(context)
-                        .replace('/home/my-profile/settings/visibility'),
+                    onPressed: () => context.pushNamed('Visibility'),
                     child: const Text('Wijzig'),
                   ),
                 ],

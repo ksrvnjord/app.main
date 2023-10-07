@@ -17,13 +17,13 @@ class UnknownRoutePage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     log(
-      "404: ${Routemaster.of(context).currentRoute} not found)}",
+      "404: ${GoRouter.of(context).routeInformationProvider.value.uri.path} not found)}",
       // ignore: no-magic-number
       level: 2000,
       name: 'Unknown Route',
     );
 
-    final navigationHistory = Routemaster.of(context).history;
+    final canPop = context.canPop();
 
     return Scaffold(
       appBar: AppBar(
@@ -53,25 +53,21 @@ class UnknownRoutePage extends StatelessWidget {
           if (!kDebugMode) {
             // Report error in Routing to Crashlytics in production.
             FirebaseCrashlytics.instance.recordError(
-              "404: ${GoRouter.of(context).routeInformationProvider.value.location} not found)}",
+              "404: ${GoRouter.of(context).routeInformationProvider.value.uri.path} not found)}",
               StackTrace.empty,
               reason: 'because of invalid route',
             );
           }
-          if (navigationHistory.canGoBack) {
+          if (canPop) {
             // Going back is preferred for UX, but not always possible.
-            // ignore: avoid-ignoring-return-values
-            navigationHistory.back();
+            context.pop();
           } else {
-            Routemaster.of(context).replace('/');
+            context.go('/');
           }
         },
-        icon: navigationHistory.canGoBack
-            ? const Icon(Icons.arrow_back)
-            : const Icon(Icons.home),
-        label: navigationHistory.canGoBack
-            ? const Text('Ga terug')
-            : const Text('Ga naar dashboard'),
+        icon: canPop ? const Icon(Icons.arrow_back) : const Icon(Icons.home),
+        label:
+            canPop ? const Text('Ga terug') : const Text('Ga naar dashboard'),
       ),
     );
   }

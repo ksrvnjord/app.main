@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -72,7 +74,10 @@ class CalendarReservation extends StatelessWidget {
               .textColor(colorScheme.onTertiaryContainer)
               .padding(all: reservationPadding),
         ),
-        onTap: () => Routemaster.of(context).push(reservationDocumentId),
+        onTap: () => context.pushNamed(
+          RouteName.reservation,
+          pathParameters: {'id': reservationDocumentId},
+        ),
       ),
     ].toColumn().padding(top: reservationOffset);
   }

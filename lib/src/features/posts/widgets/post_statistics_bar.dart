@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/comments_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostStatisticsBar extends ConsumerWidget {
@@ -53,8 +53,10 @@ class PostStatisticsBar extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.outline,
                       ),
                 ),
-                onTap: () =>
-                    Routemaster.of(context).push('${snapshot.id}/comments'),
+                onTap: () => context.pushNamed(
+                  "Comments",
+                  pathParameters: {'id': snapshot.id},
+                ),
               )
             : const SizedBox.shrink(),
         loading: () => const SizedBox.shrink(),
