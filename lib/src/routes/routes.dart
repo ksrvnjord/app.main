@@ -110,9 +110,7 @@ class Routes {
       redirect: (context, state) {
         final auth = ref.read(authModelProvider);
         final loggedIn = auth.client != null;
-        print("INCOMING REDIRECT: : ${state.uri.toString()}");
         final loggingIn = state.uri.path == '/login';
-        print("Login status: $loggedIn, loggingIn: $loggingIn");
 
         // If not logged in, redirect to login page.
         if (!loggedIn) {
@@ -134,7 +132,7 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/login',
       observers: [
         GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),

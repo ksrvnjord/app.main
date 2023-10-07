@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 
 // ignore: prefer-static-class
 final CollectionReference<Poll> pollsCollection =
