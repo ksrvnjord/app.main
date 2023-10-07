@@ -64,6 +64,9 @@ import 'package:upgrader/upgrader.dart';
 @immutable
 class RouteName {
   static const forms = "Forms";
+  static const postComments = "Post -> Comments";
+  static const editMyVisibility = "Edit my visibility";
+  static const reservation = "Reservation";
 }
 
 // This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
@@ -98,6 +101,11 @@ class Routes {
           ),
         ),
         ...Routes._unauthenticated,
+        _route(
+          name: "Unknown Route",
+          path: '/404',
+          child: const UnknownRoutePage(),
+        ),
       ],
       errorPageBuilder: (context, state) => _getPage(
         child: const UnknownRoutePage(),
@@ -117,7 +125,8 @@ class Routes {
 
         return '/login';
       },
-      initialLocation: _previousRouter?.routeInformationProvider.value.location,
+      initialLocation:
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
       observers: [
         GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
@@ -266,7 +275,7 @@ class Routes {
                 ),
                 _route(
                   path: 'visibility',
-                  name: "Edit my visibility",
+                  name: RouteName.editMyVisibility,
                   child: const MePrivacyPage(),
                 ),
               ],
@@ -289,13 +298,13 @@ class Routes {
           child: const CreatePostPage(),
         ),
         _route(
-          path: ':postId/comments',
-          name: 'Post -> Comments',
+          path: ':id/comments',
+          name: RouteName.postComments,
           pageBuilder: (context, state) => _getPage(
             child: CommentsPage(
-              postDocId: state.pathParameters['postId']!,
+              postDocId: state.pathParameters['id']!,
             ),
-            name: "Post -> Comments",
+            name: RouteName.postComments,
           ),
         ),
       ],
@@ -363,12 +372,12 @@ class Routes {
             ),
             _route(
               path: ':id',
-              name: "Show Training",
+              name: RouteName.reservation,
               pageBuilder: (context, state) => _getPage(
                 child: ShowTrainingPage(
                   reservationDocumentId: state.pathParameters['id']!,
                 ),
-                name: "Show Training",
+                name: RouteName.reservation,
               ),
             ),
             _route(
