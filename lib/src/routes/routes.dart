@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
@@ -510,6 +511,12 @@ class Routes {
       name: "More",
       child: const MorePage(),
       routes: [
+        // Route for about page.
+        _route(
+          path: "about",
+          name: "About this app",
+          child: const AboutThisAppPage(),
+        ),
         // Route for GalleryPage.
         _route(
           path: "gallery",

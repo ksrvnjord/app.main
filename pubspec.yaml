@@ -71,6 +71,7 @@ dependencies:
   sliver_tools: ^0.2.12
   flutter_pdfview: ^1.3.1
   go_router: ^11.1.2
+  package_info_plus: ^4.1.0
 
 dependency_overrides:
   package_info_plus: any
