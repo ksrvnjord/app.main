@@ -24,11 +24,11 @@ class AuthModel extends ChangeNotifier {
 
   String error = '';
   String storedUser = '';
-  AuthConstants globalConstants = GetIt.I.get<AuthConstants>();
 
   final _storage = const FlutterSecureStorage();
   bool _isBusy = false;
   bool get isBusy => _isBusy;
+  get _globalConstants => GetIt.I.get<AuthConstants>();
 
   set isBusy(bool value) {
     _isBusy = value;
@@ -49,7 +49,7 @@ class AuthModel extends ChangeNotifier {
     // ignore: avoid-ignoring-return-values
     error = ""; // Reset error message.
     isBusy = true;
-    globalConstants.environment =
+    _globalConstants.environment =
         username == "demo" ? Environment.demo : Environment.production;
 
     await _heimdallLogin(username, password);
@@ -100,11 +100,11 @@ class AuthModel extends ChangeNotifier {
 
     try {
       client = await oauth2.resourceOwnerPasswordGrant(
-        globalConstants.oauthEndpoint(),
+        _globalConstants.oauthEndpoint(),
         username,
         password,
-        identifier: globalConstants.oauthId,
-        secret: globalConstants.oauthSecret,
+        identifier: _globalConstants.oauthId,
+        secret: _globalConstants.oauthSecret,
       );
     } catch (e) {
       error = e.toString();
@@ -132,12 +132,12 @@ class AuthModel extends ChangeNotifier {
     String? storedCreds = await _storage.read(key: 'oauth2_credentials');
     Map<String, dynamic> credentials = jsonDecode(storedCreds ?? '{}');
     // Change the environment based on the token endpoint.
-    globalConstants.environment = credentials['tokenEndpoint'] ==
+    _globalConstants.environment = credentials['tokenEndpoint'] ==
             AuthConstants.oauthEndpointFor(Environment.demo).path
         ? Environment.demo
         : Environment.production;
 
-    globalConstants.environment = Environment.demo;
+    _globalConstants.environment = Environment.demo;
     // If token doesn't exist or is expired, let user login again.
     if (credentials['expiration'] == null ||
         DateTime.fromMillisecondsSinceEpoch(credentials['expiration'])
@@ -152,7 +152,7 @@ class AuthModel extends ChangeNotifier {
   // Login to Firebase with the stored credentials.
   // NOTE: The function will not do anything if the environment is set to demo.
   Future<void> _firebaseLogin() async {
-    if (globalConstants.environment == Environment.demo) {
+    if (_globalConstants.environment == Environment.demo) {
       // Don't login to Firebase in demo mode.
       return;
     }
@@ -166,7 +166,7 @@ class AuthModel extends ChangeNotifier {
     try {
       // Get the token for the configured (constant) endpoint JWT.
       final response = await Dio().get(
-        globalConstants.jwtEndpoint().toString(),
+        _globalConstants.jwtEndpoint().toString(),
         options: Options(headers: {
           'Authorization': 'Bearer $accessToken',
         }),
