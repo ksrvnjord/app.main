@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageEditWidget extends ConsumerWidget {
@@ -22,14 +22,13 @@ class DamageEditWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final damageForm = ref.watch(damageFormProvider);
     final messenger = ScaffoldMessenger.of(context);
-    final navigator = Routemaster.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Schademelding'),
         actions: [
           IconButton(
-            onPressed: () => deleteDamageForm(messenger, navigator),
+            onPressed: () => deleteDamageForm(messenger, context),
             icon: const Icon(Icons.delete),
           ),
         ],
@@ -68,7 +67,7 @@ class DamageEditWidget extends ConsumerWidget {
           .scrollable(scrollDirection: Axis.vertical),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => damageForm.complete
-            ? editDamageForm(damageForm, messenger, navigator)
+            ? editDamageForm(damageForm, messenger, context)
             : messenger.showSnackBar(SnackBar(
                 content: const Text('Nog niet alle velden zijn ingevuld'),
                 backgroundColor: Colors.red[900],
@@ -81,7 +80,7 @@ class DamageEditWidget extends ConsumerWidget {
 
   Future<void> deleteDamageForm(
     ScaffoldMessengerState messenger,
-    Routemaster navigator,
+    BuildContext context,
   ) async {
     try {
       await Damage.deleteById(damageDocumentId, reservationObjectId);
@@ -90,7 +89,8 @@ class DamageEditWidget extends ConsumerWidget {
         content: Text('Schademelding verwijderd'),
       ));
       // ignore: avoid-ignoring-return-values
-      navigator.pop();
+      // ignore: use_build_context_synchronously
+      context.pop();
     } catch (e) {
       // ignore: avoid-ignoring-return-values
       messenger.showSnackBar(const SnackBar(
@@ -105,7 +105,7 @@ class DamageEditWidget extends ConsumerWidget {
   Future<void> editDamageForm(
     DamageForm damageForm,
     ScaffoldMessengerState messenger,
-    Routemaster navigator,
+    BuildContext context,
   ) async {
     try {
       await Damage.edit(
@@ -128,7 +128,7 @@ class DamageEditWidget extends ConsumerWidget {
       ));
     }
 
-    // ignore: avoid-ignoring-return-values
-    navigator.pop();
+    // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+    context.pop();
   }
 }
