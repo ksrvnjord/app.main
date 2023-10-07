@@ -16,12 +16,17 @@ class PollCard extends ConsumerWidget {
     this.isExpanded,
   }) : super(key: key);
 
-  final QueryDocumentSnapshot<Poll> pollDoc;
+  final DocumentSnapshot<Poll> pollDoc;
   final bool? isExpanded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Poll poll = pollDoc.data();
+    final Poll? poll = pollDoc.data();
+    if (poll == null) {
+      return const ErrorCardWidget(
+        errorMessage: 'Het is niet gelukt om de poll te laden',
+      );
+    }
 
     final String? imagePath = poll.imagePath;
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));

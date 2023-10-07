@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormsWidget extends ConsumerWidget {
@@ -43,7 +44,7 @@ class FormsWidget extends ConsumerWidget {
         title: "Forms",
         titleIcon: Icons.edit_document,
         onTapName: "Alle forms",
-        onTap: () => context.goNamed('Polls'),
+        onTap: () => context.goNamed(RouteName.forms),
       ),
       openPolls.when(
         data: (data) => _buildOpenPollsList(data, context),
