@@ -12,21 +12,19 @@ class PollPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pollVal = ref.watch(pollProvider(pollId));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Form'),
       ),
-      body: pollVal.when(
-        data: (poll) => PollCard(
-          pollDoc: poll,
-          isExpanded: true,
-        ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) =>
-            ErrorCardWidget(errorMessage: error.toString()),
-      ),
+      body: ref.watch(pollProvider(pollId)).when(
+            data: (poll) => PollCard(
+              pollDoc: poll,
+              isExpanded: true,
+            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) =>
+                ErrorCardWidget(errorMessage: error.toString()),
+          ),
     );
   }
 }
