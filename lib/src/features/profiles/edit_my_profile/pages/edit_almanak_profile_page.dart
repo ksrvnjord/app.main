@@ -64,7 +64,7 @@ class _EditAlmanakProfilePageState
         FloatingActionButton.extended(
           backgroundColor: colorScheme.secondaryContainer,
           heroTag: null, // Prevents the hero animation from playing.
-          onPressed: () => context.go('/my-profile/public-profile/$userId'),
+          onPressed: () => context.go('/mijn-profiel/publiek-profiel/$userId'),
           label: const Text("Publiek profiel bekijken")
               .textColor(colorScheme.onSecondaryContainer),
         ),
@@ -143,8 +143,8 @@ class _EditAlmanakProfilePageState
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.go(
-                  '/my-profile/sensitive-data',
+                onTap: () => context.goNamed(
+                  "Sensitive Data",
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),

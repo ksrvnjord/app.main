@@ -38,7 +38,7 @@ class FormCard extends StatelessWidget {
           child: Text(buttonText),
         ).height(buttonHeight).padding(right: buttonPadding).expanded(),
         RoundedElevatedButton(
-          onPressed: () => context.go('/login'),
+          onPressed: () => context.goNamed('Login'),
           child: const Icon(Icons.arrow_back),
         ).height(buttonHeight),
       ].toRow(),

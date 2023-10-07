@@ -136,19 +136,19 @@ class Routes {
       routes: [
         // Route for viewing all forms.
         _route(
-          path: 'polls',
+          path: 'peilingen',
           name: "Polls",
           child: const PollsPage(),
         ),
         // Route for viewing all events.
         _route(
-          path: 'events',
+          path: 'evenementen',
           name: "Events",
           child: const EventsPage(),
         ),
         // Dynamic route for viewing one announcement.
         _route(
-          path: 'announcements/:id',
+          path: 'aankondigingen/:id',
           name: "Announcement",
           pageBuilder: (context, state) => _getPage(
             child: AnnouncementPage(
@@ -158,12 +158,12 @@ class Routes {
           ),
         ),
         _route(
-          path: 'my-profile',
+          path: 'mijn-profiel',
           name: "Edit Profile",
           child: const EditAlmanakProfilePage(),
           routes: [
             _route(
-              path: 'public-profile/:identifier',
+              path: 'publiek-profiel/:identifier',
               name: "Preview Profile",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakProfilePage(
@@ -173,23 +173,23 @@ class Routes {
               ),
             ),
             _route(
-              path: 'sensitive-data',
+              path: 'gevoelige-data',
               name: "Sensitive Data",
               child: const MePage(),
             ),
             _route(
-              path: 'permissions',
+              path: 'permissies',
               name: "My Permissions",
               child: const MyPermissionsPage(),
             ),
             // Route for my allergies page.
             _route(
-              path: 'allergies',
+              path: 'allergieen',
               name: "My Allergies",
               child: const EditAllergiesPage(),
             ),
             _route(
-              path: 'groups',
+              path: 'groepen',
               name: "My Groups",
               child: const EditGroupsPage(),
               routes: [
@@ -199,7 +199,7 @@ class Routes {
                   child: const SelectPloegPage(),
                   routes: [
                     _route(
-                      path: 'add',
+                      path: 'toevoegen',
                       name: "Add Ploeg",
                       child: const AddPloegPage(),
                     ),
@@ -213,12 +213,12 @@ class Routes {
               child: const EditCommissiesPage(),
               routes: [
                 _route(
-                  path: 'select',
+                  path: 'selecteer',
                   name: "Select Commissie",
                   child: const SelectCommissiePage(),
                   routes: [
                     _route(
-                      path: 'fill-info',
+                      path: 'vul-info',
                       name: "Fill Commissie Info",
                       pageBuilder: (context, state) => _getPage(
                         child: FillCommissieInfoPage(
@@ -232,22 +232,22 @@ class Routes {
               ],
             ),
             _route(
-              path: 'settings',
+              path: 'instellingen',
               name: "Settings",
               child: const SettingsPage(),
               routes: [
                 _route(
-                  path: 'advanced',
+                  path: 'geavanceerd',
                   name: "Advanced Settings",
                   child: const AdvancedSettingsPage(),
                 ),
                 _route(
-                  path: 'notification-preferences',
+                  path: 'notificatie-voorkeuren',
                   name: "Notification Preferences",
                   child: const NotificationsPage(),
                 ),
                 _route(
-                  path: 'visibility',
+                  path: 'zichtbaarheid',
                   name: "Edit my visibility",
                   child: const MePrivacyPage(),
                 ),
@@ -261,12 +261,12 @@ class Routes {
 
   static final _postsRoutes = [
     _route(
-      path: '/posts',
+      path: '/prikbord',
       name: 'Posts',
       child: const PostsPage(),
       routes: [
         _route(
-          path: 'new',
+          path: 'nieuw',
           name: 'New Post',
           child: const CreatePostPage(),
         ),
@@ -286,23 +286,23 @@ class Routes {
 
   static final _reservationRoutes = [
     _route(
-      path: "/training",
+      path: "/afschrijven",
       name: "Training",
       child: const TrainingPage(),
       routes: [
         // Route for viewing all damages.
         _route(
-          path: 'damages',
+          path: 'schademeldingen',
           name: "Damages",
           child: const DamagesListPage(),
           routes: [
             _route(
-              path: 'create',
+              path: 'melden',
               name: "Create Damage",
               child: const DamagesCreatePage(),
             ),
             _route(
-              path: 'edit',
+              path: 'aanpassen',
               name: "Edit Damage",
               pageBuilder: (context, state) => _getPage(
                 child: DamagesEditPage(
@@ -314,7 +314,7 @@ class Routes {
               ),
             ),
             _route(
-              path: 'show',
+              path: 'bekijk',
               name: "Show Damage",
               pageBuilder: (context, state) => _getPage(
                 child: DamagesShowPage(
@@ -329,7 +329,7 @@ class Routes {
         ),
         // Route for view all training.
         _route(
-          path: 'all',
+          path: 'mijn-afschrijvingen',
           name: "Planning Overview",
           child: const AllTrainingPage(),
           routes: [
@@ -354,7 +354,7 @@ class Routes {
               ),
             ),
             _route(
-              path: 'reservationObject/:id',
+              path: 'afschrijvingObject/:id',
               name: "Show Reservation Object",
               pageBuilder: (context, state) => _getPage(
                 child: ShowReservationObjectPage(
@@ -473,19 +473,19 @@ class Routes {
 
   static final _moreRoutes = [
     _route(
-      path: "/more",
+      path: "/meer",
       name: "More",
       child: const MorePage(),
       routes: [
         // Route for GalleryPage.
         _route(
-          path: "gallery",
+          path: "gallerij",
           name: "Gallery",
           child: const GalleryMainPage(),
         ),
         // Route for DocumentsPage.
         _route(
-          path: "documents",
+          path: "documenten",
           name: "Documents",
           child: const DocumentsMainPage(),
         ),
@@ -507,7 +507,7 @@ class Routes {
           _getPage(child: const LoginPage(), name: "Login"),
     ),
     GoRoute(
-      path: '/forgot',
+      path: '/wachtwoord-vergeten',
       name: 'Forgot Password',
       pageBuilder: (child, state) =>
           _getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
