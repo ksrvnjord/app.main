@@ -5,8 +5,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
 // ignore: prefer-static-class
-final groupsForUserProvider = FutureProvider.autoDispose
-    .family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
+final groupsForUserProvider =
+    FutureProvider.family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
   (ref, userId) async {
     final commissies = ref.watch(commissiesForUserProvider(userId).future);
 

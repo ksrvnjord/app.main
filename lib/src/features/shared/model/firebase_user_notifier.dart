@@ -28,7 +28,7 @@ final currentFirestoreUserProvider =
 
 // ignore: prefer-static-class
 final currentFirestoreUserStreamProvider =
-    StreamProvider.autoDispose<QuerySnapshot<FirestoreAlmanakProfile>>((ref) {
+    StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>((ref) {
   final user = ref.watch(firebaseAuthUserProvider);
 
   return FirebaseFirestore.instance

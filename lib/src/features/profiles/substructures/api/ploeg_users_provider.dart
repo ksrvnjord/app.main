@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 
 // ignore: prefer-static-class
 final ploegUsersProvider =
-    FutureProvider.autoDispose.family<QuerySnapshot<PloegEntry>, String>(
+    FutureProvider.family<QuerySnapshot<PloegEntry>, String>(
   (ref, name) {
     final selectedYear =
         ref.watch(ploegYearProvider); // Year can be changed in state.

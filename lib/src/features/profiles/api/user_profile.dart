@@ -11,7 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 
 // Retrieves all data from firestore and heimdall for a given user.
 final almanakUserProvider =
-    FutureProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
+    FutureProvider.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async {
     if (FirebaseAuth.instance.currentUser == null) {
       // If in DEMO mode, the lidnummer is the heimdall id.
@@ -57,8 +57,8 @@ final almanakUserProvider =
   },
 );
 
-final heimdallUserByLidnummerProvider = FutureProvider.autoDispose
-    .family<Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
+final heimdallUserByLidnummerProvider = FutureProvider.family<
+    Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
   (ref, identifier) async {
     final client = ref.watch(graphQLModelProvider).client;
 
@@ -75,7 +75,7 @@ final heimdallUserByLidnummerProvider = FutureProvider.autoDispose
 );
 
 final heimdallUserByIdProvider =
-    FutureProvider.autoDispose.family<Query$AlmanakProfile$user?, String>(
+    FutureProvider.family<Query$AlmanakProfile$user?, String>(
   (ref, heimdallId) async {
     final client = ref.watch(graphQLModelProvider).client;
 
