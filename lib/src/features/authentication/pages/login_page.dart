@@ -23,9 +23,9 @@ class LoginPage extends ConsumerWidget {
       body: <Widget>[
         const LogoWidget(image: Images.appLogoBlue)
             .padding(bottom: logoPadding),
-        auth.isBusy
+        auth.isBusy // Wait for try login into Firebase and Heimdall.
             ? const LoginLoadingWidget()
-            : auth.client != null
+            : auth.client != null // User logged into Heimdall.
                 ? const LoginDoneWidget()
                 : const LoginForm(),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
