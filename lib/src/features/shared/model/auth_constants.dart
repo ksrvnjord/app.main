@@ -1,7 +1,5 @@
 // @immutable // TODO: create a provider for this to introduce immutability.
 
-import 'package:get_it/get_it.dart';
-
 class AuthConstants {
   Environment environment = Environment.demo;
 
@@ -9,7 +7,7 @@ class AuthConstants {
   static const demoBaseURL = 'https://heimdall-test.ksrv.nl';
 
   get baseURL {
-    switch (GetIt.I.get<AuthConstants>().environment) {
+    switch (environment) {
       case Environment.production:
         return prodBaseURL;
       case Environment.demo:
@@ -20,7 +18,7 @@ class AuthConstants {
   }
 
   get oauthId {
-    switch (GetIt.I.get<AuthConstants>().environment) {
+    switch (environment) {
       case Environment.production:
         return '4';
       case Environment.demo:
@@ -31,7 +29,7 @@ class AuthConstants {
   }
 
   get oauthSecret {
-    switch (GetIt.I.get<AuthConstants>().environment) {
+    switch (environment) {
       case Environment.production:
         return 'J3VLpaahf406OCpMrQzAYKT4kjV03jSAnu3olNPu';
       case Environment.demo:
