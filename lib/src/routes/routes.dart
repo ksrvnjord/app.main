@@ -511,7 +511,7 @@ class Routes {
       name: "More",
       child: const MorePage(),
       routes: [
-        // route for about page.
+        // Route for about page.
         _route(
           path: "about",
           name: "About this app",
