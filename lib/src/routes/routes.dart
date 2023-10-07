@@ -76,14 +76,10 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 // ignore: prefer-static-class
 GoRouter? _previousRouter;
 
-@immutable
 class Routes {
   // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
-    final auth = ref.watch(authModelProvider);
-    final loggedIn = auth.client != null;
-
     return GoRouter(
       routes: [
         // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
@@ -112,21 +108,31 @@ class Routes {
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        // Redirect to requested page if logged in.
-        if (loggedIn) {
-          return null;
+        final auth = ref.read(authModelProvider);
+        final loggedIn = auth.client != null;
+        final loggingIn = state.uri.path == '/login';
+
+        // If not logged in, redirect to login page.
+        if (!loggedIn) {
+          // If we requested the login page, we don't want to redirect to the login page again.
+          if (loggingIn) return null;
+
+          final unauthenticatedUri = Uri(
+            path: '/login',
+            queryParameters: {'from': state.uri.toString()},
+          );
+
+          // If we requested other pages, we want to redirect to the login page.
+          return unauthenticatedUri.toString();
         }
 
-        // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
-        if (Routes._unauthenticated
-            .any((route) => route.path == state.matchedLocation)) {
-          return null;
-        }
+        if (loggingIn) return state.uri.queryParameters['from'] ?? '/';
 
-        return '/login';
+        return null;
       },
+      refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/login',
       observers: [
         GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),

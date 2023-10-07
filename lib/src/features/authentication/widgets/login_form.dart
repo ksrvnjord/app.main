@@ -24,8 +24,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   void login(AuthModel auth, GraphQLModel _) async {
     // ignore: avoid-ignoring-return-values
     await auth.login(_username.text, _password.text);
-    // ignore: avoid-ignoring-return-values
-    await auth.firebase();
   }
 
   @override
