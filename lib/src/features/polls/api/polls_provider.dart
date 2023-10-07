@@ -25,3 +25,9 @@ final openPollsProvider =
         ) // Show the poll with closest deadline first.
         .limit(3)
         .get());
+
+// ignore: prefer-static-class
+final pollProvider =
+    FutureProvider.family<DocumentSnapshot<Poll>, String>((ref, pollId) {
+  return pollsCollection.doc(pollId).get();
+});

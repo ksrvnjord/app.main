@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -59,6 +60,11 @@ import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
+
+@immutable
+class RouteName {
+  static const forms = "Forms";
+}
 
 // This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
 // ignore: prefer-static-class
@@ -136,9 +142,21 @@ class Routes {
       routes: [
         // Route for viewing all forms.
         _route(
-          path: 'polls',
-          name: "Polls",
+          path: 'forms',
+          name: RouteName.forms,
           child: const PollsPage(),
+          routes: [
+            // Dynamic route for viewing one form.
+            // At the moment only accessible through deeplink, not in App-UI.
+            _route(
+              path: ':formId',
+              name: "Form",
+              pageBuilder: (context, state) => _getPage(
+                child: PollPage(pollId: state.pathParameters['formId']!),
+                name: "Form",
+              ),
+            ),
+          ],
         ),
         // Route for viewing all events.
         _route(
