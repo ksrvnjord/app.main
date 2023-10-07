@@ -11,27 +11,28 @@ final postsCollection =
           toFirestore: (post, _) => post.toJson(),
         );
 
-final postProvider =
-    StreamProvider.autoDispose.family<DocumentSnapshot<Post>, String>(
+final postProvider = StreamProvider.family<DocumentSnapshot<Post>, String>(
   (ref, docId) {
     return postsCollection.doc(docId).snapshots();
   },
 );
 
 // Retrieves posts for a given topic.
-final postsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
+final postsProvider = StreamProvider<QuerySnapshot<Post>>((ref) {
   final String? topic = ref.watch(selectedTopicProvider);
+
+  const int amountOfPosts = 30;
   if (topic == null) {
     // Get all posts if no topic selected.
     return postsCollection
         .orderBy('createdTime', descending: true)
-        .limit(50)
+        .limit(amountOfPosts) // TODO: use pagination for posts.
         .snapshots();
   }
 
   return postsCollection
       .where('topic', isEqualTo: topic)
       .orderBy('createdTime', descending: true)
-      .limit(50) // TODO: use pagination for posts.
+      .limit(amountOfPosts) // TODO: use pagination for posts.
       .snapshots();
 });

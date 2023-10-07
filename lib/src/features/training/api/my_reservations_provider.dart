@@ -6,7 +6,7 @@ import '../model/reservation.dart';
 
 // ignore: prefer-static-class
 final myReservationsProvider =
-    StreamProvider.autoDispose<QuerySnapshot<Reservation>>((ref) {
+    StreamProvider<QuerySnapshot<Reservation>>((ref) {
   final String? uid = ref.watch(firebaseAuthUserProvider)?.uid;
   if (uid == null) {
     return const Stream.empty();

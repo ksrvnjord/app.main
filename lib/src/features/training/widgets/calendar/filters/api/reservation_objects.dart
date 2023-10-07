@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 // Write a FutureProvider that returns a list of ReservationObjects.
 // ignore: prefer-static-class
 final availableReservationObjectsProvider =
-    FutureProvider.autoDispose<QuerySnapshot<ReservationObject>>((ref) async {
+    FutureProvider<QuerySnapshot<ReservationObject>>((ref) async {
   final filters = ref.watch(reservationTypeFiltersListProvider);
 
   return await FirebaseFirestore.instance

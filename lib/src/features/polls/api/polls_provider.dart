@@ -12,7 +12,10 @@ final CollectionReference<Poll> pollsCollection =
 // Retrieves all the polls.
 // ignore: prefer-static-class
 final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
-  return pollsCollection.orderBy('openUntil', descending: true).get();
+  return pollsCollection
+      .orderBy('openUntil', descending: true)
+      .limit(50) // TODO: use pagination for polls.
+      .get();
 });
 
 // ignore: prefer-static-class

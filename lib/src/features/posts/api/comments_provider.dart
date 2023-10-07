@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 
 // ignore: prefer-static-class
-final commentsProvider = StreamProvider.autoDispose
-    .family<QuerySnapshot<Comment>, String>((ref, postId) {
+final commentsProvider =
+    StreamProvider.family<QuerySnapshot<Comment>, String>((ref, postId) {
   final commentsCollection = FirebaseFirestore.instance
       .collection('posts')
       .doc(postId)
