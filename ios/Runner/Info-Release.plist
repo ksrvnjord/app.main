@@ -78,7 +78,7 @@
 				<string>app.njord.nl</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>njord</string>
+					<string>http</string>
 				</array>
 			</dict>
 		</array>
