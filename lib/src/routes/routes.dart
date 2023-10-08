@@ -109,26 +109,27 @@ class Routes {
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        final auth = ref.read(authModelProvider);
-        final loggedIn = auth.client != null;
-        final loggingIn = state.uri.path == '/login';
+        final AuthModel auth = ref.read(authModelProvider);
+        final bool loggedIn = auth.client != null;
+        const String loginPath = '/login';
+        const String defaultLocationAfterLogin = '/';
 
-        // If not logged in, redirect to login page.
-        if (!loggedIn) {
-          // If we requested the login page, we don't want to redirect to the login page again.
-          if (loggingIn) return null;
-
-          final unauthenticatedUri = Uri(
-            path: '/login',
+        // CHECK 1: We have to add a redirect to the URL if the user is not logged in.
+        if (!loggedIn &&
+            !Routes._unauthenticated
+                .any((route) => route.path == state.matchedLocation)) {
+          return Uri(
+            path: loginPath,
             queryParameters: {'from': state.uri.toString()},
-          );
-
-          // If we requested other pages, we want to redirect to the login page.
-          return unauthenticatedUri.toString();
+          ).toString();
         }
 
-        if (loggingIn) return state.uri.queryParameters['from'] ?? '/';
+        // CHECK2: User is logged in, so we can follow the 'from' redirect url if possible.
+        if (loggedIn && state.uri.path == loginPath) {
+          return state.uri.queryParameters['from'] ?? defaultLocationAfterLogin;
+        }
 
+        // User is logged.
         return null;
       },
       refreshListenable: ref.read(authModelProvider),
