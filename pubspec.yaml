@@ -54,7 +54,7 @@ dependencies:
   firebase_app_check: ^0.2.0
   tuple: ^2.0.1
   path_provider: ^2.0.2
-  flutter_riverpod: ^2.2.0
+  flutter_riverpod: ^2.4.3
   riverpod_generator: ^2.2.3
   timeago: ^3.3.0
   expandable_text: ^2.3.0
