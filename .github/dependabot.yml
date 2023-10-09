@@ -19,3 +19,11 @@ updates:
       - "alexanderserraris"
     schedule:
       interval: "weekly"
+
+    # Enable version updates for Gradle
+  - package-ecosystem: "gradle" # TODO: check if dependabot opens PRs for gradle
+    directory: "/android"
+    assignees:
+      - "alexanderserraris"
+    schedule:
+      interval: "weekly"
