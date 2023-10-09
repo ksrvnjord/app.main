@@ -5,15 +5,11 @@ name: Static Analysis
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - "main"
+      - "!dependabot/**" # Ignore automatic PRs from dependabot
     paths:
-      - lib/**
-      - pubspec.yaml
-  push:
-    branches: ["main"]
-    paths:
-      - lib/**
-      - pubspec.yaml
+      - "lib/**"
 
 env:
   flutter_version: "3.10.0"
