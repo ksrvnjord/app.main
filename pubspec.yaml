@@ -33,7 +33,7 @@ dependencies:
   syncfusion_flutter_calendar: ^23.1.36
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: ">=3.0.0"
+  firebase_auth: ^4.10.1
   time_range_picker: ^2.2.0
   firebase_core: ^2.11.0
   shared_preferences: ^2.0.15
