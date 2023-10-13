@@ -314,7 +314,7 @@ class Routes {
               ),
             ),
             _route(
-              path: 'bekijk',
+              path: 'bekijken',
               name: "Show Damage",
               pageBuilder: (context, state) => _getPage(
                 child: DamagesShowPage(
@@ -334,7 +334,7 @@ class Routes {
           child: const AllTrainingPage(),
           routes: [
             _route(
-              path: 'plan',
+              path: 'nieuw',
               name: "Plan Training",
               pageBuilder: (context, state) => _getPage(
                 child: PlanTrainingPage(
