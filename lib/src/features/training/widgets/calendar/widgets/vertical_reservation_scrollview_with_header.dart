@@ -19,7 +19,7 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final availableReservationObjects =
-        ref.watch(availableReservationObjectsProvider);
+        ref.watch(sortedAvailableReservationObjectProvider);
 
     const double verticalLineWidth = 0.2;
 
@@ -30,7 +30,7 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: StickyHeader(
-            header: data.docs // This builds the header with the boat names.
+            header: data // This builds the header with the boat names.
                 .map<Widget>(
                   (doc) => ReservationObjectNameBox(reservationObj: doc),
                 )
@@ -38,7 +38,7 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
                 .toRow(),
             content: Stack(
               children: [
-                data.docs // This builds the content with the slots.
+                data // This builds the content with the slots.
                     .map<Widget>((e) {
                       return ObjectCalendar(date: date, boat: e).border(
                         left: verticalLineWidth,
