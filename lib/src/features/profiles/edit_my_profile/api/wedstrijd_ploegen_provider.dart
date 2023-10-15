@@ -12,6 +12,8 @@ final wedstrijdPloegenProvider = Provider<List<String>>(
       "Middengroep Licht",
       "Middengroep Zwaar",
       "Middengroep Lichte Dames",
+      "Oude Vier",
+      "Dames Vier",
       "Scull",
     ]..sort();
   },
