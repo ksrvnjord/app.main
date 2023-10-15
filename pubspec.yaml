@@ -6,7 +6,7 @@ version: 1.1726.11+13
 
 environment:
   sdk: "^2.19.4" # Dart SDK version: https://dart.dev/get-dart/archive
-  flutter: ^3.10.0 # Flutter SDK version: https://docs.flutter.dev/release/archive
+  flutter: ^3.13.6 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
@@ -43,7 +43,7 @@ dependencies:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
   cloud_functions: ^4.4.1
-  firebase_storage: ^11.2.7
+  firebase_storage: ^11.2.8
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0

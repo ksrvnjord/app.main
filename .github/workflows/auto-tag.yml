@@ -7,7 +7,9 @@ name: Auto Tag from pubspec.yaml
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths:
+      - "pubspec.yaml" # Only run on changes to the pubspec.yaml file
 
 jobs:
   tag:
@@ -15,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Flutter Auto Tag
         # You may pin to the exact commit or the version.
         uses: jacopocarlini/action-autotag@3.0.0
