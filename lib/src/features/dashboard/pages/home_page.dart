@@ -91,7 +91,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 FirebaseWidget(
                   onAuthenticated: IconButton(
                     iconSize: myProfileSize,
-                    onPressed: () => context.go('/my-profile'),
+                    onPressed: () => context.goNamed("Edit Profile"),
                     icon:
                         const MyProfilePicture(profileIconSize: myProfileSize),
                   ),

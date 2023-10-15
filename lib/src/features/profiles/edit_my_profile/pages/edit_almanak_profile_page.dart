@@ -36,7 +36,11 @@ class _EditAlmanakProfilePageState
     final currentUser = ref.watch(currentFirestoreUserProvider);
     final userVal =
         ref.watch(firestoreUserFutureProvider(currentUser?.identifier ?? ""));
-    final userId = ref.watch(firebaseAuthUserProvider)?.uid;
+
+    // TODO: Make a try-else statement for if the userId is null.
+
+    // ignore: avoid-non-null-assertion
+    final userId = ref.watch(firebaseAuthUserProvider)!.uid;
 
     const double floatingActionButtonSpacing = 16;
     final colorScheme = Theme.of(context).colorScheme;
@@ -65,7 +69,9 @@ class _EditAlmanakProfilePageState
         FloatingActionButton.extended(
           backgroundColor: colorScheme.secondaryContainer,
           heroTag: null, // Prevents the hero animation from playing.
-          onPressed: () => context.go('/my-profile/public-profile/$userId'),
+          onPressed: () => context.goNamed('Preview Profile', pathParameters: {
+            'identifier': userId,
+          }),
           label: const Text("Publiek profiel bekijken")
               .textColor(colorScheme.onSecondaryContainer),
         ),
@@ -144,8 +150,8 @@ class _EditAlmanakProfilePageState
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.go(
-                  '/my-profile/sensitive-data',
+                onTap: () => context.goNamed(
+                  "Sensitive Data",
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
