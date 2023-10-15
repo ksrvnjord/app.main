@@ -89,7 +89,7 @@ class AlmanakPloegPage extends ConsumerWidget {
         (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
-        Text("Geen Leeden gevonden voor $ploegName gevonden")
+        Text("Geen Leeden gevonden voor $ploegName")
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
