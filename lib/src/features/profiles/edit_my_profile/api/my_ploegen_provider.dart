@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notif
 
 // ignore: prefer-static-class
 final myPloegenProvider =
-    StreamProvider.autoDispose<QuerySnapshot<PloegEntry>>((ref) async* {
+    StreamProvider<QuerySnapshot<PloegEntry>>((ref) async* {
   // We have to mark as async* because we need to await the future and lazily yield.
   final uid = ref.watch(currentFirestoreUserProvider)?.identifier;
 

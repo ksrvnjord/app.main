@@ -9,10 +9,14 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 void upsertPollAnswer(
   String? choice,
   QuerySnapshot<PollAnswer> snapshot,
-  QueryDocumentSnapshot<Poll> pollDoc,
+  DocumentSnapshot<Poll> pollDoc,
   WidgetRef ref,
 ) async {
-  final Poll poll = pollDoc.data();
+  final Poll? poll = pollDoc.data();
+  if (poll == null) {
+    throw Exception('Poll is null');
+  }
+
   if (DateTime.now().isAfter(poll.openUntil)) {
     throw Exception('Poll is closed');
   }

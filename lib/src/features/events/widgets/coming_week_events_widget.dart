@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'upcoming_event_widget.dart';
 
@@ -49,7 +48,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
             error: (error, stackTrace) =>
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
-          onTap: () => Routemaster.of(context).push('events'),
+          onTap: () => context.pushNamed('Events'),
         ),
       ],
     );

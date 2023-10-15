@@ -126,7 +126,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
     return SingleChildScrollView(
       child: [
         [
-          Switch(
+          Switch.adaptive(
             value: listed,
             onChanged: toggleCheckBox,
           ),
@@ -138,7 +138,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
             ...(checkboxes.keys.map<Widget>(
               (key) {
                 return [
-                  Checkbox(
+                  Checkbox.adaptive(
                     value: checkboxes[key],
                     onChanged: (value) => toggleCheckBoxes(key, value ?? false),
                     checkColor: Colors.white,

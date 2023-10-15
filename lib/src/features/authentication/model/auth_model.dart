@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_constants.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -18,24 +18,52 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 // ignore: prefer-static-class
 final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
-// @immutable TODO: make this class immutable.
+// TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
   oauth2.Client? client;
-  bool isBusy = false;
+
   String error = '';
   String storedUser = '';
-  GlobalConstants globalConstants = GetIt.I.get<GlobalConstants>();
+
   final _storage = const FlutterSecureStorage();
+  bool _isBusy = false;
+  bool get isBusy => _isBusy;
+  get _authConstants => GetIt.I.get<AuthConstants>();
+
+  set isBusy(bool value) {
+    _isBusy = value;
+    notifyListeners();
+  }
 
   AuthModel() {
     isBusy = true;
     // ignore: prefer-async-await
-    boot().then((value) {
-      client = value;
-    }).whenComplete(() {
+    _boot().whenComplete(() {
       isBusy = false;
-      notifyListeners();
     });
+  }
+
+  // Login with State and config Management.
+  // SHOULD ONLY BE CALLED ON THE LOGIN PAGE.
+  Future<void> login(String username, String password) async {
+    // ignore: avoid-ignoring-return-values
+    error = ""; // Reset error message.
+    isBusy = true;
+    _authConstants.environment =
+        username == "demo" ? Environment.demo : Environment.production;
+
+    await _heimdallLogin(username, password);
+    await _firebaseLogin();
+    isBusy = false;
+  }
+
+  void logout() async {
+    unsubscribeAllTopics().whenComplete(() => null);
+
+    await _storage.delete(key: 'oauth2_credentials');
+    client = null;
+    FirebaseAuth.instance.signOut();
+    notifyListeners();
   }
 
   Future<void> unsubscribeAllTopics() async {
@@ -62,93 +90,82 @@ class AuthModel extends ChangeNotifier {
     await cache.put('all', true);
   }
 
-  Future<bool> login(String username, String password) async {
-    if (username == '') {
-      error = 'Please enter a username';
-      notifyListeners();
+  // Tries to login into Heimdall and Firebase.
+  Future<void> _heimdallLogin(String username, String password) async {
+    if (username.isEmpty || password.isEmpty) {
+      error = 'Both username and password fields are required.';
 
-      return false;
+      return;
     }
-
-    if (password == '') {
-      error = 'Please enter a password';
-      notifyListeners();
-
-      return false;
-    }
-
-    isBusy = true;
-    globalConstants.switchEnvironment(username);
-    notifyListeners();
-
-    error = '';
 
     try {
       client = await oauth2.resourceOwnerPasswordGrant(
-        globalConstants.oauthEndpoint(),
+        _authConstants.oauthEndpoint(),
         username,
         password,
-        identifier: globalConstants.oauthId,
-        secret: globalConstants.oauthSecret,
+        identifier: _authConstants.oauthId,
+        secret: _authConstants.oauthSecret,
       );
     } catch (e) {
       error = e.toString();
-      isBusy = false;
-      notifyListeners();
 
-      return false;
+      return;
     }
     Credentials? credentials = client?.credentials;
-    if (credentials != null) {
-      isBusy = false;
-      await _storage.write(
-        key: 'oauth2_credentials',
-        value: credentials.toJson(),
-      );
-      notifyListeners();
+    if (credentials == null) {
+      error = 'Credentials are null.';
 
-      return true;
+      return;
     }
 
-    isBusy = false;
-    notifyListeners();
-
-    return false;
+    // Write the credentials to the secure storage.
+    await _storage.write(
+      key: 'oauth2_credentials',
+      value: credentials.toJson(),
+    );
   }
 
-  Future<oauth2.Client?> boot() async {
+  // On Startup, try to login with the stored credentials.
+  // If the credentials are not expired, try to login to Firebase as well.
+  Future<void> _boot() async {
+    // Get stored credentials.
     String? storedCreds = await _storage.read(key: 'oauth2_credentials');
     Map<String, dynamic> credentials = jsonDecode(storedCreds ?? '{}');
+    // Change the environment based on the token endpoint.
+    _authConstants.environment = credentials['tokenEndpoint'] ==
+            AuthConstants.oauthEndpointFor(Environment.demo).path
+        ? Environment.demo
+        : Environment.production;
 
-    if (credentials['tokenEndpoint'] ==
-        'https://heimdall-test.ksrv.nl/oauth/token') {
-      globalConstants.switchEnvironment('demo');
-    } else {
-      globalConstants.switchEnvironment('production.account');
+    // If token doesn't exist or is expired, let user login again.
+    if (credentials['expiration'] == null ||
+        DateTime.fromMillisecondsSinceEpoch(credentials['expiration'])
+            .isBefore(DateTime.now())) {
+      return;
     }
-
-    if (credentials['expiration'] != null) {
-      DateTime expiration =
-          DateTime.fromMillisecondsSinceEpoch(credentials['expiration']);
-      if (expiration.isAfter(DateTime.now())) {
-        return oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
-      }
-    }
-
-    return null;
+    // Credentials not expired, try to login to Firebase.
+    client = oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
+    await _firebaseLogin();
   }
 
-  Future<bool> firebase() async {
+  // Login to Firebase with the stored credentials.
+  // NOTE: The function will not do anything if the environment is set to demo.
+  Future<void> _firebaseLogin() async {
+    if (_authConstants.environment == Environment.demo) {
+      // Don't login to Firebase in demo mode.
+      return;
+    }
+
     final String? accessToken = client?.credentials.accessToken;
     // Only fire this if an access token is available.
     if (accessToken == null) {
-      return false;
+      return;
     }
 
     try {
       // Get the token for the configured (constant) endpoint JWT.
       final response = await Dio().get(
-        globalConstants.jwtEndpoint().toString(),
+        _authConstants.jwtEndpoint().toString(),
         options: Options(headers: {
           'Authorization': 'Bearer $accessToken',
         }),
@@ -161,7 +178,6 @@ class AuthModel extends ChangeNotifier {
       if (data != null && data['token'] != null) {
         // ignore: avoid-ignoring-return-values
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
-        notifyListeners();
 
         String? uid = FirebaseAuth.instance.currentUser?.uid;
         if (uid != null) {
@@ -178,16 +194,5 @@ class AuthModel extends ChangeNotifier {
       // ignore: avoid-ignoring-return-values
       Sentry.captureException(error, stackTrace: st);
     }
-
-    return true;
-  }
-
-  void logout() async {
-    unsubscribeAllTopics().whenComplete(() => null);
-
-    await _storage.delete(key: 'oauth2_credentials');
-    client = null;
-    FirebaseAuth.instance.signOut();
-    notifyListeners();
   }
 }

@@ -4,8 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
-final commissieLeedenProvider = FutureProvider.autoDispose
-    .family<QuerySnapshot<CommissieEntry>, Tuple2<String, int>>(
+final commissieLeedenProvider =
+    FutureProvider.family<QuerySnapshot<CommissieEntry>, Tuple2<String, int>>(
   (ref, commissieAndYear) {
     final commissie = commissieAndYear.item1;
     final year = commissieAndYear.item2;

@@ -71,7 +71,7 @@ class AlmanakPloegPage extends ConsumerWidget {
             error: (error, stk) =>
                 ErrorCardWidget(errorMessage: error.toString()),
             loading: () => const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ],
@@ -89,7 +89,7 @@ class AlmanakPloegPage extends ConsumerWidget {
         (doc) => toListTile(doc),
       ),
       if (docs.isEmpty)
-        Text("Geen Leeden gevonden voor $ploegName gevonden")
+        Text("Geen Leeden gevonden voor $ploegName")
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();

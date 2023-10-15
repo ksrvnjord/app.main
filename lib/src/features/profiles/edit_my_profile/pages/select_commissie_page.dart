@@ -34,7 +34,8 @@ class SelectCommissiePage extends ConsumerWidget {
           errorMessage: err.toString(),
           stackTrace: stk,
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
       ),
     );
   }

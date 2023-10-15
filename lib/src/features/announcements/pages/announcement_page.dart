@@ -36,7 +36,7 @@ class AnnouncementPage extends ConsumerWidget {
           );
         },
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-        loading: () => const CircularProgressIndicator().center(),
+        loading: () => const CircularProgressIndicator.adaptive().center(),
       ),
     );
   }

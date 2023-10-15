@@ -28,7 +28,7 @@ class DamagesEditPage extends ConsumerWidget {
       },
       loading: () => const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         ),
       ),
       error: (e, s) => Scaffold(
