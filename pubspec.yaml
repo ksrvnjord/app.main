@@ -6,7 +6,7 @@ version: 1.1726.11+13
 
 environment:
   sdk: "^2.19.4" # Dart SDK version: https://dart.dev/get-dart/archive
-  flutter: ^3.10.0 # Flutter SDK version: https://docs.flutter.dev/release/archive
+  flutter: ^3.13.6 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
@@ -33,17 +33,17 @@ dependencies:
   syncfusion_flutter_calendar: ^23.1.36
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: ">=3.0.0"
+  firebase_auth: ^4.10.1
   time_range_picker: ^2.2.0
   firebase_core: ^2.11.0
   shared_preferences: ^2.0.15
-  firebase_messaging: ^14.6.8
+  firebase_messaging: ^14.6.9
   flutter_local_notifications: ^15.1.2
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
   cloud_functions: ^4.4.1
-  firebase_storage: ^11.2.7
+  firebase_storage: ^11.2.8
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
