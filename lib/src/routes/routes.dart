@@ -159,7 +159,7 @@ class Routes {
       routes: [
         // Route for viewing all forms.
         _route(
-          path: 'peilingen',
+          path: 'forms', // Used for Deeplinking-pilot, so don't change this.
           name: RouteName.forms,
           child: const PollsPage(),
           routes: [
