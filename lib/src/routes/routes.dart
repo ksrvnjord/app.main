@@ -137,7 +137,7 @@ class Routes {
         // Route for viewing all forms.
         _route(
           path: 'peilingen',
-          name: "Polls",
+          name: RouteName.forms,
           child: const PollsPage(),
         ),
         // Route for viewing all events.
@@ -248,7 +248,7 @@ class Routes {
                 ),
                 _route(
                   path: 'zichtbaarheid',
-                  name: "Edit my visibility",
+                  name: RouteName.editMyVisibility,
                   child: const MePrivacyPage(),
                 ),
               ],
