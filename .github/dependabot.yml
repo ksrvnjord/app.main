@@ -11,6 +11,7 @@ updates:
       - "alexanderserraris"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 3
 
   # Enable version updates for Github Actions
   - package-ecosystem: "github-actions"
@@ -19,6 +20,7 @@ updates:
       - "alexanderserraris"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 1
 
     # Enable version updates for Gradle
   - package-ecosystem: "gradle" # TODO: check if dependabot opens PRs for gradle
@@ -27,3 +29,4 @@ updates:
       - "alexanderserraris"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 2
