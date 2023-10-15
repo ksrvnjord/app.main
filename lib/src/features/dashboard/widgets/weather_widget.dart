@@ -118,7 +118,7 @@ class WeatherWidget extends ConsumerWidget {
             );
       },
       error: (err, stk) => Text(err.toString()),
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CircularProgressIndicator.adaptive(),
     );
   }
 }

@@ -29,7 +29,7 @@ class PostList extends ConsumerWidget {
                 ],
               ].toColumn(),
         loading: () => const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         ),
         error: (error, stack) => ErrorCardWidget(
           errorMessage: error.toString(),

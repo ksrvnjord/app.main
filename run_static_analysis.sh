@@ -6,6 +6,33 @@
 # - dart
 # - flutter
 
+# Function to search for the string in files recursively
+search_recursively() {
+    local dir="$1"
+    local target="$2"
+    
+    # Use find to search for files in the directory and its subdirectories
+    find "$dir" -type f -exec grep -Hn "$target" {} +
+    
+    # Check the exit status of find
+    if [ $? -eq 0 ]; then
+        echo "❌ Found occurence of '$target' in '$dir' or its subdirectories"
+        echo "Consider using the adaptive version of the widget instead"
+        echo "Example: CircularProgressIndicator.adaptive()"
+        exit 1
+    fi
+    
+    echo "✅ Found no occurences of '$target' in '$dir' or its subdirectories"
+}
+
+# These patterns should be replaced with their adaptive versions: https://docs.flutter.dev/platform-integration/platform-adaptations
+forbidden_patterns=("CircularProgressIndicator(" "Switch(" "Slider(" "Radio(" "Checkbox(")
+
+# Iterate through the array using a for loop
+for item in "${forbidden_patterns[@]}"; do
+    search_recursively "lib" "$item"
+done
+
 
 
 # create an array containing the commands
@@ -31,6 +58,7 @@ for command in "${commands[@]}"; do
     fi
     echo "✅ Static analysis passed for '$command'"
 done
+
 
 echo ""
 echo "✅ Static analysis completed successfully, good job!"

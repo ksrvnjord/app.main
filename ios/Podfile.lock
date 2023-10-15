@@ -38,7 +38,7 @@ PODS:
   - Firebase/Storage (10.15.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.15.0)
-  - firebase_analytics (10.5.0):
+  - firebase_analytics (10.5.1):
     - Firebase/Analytics (= 10.15.0)
     - firebase_core
     - Flutter
@@ -47,22 +47,22 @@ PODS:
     - firebase_core
     - FirebaseAppCheck (~> 10.15.0-beta)
     - Flutter
-  - firebase_auth (4.10.0):
+  - firebase_auth (4.10.1):
     - Firebase/Auth (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.16.0):
+  - firebase_core (2.17.0):
     - Firebase/CoreOnly (= 10.15.0)
     - Flutter
-  - firebase_crashlytics (3.3.6):
+  - firebase_crashlytics (3.3.7):
     - Firebase/Crashlytics (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.6.8):
+  - firebase_messaging (14.6.9):
     - Firebase/Messaging (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_storage (11.2.7):
+  - firebase_storage (11.2.8):
     - Firebase/Storage (= 10.15.0)
     - firebase_core
     - Flutter
@@ -367,13 +367,13 @@ SPEC CHECKSUMS:
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
-  firebase_analytics: 84fbf469b4964adb5410e25f3f45433dac480ccf
+  firebase_analytics: f153c564d6a7675e56e4f171454b9f1b3e7b6601
   firebase_app_check: e9ea282ac1792e9cb3e770a83ed37887c6f17947
-  firebase_auth: ca31bca59224dc727ea0df7f066f30158a8acc3b
-  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
-  firebase_crashlytics: 4365238d33a7a43164f1049f892365de4aee999f
-  firebase_messaging: 6aff54d420b7ce7080c26dd131b08bc632666852
-  firebase_storage: 0b51a488243202d5bed0d66415fea3425f2d3901
+  firebase_auth: b62e99e6ece589afe88ebe8919eb9563b52c384c
+  firebase_core: 28e84c2a4fcf6a50ef83f47b145ded8c1fa331e4
+  firebase_crashlytics: 36b8a72e23437dbb69bd97102661ce31b6721be5
+  firebase_messaging: 91ec967913a5d144f951b3c3ac17a57796d38735
+  firebase_storage: 5aa5cd1cfc03814e3417b6718d805e5d1804f990
   FirebaseAnalytics: 47cef43728f81a839cf1306576bdd77ffa2eac7e
   FirebaseAppCheck: 66eea1c882cddd1bce9d92a0a7efd596f7204782
   FirebaseAppCheckInterop: a8c555b1c2db1d9445e6c3a08a848167ddb7eb51
@@ -411,7 +411,7 @@ SPEC CHECKSUMS:
   Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
   sentry_flutter: b2feefdad5b0f06602347172bc7257e8e9da5562
   SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
-  share_plus: 599aa54e4ea31d4b4c0e9c911bcc26c55e791028
+  share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4

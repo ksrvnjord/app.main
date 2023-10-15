@@ -37,7 +37,8 @@ class CommentsPage extends ConsumerWidget {
                 squareBorder: true,
                 expandContent: true,
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),
@@ -57,7 +58,8 @@ class CommentsPage extends ConsumerWidget {
                         separator: const SizedBox(height: commentSpacing),
                       )
                       .padding(horizontal: commentHPadding),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
             ),

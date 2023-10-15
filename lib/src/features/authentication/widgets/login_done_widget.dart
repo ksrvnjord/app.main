@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginDoneWidget extends ConsumerWidget {
@@ -47,7 +47,7 @@ class LoginDoneWidget extends ConsumerWidget {
       const Text('Je bent ingelogd.').padding(top: textPadding),
       <Widget>[
         ElevatedButton(
-          onPressed: () => Routemaster.of(context).push('/'),
+          onPressed: () => context.go('/'),
           child: const Text('Doorgaan'),
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),

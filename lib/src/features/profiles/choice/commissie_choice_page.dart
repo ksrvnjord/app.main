@@ -40,7 +40,8 @@ class CommissieChoicePage extends ConsumerWidget {
           itemCount: choices.length,
         ),
         error: (err, __) => ErrorCardWidget(errorMessage: err.toString()),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
       ),
     );
   }

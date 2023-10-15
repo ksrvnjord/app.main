@@ -16,12 +16,17 @@ class PollCard extends ConsumerWidget {
     this.isExpanded,
   }) : super(key: key);
 
-  final QueryDocumentSnapshot<Poll> pollDoc;
+  final DocumentSnapshot<Poll> pollDoc;
   final bool? isExpanded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Poll poll = pollDoc.data();
+    final Poll? poll = pollDoc.data();
+    if (poll == null) {
+      return const ErrorCardWidget(
+        errorMessage: 'Het is niet gelukt om de poll te laden',
+      );
+    }
 
     final String? imagePath = poll.imagePath;
     final answerStream = ref.watch(pollAnswerProvider(pollDoc.reference));
@@ -68,7 +73,7 @@ class PollCard extends ConsumerWidget {
                   errorMessage:
                       "Het is niet gelukt om de afbeelding te downloaden",
                 ),
-                loading: () => const CircularProgressIndicator(),
+                loading: () => const CircularProgressIndicator.adaptive(),
               ),
         if (description != null)
           Text(description, style: textTheme.bodyMedium)
@@ -101,7 +106,7 @@ class PollCard extends ConsumerWidget {
           error: (error, stackTrace) => const ErrorCardWidget(
             errorMessage: 'Het is mislukt om je antwoord te laden',
           ),
-          loading: () => const CircularProgressIndicator(),
+          loading: () => const CircularProgressIndicator.adaptive(),
         ),
       ],
     ).card(

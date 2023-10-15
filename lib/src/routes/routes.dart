@@ -8,6 +8,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -60,6 +62,14 @@ import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
 
+@immutable
+class RouteName {
+  static const forms = "Forms";
+  static const postComments = "Post -> Comments";
+  static const editMyVisibility = "Edit my visibility";
+  static const reservation = "Reservation";
+}
+
 // This is super important - otherwise, we would throw away the whole widget tree when the provider is updated.
 // ignore: prefer-static-class
 final _navigatorKey = GlobalKey<NavigatorState>();
@@ -67,14 +77,10 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 // ignore: prefer-static-class
 GoRouter? _previousRouter;
 
-@immutable
 class Routes {
   // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
-    final auth = ref.watch(authModelProvider);
-    final loggedIn = auth.client != null;
-
     return GoRouter(
       routes: [
         // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
@@ -92,26 +98,43 @@ class Routes {
           ),
         ),
         ...Routes._unauthenticated,
+        _route(
+          name: "Unknown Route",
+          path: '/404',
+          child: const UnknownRoutePage(),
+        ),
       ],
       errorPageBuilder: (context, state) => _getPage(
         child: const UnknownRoutePage(),
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        // Redirect to requested page if logged in.
-        if (loggedIn) {
-          return null;
+        final AuthModel auth = ref.read(authModelProvider);
+        final bool loggedIn = auth.client != null;
+        const String loginPath = '/login';
+        const String defaultLocationAfterLogin = '/';
+
+        // CHECK 1: We have to add a redirect to the URL if the user is not logged in.
+        if (!loggedIn &&
+            !Routes._unauthenticated
+                .any((route) => route.path == state.matchedLocation)) {
+          return Uri(
+            path: loginPath,
+            queryParameters: {'from': state.uri.toString()},
+          ).toString();
         }
 
-        // If the user is not logged in, we check if the current route is in the list of routes that are allowed when not logged in.
-        if (Routes._unauthenticated
-            .any((route) => route.path == state.matchedLocation)) {
-          return null;
+        // CHECK2: User is logged in, so we can follow the 'from' redirect url if possible.
+        if (loggedIn && state.uri.path == loginPath) {
+          return state.uri.queryParameters['from'] ?? defaultLocationAfterLogin;
         }
 
-        return '/login';
+        // User is logged.
+        return null;
       },
-      initialLocation: _previousRouter?.routeInformationProvider.value.location,
+      refreshListenable: ref.read(authModelProvider),
+      initialLocation:
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/login',
       observers: [
         GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
@@ -139,6 +162,18 @@ class Routes {
           path: 'peilingen',
           name: RouteName.forms,
           child: const PollsPage(),
+          routes: [
+            // Dynamic route for viewing one form.
+            // At the moment only accessible through deeplink, not in App-UI.
+            _route(
+              path: ':formId',
+              name: "Form",
+              pageBuilder: (context, state) => _getPage(
+                child: PollPage(pollId: state.pathParameters['formId']!),
+                name: "Form",
+              ),
+            ),
+          ],
         ),
         // Route for viewing all events.
         _route(
@@ -271,13 +306,13 @@ class Routes {
           child: const CreatePostPage(),
         ),
         _route(
-          path: ':postId/comments',
-          name: 'Post -> Comments',
+          path: ':id/comments',
+          name: RouteName.postComments,
           pageBuilder: (context, state) => _getPage(
             child: CommentsPage(
-              postDocId: state.pathParameters['postId']!,
+              postDocId: state.pathParameters['id']!,
             ),
-            name: "Post -> Comments",
+            name: RouteName.postComments,
           ),
         ),
       ],
@@ -345,12 +380,12 @@ class Routes {
             ),
             _route(
               path: ':id',
-              name: "Show Training",
+              name: RouteName.reservation,
               pageBuilder: (context, state) => _getPage(
                 child: ShowTrainingPage(
                   reservationDocumentId: state.pathParameters['id']!,
                 ),
-                name: "Show Training",
+                name: RouteName.reservation,
               ),
             ),
             _route(
@@ -477,6 +512,12 @@ class Routes {
       name: "More",
       child: const MorePage(),
       routes: [
+        // Route for about page.
+        _route(
+          path: "about",
+          name: "About this app",
+          child: const AboutThisAppPage(),
+        ),
         // Route for GalleryPage.
         _route(
           path: "gallerij",
