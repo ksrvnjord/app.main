@@ -37,7 +37,7 @@ class _EditAlmanakProfilePageState
     final userVal =
         ref.watch(firestoreUserFutureProvider(currentUser?.identifier ?? ""));
 
-    // TODO: make a try-else statement for if the userId is null.
+    // TODO: Make a try-else statement for if the userId is null.
 
     // ignore: avoid-non-null-assertion
     final userId = ref.watch(firebaseAuthUserProvider)!.uid;
