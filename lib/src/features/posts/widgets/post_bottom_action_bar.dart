@@ -53,7 +53,7 @@ class PostBottomActionBar extends StatelessWidget {
           const Text("Reageer").fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: 4)),
         onTap: () => context.goNamed('Post -> Comments', pathParameters: {
-          'postId': snapshot.id,
+          'id': snapshot.id,
         }),
       ),
     ].toRow(
