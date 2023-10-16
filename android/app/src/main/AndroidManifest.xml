@@ -17,7 +17,7 @@
             android:resource="@mipmap/ic_stat_ic_launcher_foreground" />
 
         <activity android:name="io.flutter.embedding.android.FlutterActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection"
             android:hardwareAccelerated="true"
