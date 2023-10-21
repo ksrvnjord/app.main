@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
@@ -14,17 +12,18 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
-  const PloegChoicePage({Key? key})
+  const PloegChoicePage({Key? key, required this.ploegYear})
       : super(
           key: key,
         );
+
+  final int ploegYear;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedGender = ref.watch(ploegGeslachtFilterProvider);
     final ploegType = ref.watch(ploegTypeProvider);
-    final ploegYear = ref.watch(ploegYearProvider);
-    final ploegen = ref.watch(ploegenProvider);
+    final ploegen = ref.watch(ploegenProvider(ploegYear));
 
     const double titleShimmerPadding = 128;
     const double titleShimmerHeight = 18;
@@ -80,9 +79,10 @@ class PloegChoicePage extends ConsumerWidget {
                           ))
                       .toList(),
                   value: ploegYear,
-                  onChanged: (value) => ref
-                      .read(ploegYearProvider.notifier)
-                      .state = value ?? getNjordYear(),
+                  onChanged: (value) => context.replaceNamed(
+                    "Ploegen",
+                    queryParameters: {"year": (value ?? ploegYear).toString()},
+                  ),
                   menuMaxHeight: menuMaxHeight,
                 ),
               ].toRow(
@@ -114,8 +114,11 @@ class PloegChoicePage extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       // ignore: prefer-extracting-callbacks
-                      onTap: () => context
-                          .pushNamed("Ploeg", pathParameters: {"ploeg": ploeg}),
+                      onTap: () => context.pushNamed(
+                        "Ploeg",
+                        queryParameters: {"year": ploegYear.toString()},
+                        pathParameters: {"ploeg": ploeg},
+                      ),
                     ),
                   )
                   .toList(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/tag.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -9,12 +10,14 @@ class GroupInfoTile extends StatelessWidget {
     required this.startYear,
     required this.endYear,
     this.tags,
+    required this.groupPath,
   });
 
   final String header;
   final int startYear;
   final int endYear;
   final List<Tag>? tags;
+  final String groupPath;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,19 @@ class GroupInfoTile extends StatelessWidget {
                   ))
               .toList(),
       ].toWrap(spacing: chipSpacing, runSpacing: runSpacing),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      onTap: () => context.pushNamed(
+        groupPath,
+        pathParameters: {
+          groupPath == "Ploeg" ? "ploeg" : "name": header,
+        },
+        queryParameters: {
+          "year": startYear.toString(),
+        },
+      ), // If group==ploeg use groupID ploeg else use commissieID name.
     );
   }
 }
