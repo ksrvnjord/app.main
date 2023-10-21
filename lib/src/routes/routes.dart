@@ -24,6 +24,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -228,10 +229,29 @@ class Routes {
               name: "My Groups",
               child: const EditGroupsPage(),
               routes: [
-                _route(
+                GoRoute(
                   path: 'ploeg',
                   name: "Select Ploeg",
-                  child: const SelectPloegPage(),
+                  pageBuilder: (context, state) => _getPage(
+                    child: SelectPloegPage(
+                      selectedYear: int.parse(
+                        state.uri.queryParameters['year']!,
+                      ),
+                    ),
+                    name: "Select Ploeg",
+                  ),
+                  redirect: (
+                    context,
+                    state,
+                  ) => // Default route is ploegen for currentYear.
+                      state.uri.queryParameters['year'] == null
+                          ? Uri(
+                              path: state.matchedLocation,
+                              queryParameters: {
+                                'year': getNjordYear().toString(),
+                              },
+                            ).toString()
+                          : null,
                   routes: [
                     _route(
                       path: 'toevoegen',
@@ -443,10 +463,25 @@ class Routes {
             ),
           ],
         ),
-        _route(
+        GoRoute(
           path: "ploegen",
           name: "Ploegen",
-          child: const PloegChoicePage(),
+          pageBuilder: (context, state) => _getPage(
+            child: PloegChoicePage(
+              ploegYear: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Ploegen",
+          ),
+          redirect:
+              (context, state) => // Default route is ploegen for currentYear.
+                  state.uri.queryParameters['year'] == null
+                      ? Uri(
+                          path: state.matchedLocation,
+                          queryParameters: {'year': getNjordYear().toString()},
+                        ).toString()
+                      : null,
           routes: [
             _route(
               path: ":ploeg",
@@ -454,6 +489,9 @@ class Routes {
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
                   ploegName: state.pathParameters['ploeg']!,
+                  year: state.uri.queryParameters['year'] == null
+                      ? getNjordYear()
+                      : int.parse(state.uri.queryParameters['year']!),
                 ),
                 name: "Ploeg",
               ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
@@ -14,17 +13,18 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.da
 import 'package:styled_widget/styled_widget.dart';
 
 class SelectPloegPage extends ConsumerWidget {
-  const SelectPloegPage({Key? key})
+  const SelectPloegPage({Key? key, required this.selectedYear})
       : super(
           key: key,
         ); // TODO: make this page more modular so that it can be used to find a ploeg in the almanak, as selecting a ploeg for adding to profile, by changing the route where it navigates to.
 
+  final int selectedYear;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ploegen = ref.watch(ploegenProvider);
+    final ploegen = ref.watch(ploegenProvider(selectedYear));
     final selectedGender = ref.watch(ploegGeslachtFilterProvider);
     final ploegType = ref.watch(ploegTypeProvider);
-    final selectedYear = ref.watch(ploegYearProvider);
 
     const double ploegenHeaderFontSize = 24;
     const double titleShimmerPadding = 128;
@@ -73,8 +73,15 @@ class SelectPloegPage extends ConsumerWidget {
                       ))
                   .toList(),
               value: selectedYear,
-              onChanged: (value) => ref.read(ploegYearProvider.notifier).state =
-                  value ?? getNjordYear(),
+              // TODO: Remove this after we don't need users to manually add ploegen anymore.
+              // ignore: prefer-extracting-callbacks
+              onChanged: (value) {
+                ref.read(ploegYearProvider.notifier).state =
+                    value ?? selectedYear;
+                context.replaceNamed("Select Ploeg", queryParameters: {
+                  "year": (value ?? selectedYear).toString(),
+                });
+              },
               menuMaxHeight: menuMaxHeight,
             ),
           ].toRow(
@@ -99,7 +106,9 @@ class SelectPloegPage extends ConsumerWidget {
                           .read(ploegEntryCreateNotifierProvider.notifier)
                           .setPloegName(ploeg);
                       // ignore: avoid-ignoring-return-values
-                      context.pushNamed("Add Ploeg");
+                      context.pushNamed("Add Ploeg", queryParameters: {
+                        "year": selectedYear.toString(),
+                      });
                     },
                   ),
                 )

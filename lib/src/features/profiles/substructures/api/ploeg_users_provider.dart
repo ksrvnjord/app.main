@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
+import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
 final ploegUsersProvider =
-    FutureProvider.family<QuerySnapshot<PloegEntry>, String>(
-  (ref, name) {
-    final selectedYear =
-        ref.watch(ploegYearProvider); // Year can be changed in state.
-
+    FutureProvider.family<QuerySnapshot<PloegEntry>, Tuple2<String, int>>(
+  (ref, nameYear) {
     return FirebaseFirestore.instance
         .collectionGroup('groups')
         .withConverter(
@@ -17,8 +14,8 @@ final ploegUsersProvider =
               PloegEntry.fromJson(snapshot.data() ?? {}),
           toFirestore: (entry, _) => entry.toJson(),
         )
-        .where('name', isEqualTo: name)
-        .where('year', isEqualTo: selectedYear)
+        .where('name', isEqualTo: nameYear.item1)
+        .where('year', isEqualTo: nameYear.item2)
         .get();
   },
 );
