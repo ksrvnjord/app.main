@@ -19,9 +19,11 @@ class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
     required this.commissieName,
+    this.commissieYear,
   }) : super(key: key);
 
   final String commissieName;
+  final int? commissieYear;
 
   @override
   AlmanakCommissiePageState createState() => AlmanakCommissiePageState();
@@ -42,6 +44,21 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   final ScrollController scrollController = ScrollController(
     keepScrollOffset: true,
   ); // For keeping scroll position when changing year.
+
+  @override
+  void initState() {
+    super.initState();
+
+    final njordYear = getNjordYear();
+
+    selectedYear = Tuple2<int, int>(
+      widget.commissieYear ?? njordYear,
+      widget.commissieYear != null
+          // ignore: avoid-non-null-assertion
+          ? widget.commissieYear! + 1
+          : njordYear + 1,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

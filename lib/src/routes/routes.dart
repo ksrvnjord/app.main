@@ -434,6 +434,9 @@ class Routes {
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
                   commissieName: state.pathParameters['name']!,
+                  commissieYear: state.uri.queryParameters['year'] != null
+                      ? int.parse(state.uri.queryParameters['year']!)
+                      : null,
                 ),
                 name: "Commissie",
               ),

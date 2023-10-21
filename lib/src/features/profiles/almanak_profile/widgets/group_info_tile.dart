@@ -51,9 +51,15 @@ class GroupInfoTile extends StatelessWidget {
         Icons.arrow_forward_ios,
         color: Theme.of(context).colorScheme.primary,
       ),
-      onTap: () => context.pushNamed(groupPath, pathParameters: {
-        groupPath == "Ploeg" ? "ploeg" : "name": header,
-      }), // If group==ploeg use groupID ploeg else use commissieID name.
+      onTap: () => context.pushNamed(
+        groupPath,
+        pathParameters: {
+          groupPath == "Ploeg" ? "ploeg" : "name": header,
+        },
+        queryParameters: {
+          "year": startYear.toString(),
+        },
+      ), // If group==ploeg use groupID ploeg else use commissieID name.
     );
   }
 }
