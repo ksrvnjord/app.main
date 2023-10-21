@@ -23,7 +23,7 @@ class FirestoreAlmanakProfile {
   final bool?
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
 
-  bool get isAppCo => ['21203', '18031', '18257', '20198']
+  bool get isAppCo => ['21203', '18031', '18257', '20198', '22195']
       .contains(identifier); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
