@@ -172,7 +172,7 @@ class _EditAlmanakProfilePageState
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
-                  onTap: () => context.pushNamed('My Commissies'),
+                  onTap: () => context.goNamed('My Commissies'),
                 ),
                 DropdownButtonFormField<String?>(
                   items: ['Geen', ...houseNames]
@@ -246,7 +246,7 @@ class _EditAlmanakProfilePageState
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
-                  onTap: () => context.pushNamed(
+                  onTap: () => context.goNamed(
                     'My Allergies',
                   ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),

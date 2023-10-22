@@ -114,7 +114,7 @@ class PloegChoicePage extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       // ignore: prefer-extracting-callbacks
-                      onTap: () => context.pushNamed(
+                      onTap: () => context.goNamed(
                         "Ploeg",
                         queryParameters: {"year": ploegYear.toString()},
                         pathParameters: {"ploeg": ploeg},

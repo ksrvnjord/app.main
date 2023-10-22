@@ -35,7 +35,7 @@ class AlmanakPage extends StatelessWidget {
                 content: const Text('Je bent niet zichtbaar in de almanak.'),
                 actions: [
                   TextButton(
-                    onPressed: () => context.pushNamed('Visibility'),
+                    onPressed: () => context.goNamed('Visibility'),
                     child: const Text('Wijzig'),
                   ),
                 ],

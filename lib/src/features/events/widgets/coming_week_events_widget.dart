@@ -48,7 +48,7 @@ class ComingWeekEventsWidget extends ConsumerWidget {
             error: (error, stackTrace) =>
                 ErrorCardWidget(errorMessage: error.toString()),
           ),
-          onTap: () => context.pushNamed('Events'),
+          onTap: () => context.goNamed('Events'),
         ),
       ],
     );

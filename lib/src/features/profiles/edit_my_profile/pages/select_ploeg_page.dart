@@ -106,7 +106,7 @@ class SelectPloegPage extends ConsumerWidget {
                           .read(ploegEntryCreateNotifierProvider.notifier)
                           .setPloegName(ploeg);
                       // ignore: avoid-ignoring-return-values
-                      context.pushNamed("Add Ploeg", queryParameters: {
+                      context.goNamed("Add Ploeg", queryParameters: {
                         "year": selectedYear.toString(),
                       });
                     },

@@ -57,7 +57,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
-      onTap: () => context.pushNamed(routeName, pathParameters: {"name": name}),
+      onTap: () => context.goNamed(routeName, pathParameters: {"name": name}),
     );
   }
 }
