@@ -17,6 +17,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -82,9 +83,13 @@ Future<void> appRunner() async {
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(CurrentUser());
 
-  runApp(const BetterFeedback(
+  final preferences = await SharedPreferences.getInstance();
+
+  runApp(BetterFeedback(
     child: ProviderScope(
-      child: Application(),
+      child: Application(
+        preferences: preferences,
+      ),
     ),
   ));
 }
@@ -127,11 +132,20 @@ Future<void> main() async {
 
 // Main is not a nice class name, but it is the main class of the app.
 // ignore: prefer-match-file-name
-class Application extends ConsumerWidget {
-  const Application({Key? key}) : super(key: key);
+class Application extends ConsumerStatefulWidget {
+  const Application({Key? key, required this.preferences}) : super(key: key);
+
+  final SharedPreferences preferences;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ApplicationState createState() => ApplicationState();
+}
+
+class ApplicationState extends ConsumerState<Application> {
+  bool _firstRun = true;
+
+  @override
+  Widget build(BuildContext context) {
     initializeDateFormatting('nl_NL');
 
     const pageTransitionsTheme = PageTransitionsTheme(builders: {
@@ -143,36 +157,43 @@ class Application extends ConsumerWidget {
       TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
     });
 
-    final themeBrightness = ref.watch(themeBrightnessProvider);
-
     final router = ref.watch(Routes.routerProvider);
 
-    return Builder(
-      builder: (context) => MaterialApp.router(
-        routerConfig: router,
-        title: 'K.S.R.V. Njord',
-        theme: ThemeData(
-          pageTransitionsTheme: pageTransitionsTheme,
-          useMaterial3: true,
-          brightness: Brightness.light,
-          colorScheme: lightColorScheme,
-        ),
-        darkTheme: ThemeData(
-          pageTransitionsTheme: pageTransitionsTheme,
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorScheme: darkColorScheme,
-          // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
-        ),
-        themeMode: themeBrightness.whenOrNull(data: (themeMode) => themeMode),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('nl', 'NL')],
-        debugShowCheckedModeBanner: false,
+    /// This prevents the app from rebuilding on startup when the themeBrightnessProvider is not yet initialized.
+    ThemeMode themeMode;
+    final mode = ref.watch(themeBrightnessProvider);
+    if (_firstRun) {
+      themeMode = ThemeMode.values
+          .byName(widget.preferences.getString('themeMode') ?? 'dark');
+      _firstRun = false;
+    } else {
+      themeMode = mode;
+    }
+
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'K.S.R.V. Njord',
+      theme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: lightColorScheme,
       ),
+      darkTheme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: darkColorScheme,
+        // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
+      ),
+      themeMode: themeMode,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('nl', 'NL')],
+      debugShowCheckedModeBanner: false,
     );
   }
 }
