@@ -17,7 +17,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -83,13 +82,9 @@ Future<void> appRunner() async {
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(CurrentUser());
 
-  final preferences = await SharedPreferences.getInstance();
-
-  runApp(BetterFeedback(
+  runApp(const BetterFeedback(
     child: ProviderScope(
-      child: Application(
-        preferences: preferences,
-      ),
+      child: Application(),
     ),
   ));
 }
@@ -132,20 +127,11 @@ Future<void> main() async {
 
 // Main is not a nice class name, but it is the main class of the app.
 // ignore: prefer-match-file-name
-class Application extends ConsumerStatefulWidget {
-  const Application({Key? key, required this.preferences}) : super(key: key);
-
-  final SharedPreferences preferences;
+class Application extends ConsumerWidget {
+  const Application({Key? key}) : super(key: key);
 
   @override
-  ApplicationState createState() => ApplicationState();
-}
-
-class ApplicationState extends ConsumerState<Application> {
-  bool _firstRun = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     initializeDateFormatting('nl_NL');
 
     const pageTransitionsTheme = PageTransitionsTheme(builders: {
@@ -159,16 +145,7 @@ class ApplicationState extends ConsumerState<Application> {
 
     final router = ref.watch(Routes.routerProvider);
 
-    /// This prevents the app from rebuilding on startup when the themeBrightnessProvider is not yet initialized.
-    ThemeMode themeMode;
-    final mode = ref.watch(themeBrightnessProvider);
-    if (_firstRun) {
-      themeMode = ThemeMode.values
-          .byName(widget.preferences.getString('themeMode') ?? 'dark');
-      _firstRun = false;
-    } else {
-      themeMode = mode;
-    }
+    final themeMode = ref.watch(themeBrightnessProvider);
 
     return MaterialApp.router(
       routerConfig: router,
@@ -186,7 +163,11 @@ class ApplicationState extends ConsumerState<Application> {
         colorScheme: darkColorScheme,
         // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
       ),
-      themeMode: themeMode,
+      themeMode: themeMode.when(
+        data: (mode) => mode,
+        loading: () => ThemeMode.system,
+        error: (_, __) => ThemeMode.system,
+      ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

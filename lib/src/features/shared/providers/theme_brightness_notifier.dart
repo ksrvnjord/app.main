@@ -4,25 +4,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: prefer-static-class
 final themeBrightnessProvider =
-    NotifierProvider<ThemeBrightnessNotifier, ThemeMode>(() {
+    AsyncNotifierProvider<ThemeBrightnessNotifier, ThemeMode>(() {
   return ThemeBrightnessNotifier();
 });
 
-// ignore: prefer-static-class
-final themeBrightnessFromSharedPrefs = FutureProvider<ThemeMode>((ref) async {
-  final prefs = await SharedPreferences.getInstance();
-  final themeMode = prefs.getString('themeMode');
-
-  return ThemeMode.values.byName(themeMode ?? 'system');
-});
-
-class ThemeBrightnessNotifier extends Notifier<ThemeMode> {
+class ThemeBrightnessNotifier extends AsyncNotifier<ThemeMode> {
   @override
-  build() {
-    return ThemeMode.dark;
+  Future<ThemeMode> build() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeMode = prefs.getString('themeMode');
+
+    return ThemeMode.values.byName(themeMode ?? 'dark');
   }
 
-  void setThemeMode(final ThemeMode? themeMode) async {
+  Future<void> setThemeMode(final ThemeMode? themeMode) async {
     final theme = themeMode ?? ThemeMode.system;
 
     final prefs = await SharedPreferences.getInstance();
@@ -30,6 +25,6 @@ class ThemeBrightnessNotifier extends Notifier<ThemeMode> {
     if (!result) {
       throw Exception('Could not save themeMode to SharedPreferences');
     }
-    state = theme;
+    state = AsyncValue.data(theme);
   }
 }

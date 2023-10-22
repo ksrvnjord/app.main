@@ -13,7 +13,7 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const double groupSpacing = 32;
 
-    final themeBrightness = ref.watch(themeBrightnessFromSharedPrefs);
+    final themeBrightness = ref.watch(themeBrightnessProvider);
 
     return Scaffold(
       appBar: AppBar(
