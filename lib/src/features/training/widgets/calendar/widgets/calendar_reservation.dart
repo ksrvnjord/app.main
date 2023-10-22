@@ -73,7 +73,7 @@ class CalendarReservation extends StatelessWidget {
               .textColor(colorScheme.onTertiaryContainer)
               .padding(all: reservationPadding),
         ),
-        onTap: () => context.pushNamed(
+        onTap: () => context.goNamed(
           RouteName.reservation,
           pathParameters: {'id': reservationDocumentId},
         ),

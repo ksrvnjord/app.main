@@ -38,7 +38,7 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.pushNamed(
+                onTap: () => context.goNamed(
                   'Notification Preferences',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),

@@ -47,7 +47,7 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
       ].toColumn().card(
             color: colorScheme.primaryContainer,
           ),
-      onTap: () => context.pushNamed(pushRoute),
+      onTap: () => context.goNamed(pushRoute),
     );
   }
 }
