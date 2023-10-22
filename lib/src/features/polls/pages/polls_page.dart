@@ -1,36 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-// TODO: Only polls that are open should be modifiable.
-class PollsPage extends ConsumerWidget {
+class PollsPage extends StatelessWidget {
   const PollsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pollQuery = ref.watch(pollsProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forms'),
       ),
-      body: pollQuery.when(
-        data: (snapshot) => snapshot.size == 0
-            ? const Center(child: Text('Geen polls gevonden'))
-            : ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemBuilder: (context, index) =>
-                    PollCard(pollDoc: snapshot.docs[index]),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: snapshot.size,
-              ),
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
-        error: (error, stack) =>
-            ErrorCardWidget(errorMessage: error.toString()),
+      body: FirestorePagination(
+        query: pollsCollection.orderBy('openUntil', descending: true),
+        itemBuilder: (context, snap, index) {
+          final pollSnapshot = snap as DocumentSnapshot<Poll>;
+
+          return PollCard(pollDoc: pollSnapshot);
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+        isLive: true,
+        padding: const EdgeInsets.all(8),
       ),
     );
   }
