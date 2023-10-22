@@ -25,17 +25,6 @@ final damageProvider =
 );
 
 // ignore: prefer-static-class
-final damagesProvider = StreamProvider<QuerySnapshot<Damage>>(
-  (ref) => FirebaseFirestore.instance
-      .collectionGroup("damages")
-      .withConverter<Damage>(
-        fromFirestore: (snapshot, _) => Damage.fromJson(snapshot.data() ?? {}),
-        toFirestore: (reservation, _) => reservation.toJson(),
-      )
-      .snapshots(),
-);
-
-// ignore: prefer-static-class
 final damagesForReservationObjectProvider =
     StreamProvider.family<QuerySnapshot<Damage>, String>(
   (ref, reservationObjectId) => FirebaseFirestore.instance

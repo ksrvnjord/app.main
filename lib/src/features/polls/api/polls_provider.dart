@@ -10,17 +10,6 @@ final CollectionReference<Poll> pollsCollection =
           toFirestore: (poll, _) => poll.toJson(),
         );
 
-// Retrieves all the polls.
-// ignore: prefer-static-class
-final pollsProvider = StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? pollsCollection
-          .orderBy('openUntil', descending: true)
-          .limit(50)
-          .snapshots()
-      : const Stream.empty();
-});
-
 // ignore: prefer-static-class
 final openPollsProvider =
     StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
