@@ -11,14 +11,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 
 // Retrieves all data from firestore and heimdall for a given user.
 final almanakUserProvider =
-    FutureProvider.family<FirestoreAlmanakProfile, String>(
-  (ref, lidnummer) async {
+    StreamProvider.family<FirestoreAlmanakProfile, String>(
+  (ref, lidnummer) async* {
     if (FirebaseAuth.instance.currentUser == null) {
       // If in DEMO mode, the lidnummer is the heimdall id.
       final profile =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
-      return FirestoreAlmanakProfile.fromHeimdall(profile);
+      yield FirestoreAlmanakProfile.fromHeimdall(profile);
     }
 
     // Call both queries in parallel.
@@ -26,7 +26,10 @@ final almanakUserProvider =
         ref.watch(heimdallUserByLidnummerProvider(lidnummer).future);
 
     FirestoreAlmanakProfile profile =
-        (await ref.watch(firestoreUserFutureProvider(lidnummer).future)).data();
+        (await ref.watch(firestoreUserStreamProvider(lidnummer).future))
+            .docs
+            .first
+            .data();
     final heimdallProfileData = await heimdallProfile;
 
     // Merge the data.
@@ -38,7 +41,7 @@ final almanakUserProvider =
     final postalCode = heimdallProfilePublic?.zipcode;
     final city = heimdallProfilePublic?.city;
 
-    return profile.copyWith(
+    yield profile.copyWith(
       email: heimdallProfilePublic?.email,
       phonePrimary: heimdallProfilePublic?.phone_primary,
       address: street != null ||
@@ -57,9 +60,9 @@ final almanakUserProvider =
   },
 );
 
-final heimdallUserByLidnummerProvider = FutureProvider.family<
+final heimdallUserByLidnummerProvider = StreamProvider.family<
     Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
-  (ref, identifier) async {
+  (ref, identifier) async* {
     final client = ref.watch(graphQLModelProvider).client;
 
     final result = await client.query$AlmanakProfileByIdentifier(
@@ -70,13 +73,13 @@ final heimdallUserByLidnummerProvider = FutureProvider.family<
       ),
     );
 
-    return result.parsedData?.userByIdentifier;
+    yield result.parsedData?.userByIdentifier;
   },
 );
 
 final heimdallUserByIdProvider =
-    FutureProvider.family<Query$AlmanakProfile$user?, String>(
-  (ref, heimdallId) async {
+    StreamProvider.family<Query$AlmanakProfile$user?, String>(
+  (ref, heimdallId) async* {
     final client = ref.watch(graphQLModelProvider).client;
 
     final result = await client.query$AlmanakProfile(
@@ -86,6 +89,6 @@ final heimdallUserByIdProvider =
       ),
     );
 
-    return result.parsedData?.user;
+    yield result.parsedData?.user;
   },
 );

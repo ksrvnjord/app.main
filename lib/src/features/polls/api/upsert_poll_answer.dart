@@ -30,12 +30,11 @@ void upsertPollAnswer(
         toFirestore: (answer, _) => answer.toJson(),
       );
 
-  ref.invalidate(
-    currentfirestoreUserFutureProvider,
-  ); // Retrieve latest allergies data, in case it changed.
-  final userSnapshot =
-      await ref.watch(currentfirestoreUserFutureProvider.future);
-  final currentUser = userSnapshot.data();
+  final userSnapshot = ref.watch(currentfirestoreUserStreamProvider);
+  final currentUser = userSnapshot.value?.docs.first.data();
+  if (currentUser == null) {
+    throw Exception('Firestore User is null');
+  }
 
   final bool hasAnswered = snapshot.size != 0;
   if (!hasAnswered) {

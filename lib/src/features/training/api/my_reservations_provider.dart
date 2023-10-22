@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 
 import '../model/reservation.dart';
 
 // ignore: prefer-static-class
 final myReservationsProvider =
     StreamProvider<QuerySnapshot<Reservation>>((ref) {
-  final String? uid = ref.watch(firebaseAuthUserProvider)?.uid;
+  final String? uid = ref.watch(firebaseAuthUserProvider).value?.uid;
   if (uid == null) {
     return const Stream.empty();
   }

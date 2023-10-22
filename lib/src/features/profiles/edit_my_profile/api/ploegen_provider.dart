@@ -10,18 +10,20 @@ import 'package:tuple/tuple.dart';
 // Must be a future provider because the competitieploegen are fetched from the database.
 // ignore: prefer-static-class
 final ploegenProvider =
-    FutureProvider.family<List<String>, int>((ref, year) async {
+    StreamProvider.family<List<String>, int>((ref, year) async* {
   final selectedType = ref.watch(ploegTypeProvider);
 
   switch (selectedType) {
     case PloegType.wedstrijd:
-      return ref.watch(wedstrijdPloegenProvider);
+      yield ref.watch(wedstrijdPloegenProvider);
+      break;
     case PloegType.competitie:
       final selectedGender = ref.watch(ploegGeslachtFilterProvider);
-      return ref.watch(
+      yield await ref.watch(
         competitiePloegenProvider(Tuple2<int, Gender>(year, selectedGender))
             .future,
       );
+      break;
     default:
       throw UnimplementedError('Unknown ploeg type');
   }

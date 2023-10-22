@@ -22,10 +22,10 @@ final myCommissiesProvider =
 });
 
 final commissiesForUserProvider =
-    FutureProvider.family<QuerySnapshot<CommissieEntry>, String>(
+    StreamProvider.family<QuerySnapshot<CommissieEntry>, String>(
   (ref, userId) => getCommissieCollectionRefWithConverter(
     peopleRef.doc(userId),
-  ).orderBy('startYear', descending: true).get(),
+  ).orderBy('startYear', descending: true).snapshots(),
 );
 
 // Convenience method to get a reference to the commissies collection using the converter.

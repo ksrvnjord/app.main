@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
@@ -35,12 +35,12 @@ class _EditAlmanakProfilePageState
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentFirestoreUserProvider);
     final userVal =
-        ref.watch(firestoreUserFutureProvider(currentUser?.identifier ?? ""));
+        ref.watch(firestoreUserStreamProvider(currentUser?.identifier ?? ""));
 
     // TODO: Make a try-else statement for if the userId is null.
 
     // ignore: avoid-non-null-assertion
-    final userId = ref.watch(firebaseAuthUserProvider)!.uid;
+    final userId = ref.watch(firebaseAuthUserProvider).value!.uid;
 
     const double floatingActionButtonSpacing = 16;
     final colorScheme = Theme.of(context).colorScheme;
@@ -90,10 +90,10 @@ class _EditAlmanakProfilePageState
   }
 
   ListView buildForm(
-    QueryDocumentSnapshot<FirestoreAlmanakProfile> snapshot,
+    QuerySnapshot<FirestoreAlmanakProfile> snapshot,
     BuildContext context,
   ) {
-    final user = snapshot.data();
+    final user = snapshot.docs.first.data();
     final colorScheme = Theme.of(context).colorScheme;
 
     const double imageHelpTextTopPadding = 4;
@@ -318,7 +318,7 @@ class _EditAlmanakProfilePageState
       success = false;
     });
 
-    ref.invalidate(firestoreUserFutureProvider); // Invalidate cache.
+    ref.invalidate(firestoreUserStreamProvider); // Invalidate cache.
 
     // PROFILE PICTURE UPLOAD.
     final File? newprofilePicture = form.profilePicture;

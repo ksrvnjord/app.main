@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almana
 
 // ignore: prefer-static-class
 final bestuurUsersProvider =
-    FutureProvider<QuerySnapshot<FirestoreAlmanakProfile>>(
+    StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>(
   (ref) => FirebaseFirestore.instance
       .collection("people")
       .withConverter(
@@ -13,5 +13,5 @@ final bestuurUsersProvider =
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
       .where("bestuurs_functie", isNull: false)
-      .get(),
+      .snapshots(),
 );

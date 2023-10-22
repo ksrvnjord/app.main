@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 
 // ignore: prefer-static-class
 final groupsForUserProvider =
-    FutureProvider.family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
-  (ref, userId) async {
+    StreamProvider.family<List<QueryDocumentSnapshot<GroupEntry>>, String>(
+  (ref, userId) async* {
     final commissies = ref.watch(commissiesForUserProvider(userId).future);
 
     final ploegen = ref.watch(ploegenForUserProvider(userId).future);
@@ -15,7 +15,7 @@ final groupsForUserProvider =
     // Await for both futures to complete.
     final snapshots = await Future.wait([commissies, ploegen]);
 
-    return snapshots // [ snapshot, snapshot].
+    yield snapshots // [ snapshot, snapshot].
         .map(
           (querySnapshot) => querySnapshot.docs,
         ) // [ [doc, doc], [doc, doc] ].

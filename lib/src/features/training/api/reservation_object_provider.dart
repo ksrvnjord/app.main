@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 
 // ignore: prefer-static-class
 final reservationObjectProvider =
-    FutureProvider.family<DocumentSnapshot<ReservationObject>, String>(
-  (ref, documentId) async {
-    return await FirebaseFirestore.instance
+    StreamProvider.family<DocumentSnapshot<ReservationObject>, String>(
+  (ref, documentId) {
+    return FirebaseFirestore.instance
         .collection('reservationObjects')
         .withConverter<ReservationObject>(
           fromFirestore: (snapshot, _) =>
@@ -14,6 +14,6 @@ final reservationObjectProvider =
           toFirestore: (reservationObject, _) => reservationObject.toJson(),
         )
         .doc(documentId)
-        .get();
+        .snapshots();
   },
 );

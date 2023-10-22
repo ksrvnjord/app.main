@@ -10,6 +10,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:oauth2/oauth2.dart';
@@ -20,26 +24,29 @@ final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
 // TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
-  oauth2.Client? client;
-
   String error = '';
   String storedUser = '';
 
+  AuthState _authState = AuthState.loading; // Default to loading on startup.
+
+  oauth2.Client? _client;
   final _storage = const FlutterSecureStorage();
-  bool _isBusy = false;
-  bool get isBusy => _isBusy;
+
+  oauth2.Client? get client => _client;
+  AuthState get authState => _authState;
+
   get _authConstants => GetIt.I.get<AuthConstants>();
 
-  set isBusy(bool value) {
-    _isBusy = value;
+  set authState(AuthState value) {
+    _authState = value;
     notifyListeners();
   }
 
   AuthModel() {
-    isBusy = true;
     // ignore: prefer-async-await
     _boot().whenComplete(() {
-      isBusy = false;
+      authState =
+          _client == null ? AuthState.unauthenticated : AuthState.authenticated;
     });
   }
 
@@ -48,22 +55,22 @@ class AuthModel extends ChangeNotifier {
   Future<void> login(String username, String password) async {
     // ignore: avoid-ignoring-return-values
     error = ""; // Reset error message.
-    isBusy = true;
+    authState = AuthState.loading;
     _authConstants.environment =
         username == "demo" ? Environment.demo : Environment.production;
 
     await _heimdallLogin(username, password);
     await _firebaseLogin();
-    isBusy = false;
+    authState =
+        _client == null ? AuthState.unauthenticated : AuthState.authenticated;
   }
 
   void logout() async {
     unsubscribeAllTopics().whenComplete(() => null);
 
     await _storage.delete(key: 'oauth2_credentials');
-    client = null;
-    FirebaseAuth.instance.signOut();
-    notifyListeners();
+    await FirebaseAuth.instance.signOut();
+    authState = AuthState.unauthenticated;
   }
 
   Future<void> unsubscribeAllTopics() async {
@@ -99,7 +106,7 @@ class AuthModel extends ChangeNotifier {
     }
 
     try {
-      client = await oauth2.resourceOwnerPasswordGrant(
+      _client = await oauth2.resourceOwnerPasswordGrant(
         _authConstants.oauthEndpoint(),
         username,
         password,
@@ -111,7 +118,7 @@ class AuthModel extends ChangeNotifier {
 
       return;
     }
-    Credentials? credentials = client?.credentials;
+    Credentials? credentials = _client?.credentials;
     if (credentials == null) {
       error = 'Credentials are null.';
 
@@ -144,7 +151,7 @@ class AuthModel extends ChangeNotifier {
       return;
     }
     // Credentials not expired, try to login to Firebase.
-    client = oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
+    _client = oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
     await _firebaseLogin();
   }
 
@@ -156,7 +163,7 @@ class AuthModel extends ChangeNotifier {
       return;
     }
 
-    final String? accessToken = client?.credentials.accessToken;
+    final String? accessToken = _client?.credentials.accessToken;
     // Only fire this if an access token is available.
     if (accessToken == null) {
       return;
@@ -185,7 +192,13 @@ class AuthModel extends ChangeNotifier {
             uid,
           ); // Link crashes to users, so we can reach out to them if needed.
           // Subscribe the user to FirebaseMessaging as well.
-          subscribeDefaultTopics(uid);
+          if (!kIsWeb) {
+            requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
+            subscribeDefaultTopics(uid);
+            // Web does not support messaging, also user should be logged in to Firebase for it to work.
+            saveMessagingToken(); // TODO: Retry on no internet connection.
+            initMessagingInfo();
+          }
         }
       }
     } catch (e, st) {

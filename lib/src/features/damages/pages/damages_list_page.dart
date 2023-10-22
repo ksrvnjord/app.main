@@ -31,17 +31,17 @@ class DamagesListPage extends ConsumerWidget {
           ),
           itemBuilder: (context, index) => DamageTileWidget(
             showDamage: () => context.goNamed('Show Damage', queryParameters: {
-              'id': data[index].id,
-              'reservationObjectId': data[index].data().parent.id,
+              'id': data.docs[index].id,
+              'reservationObjectId': data.docs[index].data().parent.id,
             }),
             editDamage: () => context.goNamed('Edit Damage', queryParameters: {
-              'id': data[index].id,
-              'reservationObjectId': data[index].data().parent.id,
+              'id': data.docs[index].id,
+              'reservationObjectId': data.docs[index].data().parent.id,
             }),
-            damageSnapshot: data[index],
+            damageSnapshot: data.docs[index],
           ),
           separatorBuilder: (context, index) => const SizedBox(height: gapY),
-          itemCount: data.length,
+          itemCount: data.size,
         ),
       ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
