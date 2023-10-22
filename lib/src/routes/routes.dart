@@ -52,7 +52,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -152,7 +151,6 @@ class Routes {
       initialLocation:
           _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
       observers: [
-        GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
       debugLogDiagnostics: true,
