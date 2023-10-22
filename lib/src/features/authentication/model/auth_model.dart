@@ -11,6 +11,9 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
+import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:oauth2/oauth2.dart';
@@ -189,7 +192,13 @@ class AuthModel extends ChangeNotifier {
             uid,
           ); // Link crashes to users, so we can reach out to them if needed.
           // Subscribe the user to FirebaseMessaging as well.
-          subscribeDefaultTopics(uid);
+          if (!kIsWeb) {
+            requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
+            subscribeDefaultTopics(uid);
+            // Web does not support messaging, also user should be logged in to Firebase for it to work.
+            saveMessagingToken(); // TODO: Retry on no internet connection.
+            initMessagingInfo();
+          }
         }
       }
     } catch (e, st) {
