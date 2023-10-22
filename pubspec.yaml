@@ -73,6 +73,7 @@ dependencies:
   package_info_plus: ^4.1.0
   flutter_web_plugins:
     sdk: flutter
+  firebase_pagination: ^3.0.0
 
 dependency_overrides:
   package_info_plus: any
