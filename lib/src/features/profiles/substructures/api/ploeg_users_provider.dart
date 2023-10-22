@@ -5,7 +5,7 @@ import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
 final ploegUsersProvider =
-    FutureProvider.family<QuerySnapshot<PloegEntry>, Tuple2<String, int>>(
+    StreamProvider.family<QuerySnapshot<PloegEntry>, Tuple2<String, int>>(
   (ref, nameYear) {
     return FirebaseFirestore.instance
         .collectionGroup('groups')
@@ -16,6 +16,6 @@ final ploegUsersProvider =
         )
         .where('name', isEqualTo: nameYear.item1)
         .where('year', isEqualTo: nameYear.item2)
-        .get();
+        .snapshots();
   },
 );

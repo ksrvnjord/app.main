@@ -35,7 +35,7 @@ class _EditAlmanakProfilePageState
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentFirestoreUserProvider);
     final userVal =
-        ref.watch(firestoreUserFutureProvider(currentUser?.identifier ?? ""));
+        ref.watch(firestoreUserStreamProvider(currentUser?.identifier ?? ""));
 
     // TODO: Make a try-else statement for if the userId is null.
 
@@ -90,10 +90,10 @@ class _EditAlmanakProfilePageState
   }
 
   ListView buildForm(
-    QueryDocumentSnapshot<FirestoreAlmanakProfile> snapshot,
+    QuerySnapshot<FirestoreAlmanakProfile> snapshot,
     BuildContext context,
   ) {
-    final user = snapshot.data();
+    final user = snapshot.docs.first.data();
     final colorScheme = Theme.of(context).colorScheme;
 
     const double imageHelpTextTopPadding = 4;
@@ -318,7 +318,7 @@ class _EditAlmanakProfilePageState
       success = false;
     });
 
-    ref.invalidate(firestoreUserFutureProvider); // Invalidate cache.
+    ref.invalidate(firestoreUserStreamProvider); // Invalidate cache.
 
     // PROFILE PICTURE UPLOAD.
     final File? newprofilePicture = form.profilePicture;

@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almana
 
 // ignore: prefer-static-class
 final homeUsers =
-    FutureProvider.family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
+    StreamProvider.family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
   (ref, houseName) => FirebaseFirestore.instance
       .collection("people")
       .withConverter(
@@ -13,5 +13,5 @@ final homeUsers =
         toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
       )
       .where("huis", isEqualTo: houseName)
-      .get(),
+      .snapshots(),
 );

@@ -52,10 +52,10 @@ final firestoreUserProvider = StateNotifierProvider.family<FirebaseUserNotifier,
 
     if (curUser == null) return FirebaseUserNotifier(null);
 
-    final firestoreUserVal = ref.watch(firestoreUserFutureProvider(userId));
+    final firestoreUserVal = ref.watch(firestoreUserStreamProvider(userId));
 
     final FirestoreAlmanakProfile? firebaseUser = firestoreUserVal.whenOrNull(
-      data: (data) => data.data(),
+      data: (data) => data.size > 0 ? data.docs.first.data() : null,
     );
 
     return FirebaseUserNotifier(firebaseUser);

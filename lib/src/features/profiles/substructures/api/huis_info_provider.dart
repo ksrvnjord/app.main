@@ -5,24 +5,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/huis_info.dart';
 
 // ignore: prefer-static-class
-final huisInfoProvider =
-    FutureProvider.autoDispose.family<HuisInfo?, String>((ref, name) async {
-  final snapshot = await FirebaseFirestore.instance
+final huisInfoProvider = StreamProvider.autoDispose
+    .family<QuerySnapshot<HuisInfo>, String>((ref, name) {
+  return FirebaseFirestore.instance
       .collection('group_info')
       .withConverter<HuisInfo>(
         fromFirestore: (snapshot, _) => HuisInfo.fromMap(snapshot.data() ?? {}),
         toFirestore: (HuisInfo huisInfo, _) => huisInfo.toMap(),
       )
       .where('name', isEqualTo: name)
-      .get();
-
-  return snapshot.size == 0 ? null : snapshot.docs.first.data();
+      .snapshots();
 });
 
 // ignore: prefer-static-class
 final huisDescriptionProvider =
-    FutureProvider.autoDispose.family<String?, String>((ref, name) async {
+    StreamProvider.autoDispose.family<String?, String>((ref, name) async* {
   final huis = await ref.watch(huisInfoProvider(name).future);
 
-  return huis?.description;
+  yield huis.docs.first.data().description;
 });

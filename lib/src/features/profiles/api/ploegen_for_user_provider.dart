@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 
 // ignore: prefer-static-class
 final ploegenForUserProvider =
-    FutureProvider.family<QuerySnapshot<PloegEntry>, String>((ref, userId) {
+    StreamProvider.family<QuerySnapshot<PloegEntry>, String>((ref, userId) {
   return FirebaseFirestore.instance
       .collection("people")
       .doc(userId)
@@ -16,5 +16,5 @@ final ploegenForUserProvider =
       )
       .where('type', isEqualTo: 'ploeg')
       .orderBy('year', descending: true)
-      .get();
+      .snapshots();
 });
