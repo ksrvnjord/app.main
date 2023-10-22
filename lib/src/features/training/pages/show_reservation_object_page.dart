@@ -108,12 +108,12 @@ class ShowReservationObjectPage extends ConsumerWidget {
               damagesForReservationObjectProvider(snapshot.id).future,
             ),
             success: (data) => [
-              if (data.isNotEmpty)
+              if (data.size > 0)
                 Text(
                   'Schades',
                   style: Theme.of(context).textTheme.labelLarge,
                 ).padding(top: gap),
-              ...data.map<Widget>((e) {
+              ...data.docs.map<Widget>((e) {
                 return DamageTileWidget(
                   showDamage: () => context.pushNamed(
                     'Show Damage',
