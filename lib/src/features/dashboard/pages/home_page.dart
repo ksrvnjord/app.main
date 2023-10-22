@@ -11,10 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.d
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/api/polls_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/api/firebase_currentuser_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -26,22 +23,22 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  /// We only need to refresh providers that we don't listen to through a stream.
   Future<void> _refresh() async {
-    // Invalidate all providers for the widgets on the home page.
-    ref.invalidate(firebaseAuthUserProvider);
-    ref.invalidate(vaarverbodProvider);
-    ref.invalidate(openPollsProvider);
-    ref.invalidate(pollAnswerProvider);
-    ref.invalidate(comingEventsProvider);
-    ref.invalidate(Announcements.firstTenProvider);
+    final futureProviders = [
+      vaarverbodProvider,
+      comingEventsProvider,
+      Announcements.firstTenProvider,
+    ];
 
-    // Wait for all providers to be updated.
+    for (final provider in futureProviders) {
+      ref.invalidate(provider);
+    }
+
     // ignore: avoid-ignoring-return-values
     await Future.wait([
-      ref.watch(vaarverbodProvider.future),
-      ref.watch(openPollsProvider.future),
-      ref.watch(comingEventsProvider.future),
-      ref.watch(Announcements.firstTenProvider.future),
+      for (final FutureProvider provider in futureProviders)
+        ref.watch(provider.future),
     ]);
   }
 

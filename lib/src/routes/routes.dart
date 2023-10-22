@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
@@ -110,32 +111,46 @@ class Routes {
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        final AuthModel auth = ref.read(authModelProvider);
-        final bool loggedIn = auth.client != null;
+        final AuthState authState = ref.read(authModelProvider).authState;
         const String loginPath = '/login';
-        const String defaultLocationAfterLogin = '/';
+        const String initialLocation = '/';
+        final currentPath = state.uri.path;
 
-        // CHECK 1: We have to add a redirect to the URL if the user is not logged in.
-        if (!loggedIn &&
-            !Routes._unauthenticated
-                .any((route) => route.path == state.matchedLocation)) {
-          return Uri(
-            path: loginPath,
-            queryParameters: {'from': state.uri.toString()},
-          ).toString();
+        final loginPathWithRedirect = Uri(
+          path: loginPath,
+          queryParameters: initialLocation == currentPath
+              ? {}
+              : {'from': state.uri.toString()},
+        ).toString();
+
+        switch (authState) {
+          case AuthState.loading:
+            if (currentPath != loginPath) {
+              // Loading happens on login page, as login page shows the loading widget.
+              return loginPathWithRedirect;
+            }
+            break;
+          case AuthState.unauthenticated:
+            final routeRequiresAuth = !Routes._unauthenticated
+                .any((route) => route.path == currentPath);
+            if (routeRequiresAuth) {
+              return loginPathWithRedirect;
+            }
+            break;
+          case AuthState.authenticated:
+            if (currentPath == loginPath) {
+              return state.uri.queryParameters['from'] ?? initialLocation;
+            }
+            break;
+          default:
+            throw UnimplementedError("Unknown AuthState");
         }
 
-        // CHECK2: User is logged in, so we can follow the 'from' redirect url if possible.
-        if (loggedIn && state.uri.path == loginPath) {
-          return state.uri.queryParameters['from'] ?? defaultLocationAfterLogin;
-        }
-
-        // User is logged.
         return null;
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/login',
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
       observers: [
         GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),

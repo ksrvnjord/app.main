@@ -1,6 +1,7 @@
 // ignore_for_file: prefer-static-class
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 
 import '../model/post.dart';
@@ -11,28 +12,30 @@ final postsCollection =
           toFirestore: (post, _) => post.toJson(),
         );
 
-final postProvider = StreamProvider.family<DocumentSnapshot<Post>, String>(
+final postProvider =
+    StreamProvider.family.autoDispose<DocumentSnapshot<Post>, String>(
   (ref, docId) {
     return postsCollection.doc(docId).snapshots();
   },
 );
 
 // Retrieves posts for a given topic.
-final postsProvider = StreamProvider<QuerySnapshot<Post>>((ref) {
-  final String? topic = ref.watch(selectedTopicProvider);
+final postsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
+  if (ref.watch(firebaseAuthUserProvider).value != null) {
+    final String? topic = ref.watch(selectedTopicProvider);
+    const int amountOfPosts = 30;
 
-  const int amountOfPosts = 30;
-  if (topic == null) {
-    // Get all posts if no topic selected.
-    return postsCollection
-        .orderBy('createdTime', descending: true)
-        .limit(amountOfPosts) // TODO: use pagination for posts.
-        .snapshots();
+    return topic == null
+        ? postsCollection
+            .orderBy('createdTime', descending: true)
+            .limit(amountOfPosts)
+            .snapshots()
+        : postsCollection
+            .where('topic', isEqualTo: topic)
+            .orderBy("createdTime", descending: true)
+            .limit(amountOfPosts)
+            .snapshots();
+  } else {
+    return const Stream.empty();
   }
-
-  return postsCollection
-      .where('topic', isEqualTo: topic)
-      .orderBy('createdTime', descending: true)
-      .limit(amountOfPosts) // TODO: use pagination for posts.
-      .snapshots();
 });
