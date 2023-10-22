@@ -629,10 +629,11 @@ packages:
   firebase_pagination:
     dependency: "direct main"
     description:
-      name: firebase_pagination
-      sha256: "1f9ac5230447f243ce203a789e34b287f58082428d7709a9736e6352c0b3f401"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: ab62b946e3882c047564a52087d13838495beab2
+      url: "https://github.com/ksrvnjord/firebase_pagination"
+    source: git
     version: "3.0.0"
   firebase_storage:
     dependency: "direct main"

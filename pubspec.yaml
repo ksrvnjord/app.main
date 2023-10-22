@@ -73,7 +73,9 @@ dependencies:
   package_info_plus: ^4.1.0
   flutter_web_plugins:
     sdk: flutter
-  firebase_pagination: ^3.0.0
+  firebase_pagination: # Forked to add capability to refresh widget on Firebase Query change.
+    git:
+      url: https://github.com/ksrvnjord/firebase_pagination
 
 dependency_overrides:
   package_info_plus: any

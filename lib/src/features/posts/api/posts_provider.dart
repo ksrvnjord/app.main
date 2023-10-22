@@ -39,3 +39,13 @@ final postsProvider = StreamProvider.autoDispose<QuerySnapshot<Post>>((ref) {
     return const Stream.empty();
   }
 });
+
+final postQueryProvider = Provider.family.autoDispose<Query<Post>, String?>(
+  (ref, topic) {
+    return topic == null
+        ? postsCollection.orderBy('createdTime', descending: true)
+        : postsCollection
+            .where('topic', isEqualTo: topic)
+            .orderBy('createdTime', descending: true);
+  },
+);

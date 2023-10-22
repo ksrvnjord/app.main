@@ -41,7 +41,7 @@ class PostsPage extends ConsumerWidget {
                       FirebaseAnalytics.instance.logEvent(
                         name: 'filter_posts_button_pressed',
                         parameters: {
-                          'selected_topic': selectedTopic,
+                          'selected_topic': selectedTopic ?? "Alle posts",
                         },
                       );
 
