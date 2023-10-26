@@ -10,33 +10,21 @@ final themeBrightnessProvider =
 
 class ThemeBrightnessNotifier extends AsyncNotifier<ThemeMode> {
   @override
-  build() async {
+  Future<ThemeMode> build() async {
     final prefs = await SharedPreferences.getInstance();
+    final themeMode = prefs.getString('themeMode');
 
-    final hasTriedLustrumColors = prefs.getBool('hasTriedLustrumColors');
-    if (hasTriedLustrumColors == null || !hasTriedLustrumColors) {
-      // ignore: avoid-ignoring-return-values
-      await prefs.setString('themeMode', 'dark');
-      // ignore: avoid-ignoring-return-values
-      await prefs.setBool('hasTriedLustrumColors', true);
-    }
-
-    final themeStr = prefs.getString('themeMode');
-    try {
-      return ThemeMode.values.byName(themeStr ?? 'dark');
-    } catch (e) {
-      return ThemeMode.system;
-    }
+    return ThemeMode.values.byName(themeMode ?? 'dark');
   }
 
-  void setThemeMode(ThemeMode? themeMode) async {
-    themeMode ??= ThemeMode.system;
+  Future<void> setThemeMode(final ThemeMode? themeMode) async {
+    final theme = themeMode ?? ThemeMode.system;
 
     final prefs = await SharedPreferences.getInstance();
-    final result = await prefs.setString('themeMode', themeMode.name);
+    final result = await prefs.setString('themeMode', theme.name);
     if (!result) {
       throw Exception('Could not save themeMode to SharedPreferences');
     }
-    state = AsyncValue.data(themeMode);
+    state = AsyncValue.data(theme);
   }
 }
