@@ -10,18 +10,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
-import 'package:routemaster/routemaster.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:ksrvnjord_main_app/color_schemes.g.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
@@ -36,7 +35,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage _) async {}
 Future<void> appRunner() async {
   // ignore: avoid-ignoring-return-values
   WidgetsFlutterBinding.ensureInitialized();
-  Routemaster.setPathUrlStrategy();
+
+  usePathUrlStrategy();
 
   // ----------------- FIREBASE / START -----------------. //
   // ignore: avoid-ignoring-return-values
@@ -46,7 +46,7 @@ Future<void> appRunner() async {
   );
   if (!kIsWeb) {
     // TODO: add Apple App Check provider.
-    await FirebaseAppCheck.instance.activate(
+    FirebaseAppCheck.instance.activate(
       // TODO: add webprovider and apple provider so we can start to enforce app check for additional security.
       androidProvider:
           kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
@@ -67,18 +67,16 @@ Future<void> appRunner() async {
   if (!kIsWeb) {
     // FirebaseMessaging not implemented on Web yet.
     // ignore: avoid-ignoring-return-values
-    await FirebaseMessaging.instance.getInitialMessage();
+    FirebaseMessaging.instance.getInitialMessage();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
     kReleaseMode,
   ); // Don't collect analytics in debug mode.
 
   // ----------------- FIREBASE / END -----------------. //
 
-  // ignore: avoid-ignoring-return-values
-  GetIt.I.registerSingleton(GlobalObserverService());
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(AuthConstants());
   // ignore: avoid-ignoring-return-values
@@ -105,7 +103,7 @@ Future<void> main() async {
   ); // Store the cache in a separate folder.
   Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.
   // ignore: avoid-ignoring-return-values
-  await Hive.openLazyBox<ImageCacheItem>('imageCache');
+  Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
@@ -114,7 +112,7 @@ Future<void> main() async {
   if (kReleaseMode) {
     // Run it inside of SentryFlutter, but log / except to the debug-app.
     const double sampleRate = 1;
-    await SentryFlutter.init(
+    SentryFlutter.init(
       (options) {
         options.dsn =
             'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/3';
@@ -145,36 +143,38 @@ class Application extends ConsumerWidget {
       TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
     });
 
-    final themeBrightness = ref.watch(themeBrightnessProvider);
-
     final router = ref.watch(Routes.routerProvider);
 
-    return Builder(
-      builder: (context) => MaterialApp.router(
-        routerConfig: router,
-        title: 'K.S.R.V. Njord',
-        theme: ThemeData(
-          pageTransitionsTheme: pageTransitionsTheme,
-          useMaterial3: true,
-          brightness: Brightness.light,
-          colorScheme: lightColorScheme,
-        ),
-        darkTheme: ThemeData(
-          pageTransitionsTheme: pageTransitionsTheme,
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorScheme: darkColorScheme,
-          // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
-        ),
-        themeMode: themeBrightness.whenOrNull(data: (themeMode) => themeMode),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('nl', 'NL')],
-        debugShowCheckedModeBanner: false,
+    final themeMode = ref.watch(themeBrightnessProvider);
+
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'K.S.R.V. Njord',
+      theme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: lightColorScheme,
       ),
+      darkTheme: ThemeData(
+        pageTransitionsTheme: pageTransitionsTheme,
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: darkColorScheme,
+        // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
+      ),
+      themeMode: themeMode.when(
+        data: (mode) => mode,
+        loading: () => ThemeMode.system,
+        error: (_, __) => ThemeMode.system,
+      ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('nl', 'NL')],
+      debugShowCheckedModeBanner: false,
     );
   }
 }

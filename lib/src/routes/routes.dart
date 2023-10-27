@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
@@ -24,6 +25,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -50,7 +52,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/global_observer_service.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -109,34 +110,47 @@ class Routes {
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        final AuthModel auth = ref.read(authModelProvider);
-        final bool loggedIn = auth.client != null;
+        final AuthState authState = ref.read(authModelProvider).authState;
         const String loginPath = '/login';
-        const String defaultLocationAfterLogin = '/';
+        const String initialLocation = '/';
+        final currentPath = state.uri.path;
 
-        // CHECK 1: We have to add a redirect to the URL if the user is not logged in.
-        if (!loggedIn &&
-            !Routes._unauthenticated
-                .any((route) => route.path == state.matchedLocation)) {
-          return Uri(
-            path: loginPath,
-            queryParameters: {'from': state.uri.toString()},
-          ).toString();
+        final loginPathWithRedirect = Uri(
+          path: loginPath,
+          queryParameters: initialLocation == currentPath
+              ? {}
+              : {'from': state.uri.toString()},
+        ).toString();
+
+        switch (authState) {
+          case AuthState.loading:
+            if (currentPath != loginPath) {
+              // Loading happens on login page, as login page shows the loading widget.
+              return loginPathWithRedirect;
+            }
+            break;
+          case AuthState.unauthenticated:
+            final routeRequiresAuth = !Routes._unauthenticated
+                .any((route) => route.path == currentPath);
+            if (routeRequiresAuth) {
+              return loginPathWithRedirect;
+            }
+            break;
+          case AuthState.authenticated:
+            if (currentPath == loginPath) {
+              return state.uri.queryParameters['from'] ?? initialLocation;
+            }
+            break;
+          default:
+            throw UnimplementedError("Unknown AuthState");
         }
 
-        // CHECK2: User is logged in, so we can follow the 'from' redirect url if possible.
-        if (loggedIn && state.uri.path == loginPath) {
-          return state.uri.queryParameters['from'] ?? defaultLocationAfterLogin;
-        }
-
-        // User is logged.
         return null;
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/login',
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
       observers: [
-        GlobalObserver(),
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
       debugLogDiagnostics: true,
@@ -228,10 +242,29 @@ class Routes {
               name: "My Groups",
               child: const EditGroupsPage(),
               routes: [
-                _route(
+                GoRoute(
                   path: 'ploeg',
                   name: "Select Ploeg",
-                  child: const SelectPloegPage(),
+                  pageBuilder: (context, state) => _getPage(
+                    child: SelectPloegPage(
+                      selectedYear: int.parse(
+                        state.uri.queryParameters['year']!,
+                      ),
+                    ),
+                    name: "Select Ploeg",
+                  ),
+                  redirect: (
+                    context,
+                    state,
+                  ) => // Default route is ploegen for currentYear.
+                      state.uri.queryParameters['year'] == null
+                          ? Uri(
+                              path: state.matchedLocation,
+                              queryParameters: {
+                                'year': getNjordYear().toString(),
+                              },
+                            ).toString()
+                          : null,
                   routes: [
                     _route(
                       path: 'toevoegen',
@@ -434,16 +467,34 @@ class Routes {
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
                   commissieName: state.pathParameters['name']!,
+                  commissieYear: state.uri.queryParameters['year'] != null
+                      ? int.parse(state.uri.queryParameters['year']!)
+                      : null,
                 ),
                 name: "Commissie",
               ),
             ),
           ],
         ),
-        _route(
+        GoRoute(
           path: "ploegen",
           name: "Ploegen",
-          child: const PloegChoicePage(),
+          pageBuilder: (context, state) => _getPage(
+            child: PloegChoicePage(
+              ploegYear: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Ploegen",
+          ),
+          redirect:
+              (context, state) => // Default route is ploegen for currentYear.
+                  state.uri.queryParameters['year'] == null
+                      ? Uri(
+                          path: state.matchedLocation,
+                          queryParameters: {'year': getNjordYear().toString()},
+                        ).toString()
+                      : null,
           routes: [
             _route(
               path: ":ploeg",
@@ -451,6 +502,9 @@ class Routes {
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
                   ploegName: state.pathParameters['ploeg']!,
+                  year: state.uri.queryParameters['year'] == null
+                      ? getNjordYear()
+                      : int.parse(state.uri.queryParameters['year']!),
                 ),
                 name: "Ploeg",
               ),

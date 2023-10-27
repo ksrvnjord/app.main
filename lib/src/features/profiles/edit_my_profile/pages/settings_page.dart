@@ -13,6 +13,8 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const double groupSpacing = 32;
 
+    final themeBrightness = ref.watch(themeBrightnessProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Instellingen'),
@@ -38,7 +40,7 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.pushNamed(
+                onTap: () => context.goNamed(
                   'Notification Preferences',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
@@ -59,9 +61,11 @@ class SettingsPage extends ConsumerWidget {
                           ),
                         ))
                     .toList(),
-                value: ref
-                    .watch(themeBrightnessProvider)
-                    .whenOrNull(data: (themeMode) => themeMode),
+                value: themeBrightness.when(
+                  data: (brightness) => brightness,
+                  loading: () => ThemeMode.system,
+                  error: (error, stackTrace) => ThemeMode.system,
+                ),
                 hint: const Text('Weergave modus'),
                 onChanged: (value) => ref
                     .read(themeBrightnessProvider.notifier)

@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifi
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 // ignore: prefer-static-class
-final heimdallAlmanakProfileProvider = FutureProvider.autoDispose
+final heimdallAlmanakProfileProvider = StreamProvider.autoDispose
     .family<Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
-  (ref, profileId) async {
+  (ref, profileId) async* {
     final client = ref.watch(graphQLModelProvider).client;
     final result = await client.query$AlmanakProfileByIdentifier(
       Options$Query$AlmanakProfileByIdentifier(
@@ -18,6 +18,6 @@ final heimdallAlmanakProfileProvider = FutureProvider.autoDispose
 
     final parsedData = result.parsedData;
 
-    return parsedData?.userByIdentifier;
+    yield parsedData?.userByIdentifier;
   },
 );

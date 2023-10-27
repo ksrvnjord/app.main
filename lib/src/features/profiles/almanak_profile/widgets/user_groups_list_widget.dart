@@ -40,6 +40,7 @@ class UserGroupsListWidget extends StatelessWidget {
                     icon: Icons.person,
                   ),
                 ],
+          groupPath: "Commissie",
         );
       case PloegEntry:
         final ploegEntry = entry as PloegEntry;
@@ -54,6 +55,7 @@ class UserGroupsListWidget extends StatelessWidget {
               icon: Icons.person,
             ),
           ],
+          groupPath: "Ploeg",
         );
       default:
         throw UnimplementedError(

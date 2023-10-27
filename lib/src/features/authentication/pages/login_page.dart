@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_done_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_loading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/widgets/login_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart';
@@ -23,11 +23,11 @@ class LoginPage extends ConsumerWidget {
       body: <Widget>[
         const LogoWidget(image: Images.appLogoBlue)
             .padding(bottom: logoPadding),
-        auth.isBusy // Wait for try login into Firebase and Heimdall.
+        auth.authState ==
+                AuthState
+                    .loading // Wait for try login into Firebase and Heimdall.
             ? const LoginLoadingWidget()
-            : auth.client != null // User logged into Heimdall.
-                ? const LoginDoneWidget()
-                : const LoginForm(),
+            : const LoginForm(),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
     );
   }

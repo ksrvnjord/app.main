@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 
 // ignore: prefer-static-class
@@ -9,28 +10,25 @@ final CollectionReference<Poll> pollsCollection =
           toFirestore: (poll, _) => poll.toJson(),
         );
 
-// Retrieves all the polls.
 // ignore: prefer-static-class
-final pollsProvider = FutureProvider<QuerySnapshot<Poll>>((ref) {
-  return pollsCollection
-      .orderBy('openUntil', descending: true)
-      .limit(50) // TODO: use pagination for polls.
-      .get();
+final openPollsProvider =
+    StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
+  return ref.watch(firebaseAuthUserProvider).value != null
+      ? pollsCollection
+          .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+          .orderBy(
+            'openUntil',
+            descending: false,
+          ) // Show the poll with closest deadline first.
+          .limit(3)
+          .snapshots()
+      : const Stream.empty();
 });
 
 // ignore: prefer-static-class
-final openPollsProvider =
-    FutureProvider<QuerySnapshot<Poll>>((ref) => pollsCollection
-        .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-        .orderBy(
-          'openUntil',
-          descending: false,
-        ) // Show the poll with closest deadline first.
-        .limit(3)
-        .get());
-
-// ignore: prefer-static-class
 final pollProvider =
-    FutureProvider.family<DocumentSnapshot<Poll>, String>((ref, pollId) {
-  return pollsCollection.doc(pollId).get();
+    StreamProvider.family<DocumentSnapshot<Poll>, String>((ref, pollId) {
+  return ref.watch(firebaseAuthUserProvider).value != null
+      ? pollsCollection.doc(pollId).snapshots()
+      : const Stream.empty();
 });

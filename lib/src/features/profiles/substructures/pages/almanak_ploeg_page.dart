@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_year_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
@@ -16,20 +16,26 @@ class AlmanakPloegPage extends ConsumerWidget {
   const AlmanakPloegPage({
     Key? key,
     required this.ploegName,
+    required this.year,
   }) : super(key: key);
 
   final String ploegName;
 
+  /// NOTE: year is nullable because it is optional in the route.
+  final int year;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(ploegUsersProvider(ploegName));
-    final selectedYear = ref.watch(ploegYearProvider);
+    final users = ref.watch(ploegUsersProvider(Tuple2(ploegName, year)));
     final selectedPloegType = ref.watch(ploegTypeProvider);
 
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
 
     final List<Tuple2<int, int>> years = yearsFrom1874;
+
+    final ploegIsWedstrijdploeg =
+        ref.watch(wedstrijdPloegenProvider).contains(ploegName);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,11 +60,17 @@ class AlmanakPloegPage extends ConsumerWidget {
                           child: Text("${year.item1}-${year.item2}"),
                         ))
                     .toList(),
-                value: selectedYear,
-                onChanged: selectedPloegType == PloegType.wedstrijd
-                    ? (value) => ref.read(ploegYearProvider.notifier).state =
-                        value ?? getNjordYear()
-                    : null,
+                value: year,
+                onChanged:
+                    ploegIsWedstrijdploeg // Only wedstrijdploegen can have multiple years.
+                        ? (value) => context.replaceNamed(
+                              "Ploeg",
+                              pathParameters: {"ploeg": ploegName},
+                              queryParameters: {
+                                "year": (value ?? year).toString(),
+                              },
+                            )
+                        : null,
                 icon: const Icon(Icons.arrow_drop_down),
                 menuMaxHeight: menuMaxHeight,
               ),

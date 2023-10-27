@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 
 class DamagesListPage extends ConsumerWidget {
   const DamagesListPage({
@@ -13,8 +14,6 @@ class DamagesListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double paddingY = 16;
-    const double paddingX = 8;
     const double gapY = 8;
 
     return Scaffold(
@@ -22,27 +21,33 @@ class DamagesListPage extends ConsumerWidget {
         automaticallyImplyLeading: true,
         title: const Text('Schademeldingen'),
       ),
-      body: FutureWrapper(
-        future: ref.watch(damagesProvider.future),
-        success: (data) => ListView.separated(
-          padding: const EdgeInsets.symmetric(
-            vertical: paddingY,
-            horizontal: paddingX,
-          ),
-          itemBuilder: (context, index) => DamageTileWidget(
+      body: FirestorePagination(
+        query: FirebaseFirestore.instance
+            .collectionGroup("damages")
+            .withConverter<Damage>(
+              fromFirestore: (snapshot, _) =>
+                  Damage.fromJson(snapshot.data() ?? {}),
+              toFirestore: (reservation, _) => reservation.toJson(),
+            )
+            .orderBy('createdTime', descending: true),
+        itemBuilder: (context, snap, index) {
+          final pollSnapshot = snap as QueryDocumentSnapshot<Damage>;
+
+          return DamageTileWidget(
             showDamage: () => context.goNamed('Show Damage', queryParameters: {
-              'id': data[index].id,
-              'reservationObjectId': data[index].data().parent.id,
+              'id': pollSnapshot.id,
+              'reservationObjectId': pollSnapshot.data().parent.id,
             }),
             editDamage: () => context.goNamed('Edit Damage', queryParameters: {
-              'id': data[index].id,
-              'reservationObjectId': data[index].data().parent.id,
+              'id': pollSnapshot.id,
+              'reservationObjectId': pollSnapshot.data().parent.id,
             }),
-            damageSnapshot: data[index],
-          ),
-          separatorBuilder: (context, index) => const SizedBox(height: gapY),
-          itemCount: data.length,
-        ),
+            damageSnapshot: pollSnapshot,
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: gapY),
+        isLive: true,
+        padding: const EdgeInsets.all(8),
       ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // Only show button if user is logged in.

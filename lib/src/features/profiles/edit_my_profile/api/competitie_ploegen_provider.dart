@@ -7,8 +7,8 @@ import 'package:tuple/tuple.dart';
 // We give year and gender to this provider, so we can save the state for a selected filter combination.
 // ignore: prefer-static-class
 final competitiePloegenProvider =
-    FutureProvider.family<List<String>, Tuple2<int, Gender>>(
-  (ref, yearAndGender) async {
+    StreamProvider.family<List<String>, Tuple2<int, Gender>>(
+  (ref, yearAndGender) async* {
     final int selectedYear = yearAndGender.item1;
     final selectedGender = yearAndGender.item2;
 
@@ -27,6 +27,6 @@ final competitiePloegenProvider =
         .orderBy('name')
         .get();
 
-    return snapshot.docs.map((e) => e.data().name).toList();
+    yield snapshot.docs.map((e) => e.data().name).toList();
   },
 );

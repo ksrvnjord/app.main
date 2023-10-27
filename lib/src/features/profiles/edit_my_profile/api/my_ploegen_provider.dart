@@ -11,9 +11,9 @@ final myPloegenProvider =
   final uid = ref.watch(currentFirestoreUserProvider)?.identifier;
 
   final userDoc =
-      await ref.watch(firestoreUserFutureProvider(uid ?? "").future);
+      await ref.watch(firestoreUserStreamProvider(uid ?? "").future);
 
-  yield* userDoc.reference
+  yield* userDoc.docs.first.reference
       .collection('groups')
       .withConverter(
         fromFirestore: (snapshot, _) =>

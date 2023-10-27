@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 
 // ignore: prefer-static-class
 final reservationByIdProvider =
-    FutureProvider.family<DocumentSnapshot<Reservation>, String>(
+    StreamProvider.family<DocumentSnapshot<Reservation>, String>(
   (ref, reservationDocumentId) => FirebaseFirestore.instance
       .collection('reservations')
       .withConverter(
@@ -14,5 +14,5 @@ final reservationByIdProvider =
         toFirestore: (reservation, _) => reservation.toJson(),
       )
       .doc(reservationDocumentId)
-      .get(),
+      .snapshots(),
 );

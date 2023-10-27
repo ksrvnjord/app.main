@@ -53,7 +53,7 @@ class PostStatisticsBar extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.outline,
                       ),
                 ),
-                onTap: () => context.pushNamed(
+                onTap: () => context.goNamed(
                   "Comments",
                   pathParameters: {'id': snapshot.id},
                 ),

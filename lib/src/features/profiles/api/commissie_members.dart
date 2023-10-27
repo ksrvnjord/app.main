@@ -5,7 +5,7 @@ import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
 final commissieLeedenProvider =
-    FutureProvider.family<QuerySnapshot<CommissieEntry>, Tuple2<String, int>>(
+    StreamProvider.family<QuerySnapshot<CommissieEntry>, Tuple2<String, int>>(
   (ref, commissieAndYear) {
     final commissie = commissieAndYear.item1;
     final year = commissieAndYear.item2;
@@ -19,6 +19,6 @@ final commissieLeedenProvider =
         )
         .where('name', isEqualTo: commissie)
         .where('startYear', isEqualTo: year)
-        .get();
+        .snapshots();
   },
 );
