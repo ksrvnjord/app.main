@@ -41,6 +41,7 @@ class EditAllergiesPage extends ConsumerWidget {
     final myAllergies = currentUser.allergies;
 
     final List<String> allergies = [
+      'Vegetarisch',
       'Gluten',
       'Lactose',
       'Noten',
