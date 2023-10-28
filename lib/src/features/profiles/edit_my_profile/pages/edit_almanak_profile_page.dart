@@ -235,14 +235,14 @@ class _EditAlmanakProfilePageState
             ),
 
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "Voedselallergieën", children: [
+            FormSection(title: "Allergiëen & dieetwensen", children: [
               [
                 const Text(
                   "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
                 ),
                 ListTile(
                   // ignore: avoid-non-ascii-symbols
-                  title: const Text('Geef mijn allergieën door'),
+                  title: const Text('Geef mijn allergiëen & dieetwensen door'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
