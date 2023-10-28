@@ -9,5 +9,5 @@ final reservationTypeFiltersFromSharedPrefsProvider =
   final prefs = await SharedPreferences
       .getInstance(); // TODO: init shared prefs in main.dart, so we can use Shared Preference synchronously.
 
-  return prefs.getStringList('afschrijf_filters') ?? [];
+  return prefs.getStringList('reservation_filters') ?? [];
 });
