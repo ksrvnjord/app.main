@@ -16,7 +16,7 @@ class EditAllergiesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         // ignore: avoid-non-ascii-symbols
-        title: const Text('Wijzig mijn allergiëen'),
+        title: const Text('Mijn allergiëen & dieetwensen'),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
@@ -76,7 +76,8 @@ class EditAllergiesPage extends ConsumerWidget {
       [
         // Add textfield for adding custom allergies.
         // ignore: avoid-non-ascii-symbols
-        const Text('Andere allergieën:').fontSize(otherAllergiesFontSize),
+        const Text('Andere allergieën & dieetwensen:')
+            .fontSize(otherAllergiesFontSize),
         TextField(
           controller: TextEditingController()..text = customAllergy,
           decoration: const InputDecoration(
