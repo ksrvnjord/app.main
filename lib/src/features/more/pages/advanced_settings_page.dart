@@ -3,14 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AdvancedSettingsPage extends StatelessWidget {
   const AdvancedSettingsPage({Key? key}) : super(key: key);
 
   // Create  a function that clear the cache and exits the app.
-  Future<void> clearCache() async {
+  Future<void> clearAppData() async {
     await HiveCache.deleteAll();
+    final prefs = await SharedPreferences.getInstance();
+    // ignore: avoid-ignoring-return-values
+    await prefs.clear();
+
     if (Platform.isAndroid) {
       SystemNavigator.pop();
     } else if (Platform.isIOS) {
@@ -46,7 +51,7 @@ class AdvancedSettingsPage extends StatelessWidget {
                   child: const Text('Annuleren'),
                 ),
                 TextButton(
-                  onPressed: () => clearCache(),
+                  onPressed: () => clearAppData(),
                   child: const Text('Verwijder de cache en sluit mijn app af')
                       .textColor(Colors.red),
                 ),
