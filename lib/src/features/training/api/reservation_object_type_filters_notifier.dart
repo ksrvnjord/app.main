@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/shared_preferences_reservationfilters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,11 +19,6 @@ class ReservationObjectTypeFiltersNotifier
   ReservationObjectTypeFiltersNotifier(Map<String, List<String>> filters)
       : super(filters);
 
-  void updateFilters(Map<String, List<String>> filters) {
-    state = filters;
-    _saveToSharedPrefs();
-  }
-
   void updateFiltersForCategory(String category, List<String> filters) {
     state = {...state, category: filters};
     _saveToSharedPrefs();
@@ -36,7 +32,7 @@ class ReservationObjectTypeFiltersNotifier
     }
     final prefs = await SharedPreferences.getInstance();
     // ignore: avoid-ignoring-return-values
-    prefs.setStringList('afschrijf_filters', allFilters);
+    await prefs.setStringList('reservation_filters', allFilters);
   }
 }
 
@@ -65,7 +61,11 @@ final reservationTypeFiltersProvider = StateNotifierProvider<
         return filters;
       },
       loading: () => {},
-      error: (error, stackTrace) => {},
+      error: (error, stackTrace) {
+        FirebaseCrashlytics.instance.recordError(error, stackTrace);
+
+        return {};
+      },
     ));
   },
 );
