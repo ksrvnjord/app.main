@@ -3,6 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
@@ -626,6 +628,35 @@ class Routes {
             child: CreatePushNotificationPage(),
             name: "Create Push Notification",
           ),
+        ),
+        _route(
+          path: "beheer-groepen",
+          name: "Manage Groups",
+          pageBuilder: (context, state) => _getPage(
+            child: const ManageGroupsPage(),
+            name: "Manage Groups",
+          ),
+          routes: [
+            // route to create a group
+            _route(
+              path: "maak-groep",
+              name: "Create Group",
+              pageBuilder: (context, state) => _getPage(
+                child: const ManageGroupsPage(),
+                name: "Create Group",
+              ),
+            ),
+            _route(
+              path: "edit-groep/:id",
+              name: "Edit Group",
+              pageBuilder: (context, state) => _getPage(
+                child: EditGroupPage(
+                  groupId: state.pathParameters['id']!,
+                ),
+                name: "Edit Group",
+              ),
+            ),
+          ],
         ),
       ],
     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -8,6 +9,8 @@ class AdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double sectionPadding = 8;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -18,44 +21,38 @@ class AdminPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ListTile(
-            leading: const Icon(Icons.warning_amber),
-            title: const Text('Beheer vaarverbod'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Manage Boating Ban'),
+          const MoreLinkTile(
+            leading: Icon(Icons.warning_amber),
+            label: "Beheer vaarverbod",
+            url: "https://heimdall.njord.nl/",
           ),
           // List tile to navigate to push notification create page.
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Stuur Push Notificatie'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Create Push Notification'),
+          const MoreLinkTile(
+            leading: Icon(Icons.notifications),
+            label: "Stuur Push Notificatie",
+            url: "https://heimdall.njord.nl/notifications",
           ),
-          ListTile(
-            leading: const Icon(Icons.event),
-            title: const Text('Beheer Evenementen'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Manage Events'),
+          const MoreLinkTile(
+            leading: Icon(Icons.event),
+            label: "Beheer Evenementen",
+            url: "https://heimdall.njord.nl/events",
           ),
-          ListTile(
-            leading: const Icon(Icons.description),
-            title: const Text('Beheer Forms'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Manage Forms'),
+          const MoreLinkTile(
+            leading: Icon(Icons.description),
+            label: "Beheer Polls",
+            url: "https://heimdall.njord.nl/polls",
           ),
-          ListTile(
-            leading: const Icon(Icons.announcement),
-            title: const Text('Beheer Aankondigingen'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Manage Announcements'),
+          const MoreLinkTile(
+            leading: Icon(Icons.announcement),
+            label: "Beheer Aankondigingen",
+            url: "https://heimdall.njord.nl/announcements",
           ),
 
           FormSection(title: "Leedenadministratie", children: [
-            ListTile(
-              leading: const Icon(Icons.people),
-              title: const Text('Beheer Leeden'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Members'),
+            const MoreLinkTile(
+              leading: Icon(Icons.people),
+              label: "Beheer Leeden",
+              url: "https://heimdall.njord.nl/users",
             ),
             ListTile(
               leading: const Icon(Icons.group),
@@ -63,31 +60,22 @@ class AdminPage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => context.goNamed('Manage Groups'),
             ),
-          ]).paddingDirectional(vertical: 8),
-          FormSection(title: 'Afschrijfsysteem', children: [
-            ListTile(
-              leading: const Icon(Icons.calendar_today),
-              title: const Text('Maak (herhalende) Afschrijving'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Create Recurring Reservation'),
+          ]).paddingDirectional(vertical: sectionPadding),
+          const FormSection(title: 'Afschrijfsysteem', children: [
+            MoreLinkTile(
+              leading: Icon(Icons.calendar_today),
+              label: "Maak (herhalende) Afschrijving",
+              url: "https://heimdall.njord.nl/rowing/reservations/new",
             ),
-            ListTile(
-              leading: const Icon(Icons.security),
-              title: const Text('Beheer Permissies'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Permissions'),
+            MoreLinkTile(
+              leading: Icon(Icons.warning),
+              label: "Beheer Leeden",
+              url: "https://heimdall.njord.nl/rowing/damages",
             ),
-            ListTile(
-              leading: const Icon(Icons.warning),
-              title: const Text('Beheer Schades'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Damages'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.directions_boat),
-              title: const Text('Beheer Boten'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Boats'),
+            MoreLinkTile(
+              leading: Icon(Icons.directions_boat),
+              label: "Beheer Boten",
+              url: "https://heimdall.njord.nl/rowing/equipment",
             ),
           ]).paddingDirectional(vertical: 8),
         ],
