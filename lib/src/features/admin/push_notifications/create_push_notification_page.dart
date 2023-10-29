@@ -1,35 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
-class CreatePushNotificationPage extends StatefulWidget {
+class CreatePushNotificationPage extends ConsumerStatefulWidget {
+  const CreatePushNotificationPage({super.key});
+
   @override
-  _CreatePushNotificationPageState createState() =>
-      _CreatePushNotificationPageState();
+  CreatePushNotificationPageState createState() =>
+      CreatePushNotificationPageState();
 }
 
-class _CreatePushNotificationPageState
-    extends State<CreatePushNotificationPage> {
+class CreatePushNotificationPageState
+    extends ConsumerState<CreatePushNotificationPage> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _message = '';
+  final String _topic = 'all';
 
   void _submitForm() {
-    if (_formKey.currentState!.validate()) {
+    final currentState = _formKey.currentState;
+    if (currentState != null && currentState.validate()) {
+      // ignore: avoid-ignoring-return-values
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Confirm sending push notification?'),
+          title: Text('Wil je echt een push notificatie sturen naar $_topic?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: const Text('Annuleer'),
             ),
             ElevatedButton(
+              // ignore: prefer-extracting-callbacks
               onPressed: () {
-                // TODO: Send push notification
-                context.pop();
+                final dio = ref.watch(dioProvider);
+                // ignore: avoid-ignoring-return-values
+                dio.post(
+                  "/api/social/notification/",
+                  data: {
+                    "title": _title,
+                    "body": _message,
+                    "topic": _topic,
+                    "confirm": true,
+                  },
+                );
+
+                // ignore: avoid-ignoring-return-values
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Push notificatie is verstuurd."),
+                  ),
+                );
+
+                Navigator.of(context).pop();
               },
-              child: const Text('Send'),
+              child: const Text('Verstuur'),
             ),
           ],
         ),
@@ -41,7 +66,7 @@ class _CreatePushNotificationPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Maak Push Notificatie'),
+        title: const Text('Stuur Push Notificatie'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -51,44 +76,47 @@ class _CreatePushNotificationPageState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                ),
+                decoration: const InputDecoration(labelText: 'Titel'),
+                onChanged: (value) => setState(() {
+                  _title = value;
+                }),
+                // ignore: prefer-extracting-callbacks
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return 'Voer een titel in';
                   }
+
                   return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _title = value;
-                  });
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Message',
-                ),
+                decoration: const InputDecoration(labelText: 'Bericht'),
+                onChanged: (value) => setState(() {
+                  _message = value;
+                }),
+                // ignore: prefer-extracting-callbacks
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a message';
+                    return 'Voer een bericht in';
                   }
+
                   return null;
                 },
-                onChanged: (value) {
-                  setState(() {
-                    _message = value;
-                  });
-                },
+              ),
+              TextFormField(
+                initialValue: _topic,
+                decoration: const InputDecoration(labelText: 'Ontvangers'),
+                readOnly: true,
+                enabled: false,
               ),
             ],
           ),
         ),
       ),
+      // ignore: arguments-ordering
       floatingActionButton: FloatingActionButton(
         onPressed: _submitForm,
-        child: Icon(Icons.send),
+        child: const Icon(Icons.send),
       ),
     );
   }

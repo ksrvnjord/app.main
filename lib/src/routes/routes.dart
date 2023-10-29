@@ -470,7 +470,14 @@ class Routes {
         _route(
           path: "leeden",
           name: "Leeden",
-          child: const AlmanakLeedenPage(),
+          pageBuilder: (context, state) => _getPage(
+            child: AlmanakLeedenPage(
+              onTap: state.extra is void Function(int)?
+                  ? state.extra as void Function(int)?
+                  : null,
+            ),
+            name: "Leeden",
+          ),
         ),
         _route(
           path: "bestuur",
@@ -625,7 +632,7 @@ class Routes {
           path: "maak-push-notificatie",
           name: "Create Push Notification",
           pageBuilder: (context, state) => _getPage(
-            child: CreatePushNotificationPage(),
+            child: const CreatePushNotificationPage(),
             name: "Create Push Notification",
           ),
         ),
@@ -633,25 +640,23 @@ class Routes {
           path: "beheer-groepen",
           name: "Manage Groups",
           pageBuilder: (context, state) => _getPage(
-            child: const ManageGroupsPage(),
+            child: ManageGroupsPage(
+              year: state.uri.queryParameters['year'] != null
+                  ? int.parse(state.uri.queryParameters['year']!)
+                  : getNjordYear(),
+              type: state.uri.queryParameters['type'] != null
+                  ? state.uri.queryParameters['type']!
+                  : null,
+            ),
             name: "Manage Groups",
           ),
           routes: [
-            // route to create a group
             _route(
-              path: "maak-groep",
-              name: "Create Group",
-              pageBuilder: (context, state) => _getPage(
-                child: const ManageGroupsPage(),
-                name: "Create Group",
-              ),
-            ),
-            _route(
-              path: "edit-groep/:id",
+              path: "groep/:id",
               name: "Edit Group",
               pageBuilder: (context, state) => _getPage(
                 child: EditGroupPage(
-                  groupId: state.pathParameters['id']!,
+                  groupId: int.parse(state.pathParameters['id']!),
                 ),
                 name: "Edit Group",
               ),

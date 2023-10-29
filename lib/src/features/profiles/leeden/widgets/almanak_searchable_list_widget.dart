@@ -5,8 +5,13 @@ import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakSearchableListWidget extends StatefulWidget {
   final GraphQLClient client;
-  const AlmanakSearchableListWidget({Key? key, required this.client})
-      : super(key: key);
+  final void Function(int userId)? onTap;
+
+  const AlmanakSearchableListWidget({
+    Key? key,
+    required this.client,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   createState() => _AlmanakSearchableListWidgetState();
@@ -39,6 +44,7 @@ class _AlmanakSearchableListWidgetState
         builder: (_, __) => AlmanakScrollingWidget(
           client: widget.client,
           search: _search.text,
+          onTap: widget.onTap,
         ).expanded(),
       ),
     ].toColumn();

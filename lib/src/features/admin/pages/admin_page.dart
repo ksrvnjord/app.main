@@ -11,6 +11,8 @@ class AdminPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double sectionPadding = 8;
 
+    const double sectionVPadding = 8;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -27,10 +29,11 @@ class AdminPage extends StatelessWidget {
             url: "https://heimdall.njord.nl/",
           ),
           // List tile to navigate to push notification create page.
-          const MoreLinkTile(
-            leading: Icon(Icons.notifications),
-            label: "Stuur Push Notificatie",
-            url: "https://heimdall.njord.nl/notifications",
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Stuur Push Notificatie'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.goNamed('Create Push Notification'),
           ),
           const MoreLinkTile(
             leading: Icon(Icons.event),
@@ -77,7 +80,7 @@ class AdminPage extends StatelessWidget {
               label: "Beheer Boten",
               url: "https://heimdall.njord.nl/rowing/equipment",
             ),
-          ]).paddingDirectional(vertical: 8),
+          ]).paddingDirectional(vertical: sectionVPadding),
         ],
       ),
     );
