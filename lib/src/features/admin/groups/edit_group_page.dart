@@ -134,23 +134,34 @@ class EditGroupPage extends ConsumerWidget {
                 floating: true,
                 pinned: true,
               ),
-              SliverList.builder(
-                itemBuilder: (context, index) {
-                  final Map<String, dynamic> user = users[index]['user'];
-                  final String? role = users[index]['role'];
+              users.isEmpty
+                  ? const SliverFillRemaining(
+                      child: Center(
+                        child: Text('Er zijn geen leden in deze groep.'),
+                      ),
+                    )
+                  : SliverList.builder(
+                      itemBuilder: (context, index) {
+                        final Map<String, dynamic> user = users[index]['user'];
+                        final String? role = users[index]['role'];
 
-                  return ListTile(
-                    title: Text(user['first_name'] + ' ' + user['last_name']),
-                    subtitle: role == null ? null : Text(role),
-                    trailing: IconButton(
-                      onPressed: () =>
-                          removeUserFromGroup(user['identifier'], ref, context),
-                      icon: const Icon(Icons.delete),
+                        return ListTile(
+                          title: Text(
+                            user['first_name'] + ' ' + user['last_name'],
+                          ),
+                          subtitle: role == null ? null : Text(role),
+                          trailing: IconButton(
+                            onPressed: () => removeUserFromGroup(
+                              user['identifier'],
+                              ref,
+                              context,
+                            ),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        );
+                      },
+                      itemCount: users.length,
                     ),
-                  );
-                },
-                itemCount: users.length,
-              ),
             ],
           );
         },
