@@ -66,11 +66,10 @@ class CommissieChoicePage extends ConsumerWidget {
                   onTap: () => context.goNamed(
                     "Commissie",
                     pathParameters: {
-                      "id": choices[index].id.toString(),
+                      "name": choices[index].name,
                     },
                     queryParameters: {
                       "year": year.toString(),
-                      "name": choices[index].name,
                     },
                   ),
                 ),

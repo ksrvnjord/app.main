@@ -499,12 +499,11 @@ class Routes {
           ),
           routes: [
             _route(
-              path: ":id",
+              path: ":name",
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  commissieId: int.parse(state.pathParameters['id']!),
-                  name: state.uri.queryParameters['name']!,
+                  name: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
                       : getNjordYear(),

@@ -17,12 +17,10 @@ import 'package:tuple/tuple.dart';
 class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
     Key? key,
-    required this.commissieId,
     required this.name,
     required this.year,
   }) : super(key: key);
 
-  final int commissieId;
   final String name;
   final int year;
 
@@ -48,7 +46,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       widget.year,
     );
     final commissieLeeden = ref.watch(
-      commissieLeedenProvider(widget.commissieId),
+      commissieLeedenProvider(commissieAndYear),
     );
 
     const double pageHPadding = 12;
@@ -87,8 +85,12 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
               YearSelectorDropdown(
                 onChanged: (y) => context.goNamed(
                   "Commissie",
-                  pathParameters: {"id": widget.commissieId.toString()},
-                  queryParameters: {"year": y.toString(), "name": widget.name},
+                  pathParameters: {
+                    "name": widget.name,
+                  },
+                  queryParameters: {
+                    "year": y.toString(),
+                  },
                 ),
                 selectedYear: widget.year,
               ),
