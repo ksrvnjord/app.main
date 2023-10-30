@@ -131,6 +131,60 @@ class EditGroupPage extends ConsumerWidget {
             slivers: [
               SliverAppBar(
                 title: Text('$year - $name'),
+                actions: [
+                  IconButton(
+                    // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
+                    onPressed: () async {
+                      final dio = ref.read(dioProvider);
+                      final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Bevestig verwijdering'),
+                          content: const Text(
+                            'Weet je zeker dat je deze groep wilt verwijderen?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Annuleren'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text('Verwijderen'),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (confirmed != true) {
+                        return;
+                      }
+                      try {
+                        // ignore: avoid-ignoring-return-values
+                        await dio.delete("/api/users/groups/$groupId/");
+                      } catch (e) {
+                        if (!context.mounted) return;
+
+                        // ignore: avoid-ignoring-return-values
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            "Het is niet gelukt om de groep te verwijderen.",
+                          ),
+                        ));
+
+                        return;
+                      }
+                      if (!context.mounted) return;
+                      // ignore: avoid-ignoring-return-values
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Groep is verwijderd."),
+                      ));
+                      ref.invalidate(groupsProvider);
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
+                ],
                 floating: true,
                 pinned: true,
               ),
