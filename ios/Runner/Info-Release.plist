@@ -5,7 +5,7 @@
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true />
 		<key>FLTEnableImpeller</key>
-		<false />
+		<true />
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
