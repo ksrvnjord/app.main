@@ -10,7 +10,7 @@ class AlmanakSearchableListWidget extends StatefulWidget {
   const AlmanakSearchableListWidget({
     Key? key,
     required this.client,
-    this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   @override

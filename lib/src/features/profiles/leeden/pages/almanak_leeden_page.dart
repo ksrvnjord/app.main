@@ -16,10 +16,7 @@ class AlmanakLeedenPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Leeden"),
       ),
-      body: AlmanakSearchableListWidget(
-        client: client,
-        onTap: onTap,
-      ),
+      body: AlmanakSearchableListWidget(client: client, onTap: onTap),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture
 
 class AlmanakUserButtonWidget extends ConsumerWidget {
   final Query$Almanak$users$data user;
-  final void Function()? onTap;
+  final void Function() onTap;
 
   const AlmanakUserButtonWidget(this.user, {Key? key, required this.onTap})
       : super(key: key);
