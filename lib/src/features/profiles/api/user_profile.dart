@@ -19,6 +19,8 @@ final almanakUserProvider =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
 
       yield FirestoreAlmanakProfile.fromHeimdall(profile);
+
+      return;
     }
 
     // Call both queries in parallel.
