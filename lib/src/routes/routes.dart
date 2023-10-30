@@ -171,7 +171,8 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ??
+              '/almanak',
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -488,17 +489,25 @@ class Routes {
         _route(
           path: "commissies",
           name: "Commissies",
-          child: const CommissieChoicePage(),
+          pageBuilder: (context, state) => _getPage(
+            child: CommissieChoicePage(
+              year: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Commissies",
+          ),
           routes: [
             _route(
-              path: ":name",
+              path: ":id",
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  commissieName: state.pathParameters['name']!,
-                  commissieYear: state.uri.queryParameters['year'] != null
+                  commissieId: int.parse(state.pathParameters['id']!),
+                  name: state.uri.queryParameters['name']!,
+                  year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
-                      : null,
+                      : getNjordYear(),
                 ),
                 name: "Commissie",
               ),

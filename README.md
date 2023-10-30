@@ -14,6 +14,16 @@ De Flut-ter versie.
 - Start een emulator of sluit je telefoon aan
 - Run de app: `flutter run`
 
+
+## Code genereren
+Codegeneratie voor JSON-serialisatie en -deserialisatie biedt een geautomatiseerde aanpak voor het omzetten van objecten naar JSON en vice versa. Het gebruik ervan bespaart niet alleen waardevolle ontwikkeltijd door het vermijden van handmatige codecreatie, maar zorgt ook voor een consistente en foutvrije verwerking van data. Deze techniek is bijzonder nuttig wanneer datamodellen evolueren, aangezien wijzigingen in serialisatie- en deserialisatiecode automatisch kunnen worden doorgevoerd, wat zorgt voor consistentie tussen het schema en de code. Bovendien kan codegeneratie optimalisaties toepassen die handmatige implementaties overtreffen, terwijl het tegelijkertijd typeveiligheid waarborgt in sterk getypeerde programmeertalen. Wanneer men te maken heeft met meerdere platforms of talen, garandeert het ook een uniforme serialisatie/deserialisatie logica. Kortom, codegeneratie voor JSON-interacties verhoogt de efficiëntie, vermindert fouten en vergemakkelijkt onderhoud en debugging.
+We gebruiken [json_serializable](https://pub.dev/packages/json_serializable) voor het genereren van code. 
+Run de code generatie met:
+```bash
+dart run build_runner watch
+```
+
+
 ### Automatisch static analysis runnen
 Als je een Pull Request opent dan wordt er automatisch een static analysis uitgevoerd, dit kan een aantal minuten duren, we raden je aan om dit lokaal te doen voordat je een Pull Request opent.
 - Run het volgende command in de root van dit project om deze pre-push hook te installeren:

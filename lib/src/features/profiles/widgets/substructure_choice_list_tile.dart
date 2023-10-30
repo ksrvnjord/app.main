@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -13,20 +12,22 @@ class SubstructureChoiceListTile extends ConsumerWidget {
 
   const SubstructureChoiceListTile({
     Key? key,
-    required this.routeName,
     required this.name,
     required this.imageProvider, // The imageProvider for the choice.
+    required this.onTap,
   }) : super(key: key);
   final String name;
-  final String routeName;
 
+  final void Function()? onTap;
   final AsyncValue<ImageProvider<Object>> imageProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const int maxLines = 2;
 
+    // ignore: arguments-ordering
     return InkWell(
+      onTap: onTap,
       child: [
         FadeInImage(
           placeholder: Image.asset(Images.placeholderProfilePicture).image,
@@ -57,7 +58,6 @@ class SubstructureChoiceListTile extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
-      onTap: () => context.goNamed(routeName, pathParameters: {"name": name}),
     );
   }
 }

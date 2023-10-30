@@ -205,12 +205,12 @@ class ManageGroupsPage extends ConsumerWidget {
                   : [
                       for (var group in data)
                         ListTile(
-                          title: Text(group['name']),
-                          subtitle: Text(group['type']),
+                          title: Text(group.name),
+                          subtitle: Text(group.type),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () =>
                               context.goNamed('Edit Group', pathParameters: {
-                            'id': group['id'].toString(),
+                            'id': group.id.toString(),
                           }),
                         ),
                     ].toColumn();

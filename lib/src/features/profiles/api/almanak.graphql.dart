@@ -1,4 +1,5 @@
 // ignore_for_file: type=lint
+import 'dart:async';
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -124,7 +125,7 @@ class _CopyWithImpl$Variables$Query$Almanak<TRes>
 
   final TRes Function(Variables$Query$Almanak) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? search = _undefined,
@@ -156,7 +157,7 @@ class _CopyWithStubImpl$Variables$Query$Almanak<TRes>
 class Query$Almanak {
   Query$Almanak({
     this.users,
-    required this.$__typename,
+    this.$__typename = 'Query',
   });
 
   factory Query$Almanak.fromJson(Map<String, dynamic> json) {
@@ -249,7 +250,7 @@ class _CopyWithImpl$Query$Almanak<TRes>
 
   final TRes Function(Query$Almanak) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? users = _undefined,
@@ -470,6 +471,10 @@ const documentNodeQueryAlmanak = DocumentNode(definitions: [
 ]);
 Query$Almanak _parserFn$Query$Almanak(Map<String, dynamic> data) =>
     Query$Almanak.fromJson(data);
+typedef OnQueryComplete$Query$Almanak = FutureOr<void> Function(
+  Map<String, dynamic>?,
+  Query$Almanak?,
+);
 
 class Options$Query$Almanak extends graphql.QueryOptions<Query$Almanak> {
   Options$Query$Almanak({
@@ -479,20 +484,41 @@ class Options$Query$Almanak extends graphql.QueryOptions<Query$Almanak> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$Almanak? typedOptimisticResult,
     Duration? pollInterval,
     graphql.Context? context,
-  }) : super(
+    OnQueryComplete$Query$Almanak? onComplete,
+    graphql.OnQueryError? onError,
+  })  : onCompleteWithParsed = onComplete,
+        super(
           variables: variables.toJson(),
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           pollInterval: pollInterval,
           context: context,
+          onComplete: onComplete == null
+              ? null
+              : (data) => onComplete(
+                    data,
+                    data == null ? null : _parserFn$Query$Almanak(data),
+                  ),
+          onError: onError,
           document: documentNodeQueryAlmanak,
           parserFn: _parserFn$Query$Almanak,
         );
+
+  final OnQueryComplete$Query$Almanak? onCompleteWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onComplete == null
+            ? super.properties
+            : super.properties.where((property) => property != onComplete),
+        onCompleteWithParsed,
+      ];
 }
 
 class WatchOptions$Query$Almanak
@@ -504,6 +530,7 @@ class WatchOptions$Query$Almanak
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$Almanak? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -515,7 +542,7 @@ class WatchOptions$Query$Almanak
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeQueryAlmanak,
           pollInterval: pollInterval,
@@ -595,7 +622,7 @@ class Query$Almanak$users {
   Query$Almanak$users({
     required this.paginatorInfo,
     required this.data,
-    required this.$__typename,
+    this.$__typename = 'UserPaginator',
   });
 
   factory Query$Almanak$users.fromJson(Map<String, dynamic> json) {
@@ -717,7 +744,7 @@ class _CopyWithImpl$Query$Almanak$users<TRes>
 
   final TRes Function(Query$Almanak$users) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? paginatorInfo = _undefined,
@@ -774,7 +801,7 @@ class _CopyWithStubImpl$Query$Almanak$users<TRes>
 class Query$Almanak$users$paginatorInfo {
   Query$Almanak$users$paginatorInfo({
     required this.hasMorePages,
-    required this.$__typename,
+    this.$__typename = 'PaginatorInfo',
   });
 
   factory Query$Almanak$users$paginatorInfo.fromJson(
@@ -868,7 +895,7 @@ class _CopyWithImpl$Query$Almanak$users$paginatorInfo<TRes>
 
   final TRes Function(Query$Almanak$users$paginatorInfo) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? hasMorePages = _undefined,
@@ -904,7 +931,7 @@ class Query$Almanak$users$data {
     required this.username,
     required this.identifier,
     required this.fullContact,
-    required this.$__typename,
+    this.$__typename = 'User',
   });
 
   factory Query$Almanak$users$data.fromJson(Map<String, dynamic> json) {
@@ -1055,7 +1082,7 @@ class _CopyWithImpl$Query$Almanak$users$data<TRes>
 
   final TRes Function(Query$Almanak$users$data) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
@@ -1112,7 +1139,7 @@ class _CopyWithStubImpl$Query$Almanak$users$data<TRes>
 class Query$Almanak$users$data$fullContact {
   Query$Almanak$users$data$fullContact({
     required this.public,
-    required this.$__typename,
+    this.$__typename = 'UserContact',
   });
 
   factory Query$Almanak$users$data$fullContact.fromJson(
@@ -1209,7 +1236,7 @@ class _CopyWithImpl$Query$Almanak$users$data$fullContact<TRes>
 
   final TRes Function(Query$Almanak$users$data$fullContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? public = _undefined,
@@ -1249,7 +1276,7 @@ class Query$Almanak$users$data$fullContact$public {
   Query$Almanak$users$data$fullContact$public({
     this.first_name,
     this.last_name,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$Almanak$users$data$fullContact$public.fromJson(
@@ -1358,7 +1385,7 @@ class _CopyWithImpl$Query$Almanak$users$data$fullContact$public<TRes>
 
   final TRes Function(Query$Almanak$users$data$fullContact$public) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,

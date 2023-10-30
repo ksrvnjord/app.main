@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_choice_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
@@ -11,37 +13,79 @@ import 'package:tuple/tuple.dart';
 class CommissieChoicePage extends ConsumerWidget {
   const CommissieChoicePage({
     Key? key,
+    required this.year,
   }) : super(key: key);
+
+  final int year;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commissies = ref.watch(commissieNamesProvider);
+    final commissies = ref.watch(groupsProvider(
+      Tuple2(
+        "commissie",
+        year,
+      ),
+    ));
+
+    const double yearSpacing = 8;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Commissies"),
       ),
-      body: commissies.when(
-        data: (choices) => ListView.builder(
-          itemBuilder: (context, index) => [
-            SubstructureChoiceListTile(
-              routeName: "Commissie",
-              name: choices.elementAt(index),
-              imageProvider: ref.watch(commissieThumbnailProvider(
-                Tuple2(
-                  choices.elementAt(index),
-                  // ignore: no-magic-number
-                  2022,
-                ), // # FIXME: hardcoded year, we keep this until commissies can edit their own info.
-              )),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: [
+              const Text("Kies een jaar:"),
+              YearSelectorDropdown(
+                onChanged: (y) => context.goNamed(
+                  "Commissies",
+                  queryParameters: {"year": y.toString()},
+                ),
+                selectedYear: year,
+              ),
+            ].toWrap(
+              alignment: WrapAlignment.end,
+              spacing: yearSpacing,
+              crossAxisAlignment: WrapCrossAlignment.center,
             ),
-            const Divider(height: 0, thickness: 0.5),
-          ].toColumn(),
-          itemCount: choices.length,
-        ),
-        error: (err, __) => ErrorCardWidget(errorMessage: err.toString()),
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
+          ),
+          commissies.when(
+            data: (choices) => SliverList.builder(
+              itemBuilder: (context, index) => [
+                SubstructureChoiceListTile(
+                  name: choices[index].name,
+                  imageProvider: ref.watch(commissieThumbnailProvider(
+                    Tuple2(
+                      choices[index].name,
+                      // ignore: no-magic-number
+                      2022,
+                    ), // # FIXME: hardcoded year, we keep this until commissies can edit their own info.
+                  )),
+                  onTap: () => context.goNamed(
+                    "Commissie",
+                    pathParameters: {
+                      "id": choices[index].id.toString(),
+                    },
+                    queryParameters: {
+                      "year": year.toString(),
+                      "name": choices[index].name,
+                    },
+                  ),
+                ),
+                const Divider(height: 0, thickness: 0.5),
+              ].toColumn(),
+              itemCount: choices.length,
+            ),
+            error: (err, __) => SliverToBoxAdapter(
+              child: ErrorCardWidget(errorMessage: err.toString()),
+            ),
+            loading: () => const SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator.adaptive()),
+            ),
+          ),
+        ],
       ),
     );
   }
