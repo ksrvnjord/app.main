@@ -1,7 +1,7 @@
 // ignore_for_file: prefer-static-class
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
@@ -11,9 +11,11 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 
 // Retrieves all data from firestore and heimdall for a given user.
 final almanakUserProvider =
-    StreamProvider.family<FirestoreAlmanakProfile, String>(
+    StreamProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async* {
-    if (FirebaseAuth.instance.currentUser == null) {
+    final user = ref.watch(firebaseAuthUserProvider).value;
+
+    if (user == null) {
       // If in DEMO mode, the lidnummer is the heimdall id.
       final profile =
           await ref.watch(heimdallUserByIdProvider(lidnummer).future);
@@ -65,6 +67,9 @@ final almanakUserProvider =
 final heimdallUserByLidnummerProvider = StreamProvider.family<
     Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
   (ref, identifier) async* {
+    // ignore: avoid-ignoring-return-values
+    ref.watch(firebaseAuthUserProvider);
+
     final client = ref.watch(graphQLClientProvider);
 
     final result = await client.query$AlmanakProfileByIdentifier(
@@ -80,8 +85,11 @@ final heimdallUserByLidnummerProvider = StreamProvider.family<
 );
 
 final heimdallUserByIdProvider =
-    StreamProvider.family<Query$AlmanakProfile$user?, String>(
+    StreamProvider.autoDispose.family<Query$AlmanakProfile$user?, String>(
   (ref, heimdallId) async* {
+    // ignore: avoid-ignoring-return-values
+    ref.watch(firebaseAuthUserProvider);
+
     final client = ref.watch(graphQLClientProvider);
 
     final result = await client.query$AlmanakProfile(

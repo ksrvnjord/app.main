@@ -4,19 +4,21 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 
 // ignore: prefer-static-class
-final firestoreUserStreamProvider =
-    StreamProvider.family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
+final firestoreUserStreamProvider = StreamProvider.autoDispose
+    .family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
   (ref, userId) {
-    return FirebaseFirestore.instance
-        .collection('people')
-        .withConverter<FirestoreAlmanakProfile>(
-          fromFirestore: (snapshot, _) =>
-              FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-          toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-        )
-        .where('identifier', isEqualTo: userId)
-        .limit(1)
-        .snapshots();
+    return ref.watch(firebaseAuthUserProvider).value == null
+        ? const Stream.empty()
+        : FirebaseFirestore.instance
+            .collection('people')
+            .withConverter<FirestoreAlmanakProfile>(
+              fromFirestore: (snapshot, _) =>
+                  FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
+              toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+            )
+            .where('identifier', isEqualTo: userId)
+            .limit(1)
+            .snapshots();
   },
 );
 
@@ -26,15 +28,17 @@ final currentfirestoreUserStreamProvider =
   (ref) {
     final user = ref.watch(firebaseAuthUserProvider).value;
 
-    return FirebaseFirestore.instance
-        .collection('people')
-        .withConverter<FirestoreAlmanakProfile>(
-          fromFirestore: (snapshot, _) =>
-              FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-          toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-        )
-        .where('identifier', isEqualTo: user?.uid)
-        .limit(1)
-        .snapshots();
+    return user == null
+        ? const Stream.empty()
+        : FirebaseFirestore.instance
+            .collection('people')
+            .withConverter<FirestoreAlmanakProfile>(
+              fromFirestore: (snapshot, _) =>
+                  FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
+              toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+            )
+            .where('identifier', isEqualTo: user.uid)
+            .limit(1)
+            .snapshots();
   },
 );
