@@ -59,9 +59,10 @@ class FullFormCard extends ConsumerWidget {
           Text(description, style: textTheme.bodyMedium)
               .padding(horizontal: descriptionHPadding),
         questions
-            .map((question) => 
+            .map(
+              (question) =>
                   Text(question['Label'], style: textTheme.bodyMedium),
-                )
+            )
             .toList()
             .toColumn(),
         answerStream.when(
