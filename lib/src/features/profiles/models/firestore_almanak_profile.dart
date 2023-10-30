@@ -22,6 +22,7 @@ class FirestoreAlmanakProfile {
   final String? phonePrimary;
   final bool?
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
+  final bool? isAdmin; // Used for admin capabilties in-app.
 
   bool get isAppCo => ['21203', '18031', '18257', '20198', '22195']
       .contains(identifier); // Used for testing purposes and AppCo rights.
@@ -45,6 +46,7 @@ class FirestoreAlmanakProfile {
     this.substructures,
     this.allergies = const <String>[],
     this.canBookTrainingFarInAdvance,
+    this.isAdmin,
   });
 
   // FromJson.
@@ -65,6 +67,7 @@ class FirestoreAlmanakProfile {
           : null,
       allergies: List<String>.from(json['allergies'] ?? const <String>[]),
       canBookTrainingFarInAdvance: json['canBookTrainingFarInAdvance'],
+      isAdmin: json['isAdmin'],
     );
   }
 
@@ -106,6 +109,7 @@ class FirestoreAlmanakProfile {
     List<String>? substructures,
     List<String>? allergies,
     bool? canBookTrainingFarInAdvance,
+    bool? isAdmin,
   }) {
     return FirestoreAlmanakProfile(
       firstName: firstName ?? this.firstName,
@@ -125,6 +129,7 @@ class FirestoreAlmanakProfile {
       allergies: allergies ?? this.allergies,
       canBookTrainingFarInAdvance:
           canBookTrainingFarInAdvance ?? this.canBookTrainingFarInAdvance,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 

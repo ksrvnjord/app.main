@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
@@ -9,11 +11,13 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.da
 class AlmanakScrollingWidget extends StatefulWidget {
   final GraphQLClient client;
   final String search;
+  final void Function(int userId)? onTap;
 
   const AlmanakScrollingWidget({
     Key? key,
     required this.client,
     this.search = '',
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -60,11 +64,25 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
   Widget build(BuildContext context) {
     _pagingController.refresh();
 
+    final onTap = widget.onTap;
+
     return RefreshIndicator(
       child: PagedListView<int, Query$Almanak$users$data>.separated(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<Query$Almanak$users$data>(
-          itemBuilder: (context, item, index) => AlmanakUserButtonWidget(item),
+          itemBuilder: (context, item, index) => AlmanakUserButtonWidget(
+            item,
+            onTap: () => onTap != null
+                ? onTap(int.parse(item.identifier))
+                : context.pushNamed(
+                    "Lid",
+                    pathParameters: {
+                      "id": FirebaseAuth.instance.currentUser != null
+                          ? item.identifier
+                          : item.id,
+                    },
+                  ),
+          ),
           firstPageErrorIndicatorBuilder: (context) => const LoadingWidget(),
           noItemsFoundIndicatorBuilder: (context) => const Column(
             children: [

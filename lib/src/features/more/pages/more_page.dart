@@ -1,14 +1,17 @@
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class MorePage extends ConsumerWidget {
@@ -17,6 +20,7 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(firebaseAuthUserProvider).value;
+    final currentFirestoreUser = ref.watch(currentFirestoreUserStreamProvider);
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
@@ -28,6 +32,7 @@ class MorePage extends ConsumerWidget {
     };
 
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -119,6 +124,28 @@ class MorePage extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+      // Floatingaction button to navigate to admin page.
+      floatingActionButton: currentFirestoreUser.when(
+        data: (value) {
+          final isAdmin = value.docs.first.data().isAdmin;
+
+          return isAdmin != null && isAdmin
+              ? FloatingActionButton.extended(
+                  foregroundColor: colorScheme.onTertiaryContainer,
+                  backgroundColor: colorScheme.tertiaryContainer,
+                  onPressed: () => context.goNamed('Admin'),
+                  icon: const Icon(Icons.admin_panel_settings),
+                  label: const Text('Ga naar Admin Panel'),
+                )
+              : null;
+        },
+        loading: () => const SizedBox.shrink(),
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
