@@ -9,8 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FormCard extends ConsumerWidget {
-  const FormCard({
+class FullFormCard extends ConsumerWidget {
+  const FullFormCard({
     Key? key,
     required this.formDoc,
   }) : super(key: key);
@@ -30,6 +30,8 @@ class FormCard extends ConsumerWidget {
 
     final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
+    final bool pollIsOpen = DateTime.now().isBefore(form.openUntil);
+
     const double descriptionHPadding = 16;
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -39,24 +41,42 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     // ignore: arguments-ordering
-    return ListTile(
+    return ExpansionTile(
       title: Text(form.formName),
       subtitle: Text(
         '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
         style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
+      initiallyExpanded: true,
       // ignore: avoid-non-null-assertion
       shape: const RoundedRectangleBorder(
         side: BorderSide(color: Colors.transparent, width: 0),
       ),
-      trailing: Icon(
-        Icons.arrow_forward_ios,
-        color: colorScheme.primary,
-      ),
-      onTap: () => context.pushNamed(
-        "Form",
-        pathParameters: {"formId": 'KPShGcIv1b3R06Whs8aK'},
-      ),
+      children: [
+        if (description != null)
+          Text(description, style: textTheme.bodyMedium)
+              .padding(horizontal: descriptionHPadding),
+        answerStream.when(
+          data: (snapshot) {
+            final String? answerOfUser =
+                snapshot.size != 0 ? snapshot.docs.first.data().answer : null;
+
+            return Container();
+            // return [
+            //   ...form.questions.map((option) => RadioListTile(
+            //         value: option,
+            //         groupValue: answerOfUser,
+            //         toggleable: true,
+            //         title: Text(option),
+            //       )),
+            // ].toColumn();
+          },
+          error: (error, stackTrace) => const ErrorCardWidget(
+            errorMessage: 'Het is mislukt om je antwoord te laden',
+          ),
+          loading: () => const CircularProgressIndicator.adaptive(),
+        ),
+      ],
     ).card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       elevation: 0,

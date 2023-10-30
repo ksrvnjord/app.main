@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/full_form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -23,9 +24,8 @@ class FormPage extends ConsumerWidget {
       body: ListView(
         children: [
           formVal.when(
-            data: (form) => FormCard(
+            data: (form) => FullFormCard(
               formDoc: form,
-              isExpanded: true,
             ).padding(all: cardPadding),
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
