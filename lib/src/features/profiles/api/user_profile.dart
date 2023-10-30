@@ -65,7 +65,7 @@ final almanakUserProvider =
 final heimdallUserByLidnummerProvider = StreamProvider.family<
     Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
   (ref, identifier) async* {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
 
     final result = await client.query$AlmanakProfileByIdentifier(
       Options$Query$AlmanakProfileByIdentifier(
@@ -82,7 +82,7 @@ final heimdallUserByLidnummerProvider = StreamProvider.family<
 final heimdallUserByIdProvider =
     StreamProvider.family<Query$AlmanakProfile$user?, String>(
   (ref, heimdallId) async* {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
 
     final result = await client.query$AlmanakProfile(
       Options$Query$AlmanakProfile(

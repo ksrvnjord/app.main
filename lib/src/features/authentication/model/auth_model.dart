@@ -68,8 +68,8 @@ class AuthModel extends ChangeNotifier {
   void logout() async {
     unsubscribeAllTopics().whenComplete(() => null);
 
-    await _storage.delete(key: 'oauth2_credentials');
     await FirebaseAuth.instance.signOut();
+    await _storage.delete(key: 'oauth2_credentials');
     authState = AuthState.unauthenticated;
   }
 

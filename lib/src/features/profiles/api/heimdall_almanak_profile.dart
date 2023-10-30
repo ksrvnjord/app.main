@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart'
 final heimdallAlmanakProfileProvider = StreamProvider.autoDispose
     .family<Query$AlmanakProfileByIdentifier$userByIdentifier?, String>(
   (ref, profileId) async* {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
     final result = await client.query$AlmanakProfileByIdentifier(
       Options$Query$AlmanakProfileByIdentifier(
         variables:

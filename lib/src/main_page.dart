@@ -15,7 +15,7 @@ class MainPage extends ConsumerWidget {
 
   void onStartup(WidgetRef ref) {
     // ignore: avoid-ignoring-return-values
-    ref.read(graphQLModelProvider);
+    ref.read(graphQLClientProvider);
 
     final user = ref.read(
       currentFirestoreUserProvider,
