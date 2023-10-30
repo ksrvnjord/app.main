@@ -3,6 +3,11 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
@@ -52,6 +57,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -60,6 +66,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dar
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
+import 'package:ksrvnjord_main_app/src/routes/unauthorized_route_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -99,10 +106,16 @@ class Routes {
           ),
         ),
         ...Routes._unauthenticated,
+        ...Routes._adminRoutes,
         _route(
           name: "Unknown Route",
           path: '/404',
           child: const UnknownRoutePage(),
+        ),
+        _route(
+          name: "Unauthorized Route",
+          path: '/401',
+          child: const UnauthorizedRoutePage(),
         ),
       ],
       errorPageBuilder: (context, state) => _getPage(
@@ -140,6 +153,15 @@ class Routes {
             if (currentPath == loginPath) {
               return state.uri.queryParameters['from'] ?? initialLocation;
             }
+            final bool currentRouteRequiresAdmin =
+                Routes._adminRoutes.any((route) => route.path == currentPath);
+            final bool userIsAdmin = ref.watch(currentFirestoreUserProvider
+                    .select((value) => value?.isAdmin)) ??
+                false; // Watch for changes in the user's admin status.
+            if (currentRouteRequiresAdmin && !userIsAdmin) {
+              return '/401';
+            }
+
             break;
           default:
             throw UnimplementedError("Unknown AuthState");
@@ -449,7 +471,14 @@ class Routes {
         _route(
           path: "leeden",
           name: "Leeden",
-          child: const AlmanakLeedenPage(),
+          pageBuilder: (context, state) => _getPage(
+            child: AlmanakLeedenPage(
+              onTap: state.extra is void Function(int)?
+                  ? state.extra as void Function(int)?
+                  : null,
+            ),
+            name: "Leeden",
+          ),
         ),
         _route(
           path: "bestuur",
@@ -589,6 +618,60 @@ class Routes {
           path: "contact",
           name: "Contact",
           child: const ContactPage(),
+        ),
+      ],
+    ),
+  ];
+
+  static final _adminRoutes = [
+    _route(
+      path: "/admin",
+      name: "Admin",
+      child: const AdminPage(),
+      routes: [
+        // Route for manage vaarverbod page.
+        _route(
+          path: "vaarverbod",
+          name: "Manage Vaarverbod",
+          pageBuilder: (context, state) => _getPage(
+            child: const ManageVaarverbodPage(),
+            name: "Manage Vaarverbod",
+          ),
+        ),
+        _route(
+          path: "maak-push-notificatie",
+          name: "Create Push Notification",
+          pageBuilder: (context, state) => _getPage(
+            child: const CreatePushNotificationPage(),
+            name: "Create Push Notification",
+          ),
+        ),
+        _route(
+          path: "beheer-groepen",
+          name: "Manage Groups",
+          pageBuilder: (context, state) => _getPage(
+            child: ManageGroupsPage(
+              year: state.uri.queryParameters['year'] != null
+                  ? int.parse(state.uri.queryParameters['year']!)
+                  : getNjordYear(),
+              type: state.uri.queryParameters['type'] != null
+                  ? state.uri.queryParameters['type']!
+                  : null,
+            ),
+            name: "Manage Groups",
+          ),
+          routes: [
+            _route(
+              path: "groep/:id",
+              name: "Edit Group",
+              pageBuilder: (context, state) => _getPage(
+                child: EditGroupPage(
+                  groupId: int.parse(state.pathParameters['id']!),
+                ),
+                name: "Edit Group",
+              ),
+            ),
+          ],
         ),
       ],
     ),
