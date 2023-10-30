@@ -31,22 +31,24 @@ final currentFirestoreUserStreamProvider =
     StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>((ref) {
   final user = ref.watch(firebaseAuthUserProvider).value;
 
-  return FirebaseFirestore.instance
-      .collection('people')
-      .withConverter<FirestoreAlmanakProfile>(
-        fromFirestore: (snapshot, _) =>
-            FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-        toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-      )
-      // ignore: avoid-non-null-assertion
-      .where('identifier', isEqualTo: user!.uid)
-      .limit(1)
-      .snapshots();
+  return user == null
+      ? const Stream.empty()
+      : FirebaseFirestore.instance
+          .collection('people')
+          .withConverter<FirestoreAlmanakProfile>(
+            fromFirestore: (snapshot, _) =>
+                FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
+            toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
+          )
+          // ignore: avoid-non-null-assertion
+          .where('identifier', isEqualTo: user.uid)
+          .limit(1)
+          .snapshots();
 });
 
 // ignore: prefer-static-class
-final firestoreUserProvider = StateNotifierProvider.family<FirebaseUserNotifier,
-    FirestoreAlmanakProfile?, String>(
+final firestoreUserProvider = StateNotifierProvider.autoDispose
+    .family<FirebaseUserNotifier, FirestoreAlmanakProfile?, String>(
   (ref, userId) {
     final curUser = ref.watch(firebaseAuthUserProvider).value;
 

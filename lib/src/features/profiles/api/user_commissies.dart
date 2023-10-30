@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/commissie_entry.dart';
 
 final peopleRef = FirebaseFirestore.instance.collection("people");
@@ -14,18 +15,22 @@ Future<void> addMyCommissie(CommissieEntry commissie) {
 
 final myCommissiesProvider =
     StreamProvider.autoDispose<QuerySnapshot<CommissieEntry>>((ref) {
-  final userId = FirebaseAuth.instance.currentUser?.uid;
+  final userId = ref.watch(firebaseAuthUserProvider).value?.uid;
 
-  return getCommissieCollectionRefWithConverter(
-    peopleRef.doc(userId),
-  ).snapshots();
+  return userId == null
+      ? const Stream.empty()
+      : getCommissieCollectionRefWithConverter(
+          peopleRef.doc(userId),
+        ).snapshots();
 });
 
 final commissiesForUserProvider =
-    StreamProvider.family<QuerySnapshot<CommissieEntry>, String>(
-  (ref, userId) => getCommissieCollectionRefWithConverter(
-    peopleRef.doc(userId),
-  ).orderBy('startYear', descending: true).snapshots(),
+    StreamProvider.autoDispose.family<QuerySnapshot<CommissieEntry>, String>(
+  (ref, userId) => ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : getCommissieCollectionRefWithConverter(
+          peopleRef.doc(userId),
+        ).orderBy('startYear', descending: true).snapshots(),
 );
 
 // Convenience method to get a reference to the commissies collection using the converter.

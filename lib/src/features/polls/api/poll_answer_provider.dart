@@ -4,8 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll_answer.dart';
 
 // ignore: prefer-static-class
-final pollAnswerProvider =
-    StreamProvider.family<QuerySnapshot<PollAnswer>, DocumentReference>(
+final pollAnswerProvider = StreamProvider.autoDispose
+    .family<QuerySnapshot<PollAnswer>, DocumentReference>(
   (ref, docRef) {
     final user = ref.watch(firebaseAuthUserProvider).value;
     if (user == null) {

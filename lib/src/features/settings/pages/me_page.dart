@@ -14,7 +14,7 @@ class MePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
     final result = me(client);
 
     return Scaffold(
@@ -129,7 +129,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
   Widget build(BuildContext context) {
     const double paddingBody = 15;
     final double rowWidth = MediaQuery.of(context).size.width - paddingBody * 2;
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
 
     const double fieldPadding = 8;
 

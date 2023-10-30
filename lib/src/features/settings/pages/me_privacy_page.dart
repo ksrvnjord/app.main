@@ -19,7 +19,7 @@ class MePrivacyPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
     final result = me(client);
 
     return Scaffold(
@@ -110,7 +110,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
     const double pagePadding = 8;
 
     const Map<String, String> checkboxReadableMap = {
