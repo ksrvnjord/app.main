@@ -38,6 +38,8 @@ class FullFormCard extends ConsumerWidget {
 
     final description = form.description;
 
+    final questions = form.questions;
+
     final textTheme = Theme.of(context).textTheme;
 
     // ignore: arguments-ordering
@@ -56,6 +58,12 @@ class FullFormCard extends ConsumerWidget {
         if (description != null)
           Text(description, style: textTheme.bodyMedium)
               .padding(horizontal: descriptionHPadding),
+        questions
+            .map((question) => 
+                  Text(question['Label'], style: textTheme.bodyMedium),
+                )
+            .toList()
+            .toColumn(),
         answerStream.when(
           data: (snapshot) {
             final String? answerOfUser =
