@@ -23,10 +23,11 @@ class AdminPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const MoreLinkTile(
-            leading: Icon(Icons.warning_amber),
-            label: "Beheer vaarverbod",
-            url: "https://heimdall.njord.nl/",
+          ListTile(
+            leading: const Icon(Icons.warning_amber),
+            title: const Text('Beheer vaarverbod'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.goNamed('Manage Vaarverbod'),
           ),
           // List tile to navigate to push notification create page.
           ListTile(

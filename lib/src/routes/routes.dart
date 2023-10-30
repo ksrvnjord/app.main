@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dar
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
@@ -628,6 +629,15 @@ class Routes {
       name: "Admin",
       child: const AdminPage(),
       routes: [
+        // Route for manage vaarverbod page.
+        _route(
+          path: "vaarverbod",
+          name: "Manage Vaarverbod",
+          pageBuilder: (context, state) => _getPage(
+            child: const ManageVaarverbodPage(),
+            name: "Manage Vaarverbod",
+          ),
+        ),
         _route(
           path: "maak-push-notificatie",
           name: "Create Push Notification",
