@@ -7,7 +7,7 @@ part 'django_group.g.dart';
 class DjangoGroup {
   // ignore: prefer-correct-identifier-length
   final int id;
-  final List<GroupDjangoRelation> users;
+  final List<GroupDjangoRelation>? users;
   final String name;
   final String type;
   final int year;

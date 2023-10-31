@@ -47,9 +47,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_commissies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/fill_commissie_info_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
@@ -171,8 +168,7 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ??
-              '/almanak',
+          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -293,30 +289,6 @@ class Routes {
                       path: 'toevoegen',
                       name: "Add Ploeg",
                       child: const AddPloegPage(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            _route(
-              path: 'commissies',
-              name: "My Commissies",
-              child: const EditCommissiesPage(),
-              routes: [
-                _route(
-                  path: 'selecteer',
-                  name: "Select Commissie",
-                  child: const SelectCommissiePage(),
-                  routes: [
-                    _route(
-                      path: 'vul-info',
-                      name: "Fill Commissie Info",
-                      pageBuilder: (context, state) => _getPage(
-                        child: FillCommissieInfoPage(
-                          commissie: state.uri.queryParameters['commissie']!,
-                        ),
-                        name: "Fill Commissie Info",
-                      ),
                     ),
                   ],
                 ),

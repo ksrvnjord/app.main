@@ -21,6 +21,6 @@ final commissieLeedenProvider = StreamProvider.autoDispose
     final groups =
         (data['results'] as List).map((e) => DjangoGroup.fromJson(e)).toList();
 
-    yield* Stream.value(groups.firstOrNull?.users ?? []);
+    yield groups.firstOrNull?.users ?? [];
   },
 );

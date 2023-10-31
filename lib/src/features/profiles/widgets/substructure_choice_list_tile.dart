@@ -18,7 +18,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   }) : super(key: key);
   final String name;
 
-  final void Function()? onTap;
+  final void Function() onTap;
   final AsyncValue<ImageProvider<Object>> imageProvider;
 
   @override

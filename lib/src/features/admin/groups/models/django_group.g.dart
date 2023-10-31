@@ -8,8 +8,8 @@ part of 'django_group.dart';
 
 DjangoGroup _$DjangoGroupFromJson(Map<String, dynamic> json) => DjangoGroup(
       id: json['id'] as int,
-      users: (json['users'] as List<dynamic>)
-          .map((e) => GroupDjangoRelation.fromJson(e as Map<String, dynamic>))
+      users: (json['users'] as List<dynamic>?)
+          ?.map((e) => GroupDjangoRelation.fromJson(e as Map<String, dynamic>))
           .toList(),
       name: json['name'] as String,
       type: json['type'] as String,
