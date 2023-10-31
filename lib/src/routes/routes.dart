@@ -34,11 +34,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -47,9 +44,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_commissies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/fill_commissie_info_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
@@ -86,6 +80,8 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 GoRouter? _previousRouter;
 
 class Routes {
+  static const initialPath = '/';
+
   // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
@@ -171,7 +167,8 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ??
+              initialPath,
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -258,68 +255,6 @@ class Routes {
               path: 'allergieen',
               name: "My Allergies",
               child: const EditAllergiesPage(),
-            ),
-            _route(
-              path: 'groepen',
-              name: "My Groups",
-              child: const EditGroupsPage(),
-              routes: [
-                GoRoute(
-                  path: 'ploeg',
-                  name: "Select Ploeg",
-                  pageBuilder: (context, state) => _getPage(
-                    child: SelectPloegPage(
-                      selectedYear: int.parse(
-                        state.uri.queryParameters['year']!,
-                      ),
-                    ),
-                    name: "Select Ploeg",
-                  ),
-                  redirect: (
-                    context,
-                    state,
-                  ) => // Default route is ploegen for currentYear.
-                      state.uri.queryParameters['year'] == null
-                          ? Uri(
-                              path: state.matchedLocation,
-                              queryParameters: {
-                                'year': getNjordYear().toString(),
-                              },
-                            ).toString()
-                          : null,
-                  routes: [
-                    _route(
-                      path: 'toevoegen',
-                      name: "Add Ploeg",
-                      child: const AddPloegPage(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            _route(
-              path: 'commissies',
-              name: "My Commissies",
-              child: const EditCommissiesPage(),
-              routes: [
-                _route(
-                  path: 'selecteer',
-                  name: "Select Commissie",
-                  child: const SelectCommissiePage(),
-                  routes: [
-                    _route(
-                      path: 'vul-info',
-                      name: "Fill Commissie Info",
-                      pageBuilder: (context, state) => _getPage(
-                        child: FillCommissieInfoPage(
-                          commissie: state.uri.queryParameters['commissie']!,
-                        ),
-                        name: "Fill Commissie Info",
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
             _route(
               path: 'instellingen',
@@ -488,17 +423,24 @@ class Routes {
         _route(
           path: "commissies",
           name: "Commissies",
-          child: const CommissieChoicePage(),
+          pageBuilder: (context, state) => _getPage(
+            child: CommissieChoicePage(
+              year: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Commissies",
+          ),
           routes: [
             _route(
               path: ":name",
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  commissieName: state.pathParameters['name']!,
-                  commissieYear: state.uri.queryParameters['year'] != null
+                  name: state.pathParameters['name']!,
+                  year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
-                      : null,
+                      : getNjordYear(),
                 ),
                 name: "Commissie",
               ),
@@ -513,6 +455,9 @@ class Routes {
               ploegYear: state.uri.queryParameters['year'] == null
                   ? getNjordYear()
                   : int.parse(state.uri.queryParameters['year']!),
+              ploegType: state.uri.queryParameters['type'] == null
+                  ? "competitieploeg"
+                  : state.uri.queryParameters['type']!,
             ),
             name: "Ploegen",
           ),

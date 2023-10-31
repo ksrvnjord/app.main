@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/ploegen_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/gender.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
-  const PloegChoicePage({Key? key, required this.ploegYear})
-      : super(
+  const PloegChoicePage({
+    Key? key,
+    required this.ploegYear,
+    required this.ploegType,
+  }) : super(
           key: key,
         );
 
   final int ploegYear;
+  final String ploegType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedGender = ref.watch(ploegGeslachtFilterProvider);
-    final ploegType = ref.watch(ploegTypeProvider);
-    final ploegen = ref.watch(ploegenProvider(ploegYear));
+    final ploegen = ref.watch(groupsProvider(Tuple2(ploegType, ploegYear)));
 
     const double titleShimmerPadding = 128;
     const double titleShimmerHeight = 18;
 
-    final List<Tuple2<int, int>> years = yearsFrom1874;
-
-    const double menuMaxHeight = 240;
-    const double filtersHorizontalPadding = 8;
+    const double wrapSpacing = 8;
+    const double filterHPadding = 8;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,72 +38,47 @@ class PloegChoicePage extends ConsumerWidget {
         padding: const EdgeInsets.only(top: 8, bottom: 80),
         children: [
           [
-            SegmentedButton<PloegType>(
-              segments: [
-                for (final ploegType in PloegType.values)
-                  ButtonSegment(
-                    value: ploegType,
-                    label: Text(ploegType.value),
-                  ),
-              ],
-              selected: {
-                ploegType,
-              },
-              onSelectionChanged: (types) =>
-                  ref.read(ploegTypeProvider.notifier).state = types.first,
-            ),
-            const SizedBox(height: 8),
-            if (ploegType == PloegType.competitie)
-              [
-                SegmentedButton<Gender>(
-                  segments: [
-                    for (final gender in Gender.values)
-                      ButtonSegment(value: gender, label: Text(gender.value)),
-                  ],
-                  selected: {
-                    selectedGender,
+            for (final type in ['competitieploeg', 'wedstrijdsectie'])
+              ChoiceChip(
+                label: Text(type),
+                onSelected: (selected) => context.goNamed(
+                  'Ploegen',
+                  queryParameters: {
+                    'year': ploegYear.toString(),
+                    'type': type,
                   },
-                  onSelectionChanged: (types) => ref
-                      .read(ploegGeslachtFilterProvider.notifier)
-                      .state = types.first,
-                ).expanded(),
-                DropdownButton<int>(
-                  items: years
-                      .map((njordYear) => DropdownMenuItem(
-                            value: njordYear.item1,
-                            child:
-                                Text("${njordYear.item1}-${njordYear.item2}"),
-                          ))
-                      .toList(),
-                  value: ploegYear,
-                  onChanged: (value) => context.replaceNamed(
-                    "Ploegen",
-                    queryParameters: {"year": (value ?? ploegYear).toString()},
-                  ),
-                  menuMaxHeight: menuMaxHeight,
                 ),
-              ].toRow(
-                separator: const SizedBox(width: 48),
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                selected: type == ploegType,
               ),
-            const SizedBox(height: 16),
-            Text(
-              "Ploegen",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            [
+              const Text("Kies een jaar:"),
+              YearSelectorDropdown(
+                onChanged: (selectedYear) => context.goNamed(
+                  "Ploegen",
+                  queryParameters: {
+                    'year': selectedYear.toString(),
+                    'type': ploegType,
+                  },
+                ),
+                selectedYear: ploegYear,
+              ),
+            ].toRow(),
           ]
-              .toColumn(crossAxisAlignment: CrossAxisAlignment.stretch)
-              .padding(horizontal: filtersHorizontalPadding),
+              .toWrap(
+                spacing: wrapSpacing,
+              )
+              .paddingDirectional(horizontal: filterHPadding),
           ploegen.when(
             data: (data) => [
               data.isEmpty
-                  ? const Text("Geen ploegen gevonden").center()
+                  ? Text("Geen $ploegType gevonden voor $ploegYear-${ploegYear + 1}")
+                      .center()
                   : const SizedBox(),
               ...data
                   .map(
                     (ploeg) => ListTile(
                       title: Text(
-                        ploeg,
+                        ploeg.name,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       trailing: Icon(
@@ -117,7 +89,7 @@ class PloegChoicePage extends ConsumerWidget {
                       onTap: () => context.goNamed(
                         "Ploeg",
                         queryParameters: {"year": ploegYear.toString()},
-                        pathParameters: {"ploeg": ploeg},
+                        pathParameters: {"ploeg": ploeg.name},
                       ),
                     ),
                   )

@@ -1,4 +1,5 @@
 // ignore_for_file: type=lint
+import 'dart:async';
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -81,7 +82,7 @@ class _CopyWithImpl$Variables$Query$AlmanakProfile<TRes>
 
   final TRes Function(Variables$Query$AlmanakProfile) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({Object? profileId = _undefined}) =>
       _then(Variables$Query$AlmanakProfile._({
@@ -103,7 +104,7 @@ class _CopyWithStubImpl$Variables$Query$AlmanakProfile<TRes>
 class Query$AlmanakProfile {
   Query$AlmanakProfile({
     required this.user,
-    required this.$__typename,
+    this.$__typename = 'Query',
   });
 
   factory Query$AlmanakProfile.fromJson(Map<String, dynamic> json) {
@@ -196,7 +197,7 @@ class _CopyWithImpl$Query$AlmanakProfile<TRes>
 
   final TRes Function(Query$AlmanakProfile) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? user = _undefined,
@@ -395,6 +396,10 @@ const documentNodeQueryAlmanakProfile = DocumentNode(definitions: [
 Query$AlmanakProfile _parserFn$Query$AlmanakProfile(
         Map<String, dynamic> data) =>
     Query$AlmanakProfile.fromJson(data);
+typedef OnQueryComplete$Query$AlmanakProfile = FutureOr<void> Function(
+  Map<String, dynamic>?,
+  Query$AlmanakProfile?,
+);
 
 class Options$Query$AlmanakProfile
     extends graphql.QueryOptions<Query$AlmanakProfile> {
@@ -405,20 +410,41 @@ class Options$Query$AlmanakProfile
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$AlmanakProfile? typedOptimisticResult,
     Duration? pollInterval,
     graphql.Context? context,
-  }) : super(
+    OnQueryComplete$Query$AlmanakProfile? onComplete,
+    graphql.OnQueryError? onError,
+  })  : onCompleteWithParsed = onComplete,
+        super(
           variables: variables.toJson(),
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           pollInterval: pollInterval,
           context: context,
+          onComplete: onComplete == null
+              ? null
+              : (data) => onComplete(
+                    data,
+                    data == null ? null : _parserFn$Query$AlmanakProfile(data),
+                  ),
+          onError: onError,
           document: documentNodeQueryAlmanakProfile,
           parserFn: _parserFn$Query$AlmanakProfile,
         );
+
+  final OnQueryComplete$Query$AlmanakProfile? onCompleteWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onComplete == null
+            ? super.properties
+            : super.properties.where((property) => property != onComplete),
+        onCompleteWithParsed,
+      ];
 }
 
 class WatchOptions$Query$AlmanakProfile
@@ -430,6 +456,7 @@ class WatchOptions$Query$AlmanakProfile
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$AlmanakProfile? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -441,7 +468,7 @@ class WatchOptions$Query$AlmanakProfile
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeQueryAlmanakProfile,
           pollInterval: pollInterval,
@@ -525,7 +552,7 @@ class Query$AlmanakProfile$user {
     required this.email,
     required this.username,
     required this.fullContact,
-    required this.$__typename,
+    this.$__typename = 'User',
   });
 
   factory Query$AlmanakProfile$user.fromJson(Map<String, dynamic> json) {
@@ -662,7 +689,7 @@ class _CopyWithImpl$Query$AlmanakProfile$user<TRes>
 
   final TRes Function(Query$AlmanakProfile$user) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? identifier = _undefined,
@@ -716,7 +743,7 @@ class _CopyWithStubImpl$Query$AlmanakProfile$user<TRes>
 class Query$AlmanakProfile$user$fullContact {
   Query$AlmanakProfile$user$fullContact({
     required this.public,
-    required this.$__typename,
+    this.$__typename = 'UserContact',
   });
 
   factory Query$AlmanakProfile$user$fullContact.fromJson(
@@ -813,7 +840,7 @@ class _CopyWithImpl$Query$AlmanakProfile$user$fullContact<TRes>
 
   final TRes Function(Query$AlmanakProfile$user$fullContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? public = _undefined,
@@ -860,7 +887,7 @@ class Query$AlmanakProfile$user$fullContact$public {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$AlmanakProfile$user$fullContact$public.fromJson(
@@ -1067,7 +1094,7 @@ class _CopyWithImpl$Query$AlmanakProfile$user$fullContact$public<TRes>
 
   final TRes Function(Query$AlmanakProfile$user$fullContact$public) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
