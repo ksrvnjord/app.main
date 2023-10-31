@@ -38,7 +38,7 @@ class PloegChoicePage extends ConsumerWidget {
         padding: const EdgeInsets.only(top: 8, bottom: 80),
         children: [
           [
-            for (final type in ['competitieploeg', 'wedstrijdsectie'])
+            for (final type in ['Competitieploeg', 'Wedstrijdsectie'])
               ChoiceChip(
                 label: Text(type),
                 onSelected: (selected) => context.goNamed(
@@ -88,7 +88,10 @@ class PloegChoicePage extends ConsumerWidget {
                       // ignore: prefer-extracting-callbacks
                       onTap: () => context.goNamed(
                         "Ploeg",
-                        queryParameters: {"year": ploegYear.toString()},
+                        queryParameters: {
+                          "year": ploegYear.toString(),
+                          "type": ploegType,
+                        },
                         pathParameters: {"ploeg": ploeg.name},
                       ),
                     ),

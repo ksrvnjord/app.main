@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_types.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
@@ -21,9 +22,7 @@ class ManageGroupsPage extends ConsumerWidget {
   final String? type;
 
   Future<void> createNewGroup({
-    required String groupName,
-    required int groupYear,
-    required String groupType,
+    required DjangoGroup group,
     required WidgetRef ref,
     required BuildContext ctx,
   }) async {
@@ -32,7 +31,7 @@ class ManageGroupsPage extends ConsumerWidget {
       // ignore: avoid-ignoring-return-values
       await dio.post(
         "/api/users/groups/",
-        data: {"name": groupName, "year": groupYear, "type": groupType},
+        data: group.toJson(),
       );
     } catch (e) {
       if (ctx.mounted) {
@@ -58,10 +57,11 @@ class ManageGroupsPage extends ConsumerWidget {
     ref.invalidate(groupsProvider);
   }
 
-  Widget _buildCreateGroupBottomSheet() {
+  Widget _buildCreateGroupBottomSheet(
+    String? type,
+  ) {
     final nameController = TextEditingController();
     int year = getNjordYear();
-    String type = groupTypes.first;
     String? nameErrorMsg;
 
     return StatefulBuilder(
@@ -208,10 +208,16 @@ class ManageGroupsPage extends ConsumerWidget {
                           title: Text(group.name),
                           subtitle: Text(group.type),
                           trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () =>
-                              context.goNamed('Edit Group', pathParameters: {
-                            'id': group.id.toString(),
-                          }),
+                          onTap: () => context.goNamed(
+                            'Edit Group',
+                            pathParameters: {
+                              'id': group.id.toString(),
+                            },
+                            queryParameters: {
+                              "type": group.type,
+                              "year": group.year.toString(),
+                            },
+                          ),
                         ),
                     ].toColumn();
             },
@@ -227,21 +233,18 @@ class ManageGroupsPage extends ConsumerWidget {
         onPressed: () async {
           final result = await showModalBottomSheet(
             context: context,
-            builder: (context) => _buildCreateGroupBottomSheet()
+            builder: (context) => _buildCreateGroupBottomSheet(type)
                 .padding(bottom: MediaQuery.of(context).viewInsets.bottom),
             isScrollControlled: true,
           );
 
-          if (result != null) {
-            // Create the new group using the name and year entered in the bottom sheet.
-            final groupName = result['name'];
-            final groupYear = result['year'];
-            final type = result['type'];
-            if (!context.mounted) return;
+          if (result != null && context.mounted) {
             await createNewGroup(
-              groupName: groupName,
-              groupYear: groupYear,
-              groupType: type,
+              group: DjangoGroup(
+                name: result['name'],
+                type: result['type'],
+                year: result['year'],
+              ),
               ref: ref,
               ctx: context,
             );
