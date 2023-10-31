@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/widgets/role_dialog.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -81,11 +82,19 @@ class EditGroupPage extends ConsumerWidget {
   ) {
     return (int userId) async {
       final dio = ref.read(dioProvider);
+
+      // Show a dialog to let the user select a role for the user
+      // The role is either "Praeses" or "Ab-actis" or some custom entered role.
+      final role = await showDialog<String>(
+        context: ctx,
+        builder: (context) => const RoleDialog(),
+      );
+
       try {
         // ignore: avoid-ignoring-return-values
         await dio.post(
           "/api/users/groups/$groupId/add/",
-          data: {"user": userId},
+          data: {"user": userId, "role": role},
         );
       } catch (e) {
         if (!ctx.mounted) return;
