@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 
-part 'commissie_django_entry.g.dart';
+part 'group_django_entry.g.dart';
 
 @JsonSerializable()
 class GroupDjangoEntry {
+  // ignore: prefer-correct-identifier-length
   final int id;
   final DjangoGroup group;
   final String? role;

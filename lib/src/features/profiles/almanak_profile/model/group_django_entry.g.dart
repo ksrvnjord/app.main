@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'commissie_django_entry.dart';
+part of 'group_django_entry.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

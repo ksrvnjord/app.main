@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/commissie_django_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/heimdall_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
