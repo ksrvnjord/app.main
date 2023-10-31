@@ -34,6 +34,9 @@ class User {
   bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
   int get djangoId => _django.id;
 
+  // INFERRED FIELDS.
+  String get fullName => '$firstName $lastName';
+
   const User({FirestoreUser? firestore, required DjangoUser django})
       : _django = django,
         _firestore = firestore;
