@@ -10,7 +10,7 @@ GroupDjangoRelation _$GroupDjangoRelationFromJson(Map<String, dynamic> json) =>
     GroupDjangoRelation(
       id: json['id'] as int,
       user: GroupDjangoUser.fromJson(json['user'] as Map<String, dynamic>),
-      role: json['role'] as String?,
+      role: GroupDjangoRelation._roleFromJson(json['role'] as String?),
       permissions: (json['permissions'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -21,6 +21,6 @@ Map<String, dynamic> _$GroupDjangoRelationToJson(
     <String, dynamic>{
       'id': instance.id,
       'user': instance.user,
-      'role': instance.role,
+      'role': GroupDjangoRelation._roleToJson(instance.role),
       'permissions': instance.permissions,
     };

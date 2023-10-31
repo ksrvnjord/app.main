@@ -10,7 +10,7 @@ final groupsProvider = FutureProvider.autoDispose
   final res = await dio.get(
     "/api/users/groups/",
     queryParameters: {
-      "type": typeAndYear.item1,
+      "type": typeAndYear.item1?.toLowerCase(),
       "year": typeAndYear.item2,
       "ordering": "name",
     },

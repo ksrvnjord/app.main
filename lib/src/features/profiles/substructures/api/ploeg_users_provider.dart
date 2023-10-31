@@ -1,24 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
 final ploegUsersProvider = StreamProvider.autoDispose
-    .family<QuerySnapshot<PloegEntry>, Tuple2<String, int>>(
-  (ref, nameYear) {
-    return ref.watch(firebaseAuthUserProvider).value == null
-        ? const Stream.empty()
-        : FirebaseFirestore.instance
-            .collectionGroup('groups')
-            .withConverter(
-              fromFirestore: (snapshot, _) =>
-                  PloegEntry.fromJson(snapshot.data() ?? {}),
-              toFirestore: (entry, _) => entry.toJson(),
-            )
-            .where('name', isEqualTo: nameYear.item1)
-            .where('year', isEqualTo: nameYear.item2)
-            .snapshots();
+    .family<List<GroupDjangoRelation>, Tuple2<String, int>>(
+  (ref, nameAndYear) async* {
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.get("/api/users/groups/", queryParameters: {
+      "search": nameAndYear.item1,
+      "year": nameAndYear.item2,
+    });
+
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final groups =
+        (data['results'] as List).map((e) => DjangoGroup.fromJson(e)).toList();
+
+    yield groups.firstOrNull?.users ?? [];
   },
 );

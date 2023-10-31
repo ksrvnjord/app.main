@@ -7,12 +7,12 @@ part of 'django_group.dart';
 // **************************************************************************
 
 DjangoGroup _$DjangoGroupFromJson(Map<String, dynamic> json) => DjangoGroup(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       users: (json['users'] as List<dynamic>?)
           ?.map((e) => GroupDjangoRelation.fromJson(e as Map<String, dynamic>))
           .toList(),
       name: json['name'] as String,
-      type: json['type'] as String,
+      type: DjangoGroup._typeFromJson(json['type'] as String),
       year: json['year'] as int,
     );
 
@@ -21,6 +21,6 @@ Map<String, dynamic> _$DjangoGroupToJson(DjangoGroup instance) =>
       'id': instance.id,
       'users': instance.users,
       'name': instance.name,
-      'type': instance.type,
+      'type': DjangoGroup._typeToJson(instance.type),
       'year': instance.year,
     };

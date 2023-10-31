@@ -38,7 +38,7 @@ class PloegChoicePage extends ConsumerWidget {
         padding: const EdgeInsets.only(top: 8, bottom: 80),
         children: [
           [
-            for (final type in ['competitieploeg', 'wedstrijdsectie'])
+            for (final type in ['Competitieploeg', 'Wedstrijdsectie'])
               ChoiceChip(
                 label: Text(type),
                 onSelected: (selected) => context.goNamed(

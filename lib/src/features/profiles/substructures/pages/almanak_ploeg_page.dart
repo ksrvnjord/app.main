@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/choice/providers/ploeg_type_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -27,7 +25,6 @@ class AlmanakPloegPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final users = ref.watch(ploegUsersProvider(Tuple2(ploegName, year)));
-    final selectedPloegType = ref.watch(ploegTypeProvider);
 
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
@@ -41,49 +38,52 @@ class AlmanakPloegPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(ploegName),
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(bottom: 80),
-        children: [
-          [
-            Text(
-              "Leeden",
-              style: Theme.of(context).textTheme.titleLarge,
-            ).alignment(Alignment.centerLeft),
-            [
-              const Text('Kies een jaar: ').textColor(
-                selectedPloegType == PloegType.wedstrijd ? null : Colors.grey,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: [
+              Text(
+                "Leeden",
+                style: Theme.of(context).textTheme.titleLarge,
+              ).alignment(Alignment.centerLeft),
+              [
+                const Text('Kies een jaar: ').textColor(
+                  ploegIsWedstrijdploeg ? null : Colors.grey,
+                ),
+                DropdownButton<int>(
+                  items: years
+                      .map((year) => DropdownMenuItem<int>(
+                            value: year.item1,
+                            child: Text("${year.item1}-${year.item2}"),
+                          ))
+                      .toList(),
+                  value: year,
+                  onChanged:
+                      ploegIsWedstrijdploeg // Only wedstrijdploegen can have multiple years.
+                          ? (value) => context.replaceNamed(
+                                "Ploeg",
+                                pathParameters: {"ploeg": ploegName},
+                                queryParameters: {
+                                  "year": (value ?? year).toString(),
+                                },
+                              )
+                          : null,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  menuMaxHeight: menuMaxHeight,
+                ),
+              ].toRow(),
+            ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
+                  horizontal: headerHPadding,
+                ),
+          ),
+          SliverToBoxAdapter(
+            child: users.when(
+              data: (snapshot) => buildPloegList(snapshot),
+              error: (error, stk) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+              loading: () => const Center(
+                child: CircularProgressIndicator.adaptive(),
               ),
-              DropdownButton<int>(
-                items: years
-                    .map((year) => DropdownMenuItem<int>(
-                          value: year.item1,
-                          child: Text("${year.item1}-${year.item2}"),
-                        ))
-                    .toList(),
-                value: year,
-                onChanged:
-                    ploegIsWedstrijdploeg // Only wedstrijdploegen can have multiple years.
-                        ? (value) => context.replaceNamed(
-                              "Ploeg",
-                              pathParameters: {"ploeg": ploegName},
-                              queryParameters: {
-                                "year": (value ?? year).toString(),
-                              },
-                            )
-                        : null,
-                icon: const Icon(Icons.arrow_drop_down),
-                menuMaxHeight: menuMaxHeight,
-              ),
-            ].toRow(),
-          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
-                horizontal: headerHPadding,
-              ),
-          users.when(
-            data: (snapshot) => buildPloegList(snapshot),
-            error: (error, stk) =>
-                ErrorCardWidget(errorMessage: error.toString()),
-            loading: () => const Center(
-              child: CircularProgressIndicator.adaptive(),
             ),
           ),
         ],
@@ -91,40 +91,44 @@ class AlmanakPloegPage extends ConsumerWidget {
     );
   }
 
-  Widget buildPloegList(QuerySnapshot<PloegEntry> snapshot) {
-    List<QueryDocumentSnapshot<PloegEntry>> docs = snapshot.docs;
-    docs.sort((a, b) => comparePloegFunctie(a.data(), b.data()));
+  Widget buildPloegList(List<GroupDjangoRelation> users) {
+    users.sort((a, b) => comparePloegFunctie(a, b));
     const double notFoundPadding = 16;
 
     return <Widget>[
-      ...docs.map(
+      ...users.map(
         (doc) => toListTile(doc),
       ),
-      if (docs.isEmpty)
+      if (users.isEmpty)
         Text("Geen Leeden gevonden voor $ploegName")
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
   }
 
-  AlmanakUserTile toListTile(QueryDocumentSnapshot<PloegEntry> doc) {
-    final user = doc.data();
+  AlmanakUserTile toListTile(GroupDjangoRelation relation) {
+    final user = relation.user;
 
     return AlmanakUserTile(
       firstName: user.firstName,
       lastName: user.lastName,
-      subtitle: user.role.value,
-      lidnummer: user.identifier,
+      subtitle: relation.role,
+      lidnummer: user.identifier.toString(),
     );
   }
 
-  int comparePloegFunctie(PloegEntry a, PloegEntry b) {
-    // Sort based on role in ploeg.
-    int indexA = PloegRole.values.indexOf(a.role);
-    int indexB = PloegRole.values.indexOf(b.role);
+  int comparePloegFunctie(GroupDjangoRelation a, GroupDjangoRelation b) {
+    // Sort based on role in ploeg in the following order:
+    final ploegRoles = [
+      "coach",
+      "stuur",
+      "roeier",
+    ];
 
-    return indexA == indexB
-        ? a.lastName.compareTo(b.lastName)
-        : indexA.compareTo(indexB);
+    // Sort a and b based on their role in the ploeg.
+    final aRole = ploegRoles.indexOf(a.role?.toLowerCase() ?? "");
+    final bRole = ploegRoles.indexOf(b.role?.toLowerCase() ?? "");
+
+    return aRole.compareTo(bRole);
   }
 }
