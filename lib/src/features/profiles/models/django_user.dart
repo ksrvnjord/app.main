@@ -1,9 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 part 'django_user.g.dart';
 
+/// Model representing user data from ONLY Django.
 @JsonSerializable()
 class DjangoUser {
   // ignore: prefer-correct-identifier-length
@@ -100,4 +108,50 @@ class DjangoUser {
       _$DjangoUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$DjangoUserToJson(this);
+
+  static Future<DjangoUser> getByIdentifier(
+    String identifier,
+    AutoDisposeStreamProviderRef<User> ref,
+  ) async {
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.get("/api/users/users/", queryParameters: {
+      "search": identifier,
+    });
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final results = data["results"] as List;
+    final user = results.first as Map<String, dynamic>;
+
+    return DjangoUser.fromJson(user);
+  }
+
+  static Future<DjangoUser> getById(
+    String id,
+    AutoDisposeStreamProviderRef<DjangoUser> ref,
+  ) async {
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.get("/api/users/user/$id");
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final results = data["results"] as List;
+    final user = results.first as Map<String, dynamic>;
+
+    return DjangoUser.fromJson(user);
+  }
+
+  static Future<Query$AlmanakProfile$user?> getByIdGraphQL(
+    String id,
+    AutoDisposeStreamProviderRef<User> ref,
+  ) async {
+    final client = ref.watch(graphQLClientProvider);
+
+    final result = await client.query$AlmanakProfile(
+      Options$Query$AlmanakProfile(
+        variables: Variables$Query$AlmanakProfile(profileId: id),
+        fetchPolicy: gql.FetchPolicy.cacheFirst,
+      ),
+    );
+
+    return result.parsedData?.user;
+  }
 }

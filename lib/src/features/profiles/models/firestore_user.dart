@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 part 'firestore_user.g.dart';
 
+/// Model representing user data from ONLY Firestore.
 @immutable
 @JsonSerializable()
 class FirestoreUser {

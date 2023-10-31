@@ -4,12 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:ksrvnjord_main_app/schema.graphql.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/api/me.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -81,11 +79,6 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   }
 
   void save(GraphQLClient client) async {
-    final uid = ref.watch(currentFirestoreUserProvider)?.identifier;
-    ref.invalidate(heimdallUserByLidnummerProviderGraphQL(
-      uid ?? "",
-    )); // Invalidate the cache for the user profile, so the user sees the changes immediately.
-
     try {
       // ignore: avoid-ignoring-return-values
       await updatePublicContact(
