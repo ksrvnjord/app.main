@@ -9,7 +9,7 @@ import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
 class Query$Me {
   Query$Me({
     this.me,
-    required this.$__typename,
+    this.$__typename = 'Query',
   });
 
   factory Query$Me.fromJson(Map<String, dynamic> json) {
@@ -100,7 +100,7 @@ class _CopyWithImpl$Query$Me<TRes> implements CopyWith$Query$Me<TRes> {
 
   final TRes Function(Query$Me) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? me = _undefined,
@@ -444,6 +444,10 @@ const documentNodeQueryMe = DocumentNode(definitions: [
 ]);
 Query$Me _parserFn$Query$Me(Map<String, dynamic> data) =>
     Query$Me.fromJson(data);
+typedef OnQueryComplete$Query$Me = FutureOr<void> Function(
+  Map<String, dynamic>?,
+  Query$Me?,
+);
 
 class Options$Query$Me extends graphql.QueryOptions<Query$Me> {
   Options$Query$Me({
@@ -452,19 +456,40 @@ class Options$Query$Me extends graphql.QueryOptions<Query$Me> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$Me? typedOptimisticResult,
     Duration? pollInterval,
     graphql.Context? context,
-  }) : super(
+    OnQueryComplete$Query$Me? onComplete,
+    graphql.OnQueryError? onError,
+  })  : onCompleteWithParsed = onComplete,
+        super(
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           pollInterval: pollInterval,
           context: context,
+          onComplete: onComplete == null
+              ? null
+              : (data) => onComplete(
+                    data,
+                    data == null ? null : _parserFn$Query$Me(data),
+                  ),
+          onError: onError,
           document: documentNodeQueryMe,
           parserFn: _parserFn$Query$Me,
         );
+
+  final OnQueryComplete$Query$Me? onCompleteWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onComplete == null
+            ? super.properties
+            : super.properties.where((property) => property != onComplete),
+        onCompleteWithParsed,
+      ];
 }
 
 class WatchOptions$Query$Me extends graphql.WatchQueryOptions<Query$Me> {
@@ -474,6 +499,7 @@ class WatchOptions$Query$Me extends graphql.WatchQueryOptions<Query$Me> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$Me? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -484,7 +510,7 @@ class WatchOptions$Query$Me extends graphql.WatchQueryOptions<Query$Me> {
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeQueryMe,
           pollInterval: pollInterval,
@@ -556,7 +582,7 @@ class Query$Me$me {
     required this.username,
     required this.listed,
     required this.fullContact,
-    required this.$__typename,
+    this.$__typename = 'User',
   });
 
   factory Query$Me$me.fromJson(Map<String, dynamic> json) {
@@ -702,7 +728,7 @@ class _CopyWithImpl$Query$Me$me<TRes> implements CopyWith$Query$Me$me<TRes> {
 
   final TRes Function(Query$Me$me) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? identifier = _undefined,
@@ -763,7 +789,7 @@ class Query$Me$me$fullContact {
     required this.public,
     this.private,
     this.update,
-    required this.$__typename,
+    this.$__typename = 'UserContact',
   });
 
   factory Query$Me$me$fullContact.fromJson(Map<String, dynamic> json) {
@@ -893,7 +919,7 @@ class _CopyWithImpl$Query$Me$me$fullContact<TRes>
 
   final TRes Function(Query$Me$me$fullContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? public = _undefined,
@@ -970,7 +996,7 @@ class Query$Me$me$fullContact$public {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$Me$me$fullContact$public.fromJson(Map<String, dynamic> json) {
@@ -1175,7 +1201,7 @@ class _CopyWithImpl$Query$Me$me$fullContact$public<TRes>
 
   final TRes Function(Query$Me$me$fullContact$public) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
@@ -1248,7 +1274,7 @@ class Query$Me$me$fullContact$private {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$Me$me$fullContact$private.fromJson(Map<String, dynamic> json) {
@@ -1453,7 +1479,7 @@ class _CopyWithImpl$Query$Me$me$fullContact$private<TRes>
 
   final TRes Function(Query$Me$me$fullContact$private) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
@@ -1526,7 +1552,7 @@ class Query$Me$me$fullContact$update {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$Me$me$fullContact$update.fromJson(Map<String, dynamic> json) {
@@ -1731,7 +1757,7 @@ class _CopyWithImpl$Query$Me$me$fullContact$update<TRes>
 
   final TRes Function(Query$Me$me$fullContact$update) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
@@ -1870,7 +1896,7 @@ class _CopyWithImpl$Variables$Mutation$Me<TRes>
 
   final TRes Function(Variables$Mutation$Me) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({Object? contact = _undefined}) => _then(Variables$Mutation$Me._({
         ..._instance._$data,
@@ -1891,7 +1917,7 @@ class _CopyWithStubImpl$Variables$Mutation$Me<TRes>
 class Mutation$Me {
   Mutation$Me({
     this.updateContactDetails,
-    required this.$__typename,
+    this.$__typename = 'Mutation',
   });
 
   factory Mutation$Me.fromJson(Map<String, dynamic> json) {
@@ -1983,7 +2009,7 @@ class _CopyWithImpl$Mutation$Me<TRes> implements CopyWith$Mutation$Me<TRes> {
 
   final TRes Function(Mutation$Me) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? updateContactDetails = _undefined,
@@ -2127,7 +2153,7 @@ const documentNodeMutationMe = DocumentNode(definitions: [
 Mutation$Me _parserFn$Mutation$Me(Map<String, dynamic> data) =>
     Mutation$Me.fromJson(data);
 typedef OnMutationCompleted$Mutation$Me = FutureOr<void> Function(
-  dynamic,
+  Map<String, dynamic>?,
   Mutation$Me?,
 );
 
@@ -2139,6 +2165,7 @@ class Options$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$Me? typedOptimisticResult,
     graphql.Context? context,
     OnMutationCompleted$Mutation$Me? onCompleted,
     graphql.OnMutationUpdate<Mutation$Me>? update,
@@ -2150,7 +2177,7 @@ class Options$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           onCompleted: onCompleted == null
               ? null
@@ -2183,6 +2210,7 @@ class WatchOptions$Mutation$Me extends graphql.WatchQueryOptions<Mutation$Me> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$Me? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -2194,7 +2222,7 @@ class WatchOptions$Mutation$Me extends graphql.WatchQueryOptions<Mutation$Me> {
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeMutationMe,
           pollInterval: pollInterval,
@@ -2229,9 +2257,10 @@ Mutation$Me$HookResult useMutation$Me([WidgetOptions$Mutation$Me? options]) {
   final result =
       graphql_flutter.useMutation(options ?? WidgetOptions$Mutation$Me());
   return Mutation$Me$HookResult(
-    (variables, {optimisticResult}) => result.runMutation(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
       variables.toJson(),
-      optimisticResult: optimisticResult,
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
     ),
     result.result,
   );
@@ -2248,6 +2277,7 @@ class WidgetOptions$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$Me? typedOptimisticResult,
     graphql.Context? context,
     OnMutationCompleted$Mutation$Me? onCompleted,
     graphql.OnMutationUpdate<Mutation$Me>? update,
@@ -2258,7 +2288,7 @@ class WidgetOptions$Mutation$Me extends graphql.MutationOptions<Mutation$Me> {
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           onCompleted: onCompleted == null
               ? null
@@ -2287,6 +2317,7 @@ typedef RunMutation$Mutation$Me = graphql.MultiSourceResult<Mutation$Me>
     Function(
   Variables$Mutation$Me, {
   Object? optimisticResult,
+  Mutation$Me? typedOptimisticResult,
 });
 typedef Builder$Mutation$Me = widgets.Widget Function(
   RunMutation$Mutation$Me,
@@ -2309,10 +2340,12 @@ class Mutation$Me$Widget extends graphql_flutter.Mutation<Mutation$Me> {
             (
               variables, {
               optimisticResult,
+              typedOptimisticResult,
             }) =>
                 run(
               variables.toJson(),
-              optimisticResult: optimisticResult,
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
             ),
             result,
           ),
@@ -2329,7 +2362,7 @@ class Mutation$Me$updateContactDetails {
     this.housenumber_addition,
     this.city,
     this.zipcode,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Mutation$Me$updateContactDetails.fromJson(Map<String, dynamic> json) {
@@ -2520,7 +2553,7 @@ class _CopyWithImpl$Mutation$Me$updateContactDetails<TRes>
 
   final TRes Function(Mutation$Me$updateContactDetails) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
@@ -2679,7 +2712,7 @@ class _CopyWithImpl$Variables$Mutation$UpdateVisibility<TRes>
 
   final TRes Function(Variables$Mutation$UpdateVisibility) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? listed = _undefined,
@@ -2710,7 +2743,7 @@ class Mutation$UpdateVisibility {
   Mutation$UpdateVisibility({
     this.toggleListed,
     this.updatePublicContact,
-    required this.$__typename,
+    this.$__typename = 'Mutation',
   });
 
   factory Mutation$UpdateVisibility.fromJson(Map<String, dynamic> json) {
@@ -2822,7 +2855,7 @@ class _CopyWithImpl$Mutation$UpdateVisibility<TRes>
 
   final TRes Function(Mutation$UpdateVisibility) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? toggleListed = _undefined,
@@ -3004,7 +3037,7 @@ Mutation$UpdateVisibility _parserFn$Mutation$UpdateVisibility(
         Map<String, dynamic> data) =>
     Mutation$UpdateVisibility.fromJson(data);
 typedef OnMutationCompleted$Mutation$UpdateVisibility = FutureOr<void> Function(
-  dynamic,
+  Map<String, dynamic>?,
   Mutation$UpdateVisibility?,
 );
 
@@ -3017,6 +3050,7 @@ class Options$Mutation$UpdateVisibility
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$UpdateVisibility? typedOptimisticResult,
     graphql.Context? context,
     OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
     graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
@@ -3028,7 +3062,7 @@ class Options$Mutation$UpdateVisibility
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           onCompleted: onCompleted == null
               ? null
@@ -3064,6 +3098,7 @@ class WatchOptions$Mutation$UpdateVisibility
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$UpdateVisibility? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -3075,7 +3110,7 @@ class WatchOptions$Mutation$UpdateVisibility
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeMutationUpdateVisibility,
           pollInterval: pollInterval,
@@ -3113,9 +3148,10 @@ Mutation$UpdateVisibility$HookResult useMutation$UpdateVisibility(
   final result = graphql_flutter
       .useMutation(options ?? WidgetOptions$Mutation$UpdateVisibility());
   return Mutation$UpdateVisibility$HookResult(
-    (variables, {optimisticResult}) => result.runMutation(
+    (variables, {optimisticResult, typedOptimisticResult}) =>
+        result.runMutation(
       variables.toJson(),
-      optimisticResult: optimisticResult,
+      optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
     ),
     result.result,
   );
@@ -3134,6 +3170,7 @@ class WidgetOptions$Mutation$UpdateVisibility
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Mutation$UpdateVisibility? typedOptimisticResult,
     graphql.Context? context,
     OnMutationCompleted$Mutation$UpdateVisibility? onCompleted,
     graphql.OnMutationUpdate<Mutation$UpdateVisibility>? update,
@@ -3144,7 +3181,7 @@ class WidgetOptions$Mutation$UpdateVisibility
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           onCompleted: onCompleted == null
               ? null
@@ -3175,6 +3212,7 @@ typedef RunMutation$Mutation$UpdateVisibility
     = graphql.MultiSourceResult<Mutation$UpdateVisibility> Function(
   Variables$Mutation$UpdateVisibility, {
   Object? optimisticResult,
+  Mutation$UpdateVisibility? typedOptimisticResult,
 });
 typedef Builder$Mutation$UpdateVisibility = widgets.Widget Function(
   RunMutation$Mutation$UpdateVisibility,
@@ -3198,10 +3236,12 @@ class Mutation$UpdateVisibility$Widget
             (
               variables, {
               optimisticResult,
+              typedOptimisticResult,
             }) =>
                 run(
               variables.toJson(),
-              optimisticResult: optimisticResult,
+              optimisticResult:
+                  optimisticResult ?? typedOptimisticResult?.toJson(),
             ),
             result,
           ),
@@ -3219,7 +3259,7 @@ class Mutation$UpdateVisibility$updatePublicContact {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Mutation$UpdateVisibility$updatePublicContact.fromJson(
@@ -3427,7 +3467,7 @@ class _CopyWithImpl$Mutation$UpdateVisibility$updatePublicContact<TRes>
 
   final TRes Function(Mutation$UpdateVisibility$updatePublicContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,
