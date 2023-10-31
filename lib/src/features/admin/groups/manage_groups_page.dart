@@ -227,7 +227,9 @@ class ManageGroupsPage extends ConsumerWidget {
         onPressed: () async {
           final result = await showModalBottomSheet(
             context: context,
-            builder: (context) => _buildCreateGroupBottomSheet(),
+            builder: (context) => _buildCreateGroupBottomSheet()
+                .padding(bottom: MediaQuery.of(context).viewInsets.bottom),
+            isScrollControlled: true,
           );
 
           if (result != null) {
