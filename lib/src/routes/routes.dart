@@ -34,11 +34,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -168,7 +165,8 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ??
+              '/almanak',
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -255,44 +253,6 @@ class Routes {
               path: 'allergieen',
               name: "My Allergies",
               child: const EditAllergiesPage(),
-            ),
-            _route(
-              path: 'groepen',
-              name: "My Groups",
-              child: const EditGroupsPage(),
-              routes: [
-                GoRoute(
-                  path: 'ploeg',
-                  name: "Select Ploeg",
-                  pageBuilder: (context, state) => _getPage(
-                    child: SelectPloegPage(
-                      selectedYear: int.parse(
-                        state.uri.queryParameters['year']!,
-                      ),
-                    ),
-                    name: "Select Ploeg",
-                  ),
-                  redirect: (
-                    context,
-                    state,
-                  ) => // Default route is ploegen for currentYear.
-                      state.uri.queryParameters['year'] == null
-                          ? Uri(
-                              path: state.matchedLocation,
-                              queryParameters: {
-                                'year': getNjordYear().toString(),
-                              },
-                            ).toString()
-                          : null,
-                  routes: [
-                    _route(
-                      path: 'toevoegen',
-                      name: "Add Ploeg",
-                      child: const AddPloegPage(),
-                    ),
-                  ],
-                ),
-              ],
             ),
             _route(
               path: 'instellingen',
@@ -493,6 +453,9 @@ class Routes {
               ploegYear: state.uri.queryParameters['year'] == null
                   ? getNjordYear()
                   : int.parse(state.uri.queryParameters['year']!),
+              ploegType: state.uri.queryParameters['type'] == null
+                  ? "competitieploeg"
+                  : state.uri.queryParameters['type']!,
             ),
             name: "Ploegen",
           ),

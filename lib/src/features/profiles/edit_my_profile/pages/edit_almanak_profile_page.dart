@@ -158,14 +158,43 @@ class _EditAlmanakProfilePageState
             FormSection(
               title: "Mijn groepen",
               children: [
-                ListTile(
-                  title: const Text('Beheer mijn ploegen'),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
+                Card(
+                  color: colorScheme.primaryContainer,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  onTap: () => context.goNamed(
-                    'My Groups',
-                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                  margin: const EdgeInsets.all(0.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          "Ploegen en commissies worden door het bestuur ingedeeld.",
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+                Card(
+                  color: colorScheme.tertiaryContainer,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  margin: const EdgeInsets.all(0.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Icon(Icons.question_mark),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          "Staan jouw ploegen/commissies niet goed? Neem dan contact op met de Ab-actis.",
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
                 DropdownButtonFormField<String?>(
                   items: ['Geen', ...houseNames]
