@@ -80,6 +80,8 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 GoRouter? _previousRouter;
 
 class Routes {
+  static const initialPath = '/';
+
   // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
@@ -166,7 +168,7 @@ class Routes {
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
           _previousRouter?.routeInformationProvider.value.uri.path ??
-              '/almanak',
+              initialPath,
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
