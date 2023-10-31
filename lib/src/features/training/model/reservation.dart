@@ -6,6 +6,7 @@ part 'reservation.g.dart';
 @JsonSerializable()
 class Reservation {
   @JsonKey(
+    name: 'object',
     toJson: _documentReferenceToJson,
     fromJson: _documentReferenceFromJson,
   )
@@ -51,9 +52,9 @@ class Reservation {
   Map<String, dynamic> toJson() => _$ReservationToJson(this);
 
   static DocumentReference _documentReferenceFromJson(
-    DocumentReference documentReference,
+    DocumentReference<Object?> docRef,
   ) =>
-      documentReference;
+      docRef;
 
   static DocumentReference _documentReferenceToJson(
     DocumentReference documentReference,
