@@ -20,7 +20,7 @@ class MorePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseAuthUser = ref.watch(firebaseAuthUserProvider).value;
-    final currentUser = ref.watch(currentUserProvider);
+    final currentUserVal = ref.watch(currentUserProvider);
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
@@ -126,9 +126,9 @@ class MorePage extends ConsumerWidget {
         ),
       ),
       // Floatingaction button to navigate to admin page.
-      floatingActionButton: currentUser.when(
-        data: (value) {
-          final canAccesAdminPanel = value.isStaff ?? false;
+      floatingActionButton: currentUserVal.when(
+        data: (currentUser) {
+          final canAccesAdminPanel = currentUser.isAdmin;
 
           return canAccesAdminPanel
               ? FloatingActionButton.extended(

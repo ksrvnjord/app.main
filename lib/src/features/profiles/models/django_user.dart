@@ -111,7 +111,7 @@ class DjangoUser {
 
   static Future<DjangoUser> getByIdentifier(
     String identifier,
-    AutoDisposeStreamProviderRef<User> ref,
+    StreamProviderRef<User> ref,
   ) async {
     final dio = ref.watch(dioProvider);
 
@@ -141,7 +141,7 @@ class DjangoUser {
 
   static Future<Query$AlmanakProfile$user?> getByIdGraphQL(
     String id,
-    AutoDisposeStreamProviderRef<User> ref,
+    StreamProviderRef<User> ref,
   ) async {
     final client = ref.watch(graphQLClientProvider);
 

@@ -14,7 +14,7 @@ final peopleCollection = FirebaseFirestore.instance
 
 // ignore: prefer-static-class
 final firestoreUserStreamProvider =
-    StreamProvider.autoDispose.family<QuerySnapshot<FirestoreUser>, String>(
+    StreamProvider.family<QuerySnapshot<FirestoreUser>, String>(
   (ref, userId) {
     return ref.watch(firebaseAuthUserProvider).value == null
         ? const Stream.empty()

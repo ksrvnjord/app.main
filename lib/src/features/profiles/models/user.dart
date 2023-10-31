@@ -31,7 +31,7 @@ class User {
 
   // DJANGO SPECIFIC FIELDS.
   Address? get address => _firestore?.address;
-  bool? get isStaff => _django.isStaff;
+  bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
   int get djangoId => _django.id;
 
   const User({FirestoreUser? firestore, required DjangoUser django})

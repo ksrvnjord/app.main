@@ -21,8 +21,27 @@ final currentUserProvider = StreamProvider.autoDispose<User>(
   },
 );
 
+// ignore: prefer-match-file-name
+class UserNotifier extends StateNotifier<User?> {
+  UserNotifier(User? user) : super(user);
+}
+
+final currentUserNotifierProvider = StateNotifierProvider<UserNotifier, User?>(
+  (ref) {
+    final user = ref.watch(firebaseAuthUserProvider).value;
+
+    if (user == null) {
+      return UserNotifier(null);
+    }
+
+    final profile = ref.watch(userProvider(user.uid));
+
+    return UserNotifier(profile.value);
+  },
+);
+
 /// Retrieves all data from firestore and heimdall for a given user.
-final userProvider = StreamProvider.autoDispose.family<User, String>(
+final userProvider = StreamProvider.family<User, String>(
   (ref, lidnummer) async* {
     final user = ref.watch(firebaseAuthUserProvider).value;
 
