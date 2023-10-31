@@ -1,14 +1,13 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
-import '../../shared/model/current_user.dart';
 import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -90,18 +89,14 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   Widget renderPage(
     QuerySnapshot<Reservation> snapshot,
   ) {
-    CurrentUser curUser = GetIt.I.get<CurrentUser>();
-    final privateContact = curUser.user?.fullContact.private;
-    User? firebaseUser = FirebaseAuth.instance.currentUser;
-    if (privateContact == null || firebaseUser == null) {
+    final user = ref.watch(currentUserNotifierProvider);
+    if (user == null) {
       return const ErrorCardWidget(
-        errorMessage:
-            'Er is iets misgegaan met het inloggen, probeer in- en uit te loggen.',
+        errorMessage: "Er is iets misgegaan met het ophalen van je gegevens, "
+            "probeer opnieuw in te loggen.",
       );
     }
 
-    String creatorName =
-        '${privateContact.first_name ?? "Onbekend"} ${privateContact.last_name}';
     const int timeRowItems = 3;
     List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
@@ -119,8 +114,10 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       if ((reservation.startTime.isBefore(_startTime) ||
               reservationsHaveSameStartTime) &&
           reservation.endTime.isAfter(_startTime)) {
-        if (reservation.creator == firebaseUser.uid) {
-          return Container();
+        if (reservation.creatorId == user.identifier.toString()) {
+          return const ErrorCardWidget(
+            errorMessage: "Je hebt al een afschrijving op dit tijdstip",
+          );
         }
 
         return const ErrorCardWidget(
@@ -223,16 +220,14 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         ],
       ),
       buildReservationButton(
-        firebaseUser,
-        creatorName,
+        user,
         fieldPadding,
       ).padding(all: fieldPadding),
     ]);
   }
 
   ElevatedButton buildReservationButton(
-    User firebaseUser,
-    String creatorName,
+    User currentUser,
     double fieldPadding,
   ) {
     final reservationIsInProgress = ref.watch(progressProvider);
@@ -241,8 +236,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       onPressed: reservationIsInProgress
           ? null
           : () => createReservation(
-                firebaseUser.uid,
-                creatorName,
+                currentUser.identifier.toString(),
+                currentUser.fullName,
               ),
       child: <Widget>[
         Icon(reservationIsInProgress ? LucideIcons.loader : LucideIcons.check)
@@ -261,46 +256,47 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   ) async {
     final colorScheme = Theme.of(context).colorScheme;
     ref.read(progressProvider.notifier).inProgress();
-    final response = await createReservationCloud(Reservation(
-      _startTime,
-      _endTime,
-      widget.reservationObject,
-      uid,
-      widget.objectName,
+    context.pop();
+    final res = await createReservationCloud(Reservation(
+      startTimestamp: Timestamp.fromDate(_startTime),
+      endTimestamp: Timestamp.fromDate(_endTime),
+      reservationObject: widget.reservationObject,
+      creatorId: uid,
+      objectName: widget.objectName,
       creatorName: creatorName,
-      createdAt: DateTime.now(),
     ));
 
-    if (response['success'] == true) {
+    if (res['success'] == true) {
       FirebaseAnalytics.instance.logEvent(
         name: 'reservation_created',
         parameters: <String, dynamic>{
           'reservation_object_name': widget.objectName,
         },
       );
+      if (!context.mounted) return;
+
       // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Afschrijving gelukt!'),
           backgroundColor: Colors.green,
-          showCloseIcon: true,
         ),
       );
     } else {
+      if (!context.mounted) return;
+
       // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Afschrijving mislukt! ${response['error']}",
+            "Afschrijving mislukt! ${res['error']}",
           ).textColor(colorScheme.onErrorContainer),
           backgroundColor: colorScheme.errorContainer,
-          showCloseIcon: true,
         ),
       );
     }
     ref.read(progressProvider.notifier).done();
     // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-    context.pop();
   }
 
   Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {

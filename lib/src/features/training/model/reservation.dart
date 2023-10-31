@@ -1,48 +1,71 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'reservation.g.dart';
+
+@JsonSerializable()
 class Reservation {
-  final DateTime startTime;
-  final DateTime endTime;
+  @JsonKey(
+    toJson: _documentReferenceToJson,
+    fromJson: _documentReferenceFromJson,
+  )
   final DocumentReference reservationObject;
-  final String creator;
-  DateTime createdAt = DateTime.now();
-  String objectName;
-  String creatorName;
+  final String creatorId;
 
-  Reservation(
-    this.startTime,
-    this.endTime,
-    this.reservationObject,
-    this.creator,
-    this.objectName, {
+  final String objectName;
+  final String creatorName;
+
+  @JsonKey(name: "startTime")
+  @TimestampDateTimeConverter()
+  final Timestamp startTimestamp;
+
+  @JsonKey(name: "endTime")
+  @TimestampDateTimeConverter()
+  final Timestamp endTimestamp;
+
+  @JsonKey(name: "createdAt")
+  @TimestampDateTimeConverter()
+  final Timestamp createdAtTimestamp = Timestamp.now();
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get startTime => startTimestamp.toDate();
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get endTime => endTimestamp.toDate();
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get createdAt => createdAtTimestamp.toDate();
+
+  Reservation({
+    required this.startTimestamp,
+    required this.endTimestamp,
+    required this.reservationObject,
+    required this.creatorId,
+    required this.objectName,
     required this.creatorName,
-    required this.createdAt,
   });
 
-  static Reservation fromJson(Map<String, dynamic> json) {
-    return Reservation(
-      (json['startTime'] as Timestamp).toDate(),
-      (json['endTime'] as Timestamp).toDate(),
-      json['object']! as DocumentReference,
-      json['creatorId'].toString(),
-      json['objectName'].toString(),
-      creatorName: json['creatorName'].toString(),
-      createdAt: (json['createdTime'] as Timestamp).toDate(),
-    );
-  }
+  factory Reservation.fromJson(Map<String, dynamic> json) =>
+      _$ReservationFromJson(json);
 
-  Map<String, Object> toJson() => {
-        'startTime': Timestamp.fromDate(startTime),
-        'endTime': Timestamp.fromDate(endTime),
-        'object': reservationObject,
-        'creatorId': creator,
-        'createdTime': Timestamp.fromDate(createdAt),
-        'objectName': objectName,
-        'creatorName': creatorName,
-      };
+  Map<String, dynamic> toJson() => _$ReservationToJson(this);
+
+  static DocumentReference _documentReferenceFromJson(
+    DocumentReference documentReference,
+  ) =>
+      documentReference;
+
+  static DocumentReference _documentReferenceToJson(
+    DocumentReference documentReference,
+  ) =>
+      documentReference;
+}
+
+class TimestampDateTimeConverter
+    implements JsonConverter<Timestamp, Timestamp> {
+  const TimestampDateTimeConverter();
 
   @override
-  String toString() {
-    return 'Reservation{startTime: $startTime, endTime: $endTime, reservationObject: $reservationObject, creator: $creator, createdAt: $createdAt, objectName: $objectName, creatorName: $creatorName}';
-  }
+  Timestamp fromJson(Timestamp json) => json;
+
+  @override
+  Timestamp toJson(Timestamp object) => object;
 }
