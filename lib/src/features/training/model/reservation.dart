@@ -15,6 +15,7 @@ class Reservation {
   final String objectName;
   final String creatorName;
 
+  // Firestore doesn't support DateTime, so we use Timestamp instead.
   @JsonKey(name: "startTime")
   @TimestampDateTimeConverter()
   final Timestamp startTimestamp;
@@ -27,6 +28,7 @@ class Reservation {
   @TimestampDateTimeConverter()
   final Timestamp createdAtTimestamp = Timestamp.now();
 
+  // We use getters so we can use DateTime instead of Timestamp in our code.
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime get startTime => startTimestamp.toDate();
   @JsonKey(includeFromJson: false, includeToJson: false)
