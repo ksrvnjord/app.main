@@ -15,36 +15,25 @@ final groupsForUserProvider =
 
       return;
     }
-    final user =
-        // ignore: avoid-non-null-assertion
-        (await ref.watch(userProvider(userId).future));
+    final user = await ref.watch(userProvider(userId).future);
 
     final groups = await ref.watch(groupsForDjangoUserProvider(userId).future);
 
-    final List<GroupEntry> groupEntries = [];
-
-    final type = groups.runtimeType;
-    switch (type) {
-      case const (List<GroupDjangoEntry>):
-        groupEntries.addAll(
-          groups.map(
-            (e) => CommissieEntry(
-              startYear: e.group.year,
-              endYear: e.group.year + 1,
-              // ignore: avoid-non-null-assertion
-              firstName: user.firstName,
-              // ignore: avoid-non-null-assertion
-              lastName: user.lastName,
-              identifier: userId,
-              name: e.group.name,
-              function: e.role,
-            ),
+    final List<GroupEntry> groupEntries = groups
+        .map(
+          (e) => CommissieEntry(
+            startYear: e.group.year,
+            endYear: e.group.year + 1,
+            // ignore: avoid-non-null-assertion
+            firstName: user.firstName,
+            // ignore: avoid-non-null-assertion
+            lastName: user.lastName,
+            identifier: userId,
+            name: e.group.name,
+            function: e.role,
           ),
-        );
-        break;
-      default:
-        throw UnimplementedError("Type $type is not implemented");
-    }
+        )
+        .toList();
 
     groupEntries.sort((a, b) => b.year.compareTo(a.year));
 
