@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 
-class FirebaseUserNotifier extends StateNotifier<FirestoreAlmanakProfile?> {
-  FirebaseUserNotifier(FirestoreAlmanakProfile? user) : super(user);
+class FirebaseUserNotifier extends StateNotifier<FirestoreUser?> {
+  FirebaseUserNotifier(FirestoreUser? user) : super(user);
 }
 
 // ignore: prefer-static-class
 final currentFirestoreUserProvider =
-    StateNotifierProvider<FirebaseUserNotifier, FirestoreAlmanakProfile?>(
+    StateNotifierProvider<FirebaseUserNotifier, FirestoreUser?>(
   (ref) {
     final user = ref.watch(firebaseAuthUserProvider).value;
 
@@ -18,7 +18,7 @@ final currentFirestoreUserProvider =
 
     final firestoreUserVal = ref.watch(currentfirestoreUserStreamProvider);
 
-    final FirestoreAlmanakProfile? firebaseUser = firestoreUserVal.whenOrNull(
+    final FirestoreUser? firebaseUser = firestoreUserVal.whenOrNull(
       data: (data) => data.docs.first.data(),
     );
 
@@ -28,7 +28,7 @@ final currentFirestoreUserProvider =
 
 // ignore: prefer-static-class
 final currentFirestoreUserStreamProvider =
-    StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>((ref) {
+    StreamProvider<QuerySnapshot<FirestoreUser>>((ref) {
   final user = ref.watch(firebaseAuthUserProvider).value;
 
   return user == null
@@ -42,7 +42,7 @@ final currentFirestoreUserStreamProvider =
 
 // ignore: prefer-static-class
 final firestoreUserProvider = StateNotifierProvider.autoDispose
-    .family<FirebaseUserNotifier, FirestoreAlmanakProfile?, String>(
+    .family<FirebaseUserNotifier, FirestoreUser?, String>(
   (ref, userId) {
     final curUser = ref.watch(firebaseAuthUserProvider).value;
 
@@ -50,7 +50,7 @@ final firestoreUserProvider = StateNotifierProvider.autoDispose
 
     final firestoreUserVal = ref.watch(firestoreUserStreamProvider(userId));
 
-    final FirestoreAlmanakProfile? firebaseUser = firestoreUserVal.whenOrNull(
+    final FirestoreUser? firebaseUser = firestoreUserVal.whenOrNull(
       data: (data) => data.size > 0 ? data.docs.first.data() : null,
     );
 

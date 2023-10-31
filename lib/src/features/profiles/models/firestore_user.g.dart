@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'firestore_almanak_profile.dart';
+part of 'firestore_user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FirestoreAlmanakProfile _$FirestoreAlmanakProfileFromJson(
-        Map<String, dynamic> json) =>
-    FirestoreAlmanakProfile(
+FirestoreUser _$FirestoreUserFromJson(Map<String, dynamic> json) =>
+    FirestoreUser(
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       identifier: json['identifier'] as String,
@@ -33,11 +32,9 @@ FirestoreAlmanakProfile _$FirestoreAlmanakProfileFromJson(
           const <String>[],
       canBookTrainingFarInAdvance: json['canBookTrainingFarInAdvance'] as bool?,
       isAdmin: json['isAdmin'] as bool?,
-      isStaff: json['isStaff'] as bool?,
     );
 
-Map<String, dynamic> _$FirestoreAlmanakProfileToJson(
-        FirestoreAlmanakProfile instance) =>
+Map<String, dynamic> _$FirestoreUserToJson(FirestoreUser instance) =>
     <String, dynamic>{
       'first_name': instance.firstName,
       'last_name': instance.lastName,
@@ -56,5 +53,4 @@ Map<String, dynamic> _$FirestoreAlmanakProfileToJson(
       'phonePrimary': instance.phonePrimary,
       'canBookTrainingFarInAdvance': instance.canBookTrainingFarInAdvance,
       'isAdmin': instance.isAdmin,
-      'isStaff': instance.isStaff,
     };

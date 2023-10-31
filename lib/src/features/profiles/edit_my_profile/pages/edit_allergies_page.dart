@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -33,7 +33,7 @@ class EditAllergiesPage extends ConsumerWidget {
   }
 
   Widget buildAllergiesForm(
-    QuerySnapshot<FirestoreAlmanakProfile> snapshot,
+    QuerySnapshot<FirestoreUser> snapshot,
     BuildContext context,
   ) {
     final doc = snapshot.docs.first;
@@ -103,7 +103,7 @@ class EditAllergiesPage extends ConsumerWidget {
   }
 
   updateAllergies(
-    QueryDocumentSnapshot<FirestoreAlmanakProfile> doc,
+    QueryDocumentSnapshot<FirestoreUser> doc,
     bool value,
     String allergy,
     BuildContext context,
@@ -123,7 +123,7 @@ class EditAllergiesPage extends ConsumerWidget {
   }
 
   void updateCustomAllergy(
-    DocumentReference<FirestoreAlmanakProfile> ref,
+    DocumentReference<FirestoreUser> ref,
     String newValue,
     String oldValue,
     BuildContext context,

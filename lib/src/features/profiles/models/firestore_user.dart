@@ -1,14 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
+
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
-part 'firestore_almanak_profile.g.dart';
+part 'firestore_user.g.dart';
 
 @immutable
 @JsonSerializable()
-class FirestoreAlmanakProfile {
+class FirestoreUser {
   @JsonKey(name: 'first_name')
   final String firstName;
 
@@ -36,14 +37,13 @@ class FirestoreAlmanakProfile {
   final bool?
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
   final bool? isAdmin; // Used for admin capabilties in-app.
-  final bool? isStaff;
 
   bool get isAppCo => ['21203', '18031', '18257', '20198', '22195']
       .contains(identifier); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
-  const FirestoreAlmanakProfile({
+  const FirestoreUser({
     required this.firstName,
     required this.lastName,
     required this.identifier,
@@ -61,75 +61,12 @@ class FirestoreAlmanakProfile {
     this.allergies = const <String>[],
     this.canBookTrainingFarInAdvance,
     this.isAdmin,
-    this.isStaff,
   });
 
-  factory FirestoreAlmanakProfile.fromHeimdall(
-    Query$AlmanakProfile$user? user,
-  ) {
-    final publicContact = user?.fullContact.public;
+  factory FirestoreUser.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreUserFromJson(json);
 
-    return FirestoreAlmanakProfile(
-      firstName: publicContact?.first_name ?? "Onbekend",
-      lastName: publicContact?.last_name ?? "Onbekend",
-      identifier: user?.identifier ?? "",
-      email: publicContact?.email,
-      address: Address(
-        street: publicContact?.street,
-        houseNumber: publicContact?.housenumber,
-        houseNumberAddition: publicContact?.housenumber_addition,
-        postalCode: publicContact?.zipcode,
-        city: publicContact?.city,
-      ),
-      phonePrimary: publicContact?.phone_primary,
-    );
-  }
-
-  factory FirestoreAlmanakProfile.fromJson(Map<String, dynamic> json) =>
-      _$FirestoreAlmanakProfileFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FirestoreAlmanakProfileToJson(this);
-
-  FirestoreAlmanakProfile copyWith({
-    String? firstName,
-    String? lastName,
-    String? identifier,
-    String? ploeg,
-    String? board,
-    String? study,
-    String? otherAssociation,
-    String? bestuursFunctie,
-    String? huis,
-    bool? dubbellid,
-    String? email,
-    Address? address,
-    String? phonePrimary,
-    List<String>? substructures,
-    List<String>? allergies,
-    bool? canBookTrainingFarInAdvance,
-    bool? isAdmin,
-  }) {
-    return FirestoreAlmanakProfile(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      identifier: identifier ?? this.identifier,
-      ploeg: ploeg ?? this.ploeg,
-      board: board ?? this.board,
-      study: study ?? this.study,
-      otherAssociation: otherAssociation ?? this.otherAssociation,
-      bestuursFunctie: bestuursFunctie ?? this.bestuursFunctie,
-      huis: huis ?? this.huis,
-      dubbellid: dubbellid ?? this.dubbellid,
-      email: email ?? this.email,
-      address: address ?? this.address,
-      phonePrimary: phonePrimary ?? this.phonePrimary,
-      substructures: substructures ?? this.substructures,
-      allergies: allergies ?? this.allergies,
-      canBookTrainingFarInAdvance:
-          canBookTrainingFarInAdvance ?? this.canBookTrainingFarInAdvance,
-      isAdmin: isAdmin ?? this.isAdmin,
-    );
-  }
+  Map<String, dynamic> toJson() => _$FirestoreUserToJson(this);
 
   // ToJson.
   Map<String, dynamic> toFirestore() {
@@ -145,7 +82,7 @@ class FirestoreAlmanakProfile {
     };
   }
 
-  FirestoreAlmanakProfile mergeWithHeimdallProfile(
+  FirestoreUser mergeWithHeimdallProfile(
     Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
   ) {
     return copyWith(
@@ -158,6 +95,46 @@ class FirestoreAlmanakProfile {
         postalCode: u.zipcode,
         city: u.city,
       ),
+    );
+  }
+
+  FirestoreUser copyWith({
+    String? firstName,
+    String? lastName,
+    String? identifier,
+    String? ploeg,
+    String? board,
+    String? study,
+    String? otherAssociation,
+    String? bestuursFunctie,
+    String? huis,
+    bool? dubbellid,
+    List<String>? substructures,
+    List<String>? allergies,
+    String? email,
+    required Address address,
+    String? phonePrimary,
+    bool? isAdmin,
+  }) {
+    return FirestoreUser(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      identifier: identifier ?? this.identifier,
+      ploeg: ploeg ?? this.ploeg,
+      board: board ?? this.board,
+      study: study ?? this.study,
+      otherAssociation: otherAssociation ?? this.otherAssociation,
+      bestuursFunctie: bestuursFunctie ?? this.bestuursFunctie,
+      huis: huis ?? this.huis,
+      dubbellid: dubbellid ?? this.dubbellid,
+      email: email ?? this.email,
+      address: address,
+      phonePrimary: phonePrimary ?? this.phonePrimary,
+      substructures: substructures ?? this.substructures,
+      allergies: allergies ?? this.allergies,
+      canBookTrainingFarInAdvance:
+          canBookTrainingFarInAdvance ?? canBookTrainingFarInAdvance,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 }

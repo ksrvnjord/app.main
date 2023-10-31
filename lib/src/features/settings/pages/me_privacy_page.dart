@@ -82,7 +82,7 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
 
   void save(GraphQLClient client) async {
     final uid = ref.watch(currentFirestoreUserProvider)?.identifier;
-    ref.invalidate(heimdallUserByLidnummerProvider(
+    ref.invalidate(heimdallUserByLidnummerProviderGraphQL(
       uid ?? "",
     )); // Invalidate the cache for the user profile, so the user sees the changes immediately.
 

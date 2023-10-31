@@ -2,13 +2,13 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/author_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CommentCard extends StatelessWidget {
   final Comment comment;
-  final FirestoreAlmanakProfile? postAuthor;
+  final FirestoreUser? postAuthor;
 
   const CommentCard({Key? key, required this.postAuthor, required this.comment})
       : super(key: key);

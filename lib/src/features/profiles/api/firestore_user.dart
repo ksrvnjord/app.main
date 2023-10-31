@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 
 //ignore: prefer-static-class
 final peopleCollection = FirebaseFirestore.instance
     .collection('people')
-    .withConverter<FirestoreAlmanakProfile>(
+    .withConverter<FirestoreUser>(
       fromFirestore: (snapshot, _) =>
-          FirestoreAlmanakProfile.fromJson(snapshot.data() ?? {}),
+          FirestoreUser.fromJson(snapshot.data() ?? {}),
       toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
     );
 
 // ignore: prefer-static-class
-final firestoreUserStreamProvider = StreamProvider.autoDispose
-    .family<QuerySnapshot<FirestoreAlmanakProfile>, String>(
+final firestoreUserStreamProvider =
+    StreamProvider.autoDispose.family<QuerySnapshot<FirestoreUser>, String>(
   (ref, userId) {
     return ref.watch(firebaseAuthUserProvider).value == null
         ? const Stream.empty()
@@ -27,7 +27,7 @@ final firestoreUserStreamProvider = StreamProvider.autoDispose
 
 // ignore: prefer-static-class
 final currentfirestoreUserStreamProvider =
-    StreamProvider<QuerySnapshot<FirestoreAlmanakProfile>>(
+    StreamProvider<QuerySnapshot<FirestoreUser>>(
   (ref) {
     final user = ref.watch(firebaseAuthUserProvider).value;
 

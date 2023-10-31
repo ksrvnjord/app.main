@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -46,8 +46,8 @@ class AlmanakBestuurPage extends ConsumerWidget {
     );
   }
 
-  Widget buildBestuurList(QuerySnapshot<FirestoreAlmanakProfile> snapshot) {
-    List<QueryDocumentSnapshot<FirestoreAlmanakProfile>> docs = snapshot.docs;
+  Widget buildBestuurList(QuerySnapshot<FirestoreUser> snapshot) {
+    List<QueryDocumentSnapshot<FirestoreUser>> docs = snapshot.docs;
     // We want to sort baseed on the bestuurs_volgorde.
     docs.sort((a, b) => compareBestuursFunctie(a.data(), b.data()));
 
@@ -59,7 +59,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
   }
 
   AlmanakUserTile toListTile(
-    QueryDocumentSnapshot<FirestoreAlmanakProfile> doc,
+    QueryDocumentSnapshot<FirestoreUser> doc,
   ) {
     final user = doc.data();
 
@@ -73,8 +73,8 @@ class AlmanakBestuurPage extends ConsumerWidget {
 
   /// Compare the bestuursfuncties op basis van constitutie.
   int compareBestuursFunctie(
-    FirestoreAlmanakProfile a,
-    FirestoreAlmanakProfile b,
+    FirestoreUser a,
+    FirestoreUser b,
   ) {
     const List<String> bestuurVolgorde = [
       "Praeses",

@@ -128,8 +128,7 @@ class MorePage extends ConsumerWidget {
       // Floatingaction button to navigate to admin page.
       floatingActionButton: currentUser.when(
         data: (value) {
-          final canAccesAdminPanel =
-              (value.isStaff ?? false) || (value.isAdmin ?? false);
+          final canAccesAdminPanel = value.isStaff ?? false;
 
           return canAccesAdminPanel
               ? FloatingActionButton.extended(
