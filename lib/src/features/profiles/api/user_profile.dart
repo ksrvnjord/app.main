@@ -9,8 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
-// Retrieves all data from firestore and heimdall for a given user.
-final almanakUserProvider =
+/// Retrieves all data from firestore and heimdall for a given user.
+final userProvider =
     StreamProvider.autoDispose.family<FirestoreAlmanakProfile, String>(
   (ref, lidnummer) async* {
     final user = ref.watch(firebaseAuthUserProvider).value;
@@ -61,6 +61,21 @@ final almanakUserProvider =
             )
           : null,
     );
+  },
+);
+
+/// Retrieves all data from firestore and heimdall for the current user.
+final currentUserProvider = StreamProvider.autoDispose<FirestoreAlmanakProfile>(
+  (ref) async* {
+    final user = ref.watch(firebaseAuthUserProvider).value;
+
+    if (user == null) {
+      return;
+    }
+
+    final profile = await ref.watch(userProvider(user.uid).future);
+
+    yield profile;
   },
 );
 

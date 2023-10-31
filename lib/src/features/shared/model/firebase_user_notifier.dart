@@ -33,13 +33,7 @@ final currentFirestoreUserStreamProvider =
 
   return user == null
       ? const Stream.empty()
-      : FirebaseFirestore.instance
-          .collection('people')
-          .withConverter<FirestoreAlmanakProfile>(
-            fromFirestore: (snapshot, _) =>
-                FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-            toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-          )
+      : peopleCollection
           // ignore: avoid-non-null-assertion
           .where('identifier', isEqualTo: user.uid)
           .limit(1)

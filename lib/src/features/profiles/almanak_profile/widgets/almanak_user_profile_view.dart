@@ -39,7 +39,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
     ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
     final AsyncValue<FirestoreAlmanakProfile> profile =
-        ref.watch(almanakUserProvider(identifier));
+        ref.watch(userProvider(identifier));
 
     final userGroups = ref.watch(groupsForUserProvider(identifier));
     final userPloegen = ref.watch(ploegenForUserProvider(identifier));

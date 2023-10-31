@@ -319,13 +319,7 @@ class _EditAlmanakProfilePageState
     final currentUser = ref.watch(currentFirestoreUserProvider);
 
     // FIND DOCUMENT OF CURRENT USER.
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('people')
-        .withConverter<FirestoreAlmanakProfile>(
-          fromFirestore: (snapshot, _) =>
-              FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-          toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-        )
+    final querySnapshot = await peopleCollection
         .where('identifier', isEqualTo: currentUser?.identifier ?? "")
         .get();
 

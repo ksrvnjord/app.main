@@ -1,21 +1,34 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
+part 'firestore_almanak_profile.g.dart';
+
 @immutable
+@JsonSerializable()
 class FirestoreAlmanakProfile {
+  @JsonKey(name: 'first_name')
   final String firstName;
+
+  @JsonKey(name: 'last_name')
   final String lastName;
+
   final String identifier;
   final String? ploeg;
   final String? board;
   final String? study;
+
+  @JsonKey(name: 'other_association')
   final String? otherAssociation;
+
+  @JsonKey(name: 'bestuurs_functie')
   final String? bestuursFunctie;
   final String? huis;
   final bool? dubbellid;
   final List<String>? substructures;
+
   final List<String> allergies;
   final String? email;
   final Address? address;
@@ -23,6 +36,7 @@ class FirestoreAlmanakProfile {
   final bool?
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
   final bool? isAdmin; // Used for admin capabilties in-app.
+  final bool? isStaff;
 
   bool get isAppCo => ['21203', '18031', '18257', '20198', '22195']
       .contains(identifier); // Used for testing purposes and AppCo rights.
@@ -47,29 +61,8 @@ class FirestoreAlmanakProfile {
     this.allergies = const <String>[],
     this.canBookTrainingFarInAdvance,
     this.isAdmin,
+    this.isStaff,
   });
-
-  // FromJson.
-  factory FirestoreAlmanakProfile.fromFirestore(Map<String, dynamic> json) {
-    return FirestoreAlmanakProfile(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      identifier: json['identifier'],
-      ploeg: json['ploeg'],
-      board: json['board'],
-      study: json['study'],
-      otherAssociation: json['other_association'],
-      bestuursFunctie: json['bestuurs_functie'],
-      huis: json['huis'],
-      dubbellid: json['dubbellid'],
-      substructures: json['substructures'] != null
-          ? List<String>.from(json['substructures'])
-          : null,
-      allergies: List<String>.from(json['allergies'] ?? const <String>[]),
-      canBookTrainingFarInAdvance: json['canBookTrainingFarInAdvance'],
-      isAdmin: json['isAdmin'],
-    );
-  }
 
   factory FirestoreAlmanakProfile.fromHeimdall(
     Query$AlmanakProfile$user? user,
@@ -91,6 +84,11 @@ class FirestoreAlmanakProfile {
       phonePrimary: publicContact?.phone_primary,
     );
   }
+
+  factory FirestoreAlmanakProfile.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreAlmanakProfileFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FirestoreAlmanakProfileToJson(this);
 
   FirestoreAlmanakProfile copyWith({
     String? firstName,
