@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AuthorWidget extends StatelessWidget {
   final String authorName;
-  final FirestoreAlmanakProfile? postAuthor;
+  final FirestoreUser? postAuthor;
   final double fontSize;
 
   const AuthorWidget({

@@ -31,6 +31,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.da
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -51,7 +52,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -151,10 +151,11 @@ class Routes {
             }
             final bool currentRouteRequiresAdmin =
                 Routes._adminRoutes.any((route) => route.path == currentPath);
-            final bool userIsAdmin = ref.watch(currentFirestoreUserProvider
-                    .select((value) => value?.isAdmin)) ??
+            final bool canAccesAdminRoutes = ref.watch(
+                  currentUserNotifierProvider.select((value) => value?.isAdmin),
+                ) ??
                 false; // Watch for changes in the user's admin status.
-            if (currentRouteRequiresAdmin && !userIsAdmin) {
+            if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
               return '/401';
             }
 

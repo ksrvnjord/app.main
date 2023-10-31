@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -13,7 +13,7 @@ class LeedenList extends StatelessWidget {
   });
 
   final String name;
-  final QuerySnapshot<FirestoreAlmanakProfile> almanakProfileSnapshot;
+  final QuerySnapshot<FirestoreUser> almanakProfileSnapshot;
 
   final int Function(
     // ignore: avoid-dynamic
@@ -24,7 +24,7 @@ class LeedenList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<QueryDocumentSnapshot<FirestoreAlmanakProfile>> docs =
+    List<QueryDocumentSnapshot<FirestoreUser>> docs =
         almanakProfileSnapshot.docs;
     if (compare != null) {
       docs.sort(compare); // For ordering based on functions of the members.
@@ -52,7 +52,7 @@ class LeedenList extends StatelessWidget {
   }
 
   AlmanakUserTile toListTile(
-    QueryDocumentSnapshot<FirestoreAlmanakProfile> doc,
+    QueryDocumentSnapshot<FirestoreUser> doc,
   ) {
     final user = doc.data();
 

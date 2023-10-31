@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
-final commissiesForUserProvider =
+final groupsForDjangoUserProvider =
     StreamProvider.autoDispose.family<List<GroupDjangoEntry>, String>(
   (ref, identifier) async* {
     final dio = ref.watch(dioProvider);
