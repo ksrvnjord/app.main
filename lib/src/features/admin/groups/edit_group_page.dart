@@ -77,6 +77,7 @@ class EditGroupPage extends ConsumerWidget {
   }
 
   Future<void> Function(int) addUserToGroupCallBack(
+    Map<String, dynamic> group,
     WidgetRef ref,
     BuildContext ctx,
   ) {
@@ -87,7 +88,9 @@ class EditGroupPage extends ConsumerWidget {
       // The role is either "Praeses" or "Ab-actis" or some custom entered role.
       final role = await showDialog<String>(
         context: ctx,
-        builder: (context) => const RoleDialog(),
+        builder: (context) => RoleDialog(
+          groupType: group['type'],
+        ),
       );
 
       try {
@@ -239,7 +242,11 @@ class EditGroupPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.pushNamed(
           "Leeden",
-          extra: addUserToGroupCallBack(ref, context),
+          extra: groupVal.when(
+            data: (group) => addUserToGroupCallBack(group, ref, context),
+            loading: () => null,
+            error: (error, stack) => null,
+          ),
         ),
         icon: const Icon(Icons.add),
         label: const Text('Voeg lid toe'),
