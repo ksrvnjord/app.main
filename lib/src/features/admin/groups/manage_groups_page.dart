@@ -208,10 +208,16 @@ class ManageGroupsPage extends ConsumerWidget {
                           title: Text(group.name),
                           subtitle: Text(group.type),
                           trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () =>
-                              context.goNamed('Edit Group', pathParameters: {
-                            'id': group.id.toString(),
-                          }),
+                          onTap: () => context.goNamed(
+                            'Edit Group',
+                            pathParameters: {
+                              'id': group.id.toString(),
+                            },
+                            queryParameters: {
+                              "type": group.type,
+                              "year": group.year.toString(),
+                            },
+                          ),
                         ),
                     ].toColumn();
             },

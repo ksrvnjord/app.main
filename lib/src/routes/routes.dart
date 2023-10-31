@@ -456,7 +456,7 @@ class Routes {
                   ? getNjordYear()
                   : int.parse(state.uri.queryParameters['year']!),
               ploegType: state.uri.queryParameters['type'] == null
-                  ? "competitieploeg"
+                  ? "Competitieploeg"
                   : state.uri.queryParameters['type']!,
             ),
             name: "Ploegen",

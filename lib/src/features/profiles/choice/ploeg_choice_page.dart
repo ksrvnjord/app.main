@@ -88,7 +88,10 @@ class PloegChoicePage extends ConsumerWidget {
                       // ignore: prefer-extracting-callbacks
                       onTap: () => context.goNamed(
                         "Ploeg",
-                        queryParameters: {"year": ploegYear.toString()},
+                        queryParameters: {
+                          "year": ploegYear.toString(),
+                          "type": ploegType,
+                        },
                         pathParameters: {"ploeg": ploeg.name},
                       ),
                     ),
