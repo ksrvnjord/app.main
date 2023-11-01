@@ -1,5 +1,6 @@
 // ignore_for_file: prefer-static-class
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
@@ -36,7 +37,15 @@ final currentUserNotifierProvider = StateNotifierProvider<UserNotifier, User?>(
 
     final profile = ref.watch(userProvider(user.uid));
 
-    return UserNotifier(profile.value);
+    return profile.when(
+      data: (data) => UserNotifier(data),
+      loading: () => UserNotifier(null),
+      error: (err, stk) {
+        FirebaseCrashlytics.instance.recordError(err, stk);
+
+        return UserNotifier(null);
+      },
+    );
   },
 );
 
