@@ -82,7 +82,9 @@ GoRouter? _previousRouter;
 class Routes {
   static const initialPath = '/';
 
-  // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  ///
+  /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
     return GoRouter(
@@ -151,7 +153,7 @@ class Routes {
             }
             final bool currentRouteRequiresAdmin =
                 Routes._adminRoutes.any((route) => route.path == currentPath);
-            final bool canAccesAdminRoutes = ref.watch(
+            final bool canAccesAdminRoutes = ref.read(
                   currentUserNotifierProvider.select((value) => value?.isAdmin),
                 ) ??
                 false; // Watch for changes in the user's admin status.
