@@ -12,13 +12,7 @@ final availableReservationObjectsProvider =
 
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : FirebaseFirestore.instance
-          .collection('reservationObjects')
-          .withConverter<ReservationObject>(
-            fromFirestore: (snapshot, _) =>
-                ReservationObject.fromJson(snapshot.data() ?? {}),
-            toFirestore: (reservation, _) => reservation.toJson(),
-          )
+      : ReservationObject.firestoreConverter
           .where('type', whereIn: filters)
           .where('available', isEqualTo: true)
           .orderBy('name')

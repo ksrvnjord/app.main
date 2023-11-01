@@ -52,6 +52,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -366,7 +367,12 @@ class Routes {
               name: "Plan Training",
               pageBuilder: (context, state) => _getPage(
                 child: PlanTrainingPage(
-                  queryParams: state.uri.queryParameters,
+                  reservationObject: ReservationObject.firestoreConverter
+                      .doc(state.uri.queryParameters['reservationObjectId']),
+                  startTime:
+                      DateTime.parse(state.uri.queryParameters['startTime']!),
+                  objectName:
+                      state.uri.queryParameters['reservationObjectName']!,
                 ),
                 name: "Plan Training",
               ),

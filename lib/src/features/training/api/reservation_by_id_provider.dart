@@ -6,17 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 // ignore: prefer-static-class
 final reservationByIdProvider =
     StreamProvider.autoDispose.family<DocumentSnapshot<Reservation>, String>(
-  (ref, reservationDocumentId) =>
-      ref.watch(firebaseAuthUserProvider).value == null
-          ? const Stream.empty()
-          : FirebaseFirestore.instance
-              .collection('reservations')
-              .withConverter(
-                fromFirestore: (snapshot, _) => Reservation.fromJson(
-                  snapshot.data() ?? {},
-                ),
-                toFirestore: (reservation, _) => reservation.toJson(),
-              )
-              .doc(reservationDocumentId)
-              .snapshots(),
+  (ref, reservationDocumentId) => ref.watch(firebaseAuthUserProvider).value ==
+          null
+      ? const Stream.empty()
+      : Reservation.firestoreConverter.doc(reservationDocumentId).snapshots(),
 );

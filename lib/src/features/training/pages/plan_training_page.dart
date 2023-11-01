@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/api/reservations_for_object_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/model/reservations_query.dart';
 import '../../shared/widgets/error_card_widget.dart';
 import '../model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -17,21 +18,20 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
 class PlanTrainingPage extends ConsumerStatefulWidget {
-  final DocumentReference reservationObject;
+  final DocumentReference<ReservationObject> reservationObject;
   final DateTime startTime;
   final DateTime date;
   final String objectName;
 
-  PlanTrainingPage({Key? key, required Map<String, dynamic> queryParams})
-      : reservationObject = FirebaseFirestore.instance
-            .collection('reservationObjects')
-            .doc(queryParams['reservationObjectId']),
-        startTime = DateTime.parse(queryParams['startTime']),
-        objectName = queryParams['reservationObjectName'],
-        date = DateTime(
-          DateTime.parse(queryParams['startTime']).year,
-          DateTime.parse(queryParams['startTime']).month,
-          DateTime.parse(queryParams['startTime']).day,
+  PlanTrainingPage({
+    Key? key,
+    required this.reservationObject,
+    required this.startTime,
+    required this.objectName,
+  })  : date = DateTime(
+          startTime.year,
+          startTime.month,
+          startTime.day,
         ),
         super(key: key);
 
@@ -42,55 +42,115 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
 class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   DateTime _startTime = DateTime.now(); // Selected start time of the slider.
   DateTime _endTime = DateTime.now(); // Selected end time of the slider.
-  TimeOfDay _startTimeOfDay =
-      TimeOfDay.now(); // Selected start time of the slider.
-  TimeOfDay _endTimeOfDay = TimeOfDay.now(); // Selected end time of the slider.
 
-  static const intervalOfSelector = Duration(minutes: 15);
-  static const minimumReservationDuration = Duration(minutes: 15);
+  bool inProgress = false;
 
   @override
   void initState() {
     super.initState();
     _startTime = widget.startTime;
     _endTime = widget.startTime.add(const Duration(hours: 1));
-    _startTimeOfDay =
-        TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
-    _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(currentUserNotifierProvider);
+
+    final reservationsVal = ref.watch(reservationsProvider(
+      ReservationsQuery(widget.date, widget.reservationObject),
+    ));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nieuwe Afschrijving'),
       ),
-      body: FutureWrapper(
-        future: FirebaseFirestore.instance
-            .collection('reservations')
-            .withConverter<Reservation>(
-              fromFirestore: (snapshot, _) =>
-                  Reservation.fromJson(snapshot.data() ?? {}),
-              toFirestore: (reservation, _) => reservation.toJson(),
+      body: inProgress
+          ? const Center(
+              child: CircularProgressIndicator.adaptive(),
             )
-            .where('object', isEqualTo: widget.reservationObject)
-            .where('startTime', isGreaterThanOrEqualTo: widget.date)
-            .where(
-              'startTime',
-              isLessThanOrEqualTo: widget.date.add(const Duration(days: 1)),
-            )
-            .get(),
-        success: (snapshot) => renderPage(snapshot),
-        error: (error) => ErrorCardWidget(errorMessage: error.toString()),
-      ),
+          : reservationsVal.when(
+              data: (snapshot) => renderPage(snapshot, user),
+              loading: () =>
+                  const CircularProgressIndicator.adaptive().center(),
+              error: (error, stk) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+            ),
     );
   }
 
-  Widget renderPage(
+  /// Finds the available time range for a reservation.
+  ///
+  /// This function iterates over all existing reservations in the provided [snapshot]
+  /// and determines the earliest and latest possible times for a new reservation.
+  ///
+  /// The earliest possible time for a reservation is the end time of the last reservation
+  /// that ends before the start time of the new reservation.
+  ///
+  /// The latest possible time for a reservation is the start time of the first reservation
+  /// that starts after the start time of the new reservation.
+  ///
+  /// If a user already has a reservation at the start time of the new reservation,
+  /// an exception is thrown.
+  ///
+  /// If the start time of the new reservation is during another reservation,
+  /// an exception is thrown.
+  ///
+  /// @param snapshot The [QuerySnapshot] of existing reservations.
+  /// @return A [DateTimeRange] representing the available time range for a new reservation.
+  DateTimeRange findAvailableTimerange(
     QuerySnapshot<Reservation> snapshot,
+    DateTime desiredStartTime,
   ) {
     final user = ref.watch(currentUserNotifierProvider);
     if (user == null) {
+      throw Exception(
+        "Er is iets misgegaan met het ophalen van je gegevens, "
+        "probeer opnieuw in te loggen.",
+      );
+    }
+
+    DateTime earliestPossibleTime = widget.date.add(const Duration(
+      hours: 6,
+    )); // People can reservate starting at 06:00.
+
+    DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
+    for (QueryDocumentSnapshot<Reservation> document in snapshot.docs) {
+      // Determine earliest/latest possible time for slider.
+      Reservation reservation = document.data();
+      final reservationsHaveSameStartTime =
+          reservation.startTime.isAtSameMomentAs(desiredStartTime);
+
+      if ((reservation.startTime.isBefore(desiredStartTime) ||
+              reservationsHaveSameStartTime) &&
+          reservation.endTime.isAfter(desiredStartTime)) {
+        if (reservation.creatorId == user.identifier.toString()) {
+          throw Exception(
+            "Je hebt al een afschrijving op dit tijdstip, je kan niet twee keer achter elkaar afschrijven",
+          );
+        }
+        throw Exception(
+          "Dit tijdstip is al bezet door ${reservation.creatorName}",
+        );
+      }
+
+      if ((reservation.endTime.isBefore(desiredStartTime) ||
+              reservation.endTime.isAtSameMomentAs(desiredStartTime)) &&
+          reservation.endTime.isAfter(earliestPossibleTime)) {
+        earliestPossibleTime = reservation.endTime;
+      }
+
+      if ((reservation.startTime.isAfter(desiredStartTime) ||
+              reservationsHaveSameStartTime) &&
+          reservation.startTime.isBefore(latestPossibleTime)) {
+        latestPossibleTime = reservation.startTime;
+      }
+    }
+
+    return DateTimeRange(start: earliestPossibleTime, end: latestPossibleTime);
+  }
+
+  Widget renderPage(QuerySnapshot<Reservation> snapshot, User? currentUser) {
+    if (currentUser == null) {
       return const ErrorCardWidget(
         errorMessage: "Er is iets misgegaan met het ophalen van je gegevens, "
             "probeer opnieuw in te loggen.",
@@ -98,165 +158,128 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     }
 
     const int timeRowItems = 3;
-    List<QueryDocumentSnapshot<Reservation>> documents = snapshot.docs;
 
-    DateTime earliestPossibleTime = widget.date.add(const Duration(
-      hours: 6,
-    )); // People can reservate starting at 06:00.
+    try {
+      final range = findAvailableTimerange(snapshot, _startTime);
+      final (earliestPossibleTime, latestPossibleTime) =
+          (range.start, range.end);
 
-    DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
-    for (QueryDocumentSnapshot<Reservation> document in documents) {
-      // Determine earliest/latest possible time for slider.
-      Reservation reservation = document.data();
-      final reservationsHaveSameStartTime =
-          reservation.startTime.isAtSameMomentAs(_startTime);
-
-      if ((reservation.startTime.isBefore(_startTime) ||
-              reservationsHaveSameStartTime) &&
-          reservation.endTime.isAfter(_startTime)) {
-        if (reservation.creatorId == user.identifier.toString()) {
-          return const ErrorCardWidget(
-            errorMessage: "Je hebt al een afschrijving op dit tijdstip",
-          );
-        }
-
-        return const ErrorCardWidget(
-          errorMessage: "Deze tijd is al bezet",
-        );
+      if (_endTime.isAfter(latestPossibleTime)) {
+        _endTime = latestPossibleTime;
       }
 
-      if ((reservation.endTime.isBefore(_startTime) ||
-              reservation.endTime.isAtSameMomentAs(_startTime)) &&
-          reservation.endTime.isAfter(earliestPossibleTime)) {
-        earliestPossibleTime = reservation.endTime;
-      }
+      const double fieldPadding = 16;
+      const double timeSelectorDialogHandlerRadius = 8;
 
-      if ((reservation.startTime.isAfter(_startTime) ||
-              reservationsHaveSameStartTime) &&
-          reservation.startTime.isBefore(latestPossibleTime)) {
-        latestPossibleTime = reservation.startTime;
-      }
-    }
+      final screenWidth = MediaQuery.of(context).size.width;
+      const intervalOfSelector = Duration(minutes: 15);
+      const minimumReservationDuration = Duration(minutes: 15);
 
-    if (_endTime.isAfter(latestPossibleTime)) {
-      _endTime = latestPossibleTime;
-    }
-    _startTimeOfDay =
-        TimeOfDay(hour: _startTime.hour, minute: _startTime.minute);
-    _endTimeOfDay = TimeOfDay(hour: _endTime.hour, minute: _endTime.minute);
-
-    const double fieldPadding = 16;
-    const double timeSelectorDialogHandlerRadius = 8;
-
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return ListView(children: <Widget>[
-      DataTextListTile(name: 'Boot', value: widget.objectName),
-      DataTextListTile(
-        name: "Datum",
-        value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
-      ),
-      Row(
-        children: [
-          SizedBox(
-            width: screenWidth / timeRowItems,
-            child: DataTextListTile(
-              name: "Starttijd",
-              value: DateFormat.Hm().format(_startTime),
+      return ListView(children: <Widget>[
+        DataTextListTile(name: 'Boot', value: widget.objectName),
+        DataTextListTile(
+          name: "Datum",
+          value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: screenWidth / timeRowItems,
+              child: DataTextListTile(
+                name: "Starttijd",
+                value: DateFormat.Hm().format(_startTime),
+              ),
             ),
-          ),
-          SizedBox(
-            width: screenWidth / timeRowItems,
-            child: DataTextListTile(
-              name: "Eindtijd",
-              value: DateFormat.Hm().format(_endTime),
+            SizedBox(
+              width: screenWidth / timeRowItems,
+              child: DataTextListTile(
+                name: "Eindtijd",
+                value: DateFormat.Hm().format(_endTime),
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () => {
-              showTimeRangePicker(
-                context: context,
-                start: _startTimeOfDay,
-                end: _endTimeOfDay,
-                disabledTime: TimeRange(
-                  startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                  endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
-                ),
-                disabledColor: Colors.grey,
-                interval: intervalOfSelector,
-                fromText: 'Starttijd',
-                toText: 'Eindtijd',
-                use24HourFormat: true,
-                strokeColor: Colors.lightBlue,
-                handlerRadius: timeSelectorDialogHandlerRadius,
-                // ignore: no-equal-arguments
-                handlerColor: Colors.lightBlue,
-                minDuration: minimumReservationDuration,
-              ).then((value) {
-                if (value != null && mounted) {
+            IconButton(
+              onPressed: () => {
+                showTimeRangePicker(
+                  context: context,
+                  start: TimeOfDay(
+                    hour: _startTime.hour,
+                    minute: _startTime.minute,
+                  ),
+                  end: TimeOfDay(hour: _endTime.hour, minute: _endTime.minute),
+                  disabledTime: TimeRange(
+                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                  ),
+                  disabledColor: Colors.grey,
+                  interval: intervalOfSelector,
+                  fromText: 'Starttijd',
+                  toText: 'Eindtijd',
+                  use24HourFormat: true,
+                  strokeColor: Colors.lightBlue,
+                  handlerRadius: timeSelectorDialogHandlerRadius,
+                  // ignore: no-equal-arguments
+                  handlerColor: Colors.lightBlue,
+                  minDuration: minimumReservationDuration,
+                ).then((value) {
+                  // Value is an Object? with properties: startTime, endTime.
+                  if (value == null || !mounted) return;
+
+                  final (startTimeOfDay, endTimeOfDay) = (
+                    value.startTime as TimeOfDay,
+                    value.endTime as TimeOfDay
+                  );
                   setState(() {
-                    _endTimeOfDay = value.endTime;
-                    _startTimeOfDay = value.startTime;
                     _endTime = DateTime(
                       widget.date.year,
                       widget.date.month,
                       widget.date.day,
-                      _endTimeOfDay.hour,
-                      _endTimeOfDay.minute,
+                      endTimeOfDay.hour,
+                      endTimeOfDay.minute,
                     );
                     _startTime = DateTime(
                       widget.date.year,
                       widget.date.month,
                       widget.date.day,
-                      _startTimeOfDay.hour,
-                      _startTimeOfDay.minute,
+                      startTimeOfDay.hour,
+                      startTimeOfDay.minute,
                     );
                   });
-                }
-              }),
-            },
-            icon: const Icon(Icons.tune, size: 40),
-          ),
-        ],
-      ),
-      buildReservationButton(
-        user,
-        fieldPadding,
-      ).padding(all: fieldPadding),
-    ]);
-  }
-
-  ElevatedButton buildReservationButton(
-    User currentUser,
-    double fieldPadding,
-  ) {
-    final reservationIsInProgress = ref.watch(progressProvider);
-
-    return ElevatedButton(
-      onPressed: reservationIsInProgress
-          ? null
-          : () => createReservation(
-                currentUser.identifier.toString(),
-                currentUser.fullName,
-              ),
-      child: <Widget>[
-        Icon(reservationIsInProgress ? LucideIcons.loader : LucideIcons.check)
-            .padding(bottom: 1),
-        Text(
-          reservationIsInProgress ? "Zwanen voeren..." : 'Afschrijven',
-          style: const TextStyle(fontSize: 18),
-        ).padding(vertical: fieldPadding),
-      ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-    );
+                }),
+              },
+              icon: const Icon(Icons.tune, size: 40),
+            ),
+          ],
+        ),
+        ElevatedButton(
+          onPressed: inProgress
+              ? null
+              : () => createReservation(
+                    currentUser.identifier.toString(),
+                    currentUser.fullName,
+                  ),
+          child: <Widget>[
+            Icon(inProgress ? LucideIcons.loader : LucideIcons.check)
+                .padding(bottom: 1),
+            Text(
+              inProgress ? "Zwanen voeren..." : 'Afschrijven',
+              style: const TextStyle(fontSize: 18),
+            ).padding(vertical: fieldPadding),
+          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+        ).padding(all: fieldPadding),
+      ]);
+    } catch (e) {
+      return ErrorCardWidget(errorMessage: e.toString());
+    }
   }
 
   void createReservation(
     String uid,
     String creatorName,
   ) async {
-    final colorScheme = Theme.of(context).colorScheme;
-    ref.read(progressProvider.notifier).inProgress();
-    context.pop();
+    setState(() {
+      inProgress = true;
+    });
+
     final res = await createReservationCloud(Reservation(
       startTimestamp: Timestamp.fromDate(_startTime),
       endTimestamp: Timestamp.fromDate(_endTime),
@@ -285,6 +308,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     } else {
       if (!context.mounted) return;
 
+      final colorScheme = Theme.of(context).colorScheme;
       // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -295,8 +319,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         ),
       );
     }
-    ref.read(progressProvider.notifier).done();
     // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+    context.pop();
   }
 
   Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {

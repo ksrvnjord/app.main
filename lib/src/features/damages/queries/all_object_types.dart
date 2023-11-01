@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
 // TODO: Find an offline-first approach for this as soon as we have a fairly
@@ -9,13 +8,7 @@ Future<Map<String, List<ReservationObject>>> reservationObjectsByType() async {
   Map<String, List<ReservationObject>> objects = {};
 
   // Gather all the ReservationObjects that are available.
-  final listOfObjects = (await FirebaseFirestore.instance
-          .collection('reservationObjects')
-          .withConverter<ReservationObject>(
-            fromFirestore: (snapshot, _) =>
-                ReservationObject.fromJson(snapshot.data() ?? {}),
-            toFirestore: (reservation, _) => reservation.toJson(),
-          )
+  final listOfObjects = (await ReservationObject.firestoreConverter
           .where('available', isEqualTo: true)
           .get())
       .docs;

@@ -9,14 +9,6 @@ final reservationObjectProvider = StreamProvider.autoDispose
   (ref, documentId) {
     return ref.watch(firebaseAuthUserProvider).value == null
         ? const Stream.empty()
-        : FirebaseFirestore.instance
-            .collection('reservationObjects')
-            .withConverter<ReservationObject>(
-              fromFirestore: (snapshot, _) =>
-                  ReservationObject.fromJson(snapshot.data() ?? {}),
-              toFirestore: (reservationObject, _) => reservationObject.toJson(),
-            )
-            .doc(documentId)
-            .snapshots();
+        : ReservationObject.firestoreConverter.doc(documentId).snapshots();
   },
 );

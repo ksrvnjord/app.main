@@ -5,6 +5,14 @@ part 'reservation.g.dart';
 
 @JsonSerializable()
 class Reservation {
+  static final firestoreConverter = FirebaseFirestore.instance
+      .collection('reservations')
+      .withConverter<Reservation>(
+        fromFirestore: (snapshot, _) =>
+            Reservation.fromJson(snapshot.data() ?? {}),
+        toFirestore: (_, __) => {},
+      );
+
   @JsonKey(
     name: 'object',
     toJson: _documentReferenceToJson,
