@@ -6,17 +6,11 @@ Future<List<DocumentSnapshot<ReservationObject>>> objectByTypeAndName(
   String type,
   String name,
 ) async {
-  return (await FirebaseFirestore.instance
-          .collection('reservationObjects')
-          .withConverter<ReservationObject>(
-            fromFirestore: (snapshot, _) =>
-                ReservationObject.fromJson(snapshot.data() ?? {}),
-            toFirestore: (reservation, _) => reservation.toJson(),
-          )
-          .where('available', isEqualTo: true)
-          .where('type', isEqualTo: type)
-          .where('name', isEqualTo: name)
-          .get())
-      .docs
-      .toList();
+  final snapshot = await ReservationObject.firestoreConverter
+      .where('available', isEqualTo: true)
+      .where('type', isEqualTo: type)
+      .where('name', isEqualTo: name)
+      .get();
+
+  return snapshot.docs;
 }

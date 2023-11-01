@@ -32,13 +32,7 @@ final reservationsProvider = StreamProvider.autoDispose
 
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : FirebaseFirestore.instance
-          .collection('reservations')
-          .withConverter<Reservation>(
-            fromFirestore: (snapshot, _) =>
-                Reservation.fromJson(snapshot.data() ?? {}),
-            toFirestore: (reservation, _) => reservation.toJson(),
-          )
+      : Reservation.firestoreConverter
           .where('object', isEqualTo: query.docRef)
           .where('startTime', isGreaterThanOrEqualTo: start)
           .where('startTime', isLessThanOrEqualTo: end)
