@@ -84,16 +84,22 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<void> subscribeDefaultTopics(String userId) async {
-    // Required topics to subscribe to.
-    if (!kIsWeb) {
-      await FirebaseMessaging.instance.subscribeToTopic(userId);
-      await FirebaseMessaging.instance.subscribeToTopic("all");
-    }
+    try {
+      // Required topics to subscribe to.
+      if (!kIsWeb) {
+        await FirebaseMessaging.instance.subscribeToTopic(userId);
+        await FirebaseMessaging.instance.subscribeToTopic("all");
+      }
 
-    // Store the subscribed topics in a local cache.
-    Box cache = await Hive.openBox<bool>('topics');
-    await cache.put(userId, true);
-    await cache.put('all', true);
+      // Store the subscribed topics in a local cache.
+      Box cache = await Hive.openBox<bool>('topics');
+      await cache.put(userId, true);
+      await cache.put('all', true);
+    } catch (e, st) {
+      FirebaseCrashlytics.instance.recordError(e, st);
+
+      return;
+    }
   }
 
   // Tries to login into Heimdall and Firebase.
