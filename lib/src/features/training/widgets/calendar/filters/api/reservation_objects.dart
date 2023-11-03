@@ -12,16 +12,21 @@ final availableReservationObjectsProvider =
 
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : ReservationObject.firestoreConverter
-          .where('type', whereIn: filters)
-          .where('available', isEqualTo: true)
-          .orderBy('name')
-          .snapshots();
+      : filters.isEmpty
+          ? ReservationObject.firestoreConverter
+              .where('available', isEqualTo: true)
+              .orderBy('name')
+              .snapshots()
+          : ReservationObject.firestoreConverter
+              .where('type', whereIn: filters)
+              .where('available', isEqualTo: true)
+              .orderBy('name')
+              .snapshots();
 });
 
 // ignore: prefer-static-class
 final sortedAvailableReservationObjectProvider =
-    FutureProvider.autoDispose((ref) async {
+    StreamProvider.autoDispose((ref) async* {
   final availableReservationObjects =
       await ref.watch(availableReservationObjectsProvider.future);
   final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
@@ -52,5 +57,5 @@ final sortedAvailableReservationObjectProvider =
       .toList()
     ..sort((a, b) => a.data().name.compareTo(b.data().name));
 
-  return [...boatsICanReserve, ...boatsICannotReserve];
+  yield [...boatsICanReserve, ...boatsICannotReserve];
 });
