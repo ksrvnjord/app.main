@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_by_id_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
 
 class ShowTrainingPage extends ConsumerWidget {
   final String reservationDocumentId;
@@ -60,6 +62,52 @@ class ShowTrainingPage extends ConsumerWidget {
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        tooltip: "Afschrijving verwijderen",
+        onPressed: () => showDeleteReservationDialogForTraining(
+          context,
+          reservationDocumentId,
+        ),
+        label: const Row(children: [Text("Verwijderen  "), Icon(Icons.delete)]),
+      ),
+    );
+  }
+
+  Future<void> showDeleteReservationDialogForTraining(
+    BuildContext context,
+    String reservationId,
+  ) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Afschrijving verwijderen'),
+          content: const Text(
+            'Weet je zeker dat je jouw afschrijving wilt verwijderen?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Nee'),
+            ),
+            TextButton(
+              // ignore: prefer-extracting-callbacks
+              onPressed: () {
+                deleteReservation(reservationId);
+                context.goNamed('Planning Overview');
+              },
+              child: Text(
+                'Verwijder mijn afschrijving',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          ],
+        );
+      },
+      useRootNavigator: false,
     );
   }
 }
