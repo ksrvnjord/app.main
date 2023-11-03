@@ -59,7 +59,8 @@ class AllTrainingPage extends ConsumerWidget {
             tooltip: "Kies afschrijf filters",
             foregroundColor: colorScheme.onPrimaryContainer,
             onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ShowFiltersPage())),
+              MaterialPageRoute(builder: (context) => ShowFiltersPage()),
+            ),
             label: const Row(
               children: [
                 Icon(Icons.filter_list_alt),
