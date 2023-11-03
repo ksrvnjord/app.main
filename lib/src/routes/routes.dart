@@ -3,6 +3,11 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
@@ -26,14 +31,12 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.da
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/add_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -42,9 +45,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_commissies_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/fill_commissie_info_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/select_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
@@ -52,6 +52,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
 import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
@@ -60,6 +61,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dar
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
+import 'package:ksrvnjord_main_app/src/routes/unauthorized_route_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -79,7 +81,11 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 GoRouter? _previousRouter;
 
 class Routes {
-  // We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  static const initialPath = '/';
+
+  /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
+  ///
+  /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
   // ignore: prefer-static-class
   static final routerProvider = Provider((ref) {
     return GoRouter(
@@ -99,10 +105,16 @@ class Routes {
           ),
         ),
         ...Routes._unauthenticated,
+        ...Routes._adminRoutes,
         _route(
           name: "Unknown Route",
           path: '/404',
           child: const UnknownRoutePage(),
+        ),
+        _route(
+          name: "Unauthorized Route",
+          path: '/401',
+          child: const UnauthorizedRoutePage(),
         ),
       ],
       errorPageBuilder: (context, state) => _getPage(
@@ -140,6 +152,16 @@ class Routes {
             if (currentPath == loginPath) {
               return state.uri.queryParameters['from'] ?? initialLocation;
             }
+            final bool currentRouteRequiresAdmin =
+                Routes._adminRoutes.any((route) => route.path == currentPath);
+            final bool canAccesAdminRoutes = ref.read(
+                  currentUserNotifierProvider.select((value) => value?.isAdmin),
+                ) ??
+                false; // Watch for changes in the user's admin status.
+            if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
+              return '/401';
+            }
+
             break;
           default:
             throw UnimplementedError("Unknown AuthState");
@@ -149,7 +171,8 @@ class Routes {
       },
       refreshListenable: ref.read(authModelProvider),
       initialLocation:
-          _previousRouter?.routeInformationProvider.value.uri.path ?? '/',
+          _previousRouter?.routeInformationProvider.value.uri.path ??
+              initialPath,
       observers: [
         FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
       ],
@@ -236,68 +259,6 @@ class Routes {
               path: 'allergieen',
               name: "My Allergies",
               child: const EditAllergiesPage(),
-            ),
-            _route(
-              path: 'groepen',
-              name: "My Groups",
-              child: const EditGroupsPage(),
-              routes: [
-                GoRoute(
-                  path: 'ploeg',
-                  name: "Select Ploeg",
-                  pageBuilder: (context, state) => _getPage(
-                    child: SelectPloegPage(
-                      selectedYear: int.parse(
-                        state.uri.queryParameters['year']!,
-                      ),
-                    ),
-                    name: "Select Ploeg",
-                  ),
-                  redirect: (
-                    context,
-                    state,
-                  ) => // Default route is ploegen for currentYear.
-                      state.uri.queryParameters['year'] == null
-                          ? Uri(
-                              path: state.matchedLocation,
-                              queryParameters: {
-                                'year': getNjordYear().toString(),
-                              },
-                            ).toString()
-                          : null,
-                  routes: [
-                    _route(
-                      path: 'toevoegen',
-                      name: "Add Ploeg",
-                      child: const AddPloegPage(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            _route(
-              path: 'commissies',
-              name: "My Commissies",
-              child: const EditCommissiesPage(),
-              routes: [
-                _route(
-                  path: 'selecteer',
-                  name: "Select Commissie",
-                  child: const SelectCommissiePage(),
-                  routes: [
-                    _route(
-                      path: 'vul-info',
-                      name: "Fill Commissie Info",
-                      pageBuilder: (context, state) => _getPage(
-                        child: FillCommissieInfoPage(
-                          commissie: state.uri.queryParameters['commissie']!,
-                        ),
-                        name: "Fill Commissie Info",
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
             _route(
               path: 'instellingen',
@@ -406,7 +367,12 @@ class Routes {
               name: "Plan Training",
               pageBuilder: (context, state) => _getPage(
                 child: PlanTrainingPage(
-                  queryParams: state.uri.queryParameters,
+                  reservationObject: ReservationObject.firestoreConverter
+                      .doc(state.uri.queryParameters['reservationObjectId']),
+                  startTime:
+                      DateTime.parse(state.uri.queryParameters['startTime']!),
+                  objectName:
+                      state.uri.queryParameters['reservationObjectName']!,
                 ),
                 name: "Plan Training",
               ),
@@ -449,7 +415,14 @@ class Routes {
         _route(
           path: "leeden",
           name: "Leeden",
-          child: const AlmanakLeedenPage(),
+          pageBuilder: (context, state) => _getPage(
+            child: AlmanakLeedenPage(
+              onTap: state.extra is void Function(int)?
+                  ? state.extra as void Function(int)?
+                  : null,
+            ),
+            name: "Leeden",
+          ),
         ),
         _route(
           path: "bestuur",
@@ -459,17 +432,24 @@ class Routes {
         _route(
           path: "commissies",
           name: "Commissies",
-          child: const CommissieChoicePage(),
+          pageBuilder: (context, state) => _getPage(
+            child: CommissieChoicePage(
+              year: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Commissies",
+          ),
           routes: [
             _route(
               path: ":name",
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  commissieName: state.pathParameters['name']!,
-                  commissieYear: state.uri.queryParameters['year'] != null
+                  name: state.pathParameters['name']!,
+                  year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
-                      : null,
+                      : getNjordYear(),
                 ),
                 name: "Commissie",
               ),
@@ -484,6 +464,9 @@ class Routes {
               ploegYear: state.uri.queryParameters['year'] == null
                   ? getNjordYear()
                   : int.parse(state.uri.queryParameters['year']!),
+              ploegType: state.uri.queryParameters['type'] == null
+                  ? "Competitieploeg"
+                  : state.uri.queryParameters['type']!,
             ),
             name: "Ploegen",
           ),
@@ -589,6 +572,60 @@ class Routes {
           path: "contact",
           name: "Contact",
           child: const ContactPage(),
+        ),
+      ],
+    ),
+  ];
+
+  static final _adminRoutes = [
+    _route(
+      path: "/admin",
+      name: "Admin",
+      child: const AdminPage(),
+      routes: [
+        // Route for manage vaarverbod page.
+        _route(
+          path: "vaarverbod",
+          name: "Manage Vaarverbod",
+          pageBuilder: (context, state) => _getPage(
+            child: const ManageVaarverbodPage(),
+            name: "Manage Vaarverbod",
+          ),
+        ),
+        _route(
+          path: "maak-push-notificatie",
+          name: "Create Push Notification",
+          pageBuilder: (context, state) => _getPage(
+            child: const CreatePushNotificationPage(),
+            name: "Create Push Notification",
+          ),
+        ),
+        _route(
+          path: "beheer-groepen",
+          name: "Manage Groups",
+          pageBuilder: (context, state) => _getPage(
+            child: ManageGroupsPage(
+              year: state.uri.queryParameters['year'] != null
+                  ? int.parse(state.uri.queryParameters['year']!)
+                  : getNjordYear(),
+              type: state.uri.queryParameters['type'] != null
+                  ? state.uri.queryParameters['type']!
+                  : null,
+            ),
+            name: "Manage Groups",
+          ),
+          routes: [
+            _route(
+              path: "groep/:id",
+              name: "Edit Group",
+              pageBuilder: (context, state) => _getPage(
+                child: EditGroupPage(
+                  groupId: int.parse(state.pathParameters['id']!),
+                ),
+                name: "Edit Group",
+              ),
+            ),
+          ],
         ),
       ],
     ),

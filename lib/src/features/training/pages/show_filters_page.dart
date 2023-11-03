@@ -13,12 +13,12 @@ class ShowFiltersPage extends ConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  final Map<String, List<MultiSelectItem<String?>>>
+  final Map<String, List<MultiSelectItem<String>>>
       availableFilters = // Build a map of categories and their types.
       reservationObjectTypes.map((category, types) => MapEntry(
             category,
             types
-                .map((type) => MultiSelectItem<String?>(
+                .map((type) => MultiSelectItem<String>(
                       type,
                       // ignore: no-equal-arguments
                       type,
@@ -55,6 +55,7 @@ class ShowFiltersPage extends ConsumerWidget {
           ...availableFilters.keys
               .map(
                 (String key) => [
+                  // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
                   MultiSelectChipField<String?>(
                     items: availableFilters[key] ?? [],
                     decoration: const BoxDecoration(),

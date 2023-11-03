@@ -1,6 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReservationObject {
+  static final firestoreConverter = FirebaseFirestore.instance
+      .collection('reservationObjects')
+      .withConverter<ReservationObject>(
+        fromFirestore: (snapshot, _) =>
+            ReservationObject.fromJson(snapshot.data() ?? {}),
+        toFirestore: (_, __) => {},
+      );
+
   final DocumentReference? reference;
   final String name;
   final List<String> permissions;
