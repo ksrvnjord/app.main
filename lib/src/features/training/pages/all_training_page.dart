@@ -55,14 +55,21 @@ class AllTrainingPage extends ConsumerWidget {
           ).expanded(),
         ].toColumn(),
         floatingActionButton: Stack(children: [
-          FloatingActionButton(
-            // ignore: sort_child_properties_last
-            child: const Icon(Icons.filter_list_alt),
+          FloatingActionButton.extended(
             tooltip: "Kies afschrijf filters",
             foregroundColor: colorScheme.onPrimaryContainer,
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ShowFiltersPage(),
-            )),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ShowFiltersPage()),
+            ),
+            label: const Row(
+              children: [
+                Icon(Icons.filter_list_alt),
+                SizedBox(
+                  width: 8,
+                ),
+                Text("Filters"),
+              ],
+            ),
           ),
         ]),
       ),
