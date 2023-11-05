@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/full_form_card.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -62,7 +62,7 @@ class FormPage extends ConsumerWidget {
                   Text(description, style: textTheme.bodyMedium)
                       .padding(horizontal: descriptionHPadding),
                 ...questions.map(
-                  (question) => FullFormCard(
+                  (question) => FormQuestion(
                       question: question, formPath: formDoc.reference.path, formDoc: formDoc,),
                 ),
                 answerStream.when(

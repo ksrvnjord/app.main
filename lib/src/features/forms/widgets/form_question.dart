@@ -9,8 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FullFormCard extends ConsumerWidget {
-  const FullFormCard({
+class FormQuestion extends ConsumerWidget {
+  const FormQuestion({
     Key? key,
     required this.question,
     required this.formPath,
@@ -47,16 +47,16 @@ class FullFormCard extends ConsumerWidget {
       case 'TEXT':
         questionWidgets.add(
           TextFormField(
-              // onTap: () => {
-              //       debugPrint(answerWidgets["Value"] ?? "null"),
-              //       debugPrint(answerWidgets["Value"]?.length.toString()),
-              //     },
+              onTap: () => {
+                    debugPrint(answerWidgets["Value"] ?? "null"),
+                    debugPrint(answerWidgets["Value"]?.length.toString()),
+                  },
               onFieldSubmitted: (String value) => {
                     answerWidgets["Value"] = (value.isNotEmpty) ? value : null,
                     UpdateAnswer(answerWidgets),
                     answerStream.when(
                       data: (snapshot) {
-                        upsertFormAnswer(value, snapshot, formDoc, ref);
+                        upsertFormAnswer(value, 0, snapshot, formDoc, ref);
                       },
                       error: (error, stackTrace) => const ErrorCardWidget(
                         errorMessage: 'Het is mislukt om je antwoord te laden',
