@@ -40,8 +40,6 @@ class FormPage extends ConsumerWidget {
 
               final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
-              final bool pollIsOpen = DateTime.now().isBefore(form.openUntil);
-
               const double descriptionHPadding = 16;
 
               final colorScheme = Theme.of(context).colorScheme;
@@ -65,13 +63,13 @@ class FormPage extends ConsumerWidget {
                       .padding(horizontal: descriptionHPadding),
                 ...questions.map(
                   (question) => FullFormCard(
-                      question: question, formPath: formDoc.reference.path),
+                      question: question, formPath: formDoc.reference.path, formDoc: formDoc,),
                 ),
                 answerStream.when(
                   data: (snapshot) {
-                    final String? answerOfUser = snapshot.size != 0
-                        ? snapshot.docs.first.data().answer
-                        : null;
+                    // final String? answerOfUser = snapshot.size != 0
+                    //     ? snapshot.docs.first.data().answers
+                    //     : null;
 
                     return Container();
                     // return [

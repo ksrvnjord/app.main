@@ -14,11 +14,14 @@ class FullFormCard extends ConsumerWidget {
     Key? key,
     required this.question,
     required this.formPath,
+    required this.formDoc,
   }) : super(key: key);
 
   final Map<String, dynamic> question;
 
   final String formPath;
+
+  final DocumentSnapshot<FirestoreForm> formDoc;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,14 +41,28 @@ class FullFormCard extends ConsumerWidget {
       "Value": null,
     };
 
+    final answerStream = ref.watch(formAnswerProvider(formDoc.reference));
+
     switch (type) {
       case 'TEXT':
         questionWidgets.add(
           TextFormField(
-              onTap: () => debugPrint(answerWidgets["Value"] ?? "null"),
+              // onTap: () => {
+              //       debugPrint(answerWidgets["Value"] ?? "null"),
+              //       debugPrint(answerWidgets["Value"]?.length.toString()),
+              //     },
               onFieldSubmitted: (String value) => {
-                    answerWidgets["Value"] = value,
+                    answerWidgets["Value"] = (value.isNotEmpty) ? value : null,
                     UpdateAnswer(answerWidgets),
+                    answerStream.when(
+                      data: (snapshot) {
+                        upsertFormAnswer(value, snapshot, formDoc, ref);
+                      },
+                      error: (error, stackTrace) => const ErrorCardWidget(
+                        errorMessage: 'Het is mislukt om je antwoord te laden',
+                      ),
+                      loading: () => const CircularProgressIndicator.adaptive(),
+                    ),
                   },
               onSaved: (value) {
                 debugPrint("onSaved");
@@ -66,4 +83,3 @@ class FullFormCard extends ConsumerWidget {
 UpdateAnswer(Map<String, String?> answerWidgets) {
   debugPrint("Updated answer to ${answerWidgets["Value"] ?? "null"} ");
 }
-

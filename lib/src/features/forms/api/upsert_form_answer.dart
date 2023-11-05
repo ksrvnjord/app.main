@@ -7,10 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 
 // ignore: prefer-static-class
 void upsertFormAnswer(
-  String? choice,
-  QuerySnapshot<FormAnswer> snapshot,
+  String? value, // Given answer
+  int questionNumber,
+  QuerySnapshot<FormAnswer> answerSnapshot, // Who, what, when
   DocumentSnapshot<FirestoreForm> formDoc,
   WidgetRef ref,
+  // String formPath,
 ) async {
   final FirestoreForm? form = formDoc.data();
   if (form == null) {
@@ -36,13 +38,20 @@ void upsertFormAnswer(
     throw Exception('Firestore User is null');
   }
 
-  final bool hasAnswered = snapshot.size != 0;
+  final questionAnswers = answersOfForm
+      .doc('dNmZiwY7bWFS5v2Wdi69')
+      .get()
+      .then((e) => e.data().answers);
+
+  final bool hasAnswered = answerSnapshot.size != 0;
   if (!hasAnswered) {
     // On first answer, add the answer to the collection.
     // ignore: avoid-ignoring-return-values
+    answersOfForm[questionNumber]["Value"] = value;
+
     await answersOfForm.add(FormAnswer(
       userId: FirebaseAuth.instance.currentUser?.uid ?? "",
-      answer: choice,
+      answers: value,
       answeredAt: DateTime.now(),
       // User can't be null if using form feature.
       // ignore: avoid-non-null-assertion
@@ -50,15 +59,15 @@ void upsertFormAnswer(
     ));
 
     return;
-  } else if (hasAnswered && choice == null) {
+  } else if (hasAnswered && value == null) {
     // On undo, delete the answer from the collection.
-    await snapshot.docs.first.reference.delete();
+    await answerSnapshot.docs.first.reference.delete();
 
     return;
   } else {
     // User picked a different answer.
-    await snapshot.docs.first.reference.update({
-      'answer': choice,
+    await answerSnapshot.docs.first.reference.update({
+      'answer': value,
       'answeredAt': Timestamp.now(),
       if (form.formName.contains(
         "Eten",

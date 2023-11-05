@@ -55,7 +55,9 @@ class FormCard extends ConsumerWidget {
       ),
       onTap: () => context.pushNamed(
         "Form",
-        pathParameters: {"formId": 'KPShGcIv1b3R06Whs8aK'},
+        pathParameters: {
+          "formId": formDoc.reference.id,
+        },
       ),
     ).card(
       margin: const EdgeInsets.symmetric(vertical: 4),
