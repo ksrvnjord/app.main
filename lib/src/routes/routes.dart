@@ -82,7 +82,7 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 GoRouter? _previousRouter;
 
 class Routes {
-  static const initialPath = '/admin/events';
+  static const initialPath = '/'; // Default path is '/' for the home page.
 
   /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   ///
