@@ -36,10 +36,11 @@ class AdminPage extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => context.goNamed('Create Push Notification'),
           ),
-          const MoreLinkTile(
-            leading: Icon(Icons.event),
-            label: "Beheer Evenementen",
-            url: "https://heimdall.njord.nl/events",
+          ListTile(
+            leading: const Icon(Icons.event),
+            title: const Text('Beheer Evenementen'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.goNamed('Manage Events'),
           ),
           const MoreLinkTile(
             leading: Icon(Icons.description),

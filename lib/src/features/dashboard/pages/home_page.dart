@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.d
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
@@ -31,7 +30,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final autoDisposeFutureProviders = [
       Announcements.firstTenProvider,
-      comingEventsProvider,
     ];
 
     for (final provider in autoDisposeFutureProviders) {
