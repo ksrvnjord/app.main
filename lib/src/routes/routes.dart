@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/events/manage_events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
@@ -81,7 +82,7 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 GoRouter? _previousRouter;
 
 class Routes {
-  static const initialPath = '/';
+  static const initialPath = '/'; // Default path is '/' for the home page.
 
   /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   ///
@@ -599,6 +600,11 @@ class Routes {
             child: const CreatePushNotificationPage(),
             name: "Create Push Notification",
           ),
+        ),
+        _route(
+          path: "events",
+          name: "Manage Events",
+          child: const ManageEventsPage(),
         ),
         _route(
           path: "beheer-groepen",

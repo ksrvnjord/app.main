@@ -7,6 +7,13 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class Event {
+  static final firestoreConverter = FirebaseFirestore.instance
+      .collection('events')
+      .withConverter<Event>(
+        fromFirestore: (snapshot, _) => Event.fromMap(snapshot.data() ?? {}),
+        toFirestore: (event, _) => event.toMap(),
+      );
+
   final String title;
   final Timestamp startTime;
   final Timestamp endTime;
@@ -48,8 +55,8 @@ class Event {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
-      'start_time': startTime.millisecondsSinceEpoch,
-      'end_time': endTime.millisecondsSinceEpoch,
+      'start_time': startTime,
+      'end_time': endTime,
       'color': color?.value,
     };
   }
