@@ -1,4 +1,5 @@
 // ignore_for_file: type=lint
+import 'dart:async';
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -84,7 +85,7 @@ class _CopyWithImpl$Variables$Query$AlmanakProfileByIdentifier<TRes>
 
   final TRes Function(Variables$Query$AlmanakProfileByIdentifier) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({Object? profileId = _undefined}) =>
       _then(Variables$Query$AlmanakProfileByIdentifier._({
@@ -106,7 +107,7 @@ class _CopyWithStubImpl$Variables$Query$AlmanakProfileByIdentifier<TRes>
 class Query$AlmanakProfileByIdentifier {
   Query$AlmanakProfileByIdentifier({
     required this.userByIdentifier,
-    required this.$__typename,
+    this.$__typename = 'Query',
   });
 
   factory Query$AlmanakProfileByIdentifier.fromJson(Map<String, dynamic> json) {
@@ -203,7 +204,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier<TRes>
 
   final TRes Function(Query$AlmanakProfileByIdentifier) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? userByIdentifier = _undefined,
@@ -414,6 +415,11 @@ const documentNodeQueryAlmanakProfileByIdentifier = DocumentNode(definitions: [
 Query$AlmanakProfileByIdentifier _parserFn$Query$AlmanakProfileByIdentifier(
         Map<String, dynamic> data) =>
     Query$AlmanakProfileByIdentifier.fromJson(data);
+typedef OnQueryComplete$Query$AlmanakProfileByIdentifier = FutureOr<void>
+    Function(
+  Map<String, dynamic>?,
+  Query$AlmanakProfileByIdentifier?,
+);
 
 class Options$Query$AlmanakProfileByIdentifier
     extends graphql.QueryOptions<Query$AlmanakProfileByIdentifier> {
@@ -424,20 +430,43 @@ class Options$Query$AlmanakProfileByIdentifier
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$AlmanakProfileByIdentifier? typedOptimisticResult,
     Duration? pollInterval,
     graphql.Context? context,
-  }) : super(
+    OnQueryComplete$Query$AlmanakProfileByIdentifier? onComplete,
+    graphql.OnQueryError? onError,
+  })  : onCompleteWithParsed = onComplete,
+        super(
           variables: variables.toJson(),
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           pollInterval: pollInterval,
           context: context,
+          onComplete: onComplete == null
+              ? null
+              : (data) => onComplete(
+                    data,
+                    data == null
+                        ? null
+                        : _parserFn$Query$AlmanakProfileByIdentifier(data),
+                  ),
+          onError: onError,
           document: documentNodeQueryAlmanakProfileByIdentifier,
           parserFn: _parserFn$Query$AlmanakProfileByIdentifier,
         );
+
+  final OnQueryComplete$Query$AlmanakProfileByIdentifier? onCompleteWithParsed;
+
+  @override
+  List<Object?> get properties => [
+        ...super.onComplete == null
+            ? super.properties
+            : super.properties.where((property) => property != onComplete),
+        onCompleteWithParsed,
+      ];
 }
 
 class WatchOptions$Query$AlmanakProfileByIdentifier
@@ -449,6 +478,7 @@ class WatchOptions$Query$AlmanakProfileByIdentifier
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
+    Query$AlmanakProfileByIdentifier? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -460,7 +490,7 @@ class WatchOptions$Query$AlmanakProfileByIdentifier
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
           cacheRereadPolicy: cacheRereadPolicy,
-          optimisticResult: optimisticResult,
+          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
           context: context,
           document: documentNodeQueryAlmanakProfileByIdentifier,
           pollInterval: pollInterval,
@@ -555,7 +585,7 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier {
     required this.email,
     required this.username,
     required this.fullContact,
-    required this.$__typename,
+    this.$__typename = 'User',
   });
 
   factory Query$AlmanakProfileByIdentifier$userByIdentifier.fromJson(
@@ -714,7 +744,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
 
   final TRes Function(Query$AlmanakProfileByIdentifier$userByIdentifier) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
@@ -777,7 +807,7 @@ class _CopyWithStubImpl$Query$AlmanakProfileByIdentifier$userByIdentifier<TRes>
 class Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact {
   Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact({
     required this.public,
-    required this.$__typename,
+    this.$__typename = 'UserContact',
   });
 
   factory Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact.fromJson(
@@ -887,7 +917,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContac
   final TRes Function(
       Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? public = _undefined,
@@ -944,7 +974,7 @@ class Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public {
     this.city,
     this.zipcode,
     this.phone_primary,
-    required this.$__typename,
+    this.$__typename = 'Contact',
   });
 
   factory Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public.fromJson(
@@ -1164,7 +1194,7 @@ class _CopyWithImpl$Query$AlmanakProfileByIdentifier$userByIdentifier$fullContac
           Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public)
       _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? first_name = _undefined,

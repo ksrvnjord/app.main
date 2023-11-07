@@ -55,7 +55,8 @@ class ShowFiltersPage extends ConsumerWidget {
           ...availableFilters.keys
               .map(
                 (String key) => [
-                  MultiSelectChipField<String>(
+                  // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
+                  MultiSelectChipField<String?>(
                     items: availableFilters[key] ?? [],
                     decoration: const BoxDecoration(),
                     chipColor: Theme.of(context).colorScheme.surface,
@@ -72,7 +73,7 @@ class ShowFiltersPage extends ConsumerWidget {
                         .read(reservationTypeFiltersProvider.notifier)
                         .updateFiltersForCategory(
                           key,
-                          values.toList(),
+                          values.whereType<String>().toList(),
                         ),
                     title: Text(key, style: textTheme.titleLarge),
                     scroll: false,

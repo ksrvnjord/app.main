@@ -27,16 +27,23 @@ class _HomePageState extends ConsumerState<HomePage> {
   Future<void> _refresh() async {
     final futureProviders = [
       vaarverbodProvider,
-      comingEventsProvider,
-      Announcements.firstTenProvider,
     ];
 
+    final autoDisposeFutureProviders = [
+      Announcements.firstTenProvider,
+      comingEventsProvider,
+    ];
+
+    for (final provider in autoDisposeFutureProviders) {
+      ref.invalidate(provider);
+    }
     for (final provider in futureProviders) {
       ref.invalidate(provider);
     }
 
     // ignore: avoid-ignoring-return-values
     await Future.wait([
+      for (final p in autoDisposeFutureProviders) ref.watch(p.future),
       for (final FutureProvider provider in futureProviders)
         ref.watch(provider.future),
     ]);

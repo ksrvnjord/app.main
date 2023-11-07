@@ -1,6 +1,6 @@
 // ignore: prefer-static-class
 const groupTypes = [
-  'commissie',
-  'competitieploeg',
-  'wedstrijdsectie',
+  'Commissie',
+  'Competitieploeg',
+  'Wedstrijdsectie',
 ];

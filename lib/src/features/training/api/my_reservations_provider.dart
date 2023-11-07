@@ -12,15 +12,6 @@ final myReservationsProvider =
     return const Stream.empty();
   }
 
-  final CollectionReference<Reservation> reservationsRef = FirebaseFirestore
-      .instance
-      .collection('reservations')
-      .withConverter<Reservation>(
-        fromFirestore: (snapshot, _) =>
-            Reservation.fromJson(snapshot.data() ?? {}),
-        toFirestore: (reservation, _) => reservation.toJson(),
-      );
-
   final startOfToday = DateTime.now().subtract(
     Duration(
       hours: DateTime.now().hour,
@@ -31,7 +22,7 @@ final myReservationsProvider =
     ),
   );
 
-  return reservationsRef
+  return Reservation.firestoreConverter
       .where(
         'creatorId',
         isEqualTo: uid,

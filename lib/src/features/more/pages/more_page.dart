@@ -10,8 +10,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class MorePage extends ConsumerWidget {
@@ -19,16 +19,16 @@ class MorePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(firebaseAuthUserProvider).value;
-    final currentFirestoreUser = ref.watch(currentFirestoreUserStreamProvider);
+    final firebaseAuthUser = ref.watch(firebaseAuthUserProvider).value;
+    final currentUserVal = ref.watch(currentUserProvider);
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
       "Over deze app": "About this app",
-      if (currentUser != null) "Bekijk de agenda": "Events",
+      if (firebaseAuthUser != null) "Bekijk de agenda": "Events",
       "Contacteer het bestuur / commissies": "Contact",
-      if (currentUser != null) 'Bekijk de fotogalerij': 'Gallery',
-      if (currentUser != null) 'Lees verenigingsdocumenten': 'Documents',
+      if (firebaseAuthUser != null) 'Bekijk de fotogalerij': 'Gallery',
+      if (firebaseAuthUser != null) 'Lees verenigingsdocumenten': 'Documents',
     };
 
     final textTheme = Theme.of(context).textTheme;
@@ -126,11 +126,11 @@ class MorePage extends ConsumerWidget {
         ),
       ),
       // Floatingaction button to navigate to admin page.
-      floatingActionButton: currentFirestoreUser.when(
-        data: (value) {
-          final isAdmin = value.docs.first.data().isAdmin;
+      floatingActionButton: currentUserVal.when(
+        data: (currentUser) {
+          final canAccesAdminPanel = currentUser.isAdmin;
 
-          return isAdmin != null && isAdmin
+          return canAccesAdminPanel
               ? FloatingActionButton.extended(
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,

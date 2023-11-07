@@ -4,10 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
@@ -38,8 +37,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
       2,
     ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
-    final AsyncValue<FirestoreAlmanakProfile> profile =
-        ref.watch(almanakUserProvider(identifier));
+    final profile = ref.watch(userProvider(identifier));
 
     final userGroups = ref.watch(groupsForUserProvider(identifier));
     final userPloegen = ref.watch(ploegenForUserProvider(identifier));
@@ -81,7 +79,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   ),
                 ),
               [
-                if (u.email != null && (u.email as String).isNotEmpty)
+                if (u.email.isNotEmpty)
                   ElevatedButton(
                     onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
                     child: const SizedBox(

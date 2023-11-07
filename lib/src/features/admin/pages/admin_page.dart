@@ -73,13 +73,21 @@ class AdminPage extends StatelessWidget {
             ),
             MoreLinkTile(
               leading: Icon(Icons.warning),
-              label: "Beheer Leeden",
+              label: "Beheer Schades",
               url: "https://heimdall.njord.nl/rowing/damages",
             ),
             MoreLinkTile(
               leading: Icon(Icons.directions_boat),
               label: "Beheer Boten",
               url: "https://heimdall.njord.nl/rowing/equipment",
+            ),
+            ListTile(
+              leading: Icon(Icons.perm_identity, color: Colors.grey),
+              title: Text(
+                'Beheer permissies (Wordt nog aan gewerkt)',
+                style: TextStyle(color: Colors.grey),
+              ),
+              enabled: false,
             ),
           ]).paddingDirectional(vertical: sectionVPadding),
         ],

@@ -2,10 +2,10 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1726.11+13
+version: 1.1726.12+13
 
 environment:
-  sdk: "^2.19.4" # Dart SDK version: https://dart.dev/get-dart/archive
+  sdk: "^3.0.0" # Dart SDK version: https://dart.dev/get-dart/archive
   flutter: ^3.13.6 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
@@ -77,6 +77,8 @@ dependencies:
     git:
       url: https://github.com/ksrvnjord/firebase_pagination
 
+  json_annotation: ^4.8.1
+
 dependency_overrides:
   package_info_plus: any
 
@@ -92,6 +94,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   dependency_validator: ^3.2.2
   dart_code_metrics_presets: ^1.8.0
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true

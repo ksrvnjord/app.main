@@ -340,7 +340,7 @@ class _CopyWithImpl$Input$IBooleanContact<TRes>
 
   final TRes Function(Input$IBooleanContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? initials = _undefined,
@@ -741,7 +741,7 @@ class _CopyWithImpl$Input$IContact<TRes>
 
   final TRes Function(Input$IContact) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? initials = _undefined,
@@ -897,7 +897,7 @@ class _CopyWithImpl$Input$OrderByClause<TRes>
 
   final TRes Function(Input$OrderByClause) _then;
 
-  static const _undefined = {};
+  static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? column = _undefined,
@@ -1044,4 +1044,4 @@ Enum$Trashed fromJson$Enum$Trashed(String value) {
   }
 }
 
-const possibleTypesMap = {};
+const possibleTypesMap = <String, Set<String>>{};

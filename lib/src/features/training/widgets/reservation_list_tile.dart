@@ -73,7 +73,11 @@ class ReservationListTile extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => deleteReservation(snapshot, context),
+              // ignore: prefer-extracting-callbacks
+              onPressed: () {
+                deleteReservation(snapshot.id);
+                Navigator.of(context).pop();
+              },
               child: Text(
                 'Verwijder mijn afschrijving',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -86,17 +90,14 @@ class ReservationListTile extends StatelessWidget {
       },
     );
   }
+}
 
-  Future<void> deleteReservation(
-    QueryDocumentSnapshot<Reservation> snapshot,
-    BuildContext context,
-  ) async {
-    await FirebaseFirestore.instance
-        .collection('reservations')
-        .doc(snapshot.id)
-        .delete();
-
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
-  }
+// ignore: prefer-static-class
+Future<void> deleteReservation(
+  String reservationId,
+) async {
+  await FirebaseFirestore.instance
+      .collection('reservations')
+      .doc(reservationId)
+      .delete();
 }

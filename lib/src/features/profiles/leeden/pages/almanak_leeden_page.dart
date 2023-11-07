@@ -10,7 +10,7 @@ class AlmanakLeedenPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.watch(graphQLModelProvider).client;
+    final client = ref.watch(graphQLClientProvider);
 
     return Scaffold(
       appBar: AppBar(

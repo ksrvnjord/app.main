@@ -64,6 +64,12 @@ Future<void> appRunner() async {
     };
   }
 
+  /// Don't collect crash reports in debug mode.
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    FirebaseCrashlytics.instance.deleteUnsentReports();
+  }
+
   if (!kIsWeb) {
     // FirebaseMessaging not implemented on Web yet.
     // ignore: avoid-ignoring-return-values

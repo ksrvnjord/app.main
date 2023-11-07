@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -21,7 +20,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void login(AuthModel auth, GraphQLModel _) async {
+  void login(AuthModel auth) async {
     // ignore: avoid-ignoring-return-values
     await auth.login(_username.text, _password.text);
   }
@@ -29,7 +28,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authModelProvider);
-    final graphql = ref.watch(graphQLModelProvider);
 
     const double errorTextPadding = 8;
     const double textFormFieldPadding = 8;
@@ -92,7 +90,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       ),
       <Widget>[
         RoundedElevatedButton(
-          onPressed: () => login(auth, graphql),
+          onPressed: () => login(auth),
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(

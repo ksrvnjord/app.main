@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_almanak_profile.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
@@ -90,7 +90,7 @@ class _EditAlmanakProfilePageState
   }
 
   ListView buildForm(
-    QuerySnapshot<FirestoreAlmanakProfile> snapshot,
+    QuerySnapshot<FirestoreUser> snapshot,
     BuildContext context,
   ) {
     final user = snapshot.docs.first.data();
@@ -158,21 +158,43 @@ class _EditAlmanakProfilePageState
             FormSection(
               title: "Mijn groepen",
               children: [
-                ListTile(
-                  title: const Text('Beheer mijn ploegen'),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
+                Card(
+                  color: colorScheme.primaryContainer,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  onTap: () => context.goNamed(
-                    'My Groups',
-                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                  margin: const EdgeInsets.all(0.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          "Ploegen en commissies worden door het bestuur ingedeeld.",
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
-                ListTile(
-                  title: const Text('Beheer mijn commissies'),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
+                Card(
+                  color: colorScheme.tertiaryContainer,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
-                  onTap: () => context.goNamed('My Commissies'),
+                  margin: const EdgeInsets.all(0.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Icon(Icons.question_mark),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          "Staan jouw ploegen/commissies niet goed? Neem dan contact op met de Ab-actis.",
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
                 DropdownButtonFormField<String?>(
                   items: ['Geen', ...houseNames]
@@ -297,13 +319,7 @@ class _EditAlmanakProfilePageState
     final currentUser = ref.watch(currentFirestoreUserProvider);
 
     // FIND DOCUMENT OF CURRENT USER.
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('people')
-        .withConverter<FirestoreAlmanakProfile>(
-          fromFirestore: (snapshot, _) =>
-              FirestoreAlmanakProfile.fromFirestore(snapshot.data() ?? {}),
-          toFirestore: (almanakProfile, _) => almanakProfile.toFirestore(),
-        )
+    final querySnapshot = await peopleCollection
         .where('identifier', isEqualTo: currentUser?.identifier ?? "")
         .get();
 

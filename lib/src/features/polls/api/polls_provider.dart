@@ -26,8 +26,8 @@ final openPollsProvider =
 });
 
 // ignore: prefer-static-class
-final pollProvider =
-    StreamProvider.family<DocumentSnapshot<Poll>, String>((ref, pollId) {
+final pollProvider = StreamProvider.autoDispose
+    .family<DocumentSnapshot<Poll>, String>((ref, pollId) {
   return ref.watch(firebaseAuthUserProvider).value != null
       ? pollsCollection.doc(pollId).snapshots()
       : const Stream.empty();
