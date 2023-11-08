@@ -59,6 +59,34 @@ class _RoleDialogState extends State<RoleDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
+          ] else if (widget.groupType == 'bestuur') ...[
+            DropdownButtonFormField<String>(
+              items: [
+                for (String role in [
+                  "Praeses",
+                  "Ab-actis en Commissaris voor Oud-Njord",
+                  "Quaestor",
+                  "Commissaris voor het Wedstrijdroeien",
+                  "Commissaris van het Materieel",
+                  "Commissaris van de Gebouwen",
+                  "Commissaris van het Buffet",
+                  "Commissaris voor het Competitie- en Fuifroeien",
+                  "Commissaris voor Externe Betrekkingen",
+                ])
+                  DropdownMenuItem(
+                    value: role,
+                    child: Text(role, overflow: TextOverflow.ellipsis),
+                  ),
+              ],
+              onChanged: (value) => setState(() {
+                dropdownValue = value;
+              }),
+              isExpanded: true,
+              decoration: const InputDecoration(
+                labelText: 'Rol',
+                border: OutlineInputBorder(),
+              ),
+            ),
           ] else ...[
             ErrorCardWidget(
               errorMessage: 'Onbekend groepstype ${widget.groupType}',
