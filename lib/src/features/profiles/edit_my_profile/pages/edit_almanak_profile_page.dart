@@ -257,14 +257,31 @@ class _EditAlmanakProfilePageState
             ),
 
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "Allergiëen & dieetwensen", children: [
-              [
-                const Text(
+              Card(
+                color: colorScheme.errorContainer,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+                margin: const EdgeInsets.all(0.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(children: [
+                    Icon(Icons.warning_amber),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(
+                        "Het eten bevat mogelijk sporen van allergenen.",
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              ListTile(
+                // ignore: avoid-non-ascii-symbols
+                title: const Text('Geef mijn allergiëen & dieetwensen door'),
+                subtitle: const Text(
                   "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
                 ),
-                ListTile(
-                  // ignore: avoid-non-ascii-symbols
-                  title: const Text('Geef mijn allergiëen & dieetwensen door'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                   ),
