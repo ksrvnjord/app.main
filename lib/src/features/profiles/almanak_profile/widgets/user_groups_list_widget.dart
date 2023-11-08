@@ -64,14 +64,6 @@ class UserGroupsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final docs = snapshot;
-    bool usedPloegFeature =
-        false; // TODO: remove this when we most users have migrated to the new system.
-    for (final doc in docs) {
-      if (doc is PloegEntry) {
-        usedPloegFeature = true;
-        break;
-      }
-    }
 
     const double fieldTitlePadding = 16;
 
@@ -82,7 +74,7 @@ class UserGroupsListWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Commissies${usedPloegFeature ? " & Ploegen" : ""}",
+                "Betrokken met",
                 style: Theme.of(context).textTheme.labelLarge,
               ).padding(
                 horizontal: fieldTitlePadding,
