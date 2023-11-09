@@ -254,7 +254,7 @@ class _EditAlmanakProfilePageState
                     SizedBox(width: 8.0),
                     Expanded(
                       child: Text(
-                        "Het eten bevat mogelijk sporen van allergenen.",
+                        "De KoCo kan niet garanderen dat er geen sporen van allergenen aanwezig zijn in het eten.",
                       ),
                     ),
                   ]),
