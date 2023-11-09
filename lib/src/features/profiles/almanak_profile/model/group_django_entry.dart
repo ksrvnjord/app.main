@@ -27,6 +27,6 @@ class GroupDjangoEntry {
   Map<String, dynamic> toJson() => _$GroupDjangoEntryToJson(this);
 
   static String? _roleFromJson(String? role) => role != null
-      ? role[0].toUpperCase() + role.characters.getRange(1).toString()
+      ? "${role.characters.getRange(0, 1).toUpperCase()}${role.characters.getRange(1)}"
       : null;
 }
