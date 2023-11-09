@@ -116,7 +116,8 @@ class _EditAlmanakProfilePageState
                   separator: const SizedBox(height: imageHelpTextTopPadding),
                 )
                 .center(),
-            FormSection(title: "Over mij", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "👤 Over mij", children: [
               TextFormField(
                 initialValue: user.study,
                 decoration: const InputDecoration(
@@ -156,10 +157,11 @@ class _EditAlmanakProfilePageState
               ),
             ]),
             FormSection(
-              title: "Mijn groepen",
+              // ignore: avoid-non-ascii-symbols
+              title: "👥 Mijn groepen",
               children: [
                 Card(
-                  color: colorScheme.primaryContainer,
+                  color: colorScheme.tertiaryContainer,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
@@ -172,25 +174,6 @@ class _EditAlmanakProfilePageState
                       Expanded(
                         child: Text(
                           "Ploegen en commissies worden door het bestuur ingedeeld.",
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-                Card(
-                  color: colorScheme.tertiaryContainer,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  margin: const EdgeInsets.all(0.0),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(children: [
-                      Icon(Icons.question_mark),
-                      SizedBox(width: 8.0),
-                      Expanded(
-                        child: Text(
-                          "Staan jouw ploegen/commissies niet goed? Neem dan contact op met de Ab-actis.",
                         ),
                       ),
                     ]),
@@ -257,25 +240,42 @@ class _EditAlmanakProfilePageState
             ),
 
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "Allergiëen & dieetwensen", children: [
-              [
-                const Text(
+            FormSection(title: "🍽️ Mijn Allergiëen & Dieetwensen", children: [
+              Card(
+                color: colorScheme.errorContainer,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+                margin: const EdgeInsets.all(0.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(children: [
+                    Icon(Icons.warning_amber),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(
+                        "Het eten bevat mogelijk sporen van allergenen.",
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              ListTile(
+                // ignore: avoid-non-ascii-symbols
+                title: const Text('Geef mijn allergiëen & dieetwensen door'),
+                subtitle: const Text(
                   "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
                 ),
-                ListTile(
-                  // ignore: avoid-non-ascii-symbols
-                  title: const Text('Geef mijn allergiëen & dieetwensen door'),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-                  onTap: () => context.goNamed(
-                    'My Allergies',
-                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
                 ),
-              ].toColumn(),
+                onTap: () => context.goNamed(
+                  'My Allergies',
+                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
             ]),
-
-            FormSection(title: "Afschrijven", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "🔰 Mijn afschrijfpermissies", children: [
               ListTile(
                 title: const Text('Bekijk mijn permissies'),
                 trailing: const Icon(

@@ -23,7 +23,8 @@ class SettingsPage extends ConsumerWidget {
         padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 80),
         children: [
           [
-            FormSection(title: "Privacy", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "🕵️ Privacy", children: [
               ListTile(
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),
                 trailing: const Icon(
@@ -34,7 +35,8 @@ class SettingsPage extends ConsumerWidget {
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
-            FormSection(title: "Notificaties", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "🔔 Notificaties", children: [
               ListTile(
                 title: const Text('Stel mijn notificatievoorkeuren in'),
                 trailing: const Icon(
@@ -45,7 +47,8 @@ class SettingsPage extends ConsumerWidget {
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
-            FormSection(title: "Weergave", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "🔆 Weergave", children: [
               DropdownButtonFormField<ThemeMode>(
                 items: ThemeMode.values
                     .map((mode) => DropdownMenuItem(
@@ -74,7 +77,8 @@ class SettingsPage extends ConsumerWidget {
                 decoration: const InputDecoration(labelText: 'Weergave modus'),
               ),
             ]),
-            FormSection(title: "Overig", children: [
+            // ignore: avoid-non-ascii-symbols
+            FormSection(title: "⚙️ Geavanceerde instellingen", children: [
               ListTile(
                 title: const Text('Geavanceerde instellingen'),
                 trailing: const Icon(
