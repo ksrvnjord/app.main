@@ -58,11 +58,11 @@ class ManageGroupsPage extends ConsumerWidget {
   }
 
   Widget _buildCreateGroupBottomSheet(
-    String? name,
+    String name,
   ) {
     final nameController = TextEditingController(text: name)
       ..selection = TextSelection.collapsed(
-        offset: name?.length ?? 0,
+        offset: name.length,
       ); // If keyboard collapses, it triggers rebuild, which resets the selection. So we need to set it again.
 
     return Consumer(
@@ -73,6 +73,8 @@ class ManageGroupsPage extends ConsumerWidget {
         const double dropdownMenuHeight = 240;
 
         const double cardPadding = 16;
+
+        const double bottomPaddingModal = 16;
 
         return [
           Text(
@@ -146,7 +148,8 @@ class ManageGroupsPage extends ConsumerWidget {
             )
             .padding(
               all: cardPadding,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+              bottom:
+                  MediaQuery.of(context).viewInsets.bottom + bottomPaddingModal,
             );
       },
     );
