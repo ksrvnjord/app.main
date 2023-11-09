@@ -10,7 +10,7 @@ GroupDjangoEntry _$GroupDjangoEntryFromJson(Map<String, dynamic> json) =>
     GroupDjangoEntry(
       id: json['id'] as int,
       group: DjangoGroup.fromJson(json['group'] as Map<String, dynamic>),
-      role: json['role'] as String?,
+      role: GroupDjangoEntry._roleFromJson(json['role'] as String?),
       permissions: (json['permissions'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),

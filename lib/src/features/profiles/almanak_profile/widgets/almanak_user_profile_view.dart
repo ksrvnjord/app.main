@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/ploegen_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
@@ -40,7 +39,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
     final profile = ref.watch(userProvider(identifier));
 
     final userGroups = ref.watch(groupsForUserProvider(identifier));
-    final userPloegen = ref.watch(ploegenForUserProvider(identifier));
 
     final textTheme = Theme.of(context).textTheme;
 
@@ -136,22 +134,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
               DataTextListTile(
                 name: "Aankomstjaar",
                 value: "20$yearOfArrival",
-              ),
-              FirebaseWidget(
-                onAuthenticated: userPloegen.when(
-                  data: (ploegenSnapshot) => (u.ploeg == null ||
-                          (u.ploeg as String).isEmpty ||
-                          ploegenSnapshot.size > 0)
-                      ? const SizedBox
-                          .shrink() // User has filled in new ploegen widget, so don't show old ploegen widget.
-                      : DataTextListTile(
-                          name: "Ploeg",
-                          value: u.ploeg as String,
-                        ),
-                  error: (err, __) =>
-                      ErrorCardWidget(errorMessage: err.toString()),
-                  loading: () => const SizedBox.shrink(),
-                ),
               ),
               if (u.board != null && (u.board as String).isNotEmpty)
                 DataTextListTile(

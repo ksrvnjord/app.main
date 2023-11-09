@@ -488,11 +488,11 @@ class Routes {
                       : null,
           routes: [
             _route(
-              path: ":ploeg",
+              path: ":name",
               name: "Ploeg",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
-                  ploegName: state.pathParameters['ploeg']!,
+                  ploegName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] == null
                       ? getNjordYear()
                       : int.parse(state.uri.queryParameters['year']!),

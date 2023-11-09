@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/tag.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/group_info_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/ploeg_entry.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-import '../../edit_my_profile/models/commissie_entry.dart';
 
 class UserGroupsListWidget extends StatelessWidget {
   const UserGroupsListWidget({
@@ -19,46 +17,46 @@ class UserGroupsListWidget extends StatelessWidget {
     BuildContext context,
     GroupEntry entry,
   ) {
-    switch (entry.runtimeType) {
-      case CommissieEntry:
-        final commissieEntry = entry as CommissieEntry;
-        return GroupInfoTile(
-          header: entry.name,
-          startYear: entry.year,
-          endYear: entry.year + 1,
-          tags: (commissieEntry.function == null ||
-                  (commissieEntry.function as String).isEmpty)
-              ? null
-              : [
-                  Tag(
-                    label: commissieEntry.function as String,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                    icon: Icons.person,
-                  ),
-                ],
-          groupPath: "Commissie",
-        );
-      case PloegEntry:
-        final ploegEntry = entry as PloegEntry;
-        return GroupInfoTile(
-          header: entry.name,
-          startYear: entry.year,
-          endYear: entry.year + 1,
-          tags: [
-            Tag(
-              label: ploegEntry.role.value,
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-              icon: Icons.person,
-            ),
-          ],
-          groupPath: "Ploeg",
-        );
+    String groupPath = "";
+    switch (entry.groupType) {
+      case "Commissie":
+      case "Bestuur":
+        groupPath = entry.groupType;
+        break;
+      case "Competitieploeg" || "Wedstrijdsectie":
+        groupPath = "Ploeg";
+        break;
       default:
-        throw UnimplementedError(
-          "GroupInfoTile for ${entry.runtimeType} is not implemented",
-        );
+        throw UnimplementedError("Unknown group type: ${entry.groupType}");
     }
+
+    return GroupInfoTile(
+      header: entry.name,
+      startYear: entry.year,
+      endYear: entry.year + 1,
+      tags: (entry.role == null || (entry.role as String).isEmpty)
+          ? null
+          : [
+              Tag(
+                label: entry.role as String,
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                icon: Icons.person,
+              ),
+            ],
+      groupPath: groupPath,
+      onTap: () => context.pushNamed(
+        groupPath,
+        pathParameters: {
+          if (groupPath != "Bestuur")
+            "name": entry
+                .name, // Bestuur has no path parameter, as it is always the same.
+        },
+        queryParameters: {
+          "year": entry.year.toString(),
+        },
+      ),
+    );
   }
 
   @override

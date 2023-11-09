@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_commissies.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/commissie_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/group_entry.dart';
 
 // ignore: prefer-static-class
@@ -18,23 +17,27 @@ final groupsForUserProvider =
 
     final groups = await ref.watch(groupsForDjangoUserProvider(userId).future);
 
-    final List<GroupEntry> groupEntries = groups
-        .map(
-          (e) => CommissieEntry(
-            startYear: e.group.year,
-            endYear: e.group.year + 1,
-            // ignore: avoid-non-null-assertion
-            firstName: user.firstName,
-            // ignore: avoid-non-null-assertion
-            lastName: user.lastName,
-            identifier: userId,
-            name: e.group.name,
-            function: e.role,
-          ),
-        )
-        .toList();
+    final List<GroupEntry> groupEntries = groups.map(
+      (e) {
+        return GroupEntry(
+          year: e.group.year,
+          name: e.group.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          identifier: userId,
+          groupType: e.group.type,
+          role: e.role,
+        );
+      },
+    ).toList();
 
-    groupEntries.sort((a, b) => b.year.compareTo(a.year));
+    // Sort by year, then by name.
+    groupEntries.sort((a, b) {
+      int compare = b.year.compareTo(a.year);
+      if (compare != 0) return compare;
+
+      return a.name.compareTo(b.name);
+    });
 
     yield groupEntries;
   },
