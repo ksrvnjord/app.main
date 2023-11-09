@@ -92,7 +92,7 @@ class PloegChoicePage extends ConsumerWidget {
                           "year": ploegYear.toString(),
                           "type": ploegType,
                         },
-                        pathParameters: {"ploeg": ploeg.name},
+                        pathParameters: {"name": ploeg.name},
                       ),
                     ),
                   )
