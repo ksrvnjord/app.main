@@ -17,8 +17,13 @@ void upsertFormAnswer(
   // String formPath,
 ) async {
   var userId = FirebaseAuth.instance.currentUser?.uid ?? "";
-  var collectionRef = FirebaseFirestore.instance
-      .collection('${formDoc.reference.path}/answers');
+  final CollectionReference<FormAnswer> collectionRef = FirebaseFirestore
+      .instance
+      .collection('${formDoc.reference.path}/answers')
+      .withConverter(
+          fromFirestore: (snapshot, _) =>
+              FormAnswer.fromJson(snapshot.data() ?? {}),
+          toFirestore: (answer, _) => answer.toJson());
 
   final FirestoreForm? form = formDoc.data();
   if (form == null) {
@@ -29,6 +34,7 @@ void upsertFormAnswer(
     throw Exception('Form is closed');
   }
 
+  // Old code.
   final CollectionReference<FormAnswer> answersOfForm = FirebaseFirestore
       .instance
       .collection('${formDoc.reference.path}/answers')
@@ -37,7 +43,7 @@ void upsertFormAnswer(
             FormAnswer.fromJson(snapshot.data() ?? {}),
         toFirestore: (answer, _) => answer.toJson(),
       );
-
+  // End old code.
   debugPrint("answersOfForm: $answersOfForm");
 
   final userSnapshot = ref.watch(currentfirestoreUserStreamProvider);
@@ -56,13 +62,19 @@ void upsertFormAnswer(
         await collectionRef.where('userId', isEqualTo: userId).get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      // Assuming the 'userId' is unique, there should be only one document
+      // Assuming the 'userId' is unique, there should be only one document.
       var docRef = querySnapshot.docs.first.reference;
-      // From the docRef we get the field "answers" and update it
-      var formAnswers = await docRef.get().then((doc) => doc.data()['answers']);
+      // From the docRef we get the field "answers" and update it.
+      // var formAnswers = await docRef.get().then((doc) => doc.data());//?.['answers']);
+
+      // From docRef we get the FormAnswer object and extract the answers.
+      var formAnswers = await docRef.get().then((doc) => doc.data()?.answers);
+
+      querySnapshot.docs.first.reference
+          .update({'answers': formAnswers, 'answeredAt': Timestamp.now()});
 
       // Document exists, so we update it
-      await docRef.update(formAnswers);
+      // await docRef.update(formAnswers);
       print("Form answer updated for user: $userId");
     } else {
       // No document found for the user, so we create a new one
@@ -77,8 +89,7 @@ void upsertFormAnswer(
         allergies:
             form.formName.contains("Eten") ? currentUser.allergies : null,
       ));
-      debugPrint(
-          "Form answer created for user: $userId, with new doc ID: ${docRef.id}");
+      debugPrint("Form answer created for user: $userId.");
     }
   } catch (error) {
     debugPrint("Error upserting form answer: $error");
