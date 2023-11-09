@@ -3,4 +3,5 @@ const groupTypes = [
   'Commissie',
   'Competitieploeg',
   'Wedstrijdsectie',
+  'Bestuur',
 ];

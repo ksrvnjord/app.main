@@ -1,23 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
-  const AlmanakBestuurPage({Key? key}) : super(key: key);
+  const AlmanakBestuurPage({Key? key, required this.year}) : super(key: key);
 
-  static const imageAspectRatio = 3 / 6;
+  final int year;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bestuur = ref.watch(bestuurUsersProvider);
+    final bestuurVal = ref.watch(bestuurUsersProvider(year));
+
+    const yearSelectorPadding = 8.0;
 
     const double pageHPadding = 12;
 
@@ -31,11 +33,39 @@ class AlmanakBestuurPage extends ConsumerWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
-              imageProvider: ref.watch(bestuurPictureProvider(getNjordYear())),
+              imageProvider: ref.watch(bestuurPictureProvider(year)),
             ),
           ).padding(horizontal: pageHPadding),
-          bestuur.when(
-            data: (snapshot) => buildBestuurList(snapshot),
+          [
+            Text(
+              "Leeden",
+              style: Theme.of(context).textTheme.titleLarge,
+            ).alignment(Alignment.centerLeft).padding(horizontal: pageHPadding),
+            [
+              const Text('Kies een jaar: '),
+              YearSelectorDropdown(
+                onChanged: (y) => context.goNamed(
+                  "Bestuur",
+                  queryParameters: {
+                    "year": y.toString(),
+                  },
+                ),
+                selectedYear: year,
+              ),
+            ].toRow(),
+          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
+                right: yearSelectorPadding,
+              ),
+          bestuurVal.when(
+            data: (bestuur) {
+              final users = bestuur?.users;
+
+              return bestuur == null || users == null
+                  ? const Text(
+                      "Er zijn geen bestuursleden gevonden voor dit jaar.",
+                    ).center()
+                  : buildBestuurList(users);
+            },
             loading: () => const CircularProgressIndicator.adaptive().center(),
             error: (error, stack) => ErrorCardWidget(
               errorMessage: error.toString(),
@@ -46,35 +76,32 @@ class AlmanakBestuurPage extends ConsumerWidget {
     );
   }
 
-  Widget buildBestuurList(QuerySnapshot<FirestoreUser> snapshot) {
-    List<QueryDocumentSnapshot<FirestoreUser>> docs = snapshot.docs;
+  Widget buildBestuurList(List<GroupDjangoRelation> users) {
     // We want to sort baseed on the bestuurs_volgorde.
-    docs.sort((a, b) => compareBestuursFunctie(a.data(), b.data()));
+    users.sort((a, b) => compareBestuursFunctie(a.role, b.role));
 
     return <Widget>[
-      ...docs.map(
-        (doc) => toListTile(doc),
+      ...users.map(
+        (user) => toListTile(user),
       ),
     ].toColumn();
   }
 
   AlmanakUserTile toListTile(
-    QueryDocumentSnapshot<FirestoreUser> doc,
+    GroupDjangoRelation groupRelation,
   ) {
-    final user = doc.data();
-
     return AlmanakUserTile(
-      firstName: user.firstName,
-      lastName: user.lastName,
-      subtitle: user.bestuursFunctie,
-      lidnummer: user.identifier,
+      firstName: groupRelation.user.firstName,
+      lastName: groupRelation.user.lastName,
+      subtitle: groupRelation.role,
+      lidnummer: groupRelation.user.identifier.toString(),
     );
   }
 
   /// Compare the bestuursfuncties op basis van constitutie.
   int compareBestuursFunctie(
-    FirestoreUser a,
-    FirestoreUser b,
+    String? roleA,
+    String? roleB,
   ) {
     const List<String> bestuurVolgorde = [
       "Praeses",
@@ -90,7 +117,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
     ];
 
     return bestuurVolgorde
-        .indexOf(a.bestuursFunctie ?? "")
-        .compareTo(bestuurVolgorde.indexOf(b.bestuursFunctie ?? ""));
+        .indexOf(roleA ?? "")
+        .compareTo(bestuurVolgorde.indexOf(roleB ?? ""));
   }
 }

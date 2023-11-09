@@ -58,92 +58,99 @@ class ManageGroupsPage extends ConsumerWidget {
   }
 
   Widget _buildCreateGroupBottomSheet(
-    String? type,
+    String name,
   ) {
-    final nameController = TextEditingController();
-    int year = getNjordYear();
-    String? nameErrorMsg;
+    final nameController = TextEditingController(text: name)
+      ..selection = TextSelection.collapsed(
+        offset: name.length,
+      ); // If keyboard collapses, it triggers rebuild, which resets the selection. So we need to set it again.
 
-    return StatefulBuilder(
-      builder: (context, setState) {
+    return Consumer(
+      builder: (context, ref, _) {
+        final notifierProvider = ref.watch(djangoGroupNotifierProvider);
+        final year = notifierProvider.year;
+        final type = notifierProvider.type;
         const double dropdownMenuHeight = 240;
 
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Maak nieuwe groep',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: 'Naam',
-                  errorText: nameErrorMsg,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<int>(
-                items: yearsFrom1874
-                    .map((year) => DropdownMenuItem<int>(
-                          value: year.item1,
-                          child: Text("${year.item1}-${year.item2}"),
-                        ))
-                    .toList(),
-                value: year,
-                onChanged: (value) => setState(() {
-                  year = value ?? getNjordYear();
-                }),
-                decoration: const InputDecoration(
-                  labelText: 'Jaar',
-                  border: OutlineInputBorder(),
-                ),
-                menuMaxHeight: dropdownMenuHeight,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                items: groupTypes.map((type) {
-                  return DropdownMenuItem<String>(
-                    value: type,
-                    child: Text(type),
-                  );
-                }).toList(),
-                value: type,
-                onChanged: (value) => setState(() {
-                  type = value ?? groupTypes.first;
-                }),
-                decoration: const InputDecoration(
-                  labelText: 'Type',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                // ignore: prefer-extracting-callbacks
-                onPressed: () {
-                  final name = nameController.text.trim();
+        const double cardPadding = 16;
 
-                  if (name.isNotEmpty) {
-                    Navigator.of(context)
-                        .pop({'name': name, 'year': year, 'type': type});
-                  } else {
-                    setState(() {
-                      // Show an error message if the form is not valid.
-                      // This will rebuild the bottom sheet with the error message.
-                      nameErrorMsg = 'Naam mag niet leeg zijn.';
-                    });
-                  }
-                },
-                child: const Text('Maak groep'),
-              ),
-            ],
+        const double bottomPaddingModal = 16;
+
+        return [
+          Text(
+            'Maak nieuwe groep',
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-        );
+          TextField(
+            controller: nameController,
+            decoration: const InputDecoration(
+              labelText: 'Naam',
+              border: OutlineInputBorder(),
+            ),
+            autocorrect: false,
+            onChanged: (value) =>
+                ref.read(djangoGroupNotifierProvider.notifier).setName(value),
+          ),
+          DropdownButtonFormField<int>(
+            items: yearsFrom1874
+                .map((year) => DropdownMenuItem<int>(
+                      value: year.item1,
+                      child: Text("${year.item1}-${year.item2}"),
+                    ))
+                .toList(),
+            value: year,
+            onChanged: (value) => ref
+                .read(djangoGroupNotifierProvider.notifier)
+                .setYear(value ?? getNjordYear()),
+            decoration: const InputDecoration(
+              labelText: 'Jaar',
+              border: OutlineInputBorder(),
+            ),
+            menuMaxHeight: dropdownMenuHeight,
+          ),
+          DropdownButtonFormField<String>(
+            items: groupTypes.map((type) {
+              return DropdownMenuItem<String>(
+                value: type,
+                child: Text(type),
+              );
+            }).toList(),
+            value: type,
+            onChanged: (value) => ref
+                .read(djangoGroupNotifierProvider.notifier)
+                .setType(value ?? "Competitieploeg"),
+            decoration: const InputDecoration(
+              labelText: 'Type',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          FilledButton(
+            // ignore: prefer-extracting-callbacks
+            onPressed: () {
+              createNewGroup(
+                group: DjangoGroup(
+                  name: nameController.text.trim(),
+                  type: type,
+                  year: year,
+                ),
+                ref: ref,
+                ctx: context,
+              );
+              Navigator.of(context).pop();
+            },
+            child: const Text('Maak groep'),
+          ),
+        ]
+            .toColumn(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              separator: const SizedBox(height: 16),
+            )
+            .padding(
+              all: cardPadding,
+              bottom:
+                  MediaQuery.of(context).viewInsets.bottom + bottomPaddingModal,
+            );
       },
     );
   }
@@ -229,26 +236,22 @@ class ManageGroupsPage extends ConsumerWidget {
       ),
       floatingActionButton: // Extended floating action button to Create a group.
           FloatingActionButton.extended(
-        // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
-        onPressed: () async {
-          final result = await showModalBottomSheet(
+        // ignore: prefer-extracting-callbacks
+        onPressed: () {
+          ref
+              .read(djangoGroupNotifierProvider.notifier)
+              .setType(type ?? "Competitieploeg");
+          ref.read(djangoGroupNotifierProvider.notifier).setYear(year);
+          // ignore: avoid-ignoring-return-values
+          showModalBottomSheet(
             context: context,
-            builder: (context) => _buildCreateGroupBottomSheet(type)
-                .padding(bottom: MediaQuery.of(context).viewInsets.bottom),
+            builder: (context) {
+              final name = ref.read(djangoGroupNotifierProvider).name;
+
+              return _buildCreateGroupBottomSheet(name);
+            },
             isScrollControlled: true,
           );
-
-          if (result != null && context.mounted) {
-            await createNewGroup(
-              group: DjangoGroup(
-                name: result['name'],
-                type: result['type'],
-                year: result['year'],
-              ),
-              ref: ref,
-              ctx: context,
-            );
-          }
         },
         icon: const Icon(Icons.add),
         label: const Text('Nieuwe groep'),

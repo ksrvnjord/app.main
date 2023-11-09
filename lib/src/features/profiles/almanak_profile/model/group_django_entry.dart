@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 
@@ -8,6 +9,8 @@ class GroupDjangoEntry {
   // ignore: prefer-correct-identifier-length
   final int id;
   final DjangoGroup group;
+
+  @JsonKey(fromJson: _roleFromJson)
   final String? role;
   final List<String> permissions;
 
@@ -22,4 +25,8 @@ class GroupDjangoEntry {
       _$GroupDjangoEntryFromJson(json);
 
   Map<String, dynamic> toJson() => _$GroupDjangoEntryToJson(this);
+
+  static String? _roleFromJson(String? role) => role != null
+      ? "${role.characters.getRange(0, 1).toUpperCase()}${role.characters.getRange(1)}"
+      : null;
 }

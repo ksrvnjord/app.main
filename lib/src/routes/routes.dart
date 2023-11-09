@@ -428,7 +428,14 @@ class Routes {
         _route(
           path: "bestuur",
           name: "Bestuur",
-          child: const AlmanakBestuurPage(),
+          pageBuilder: (context, state) => _getPage(
+            child: AlmanakBestuurPage(
+              year: state.uri.queryParameters['year'] == null
+                  ? getNjordYear()
+                  : int.parse(state.uri.queryParameters['year']!),
+            ),
+            name: "Bestuur",
+          ),
         ),
         _route(
           path: "commissies",
@@ -481,11 +488,11 @@ class Routes {
                       : null,
           routes: [
             _route(
-              path: ":ploeg",
+              path: ":name",
               name: "Ploeg",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
-                  ploegName: state.pathParameters['ploeg']!,
+                  ploegName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] == null
                       ? getNjordYear()
                       : int.parse(state.uri.queryParameters['year']!),

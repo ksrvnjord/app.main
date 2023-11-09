@@ -1,10 +1,14 @@
-// @immutable // TODO: make this immutable.
-abstract class GroupEntry {
+import 'package:flutter/foundation.dart';
+
+@immutable
+class GroupEntry {
   final int year;
   final String name;
   final String firstName;
   final String lastName;
   final String identifier; // Lidnummer.
+  final String groupType;
+  final String? role;
 
   const GroupEntry({
     required this.year,
@@ -12,5 +16,7 @@ abstract class GroupEntry {
     required this.firstName,
     required this.lastName,
     required this.identifier,
+    required this.groupType,
+    this.role,
   });
 }
