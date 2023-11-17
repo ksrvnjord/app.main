@@ -19,7 +19,7 @@ class FormAnswer {
   factory FormAnswer.fromJson(Map<String, dynamic> json) {
     return FormAnswer(
       userId: json['userId'],
-      answers: json['answers'],
+      answers: (json['answers'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList(),
       answeredAt: (json['answeredAt'] as Timestamp).toDate(),
       allergies: json['allergies'] != null
           ? List<String>.from(json['allergies'])

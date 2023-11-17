@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
@@ -10,12 +11,14 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 // ignore: prefer-static-class
 void upsertFormAnswer(
   String? value, // Given answer
-  int questionNumber,
-  QuerySnapshot<FormAnswer> answerSnapshot, // Who, what, when
+  String question,
   DocumentSnapshot<FirestoreForm> formDoc,
   WidgetRef ref,
   // String formPath,
 ) async {
+  final answerSnapshot =
+      await ref.watch(formAnswerProvider(formDoc.reference).future);
+
   var userId = FirebaseAuth.instance.currentUser?.uid ?? "";
   final CollectionReference<FormAnswer> collectionRef = FirebaseFirestore
       .instance
@@ -34,55 +37,49 @@ void upsertFormAnswer(
     throw Exception('Form is closed');
   }
 
-  // Old code.
-  final CollectionReference<FormAnswer> answersOfForm = FirebaseFirestore
-      .instance
-      .collection('${formDoc.reference.path}/answers')
-      .withConverter<FormAnswer>(
-        fromFirestore: (snapshot, _) =>
-            FormAnswer.fromJson(snapshot.data() ?? {}),
-        toFirestore: (answer, _) => answer.toJson(),
-      );
-  // End old code.
-  debugPrint("answersOfForm: $answersOfForm");
-
   final userSnapshot = ref.watch(currentfirestoreUserStreamProvider);
   final currentUser = userSnapshot.value?.docs.first.data();
   if (currentUser == null) {
     throw Exception('Firestore User is null');
   }
 
-  // final questionAnswers = answersOfForm
-  //     .doc('dNmZiwY7bWFS5v2Wdi69')
-  //     .get()
-  //     .then((e) => e.data().answers);
-
   try {
-    var querySnapshot =
-        await collectionRef.where('userId', isEqualTo: userId).get();
+    if (answerSnapshot.docs.isNotEmpty) {
+      final List<Map<String, dynamic>>? formAnswers =
+          // ignore: prefer-moving-to-variable
+          answerSnapshot.docs.first.data().answers;
 
-    if (querySnapshot.docs.isNotEmpty) {
-      // Assuming the 'userId' is unique, there should be only one document.
-      var docRef = querySnapshot.docs.first.reference;
-      // From the docRef we get the field "answers" and update it.
-      // var formAnswers = await docRef.get().then((doc) => doc.data());//?.['answers']);
+      bool found = false;
+      // Hebben we een antwoord op deze vraag?
+      // ignore: avoid-non-null-assertion
+      for (var i = 0; i < formAnswers!.length; i++) {
+        if (formAnswers[i]['name'] == question) {
+          formAnswers[i]['answer'] = value;
+          found = true;
+          break;
+        }
+      }
 
-      // From docRef we get the FormAnswer object and extract the answers.
-      var formAnswers = await docRef.get().then((doc) => doc.data()?.answers);
+      if (!found) {
+        formAnswers.add({'name': question, 'answer': value});
+      }
 
-      querySnapshot.docs.first.reference
+      // ignore: prefer-moving-to-variable
+      answerSnapshot.docs.first.reference
           .update({'answers': formAnswers, 'answeredAt': Timestamp.now()});
 
-      // Document exists, so we update it
-      // await docRef.update(formAnswers);
+      // Document exists, so we update it.
       print("Form answer updated for user: $userId");
     } else {
-      // No document found for the user, so we create a new one
+      // There is no document for this user, so create one.
+      List<Map<String, dynamic>> formAnswer = [
+        {'name': question, 'answer': value},
+      ];
+      // No document found for the user, so we create a new one.
+      // ignore: avoid-ignoring-return-values
       await collectionRef.add(FormAnswer(
         userId: userId,
-        answers: [
-          {'hello': value}
-        ],
+        answers: formAnswer,
         answeredAt: DateTime.now(),
         // User can't be null if using form feature.
         // ignore: avoid-non-null-assertion
@@ -93,43 +90,5 @@ void upsertFormAnswer(
     }
   } catch (error) {
     debugPrint("Error upserting form answer: $error");
-  }
-
-  final bool hasAnswered = answerSnapshot.size != 0;
-  if (!hasAnswered) {
-    // On first answer, add the answer to the collection.
-    // ignore: avoid-ignoring-return-values
-    // answersOfForm[questionNumber]["Value"] = value;
-
-    await answersOfForm.add(FormAnswer(
-      userId: userId,
-      answers: [
-        {'hello': value}
-      ],
-      answeredAt: DateTime.now(),
-      // User can't be null if using form feature.
-      // ignore: avoid-non-null-assertion
-      allergies: form.formName.contains("Eten") ? currentUser.allergies : null,
-    ));
-
-    return;
-  } else if (hasAnswered && value == null) {
-    // On undo, delete the answer from the collection.
-    await answerSnapshot.docs.first.reference.delete();
-
-    return;
-  } else {
-    // User picked a different answer.
-    await answerSnapshot.docs.first.reference.update({
-      'answer': value,
-      'answeredAt': Timestamp.now(),
-      if (form.formName.contains(
-        "Eten",
-      )) // TODO: send allergies only where the form is of a certain type, not based on the question.
-        'allergies':
-            // User can't be null if using form feature.
-            // ignore: avoid-non-null-assertion
-            currentUser.allergies,
-    });
   }
 }

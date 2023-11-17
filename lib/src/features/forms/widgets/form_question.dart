@@ -36,40 +36,40 @@ class FormQuestion extends ConsumerWidget {
       ),
     ];
 
-    final Map<String, String?> answerWidgets = {
-      "Label": question['Label'],
-      "Value": null,
-    };
-
-    final answerStream = ref.watch(formAnswerProvider(formDoc.reference));
-
     switch (type) {
       case 'TEXT':
         questionWidgets.add(
           TextFormField(
-              onTap: () => {
-                    debugPrint(answerWidgets["Value"] ?? "null"),
-                    debugPrint(answerWidgets["Value"]?.length.toString()),
-                  },
-              onFieldSubmitted: (String value) => {
-                    answerWidgets["Value"] = (value.isNotEmpty) ? value : null,
-                    UpdateAnswer(answerWidgets),
-                    answerStream.when(
-                      data: (snapshot) {
-                        upsertFormAnswer(value, 0, snapshot, formDoc, ref);
-                      },
-                      error: (error, stackTrace) => const ErrorCardWidget(
-                        errorMessage: 'Het is mislukt om je antwoord te laden',
-                      ),
-                      loading: () => const CircularProgressIndicator.adaptive(),
-                    ),
-                  },
-              onSaved: (value) {
-                debugPrint("onSaved");
-              }).padding(horizontal: 64),
+            onFieldSubmitted: (String value) => {
+              upsertFormAnswer(
+                value,
+                question['Label'],
+                formDoc,
+                ref,
+              ),
+            },
+          ).padding(horizontal: 64),
         );
         break;
-      case 'Multiplechoice':
+      // case 'Multiplechoice':
+      //   [...question['Choices'].map((choice) => questionWidgets.add(RadioListTile(
+      //               value: choice,
+      //               groupValue: answerOfUser,
+      //               onChanged: pollIsOpen
+      //                   ? (String? choice) {
+      //                       upsertPollAnswer(choice, snapshot, pollDoc, ref);
+      //                       // ignore: avoid-ignoring-return-values
+      //                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //                         content: Text(choice != null
+      //                             ? 'Je keuze is opgeslagen'
+      //                             : 'Je keuze is verwijderd'),
+      //                       ));
+      //                     }
+      //                   : null,
+      //               toggleable: true,
+      //               title: Text(option),)))];
+
+      //   break;
       default:
         return const ErrorCardWidget(
           errorMessage: 'Onbekend type vraag',
@@ -78,8 +78,4 @@ class FormQuestion extends ConsumerWidget {
 
     return questionWidgets.toColumn();
   }
-}
-
-UpdateAnswer(Map<String, String?> answerWidgets) {
-  debugPrint("Updated answer to ${answerWidgets["Value"] ?? "null"} ");
 }

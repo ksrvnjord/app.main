@@ -61,31 +61,11 @@ class FormPage extends ConsumerWidget {
                 if (description != null)
                   Text(description, style: textTheme.bodyMedium)
                       .padding(horizontal: descriptionHPadding),
-                ...questions.map(
-                  (question) => FormQuestion(
-                      question: question, formPath: formDoc.reference.path, formDoc: formDoc,),
-                ),
-                answerStream.when(
-                  data: (snapshot) {
-                    // final String? answerOfUser = snapshot.size != 0
-                    //     ? snapshot.docs.first.data().answers
-                    //     : null;
-
-                    return Container();
-                    // return [
-                    //   ...form.questions.map((option) => RadioListTile(
-                    //         value: option,
-                    //         groupValue: answerOfUser,
-                    //         toggleable: true,
-                    //         title: Text(option),
-                    //       )),
-                    // ].toColumn();
-                  },
-                  error: (error, stackTrace) => const ErrorCardWidget(
-                    errorMessage: 'Het is mislukt om je antwoord te laden',
-                  ),
-                  loading: () => const CircularProgressIndicator.adaptive(),
-                ),
+                ...questions.map((question) => FormQuestion(
+                      question: question,
+                      formPath: formDoc.reference.path,
+                      formDoc: formDoc,
+                    )),
               ].toColumn();
             },
             loading: () =>
