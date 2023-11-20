@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.da
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 class MainPage extends ConsumerWidget {
   const MainPage({super.key, required this.navigationShell});
@@ -18,6 +19,10 @@ class MainPage extends ConsumerWidget {
     final user = ref.read(
       currentFirestoreUserProvider,
     ); // Get currentUser details from firebase.
+
+    // We need to init this on startup to fill the currentUser from GraphQL, we can remove this if we remove GraphQL from the app.
+    // ignore: avoid-ignoring-return-values
+    ref.read(graphQLClientProvider);
 
     if (!kIsWeb && user != null) {
       // Web does not support messaging, also user should be logged in to Firebase for it to work.
