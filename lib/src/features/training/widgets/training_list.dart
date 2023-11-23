@@ -27,13 +27,16 @@ class TrainingList extends ConsumerWidget {
                   // ignore: avoid-non-ascii-symbols
                   child: Text('Je hebt geen afschrijvingen op dit moment'),
                 )
-              : ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemBuilder: (BuildContext context, int index) =>
-                      ReservationListTile(snapshot: data.docs[index]),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 4),
-                  itemCount: data.docs.length,
+              : Column(
+                  children: data.docs.asMap().entries.map((entry) {
+                    return Column(
+                      children: <Widget>[
+                        ReservationListTile(snapshot: entry.value),
+                        if (entry.key != data.docs.length - 1)
+                          const SizedBox(height: 4),
+                      ],
+                    );
+                  }).toList(),
                 ),
         );
   }

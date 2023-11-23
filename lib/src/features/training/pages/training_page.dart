@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
@@ -26,7 +27,23 @@ class TrainingPage extends StatelessWidget {
           screenSize: MediaQuery.of(context).size,
           pageOffset: pageOffset,
         ),
-        child: const TrainingList(),
+        child: [
+          TrainingList(),
+          SizedBox(height: 32),
+          DottedBorder(
+            color: Colors.blueGrey,
+            strokeWidth: 4,
+            borderType: BorderType.RRect,
+            radius: const Radius.circular(16),
+            strokeCap: StrokeCap.square,
+            dashPattern: [8, 8],
+            child: Text("Uw logo hier",
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
+                    )).padding(all: 32, top: 32, bottom: 32),
+          ),
+        ].toColumn(),
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: Wrap(
