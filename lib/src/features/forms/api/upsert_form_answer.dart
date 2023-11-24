@@ -6,16 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 
 // ignore: prefer-static-class
-void upsertFormAnswer(
-  String? value, // Given answer
-  String question,
-  DocumentSnapshot<FirestoreForm> formDoc,
-  WidgetRef ref,
-  // String formPath,
-) async {
+void upsertFormAnswer({
+  required String? value, // Given answer.
+  required String question,
+  required DocumentSnapshot<FirestoreForm> formDoc,
+  required WidgetRef ref,
+}) async {
   final answerSnapshot =
       await ref.watch(formAnswerProvider(formDoc.reference).future);
 
@@ -24,9 +24,10 @@ void upsertFormAnswer(
       .instance
       .collection('${formDoc.reference.path}/answers')
       .withConverter(
-          fromFirestore: (snapshot, _) =>
-              FormAnswer.fromJson(snapshot.data() ?? {}),
-          toFirestore: (answer, _) => answer.toJson());
+        fromFirestore: (snapshot, _) =>
+            FormAnswer.fromJson(snapshot.data() ?? {}),
+        toFirestore: (answer, _) => answer.toJson(),
+      );
 
   final FirestoreForm? form = formDoc.data();
   if (form == null) {
@@ -45,35 +46,36 @@ void upsertFormAnswer(
 
   try {
     if (answerSnapshot.docs.isNotEmpty) {
-      final List<Map<String, dynamic>>? formAnswers =
+      final formAnswers =
           // ignore: prefer-moving-to-variable
           answerSnapshot.docs.first.data().answers;
-
       bool found = false;
       // Hebben we een antwoord op deze vraag?
       // ignore: avoid-non-null-assertion
       for (var i = 0; i < formAnswers!.length; i++) {
-        if (formAnswers[i]['name'] == question) {
-          formAnswers[i]['answer'] = value;
+        if (formAnswers[i].question == question) {
+          formAnswers[i].answer = value;
           found = true;
           break;
         }
       }
 
       if (!found) {
-        formAnswers.add({'name': question, 'answer': value});
+        formAnswers.add(FormQuestionAnswer(question: question, answer: value));
       }
 
       // ignore: prefer-moving-to-variable
-      answerSnapshot.docs.first.reference
-          .update({'answers': formAnswers, 'answeredAt': Timestamp.now()});
+      answerSnapshot.docs.first.reference.update({
+        'answers': formAnswers.map((answer) => answer.toJson()).toList(),
+        'answeredAt': Timestamp.now(),
+      });
 
       // Document exists, so we update it.
-      print("Form answer updated for user: $userId");
+      debugPrint("Form answer updated for user: $userId");
     } else {
       // There is no document for this user, so create one.
-      List<Map<String, dynamic>> formAnswer = [
-        {'name': question, 'answer': value},
+      List<FormQuestionAnswer> formAnswer = [
+        FormQuestionAnswer(question: question, answer: value),
       ];
       // No document found for the user, so we create a new one.
       // ignore: avoid-ignoring-return-values

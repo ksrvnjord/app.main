@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/upsert_form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -15,7 +16,7 @@ class FormQuestion extends ConsumerWidget {
     required this.formDoc,
   }) : super(key: key);
 
-  final Map<String, dynamic> questionMap;
+  final FirestoreFormQuestion questionMap;
 
   final String formPath;
 
@@ -25,11 +26,11 @@ class FormQuestion extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
-    final type = questionMap['Type'];
+    final type = questionMap.type;
 
     final List<Widget> questionWidgets = [
       Text(
-        questionMap['Label'],
+        questionMap.label,
         style: textTheme.titleLarge,
       ),
     ];
@@ -40,19 +41,19 @@ class FormQuestion extends ConsumerWidget {
           TextFormField(
             onFieldSubmitted: (String value) => {
               upsertFormAnswer(
-                value,
-                questionMap['Label'],
-                formDoc,
-                ref,
+                value: value,
+                question: questionMap.label,
+                formDoc: formDoc,
+                ref: ref,
               ),
             },
           ),
         );
         break;
       case 'Multiplechoice':
-        questionWidgets.add(multipleChoiceWidget(
+        questionWidgets.add(MultipleChoiceWidget(
           value: null,
-          questionMap: questionMap,
+          formQuestion: questionMap,
           formDoc: formDoc,
           ref: ref,
         ));
