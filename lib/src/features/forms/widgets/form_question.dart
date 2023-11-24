@@ -6,18 +6,19 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/upsert_form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormQuestion extends ConsumerWidget {
   const FormQuestion({
     Key? key,
-    required this.question,
+    required this.questionMap,
     required this.formPath,
     required this.formDoc,
   }) : super(key: key);
 
-  final Map<String, dynamic> question;
+  final Map<String, dynamic> questionMap;
 
   final String formPath;
 
@@ -27,14 +28,16 @@ class FormQuestion extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
 
-    final type = question['Type'];
+    final type = questionMap['Type'];
 
     final List<Widget> questionWidgets = [
       Text(
-        question['Label'],
+        questionMap['Label'],
         style: textTheme.titleLarge,
       ),
     ];
+
+    // final answerSnapshot = await ref.watch(formAnswerProvider(formDoc.reference).future);
 
     switch (type) {
       case 'TEXT':
@@ -43,7 +46,7 @@ class FormQuestion extends ConsumerWidget {
             onFieldSubmitted: (String value) => {
               upsertFormAnswer(
                 value,
-                question['Label'],
+                questionMap['Label'],
                 formDoc,
                 ref,
               ),
@@ -51,25 +54,9 @@ class FormQuestion extends ConsumerWidget {
           ).padding(horizontal: 64),
         );
         break;
-      // case 'Multiplechoice':
-      //   [...question['Choices'].map((choice) => questionWidgets.add(RadioListTile(
-      //               value: choice,
-      //               groupValue: answerOfUser,
-      //               onChanged: pollIsOpen
-      //                   ? (String? choice) {
-      //                       upsertPollAnswer(choice, snapshot, pollDoc, ref);
-      //                       // ignore: avoid-ignoring-return-values
-      //                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //                         content: Text(choice != null
-      //                             ? 'Je keuze is opgeslagen'
-      //                             : 'Je keuze is verwijderd'),
-      //                       ));
-      //                     }
-      //                   : null,
-      //               toggleable: true,
-      //               title: Text(option),)))];
-
-      //   break;
+      case 'Multiplechoice':
+        questionWidgets.add(multipleChoiceWidget(value:null, questionMap:questionMap, formDoc:formDoc,ref: ref));
+        break;
       default:
         return const ErrorCardWidget(
           errorMessage: 'Onbekend type vraag',

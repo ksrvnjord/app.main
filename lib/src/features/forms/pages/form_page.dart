@@ -62,7 +62,7 @@ class FormPage extends ConsumerWidget {
                   Text(description, style: textTheme.bodyMedium)
                       .padding(horizontal: descriptionHPadding),
                 ...questions.map((question) => FormQuestion(
-                      question: question,
+                      questionMap: question,
                       formPath: formDoc.reference.path,
                       formDoc: formDoc,
                     )),
