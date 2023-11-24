@@ -15,6 +15,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
@@ -199,7 +201,7 @@ class Routes {
         _route(
           path: 'forms', // Used for Deeplinking-pilot, so don't change this.
           name: RouteName.forms,
-          child: const PollsPage(),
+          child: const FormsPage(),
           routes: [
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
@@ -207,7 +209,7 @@ class Routes {
               path: ':formId',
               name: "Form",
               pageBuilder: (context, state) => _getPage(
-                child: PollPage(pollId: state.pathParameters['formId']!),
+                child: FormPage(formId: state.pathParameters['formId']!),
                 name: "Form",
               ),
             ),
