@@ -41,5 +41,10 @@ class FormAnswer {
     };
   }
 
-  // Create static method that adds a form answer to Firestore.
+  static CollectionReference<FormAnswer> firestoreConvert(String formPath) =>
+      FirebaseFirestore.instance.collection('$formPath/answers').withConverter(
+            fromFirestore: (snapshot, _) =>
+                FormAnswer.fromJson(snapshot.data() ?? {}),
+            toFirestore: (answer, _) => answer.toJson(),
+          );
 }

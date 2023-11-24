@@ -1,6 +1,6 @@
 class FirestoreFormQuestion {
   final String label;
-  final String type;
+  final FormQuestionType type;
   final List<String>? options;
 
   FirestoreFormQuestion({
@@ -13,7 +13,7 @@ class FirestoreFormQuestion {
   factory FirestoreFormQuestion.fromJson(Map<String, dynamic> json) {
     return FirestoreFormQuestion(
       label: json['Label'],
-      type: json['Type'],
+      type: FormQuestionType.values.byName(json['Type']),
       options:
           json['Choices'] != null ? List<String>.from(json['Choices']) : null,
     );
@@ -28,3 +28,5 @@ class FirestoreFormQuestion {
     };
   }
 }
+
+enum FormQuestionType { text, singleChoice }

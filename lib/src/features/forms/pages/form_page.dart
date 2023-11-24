@@ -22,19 +22,22 @@ class FormPage extends ConsumerWidget {
         title: const Text('Form'),
       ),
       body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
           formVal.when(
             data: (formDoc) {
-              final FirestoreForm? form = formDoc.data();
-              if (form == null) {
+              if (!formDoc.exists) {
                 return const ErrorCardWidget(
-                  errorMessage: 'Het is niet gelukt om de form te laden',
+                  errorMessage: 'Deze form bestaat niet (meer)',
                 );
               }
+              // Since the form exists, we can safely assume that the data is not null.
+              // ignore: avoid-non-null-assertion
+              final FirestoreForm form = formDoc.data()!;
 
               final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
-              const double descriptionHPadding = 16;
+              const double descriptionVPadding = 16;
 
               final colorScheme = Theme.of(context).colorScheme;
 
@@ -54,17 +57,19 @@ class FormPage extends ConsumerWidget {
                 ),
                 if (description != null)
                   Text(description, style: textTheme.bodyMedium)
-                      .padding(horizontal: descriptionHPadding),
-                ...questions.map((question) {
-                  const double hPadding = 64;
-
-                  return FormQuestion(
-                    questionMap: question,
+                      .padding(vertical: descriptionVPadding),
+                for (final question in questions) ...[
+                  FormQuestion(
+                    formQuestion: question,
                     formPath: formDoc.reference.path,
-                    formDoc: formDoc,
-                  ).padding(horizontal: hPadding);
-                }),
-              ].toColumn();
+                    form: form,
+                    docRef: formDoc.reference,
+                  ),
+                  const SizedBox(height: 32),
+                ],
+              ].toColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+              );
             },
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
