@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/upsert_form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
@@ -37,8 +34,6 @@ class FormQuestion extends ConsumerWidget {
       ),
     ];
 
-    // final answerSnapshot = await ref.watch(formAnswerProvider(formDoc.reference).future);
-
     switch (type) {
       case 'TEXT':
         questionWidgets.add(
@@ -51,11 +46,16 @@ class FormQuestion extends ConsumerWidget {
                 ref,
               ),
             },
-          ).padding(horizontal: 64),
+          ),
         );
         break;
       case 'Multiplechoice':
-        questionWidgets.add(multipleChoiceWidget(value:null, questionMap:questionMap, formDoc:formDoc,ref: ref));
+        questionWidgets.add(multipleChoiceWidget(
+          value: null,
+          questionMap: questionMap,
+          formDoc: formDoc,
+          ref: ref,
+        ));
         break;
       default:
         return const ErrorCardWidget(

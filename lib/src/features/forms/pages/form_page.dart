@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,7 +16,6 @@ class FormPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formVal = ref.watch(formProvider(formId));
-    const double cardPadding = 8;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,9 +31,6 @@ class FormPage extends ConsumerWidget {
                   errorMessage: 'Het is niet gelukt om de form te laden',
                 );
               }
-
-              final answerStream =
-                  ref.watch(formAnswerProvider(formDoc.reference));
 
               final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
@@ -61,11 +55,15 @@ class FormPage extends ConsumerWidget {
                 if (description != null)
                   Text(description, style: textTheme.bodyMedium)
                       .padding(horizontal: descriptionHPadding),
-                ...questions.map((question) => FormQuestion(
-                      questionMap: question,
-                      formPath: formDoc.reference.path,
-                      formDoc: formDoc,
-                    )),
+                ...questions.map((question) {
+                  const double hPadding = 64;
+
+                  return FormQuestion(
+                    questionMap: question,
+                    formPath: formDoc.reference.path,
+                    formDoc: formDoc,
+                  ).padding(horizontal: hPadding);
+                }),
               ].toColumn();
             },
             loading: () =>
