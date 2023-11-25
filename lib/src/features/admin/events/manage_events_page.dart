@@ -1,12 +1,10 @@
 // ignore_for_file: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/events/create_event_bottom_sheet.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/events_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class ManageEventsPage extends ConsumerWidget {
   const ManageEventsPage({Key? key}) : super(key: key);
