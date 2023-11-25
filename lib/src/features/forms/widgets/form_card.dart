@@ -50,6 +50,7 @@ class FormCard extends ConsumerWidget {
         pathParameters: {
           "formId": formDoc.reference.id,
         },
+        queryParameters: {"v": "2"}, // TODO: Remove this after migration.
       ),
     ).card(
       margin: const EdgeInsets.symmetric(vertical: 4),

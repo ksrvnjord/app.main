@@ -53,7 +53,7 @@ class FormRepository {
     required String question,
     required String? newValue,
   }) async {
-    final List<FormQuestionAnswer> formAnswers = doc.data().answers ?? [];
+    final List<FormQuestionAnswer> formAnswers = doc.data().answers;
 
     final formQuestionAnswer = formAnswers.firstWhere(
       (a) => a.question == question,

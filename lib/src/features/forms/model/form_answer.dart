@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer
 @immutable
 class FormAnswer {
   final String userId;
-  final List<FormQuestionAnswer>? answers; // User can choose to not answer.
+  final List<FormQuestionAnswer> answers; // User can choose to not answer.
   final DateTime answeredAt;
   final List<String>? allergies;
 
@@ -35,7 +35,7 @@ class FormAnswer {
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
-      'answers': answers?.map((e) => e.toJson()).toList(),
+      'answers': answers.map((e) => e.toJson()).toList(),
       'answeredAt': Timestamp.fromDate(answeredAt),
       if (allergies != null) 'allergies': allergies,
     };
