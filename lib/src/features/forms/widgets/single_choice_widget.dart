@@ -24,7 +24,7 @@ class SingleChoiceWidget extends StatelessWidget {
   final FirestoreForm form;
   final DocumentReference<FirestoreForm> docRef;
   final WidgetRef ref;
-  final void Function(String?)? onChanged;
+  final void Function(String?) onChanged;
 
   const SingleChoiceWidget({
     this.initialValue,
