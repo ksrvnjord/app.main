@@ -48,7 +48,7 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
         TextFormField(
           controller: titleController,
           decoration: const InputDecoration(
-            labelText: 'Titel',
+            labelText: 'Titel*',
             border: OutlineInputBorder(),
           ),
           validator: (value) => value == null || value.isEmpty
@@ -58,7 +58,7 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
         TextFormField(
           controller: startDateController,
           decoration: const InputDecoration(
-            labelText: 'Start datum',
+            labelText: 'Start datum*',
             border: OutlineInputBorder(),
           ),
           // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
@@ -82,7 +82,7 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
         TextFormField(
           controller: startTimeController,
           decoration: const InputDecoration(
-            labelText: 'Start tijd',
+            labelText: 'Start tijd*',
             border: OutlineInputBorder(),
           ),
           // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
@@ -103,7 +103,7 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
         TextFormField(
           controller: endDateController,
           decoration: const InputDecoration(
-            labelText: 'Eind datum',
+            labelText: 'Eind datum*',
             border: OutlineInputBorder(),
           ),
           // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
@@ -127,7 +127,7 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
         TextFormField(
           controller: endTimeController,
           decoration: const InputDecoration(
-            labelText: 'Eind tijd',
+            labelText: 'Eind tijd*',
             border: OutlineInputBorder(),
           ),
           // ignore: avoid-passing-async-when-sync-expected, prefer-extracting-callbacks
