@@ -32,7 +32,6 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
@@ -71,6 +70,7 @@ import 'package:upgrader/upgrader.dart';
 @immutable
 class RouteName {
   static const forms = "Forms";
+  static const polls = "Polls";
   static const postComments = "Post -> Comments";
   static const editMyVisibility = "Edit my visibility";
   static const reservation = "Reservation";
@@ -197,9 +197,9 @@ class Routes {
         child: const HomePage(),
       ),
       routes: [
-        // Route for viewing all forms.
+        // Route for viewing all forms (NEW FEATURE).
         _route(
-          path: 'forms', // Used for Deeplinking-pilot, so don't change this.
+          path: 'forms',
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
@@ -208,10 +208,18 @@ class Routes {
             _route(
               path: ':formId',
               name: "Form",
-              pageBuilder: (context, state) => _getPage(
-                child: FormPage(formId: state.pathParameters['formId']!),
-                name: "Form",
-              ),
+              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
+                          null &&
+                      state.uri.queryParameters['v'] ==
+                          '2' // TODO: Remove this after migration.
+                  ? _getPage(
+                      child: FormPage(formId: state.pathParameters['formId']!),
+                      name: "Form",
+                    )
+                  : _getPage(
+                      child: PollPage(pollId: state.pathParameters['formId']!),
+                      name: "Poll",
+                    ),
             ),
           ],
         ),

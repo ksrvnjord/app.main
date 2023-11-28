@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/upsert_form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -26,15 +24,9 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    final answerStream = ref.watch(formAnswerProvider(formDoc.reference));
-
     final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
-    const double descriptionHPadding = 16;
-
     final colorScheme = Theme.of(context).colorScheme;
-
-    final description = form.description;
 
     final textTheme = Theme.of(context).textTheme;
 
@@ -58,6 +50,7 @@ class FormCard extends ConsumerWidget {
         pathParameters: {
           "formId": formDoc.reference.id,
         },
+        queryParameters: {"v": "2"}, // TODO: Remove this after migration.
       ),
     ).card(
       margin: const EdgeInsets.symmetric(vertical: 4),

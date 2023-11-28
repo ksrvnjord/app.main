@@ -109,7 +109,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               FirebaseWidget(
                 onAuthenticated: const FormsWidget().padding(
                   vertical: elementVPadding,
-                  horizontal: elementHPadding,
                 ),
               ),
               const SwanDivider(),

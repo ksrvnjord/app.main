@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 
 @immutable
 class FormAnswer {
   final String userId;
-  final List<Map<String, dynamic>>? answers; // User can choose to not answer.
+  final List<FormQuestionAnswer> answers; // User can choose to not answer.
   final DateTime answeredAt;
   final List<String>? allergies;
 
@@ -19,7 +20,10 @@ class FormAnswer {
   factory FormAnswer.fromJson(Map<String, dynamic> json) {
     return FormAnswer(
       userId: json['userId'],
-      answers: (json['answers'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList(),
+      // ignore: avoid-dynamic
+      answers: (json['answers'] as List<dynamic>)
+          .map((e) => FormQuestionAnswer.fromJson(e))
+          .toList(),
       answeredAt: (json['answeredAt'] as Timestamp).toDate(),
       allergies: json['allergies'] != null
           ? List<String>.from(json['allergies'])
@@ -31,11 +35,16 @@ class FormAnswer {
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
-      'answers': answers,
+      'answers': answers.map((e) => e.toJson()).toList(),
       'answeredAt': Timestamp.fromDate(answeredAt),
       if (allergies != null) 'allergies': allergies,
     };
   }
 
-  // Create static method that adds a form answer to Firestore.
+  static CollectionReference<FormAnswer> firestoreConvert(String formPath) =>
+      FirebaseFirestore.instance.collection('$formPath/answers').withConverter(
+            fromFirestore: (snapshot, _) =>
+                FormAnswer.fromJson(snapshot.data() ?? {}),
+            toFirestore: (answer, _) => answer.toJson(),
+          );
 }
