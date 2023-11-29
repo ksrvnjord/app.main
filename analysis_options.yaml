@@ -71,6 +71,7 @@ dart_code_metrics:
         exceptions: ["i"]
     - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
     - prefer-typedefs-for-callbacks: false
+    - parameters-ordering: false
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests
