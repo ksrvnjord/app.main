@@ -31,16 +31,11 @@ class CommentsPage extends ConsumerWidget {
         body: [
           ListView(children: [
             post.when(
-              data: (data) => PostCard(
-                snapshot: data,
-                elevation: false,
-                squareBorder: true,
-                expandContent: true,
-              ),
-              loading: () =>
-                  const Center(child: CircularProgressIndicator.adaptive()),
+              data: (data) => PostCard(expandContent: true, snapshot: data),
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
             ),
             const SizedBox(height: 8),
             commentsVal.when(

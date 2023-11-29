@@ -1,3 +1,5 @@
+// ignore_for_file: unused-code
+
 class Svgs {
   static const String swanBlue = "$_base/swan-blue-simple$_extension";
   static const String swanWhite = "$_base/swan-simple$_extension";
