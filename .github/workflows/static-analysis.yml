@@ -38,11 +38,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Install DCM
+        uses: CQLabs/setup-dcm@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check unnecessary nullable parameters
-        run: flutter pub run dart_code_metrics:metrics check-unused-code lib --fatal-unused --monorepo
+        run: dcm check-unused-code lib --fatal-unused --monorepo
 
       - name: Check unused files
-        run: flutter pub run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib
+        run: dcm check-unused-files --exclude=/**.graphql.dart lib
 
   analyze:
     name: Flutter analyze / Dart Code Metrics Analyze
@@ -70,8 +75,13 @@ jobs:
       - name: Flutter Analyze
         run: flutter analyze --fatal-warnings --fatal-infos .
 
+      - name: Install DCM
+        uses: CQLabs/setup-dcm@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Dart Code Metrics Analyze
-        run: flutter pub run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
+        run: dcm analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
 
   other:
     name: Dart Format / Validate dependencies / Check unnecessary nullable parameters
@@ -107,5 +117,10 @@ jobs:
       - name: Validate dependencies # TODO: Run only when dependencies are changed
         run: flutter pub run dependency_validator
 
+      - name: Install DCM
+        uses: CQLabs/setup-dcm@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check unnecessary nullable parameters
-        run: flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib
+        run: dcm check-unnecessary-nullable lib
