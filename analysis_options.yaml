@@ -33,7 +33,6 @@ analyzer:
     - lib/**.graphql.dart # exclude generated files
     - lib/firebase_options.dart # exclude generated files
   plugins:
-    - dart_code_metrics
 
 # DART CODE METRICS - The code metrics you don't want but need
 # Documentation at https://dcm.dev/
@@ -69,8 +68,9 @@ dart_code_metrics:
     # ------ UNAVOIDABLE RULES -----------------
     - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
     - prefer-correct-identifier-length: # i used in for-loops
-        exceptions: [ 'i' ]
+        exceptions: ["i"]
     - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
+    - prefer-typedefs-for-callbacks: false
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests
