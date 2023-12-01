@@ -48,6 +48,12 @@ class FormRepository {
     ));
   }
 
+  static Future<DocumentReference<FirestoreForm>> upsertCreateForm({
+    required FirestoreForm form,
+  }) async {
+    return await FirestoreForm.firestoreConvert.add(form);
+  }
+
   static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
     required QueryDocumentSnapshot<FormAnswer> doc,
     required String question,
