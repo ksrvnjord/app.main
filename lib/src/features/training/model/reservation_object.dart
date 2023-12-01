@@ -20,19 +20,6 @@ class ReservationObject {
   final String? brand;
   final bool critical;
 
-  const ReservationObject({
-    this.reference,
-    required this.name,
-    required this.permissions,
-    required this.type,
-    required this.available,
-    this.comment,
-    this.kind,
-    this.year,
-    this.brand,
-    this.critical = false,
-  });
-
   ReservationObject.fromJson(Map<String, Object?> json)
       : reference = json['reference'] as DocumentReference?,
         name = json['name']! as String,

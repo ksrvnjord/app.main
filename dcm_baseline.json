@@ -1,0 +1,4179 @@
+{
+  "date": "2023-11-29 21:40:24.061185Z",
+  "paths": {
+    "lib/main.dart": {
+      "avoid-unnecessary-futures": [
+        "696e8b56222a77c1a1038bd671b480d1"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "cd51330126eaf213084bb11ed4f5e25e",
+        "3cbf830f9c944d79e3589d1b14ad2d05"
+      ],
+      "unnecessary-trailing-comma": [
+        "f23dad04f6dee46dccdd0e746f6acd3c",
+        "ace01dd689572494b2f90a6b721212b6",
+        "45b5eede973e9819521f0d4302d65a2b"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "66f13c51e2c1b1ed4c2cce9e804dcd67"
+      ]
+    },
+    "lib/assets/svgs.dart": {
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98"
+      ]
+    },
+    "lib/assets/asset_data.dart": {
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98"
+      ]
+    },
+    "lib/assets/images.dart": {
+      "prefer-declaring-const-constructor": [
+        "352fe8f31134264289f1733683008523"
+      ]
+    },
+    "lib/src/main_page.dart": {
+      "prefer-widget-private-members": [
+        "959a6a8e05b68fc016946d54cf841373",
+        "95942caa2564500a352691483bdb2ba6"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "83f71b7ebf09e9de2326dbda49334e60",
+        "f634a9d59dcb0af8ca7ce4a20b9bab69",
+        "1202aa73cf1ca7c827782086bc4eff8c"
+      ],
+      "unnecessary-trailing-comma": [
+        "72ab9e78f7de37a6aabaec7f60aab990"
+      ],
+      "prefer-correct-handler-name": [
+        "95942caa2564500a352691483bdb2ba6"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/settings/api/me.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "7a894fcc35add66536989227d11ae28c"
+      ],
+      "parameters-ordering": [
+        "f6c69ad2c0c324918769d4a23191c162"
+      ],
+      "prefer-named-boolean-parameters": [
+        "303e47b63124a1e52aee803f6d00fc21"
+      ]
+    },
+    "lib/src/features/settings/pages/me_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "7a894fcc35add66536989227d11ae28c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "1236bcced12015f1454eebda609b5b55"
+      ],
+      "unnecessary-trailing-comma": [
+        "c65e5c54a23187c8fc14388c093b5cb0"
+      ],
+      "avoid-negated-conditions": [
+        "be8e21a613a07612571f6e5543999680"
+      ],
+      "prefer-widget-private-members": [
+        "d05b6ed7d2345020440df396d6da7f73",
+        "93cdc079d23b35f026f42c3345f5b2f2",
+        "f0e615cd375700a82c0a07a70f48cacd",
+        "7215e72895260cfb74180403485a0f09",
+        "43781db5c40ecc39fd718685594f0956"
+      ],
+      "parameters-ordering": [
+        "ecf127c443db7f5c3eb48ae18fe1db6d",
+        "f08a1088b4f5f996709c82f663e81ada"
+      ],
+      "map-keys-ordering": [
+        "6ad20c3479fb90893ca2b81359da66e6",
+        "f34570889fc30aed5683b137bc1930ca",
+        "45b70c52db403f8b909c376e71c400e7"
+      ],
+      "avoid-long-functions": [
+        "83c29c1e959e4245c430371af9c04958"
+      ],
+      "proper-super-calls": [
+        "cc2563519e56b89837b76f1e49606f16"
+      ],
+      "avoid-similar-names": [
+        "4ba8f08e53fa12454e94d8a9abd64858"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "aa5fe5ac46564587b039fd821e77d50c"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "prefer-correct-handler-name": [
+        "075363380323b4799196ff5108cc951d",
+        "43781db5c40ecc39fd718685594f0956"
+      ],
+      "avoid-collection-mutating-methods": [
+        "aab65be0f48908d893adfafcbcdf6823"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "5403411020667fb16d96be6775e8cc02",
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8da733310ea78daa8ad976ffa2b7533f",
+        "8da733310ea78daa8ad976ffa2b7533f",
+        "8da733310ea78daa8ad976ffa2b7533f",
+        "8da733310ea78daa8ad976ffa2b7533f",
+        "8da733310ea78daa8ad976ffa2b7533f",
+        "987a8a056257d7029379346bf7cde126",
+        "deb33402885363bab39c1fc58cd52772"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ]
+    },
+    "lib/src/features/settings/pages/me_privacy_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "7a894fcc35add66536989227d11ae28c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "1236bcced12015f1454eebda609b5b55"
+      ],
+      "avoid-passing-default-values": [
+        "91bfc35ba14bb4fb21360b15e01f73f3"
+      ],
+      "prefer-widget-private-members": [
+        "1c84c21482bbe6c894b45ddf9fa43fab",
+        "e8d8654c197e7b3beed4d69e3edd3a5b",
+        "f0e615cd375700a82c0a07a70f48cacd",
+        "c2da3cdf14736ef1e279dae27b8e2a1f",
+        "43781db5c40ecc39fd718685594f0956",
+        "5cb6025334b6e72081fc862a7b4e0d38"
+      ],
+      "prefer-moving-to-variable": [
+        "dffac38007c3b0bade1dd20485607c6a",
+        "dffac38007c3b0bade1dd20485607c6a"
+      ],
+      "avoid-collection-mutating-methods": [
+        "755c6e7e188826f57c89a6014b041584",
+        "755c6e7e188826f57c89a6014b041584"
+      ],
+      "avoid-inverted-boolean-checks": [
+        "20791eec9ee0f7586c177e2a83af1f78"
+      ],
+      "prefer-named-boolean-parameters": [
+        "e431d687bf4b2c65fbd94b12ae0cb5d9",
+        "e431d687bf4b2c65fbd94b12ae0cb5d9"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "b58c9c680bd90cf247875ad833162935"
+      ],
+      "map-keys-ordering": [
+        "9d55cdc8369737fc34cb744ceb64c03d",
+        "89857179cbd9935e8809962ff4758ce7",
+        "3afe58aa64b0466e11ff1705c8cce8ce"
+      ],
+      "prefer-correct-handler-name": [
+        "5cb6025334b6e72081fc862a7b4e0d38",
+        "c2da3cdf14736ef1e279dae27b8e2a1f",
+        "43781db5c40ecc39fd718685594f0956"
+      ],
+      "unnecessary-trailing-comma": [
+        "022251409e8d758bc7f9c2f5ff1d90df",
+        "1f6dfc1d52f445e798368d77655578f8",
+        "a918b41d93ea7ffbc03962ccdcb6789e"
+      ]
+    },
+    "lib/src/features/damages/queries/get_damage.dart": {
+      "parameters-ordering": [
+        "77c656e9d0ce947712c5fc70db29171f"
+      ]
+    },
+    "lib/src/features/damages/queries/all_object_types.dart": {
+      "avoid-similar-names": [
+        "66cd048b118707bb72741365bc34e991"
+      ],
+      "prefer-correct-identifier-length": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-collection-mutating-methods": [
+        "34ec78fcc91ffb1e54cd85e4a0924332"
+      ]
+    },
+    "lib/src/features/damages/queries/object_by_type_and_name.dart": {
+      "avoid-missing-interpolation": [
+        "afdc18c224169cc1d722ad9e54072612",
+        "773a6e8c0c2d647957be351ae07e050d"
+      ],
+      "parameters-ordering": [
+        "3c2ab40afa0ee84a380d44bcbb54ef16"
+      ]
+    },
+    "lib/src/features/damages/model/damage.dart": {
+      "parameters-ordering": [
+        "465d616979f6dc3d29d07fd99a24b7f3",
+        "b647dddce8fad0f0025537ffd12adb2e"
+      ],
+      "map-keys-ordering": [
+        "a57c106c2f25ca64330b4d2a7d5f2c51",
+        "4907f7b71851c72808aff43d0fe77146",
+        "72b7345db681eb28de9eb9e4ed7e1625",
+        "809aa422b2e548071a9c768fc6c31c36",
+        "2f659d709069c1889f736df03f65d736",
+        "6a6612d1f92674d2256e34feaded8a2d",
+        "03a75298c0cb068ca363c67489ba7f17",
+        "4c6ec3d6274cec5fbafa41dc077d470e",
+        "efacef2dd2ca217442bcc1350be14507"
+      ],
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98"
+      ],
+      "unnecessary-trailing-comma": [
+        "87c37dda0fde5fb58c664ff2f20692bc",
+        "87c37dda0fde5fb58c664ff2f20692bc"
+      ],
+      "avoid-similar-names": [
+        "1d861b71feab89849dce7aa2f1d3facd"
+      ],
+      "move-variable-closer-to-its-usage": [
+        "e77c7472f61df93d5ad749748dc8615f"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/damages/model/damage_form.dart": {
+      "prefer-correct-setter-parameter-name": [
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "prefer-early-return": [
+        "8c819e69ed036dbe39df5143e778820d",
+        "d291e0e03efb2843e205b739f6a39d9c",
+        "f7e3041d55760b9450d61a5121a55966",
+        "9c297e50e13fe8301ff37d409b142923",
+        "2d2bb414710326c7bab99653670bdd60",
+        "b2e97ceac53ba7aff43e7d49e1417f7f"
+      ],
+      "parameters-ordering": [
+        "7c546594bf678ab1b599dd97fd083108"
+      ]
+    },
+    "lib/src/features/damages/api/damage_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "6b5a645690c5750fabb5912fcfd3d355"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "1b79d25cbe3c0d0b1abb3064cfd32ec2"
+      ]
+    },
+    "lib/src/features/damages/pages/damages_list_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "prefer-action-button-tooltip": [
+        "8474b7ebd09b27a76de7e80f78fe1b3f"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "91bfc35ba14bb4fb21360b15e01f73f3"
+      ],
+      "avoid-negated-conditions": [
+        "bcb66dbdf790542862c32e41709a0e66"
+      ],
+      "prefer-define-hero-tag": [
+        "8474b7ebd09b27a76de7e80f78fe1b3f"
+      ]
+    },
+    "lib/src/features/damages/pages/damages_show_page.dart": {
+      "member-ordering": [
+        "b9e75271fbdc49ea19393791947c7364"
+      ],
+      "parameters-ordering": [
+        "30c498c6471385448a5cf000bc2a9e33"
+      ],
+      "unnecessary-trailing-comma": [
+        "b682336f433270093c182e05b60a8da0",
+        "aeabf468bf13c09237c12b8f10b9a391",
+        "d9afe8c097327410ea873688eb4e1ef5"
+      ]
+    },
+    "lib/src/features/damages/pages/damages_edit_page.dart": {
+      "member-ordering": [
+        "12798f53d1b2355633fdec89ad9987a0"
+      ],
+      "parameters-ordering": [
+        "30c498c6471385448a5cf000bc2a9e33"
+      ],
+      "arguments-ordering": [
+        "98e0190fe6e0c4882ab3ea788ff20efd"
+      ],
+      "unnecessary-trailing-comma": [
+        "f5253dd9fb2a9e03d667bb035065f3f3",
+        "18cb59e6a42bce6a4ea903958492e1ad"
+      ]
+    },
+    "lib/src/features/damages/pages/damages_create_page.dart": {
+      "member-ordering": [
+        "52d519f684bedd7897504d811fb885f6"
+      ],
+      "unnecessary-trailing-comma": [
+        "0fa2485f2a43086c3eb0e1bef194c40c",
+        "c98e53e62c8a675869fc446e1fad6999"
+      ],
+      "arguments-ordering": [
+        "5a410656528d5742a7851551a06049ad"
+      ],
+      "avoid-unused-instances": [
+        "d6b72005b3e62e110fa388005cac6bc9"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_edit_widget.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "c771ca86f039c2757e843f910a087601",
+        "28be9fec83a3e9bd21320e01f0ca7938"
+      ],
+      "member-ordering": [
+        "d368d90f83a7465e3931e85dd6a34628"
+      ],
+      "prefer-action-button-tooltip": [
+        "cec4af69136c0db09674b241f4e0564f"
+      ],
+      "prefer-widget-private-members": [
+        "ae6d0c041807d52cb7ad953d5d2baca9",
+        "41fd29297c9985d2c72b53971c71eb75"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "parameters-ordering": [
+        "30c498c6471385448a5cf000bc2a9e33",
+        "6c780e2b8c40831e4714305ece0ac056",
+        "e2bb59dac71e96c3346f0639eac42682"
+      ],
+      "prefer-correct-handler-name": [
+        "ae6d0c041807d52cb7ad953d5d2baca9"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "83bb5a93271397bbb66f202d92265238",
+        "15ea75c981effb9c1d6d43cc235dc5d1"
+      ],
+      "avoid-negated-conditions": [
+        "5cd4030d4a785bc1dcc19379aaf443f1",
+        "5cd4030d4a785bc1dcc19379aaf443f1"
+      ],
+      "avoid-passing-default-values": [
+        "c38363caf9ca3eb3428b7ed9b108564b"
+      ],
+      "prefer-define-hero-tag": [
+        "cec4af69136c0db09674b241f4e0564f"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "unnecessary-trailing-comma": [
+        "5a18ac2ef2273c271072b3f72a687875",
+        "060a0e1d4089e977817ff436c21c8be7",
+        "ead0fe361653a3265241ed18e57504c3"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089",
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_create_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "5787b8d48c855e896370e9a4ecd10375",
+        "ead0fe361653a3265241ed18e57504c3"
+      ],
+      "prefer-action-button-tooltip": [
+        "890f3198ff6e4e7dbd6dab8086495fad"
+      ],
+      "prefer-widget-private-members": [
+        "0d11d9d29e081183e47504e22193ce66"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "c38363caf9ca3eb3428b7ed9b108564b"
+      ],
+      "prefer-define-hero-tag": [
+        "890f3198ff6e4e7dbd6dab8086495fad"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "39f797ed0d5bdb85fb9227f3d3710253"
+      ],
+      "prefer-moving-to-variable": [
+        "07f077698c0745d235a7fa9bd7f97670",
+        "07f077698c0745d235a7fa9bd7f97670"
+      ],
+      "prefer-correct-error-name": [
+        "56bd7107802ebe56c6918992f0608ec6"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_form_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "f1f26dc9b1a7c833d93e7d0ec7cc2fd9"
+      ],
+      "avoid-nullable-interpolation": [
+        "c7730471d350cbe8384630d8f6cd4f38"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_show_widget.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "c771ca86f039c2757e843f910a087601",
+        "e022f4d06b5bb7ff23c7ddb17c7f69e6"
+      ],
+      "member-ordering": [
+        "96cf3063e56cb0d9d0a7d8c948a9644d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "parameters-ordering": [
+        "811a323651432e6c412ef06c2faff444"
+      ],
+      "unnecessary-trailing-comma": [
+        "9ceec0ab704bc7d62095e7c40fe24dd3",
+        "1acc136c8dfc92aafe6c251f183fea59"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "fd785147b4a67d781ff37a9cbd8b2f29"
+      ],
+      "avoid-negated-conditions": [
+        "3413b207f6c8cdf694c20db6252a8749",
+        "e8175aebb36b02854bacef25e2c51a2e"
+      ],
+      "avoid-missing-image-alt": [
+        "362f52663782b72bae01729b65fe5265"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_select_widget.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "28be9fec83a3e9bd21320e01f0ca7938"
+      ],
+      "prefer-widget-private-members": [
+        "7745cb40e309c232eae04c46177d8b93"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-mutating-parameters": [
+        "436d027ec173e87cc0cd5fb702cb58c4",
+        "436d027ec173e87cc0cd5fb702cb58c4"
+      ],
+      "parameters-ordering": [
+        "31849bd9f103ce8a53a60949c70ffa52"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ]
+    },
+    "lib/src/features/damages/widgets/damage_tile_widget.dart": {
+      "member-ordering": [
+        "9df063efdb33ca151156f2677eaae170"
+      ],
+      "prefer-correct-callback-field-name": [
+        "572a12fc46e8c7f1bc718f733dc96414",
+        "12c7d9bac81a9e4bb75218a48d8d6a8b"
+      ],
+      "parameters-ordering": [
+        "4313f9da18e62710805ce547fda2d824"
+      ],
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "686327b572b7494bf7a4118602b8447f",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "b0f720fa4ec83d0919559b915f3fdad1",
+        "bf223e260113f26436de880ea9810a11",
+        "65bdb20b8054c8498623ea349da736c3",
+        "2885754456b105ec623c79f706a8c07e"
+      ]
+    },
+    "lib/src/features/posts/model/post.dart": {
+      "parameters-ordering": [
+        "d8b8683088957d3f34b720cc12417f2d"
+      ],
+      "map-keys-ordering": [
+        "da5160d484a68092f11f0f188dfa582c",
+        "3be8fc909da864d00b0fb543910bf67c"
+      ]
+    },
+    "lib/src/features/posts/model/comment.dart": {
+      "avoid-nullable-interpolation": [
+        "d42c0e46682ec1a404afae4d5cc380e1",
+        "e8b55f64846685a7d1b1cf2e6ec63ce4"
+      ]
+    },
+    "lib/src/features/posts/api/posts_provider.dart": {
+      "prefer-returning-conditional-expressions": [
+        "7f99a3aa4eba71c6fd0bac2b94504df1"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/posts/api/comments_service.dart": {
+      "avoid-async-call-in-sync-function": [
+        "5fa43509c2839d6f53aab6990aebe5d3",
+        "3816d45b3746682a395656c81da69a38"
+      ]
+    },
+    "lib/src/features/posts/api/comments_provider.dart": {
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/posts/api/post_service.dart": {
+      "avoid-async-call-in-sync-function": [
+        "3816d45b3746682a395656c81da69a38"
+      ],
+      "parameters-ordering": [
+        "359ce8aa56f277da15e0aef079d47336"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e974876d5723b4af11b2f7ffeaebe8ad"
+      ],
+      "avoid-nullable-interpolation": [
+        "2c21b7997eda2cbeb4fd120a6a2aa797",
+        "4244cd221707ddc64d71d4c45d06941c"
+      ]
+    },
+    "lib/src/features/posts/pages/posts_page.dart": {
+      "avoid-shadowing": [
+        "18389a4a9ad5795744699cff0ba66c15"
+      ],
+      "prefer-action-button-tooltip": [
+        "b0f9ea1a15c1c414a492b7f9b1ef30f9"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "43ddcd6d2df988b6f54f01c77a1abc8a"
+      ],
+      "prefer-correct-handler-name": [
+        "997b5e9b0afb107af88e6aebcc2d4d5c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "b199bac0b8c36fd2fcf49497754fd0db",
+        "1e38c6aa661ab0f911832cfeae232aa2"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "prefer-define-hero-tag": [
+        "b0f9ea1a15c1c414a492b7f9b1ef30f9"
+      ]
+    },
+    "lib/src/features/posts/pages/comments_page.dart": {
+      "unnecessary-trailing-comma": [
+        "ffb8a9d23be6e3314be8942a48ba17a9",
+        "6911e3fccb53cf630c2534f68e778a91"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "0f51ae09b2b3e5deccd546b31a088688",
+        "3fcb0e229e62b057d1fb3b580a8aa278"
+      ]
+    },
+    "lib/src/features/posts/pages/create_post_page.dart": {
+      "prefer-action-button-tooltip": [
+        "9141c9aa3f2136c52dc15b6800dab1e2"
+      ],
+      "prefer-widget-private-members": [
+        "ffe4560fc4ecf3c7be4a7d14611a92f1",
+        "d5d3db1765287eef77d7927cc956f50a",
+        "9a0364b9e99bb480dd25e1f0284c8555",
+        "da28c96360ff061ec9f4c3d037600944",
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ],
+      "avoid-explicit-type-declaration": [
+        "84e70ab518a8ac8c3b228bae00543396",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748"
+      ],
+      "unnecessary-trailing-comma": [
+        "3594d1945a71c33f10a79b785cca75ec"
+      ],
+      "prefer-correct-handler-name": [
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ],
+      "prefer-define-hero-tag": [
+        "9141c9aa3f2136c52dc15b6800dab1e2"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/posts/widgets/comment_bottom_bar.dart": {
+      "member-ordering": [
+        "da4b6d30d9f329bd95a1d674a7fbb0bb"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "4aeb7df7898ee1b7b48d29a882cad67e"
+      ],
+      "avoid-passing-default-values": [
+        "852d073421f24b3d13035c813fc5b711"
+      ]
+    },
+    "lib/src/features/posts/widgets/create_comment_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "ffb8a9d23be6e3314be8942a48ba17a9"
+      ],
+      "prefer-widget-private-members": [
+        "f4f26296821a974a7c2ba6a8b2b57d05",
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-correct-handler-name": [
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_bottom_action_bar.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "8ccdee12bfd71a59920b22314e30a86a"
+      ],
+      "unnecessary-trailing-comma": [
+        "ca9c42f58856248a91b1ae53bc9c6b58"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_statistics_bar.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "8ccdee12bfd71a59920b22314e30a86a"
+      ],
+      "unnecessary-trailing-comma": [
+        "ca9c42f58856248a91b1ae53bc9c6b58",
+        "8532ed0ac01fd2126369808378d185a7"
+      ],
+      "arguments-ordering": [
+        "9a6968cb04e270bc57f0d05d8a9acd5d"
+      ],
+      "avoid-unused-ignores": [
+        "4cd66e8e6d1def0cf4c52f11e64be86b"
+      ]
+    },
+    "lib/src/features/posts/widgets/comment_widget.dart": {
+      "member-ordering": [
+        "5b1ac69d7e1f840cd915b08b0f5c7cac"
+      ],
+      "prefer-widget-private-members": [
+        "7f299d73873de8360529af8c4bd0a876"
+      ],
+      "prefer-explicit-function-type": [
+        "86408593c34af77fdd90df932f8b5261"
+      ],
+      "avoid-unused-instances": [
+        "d6b72005b3e62e110fa388005cac6bc9"
+      ],
+      "avoid-unnecessary-call": [
+        "53b9e9679a8ea25880376080b76f98ad",
+        "53b9e9679a8ea25880376080b76f98ad"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "c506ff134babdd6e68ab3e6350e95305"
+      ],
+      "arguments-ordering": [
+        "eb5f57b63b30c353743cc514996d9c77"
+      ],
+      "prefer-correct-handler-name": [
+        "7f299d73873de8360529af8c4bd0a876",
+        "7f299d73873de8360529af8c4bd0a876"
+      ],
+      "avoid-passing-default-values": [
+        "852d073421f24b3d13035c813fc5b711"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_header_bar.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "member-ordering": [
+        "6031369f64ff109e16b711ccf176edf8"
+      ],
+      "avoid-similar-names": [
+        "c270794483257d7f66b064d7f87be329"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-local-functions": [
+        "468c007fcdfce0cf1181f84bd406ecfb"
+      ],
+      "unnecessary-trailing-comma": [
+        "a918b41d93ea7ffbc03962ccdcb6789e",
+        "837e445753be39d638cd0634e7ac804c"
+      ],
+      "prefer-correct-handler-name": [
+        "8a8730509d25032cb9246b2b1c702ae2",
+        "f08297949346b8400df9f5fad1f6f85e"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "70a7937a14d951d482546796e82d430d"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_list.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ]
+    },
+    "lib/src/features/posts/widgets/comment_card.dart": {
+      "member-ordering": [
+        "b51b22dd7eaa6c1dd77cf05ffe09f314"
+      ],
+      "parameters-ordering": [
+        "144ecad908d8549b1dca3962a8e952da"
+      ],
+      "prefer-moving-to-variable": [
+        "58f9f295f47b3725a6a4083f31bf85ec"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "066e20a51cdb2231a8479d06fbdbe1ef",
+        "eb5f57b63b30c353743cc514996d9c77"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "prefer-correct-handler-name": [
+        "d3b8c56727a49600e803394be3cc8c84"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "25622513662be302701b8cd5c9acd0aa"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_card.dart": {
+      "parameters-ordering": [
+        "d3175d85c5979830c6d47e15cdbac45a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "b5fb7af2604d6937ff53474e57afc7eb",
+        "2c2f0e31e79e56d6ec89ba1381df6767"
+      ]
+    },
+    "lib/src/features/posts/widgets/amount_of_likes_for_comment_widget.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "8ccdee12bfd71a59920b22314e30a86a"
+      ],
+      "member-ordering": [
+        "2743ea58b3d713169cd66f985166fbc8"
+      ],
+      "parameters-ordering": [
+        "7be92164bbbc077b1daa0b9cdba30d19"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/posts/widgets/author_widget.dart": {
+      "member-ordering": [
+        "4f1449ca9fa78126fcd2618663a2183b"
+      ],
+      "parameters-ordering": [
+        "a4a2bce21484c6712c95509cb595b2e4"
+      ],
+      "arguments-ordering": [
+        "beb8ce634aca1ee039e2a65bb0ee4ee4"
+      ],
+      "unnecessary-trailing-comma": [
+        "d9cc83da3a91bf1fa1aefe678bd7a08c"
+      ],
+      "avoid-negated-conditions": [
+        "1fcb74b46213c09a915bee75aba88135"
+      ]
+    },
+    "lib/src/features/posts/widgets/post_widget.dart": {
+      "parameters-ordering": [
+        "752bb5cdeb46e4437318a564b8ca2f3c"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "map-keys-ordering": [
+        "03bd1a741e9a087c61ebc4699ee57f1f",
+        "cd3312c0b5c483497378a87c840d409e",
+        "f2b3feacb5a6716401a0cf547ec7cf0c"
+      ],
+      "prefer-correct-handler-name": [
+        "d3b8c56727a49600e803394be3cc8c84"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "25622513662be302701b8cd5c9acd0aa"
+      ],
+      "unnecessary-trailing-comma": [
+        "b09fe6b60ca47b45834ac3612c055bcd",
+        "a918b41d93ea7ffbc03962ccdcb6789e"
+      ],
+      "avoid-unused-ignores": [
+        "07ec1adfcd124a66a03b32c2ad0d8ef0"
+      ]
+    },
+    "lib/src/features/posts/widgets/clickable_profile_picture_widget.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "parameters-ordering": [
+        "ec3a1ffceffcaf51010f002606fc4c08"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "b79b4dd2aa671193538102b3576d5ba1"
+      ]
+    },
+    "lib/src/features/training/model/reservation.dart": {
+      "avoid-explicit-type-declaration": [
+        "a3d5de3eac8bb00ae86fd1a1005f1500"
+      ],
+      "parameters-ordering": [
+        "c4b8442a7f9fe263810fa6bff313e948"
+      ]
+    },
+    "lib/src/features/training/model/reservation_object.dart": {
+      "parameters-ordering": [
+        "d13b14503742633c972ba734ebb4d772"
+      ],
+      "map-keys-ordering": [
+        "92fe114dfc18197f92c8de916049c4e1",
+        "a0c4dfe2c708275008a4ff44aa39393d",
+        "c7fc33794a08ee5a49f1a21cb3d0eb80"
+      ]
+    },
+    "lib/src/features/training/api/reservation_object_type_filters_notifier.dart": {
+      "arguments-ordering": [
+        "e948bc357b978684f5e8c5942f108b4a"
+      ],
+      "avoid-collection-mutating-methods": [
+        "34ec78fcc91ffb1e54cd85e4a0924332"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "9fa4df248082457c5c4e563d3b1caefb"
+      ]
+    },
+    "lib/src/features/training/api/my_reservations_provider.dart": {
+      "avoid-explicit-type-declaration": [
+        "cebc960ee9d6d57480b196e82302ab66"
+      ],
+      "unnecessary-trailing-comma": [
+        "abb7e1e38c28a72916ab1a17e89206cb"
+      ]
+    },
+    "lib/src/features/training/pages/show_training_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "member-ordering": [
+        "570ae7173ee2d1dc610d4b904e9430d5"
+      ],
+      "prefer-widget-private-members": [
+        "619f3f581bca96e79789957623172963"
+      ],
+      "avoid-similar-names": [
+        "ebb9eae58616905763342f59d2eb1471"
+      ],
+      "unnecessary-trailing-comma": [
+        "1bf535696e3126f6f9b463f028c45099",
+        "339399943bf333155d594ef9296df239"
+      ],
+      "arguments-ordering": [
+        "1b8d820c0e19fd46eb22de1262d6a8fb"
+      ],
+      "prefer-correct-handler-name": [
+        "619f3f581bca96e79789957623172963"
+      ],
+      "prefer-define-hero-tag": [
+        "9e1ce8604ae4deb9a2cb77a5a45520e8"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "daa51c4995f7b5d8aca77a2f6e34ff9a",
+        "0aa842dc54049e4fbdf4e5ca2819d74e"
+      ],
+      "avoid-redundant-async": [
+        "0df93e34273b367bb63bad28c94c78d5"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "3f63415e4669117ff49f73960a4719d0"
+      ]
+    },
+    "lib/src/features/training/pages/show_filters_page.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "f0663f8579ed590509d493d6b0b0eadd"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "44b685b73cb34cb1d64323614757b71c",
+        "cd8f6e8fb04a23d51a0d22784262ca88"
+      ],
+      "avoid-explicit-type-declaration": [
+        "d1f81f15666dfc3018716bb3021f9368",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "map-keys-ordering": [
+        "dbfcab6e27e585ce876864e47879ea95"
+      ]
+    },
+    "lib/src/features/training/pages/all_training_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "ae1905e236aeb0d9e6fbc9123d7d86de"
+      ],
+      "prefer-define-hero-tag": [
+        "4252c02c639b4fbdff882a926e4af358"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "3b49795a73614e7060dbe124f4c7a32e"
+      ],
+      "unnecessary-trailing-comma": [
+        "f04a01a7605d3aa2b992354ba632f8af"
+      ]
+    },
+    "lib/src/features/training/pages/show_reservation_object_page.dart": {
+      "member-ordering": [
+        "fd3487816a0562184d1ef75c378ac398"
+      ],
+      "prefer-action-button-tooltip": [
+        "9d2e40f98908259819f582cee8acb35c"
+      ],
+      "prefer-widget-private-members": [
+        "b31f3e91ea82f1da43ace61a5e014099"
+      ],
+      "parameters-ordering": [
+        "cc0babeaee7a977bd315d806c703856f",
+        "507583a2c7ee0e4479802f17ad77f5ee"
+      ],
+      "unnecessary-trailing-comma": [
+        "1a35c3b7aa7d12815bf0b5dbc663f3bc",
+        "7e9b1272b069cd03bda04f7879cac15b",
+        "15f24340dbe509b526a8fc0c7629c72d"
+      ],
+      "prefer-correct-handler-name": [
+        "b31f3e91ea82f1da43ace61a5e014099"
+      ],
+      "prefer-define-hero-tag": [
+        "9d2e40f98908259819f582cee8acb35c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "fb961f8b0fadf2f8cdf820e6fc937771",
+        "8a30a72c690dd88dd25875007f5c8d8c",
+        "3bdfff1d96f4ac8a8336f0ea0047d410"
+      ],
+      "avoid-long-functions": [
+        "b81f2d226096072c5d3c1657322a606e"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "map-keys-ordering": [
+        "4f7ce438a20a0a4974d53439a581e96d",
+        "de03ee0d61648074903012e01dc19a5e"
+      ]
+    },
+    "lib/src/features/training/pages/training_page.dart": {
+      "prefer-action-button-tooltip": [
+        "85d364ff468f2dfc85c111292878108c",
+        "1c12a04241bd4a76508cf61e04ff0f2c"
+      ],
+      "prefer-widget-private-members": [
+        "8a7754f56a8ec7d8d0d0a03021143726",
+        "4881c67fd8e933fe23ed293deadae326"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "9bab96e66315e480b4e548d7fd941e75"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ]
+    },
+    "lib/src/features/training/pages/plan_training_page.dart": {
+      "member-ordering": [
+        "04e468169b0d3f6f75cde13c6bc69039"
+      ],
+      "parameters-ordering": [
+        "1bec2fa9c840fdb6e98dbe91b0a1aaf8",
+        "6f3c1c96e9bcf98d16fc53c0c34dc468",
+        "1c3c3c17d7770c667663cda70c883b25",
+        "9999ce915580d932d8aaabcfbb0f1751"
+      ],
+      "unnecessary-trailing-comma": [
+        "634b17c3c056ec9d68b29707e54ff08b",
+        "1d6cf08f1dfa172fa66fe00d43d3702c",
+        "f5253dd9fb2a9e03d667bb035065f3f3",
+        "910232afc302589022e2435454ab4834",
+        "3e1f639dccef1a5e58e0fe6957b27f3b",
+        "072130daee28d511ca876069a128ba2e"
+      ],
+      "prefer-widget-private-members": [
+        "292db71ff1a82008b52bc6f74bd0419e",
+        "3eea77d511aff9becb7cd3adaa79c9d3",
+        "b2e4b54ef6f412136f3689293388ad48",
+        "b56288c83d41ca0b02ccbfe74563cdaa",
+        "67aa8270efec9e3ac732faf4523bab23"
+      ],
+      "arguments-ordering": [
+        "46236343db8fabef28370d72186dd2c6"
+      ],
+      "avoid-long-functions": [
+        "9860d82df2324d9761eddfb5a62d1d38"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-passing-default-values": [
+        "cb1e1173242722aec2ae58a438de581e"
+      ],
+      "prefer-trailing-comma": [
+        "14bb96a7d208f232d8a52730f80fc681"
+      ],
+      "prefer-correct-handler-name": [
+        "b56288c83d41ca0b02ccbfe74563cdaa"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "map-keys-ordering": [
+        "2a69be854c2f53364138e858875438f9",
+        "733a7f8c243bee052cc801401eb6b12d",
+        "9e75ccc2ffd3e699fe49393ff0653c48"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/training/widgets/availability_header.dart": {
+      "parameters-ordering": [
+        "e9ceaefa0c40b7dd3d79148d4d975051"
+      ],
+      "unnecessary-trailing-comma": [
+        "1fe80dc4d38338e4f7f0c01670fec4d0"
+      ],
+      "avoid-single-child-column-or-row": [
+        "a70367aa7cb74e510f4f9413ccf059d3"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/filters/model/boat_types.dart": {
+      "avoid-explicit-type-declaration": [
+        "959031b2d6a9aa953d3915463f23dcd2"
+      ],
+      "prefer-prefixed-global-constants": [
+        "01cdf273c1726ffec639b35630f13c91"
+      ],
+      "map-keys-ordering": [
+        "aab05e485a2d39f00e60c3d22e7147d7"
+      ],
+      "unnecessary-trailing-comma": [
+        "77691254fcd1017516e4e9e8b179cbf8",
+        "490f5570554ca550bacce1c9502178ab",
+        "92d40a92fd785dfa38626fcfc695cf32",
+        "ee8042f8a8088fde0ff59d3b97813d7c",
+        "dbb476cfbd0f25d748ff1b01131079a8",
+        "eb74955a47363a427edc5d5a63e6d0d1"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/filters/api/reservation_objects.dart": {
+      "avoid-similar-names": [
+        "d269dc55baa3c85a284ce77509f0b295",
+        "bdeaef386fda36c46c66ee0653ad56c4"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87",
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/calendar_time.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "e03d080b1039de826cca25131a7568d4"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "ae1905e236aeb0d9e6fbc9123d7d86de",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "cb5feb1b7314637725a2e73bdc9f7295",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "cfcd208495d565ef66e7dff9f98764da",
+        "ba325a2bceb0b6aa5824626aaf6e05a0",
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ],
+      "arguments-ordering": [
+        "8fd847d0825e22042e25853f41acf92a"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/calendar_overview.dart": {
+      "member-ordering": [
+        "1d86ce3bdd57bdc37f6c41d5ff04728f"
+      ],
+      "parameters-ordering": [
+        "d5442b5b22b0999c2642b1a28993bb7c"
+      ],
+      "unnecessary-trailing-comma": [
+        "c4fe7d1e981f8f7693fb7f0f9daeeae4",
+        "8ea0e901a4fc9b026920261df7b3a8d4",
+        "6e2bf632d4cdae243f75eadbb5528e4f"
+      ],
+      "dispose-fields": [
+        "c52eeb5438f276975414ed0ca8e3df9c"
+      ],
+      "prefer-widget-private-members": [
+        "2d0b4e69cd368586f0f6c92e504985f2",
+        "afad5f3ca4d04c423c098cc0b42e573d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "8a9d94a502474b3f7e2cb785e4ce5439",
+        "8a9d94a502474b3f7e2cb785e4ce5439",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "proper-super-calls": [
+        "cc2563519e56b89837b76f1e49606f16"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/calendar_measurement.dart": {
+      "avoid-shadowing": [
+        "74f9a274618c8313e5f30752bf908294"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-getter-over-method": [
+        "15396a35ebb6951235f63054289cacd7"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/api/reservations_for_object_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "3381fb0727fb69451feac2a58cb1b202"
+      ],
+      "avoid-passing-default-values": [
+        "36b8e1133a9d046fbd840f67896716b7",
+        "36b8e1133a9d046fbd840f67896716b7",
+        "36b8e1133a9d046fbd840f67896716b7",
+        "36b8e1133a9d046fbd840f67896716b7"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/chip_widget.dart": {
+      "parameters-ordering": [
+        "8cf4ffc032d8c284d1b8a55f4a3b17f8"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "22ee156fe4d129598c4ec5317bf9fcaf"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/reservation_object_name_box.dart": {
+      "unnecessary-trailing-comma": [
+        "282e4664be9b21acc7fe78f6028b3d98"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-local-functions": [
+        "aebd9d66d3d6743d688fd905cd90ebb4"
+      ],
+      "avoid-collapsible-if": [
+        "1fb450ac86eab51a9198d0e4076f0772"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "2a056fa4bcafb6eaeb74431a43cb2751"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart": {
+      "parameters-ordering": [
+        "c227a40d709e00f36c5ccb7cbe975d84"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "4a76688721022d3a680b4bf155ab68bd"
+      ],
+      "avoid-passing-default-values": [
+        "317a04fd1b1bace912110a1dd4187d9b",
+        "852d073421f24b3d13035c813fc5b711"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/time_scrollview.dart": {
+      "unnecessary-trailing-comma": [
+        "6ce5602beddd848bb08ed37643accce6"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "317a04fd1b1bace912110a1dd4187d9b"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/calendar_background.dart": {
+      "prefer-widget-private-members": [
+        "386b7a9629168410994c9e76b5d29885"
+      ],
+      "parameters-ordering": [
+        "f9af8d190955901cbf5018c8f8f594f4"
+      ],
+      "unnecessary-trailing-comma": [
+        "ba75e21aea2b45c4193517222e25aa7e"
+      ],
+      "avoid-similar-names": [
+        "180e88078cfc4ab0986f097ad26e9cf7"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "cb5feb1b7314637725a2e73bdc9f7295",
+        "cb5feb1b7314637725a2e73bdc9f7295",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-addition-subtraction-assignments": [
+        "6aafff7f15e886f10787dba66e3d30f1"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/widgets/calendar_reservation.dart": {
+      "member-ordering": [
+        "ee6b9d34d58b530baea192c3c4e2c6ce"
+      ],
+      "parameters-ordering": [
+        "a599bb14fb50be459d9731fbbfa58872"
+      ],
+      "avoid-explicit-type-declaration": [
+        "8cf10d2341ed01492506085688270c1e",
+        "e02d2ae03de9d493df2b6b2d2813d302",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "36b8e1133a9d046fbd840f67896716b7",
+        "36b8e1133a9d046fbd840f67896716b7"
+      ],
+      "unnecessary-trailing-comma": [
+        "36b8e1133a9d046fbd840f67896716b7"
+      ]
+    },
+    "lib/src/features/training/widgets/calendar/object_calendar.dart": {
+      "member-ordering": [
+        "551af09b5dde66a38414152cfbbe8135"
+      ],
+      "parameters-ordering": [
+        "4163243ec4348bc873d284d94e3096b7"
+      ],
+      "unnecessary-trailing-comma": [
+        "638f1aa70d2ba60b587a03789efe062d"
+      ],
+      "avoid-shadowing": [
+        "6208da147b2e01d2daf532f07477c08b"
+      ],
+      "prefer-widget-private-members": [
+        "c33ba5354267c31f5c4c7722ee7f0739",
+        "637c1520d1c5f6c6d9b868df33a89578",
+        "da05b40091ba04667abd2400f897e7f0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "25f31823962a1d019d6d596dd9007877",
+        "25f31823962a1d019d6d596dd9007877"
+      ],
+      "avoid-collapsible-if": [
+        "81c4e3af4002170ab76fe2e53488b6a4"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "cfcd208495d565ef66e7dff9f98764da",
+        "36b8e1133a9d046fbd840f67896716b7"
+      ],
+      "arguments-ordering": [
+        "b423d47947d2fdfa59a47eb2fa3ce9d2"
+      ],
+      "prefer-addition-subtraction-assignments": [
+        "6aafff7f15e886f10787dba66e3d30f1"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/training/widgets/reservation_list_tile.dart": {
+      "avoid-shadowing": [
+        "c322d3de29d2b0c5e2e011dad5e77df2",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "member-ordering": [
+        "e7b10c30f6880588447935eca98978b3"
+      ],
+      "prefer-widget-private-members": [
+        "9cd33cfccfe6e72d5ef6f45d6f290602"
+      ],
+      "unnecessary-trailing-comma": [
+        "ca9c42f58856248a91b1ae53bc9c6b58",
+        "410078b970ae05fd8361cfc8031913ea",
+        "802518026e6eaddf37c48ebaada97c53",
+        "af40dfbecced53a06e6512aeb3eb72c0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "4cc0d7e0d07d4f5658eafc15da3b7db9",
+        "e0364da530c70e5b91e1afe4e2dfc980",
+        "b33ebb12982beac80ba9c6a09246c009"
+      ],
+      "prefer-correct-handler-name": [
+        "9cd33cfccfe6e72d5ef6f45d6f290602"
+      ],
+      "avoid-passing-default-values": [
+        "fd60e9353c3e4ddba2c24c3bda725ef2"
+      ],
+      "avoid-redundant-async": [
+        "0df93e34273b367bb63bad28c94c78d5"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "3f63415e4669117ff49f73960a4719d0"
+      ]
+    },
+    "lib/src/features/training/widgets/training_list.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "3f3775f5f86d98b60ef4e69ec899d499"
+      ],
+      "unnecessary-trailing-comma": [
+        "3d66676623984db28447d16995ba4ee8"
+      ],
+      "arguments-ordering": [
+        "6079f6821f7157a81997d1cbcfee1f72"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "51f3b7375c8a8c841bc292985b131624"
+      ],
+      "avoid-unused-ignores": [
+        "4cd66e8e6d1def0cf4c52f11e64be86b"
+      ]
+    },
+    "lib/src/features/gallery/utils/get_thumbnail_reference.dart": {
+      "unnecessary-trailing-comma": [
+        "de99e3884c561c7a33485681eb14237f"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "98bd1c45684cf587ac2347a92dd7bb51",
+        "98bd1c45684cf587ac2347a92dd7bb51",
+        "98bd1c45684cf587ac2347a92dd7bb51"
+      ]
+    },
+    "lib/src/features/gallery/pages/gallery_folder_page.dart": {
+      "member-ordering": [
+        "c408941a983b3f288c58e430b5349ec1"
+      ],
+      "unnecessary-trailing-comma": [
+        "e993ac57cd3899a6129f357cd3cb28af",
+        "2389bd09f74bcfb45bbe168952ee2037"
+      ]
+    },
+    "lib/src/features/gallery/pages/gallery_main_page.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "prefer-widget-private-members": [
+        "00eb056c22e487df87812b65e56b2a68"
+      ],
+      "prefer-correct-handler-name": [
+        "00eb056c22e487df87812b65e56b2a68"
+      ],
+      "avoid-negated-conditions": [
+        "3571ce55941f73524ecb10f286751030"
+      ]
+    },
+    "lib/src/features/gallery/pages/gallery_file_page.dart": {
+      "member-ordering": [
+        "23c6901d18b406d6de6deb2b23a36ebe"
+      ],
+      "unnecessary-trailing-comma": [
+        "e993ac57cd3899a6129f357cd3cb28af"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "c51fa425922aa3100c8a4ea319ebacc6",
+        "f12c0e110ffdfe5fd1ecedf07ec9084a"
+      ],
+      "prefer-correct-handler-name": [
+        "a841e865c5a9494764ab9bacf112c122"
+      ],
+      "avoid-missing-image-alt": [
+        "713397d43cb66f17225c3c9e593c5e99"
+      ]
+    },
+    "lib/src/features/gallery/widgets/folder_list.dart": {
+      "member-ordering": [
+        "f6016cd7b8083ccfec60fb38bf61fc99"
+      ],
+      "unnecessary-trailing-comma": [
+        "3d1dc3f71b31ceced377a4412893a385",
+        "3d52a97ae81bdb3cace60ebca4ea7202"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/gallery/widgets/file_button.dart": {
+      "member-ordering": [
+        "0e331b0afc89c3f48ebacfbba6f21883"
+      ],
+      "parameters-ordering": [
+        "369c18bb61d300e1921f76d66356252a"
+      ],
+      "unnecessary-trailing-comma": [
+        "b3f9e529bbb0bb534363a79c34dd63bc"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "b0b48bcdcd3f4dbf7083adea472a77cb",
+        "33389196b567ba104065e46432e0f5de"
+      ],
+      "avoid-missing-image-alt": [
+        "f94f3c72a52580ac40784f011ac9a3b5"
+      ]
+    },
+    "lib/src/features/gallery/widgets/folder_button.dart": {
+      "member-ordering": [
+        "b5287624905e1afe6625d586663065ff"
+      ],
+      "parameters-ordering": [
+        "369c18bb61d300e1921f76d66356252a"
+      ],
+      "unnecessary-trailing-comma": [
+        "b3f9e529bbb0bb534363a79c34dd63bc"
+      ],
+      "arguments-ordering": [
+        "518334d45e8ac82abe141fb56ec32cc4"
+      ],
+      "avoid-passing-default-values": [
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "18d8691de357c6245c8196a526238bb4"
+      ]
+    },
+    "lib/src/features/admin/groups/groups_provider.dart": {
+      "map-keys-ordering": [
+        "7fd0a6b80e2439b248f5e367f8da3ae2"
+      ]
+    },
+    "lib/src/features/admin/groups/models/django_group.dart": {
+      "prefer-declaring-const-constructor": [
+        "592182e26968636662a8158da36f21b5"
+      ],
+      "unnecessary-trailing-comma": [
+        "245ca712c9ea9ebfd7b67519ab5232f8",
+        "b3f6e71825104a2c459b35b10c848e9d"
+      ],
+      "parameters-ordering": [
+        "8b2290c27e4aa6b8da5ba44083597ac4",
+        "206c2d1f7e4f9c9d02f32202105d71a8"
+      ],
+      "avoid-unnecessary-nullable-return-type": [
+        "cebc960ee9d6d57480b196e82302ab66"
+      ]
+    },
+    "lib/src/features/admin/groups/models/group_types.dart": {
+      "prefer-prefixed-global-constants": [
+        "1b5b4c1f1415d2cf641635a09cb5d2a9"
+      ]
+    },
+    "lib/src/features/admin/groups/manage_groups_page.dart": {
+      "avoid-shadowing": [
+        "84cdc76cabf41bd7c961f6ab12f117d8",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "84cdc76cabf41bd7c961f6ab12f117d8",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "prefer-action-button-tooltip": [
+        "0445ff34c7cb7daeb53b14a33d693b5f"
+      ],
+      "prefer-widget-private-members": [
+        "13187c1fd48ae9b9ec60a78dfe5760ce"
+      ],
+      "parameters-ordering": [
+        "b54c640dd3c39f147827572268bbb89d",
+        "f768c29d0ca363b7587895e33630d0f9"
+      ],
+      "unnecessary-trailing-comma": [
+        "a52b54f756d6a92fdfbc90b03b51ce93",
+        "8cfab8cb67eea9e4dfd726a3d1828527",
+        "1ec30bbd52d15e565e33861e5ac5c05d",
+        "5f931e729cc514a288f02e0e1be27671",
+        "adb6f05942c12b683de2586c8d838651",
+        "4b133a4d78f6af9fef702614de5273ab",
+        "8e6dd913eff439900b03dbede12bcb51",
+        "e5b7975f4a2f5f0c5aa3302e29d45c40",
+        "4721654986d575f9cf8dbe00eb432af1"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-long-functions": [
+        "1ce4498afe7021e5bb1aa015de6862cb",
+        "b731a9aacd68a78f74537f63ba35f913"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "f51a22c8000ce89996ba1541b2e7d43f",
+        "4c7abfe596edeb0cfb326c30eac694c3"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "prefer-moving-to-variable": [
+        "746db8154745aa87b02f085411792be6",
+        "09b3a598bc49599a1e034f9fcdc63253"
+      ],
+      "map-keys-ordering": [
+        "c538af39067630a8eb9ee456bbf3ca16",
+        "bcd301e2a4c5fbafa2760d7ca6277705"
+      ],
+      "prefer-type-over-var": [
+        "b2145aac704ce76dbe1ac7adac535b23"
+      ],
+      "prefer-define-hero-tag": [
+        "0445ff34c7cb7daeb53b14a33d693b5f"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/admin/groups/edit_group_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "member-ordering": [
+        "7e65286d5bc037aa739856542a289385"
+      ],
+      "prefer-action-button-tooltip": [
+        "7fd2e7c16e92f083b7c651d35a453a1c"
+      ],
+      "prefer-widget-private-members": [
+        "628b17c82dc8bba33c3d441800109e4d",
+        "6ef7d260b0ab237e06bd4a8c5d76e66b",
+        "e4f6e91758f008549780a0764cd15681"
+      ],
+      "parameters-ordering": [
+        "46b25971c67198831b6f095d450fca00",
+        "85edb247a15a5230eb58f2b2f9aec9b6",
+        "76e84d6fc3ddfe3fb9a26f7830115d42",
+        "400ab66415af2d934d02f13412b3764c"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "unnecessary-trailing-comma": [
+        "7a2e722eb0c45d2c02c943d5fec4d781",
+        "d8f89af64893251029bb7ec3049c5f65"
+      ],
+      "map-keys-ordering": [
+        "8382bd9ee86fce815be1623d152b0614"
+      ],
+      "avoid-similar-names": [
+        "48a264a6a4feb37b587d108961dc041d",
+        "48a264a6a4feb37b587d108961dc041d"
+      ],
+      "arguments-ordering": [
+        "cd80137c86a48ab7a9dad049b5d0fa72",
+        "268612e9fc8efc2022c34014b5dab022"
+      ],
+      "avoid-long-functions": [
+        "e391ee7db973154a8881af061c86f8c4"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "4edd2d5e63f9feedeb14b969185cd65d",
+        "4edd2d5e63f9feedeb14b969185cd65d"
+      ],
+      "prefer-correct-handler-name": [
+        "628b17c82dc8bba33c3d441800109e4d"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "72eaf420d0fb0415d252daca31420310",
+        "810f56170b3e833b30b620fddb14fdcb"
+      ],
+      "prefer-define-hero-tag": [
+        "7fd2e7c16e92f083b7c651d35a453a1c"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089",
+        "5d1ddb1fbc851e185045c97c57e03089",
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/admin/groups/widgets/role_dialog.dart": {
+      "parameters-ordering": [
+        "54438e7d025c66d378aabb1fb486cb35"
+      ],
+      "unnecessary-trailing-comma": [
+        "b88e511d8fcdc1668a8b8487852ded21",
+        "437c848d31875f07b37161b021ff0529",
+        "754ba00a1a2d98dcc25ddee801cc63e7"
+      ],
+      "dispose-fields": [
+        "55d384b7a56900b873503375d4825e79"
+      ],
+      "prefer-widget-private-members": [
+        "dffe839f5c4a46ec9605be8e573fa51e",
+        "dfeeb6080bc2acc228b89f2668f87494"
+      ],
+      "prefer-correct-handler-name": [
+        "075363380323b4799196ff5108cc951d",
+        "075363380323b4799196ff5108cc951d",
+        "075363380323b4799196ff5108cc951d"
+      ],
+      "avoid-passing-default-values": [
+        "0d5e3214e11892bd1a2049da05c77b75"
+      ]
+    },
+    "lib/src/features/admin/push_notifications/create_push_notification_page.dart": {
+      "prefer-action-button-tooltip": [
+        "0f3de5b95fd76fce5f28ca1d95a4168f"
+      ],
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "b04dd0b7f45773e416744f56c0c007b3",
+        "d8041be386e331a539cbfd827d210f24"
+      ],
+      "map-keys-ordering": [
+        "fb2e03bf064143361da0d454edd15f92",
+        "1da458de9bec193c2a6e9dae48cad3b6"
+      ],
+      "unnecessary-trailing-comma": [
+        "7b41a23073becc0a2d908dc368483ec1"
+      ],
+      "prefer-correct-handler-name": [
+        "075363380323b4799196ff5108cc951d",
+        "075363380323b4799196ff5108cc951d",
+        "5d02307db21e79c4b8da8036d2f23b24"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "bbef19786c08a56d47025fc80a748f53",
+        "bbef19786c08a56d47025fc80a748f53"
+      ],
+      "prefer-define-hero-tag": [
+        "0f3de5b95fd76fce5f28ca1d95a4168f"
+      ]
+    },
+    "lib/src/features/admin/vaarverbod/manage_vaarverbod_page.dart": {
+      "unnecessary-trailing-comma": [
+        "5fd474cbef2f742f960b622e650888bb"
+      ]
+    },
+    "lib/src/features/admin/vaarverbod/vaarverbod_form_widget.dart": {
+      "parameters-ordering": [
+        "2c9bae5f35d70e03b01e7d1275c1ed32"
+      ],
+      "prefer-widget-private-members": [
+        "9acb44549b41563697bb490144ec6258",
+        "78e731027d8fd50ed642340b7c9a63b3"
+      ],
+      "map-keys-ordering": [
+        "723442aa7935c54b73784d21f8af0e2d"
+      ],
+      "unnecessary-trailing-comma": [
+        "b03ba67fefe7f2d1d3c9fc2ac6097d67"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "prefer-correct-handler-name": [
+        "075363380323b4799196ff5108cc951d",
+        "075363380323b4799196ff5108cc951d"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "bbef19786c08a56d47025fc80a748f53"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "9679ff6ec8bdce704e64a3cdeb69bba9"
+      ]
+    },
+    "lib/src/features/admin/events/create_event_bottom_sheet.dart": {
+      "dispose-fields": [
+        "1c093bb0ffd1ab9664c080644615d25d",
+        "57b6448965fbe8fd718863bdf893a6a6",
+        "400a8c6734dc69ab49a546b6408902b9",
+        "fdc62b0f9b4cecc35b36004f3b59bd1f",
+        "60a041ae3e0260136f42771344c3c65c"
+      ],
+      "prefer-widget-private-members": [
+        "b5895b44f966ada96873a32298c5ec33",
+        "bfcea4347645151eb83dfd180acf2ec4",
+        "de49d8f2c31f3ce46bd7438de5e22519",
+        "ae36181ac167e4eebfa6f03d295ea773",
+        "ae3b78a09f535fa541fb96eaf6b6d271",
+        "91277c0c27d21e58610d346ca68415e4"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "c6d4822ffcbf5d0983c270f31b1d7427"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ]
+    },
+    "lib/src/features/admin/events/manage_events_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "prefer-action-button-tooltip": [
+        "a475010bd5fcb348b8c965449f67b8f5"
+      ],
+      "unnecessary-trailing-comma": [
+        "bd94dc9a0a4f3bc4fdece6dd052aef99",
+        "a699b75c875df0a65967f7d77a5fd197",
+        "3ac50d0ae498430c6c534d1c471b080b",
+        "385edb01db715c822661b117247c000c"
+      ],
+      "arguments-ordering": [
+        "c9ddecb1b44e9f37fd832499c68eb85c"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "d2283e39f2d0f9a435397bd99fe60f05"
+      ],
+      "avoid-explicit-type-declaration": [
+        "a4ecfc70574394990cf17bd83df499f7"
+      ],
+      "prefer-define-hero-tag": [
+        "a475010bd5fcb348b8c965449f67b8f5"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-unused-ignores": [
+        "edaa26a2b64b024f956f6fd7786c13c2",
+        "a29f62500964bc676abf570ba8804430"
+      ]
+    },
+    "lib/src/features/admin/pages/admin_page.dart": {
+      "avoid-similar-names": [
+        "d898cbc8648feaab0daf7cbb0972e7c9"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/polls/model/poll.dart": {
+      "parameters-ordering": [
+        "a02ebdacc093a009000d4fd1b90bee8b"
+      ],
+      "map-keys-ordering": [
+        "06493865dafd81bd0d7ce693fd166100",
+        "6fd6f1b67dc1b8fb61dc2b21c892f22b",
+        "809aa422b2e548071a9c768fc6c31c36"
+      ]
+    },
+    "lib/src/features/polls/model/poll_answer.dart": {
+      "parameters-ordering": [
+        "f75a1f340f11d4913431b9110fc708b1"
+      ],
+      "avoid-negated-conditions": [
+        "d634d7338363a8e2c5f7cae69782d1a1"
+      ],
+      "map-keys-ordering": [
+        "ff9a1805b8ef51ca5b94a18811095963"
+      ]
+    },
+    "lib/src/features/polls/api/polls_provider.dart": {
+      "avoid-explicit-type-declaration": [
+        "b9e46eead2e111c32dcdc54cfc5a8856"
+      ],
+      "avoid-negated-conditions": [
+        "e3dc087b78a5789009296da5211be643",
+        "e3dc087b78a5789009296da5211be643"
+      ],
+      "unnecessary-trailing-comma": [
+        "a1ca024836974dc46a8b9d0a92161f95"
+      ]
+    },
+    "lib/src/features/polls/api/poll_answer_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "efe1811fe560ab6e2ed8dd82c6e6cd68"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "890c522aa145e843a6fbab3015597d96"
+      ]
+    },
+    "lib/src/features/polls/api/upsert_poll_answer.dart": {
+      "avoid-shadowing": [
+        "c322d3de29d2b0c5e2e011dad5e77df2"
+      ],
+      "parameters-ordering": [
+        "71b0b041ac3a584cf3096734fca44340"
+      ],
+      "move-variable-closer-to-its-usage": [
+        "e02357f2798517796b5941e341d569a2"
+      ],
+      "avoid-explicit-type-declaration": [
+        "68053f47deb69d6c2a2255340e410437",
+        "a32a2002765212c0bc5137a5000bf290",
+        "c506ff134babdd6e68ab3e6350e95305"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "avoid-redundant-else": [
+        "566b140f411c93b20b59fb53fc8c2d54"
+      ],
+      "unnecessary-trailing-comma": [
+        "b686eaeafe43632342918aed0b4521f6"
+      ],
+      "avoid-unused-ignores": [
+        "664958aa9815e94645737b835a61f100",
+        "664958aa9815e94645737b835a61f100"
+      ]
+    },
+    "lib/src/features/polls/pages/poll_page.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "f2f1bc8042867055af56a1f7d76dfbdc",
+        "937a24088f6f8bf179a1cfecb19ee938"
+      ],
+      "arguments-ordering": [
+        "bbf038dc5ec81eab5d446fa8dc23c076"
+      ]
+    },
+    "lib/src/features/polls/pages/polls_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "unnecessary-trailing-comma": [
+        "60a2e4210df9931888257e908589394b"
+      ]
+    },
+    "lib/src/features/polls/widgets/poll_card.dart": {
+      "parameters-ordering": [
+        "b7562a97fd59599dcbf1125c3277df90"
+      ],
+      "unnecessary-trailing-comma": [
+        "f3a90aa8335c159dc464d6ad8149366e"
+      ],
+      "avoid-explicit-type-declaration": [
+        "68053f47deb69d6c2a2255340e410437",
+        "cebc960ee9d6d57480b196e82302ab66",
+        "c506ff134babdd6e68ab3e6350e95305",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "cebc960ee9d6d57480b196e82302ab66"
+      ],
+      "arguments-ordering": [
+        "7ae2263e3207c612e3c588501347ccde"
+      ],
+      "avoid-negated-conditions": [
+        "a99a3bba3f3b461d5ee6ddce2f8e7591",
+        "df10ec2ae59021da02458e19a853a9aa",
+        "3156cb768e43c04d0ef736df42bc7cc5",
+        "b0e9da53e64e160330e92a69ef34b6e2"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-missing-image-alt": [
+        "5d66304de29d37deead9c207ca3851a5"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/announcements/model/announcement.dart": {
+      "prefer-declaring-const-constructor": [
+        "7d203c99683cdfa957942564ce9760b3"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "91fb37915e0b137471ffed358a98df47"
+      ]
+    },
+    "lib/src/features/announcements/api/announcements.dart": {
+      "unnecessary-trailing-comma": [
+        "953febb42f5c66931da248f841ce8542"
+      ],
+      "avoid-unused-ignores": [
+        "964f53a2f9685950d8868aa7120ec277"
+      ]
+    },
+    "lib/src/features/announcements/pages/announcement_page.dart": {
+      "parameters-ordering": [
+        "4ba53e803f9d3606f8904d065d597785"
+      ],
+      "avoid-similar-names": [
+        "e85bc9931f8d0aafa8e85105703066fa"
+      ],
+      "unnecessary-trailing-comma": [
+        "21d1c119ca74ff54f7a480efb3fa38d6"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "dab72726c6ec65ab5db49dc4b1401761"
+      ],
+      "avoid-unused-ignores": [
+        "664958aa9815e94645737b835a61f100"
+      ]
+    },
+    "lib/src/features/announcements/widgets/announcement_body_widget.dart": {
+      "prefer-widget-private-members": [
+        "2d76ee9cb3d05f1726953d774d4702de"
+      ],
+      "parameters-ordering": [
+        "c03af65b490293c0b75025dcb75a8fc4",
+        "b9087d29306132b0023fd708cfccc177"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "5b309ef027f5774a373c5258ae316635"
+      ],
+      "prefer-correct-handler-name": [
+        "2d76ee9cb3d05f1726953d774d4702de"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "2782f10de2f4da3c9d16906a4c9a51a8"
+      ],
+      "avoid-dynamic": [
+        "b14a7b8059d9c055954c92674ce60032",
+        "18f05aeddc212b523b40818fa2b87b33"
+      ]
+    },
+    "lib/src/features/shared/model/hive_cache.dart": {
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98",
+        "3373c0f8f67bdb76d135a833c445cb8a",
+        "e02d2ae03de9d493df2b6b2d2813d302"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "bbef19786c08a56d47025fc80a748f53"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "parameters-ordering": [
+        "4d6e8032ddf112bd9f40b58db8860b2d"
+      ],
+      "avoid-passing-default-values": [
+        "0d5e3214e11892bd1a2049da05c77b75"
+      ],
+      "unnecessary-trailing-comma": [
+        "45b5eede973e9819521f0d4302d65a2b"
+      ]
+    },
+    "lib/src/features/shared/model/thumbnail.dart": {
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98"
+      ]
+    },
+    "lib/src/features/shared/model/firebase_user_notifier.dart": {
+      "unnecessary-trailing-comma": [
+        "e94723876bb66f07af3c402d4f71b814",
+        "fb1d228e8699193e6d5dde199f92e7c0"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "avoid-unused-ignores": [
+        "664958aa9815e94645737b835a61f100"
+      ]
+    },
+    "lib/src/features/shared/model/graphql_model.dart": {
+      "avoid-explicit-type-declaration": [
+        "f351b08035187c458d4de19a851ee7db",
+        "9b107cfda3cbb923d2e16fef7f27a05f",
+        "da7b9bbfde36cebb746dfef7efbf79bc",
+        "97e7c9a7d06eac006a28bf05467fcc8b",
+        "c584750a5bbb1f57cc41dbf37c762806"
+      ],
+      "avoid-unnecessary-futures": [
+        "0df93e34273b367bb63bad28c94c78d5"
+      ],
+      "avoid-nullable-interpolation": [
+        "bc20797b5ee5f171a1b952e0dc2b9301"
+      ],
+      "unnecessary-trailing-comma": [
+        "22638d8967b060f758eb2f37f1a63591"
+      ]
+    },
+    "lib/src/features/shared/model/image_cache_item.dart": {
+      "unnecessary-trailing-comma": [
+        "1852c714f11aae927e62eb038186ce7d"
+      ]
+    },
+    "lib/src/features/shared/model/auth_constants.dart": {
+      "newline-before-case": [
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682",
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682",
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682",
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682"
+      ],
+      "prefer-getter-over-method": [
+        "59982bb2be19fe7f63d5003db4b110ed",
+        "1e53a6048662528c28f051ec286f59ca"
+      ]
+    },
+    "lib/src/features/shared/model/cached_profile_picture.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "27118326006d3829667a400ad23d5d98",
+        "e02d2ae03de9d493df2b6b2d2813d302"
+      ],
+      "arguments-ordering": [
+        "3b9a9c3cc04222a5d7f683dff0b64098",
+        "35c1ee377a7855a38415b0ca6f5d66bc"
+      ],
+      "prefer-getter-over-method": [
+        "5297a7f83b2ccd2e0111718e47bb1f04"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "802c780ddd69091cc8f975f9f955cadb",
+        "a668c07d85c37034fe4cf7f08386d0bc"
+      ]
+    },
+    "lib/src/features/shared/model/cached_image.dart": {
+      "parameters-ordering": [
+        "39212f4c230af862ab9e6cd2135a6810"
+      ],
+      "avoid-similar-names": [
+        "db78baa41182b79dc4f6ed2b465e6b26",
+        "6b3d3bd421e012ae41d7d531a841b85e"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "d7e51946800d49dd888f5e0b9a96c66d"
+      ],
+      "avoid-missing-image-alt": [
+        "81f2155245f9b507d6b524be6b54d4fb"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ]
+    },
+    "lib/src/features/shared/model/dio_provider.dart": {
+      "avoid-nullable-interpolation": [
+        "229f008f81baeafba07c8fc5f7ace3c3"
+      ]
+    },
+    "lib/src/features/shared/data/bestuur.dart": {
+      "avoid-explicit-type-declaration": [
+        "b58c9c680bd90cf247875ad833162935"
+      ],
+      "map-keys-ordering": [
+        "426dc0e282f26a2d4e7d6b6371df01a7",
+        "1aeb8b775f46da0eb942553445128095",
+        "47048ebb07f33c539b9cc6ed276bfb25",
+        "fea0360161f69c5bd9e442a9af9f2936",
+        "9b543ec14d2c3197ca5b6e4bde4b2928"
+      ]
+    },
+    "lib/src/features/shared/data/years_from_1874.dart": {
+      "avoid-explicit-type-declaration": [
+        "79e242197da94dd74ded322bc7b18e1e"
+      ]
+    },
+    "lib/src/features/shared/widgets/zoomable_image.dart": {
+      "parameters-ordering": [
+        "9000ba5359e1c53c7d4faf6e635375c1"
+      ],
+      "prefer-correct-handler-name": [
+        "a841e865c5a9494764ab9bacf112c122"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "8d16f60cdd4d8aecc784b643db6f82bc"
+      ]
+    },
+    "lib/src/features/shared/widgets/future_wrapper.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "member-ordering": [
+        "1f17f18439c95789cd70c9c66de80789"
+      ],
+      "prefer-widget-private-members": [
+        "a2e4822a98337283e39f7b60acf85ec9"
+      ],
+      "prefer-getter-over-method": [
+        "51b3cb04c8e159106ac94578a0e16df0"
+      ],
+      "prefer-correct-callback-field-name": [
+        "cb5e100e5a9a3e7f6d1fd97512215282",
+        "260ca9dd8a4577fc00b7bd5810298076"
+      ],
+      "parameters-ordering": [
+        "0ef824c1480f00273ea7f92d6589695b"
+      ]
+    },
+    "lib/src/features/shared/widgets/shimmer_widget.dart": {
+      "parameters-ordering": [
+        "d34e4952f7223cf51af4790b549d97fa"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/shared/widgets/year_selector_dropdown.dart": {
+      "prefer-explicit-parameter-names": [
+        "34020e66d3bb312789d3e32b43f89051"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/shared/widgets/logo_widget.dart": {
+      "member-ordering": [
+        "c2a68c6ec621a0c4581c1ca56c788fa4"
+      ],
+      "parameters-ordering": [
+        "037d0c6b8f0183ecb17424eb90f1f562"
+      ],
+      "unnecessary-trailing-comma": [
+        "487515888f39214fbca22951f46d0517"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4",
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-missing-image-alt": [
+        "29cf4b977b4908ddf1e5ee941f5f9701"
+      ]
+    },
+    "lib/src/features/shared/widgets/rounded_elevated_button.dart": {
+      "parameters-ordering": [
+        "7beedae63bec7c35cfbc620c98e3998e"
+      ],
+      "unnecessary-trailing-comma": [
+        "0ad20225601e17689e843b76352fff05"
+      ]
+    },
+    "lib/src/features/shared/widgets/loading_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "f5253dd9fb2a9e03d667bb035065f3f3"
+      ]
+    },
+    "lib/src/features/shared/widgets/error_card_widget.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "parameters-ordering": [
+        "beea46cbfaae2dd5515e8ed73cab028c"
+      ],
+      "avoid-explicit-type-declaration": [
+        "cb5feb1b7314637725a2e73bdc9f7295",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-missing-image-alt": [
+        "396239b676591a5c79954ab2e0ce7848"
+      ]
+    },
+    "lib/src/features/shared/widgets/data_text_list_tile.dart": {
+      "unnecessary-trailing-comma": [
+        "4a2087d8a474991bab8b94e008eaeaae",
+        "b9a2e9601896f6145dbd9cd1fd3352a4"
+      ]
+    },
+    "lib/src/features/shared/widgets/firebase_widget.dart": {
+      "member-ordering": [
+        "7b44f49aaa9a7948c0e59a4f67468cba"
+      ],
+      "prefer-correct-callback-field-name": [
+        "3811dfcdbdded1ae02dbcf0502f44ca4",
+        "73a9faf979b62b48f8f02c618a9580aa"
+      ]
+    },
+    "lib/src/features/more/mutations/toggle_topic_fcm.dart": {
+      "unnecessary-trailing-comma": [
+        "5df553da6a73e8898cb69a44719060ac"
+      ]
+    },
+    "lib/src/features/more/pages/notifications_page.dart": {
+      "unnecessary-trailing-comma": [
+        "4566851804d5f563ee45576c8f4e06c3"
+      ]
+    },
+    "lib/src/features/more/pages/advanced_settings_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "prefer-widget-private-members": [
+        "6626f34a59a3145b3ff9d14949218847"
+      ],
+      "unnecessary-trailing-comma": [
+        "25fa5f2421e44312d429721a43c7fa4f"
+      ],
+      "prefer-correct-handler-name": [
+        "8a8730509d25032cb9246b2b1c702ae2",
+        "6626f34a59a3145b3ff9d14949218847"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "1131684fcfae2132147482b4c324983a",
+        "7ac9f91317e6486f6799bdf29c2cfa84"
+      ]
+    },
+    "lib/src/features/more/pages/about_this_app_page.dart": {
+      "unnecessary-trailing-comma": [
+        "4d7fe87bfe7ff6abf036b5227dec1f2d",
+        "6f60b0beaa14b494e95d47ecc2fa2861"
+      ]
+    },
+    "lib/src/features/more/pages/contact_page.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "28be9fec83a3e9bd21320e01f0ca7938",
+        "88c37014c78a6b672207384101d319c7",
+        "a51e8b53cf0161fae1537f7f3cab16e4",
+        "d9a8f9a0b1b8527b6103f5a57817a49b",
+        "9cc82550e118152ce50fa6ba657703cb",
+        "11b30e2cbdb3357f7d2120543fd09ad1",
+        "90e60461760c7a815d8f4ffc6fe94f2f",
+        "bf59054207e26d1f2974ae48102dc7d7"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "cdbb37ff407ab23dd449d5845800c295",
+        "1a54817f06e28b8ae315db6dda20b7a6",
+        "1a54817f06e28b8ae315db6dda20b7a6"
+      ],
+      "prefer-correct-handler-name": [
+        "7b329e47ae19f617b22c3b6e3cc3f111",
+        "7b329e47ae19f617b22c3b6e3cc3f111",
+        "7b329e47ae19f617b22c3b6e3cc3f111"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "cbf130e5aa512ba5d1212a04bd96b602",
+        "0191a7e58a0374a6adeb379f437df501",
+        "137209d2436507a5a61166ceae5db0a5"
+      ],
+      "arguments-ordering": [
+        "6f9e04e3cadeedbdffd9b04c90c39a4a",
+        "e618b24ecba4754c5cb93c75469470bf"
+      ],
+      "avoid-nullable-interpolation": [
+        "cbf859a66e5b60ac5071bcb11548f19e"
+      ]
+    },
+    "lib/src/features/more/pages/more_page.dart": {
+      "prefer-action-button-tooltip": [
+        "d5d69522c51af9af5be8d4f46a1da442"
+      ],
+      "avoid-explicit-type-declaration": [
+        "b58c9c680bd90cf247875ad833162935"
+      ],
+      "unnecessary-trailing-comma": [
+        "131d6fc2163995bcb3f502dcbe43fa1b",
+        "f8e183b20d76e51bf3ced5623e3ee1c5",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "94ab1bbe92047b119c7d3e2d4ef62baf",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "72e2475e94681b6d462ffe2cc3c6f9af",
+        "d22c99c4062c3f95740bdc65f7164783"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "arguments-ordering": [
+        "702d8c1ed18e30c6d59abc00fa18d191"
+      ],
+      "prefer-define-hero-tag": [
+        "d5d69522c51af9af5be8d4f46a1da442"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "feac3cbad44f75fdaa676db668f0fe52"
+      ]
+    },
+    "lib/src/features/more/widgets/more_list_tile.dart": {
+      "member-ordering": [
+        "e7131063f4a8a73d811d33dff846b8b5"
+      ],
+      "unnecessary-trailing-comma": [
+        "d9cc83da3a91bf1fa1aefe678bd7a08c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "86a6781342e84a6ecb8bfd043f6b3f2f"
+      ]
+    },
+    "lib/src/features/more/widgets/notifications_list.dart": {
+      "member-ordering": [
+        "3bce667fed963f823f269df527c03e11"
+      ],
+      "unnecessary-trailing-comma": [
+        "c0b61be60a82d0fe10e1b035748d8e67",
+        "23d120b5ffa48d7f7f6233563d31681a"
+      ],
+      "prefer-widget-private-members": [
+        "0b189e6754039529d540f373d788c820",
+        "e329b27943961ccab9dc7a8ac2edb666"
+      ],
+      "parameters-ordering": [
+        "65dfed790fccb1f792a0a7da03989929"
+      ],
+      "prefer-named-boolean-parameters": [
+        "e431d687bf4b2c65fbd94b12ae0cb5d9"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-unnecessary-return": [
+        "505b97969baa28c3f607a38ee02f4f2d"
+      ],
+      "prefer-correct-handler-name": [
+        "0b189e6754039529d540f373d788c820"
+      ]
+    },
+    "lib/src/features/more/widgets/more_link_tile.dart": {
+      "parameters-ordering": [
+        "2382536a4f9e6e911298b2f1747a9818"
+      ],
+      "prefer-correct-handler-name": [
+        "7b329e47ae19f617b22c3b6e3cc3f111"
+      ],
+      "unnecessary-trailing-comma": [
+        "d9cc83da3a91bf1fa1aefe678bd7a08c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "c098a079416589a77ba2b9c66473d959"
+      ]
+    },
+    "lib/src/features/more/widgets/instagram_row_widget.dart": {
+      "parameters-ordering": [
+        "2f990e5df0f783d4470f941b81be7834"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-correct-handler-name": [
+        "7b329e47ae19f617b22c3b6e3cc3f111"
+      ],
+      "unnecessary-trailing-comma": [
+        "bad249ee8ffa5dfd55447a7baa08bcf0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "c098a079416589a77ba2b9c66473d959"
+      ]
+    },
+    "lib/src/features/dashboard/model/vaarverbod.dart": {
+      "parameters-ordering": [
+        "eebc5f27f78d1215903f8573a34b9175"
+      ],
+      "unnecessary-trailing-comma": [
+        "500c7f6a8edc923300d4a55829032ca8",
+        "623003f5989b9357d7f446de092f48f2",
+        "b03ba67fefe7f2d1d3c9fc2ac6097d67"
+      ],
+      "map-keys-ordering": [
+        "723442aa7935c54b73784d21f8af0e2d"
+      ]
+    },
+    "lib/src/features/dashboard/api/vaarverbod_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "91ace11f086b160616153d85a91d5a9a"
+      ]
+    },
+    "lib/src/features/dashboard/api/weather_provider.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "map-keys-ordering": [
+        "6fec031312f9f21221b1d7bcffd0ae49"
+      ]
+    },
+    "lib/src/features/dashboard/pages/home_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "unnecessary-trailing-comma": [
+        "7230b09d8e9ff01388ae92254b6a6ba2",
+        "c6f28f8fd546fb4418f51abfb640fba7",
+        "119095f374f5e61061caf1534671ac75"
+      ],
+      "prefer-correct-identifier-length": [
+        "83878c91171338902e0fe0fb97a8c47a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "2820b3daab5320d0caac8d39e473648d",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-similar-names": [
+        "76aa3d239dc231452be71420ba0906bf"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4",
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "prefer-correct-handler-name": [
+        "009fbfe28b20c0817c02f168b16f0d44"
+      ],
+      "avoid-missing-image-alt": [
+        "4276732d4bb43d9de454e85990dffc1c"
+      ],
+      "arguments-ordering": [
+        "f7122ace13a92ed0a0c32e2df10ebd3c",
+        "ea323d0b266d137855187186f3b9c772"
+      ],
+      "avoid-unused-ignores": [
+        "6b00b93f57c995516a9f1d7062befd49"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/announcements_widget.dart": {
+      "avoid-similar-names": [
+        "d27163d0d6e476a2d97133d0239d105d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "bb18ce1a99cfd1b636d68f6fe3040eae",
+        "5b5bffb79ad8d028f9c9e99286746b3e",
+        "b12438171a17ffac8d0f02fa0897471d",
+        "d60671eb18a98dbb8168414210d56bf1",
+        "9dfe09afe7e4a30f774fa5cce9acc709"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "5bda767be99946727710e40a2b39b516"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/swan_divider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "8ccdee12bfd71a59920b22314e30a86a"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "e82e421ce1135a1a2503fb8e8efe18dc",
+        "e82e421ce1135a1a2503fb8e8efe18dc"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "8c9ce2ee367146dd80592321fc5039f0"
+      ],
+      "arguments-ordering": [
+        "edaffc04c43e07abeb3b2bcafe8aba16"
+      ],
+      "avoid-passing-default-values": [
+        "ba325a2bceb0b6aa5824626aaf6e05a0",
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/weather_metric_widget.dart": {
+      "parameters-ordering": [
+        "9efcdfa07d33426363e2a72ff875491a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "99638fcf3cbddfcf753475c6dd85c9d6"
+      ],
+      "unnecessary-trailing-comma": [
+        "deec84bc412f8c16b56c4592c87c0370",
+        "40f904ee4f291408fbb17b958d032b83",
+        "f4facdde5b12485faa1229dc5951eb9c",
+        "a918b41d93ea7ffbc03962ccdcb6789e",
+        "5fb84fdf8e1b8a1087ec4fadd6a45aa2"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/widget_header.dart": {
+      "parameters-ordering": [
+        "74fc98f34a3f76d43d74aa2ffa4e4101"
+      ],
+      "prefer-correct-callback-field-name": [
+        "40ec734dff1bcb17c2da875deae00219"
+      ],
+      "avoid-explicit-type-declaration": [
+        "ecfb40fbf5deda91989d327e4183a795",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "b9a2e9601896f6145dbd9cd1fd3352a4",
+        "c352176d906472818ca5d23cb0c0c579",
+        "c844ee4302120b692c6b021a33855cf5",
+        "07705253b8bc1b374c801dbbe125ecba"
+      ],
+      "avoid-unused-ignores": [
+        "8b4e383900eddb90eb6b147d19ee030b"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/forms_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "dd1f45d4433be3199e2a0e24d1611917",
+        "77ca7aa82362c30aa005cd8eadb0046d",
+        "4689cb787b114e2948a6f7b6be407210"
+      ],
+      "parameters-ordering": [
+        "744c9ca340194442ef1ae8ad1ae09a68"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "arguments-ordering": [
+        "37aed8a74031a65a7f5cb357c625d9d9"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/lustrum_background_widget.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "cfd5c6cbcce7c054c60bc5741f7f6e42"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "parameters-ordering": [
+        "2695ef03de7016b5cbe6e31ca341f48a"
+      ],
+      "avoid-similar-names": [
+        "ea4e69c434c7b607f19cff93338cb389",
+        "688264f5436aa2a6d076b623638b493d",
+        "c28099a744bde20e848d33a54eaa64b8"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/weather_widget.dart": {
+      "prefer-widget-private-members": [
+        "c983f1c86d3832e23369d93f1a15fb7d"
+      ],
+      "unnecessary-trailing-comma": [
+        "dd1f45d4433be3199e2a0e24d1611917",
+        "ced79d82c60477b4b77f2304c17a1fff",
+        "2987fcb2e3750c20649336b0aab43289"
+      ],
+      "avoid-redundant-else": [
+        "7ce6979082cf7050c11af7a08372498c"
+      ],
+      "avoid-similar-names": [
+        "b2acb3fce35164d51c7e606e49c3fcfd",
+        "b2acb3fce35164d51c7e606e49c3fcfd"
+      ],
+      "avoid-long-functions": [
+        "42b8abb792d46883241756f1ac534c60"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "c506ff134babdd6e68ab3e6350e95305",
+        "27118326006d3829667a400ad23d5d98"
+      ]
+    },
+    "lib/src/features/dashboard/widgets/vaarverbod_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "dd1f45d4433be3199e2a0e24d1611917",
+        "48c1375236cb3b30ab72974effe63ab1",
+        "01a54f463dc2ccd3591f7abef65ba856",
+        "01a54f463dc2ccd3591f7abef65ba856",
+        "759fde20fab23b3b1216db4a56e5ccee"
+      ],
+      "avoid-long-functions": [
+        "dfd8b78db5754e805b18bf3296cbb33e"
+      ],
+      "avoid-explicit-type-declaration": [
+        "cb5feb1b7314637725a2e73bdc9f7295",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "db4d39dabd56b8ed8446b58f24f9c960"
+      ]
+    },
+    "lib/src/features/documents/pages/documents_main_page.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "prefer-widget-private-members": [
+        "00eb056c22e487df87812b65e56b2a68"
+      ],
+      "prefer-correct-handler-name": [
+        "00eb056c22e487df87812b65e56b2a68"
+      ],
+      "avoid-negated-conditions": [
+        "5074054710ce2f8d0c68be0a716d9eef"
+      ]
+    },
+    "lib/src/features/documents/pages/documents_folder_page.dart": {
+      "member-ordering": [
+        "b3ec0d5ca1048d957ae6070593e7ed90"
+      ],
+      "unnecessary-trailing-comma": [
+        "e993ac57cd3899a6129f357cd3cb28af"
+      ]
+    },
+    "lib/src/features/documents/pages/documents_file_page.dart": {
+      "member-ordering": [
+        "bc6db24c680eeebdd1014e0f023dc792"
+      ],
+      "unnecessary-trailing-comma": [
+        "e993ac57cd3899a6129f357cd3cb28af",
+        "1f33ccb3e91921951339513c68395d0a",
+        "e6db845ca39690dddc6ef1b3ffe5147b",
+        "3b73b01465761b6c2e4c7a7d3923847a"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "531a5ea71440e5eab4b367ecc590cf57"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "98bd1c45684cf587ac2347a92dd7bb51"
+      ]
+    },
+    "lib/src/features/documents/widgets/folder_list.dart": {
+      "member-ordering": [
+        "f6016cd7b8083ccfec60fb38bf61fc99"
+      ],
+      "unnecessary-trailing-comma": [
+        "3d1dc3f71b31ceced377a4412893a385",
+        "3d52a97ae81bdb3cace60ebca4ea7202"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/documents/widgets/file_button.dart": {
+      "member-ordering": [
+        "0e331b0afc89c3f48ebacfbba6f21883"
+      ],
+      "parameters-ordering": [
+        "369c18bb61d300e1921f76d66356252a"
+      ],
+      "unnecessary-trailing-comma": [
+        "b3f9e529bbb0bb534363a79c34dd63bc",
+        "9cdf237875649cb50b3be5d35c1596d2"
+      ],
+      "prefer-moving-to-variable": [
+        "84802b2f3e1a3a04ff02c503fc93cada",
+        "84802b2f3e1a3a04ff02c503fc93cada"
+      ],
+      "avoid-explicit-type-declaration": [
+        "994d06622c761cbceb384fd10a0b53f3",
+        "775e69169dba8b2820e79d72d5af0867"
+      ],
+      "arguments-ordering": [
+        "4851d5c8b62470d85e42dd24b3fd9791",
+        "154b78b64e2e293f2c50e08fc57db720"
+      ],
+      "avoid-negated-conditions": [
+        "b07eba231587417666f8a83e3691b8a0"
+      ],
+      "avoid-passing-default-values": [
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "2e7b729a4454a40475996986fd36c091"
+      ]
+    },
+    "lib/src/features/documents/widgets/folder_button.dart": {
+      "member-ordering": [
+        "b5287624905e1afe6625d586663065ff"
+      ],
+      "parameters-ordering": [
+        "369c18bb61d300e1921f76d66356252a"
+      ],
+      "unnecessary-trailing-comma": [
+        "b3f9e529bbb0bb534363a79c34dd63bc"
+      ],
+      "arguments-ordering": [
+        "4013e4bd696628edc65751dc9b5b070a",
+        "5ff30965c2b048427234368ccf7ff400"
+      ],
+      "avoid-passing-default-values": [
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "2095b2c3d3215775bb2240c6a2936334"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "bfed893b4f12990b70b3fe7f3cef5105"
+      ]
+    },
+    "lib/src/features/profiles/leeden/pages/almanak_leeden_page.dart": {
+      "prefer-explicit-parameter-names": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748"
+      ],
+      "unnecessary-trailing-comma": [
+        "9e8aa080ce67fcb289d2d53eed229509"
+      ]
+    },
+    "lib/src/features/profiles/leeden/widgets/almanak_scrolling_widget.dart": {
+      "member-ordering": [
+        "363dec11a641cfc698d977d308469d99"
+      ],
+      "parameters-ordering": [
+        "35813d313900c254b2a9b0597ee54488"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "proper-super-calls": [
+        "cc2563519e56b89837b76f1e49606f16"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "ff2f3bc9482ba8271bb670387998ae53",
+        "18fb3936f4d2bc88319f44448d8f26f8"
+      ],
+      "unnecessary-trailing-comma": [
+        "cef66c0e19ad455164da33d4744cd9f2",
+        "6a8a0314878b9fccf5266ad9d979d4be"
+      ],
+      "avoid-negated-conditions": [
+        "39b7d01851fdef32e6f09afa134f2b1a",
+        "2045213dc7d270c5cfe8d3d7aa5db87a"
+      ],
+      "avoid-single-child-column-or-row": [
+        "1976d7f704de389d9fe064e08ea35b2d"
+      ]
+    },
+    "lib/src/features/profiles/leeden/widgets/almanak_searchable_list_widget.dart": {
+      "member-ordering": [
+        "68f3d3c3907f0eb870401bfecebe618a"
+      ],
+      "parameters-ordering": [
+        "973ae26be3c044f52e7b9f8b6d7ead0a"
+      ],
+      "dispose-fields": [
+        "f27d1931a8857164e8f246da29a51048"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/profiles/choice/huis_choice_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "parameters-ordering": [
+        "8ee4e7e430ea2676f17aa41983db6f10"
+      ],
+      "unnecessary-trailing-comma": [
+        "bc4297f86801e088fb765d0383b4ad75",
+        "e3155645df2733cdcd985511e0758e08"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e"
+      ]
+    },
+    "lib/src/features/profiles/choice/substructure_choice_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "parameters-ordering": [
+        "8ee4e7e430ea2676f17aa41983db6f10"
+      ],
+      "unnecessary-trailing-comma": [
+        "bc4297f86801e088fb765d0383b4ad75"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e"
+      ]
+    },
+    "lib/src/features/profiles/choice/commissie_choice_page.dart": {
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "unnecessary-trailing-comma": [
+        "b9a31e3ad8476141549ba7db913840d3",
+        "1d58714e789c6d7293f5e08c68eaab2c",
+        "5e09058254cea750e94326c36c600963",
+        "b7e72d914cf7ee050090782d09473837",
+        "468f9e87f7c3d364e219e234c644c0a0"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e",
+        "ea86d048704d5c0f70ea55d8eefd7f9e"
+      ]
+    },
+    "lib/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart": {
+      "parameters-ordering": [
+        "9b8ed3e14c17a42478526056f48789ce"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-missing-image-alt": [
+        "f4a3faeda7672792e87c0b0a497c92d1"
+      ],
+      "unnecessary-trailing-comma": [
+        "e82e421ce1135a1a2503fb8e8efe18dc"
+      ]
+    },
+    "lib/src/features/profiles/choice/ploeg_choice_page.dart": {
+      "parameters-ordering": [
+        "6aa668426f3c2a20f748799a8670f4c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "887967a56fbebf6c0f9e8a07283dec56",
+        "cb041e542646fa2971a79ec0778b5740",
+        "8e6dd913eff439900b03dbede12bcb51"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "map-keys-ordering": [
+        "bcd301e2a4c5fbafa2760d7ca6277705",
+        "97d982836d6eac68960d7aeabf3a1076",
+        "ccb563c503c2b4923731be185cd8b604"
+      ],
+      "arguments-ordering": [
+        "aab28e238c59126c4a52a4420bb30a1a"
+      ],
+      "avoid-unused-ignores": [
+        "a29f62500964bc676abf570ba8804430"
+      ]
+    },
+    "lib/src/features/profiles/models/django_user.dart": {
+      "prefer-declaring-const-constructor": [
+        "1bab8900a13da0cbb8cf8b2fec057d30"
+      ],
+      "parameters-ordering": [
+        "da90697a715d74367b1fdc1026e0d4cf"
+      ],
+      "unnecessary-trailing-comma": [
+        "1a69fa2964293e4764b676ad9d794541"
+      ],
+      "prefer-type-over-var": [
+        "b2145aac704ce76dbe1ac7adac535b23"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/profiles/models/user.dart": {
+      "avoid-unnecessary-nullable-return-type": [
+        "cebc960ee9d6d57480b196e82302ab66"
+      ],
+      "parameters-ordering": [
+        "512d4b9608cf383f2da8acb854183a50"
+      ]
+    },
+    "lib/src/features/profiles/models/address.dart": {
+      "parameters-ordering": [
+        "8eb25f9be260ba1bef4a128231ffa404"
+      ],
+      "map-keys-ordering": [
+        "6663cc573452c49bed6fcd08130e61d0",
+        "b0835664fc7f6f2f211388487c24c23d"
+      ]
+    },
+    "lib/src/features/profiles/models/firestore_user.dart": {
+      "parameters-ordering": [
+        "f72339d66c8bd985370b7abcf05237f8",
+        "a49971a3a811600e303eaeb1303b7118"
+      ],
+      "map-keys-ordering": [
+        "3d111d969cb80c1931e0d8e36ad0444b",
+        "21da25709d8d1e54f0bf7dcf9609ba05",
+        "6d7a65337120795519db223808db60fb",
+        "afd46879401d495d02e9fc59b4fce1b8",
+        "542799487271a473a16fbbfa3384c482"
+      ],
+      "arguments-ordering": [
+        "4154b1a16d4f5f3bda6ba86e3f8a1aad"
+      ],
+      "avoid-incomplete-copy-with": [
+        "a49971a3a811600e303eaeb1303b7118"
+      ],
+      "avoid-self-compare": [
+        "6031b70fcdb2bad7ca53e936016a93f7"
+      ]
+    },
+    "lib/src/features/profiles/models/almanak.dart": {
+      "parameters-ordering": [
+        "120755620de96fa36716712fb7ea1376"
+      ],
+      "avoid-negated-conditions": [
+        "7f5bf6efcc18616882e072673d8ff677"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart": {
+      "prefer-named-boolean-parameters": [
+        "38a4d546d15b681b4e44b2cfca2547ce"
+      ],
+      "prefer-declaring-const-constructor": [
+        "a9e3d6564d8c41176032bf33905719fa"
+      ],
+      "parameters-ordering": [
+        "707d8be5024f1ef8bcbd4b5a10c11938",
+        "cfd94d91a18e90221077fa9b66fbc877"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/models/group_entry.dart": {
+      "parameters-ordering": [
+        "d52630f5412ad966dc7406ecad5eb5ff"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "eea0d33575a8372daf495a1d105bb498"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart": {
+      "unnecessary-trailing-comma": [
+        "6f9151028c84438a50606aa93e98e9d0"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart": {
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "43ddcd6d2df988b6f54f01c77a1abc8a",
+        "2885754456b105ec623c79f706a8c07e",
+        "2de41a11866aeaea32363d2bd80221d4",
+        "2885754456b105ec623c79f706a8c07e",
+        "c4212afe2e4557f6ae12d41d50da4451",
+        "2885754456b105ec623c79f706a8c07e",
+        "0e36df938181570b4479e53a3835a2a3",
+        "001752f3a2d36e96f07a602dc0874ddd"
+      ],
+      "avoid-shadowing": [
+        "cdd638e00095e76c42db80d69dfdec30"
+      ],
+      "prefer-action-button-tooltip": [
+        "39986c24c2ea69607853431e5b0d4eb5",
+        "79aa83e4875f84c34a92f920fcf3d0a1"
+      ],
+      "prefer-widget-private-members": [
+        "864000ee4756ab9f25984fc2fbf5934b",
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "3f931af58c61184a6d6638bba01c9245"
+      ],
+      "arguments-ordering": [
+        "4d97f4bbf3c7e5fb36c9234c0d12b5b9"
+      ],
+      "prefer-correct-handler-name": [
+        "a1f86c5413c3cd87c53ce6d363d66083"
+      ],
+      "avoid-long-functions": [
+        "f8bb47130d2b201a4214f82f257c3534",
+        "4ca8df21973c96a86ef409bbe28717a3"
+      ],
+      "parameters-ordering": [
+        "e3f2ce0172542a5d9a82a24b4e8a3019"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5",
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "prefer-correct-error-name": [
+        "56bd7107802ebe56c6918992f0608ec6"
+      ],
+      "avoid-missing-image-alt": [
+        "28ce8d1ccd6d9de9273e1065c5c306bc"
+      ],
+      "avoid-unused-ignores": [
+        "50d140401fb13c3311908734d335c3f6",
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/pages/settings_page.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "346f42d7e1ecc24bc1825482cb54303e",
+        "2885754456b105ec623c79f706a8c07e",
+        "8553414c69f16d9a1846c0244c42ba1c",
+        "2885754456b105ec623c79f706a8c07e",
+        "4f08ec708b68be469eca1b7edacb154b",
+        "2885754456b105ec623c79f706a8c07e",
+        "c3c6007670c332c4cc47261ce159cf87",
+        "e5e35f6e626c26e4ba24e571ad6b01d1"
+      ],
+      "arguments-ordering": [
+        "36305ab50ed9d747e30c190f696ce21a"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "ba1c4acb94dcc5853aced9521ab5f525"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart": {
+      "prefer-widget-private-members": [
+        "1a61fc755d60ffb06b70235e527af9a0",
+        "bfd2e6a73806dcecbaed18b7d865d9be",
+        "a4818b5aa8d28dc0cba95dbeaa9b1d3c"
+      ],
+      "avoid-long-functions": [
+        "90cbca580d917016bb6f33f1ca76f2ca"
+      ],
+      "parameters-ordering": [
+        "e3f2ce0172542a5d9a82a24b4e8a3019",
+        "1480765a7ccc9cfc3dd8a1480f8fd483",
+        "ffd2b92a1af20ccd42bace912f5a995c"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "avoid-explicit-type-declaration": [
+        "0ec2607dd2db1713cf61017bd57d4b9b",
+        "27118326006d3829667a400ad23d5d98",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ],
+      "arguments-ordering": [
+        "e2a2feb6ced87c581179ecf4e52cbfc9"
+      ],
+      "prefer-correct-handler-name": [
+        "a4818b5aa8d28dc0cba95dbeaa9b1d3c"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "3d4706535e68ba8aa08511f379d89114",
+        "114196169555c0d87837dbd1fefdecbb",
+        "c55e62bc65d73ff707ae2c8e234c91e5"
+      ],
+      "prefer-named-boolean-parameters": [
+        "e431d687bf4b2c65fbd94b12ae0cb5d9"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a",
+        "970f7e0e64e191b6e1fe7ca6cc110ab9"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "9bbc0e9d355f8db3a118db43345ae12b",
+        "9bbc0e9d355f8db3a118db43345ae12b"
+      ],
+      "avoid-missing-image-alt": [
+        "6ec8249f021b153ea031b506d92923b0"
+      ]
+    },
+    "lib/src/features/profiles/edit_my_profile/widgets/form_section.dart": {
+      "parameters-ordering": [
+        "00062fc21530119446ef2019f76fa98f"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "2bff11a8f94bf2f9d5e26f3ccbb62ef8",
+        "26227033528b136ed27339c254987adf",
+        "a918b41d93ea7ffbc03962ccdcb6789e"
+      ]
+    },
+    "lib/src/features/profiles/api/user_commissies.dart": {
+      "avoid-similar-names": [
+        "8fd3b566a39e1be3d939a35a00f0b4d6",
+        "91d77905eb655327c06059498d3f51f4"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/profiles/api/firestore_user.dart": {
+      "unnecessary-trailing-comma": [
+        "cf0ad6c815e1bf6ace1c0694c88cb9bd"
+      ]
+    },
+    "lib/src/features/profiles/api/substructure_picture_provider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ]
+    },
+    "lib/src/features/profiles/api/user_provider.dart": {
+      "unnecessary-trailing-comma": [
+        "f240d7df021cc32cd5ad1da7d6bd5229",
+        "d382c0de194785ea38b7b054f6f5fa4c"
+      ],
+      "arguments-ordering": [
+        "b26b374bd9174d30f5c7c78c9e6f6a9f"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "36b589e326917636629989491b90b689"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/profiles/api/groups_for_user_provider.dart": {
+      "avoid-explicit-type-declaration": [
+        "f81070c04fa594f3f497241575e6eee3"
+      ],
+      "unnecessary-trailing-comma": [
+        "7bf666898a2315a4419536cc008b6bf1"
+      ]
+    },
+    "lib/src/features/profiles/api/njord_year.dart": {
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748"
+      ]
+    },
+    "lib/src/features/profiles/api/bestuur_picture_provider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ]
+    },
+    "lib/src/features/profiles/api/bestuur_users.dart": {
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/almanak_profile_page.dart": {
+      "unnecessary-trailing-comma": [
+        "7c3aa200ff5cbe3e1beb528a2394fbd1",
+        "859f0571903dd43155064cfa7b0db60c"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/model/group_django_entry.dart": {
+      "prefer-declaring-const-constructor": [
+        "a028bbb97986df23325ee55c6330a7ec"
+      ],
+      "parameters-ordering": [
+        "f6b69a411f0dcaa3c5bcb0116369e717"
+      ],
+      "avoid-negated-conditions": [
+        "5dff0a55481b737b6c45bd96e8cc8179"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/model/tag.dart": {
+      "parameters-ordering": [
+        "1a6d50feab364e8d3f74f42f2e5127fa"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/widgets/almanak_user_profile_view.dart": {
+      "parameters-ordering": [
+        "02e5fb87bafbe74d7e577792b388c409"
+      ],
+      "unnecessary-trailing-comma": [
+        "82347ef0642cf430dbd124df39a91b39",
+        "70623d96ac2e03af814c12d092c446fc",
+        "f829ff9fd5cbe0ffb91df76515b506d6"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "994d06622c761cbceb384fd10a0b53f3"
+      ],
+      "avoid-passing-default-values": [
+        "ffd9298ee5232ed703509668b6135391"
+      ],
+      "arguments-ordering": [
+        "1a7e0bee3c8b35e11f64b52be740bc43",
+        "6007a521a707119fc9256f662a834ad8"
+      ],
+      "avoid-long-functions": [
+        "a73c450c708101e84bb8376cca87af5e"
+      ],
+      "prefer-correct-handler-name": [
+        "7b329e47ae19f617b22c3b6e3cc3f111",
+        "c4f86dffe8890f79ca9f27bd4c0a36c1"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "9e877921cb864beff928156c5098b843",
+        "e98eb6bfd7502a1fda1449829d8dc0ad",
+        "10ba1fd6bd85928dbd21a6629dd50669",
+        "96f41d77becddbf2cbfcc17a4e4d50d7"
+      ],
+      "avoid-nullable-interpolation": [
+        "b6fa18266efcfbf506e54e22bb134fa1",
+        "9f943b62df06754b67405a6c5f9b95b9"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/widgets/user_groups_list_widget.dart": {
+      "unnecessary-trailing-comma": [
+        "ca9c42f58856248a91b1ae53bc9c6b58",
+        "75ca9d2368648a7051bb2312547cce50",
+        "02f09a8c74c192279f355ae6b478679e",
+        "1f274a4f9f7832217a2f30613e99baf6",
+        "1f274a4f9f7832217a2f30613e99baf6"
+      ],
+      "newline-before-case": [
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "04a1f4ee1ab51b684e4c32df8f98e833"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/widgets/user_address_widget.dart": {
+      "parameters-ordering": [
+        "09dc12998d8e3763227f3d5bd3d00148"
+      ],
+      "unnecessary-trailing-comma": [
+        "5bdae45839d23cc8e796fd114edd96a1",
+        "f54a542e6412cd0f0f4104d6dd7b0e2b"
+      ],
+      "avoid-negated-conditions": [
+        "5169c220956037d8d6a8a2cacd9b6f5b",
+        "cf63b0f092908980837350961059c1a6",
+        "7f99812d99a7ef2c4d5421dbe617eef7",
+        "30911536d78b3188b0496dad7b85dae6",
+        "a8da5e8542f917b06237b8b0613521fb"
+      ]
+    },
+    "lib/src/features/profiles/almanak_profile/widgets/group_info_tile.dart": {
+      "parameters-ordering": [
+        "87f5eaec8595fbf81d6aae134f3c629a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "95727e3a6af4ffefaca4cbe9f83f65ac",
+        "2b7458c80a7749f12af3284330521ad5"
+      ]
+    },
+    "lib/src/features/profiles/substructures/model/group_django_relation.dart": {
+      "prefer-declaring-const-constructor": [
+        "964abf4aacccf7995b9604a9b1fcf808"
+      ],
+      "unnecessary-trailing-comma": [
+        "78ce9a58e62e784c947b25044ef51675",
+        "cb35f49439b3d3e80a8043bd1faf7f6e"
+      ],
+      "parameters-ordering": [
+        "d84fbf90c88f1311d8cb493b0f0d28f5"
+      ]
+    },
+    "lib/src/features/profiles/substructures/model/group_django_user.dart": {
+      "prefer-declaring-const-constructor": [
+        "fc898af67e24ccd556a6f964b111a49b"
+      ],
+      "parameters-ordering": [
+        "2bf0997275557c701577487fa2261660"
+      ]
+    },
+    "lib/src/features/profiles/substructures/model/group_info.dart": {
+      "parameters-ordering": [
+        "e4f3f2adb30d999ea1f972a3d7f4e3da"
+      ],
+      "unnecessary-trailing-comma": [
+        "05e3175c0d1df717a3588db2ecf25b45"
+      ]
+    },
+    "lib/src/features/profiles/substructures/model/huis_info.dart": {
+      "parameters-ordering": [
+        "6fa83ae91f15a2d6b122a1c002f4b376",
+        "3737fee4782e727a9f77f9893aa3d3a7"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "91fb37915e0b137471ffed358a98df47"
+      ],
+      "map-keys-ordering": [
+        "0b6507172b522bc764b848ba34e9e21e",
+        "432b850e6025a54157a82de72b5915ec"
+      ],
+      "enum-constants-ordering": [
+        "581974353e4ddec00bc7a857002117fe"
+      ]
+    },
+    "lib/src/features/profiles/substructures/model/commissie_info.dart": {
+      "parameters-ordering": [
+        "b97c7d169a5afd3d63bec241f8fc1427"
+      ],
+      "unnecessary-trailing-comma": [
+        "aa0ef3169600936422a3ee6b230cf5ec",
+        "d346b4ff98b49ec1c814f0b6638a8fbc"
+      ],
+      "avoid-negated-conditions": [
+        "55814a51661b5574d99be98276e61370",
+        "86c0170219305347a644f9422480b0d8"
+      ],
+      "avoid-incomplete-copy-with": [
+        "df60bd4909a82b7b5cf568909acaa250"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "91fb37915e0b137471ffed358a98df47"
+      ],
+      "map-keys-ordering": [
+        "809aa422b2e548071a9c768fc6c31c36"
+      ]
+    },
+    "lib/src/features/profiles/substructures/api/commissie_info_provider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "747be5f0d3a4e73572f97bcd29222bcf"
+      ],
+      "avoid-similar-names": [
+        "c4600ef14066816b25e1a9375975693a"
+      ],
+      "unnecessary-trailing-comma": [
+        "bc73aec90f746e7864984339debc6450"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/profiles/substructures/api/substructure_info_provider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "747be5f0d3a4e73572f97bcd29222bcf"
+      ]
+    },
+    "lib/src/features/profiles/substructures/api/huis_picture_provider.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ]
+    },
+    "lib/src/features/profiles/substructures/api/huis_info_provider.dart": {
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ]
+    },
+    "lib/src/features/profiles/substructures/pages/almanak_bestuur_page.dart": {
+      "prefer-widget-private-members": [
+        "be2a02e0f5ef59be0e7502dc226d6cf9",
+        "79b8b1c8be3ee6c6e4ffe7cfac22e24d",
+        "78cedc96aa2fe3a15b798df7a6bcc498"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "0ec2607dd2db1713cf61017bd57d4b9b"
+      ],
+      "unnecessary-trailing-comma": [
+        "c3217c842d008206fa7aa1a10ae6ad04",
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "eb55226c7fae44a3e028c7d693b122eb",
+        "3f22fa026423fc5f3d97502b6af93f91",
+        "65b6a07418c4c7e0768d41b7c310ff5c",
+        "f8d1f4e14eba1def78346b0c84aed6d3"
+      ],
+      "arguments-ordering": [
+        "9d2417a96cf078eefc9157e325242a60"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/profiles/substructures/pages/almanak_commissie_page.dart": {
+      "dispose-fields": [
+        "00cf38620cc5e22c929be7004e042d85"
+      ],
+      "prefer-widget-private-members": [
+        "3d05941ea4377344565cb366c0c38c49",
+        "71003f562397d206d95806c81a6af6d6",
+        "d58b403579d510d1a7aad897b2620efc",
+        "13983a11ce399ad09da91c3c864f3d57",
+        "58bc777e4ad794de449b03a3dc6c5266",
+        "48e186ac175e6d8f496c2ffd87c1f152",
+        "3c43ae639b0c949f450b482f54257a89",
+        "79b8b1c8be3ee6c6e4ffe7cfac22e24d",
+        "706ce6a9bad393d6c0f5739976ee40dc"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "8a9d94a502474b3f7e2cb785e4ce5439",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "8e34e45ee0458e49fe3ae87ef3d5fbd4"
+      ],
+      "unnecessary-trailing-comma": [
+        "6e3dd329ab5a699acf2ea65460d15c51",
+        "34accc129c0ff2a026e88b49d606e803",
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "b510cf49a9ec9b376b2fa374a0d2f302",
+        "eb55226c7fae44a3e028c7d693b122eb",
+        "796db6aeb10f16b65b816e647287d7c4"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/profiles/substructures/pages/almanak_ploeg_page.dart": {
+      "avoid-shadowing": [
+        "84cdc76cabf41bd7c961f6ab12f117d8"
+      ],
+      "prefer-widget-private-members": [
+        "61eb24435b37e1c3cd6ee1a88a3faf02",
+        "79b8b1c8be3ee6c6e4ffe7cfac22e24d",
+        "660cb7944f1bff94c74204a083111d32"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "79e242197da94dd74ded322bc7b18e1e",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "508f6e7f153b88c6dccc3422675157e5",
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "796db6aeb10f16b65b816e647287d7c4",
+        "b62516172149aa161feda969957d1109"
+      ],
+      "avoid-collection-mutating-methods": [
+        "cadc8c8db42409733582cb3e2298ef87"
+      ]
+    },
+    "lib/src/features/profiles/substructures/pages/almanak_huis_page.dart": {
+      "avoid-shadowing": [
+        "843bbe76636a810374d1852d64904d1a"
+      ],
+      "parameters-ordering": [
+        "59c632ee3159e0345fccffd76054171c"
+      ],
+      "unnecessary-trailing-comma": [
+        "fa262f6dd4d124c629c1f8fc761d8cc3",
+        "e64c246f1a6fbb61eabe33083da144df"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "3405181263779a9d7188c9518a71dbee",
+        "c6c8b4601c8c28d16aaca8a8c3b92641"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "64d0333cf654a2dd73c21d1a4e625170"
+      ]
+    },
+    "lib/src/features/profiles/substructures/pages/almanak_substructuur_page.dart": {
+      "unnecessary-trailing-comma": [
+        "2d3c37e159e3df6bf164cbbe32ad9056",
+        "1a35c3b7aa7d12815bf0b5dbc663f3bc"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "53e17790a51d426e62e885ae46314cd2"
+      ]
+    },
+    "lib/src/features/profiles/substructures/widgets/leeden_list.dart": {
+      "prefer-widget-private-members": [
+        "79b8b1c8be3ee6c6e4ffe7cfac22e24d"
+      ],
+      "parameters-ordering": [
+        "a9bb2d7a4bdeebdd4f7efb15474900c8"
+      ],
+      "prefer-correct-callback-field-name": [
+        "1f83af4e41052f8eb52dec322580a88d"
+      ],
+      "prefer-explicit-parameter-names": [
+        "b1fd515f513e8e4dbb53f81c53c6b134",
+        "b1fd515f513e8e4dbb53f81c53c6b134"
+      ],
+      "avoid-similar-names": [
+        "75e7fc7c61c7dcbee8fb5c06aaa8bd4d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "a29e8f9bc7ee84f8f63cd3a7a79c0844",
+        "796db6aeb10f16b65b816e647287d7c4",
+        "b8f2a4da7a3584820e130728ca003a51"
+      ]
+    },
+    "lib/src/features/profiles/substructures/widgets/substructure_description_widget.dart": {
+      "parameters-ordering": [
+        "55bff19f35a57215631bb922ec48732d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "cb47297c40a84261eb5356cb98a1abb9"
+      ],
+      "unnecessary-trailing-comma": [
+        "25bb09885ddd278315be1d361de78eae"
+      ]
+    },
+    "lib/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "parameters-ordering": [
+        "373a0b1405d8fbd6227f67020df33043"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-missing-image-alt": [
+        "6ec8249f021b153ea031b506d92923b0",
+        "6ec8249f021b153ea031b506d92923b0",
+        "69972613fbccbc24f6d1939c62cd25ac",
+        "6ec8249f021b153ea031b506d92923b0",
+        "6ec8249f021b153ea031b506d92923b0",
+        "79d11434c113cd923b88824ae3089ff7"
+      ]
+    },
+    "lib/src/features/profiles/data/substructuur_volgorde.dart": {
+      "avoid-explicit-type-declaration": [
+        "0ec2607dd2db1713cf61017bd57d4b9b"
+      ],
+      "prefer-prefixed-global-constants": [
+        "43c75f9b411107d4db9a43cf6dda0270"
+      ]
+    },
+    "lib/src/features/profiles/data/houses.dart": {
+      "avoid-explicit-type-declaration": [
+        "0ec2607dd2db1713cf61017bd57d4b9b"
+      ],
+      "prefer-prefixed-global-constants": [
+        "fbf80a5ce7d46dc8f8ef084b300c1a4f"
+      ]
+    },
+    "lib/src/features/profiles/data/substructures.dart": {
+      "avoid-explicit-type-declaration": [
+        "739e5804ead795725ec63c8e7ae0e6c5"
+      ]
+    },
+    "lib/src/features/profiles/pages/almanak_page.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "c506ff134babdd6e68ab3e6350e95305"
+      ],
+      "unnecessary-trailing-comma": [
+        "4aba0c0eab2c95b08431e34b7924b1ef",
+        "cd08f334155a2b4a2b1940bdd7a3e9d2",
+        "cd08f334155a2b4a2b1940bdd7a3e9d2",
+        "e3b303bb6d766a6192b4c71e8863ca86"
+      ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ]
+    },
+    "lib/src/features/profiles/widgets/profile_picture_list_tile_widget.dart": {
+      "arguments-ordering": [
+        "25d5a35f118f87c285db8be1ecab8374"
+      ],
+      "unnecessary-trailing-comma": [
+        "6f234a6ffff8c2b2ea3a134bb9375072"
+      ]
+    },
+    "lib/src/features/profiles/widgets/almanak_user_button_widget.dart": {
+      "member-ordering": [
+        "700fea0fe4c3990c2bbf9b6e3d61c631"
+      ]
+    },
+    "lib/src/features/profiles/widgets/default_profile_picture.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "unnecessary-trailing-comma": [
+        "dc694a943d9bb7499a8140145509cc6e"
+      ],
+      "avoid-missing-image-alt": [
+        "6ec8249f021b153ea031b506d92923b0"
+      ]
+    },
+    "lib/src/features/profiles/widgets/substructure_choice_list_tile.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "member-ordering": [
+        "5b3546ed66bf04f8fcd51d8dba4e551f"
+      ],
+      "prefer-widget-private-members": [
+        "fd1d69f13fd1a329632594b124029de0",
+        "135e606fdf5156d69e1934da10132797",
+        "8d744bc7de307f8ad16161230576791f",
+        "d58b403579d510d1a7aad897b2620efc",
+        "5d51f19afef455ff47fecb8608746dba"
+      ],
+      "parameters-ordering": [
+        "e06c3cd71beb2a729c86108c6042f18c"
+      ],
+      "avoid-explicit-type-declaration": [
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748"
+      ],
+      "avoid-missing-image-alt": [
+        "078091aa96182715623bfdeba4ab035b",
+        "6ec8249f021b153ea031b506d92923b0",
+        "6ec8249f021b153ea031b506d92923b0",
+        "6ec8249f021b153ea031b506d92923b0"
+      ],
+      "avoid-passing-default-values": [
+        "ba325a2bceb0b6aa5824626aaf6e05a0"
+      ]
+    },
+    "lib/src/features/profiles/widgets/almanak_user_tile.dart": {
+      "parameters-ordering": [
+        "e7f035bf7b2e5c8d8c124560801a295d"
+      ],
+      "avoid-similar-names": [
+        "80e99a59fa6f8f0d59e12ce9dde8aecb",
+        "73611866308df1206e32202f0717c3d4"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "2691130f6407e7d079388ca487875dbb"
+      ],
+      "avoid-negated-conditions": [
+        "5df3ed098448902671ef78b8a3ba9cc9"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "abc688d255d184ffff177e0fbc119670"
+      ]
+    },
+    "lib/src/features/profiles/widgets/profile_picture_widget.dart": {
+      "parameters-ordering": [
+        "21264b99f6eefa1094c88f92cb66e6a0"
+      ],
+      "arguments-ordering": [
+        "ef405815354e043d0ae597b879354fb2"
+      ]
+    },
+    "lib/src/features/events/models/event.dart": {
+      "parameters-ordering": [
+        "fea37b1c0c37b50e34022fa712bd2d4b",
+        "ba6d60edd26d28c6038164ad1abc652b"
+      ],
+      "avoid-negated-conditions": [
+        "85eeab13b3f191327c5f638f5a3edc7e"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "91fb37915e0b137471ffed358a98df47"
+      ],
+      "map-keys-ordering": [
+        "bf8a3b91b974191caef4d4dbcd74cea8",
+        "70bf41fdf6e1f88e2868f294ad60886c",
+        "76af09e4474ecd5377de06811c73cb2f"
+      ]
+    },
+    "lib/src/features/events/pages/events_page.dart": {
+      "unnecessary-trailing-comma": [
+        "ee9080d22ca14e5f64a3f099cb13ffea"
+      ],
+      "arguments-ordering": [
+        "1e60adfc36c0d56ec0ae6c568617073a"
+      ]
+    },
+    "lib/src/features/events/widgets/events_widget.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-unsafe-collection-methods": [
+        "5d3b681512521f7f0cb99a3761605e4f"
+      ]
+    },
+    "lib/src/features/events/widgets/upcoming_event_widget.dart": {
+      "parameters-ordering": [
+        "c9addb5829e1d57ec16796c07ae2d02c"
+      ],
+      "unnecessary-trailing-comma": [
+        "8481ba9377d3a6a4f2a9bbaa89a29526",
+        "37a4c5a93c4930e7ab0b004df120577d",
+        "4a2087d8a474991bab8b94e008eaeaae",
+        "5fb84fdf8e1b8a1087ec4fadd6a45aa2",
+        "c36e4a461a24f8bfb6bd64b89ce5132d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "fa7153f7ed1cb6c0fcf2ffb2fac21748",
+        "8cf10d2341ed01492506085688270c1e",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/events/widgets/coming_week_events_widget.dart": {
+      "avoid-stateless-widget-initialized-fields": [
+        "811e1c4e651925bc423433049ae543e9"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "arguments-ordering": [
+        "8d745082f580ce1f47040be9dbd81751"
+      ],
+      "unnecessary-trailing-comma": [
+        "62d61f9288ec0cd5573eca56423e8326"
+      ]
+    },
+    "lib/src/features/messaging/request_messaging_permission.dart": {
+      "avoid-passing-default-values": [
+        "746b08d1ecb94a7cb86e17d0dd68c3ce",
+        "8a0a39cbe9a1608eef11ecce7fa8292d",
+        "09acd14720fb76f91b6274836b63bbbd",
+        "a77022fa1f9fa85426b4f8a4bb9bb127",
+        "22a686a59fbe246b68c53b17d8d37587",
+        "3fa75c3d50b257e6baa8f63e863c95bd",
+        "03e89e0049485d46a97f8394cfba0dde"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ]
+    },
+    "lib/src/features/messaging/save_messaging_token.dart": {
+      "avoid-explicit-type-declaration": [
+        "cebc960ee9d6d57480b196e82302ab66",
+        "27118326006d3829667a400ad23d5d98"
+      ],
+      "map-keys-ordering": [
+        "746359ae662a5a5b72f3dba9a59a4252"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32"
+      ]
+    },
+    "lib/src/features/messaging/init_messaging_info.dart": {
+      "avoid-similar-names": [
+        "ec4e85f092fb81e190310b00f20c2e51",
+        "ec4e85f092fb81e190310b00f20c2e51"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "1d9225155957ca080f464c8cde2be99c"
+      ],
+      "avoid-passing-default-values": [
+        "72e77ad55c40a9d3bba4dd5f891a2832"
+      ]
+    },
+    "lib/src/features/authentication/model/auth_model.dart": {
+      "avoid-duplicate-named-imports": [
+        "25b5125588187f956f82a432401d8b59"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "e2dbc0daf2039677eb413aae6e276aa1",
+        "3eb6f6c4e3dabed6cfb9aff738f8e907"
+      ],
+      "parameters-ordering": [
+        "ff640c90f223249056fd97e204351329",
+        "ff640c90f223249056fd97e204351329"
+      ],
+      "prefer-correct-error-name": [
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32",
+        "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-unnecessary-return": [
+        "505b97969baa28c3f607a38ee02f4f2d"
+      ],
+      "avoid-explicit-type-declaration": [
+        "cebc960ee9d6d57480b196e82302ab66"
+      ],
+      "unnecessary-trailing-comma": [
+        "1a7b8f90eedd96667dd373d0fdd935e0",
+        "09fae345a99278cb3a2239daa3c0c9d2"
+      ],
+      "avoid-unused-ignores": [
+        "d9d58ec1775fb2e59d4164272e36630b",
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/features/authentication/model/auth_state.dart": {
+      "enum-constants-ordering": [
+        "700633a1b0f65fa8456a18bd6053193c"
+      ]
+    },
+    "lib/src/features/authentication/pages/login_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "unnecessary-trailing-comma": [
+        "182cb03cab8dd313ad65ec65763bfa7a"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-passing-default-values": [
+        "f2090b9a947b6924fe8228bfb7638bfd"
+      ]
+    },
+    "lib/src/features/authentication/pages/forgot_password_page.dart": {
+      "avoid-passing-default-values": [
+        "f2090b9a947b6924fe8228bfb7638bfd"
+      ],
+      "prefer-correct-handler-name": [
+        "7b329e47ae19f617b22c3b6e3cc3f111"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "b3973e5f10c167477eb820721aa6b77e"
+      ]
+    },
+    "lib/src/features/authentication/widgets/login_loading_widget.dart": {
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ]
+    },
+    "lib/src/features/authentication/widgets/form_card.dart": {
+      "parameters-ordering": [
+        "867ee5143ac044c40a3a84faa2284bac"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "f16ec6e769c2750ae571f7420fd9f934",
+        "5d0ac66cb51c642a40c109b8289326cb",
+        "26227033528b136ed27339c254987adf"
+      ]
+    },
+    "lib/src/features/authentication/widgets/login_form.dart": {
+      "member-ordering": [
+        "7b9bfd2673d751f1ed5e05da94637f8d"
+      ],
+      "prefer-widget-private-members": [
+        "d990cc6c8e04c7105292368cd122d0c8",
+        "d56b699830e77ba53855679cb1d252da"
+      ],
+      "dispose-fields": [
+        "4b2a2e394437135cca7ba9df89e5b3e4",
+        "af8314cd77d4b22e39a53f630afbd2c0"
+      ],
+      "avoid-explicit-type-declaration": [
+        "84e70ab518a8ac8c3b228bae00543396",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0",
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "prefer-returning-conditional-expressions": [
+        "9f10cb7679f3c7f2fecadfd4a2b4833c"
+      ],
+      "avoid-passing-default-values": [
+        "90b61f1fa6bb292b537f8825b9b235e8",
+        "e9aba03706e20d5b309e69be6db5a0ac"
+      ],
+      "prefer-correct-handler-name": [
+        "d56b699830e77ba53855679cb1d252da"
+      ],
+      "unnecessary-trailing-comma": [
+        "26227033528b136ed27339c254987adf"
+      ],
+      "avoid-unused-ignores": [
+        "5d1ddb1fbc851e185045c97c57e03089"
+      ]
+    },
+    "lib/src/routes/routes.dart": {
+      "avoid-long-files": [
+        "f5b4113cf60d87f92d68189ea24b367a"
+      ],
+      "avoid-long-functions": [
+        "4601e4a25b2bee3cc8a4423cc63c0088"
+      ],
+      "prefer-correct-handler-name": [
+        "0a77bb4fc599a3f5769eca69f32c5eb3",
+        "0a77bb4fc599a3f5769eca69f32c5eb3",
+        "0a77bb4fc599a3f5769eca69f32c5eb3",
+        "0a77bb4fc599a3f5769eca69f32c5eb3",
+        "0a77bb4fc599a3f5769eca69f32c5eb3",
+        "0a77bb4fc599a3f5769eca69f32c5eb3"
+      ],
+      "arguments-ordering": [
+        "85c4c5fd287e987438d41d575169e67c",
+        "ef8c5da3d6bddd4576c7df6729033878",
+        "fb5b0a310a461a848a4c3b54e2fb785a",
+        "54cd93f3502176ec2d576b6b03297f4f",
+        "65569133a77794822a28f1340681292b"
+      ],
+      "avoid-explicit-type-declaration": [
+        "054bcb8bce1b720b35af494206300a24",
+        "27118326006d3829667a400ad23d5d98",
+        "27118326006d3829667a400ad23d5d98",
+        "c506ff134babdd6e68ab3e6350e95305",
+        "c506ff134babdd6e68ab3e6350e95305"
+      ],
+      "newline-before-case": [
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7",
+        "c21f969b5f03d33d43e04f8f136e7682"
+      ],
+      "unnecessary-trailing-comma": [
+        "4104fc55824472b5726a3d41a754ede7",
+        "0dec6f14d9c394fe1d171c095de75625"
+      ],
+      "avoid-negated-conditions": [
+        "74ad5fec51dbb546c36c76261cfe9820",
+        "74ad5fec51dbb546c36c76261cfe9820",
+        "edf0b992ae287d53f890c4dcc8778fa2"
+      ],
+      "parameters-ordering": [
+        "412d3555a5af4f1889c2016dab85256e"
+      ],
+      "prefer-explicit-parameter-names": [
+        "74b8ad799e29434bd681e2a3ceddbdbd",
+        "cea6914125e609f557ee7aecc3c0c422"
+      ],
+      "avoid-unused-ignores": [
+        "964f53a2f9685950d8868aa7120ec277"
+      ]
+    },
+    "lib/src/routes/dutch_upgrade_messages.dart": {
+      "newline-before-case": [
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7",
+        "cd14c323902024e72c850aa828d634a7"
+      ]
+    },
+    "lib/src/routes/unknown_route_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "prefer-action-button-tooltip": [
+        "4223746048e6888c8c5bad23a6f7f690"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "6d5e0e63936b1e39b8d2e7bc8b11f05f",
+        "9c7efdadd09da67d9fa8af6207d9168e",
+        "ecf7a20ceb4caaa7ce8d7c73acd77293"
+      ],
+      "avoid-missing-image-alt": [
+        "afe930bb0ce3cc550db105d1ca3bafe6"
+      ],
+      "prefer-define-hero-tag": [
+        "4223746048e6888c8c5bad23a6f7f690"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "568923614a654fb0954a8c2bd6de483c"
+      ]
+    },
+    "lib/src/routes/unauthorized_route_page.dart": {
+      "avoid-importing-entrypoint-exports": [
+        "6107c03e4f0cfc414d8a74dcf38c6b0d"
+      ],
+      "prefer-action-button-tooltip": [
+        "c1a10cbf5fcae9cb93980a108d415a7e"
+      ],
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "unnecessary-trailing-comma": [
+        "9a37afd388575000024b2bbbf43cd93e",
+        "9c7efdadd09da67d9fa8af6207d9168e",
+        "ecf7a20ceb4caaa7ce8d7c73acd77293"
+      ],
+      "avoid-missing-image-alt": [
+        "afe930bb0ce3cc550db105d1ca3bafe6"
+      ],
+      "prefer-define-hero-tag": [
+        "c1a10cbf5fcae9cb93980a108d415a7e"
+      ]
+    }
+  }
+}

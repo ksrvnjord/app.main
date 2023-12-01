@@ -53,44 +53,50 @@ class AdminPage extends StatelessWidget {
             url: "https://heimdall.njord.nl/announcements",
           ),
 
-          FormSection(title: "Leedenadministratie", children: [
-            const MoreLinkTile(
-              leading: Icon(Icons.people),
-              label: "Beheer Leeden",
-              url: "https://heimdall.njord.nl/users",
-            ),
-            ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text('Beheer Groepen'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Groups'),
-            ),
-          ]).paddingDirectional(vertical: sectionPadding),
-          const FormSection(title: 'Afschrijfsysteem', children: [
-            MoreLinkTile(
-              leading: Icon(Icons.calendar_today),
-              label: "Maak (herhalende) Afschrijving",
-              url: "https://heimdall.njord.nl/rowing/reservations/new",
-            ),
-            MoreLinkTile(
-              leading: Icon(Icons.warning),
-              label: "Beheer Schades",
-              url: "https://heimdall.njord.nl/rowing/damages",
-            ),
-            MoreLinkTile(
-              leading: Icon(Icons.directions_boat),
-              label: "Beheer Boten",
-              url: "https://heimdall.njord.nl/rowing/equipment",
-            ),
-            ListTile(
-              leading: Icon(Icons.perm_identity, color: Colors.grey),
-              title: Text(
-                'Beheer permissies (Wordt nog aan gewerkt)',
-                style: TextStyle(color: Colors.grey),
+          FormSection(
+            title: "Leedenadministratie",
+            children: [
+              const MoreLinkTile(
+                leading: Icon(Icons.people),
+                label: "Beheer Leeden",
+                url: "https://heimdall.njord.nl/users",
               ),
-              enabled: false,
-            ),
-          ]).paddingDirectional(vertical: sectionVPadding),
+              ListTile(
+                leading: const Icon(Icons.group),
+                title: const Text('Beheer Groepen'),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () => context.goNamed('Manage Groups'),
+              ),
+            ],
+          ).paddingDirectional(vertical: sectionPadding),
+          const FormSection(
+            title: 'Afschrijfsysteem',
+            children: [
+              MoreLinkTile(
+                leading: Icon(Icons.calendar_today),
+                label: "Maak (herhalende) Afschrijving",
+                url: "https://heimdall.njord.nl/rowing/reservations/new",
+              ),
+              MoreLinkTile(
+                leading: Icon(Icons.warning),
+                label: "Beheer Schades",
+                url: "https://heimdall.njord.nl/rowing/damages",
+              ),
+              MoreLinkTile(
+                leading: Icon(Icons.directions_boat),
+                label: "Beheer Boten",
+                url: "https://heimdall.njord.nl/rowing/equipment",
+              ),
+              ListTile(
+                leading: Icon(Icons.perm_identity, color: Colors.grey),
+                title: Text(
+                  'Beheer permissies (Wordt nog aan gewerkt)',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                enabled: false,
+              ),
+            ],
+          ).paddingDirectional(vertical: sectionVPadding),
         ],
       ),
     );

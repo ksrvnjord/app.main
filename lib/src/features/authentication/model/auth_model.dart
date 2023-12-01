@@ -25,7 +25,6 @@ final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 // TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
   String error = '';
-  String storedUser = '';
 
   AuthState _authState = AuthState.loading; // Default to loading on startup.
 

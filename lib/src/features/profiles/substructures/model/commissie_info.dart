@@ -17,25 +17,12 @@ class CommissieInfo extends GroupInfo {
           description: description,
         );
 
-  factory CommissieInfo.fromJson(String source) =>
-      CommissieInfo.fromMap(json.decode(source) as Map<String, dynamic>);
-
   factory CommissieInfo.fromMap(Map<String, dynamic> map) {
     return CommissieInfo(
       name: map['name'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
-    );
-  }
-
-  CommissieInfo copyWith({
-    String? email,
-  }) {
-    return CommissieInfo(
-      name: name,
-      description: description,
-      email: email ?? this.email,
     );
   }
 

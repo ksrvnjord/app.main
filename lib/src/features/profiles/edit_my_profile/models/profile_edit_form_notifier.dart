@@ -19,10 +19,6 @@ class ProfileEditFormNotifier extends StateNotifier<ProfileForm> {
     state = state.copyWith(board: board);
   }
 
-  void setPloeg(String? ploeg) {
-    state = state.copyWith(ploeg: ploeg);
-  }
-
   void setDubbellid(bool? dubbellid) {
     state = state.copyWith(dubbellid: dubbellid);
   }

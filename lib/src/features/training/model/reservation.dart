@@ -33,19 +33,13 @@ class Reservation {
   @TimestampDateTimeConverter()
   final Timestamp endTimestamp;
 
-  @JsonKey(name: "createdAt")
-  @TimestampDateTimeConverter()
-  final Timestamp createdAtTimestamp = Timestamp.now();
-
   // We use getters so we can use DateTime instead of Timestamp in our code.
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime get startTime => startTimestamp.toDate();
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime get endTime => endTimestamp.toDate();
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  DateTime get createdAt => createdAtTimestamp.toDate();
 
-  Reservation({
+  const Reservation({
     required this.startTimestamp,
     required this.endTimestamp,
     required this.reservationObject,

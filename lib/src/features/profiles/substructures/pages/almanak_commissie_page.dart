@@ -30,10 +30,7 @@ class AlmanakCommissiePage extends ConsumerStatefulWidget {
 
 class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
   static const yearSelectorPadding = 8.0;
-  static const double widgetPadding = 16.0;
-  static const double titleFontSize = 20;
   static const double titleHPadding = 16;
-  static const double titleVPadding = 8;
 
   final ScrollController scrollController = ScrollController(
     keepScrollOffset: true,
