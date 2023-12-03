@@ -34,7 +34,7 @@ class AuthModel extends ChangeNotifier {
   oauth2.Client? get client => _client;
   AuthState get authState => _authState;
 
-  get _authConstants => GetIt.I.get<AuthConstants>();
+  AuthConstants get _authConstants => GetIt.I.get<AuthConstants>();
 
   set authState(AuthState value) {
     _authState = value;
