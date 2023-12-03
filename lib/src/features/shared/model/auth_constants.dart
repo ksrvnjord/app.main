@@ -17,17 +17,6 @@ class AuthConstants {
     }
   }
 
-  static Uri oauthEndpointFor(Environment environment) {
-    switch (environment) {
-      case Environment.production:
-        return Uri.parse('$prodBaseURL/oauth/token');
-      case Environment.demo:
-        return Uri.parse('$demoBaseURL/oauth/token');
-      default:
-        throw Exception('Environment not set.');
-    }
-  }
-
   get oauthId {
     switch (environment) {
       case Environment.production:
@@ -45,6 +34,17 @@ class AuthConstants {
         return 'J3VLpaahf406OCpMrQzAYKT4kjV03jSAnu3olNPu';
       case Environment.demo:
         return 'W2rE2hmgGYneR3TRp94JbSBvDcIDTf3KuaLZY39v';
+      default:
+        throw Exception('Environment not set.');
+    }
+  }
+
+  static Uri oauthEndpointFor(Environment environment) {
+    switch (environment) {
+      case Environment.production:
+        return Uri.parse('$prodBaseURL/oauth/token');
+      case Environment.demo:
+        return Uri.parse('$demoBaseURL/oauth/token');
       default:
         throw Exception('Environment not set.');
     }
