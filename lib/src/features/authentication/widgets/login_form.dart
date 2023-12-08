@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
-  static const routename = '/login';
   const LoginForm({Key? key}) : super(key: key);
 
   @override

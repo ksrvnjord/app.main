@@ -31,20 +31,8 @@ class UserGroupsListWidget extends StatelessWidget {
     }
 
     return GroupInfoTile(
-      header: entry.name,
-      startYear: entry.year,
       endYear: entry.year + 1,
-      tags: (entry.role == null || (entry.role as String).isEmpty)
-          ? null
-          : [
-              Tag(
-                label: entry.role as String,
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-                icon: Icons.person,
-              ),
-            ],
-      groupPath: groupPath,
+      header: entry.name,
       onTap: () => context.pushNamed(
         groupPath,
         pathParameters: {
@@ -56,6 +44,17 @@ class UserGroupsListWidget extends StatelessWidget {
           "year": entry.year.toString(),
         },
       ),
+      startYear: entry.year,
+      tags: (entry.role == null || (entry.role as String).isEmpty)
+          ? null
+          : [
+              Tag(
+                label: entry.role as String,
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                icon: Icons.person,
+              ),
+            ],
     );
   }
 

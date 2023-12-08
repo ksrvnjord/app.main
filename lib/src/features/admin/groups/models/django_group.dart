@@ -73,11 +73,6 @@ class DjangoGroupNotifier extends Notifier<DjangoGroup> {
   void setYear(int year) {
     state = state.copyWith(year: year);
   }
-
-  void reset() {
-    state =
-        DjangoGroup(name: "", type: "Competitieploeg", year: getNjordYear());
-  }
 }
 
 // ignore: prefer-static-class

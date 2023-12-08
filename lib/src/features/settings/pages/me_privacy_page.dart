@@ -44,7 +44,6 @@ class MePrivacyWidget extends ConsumerStatefulWidget {
 class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
   Map<String, bool> checkboxes = {};
   bool listed = false;
-  Color buttonColor = Colors.lightBlue;
 
   @override
   void initState() {
@@ -127,9 +126,10 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
         ].toRow(),
         const Divider(),
         if (listed)
-          FormSection(title: "Zichtbaarheid per veld", children: [
-            ...(checkboxes.keys.map<Widget>(
-              (key) {
+          FormSection(
+            title: "Zichtbaarheid per veld",
+            children: [
+              ...(checkboxes.keys.map<Widget>((key) {
                 return [
                   Checkbox.adaptive(
                     value: checkboxes[key],
@@ -138,9 +138,9 @@ class _MePrivacyWidgetState extends ConsumerState<MePrivacyWidget> {
                   ),
                   Text(checkboxReadableMap[key] ?? key),
                 ].toRow();
-              },
-            ).toList()),
-          ]),
+              }).toList()),
+            ],
+          ),
         [
           ElevatedButton(
             onPressed: () => save(client),

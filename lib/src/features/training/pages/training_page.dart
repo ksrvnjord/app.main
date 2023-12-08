@@ -22,10 +22,7 @@ class TrainingPage extends StatelessWidget {
       ),
       body: CustomPaint(
         // ignore: sort_child_properties_last
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: const TrainingList(),
       ),
       floatingActionButton: FirebaseWidget(
