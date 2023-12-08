@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker_widget/image_picker_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreatePostPage extends ConsumerStatefulWidget {
   const CreatePostPage({super.key});
@@ -21,6 +26,8 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
   String selectedTopic = ""; // Default value.
   String title = '';
   String content = '';
+  File? galleryFile;
+  final picker = ImagePicker();
 
   bool postCreationInProgress = false;
 
@@ -89,6 +96,23 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                       ? 'Zonder inhoud kom je nergens.'
                       : null,
                 ),
+                if (galleryFile == null) ...[
+                  TextButton(
+                    onPressed: () => showPicker(context: context),
+                    child: Text("Afbeelding toevoegen"),
+                  ),
+                ] else ...[
+                  Image(image: Image.file(galleryFile!).image),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        galleryFile = null;
+                      });
+                      print("Galleryfile is $galleryFile");
+                    },
+                    child: Text("Afbeelding verwijderen"),
+                  )
+                ]
               ].toColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 separator: const SizedBox(height: 16),
@@ -116,10 +140,10 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
     postCreationInProgress = true;
 
     await PostService.create(
-      topic: selectedTopic,
-      title: title,
-      content: content,
-    );
+        topic: selectedTopic,
+        title: title,
+        content: content,
+        image: galleryFile);
 
     if (!mounted) {
       return;
@@ -131,5 +155,54 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
 
     // ignore: avoid-ignoring-return-values
     context.goNamed("Posts");
+  }
+
+  void showPicker({
+    required BuildContext context,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () {
+                  getImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () {
+                  getImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future getImage(
+    ImageSource img,
+  ) async {
+    final pickedFile = await picker.pickImage(source: img);
+    XFile? xfilePick = pickedFile;
+    setState(
+      () {
+        if (xfilePick != null) {
+          galleryFile = File(pickedFile!.path);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+              const SnackBar(content: Text('Nothing is selected')));
+        }
+      },
+    );
   }
 }
