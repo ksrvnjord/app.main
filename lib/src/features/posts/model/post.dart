@@ -35,7 +35,7 @@ class Post {
       topic: data['topic'],
       imageRef: data['imageRef'] == null
           ? null
-          : FirebaseStorage.instance.ref(data['image']),
+          : FirebaseStorage.instance.ref(data['imageRef']),
     );
   }
 

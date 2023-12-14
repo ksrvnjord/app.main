@@ -75,6 +75,7 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
 
   Future _getImage(ImageSource img, BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: img);
+    if (!mounted) return;
     setState(() {
       if (pickedFile == null) {
         // ignore: avoid-ignoring-return-values
@@ -231,8 +232,8 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
         context.goNamed("Posts");
       }
     } on Exception {
-      // ignore: avoid-ignoring-return-values
       if (mounted) {
+        // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
