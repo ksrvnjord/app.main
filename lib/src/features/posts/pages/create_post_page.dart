@@ -1,16 +1,18 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker_widget/image_picker_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
-import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 
 class CreatePostPage extends ConsumerStatefulWidget {
   const CreatePostPage({super.key});
@@ -23,18 +25,66 @@ class CreatePostPage extends ConsumerStatefulWidget {
 
 class CreatePostPageState extends ConsumerState<CreatePostPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final _picker = ImagePicker();
+
   String selectedTopic = ""; // Default value.
   String title = '';
   String content = '';
-  File? galleryFile;
-  final picker = ImagePicker();
-
+  File? _galleryFile;
   bool postCreationInProgress = false;
 
   @override
   void initState() {
     super.initState();
     selectedTopic = ref.read(postTopicsProvider).elementAt(1);
+  }
+
+  Future<void> _showPicker({required BuildContext prevContext}) {
+    return showModalBottomSheet(
+      context: prevContext,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.gallery, context)
+                      .then((value) => Navigator.of(context).pop());
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.camera, context)
+                      .then((value) => Navigator.of(context).pop());
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future _getImage(ImageSource img, BuildContext context) async {
+    final pickedFile = await _picker.pickImage(source: img);
+    setState(() {
+      if (pickedFile == null) {
+        // ignore: avoid-ignoring-return-values
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nothing is selected')),
+        );
+      } else {
+        _galleryFile = File(pickedFile.path);
+      }
+    });
   }
 
   @override
@@ -96,23 +146,33 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                       ? 'Zonder inhoud kom je nergens.'
                       : null,
                 ),
-                if (galleryFile == null) ...[
+                if (_galleryFile == null) ...[
                   TextButton(
-                    onPressed: () => showPicker(context: context),
-                    child: Text("Afbeelding toevoegen"),
+                    onPressed: () =>
+                        // ignore: prefer-correct-handler-name
+                        unawaited(_showPicker(prevContext: context)),
+                    child: const Text("Afbeelding toevoegen"),
                   ),
                 ] else ...[
-                  Image(image: Image.file(galleryFile!).image),
+                  Image(
+                    image: Image.file(
+                      // Can't be null because of null check above.
+                      // ignore: avoid-non-null-assertion
+                      _galleryFile!,
+                      semanticLabel: "Geselecteerde Afbeelding",
+                    ).image,
+                    semanticLabel: "Geselecteerde afbeelding",
+                  ),
                   TextButton(
+                    // ignore: prefer-extracting-callbacks
                     onPressed: () {
                       setState(() {
-                        galleryFile = null;
+                        _galleryFile = null;
                       });
-                      print("Galleryfile is $galleryFile");
                     },
-                    child: Text("Afbeelding verwijderen"),
-                  )
-                ]
+                    child: const Text("Afbeelding verwijderen"),
+                  ),
+                ],
               ].toColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 separator: const SizedBox(height: 16),
@@ -139,70 +199,51 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
 
     postCreationInProgress = true;
 
-    await PostService.create(
+    final currentUser = ref.watch(currentUserNotifierProvider);
+    if (currentUser == null) {
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Er is iets misgegaan!')),
+      );
+      FirebaseCrashlytics.instance.recordFlutterFatalError(
+        FlutterErrorDetails(
+          exception: Exception("No current user when making Post."),
+        ),
+      );
+
+      return;
+    }
+
+    try {
+      await PostService.create(
         topic: selectedTopic,
         title: title,
         content: content,
-        image: galleryFile);
-
-    if (!mounted) {
-      return;
-    }
-    // ignore: avoid-ignoring-return-values
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Niewe post aangemaakt!')),
-    );
-
-    // ignore: avoid-ignoring-return-values
-    context.goNamed("Posts");
-  }
-
-  void showPicker({
-    required BuildContext context,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
-                onTap: () {
-                  getImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
-                onTap: () {
-                  getImage(ImageSource.camera);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+        currentUser: currentUser,
+        image: _galleryFile,
+      );
+      if (mounted) {
+        // ignore: avoid-ignoring-return-values
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Niewe post aangemaakt!')),
+        );
+        // ignore: avoid-ignoring-return-values
+        context.goNamed("Posts");
+      }
+    } on Exception {
+      // ignore: avoid-ignoring-return-values
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Het is niet gelukt om de post te maken, melding gemaakt naar de AppCo!',
+            ),
           ),
         );
-      },
-    );
-  }
-
-  Future getImage(
-    ImageSource img,
-  ) async {
-    final pickedFile = await picker.pickImage(source: img);
-    XFile? xfilePick = pickedFile;
-    setState(
-      () {
-        if (xfilePick != null) {
-          galleryFile = File(pickedFile!.path);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-              const SnackBar(content: Text('Nothing is selected')));
-        }
-      },
-    );
+      }
+      rethrow;
+    } finally {
+      postCreationInProgress = false;
+    }
   }
 }

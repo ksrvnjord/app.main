@@ -21,7 +21,7 @@ class PostWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Post? post = snapshot.data();
+    final post = snapshot.data();
     const int contentMaxLines = 12;
 
     const double headerPadding = 4;
@@ -64,7 +64,7 @@ class PostWidget extends ConsumerWidget {
           ),
         ),
       ].toRow(),
-      Image(image: image)
+      // Image(image: image).
       Chip(
         label: Text(postTopic),
         side: BorderSide.none,

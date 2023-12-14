@@ -78,6 +78,7 @@ dependencies:
       url: https://github.com/ksrvnjord/firebase_pagination
 
   json_annotation: ^4.8.1
+  image_picker: ^1.0.5
 
 dependency_overrides:
   package_info_plus: any

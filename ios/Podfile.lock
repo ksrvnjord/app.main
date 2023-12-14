@@ -127,10 +127,7 @@ PODS:
     - FirebaseFirestore/AutodetectLeveldb (= 10.15.0)
   - FirebaseFirestore/AutodetectLeveldb (10.15.0):
     - FirebaseFirestore/Base
-    - FirebaseFirestore/WithLeveldb
   - FirebaseFirestore/Base (10.15.0)
-  - FirebaseFirestore/WithLeveldb (10.15.0):
-    - FirebaseFirestore/Base
   - FirebaseFunctions (10.15.0):
     - FirebaseAppCheckInterop (~> 10.10)
     - FirebaseAuthInterop (~> 10.0)
@@ -401,7 +398,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 2f4bee5ed00301b5e56da0849268797a2dd31fb4
   FirebaseCrashlytics: a83f26fb922a3fe181eb738fb4dcf0c92bba6455
   FirebaseDatabase: f93f1481c7e9e3d77af960cdff82a408d37693e6
-  FirebaseFirestore: 58d92e3cc19fd1c93e279d466aaf148ce6dbf635
+  FirebaseFirestore: 8ccae2f570290edebba10527d7b19a7a07e9ca55
   FirebaseFunctions: e5a95bdd33077eefc3232381d24495ae66d3b1a7
   FirebaseInstallations: cae95cab0f965ce05b805189de1d4c70b11c76fb
   FirebaseMessaging: 0c0ae1eb722ef0c07f7801e5ded8dccd1357d6d4
@@ -437,4 +434,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 842bb15d4a3bcb9a1e94250795b9731e21c8c77a
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3
