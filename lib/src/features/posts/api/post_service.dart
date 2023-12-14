@@ -14,8 +14,13 @@ class PostService {
         toFirestore: (post, _) => post.toJson(),
       );
 
-  static deletePost(String path) async {
-    await FirebaseFirestore.instance.doc(path).delete();
+  static deletePost(DocumentSnapshot<Post> snapshot) async {
+    final post = snapshot.data();
+
+    if (post?.imageRef != null) {
+      await post?.imageRef?.delete();
+    }
+    snapshot.reference.delete();
   }
 
   static like(DocumentSnapshot<Post> snapshot) {
