@@ -73,12 +73,13 @@ class PostWidget extends ConsumerWidget {
             .when(
               data: (image) => Image(
                 image: image,
-                width: MediaQuery.of(context).size.width,
                 semanticLabel: "Post Image",
+                width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
               ),
               error: (error, stackTrace) => const Icon(Icons.error),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
             ),
       Chip(
         label: Text(postTopic),

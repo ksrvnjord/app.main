@@ -1,5 +1,5 @@
 {
-  "date": "2023-11-29 21:40:24.061185Z",
+  "date": "2023-12-15 16:14:56.506878Z",
   "paths": {
     "lib/main.dart": {
       "avoid-unnecessary-futures": [
@@ -16,6 +16,10 @@
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-mutating-parameters": [
+        "93da65a9fd0004d9477aeac024e08e15",
+        "93da65a9fd0004d9477aeac024e08e15"
       ],
       "arguments-ordering": [
         "66f13c51e2c1b1ed4c2cce9e804dcd67"
@@ -45,13 +49,13 @@
         "959a6a8e05b68fc016946d54cf841373",
         "95942caa2564500a352691483bdb2ba6"
       ],
+      "unnecessary-trailing-comma": [
+        "72ab9e78f7de37a6aabaec7f60aab990"
+      ],
       "avoid-async-call-in-sync-function": [
         "83f71b7ebf09e9de2326dbda49334e60",
         "f634a9d59dcb0af8ca7ce4a20b9bab69",
         "1202aa73cf1ca7c827782086bc4eff8c"
-      ],
-      "unnecessary-trailing-comma": [
-        "72ab9e78f7de37a6aabaec7f60aab990"
       ],
       "prefer-correct-handler-name": [
         "95942caa2564500a352691483bdb2ba6"
@@ -64,9 +68,6 @@
       "avoid-importing-entrypoint-exports": [
         "7a894fcc35add66536989227d11ae28c"
       ],
-      "parameters-ordering": [
-        "f6c69ad2c0c324918769d4a23191c162"
-      ],
       "prefer-named-boolean-parameters": [
         "303e47b63124a1e52aee803f6d00fc21"
       ]
@@ -74,9 +75,6 @@
     "lib/src/features/settings/pages/me_page.dart": {
       "avoid-importing-entrypoint-exports": [
         "7a894fcc35add66536989227d11ae28c"
-      ],
-      "avoid-async-call-in-sync-function": [
-        "1236bcced12015f1454eebda609b5b55"
       ],
       "unnecessary-trailing-comma": [
         "c65e5c54a23187c8fc14388c093b5cb0"
@@ -91,10 +89,6 @@
         "7215e72895260cfb74180403485a0f09",
         "43781db5c40ecc39fd718685594f0956"
       ],
-      "parameters-ordering": [
-        "ecf127c443db7f5c3eb48ae18fe1db6d",
-        "f08a1088b4f5f996709c82f663e81ada"
-      ],
       "map-keys-ordering": [
         "6ad20c3479fb90893ca2b81359da66e6",
         "f34570889fc30aed5683b137bc1930ca",
@@ -106,9 +100,6 @@
       "proper-super-calls": [
         "cc2563519e56b89837b76f1e49606f16"
       ],
-      "avoid-similar-names": [
-        "4ba8f08e53fa12454e94d8a9abd64858"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -119,6 +110,9 @@
       ],
       "prefer-dedicated-media-query-methods": [
         "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
       ],
       "prefer-correct-handler-name": [
         "075363380323b4799196ff5108cc951d",
@@ -139,6 +133,9 @@
         "987a8a056257d7029379346bf7cde126",
         "deb33402885363bab39c1fc58cd52772"
       ],
+      "avoid-similar-names": [
+        "4ba8f08e53fa12454e94d8a9abd64858"
+      ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32"
       ]
@@ -147,23 +144,15 @@
       "avoid-importing-entrypoint-exports": [
         "7a894fcc35add66536989227d11ae28c"
       ],
-      "avoid-async-call-in-sync-function": [
-        "1236bcced12015f1454eebda609b5b55"
-      ],
       "avoid-passing-default-values": [
         "91bfc35ba14bb4fb21360b15e01f73f3"
       ],
       "prefer-widget-private-members": [
         "1c84c21482bbe6c894b45ddf9fa43fab",
         "e8d8654c197e7b3beed4d69e3edd3a5b",
-        "f0e615cd375700a82c0a07a70f48cacd",
         "c2da3cdf14736ef1e279dae27b8e2a1f",
         "43781db5c40ecc39fd718685594f0956",
         "5cb6025334b6e72081fc862a7b4e0d38"
-      ],
-      "prefer-moving-to-variable": [
-        "dffac38007c3b0bade1dd20485607c6a",
-        "dffac38007c3b0bade1dd20485607c6a"
       ],
       "avoid-collection-mutating-methods": [
         "755c6e7e188826f57c89a6014b041584",
@@ -171,6 +160,10 @@
       ],
       "avoid-inverted-boolean-checks": [
         "20791eec9ee0f7586c177e2a83af1f78"
+      ],
+      "prefer-moving-to-variable": [
+        "dffac38007c3b0bade1dd20485607c6a",
+        "dffac38007c3b0bade1dd20485607c6a"
       ],
       "prefer-named-boolean-parameters": [
         "e431d687bf4b2c65fbd94b12ae0cb5d9",
@@ -195,40 +188,27 @@
       ],
       "unnecessary-trailing-comma": [
         "022251409e8d758bc7f9c2f5ff1d90df",
-        "1f6dfc1d52f445e798368d77655578f8",
         "a918b41d93ea7ffbc03962ccdcb6789e"
       ]
     },
-    "lib/src/features/damages/queries/get_damage.dart": {
-      "parameters-ordering": [
-        "77c656e9d0ce947712c5fc70db29171f"
-      ]
-    },
     "lib/src/features/damages/queries/all_object_types.dart": {
-      "avoid-similar-names": [
-        "66cd048b118707bb72741365bc34e991"
-      ],
       "prefer-correct-identifier-length": [
         "e1671797c52e15f763380b45e841ec32"
       ],
       "avoid-collection-mutating-methods": [
         "34ec78fcc91ffb1e54cd85e4a0924332"
+      ],
+      "avoid-similar-names": [
+        "66cd048b118707bb72741365bc34e991"
       ]
     },
     "lib/src/features/damages/queries/object_by_type_and_name.dart": {
       "avoid-missing-interpolation": [
         "afdc18c224169cc1d722ad9e54072612",
         "773a6e8c0c2d647957be351ae07e050d"
-      ],
-      "parameters-ordering": [
-        "3c2ab40afa0ee84a380d44bcbb54ef16"
       ]
     },
     "lib/src/features/damages/model/damage.dart": {
-      "parameters-ordering": [
-        "465d616979f6dc3d29d07fd99a24b7f3",
-        "b647dddce8fad0f0025537ffd12adb2e"
-      ],
       "map-keys-ordering": [
         "a57c106c2f25ca64330b4d2a7d5f2c51",
         "4907f7b71851c72808aff43d0fe77146",
@@ -249,14 +229,14 @@
         "87c37dda0fde5fb58c664ff2f20692bc",
         "87c37dda0fde5fb58c664ff2f20692bc"
       ],
-      "avoid-similar-names": [
-        "1d861b71feab89849dce7aa2f1d3facd"
-      ],
       "move-variable-closer-to-its-usage": [
         "e77c7472f61df93d5ad749748dc8615f"
       ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5"
+      ],
+      "avoid-similar-names": [
+        "1d861b71feab89849dce7aa2f1d3facd"
       ]
     },
     "lib/src/features/damages/model/damage_form.dart": {
@@ -275,9 +255,6 @@
         "9c297e50e13fe8301ff37d409b142923",
         "2d2bb414710326c7bab99653670bdd60",
         "b2e97ceac53ba7aff43e7d49e1417f7f"
-      ],
-      "parameters-ordering": [
-        "7c546594bf678ab1b599dd97fd083108"
       ]
     },
     "lib/src/features/damages/api/damage_provider.dart": {
@@ -289,13 +266,6 @@
       ]
     },
     "lib/src/features/damages/pages/damages_list_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "prefer-action-button-tooltip": [
-        "8474b7ebd09b27a76de7e80f78fe1b3f"
-      ],
       "unnecessary-trailing-comma": [
         "182cb03cab8dd313ad65ec65763bfa7a"
       ],
@@ -305,19 +275,23 @@
       "avoid-passing-default-values": [
         "91bfc35ba14bb4fb21360b15e01f73f3"
       ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
       "avoid-negated-conditions": [
         "bcb66dbdf790542862c32e41709a0e66"
       ],
       "prefer-define-hero-tag": [
+        "8474b7ebd09b27a76de7e80f78fe1b3f"
+      ],
+      "prefer-action-button-tooltip": [
         "8474b7ebd09b27a76de7e80f78fe1b3f"
       ]
     },
     "lib/src/features/damages/pages/damages_show_page.dart": {
       "member-ordering": [
         "b9e75271fbdc49ea19393791947c7364"
-      ],
-      "parameters-ordering": [
-        "30c498c6471385448a5cf000bc2a9e33"
       ],
       "unnecessary-trailing-comma": [
         "b682336f433270093c182e05b60a8da0",
@@ -328,9 +302,6 @@
     "lib/src/features/damages/pages/damages_edit_page.dart": {
       "member-ordering": [
         "12798f53d1b2355633fdec89ad9987a0"
-      ],
-      "parameters-ordering": [
-        "30c498c6471385448a5cf000bc2a9e33"
       ],
       "arguments-ordering": [
         "98e0190fe6e0c4882ab3ea788ff20efd"
@@ -350,34 +321,18 @@
       ],
       "arguments-ordering": [
         "5a410656528d5742a7851551a06049ad"
-      ],
-      "avoid-unused-instances": [
-        "d6b72005b3e62e110fa388005cac6bc9"
       ]
     },
     "lib/src/features/damages/widgets/damage_edit_widget.dart": {
-      "avoid-stateless-widget-initialized-fields": [
-        "c771ca86f039c2757e843f910a087601",
-        "28be9fec83a3e9bd21320e01f0ca7938"
-      ],
       "member-ordering": [
         "d368d90f83a7465e3931e85dd6a34628"
-      ],
-      "prefer-action-button-tooltip": [
-        "cec4af69136c0db09674b241f4e0564f"
       ],
       "prefer-widget-private-members": [
         "ae6d0c041807d52cb7ad953d5d2baca9",
         "41fd29297c9985d2c72b53971c71eb75"
       ],
       "avoid-explicit-type-declaration": [
-        "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
-      ],
-      "parameters-ordering": [
-        "30c498c6471385448a5cf000bc2a9e33",
-        "6c780e2b8c40831e4714305ece0ac056",
-        "e2bb59dac71e96c3346f0639eac42682"
       ],
       "prefer-correct-handler-name": [
         "ae6d0c041807d52cb7ad953d5d2baca9"
@@ -394,6 +349,9 @@
         "c38363caf9ca3eb3428b7ed9b108564b"
       ],
       "prefer-define-hero-tag": [
+        "cec4af69136c0db09674b241f4e0564f"
+      ],
+      "prefer-action-button-tooltip": [
         "cec4af69136c0db09674b241f4e0564f"
       ],
       "prefer-correct-error-name": [
@@ -416,9 +374,6 @@
         "5787b8d48c855e896370e9a4ecd10375",
         "ead0fe361653a3265241ed18e57504c3"
       ],
-      "prefer-action-button-tooltip": [
-        "890f3198ff6e4e7dbd6dab8086495fad"
-      ],
       "prefer-widget-private-members": [
         "0d11d9d29e081183e47504e22193ce66"
       ],
@@ -431,15 +386,18 @@
       "prefer-define-hero-tag": [
         "890f3198ff6e4e7dbd6dab8086495fad"
       ],
+      "prefer-action-button-tooltip": [
+        "890f3198ff6e4e7dbd6dab8086495fad"
+      ],
       "avoid-async-call-in-sync-function": [
         "39f797ed0d5bdb85fb9227f3d3710253"
+      ],
+      "prefer-correct-error-name": [
+        "56bd7107802ebe56c6918992f0608ec6"
       ],
       "prefer-moving-to-variable": [
         "07f077698c0745d235a7fa9bd7f97670",
         "07f077698c0745d235a7fa9bd7f97670"
-      ],
-      "prefer-correct-error-name": [
-        "56bd7107802ebe56c6918992f0608ec6"
       ],
       "avoid-unused-ignores": [
         "5d1ddb1fbc851e185045c97c57e03089"
@@ -474,28 +432,25 @@
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
-      "parameters-ordering": [
-        "811a323651432e6c412ef06c2faff444"
-      ],
       "unnecessary-trailing-comma": [
         "9ceec0ab704bc7d62095e7c40fe24dd3",
         "1acc136c8dfc92aafe6c251f183fea59"
       ],
-      "avoid-async-call-in-sync-function": [
-        "fd785147b4a67d781ff37a9cbd8b2f29"
-      ],
       "avoid-negated-conditions": [
         "3413b207f6c8cdf694c20db6252a8749",
         "e8175aebb36b02854bacef25e2c51a2e"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "fd785147b4a67d781ff37a9cbd8b2f29"
       ],
       "avoid-missing-image-alt": [
         "362f52663782b72bae01729b65fe5265"
       ]
     },
     "lib/src/features/damages/widgets/damage_select_widget.dart": {
-      "avoid-stateless-widget-initialized-fields": [
-        "28be9fec83a3e9bd21320e01f0ca7938"
-      ],
       "prefer-widget-private-members": [
         "7745cb40e309c232eae04c46177d8b93"
       ],
@@ -505,15 +460,12 @@
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
       "avoid-mutating-parameters": [
         "436d027ec173e87cc0cd5fb702cb58c4",
         "436d027ec173e87cc0cd5fb702cb58c4"
-      ],
-      "parameters-ordering": [
-        "31849bd9f103ce8a53a60949c70ffa52"
-      ],
-      "avoid-inferrable-type-arguments": [
-        "00a3270f172fa9c8cd2ddb17db4fd26b"
       ]
     },
     "lib/src/features/damages/widgets/damage_tile_widget.dart": {
@@ -523,9 +475,6 @@
       "prefer-correct-callback-field-name": [
         "572a12fc46e8c7f1bc718f733dc96414",
         "12c7d9bac81a9e4bb75218a48d8d6a8b"
-      ],
-      "parameters-ordering": [
-        "4313f9da18e62710805ce547fda2d824"
       ],
       "avoid-explicit-type-declaration": [
         "27118326006d3829667a400ad23d5d98",
@@ -537,15 +486,6 @@
         "bf223e260113f26436de880ea9810a11",
         "65bdb20b8054c8498623ea349da736c3",
         "2885754456b105ec623c79f706a8c07e"
-      ]
-    },
-    "lib/src/features/posts/model/post.dart": {
-      "parameters-ordering": [
-        "d8b8683088957d3f34b720cc12417f2d"
-      ],
-      "map-keys-ordering": [
-        "da5160d484a68092f11f0f188dfa582c",
-        "3be8fc909da864d00b0fb543910bf67c"
       ]
     },
     "lib/src/features/posts/model/comment.dart": {
@@ -577,24 +517,11 @@
       "avoid-async-call-in-sync-function": [
         "3816d45b3746682a395656c81da69a38"
       ],
-      "parameters-ordering": [
-        "359ce8aa56f277da15e0aef079d47336"
-      ],
-      "avoid-explicit-type-declaration": [
-        "e974876d5723b4af11b2f7ffeaebe8ad"
-      ],
-      "avoid-nullable-interpolation": [
-        "2c21b7997eda2cbeb4fd120a6a2aa797",
-        "4244cd221707ddc64d71d4c45d06941c"
+      "avoid-unnecessary-return": [
+        "505b97969baa28c3f607a38ee02f4f2d"
       ]
     },
     "lib/src/features/posts/pages/posts_page.dart": {
-      "avoid-shadowing": [
-        "18389a4a9ad5795744699cff0ba66c15"
-      ],
-      "prefer-action-button-tooltip": [
-        "b0f9ea1a15c1c414a492b7f9b1ef30f9"
-      ],
       "unnecessary-trailing-comma": [
         "182cb03cab8dd313ad65ec65763bfa7a",
         "43ddcd6d2df988b6f54f01c77a1abc8a"
@@ -606,10 +533,13 @@
         "b199bac0b8c36fd2fcf49497754fd0db",
         "1e38c6aa661ab0f911832cfeae232aa2"
       ],
-      "prefer-dedicated-media-query-methods": [
-        "8bf8854bebe108183caeb845c7676ae4"
+      "avoid-shadowing": [
+        "18389a4a9ad5795744699cff0ba66c15"
       ],
       "prefer-define-hero-tag": [
+        "b0f9ea1a15c1c414a492b7f9b1ef30f9"
+      ],
+      "prefer-action-button-tooltip": [
         "b0f9ea1a15c1c414a492b7f9b1ef30f9"
       ]
     },
@@ -623,14 +553,10 @@
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
       "arguments-ordering": [
-        "0f51ae09b2b3e5deccd546b31a088688",
         "3fcb0e229e62b057d1fb3b580a8aa278"
       ]
     },
     "lib/src/features/posts/pages/create_post_page.dart": {
-      "prefer-action-button-tooltip": [
-        "9141c9aa3f2136c52dc15b6800dab1e2"
-      ],
       "prefer-widget-private-members": [
         "ffe4560fc4ecf3c7be4a7d14611a92f1",
         "d5d3db1765287eef77d7927cc956f50a",
@@ -643,6 +569,10 @@
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
         "fa7153f7ed1cb6c0fcf2ffb2fac21748"
       ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b",
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
       "unnecessary-trailing-comma": [
         "3594d1945a71c33f10a79b785cca75ec"
       ],
@@ -650,6 +580,9 @@
         "a1f86c5413c3cd87c53ce6d363d66083"
       ],
       "prefer-define-hero-tag": [
+        "9141c9aa3f2136c52dc15b6800dab1e2"
+      ],
+      "prefer-action-button-tooltip": [
         "9141c9aa3f2136c52dc15b6800dab1e2"
       ],
       "avoid-unused-ignores": [
@@ -722,9 +655,6 @@
       "prefer-explicit-function-type": [
         "86408593c34af77fdd90df932f8b5261"
       ],
-      "avoid-unused-instances": [
-        "d6b72005b3e62e110fa388005cac6bc9"
-      ],
       "avoid-unnecessary-call": [
         "53b9e9679a8ea25880376080b76f98ad",
         "53b9e9679a8ea25880376080b76f98ad"
@@ -747,32 +677,25 @@
       ]
     },
     "lib/src/features/posts/widgets/post_header_bar.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "member-ordering": [
         "6031369f64ff109e16b711ccf176edf8"
-      ],
-      "avoid-similar-names": [
-        "c270794483257d7f66b064d7f87be329"
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
-      ],
-      "avoid-local-functions": [
-        "468c007fcdfce0cf1181f84bd406ecfb"
       ],
       "unnecessary-trailing-comma": [
         "a918b41d93ea7ffbc03962ccdcb6789e",
         "837e445753be39d638cd0634e7ac804c"
       ],
       "prefer-correct-handler-name": [
-        "8a8730509d25032cb9246b2b1c702ae2",
-        "f08297949346b8400df9f5fad1f6f85e"
+        "8a8730509d25032cb9246b2b1c702ae2"
       ],
-      "avoid-async-call-in-sync-function": [
-        "70a7937a14d951d482546796e82d430d"
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "avoid-similar-names": [
+        "c270794483257d7f66b064d7f87be329"
       ]
     },
     "lib/src/features/posts/widgets/post_list.dart": {
@@ -784,12 +707,6 @@
     "lib/src/features/posts/widgets/comment_card.dart": {
       "member-ordering": [
         "b51b22dd7eaa6c1dd77cf05ffe09f314"
-      ],
-      "parameters-ordering": [
-        "144ecad908d8549b1dca3962a8e952da"
-      ],
-      "prefer-moving-to-variable": [
-        "58f9f295f47b3725a6a4083f31bf85ec"
       ],
       "avoid-explicit-type-declaration": [
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
@@ -808,12 +725,12 @@
       ],
       "avoid-async-call-in-sync-function": [
         "25622513662be302701b8cd5c9acd0aa"
+      ],
+      "prefer-moving-to-variable": [
+        "58f9f295f47b3725a6a4083f31bf85ec"
       ]
     },
     "lib/src/features/posts/widgets/post_card.dart": {
-      "parameters-ordering": [
-        "d3175d85c5979830c6d47e15cdbac45a"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -829,9 +746,6 @@
       "member-ordering": [
         "2743ea58b3d713169cd66f985166fbc8"
       ],
-      "parameters-ordering": [
-        "7be92164bbbc077b1daa0b9cdba30d19"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -844,9 +758,6 @@
       "member-ordering": [
         "4f1449ca9fa78126fcd2618663a2183b"
       ],
-      "parameters-ordering": [
-        "a4a2bce21484c6712c95509cb595b2e4"
-      ],
       "arguments-ordering": [
         "beb8ce634aca1ee039e2a65bb0ee4ee4"
       ],
@@ -858,9 +769,6 @@
       ]
     },
     "lib/src/features/posts/widgets/post_widget.dart": {
-      "parameters-ordering": [
-        "752bb5cdeb46e4437318a564b8ca2f3c"
-      ],
       "avoid-explicit-type-declaration": [
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -877,6 +785,9 @@
       "avoid-async-call-in-sync-function": [
         "25622513662be302701b8cd5c9acd0aa"
       ],
+      "prefer-dedicated-media-query-methods": [
+        "8bf8854bebe108183caeb845c7676ae4"
+      ],
       "unnecessary-trailing-comma": [
         "b09fe6b60ca47b45834ac3612c055bcd",
         "a918b41d93ea7ffbc03962ccdcb6789e"
@@ -886,28 +797,14 @@
       ]
     },
     "lib/src/features/posts/widgets/clickable_profile_picture_widget.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "parameters-ordering": [
-        "ec3a1ffceffcaf51010f002606fc4c08"
-      ],
       "avoid-async-call-in-sync-function": [
         "b79b4dd2aa671193538102b3576d5ba1"
-      ]
-    },
-    "lib/src/features/training/model/reservation.dart": {
-      "avoid-explicit-type-declaration": [
-        "a3d5de3eac8bb00ae86fd1a1005f1500"
       ],
-      "parameters-ordering": [
-        "c4b8442a7f9fe263810fa6bff313e948"
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
       ]
     },
     "lib/src/features/training/model/reservation_object.dart": {
-      "parameters-ordering": [
-        "d13b14503742633c972ba734ebb4d772"
-      ],
       "map-keys-ordering": [
         "92fe114dfc18197f92c8de916049c4e1",
         "a0c4dfe2c708275008a4ff44aa39393d",
@@ -934,17 +831,11 @@
       ]
     },
     "lib/src/features/training/pages/show_training_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "member-ordering": [
         "570ae7173ee2d1dc610d4b904e9430d5"
       ],
       "prefer-widget-private-members": [
         "619f3f581bca96e79789957623172963"
-      ],
-      "avoid-similar-names": [
-        "ebb9eae58616905763342f59d2eb1471"
       ],
       "unnecessary-trailing-comma": [
         "1bf535696e3126f6f9b463f028c45099",
@@ -963,17 +854,20 @@
         "daa51c4995f7b5d8aca77a2f6e34ff9a",
         "0aa842dc54049e4fbdf4e5ca2819d74e"
       ],
-      "avoid-redundant-async": [
-        "0df93e34273b367bb63bad28c94c78d5"
+      "avoid-similar-names": [
+        "ebb9eae58616905763342f59d2eb1471"
       ],
       "avoid-inferrable-type-arguments": [
         "3f63415e4669117ff49f73960a4719d0"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
+      "avoid-redundant-async": [
+        "0df93e34273b367bb63bad28c94c78d5"
       ]
     },
     "lib/src/features/training/pages/show_filters_page.dart": {
-      "avoid-stateless-widget-initialized-fields": [
-        "f0663f8579ed590509d493d6b0b0eadd"
-      ],
       "unnecessary-trailing-comma": [
         "182cb03cab8dd313ad65ec65763bfa7a",
         "44b685b73cb34cb1d64323614757b71c",
@@ -989,9 +883,6 @@
       ]
     },
     "lib/src/features/training/pages/all_training_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "avoid-explicit-type-declaration": [
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
         "ae1905e236aeb0d9e6fbc9123d7d86de"
@@ -1002,6 +893,9 @@
       "avoid-async-call-in-sync-function": [
         "3b49795a73614e7060dbe124f4c7a32e"
       ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
       "unnecessary-trailing-comma": [
         "f04a01a7605d3aa2b992354ba632f8af"
       ]
@@ -1010,15 +904,8 @@
       "member-ordering": [
         "fd3487816a0562184d1ef75c378ac398"
       ],
-      "prefer-action-button-tooltip": [
-        "9d2e40f98908259819f582cee8acb35c"
-      ],
       "prefer-widget-private-members": [
         "b31f3e91ea82f1da43ace61a5e014099"
-      ],
-      "parameters-ordering": [
-        "cc0babeaee7a977bd315d806c703856f",
-        "507583a2c7ee0e4479802f17ad77f5ee"
       ],
       "unnecessary-trailing-comma": [
         "1a35c3b7aa7d12815bf0b5dbc663f3bc",
@@ -1029,6 +916,9 @@
         "b31f3e91ea82f1da43ace61a5e014099"
       ],
       "prefer-define-hero-tag": [
+        "9d2e40f98908259819f582cee8acb35c"
+      ],
+      "prefer-action-button-tooltip": [
         "9d2e40f98908259819f582cee8acb35c"
       ],
       "avoid-async-call-in-sync-function": [
@@ -1050,10 +940,6 @@
       ]
     },
     "lib/src/features/training/pages/training_page.dart": {
-      "prefer-action-button-tooltip": [
-        "85d364ff468f2dfc85c111292878108c",
-        "1c12a04241bd4a76508cf61e04ff0f2c"
-      ],
       "prefer-widget-private-members": [
         "8a7754f56a8ec7d8d0d0a03021143726",
         "4881c67fd8e933fe23ed293deadae326"
@@ -1065,19 +951,14 @@
       "unnecessary-trailing-comma": [
         "9bab96e66315e480b4e548d7fd941e75"
       ],
-      "prefer-dedicated-media-query-methods": [
-        "8bf8854bebe108183caeb845c7676ae4"
+      "prefer-action-button-tooltip": [
+        "85d364ff468f2dfc85c111292878108c",
+        "1c12a04241bd4a76508cf61e04ff0f2c"
       ]
     },
     "lib/src/features/training/pages/plan_training_page.dart": {
       "member-ordering": [
         "04e468169b0d3f6f75cde13c6bc69039"
-      ],
-      "parameters-ordering": [
-        "1bec2fa9c840fdb6e98dbe91b0a1aaf8",
-        "6f3c1c96e9bcf98d16fc53c0c34dc468",
-        "1c3c3c17d7770c667663cda70c883b25",
-        "9999ce915580d932d8aaabcfbb0f1751"
       ],
       "unnecessary-trailing-comma": [
         "634b17c3c056ec9d68b29707e54ff08b",
@@ -1108,6 +989,9 @@
       "prefer-dedicated-media-query-methods": [
         "8bf8854bebe108183caeb845c7676ae4"
       ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
       "avoid-passing-default-values": [
         "cb1e1173242722aec2ae58a438de581e"
       ],
@@ -1130,9 +1014,6 @@
       ]
     },
     "lib/src/features/training/widgets/availability_header.dart": {
-      "parameters-ordering": [
-        "e9ceaefa0c40b7dd3d79148d4d975051"
-      ],
       "unnecessary-trailing-comma": [
         "1fe80dc4d38338e4f7f0c01670fec4d0"
       ],
@@ -1160,13 +1041,13 @@
       ]
     },
     "lib/src/features/training/widgets/calendar/filters/api/reservation_objects.dart": {
-      "avoid-similar-names": [
-        "d269dc55baa3c85a284ce77509f0b295",
-        "bdeaef386fda36c46c66ee0653ad56c4"
-      ],
       "avoid-collection-mutating-methods": [
         "cadc8c8db42409733582cb3e2298ef87",
         "cadc8c8db42409733582cb3e2298ef87"
+      ],
+      "avoid-similar-names": [
+        "d269dc55baa3c85a284ce77509f0b295",
+        "bdeaef386fda36c46c66ee0653ad56c4"
       ]
     },
     "lib/src/features/training/widgets/calendar/calendar_time.dart": {
@@ -1199,16 +1080,10 @@
       "member-ordering": [
         "1d86ce3bdd57bdc37f6c41d5ff04728f"
       ],
-      "parameters-ordering": [
-        "d5442b5b22b0999c2642b1a28993bb7c"
-      ],
       "unnecessary-trailing-comma": [
         "c4fe7d1e981f8f7693fb7f0f9daeeae4",
         "8ea0e901a4fc9b026920261df7b3a8d4",
         "6e2bf632d4cdae243f75eadbb5528e4f"
-      ],
-      "dispose-fields": [
-        "c52eeb5438f276975414ed0ca8e3df9c"
       ],
       "prefer-widget-private-members": [
         "2d0b4e69cd368586f0f6c92e504985f2",
@@ -1221,12 +1096,15 @@
       ],
       "proper-super-calls": [
         "cc2563519e56b89837b76f1e49606f16"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
+      "dispose-fields": [
+        "c52eeb5438f276975414ed0ca8e3df9c"
       ]
     },
     "lib/src/features/training/widgets/calendar/calendar_measurement.dart": {
-      "avoid-shadowing": [
-        "74f9a274618c8313e5f30752bf908294"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -1238,6 +1116,9 @@
         "e8cd7da078a86726031ad64f35f5a6c0",
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
         "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-shadowing": [
+        "74f9a274618c8313e5f30752bf908294"
       ],
       "prefer-getter-over-method": [
         "15396a35ebb6951235f63054289cacd7"
@@ -1255,9 +1136,6 @@
       ]
     },
     "lib/src/features/training/widgets/calendar/widgets/chip_widget.dart": {
-      "parameters-ordering": [
-        "8cf4ffc032d8c284d1b8a55f4a3b17f8"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -1285,9 +1163,6 @@
       ]
     },
     "lib/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart": {
-      "parameters-ordering": [
-        "c227a40d709e00f36c5ccb7cbe975d84"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -1314,14 +1189,8 @@
       "prefer-widget-private-members": [
         "386b7a9629168410994c9e76b5d29885"
       ],
-      "parameters-ordering": [
-        "f9af8d190955901cbf5018c8f8f594f4"
-      ],
       "unnecessary-trailing-comma": [
         "ba75e21aea2b45c4193517222e25aa7e"
-      ],
-      "avoid-similar-names": [
-        "180e88078cfc4ab0986f097ad26e9cf7"
       ],
       "avoid-explicit-type-declaration": [
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
@@ -1332,14 +1201,14 @@
       ],
       "prefer-addition-subtraction-assignments": [
         "6aafff7f15e886f10787dba66e3d30f1"
+      ],
+      "avoid-similar-names": [
+        "180e88078cfc4ab0986f097ad26e9cf7"
       ]
     },
     "lib/src/features/training/widgets/calendar/widgets/calendar_reservation.dart": {
       "member-ordering": [
         "ee6b9d34d58b530baea192c3c4e2c6ce"
-      ],
-      "parameters-ordering": [
-        "a599bb14fb50be459d9731fbbfa58872"
       ],
       "avoid-explicit-type-declaration": [
         "8cf10d2341ed01492506085688270c1e",
@@ -1362,14 +1231,8 @@
       "member-ordering": [
         "551af09b5dde66a38414152cfbbe8135"
       ],
-      "parameters-ordering": [
-        "4163243ec4348bc873d284d94e3096b7"
-      ],
       "unnecessary-trailing-comma": [
         "638f1aa70d2ba60b587a03789efe062d"
-      ],
-      "avoid-shadowing": [
-        "6208da147b2e01d2daf532f07477c08b"
       ],
       "prefer-widget-private-members": [
         "c33ba5354267c31f5c4c7722ee7f0739",
@@ -1397,6 +1260,9 @@
       "arguments-ordering": [
         "b423d47947d2fdfa59a47eb2fa3ce9d2"
       ],
+      "avoid-shadowing": [
+        "6208da147b2e01d2daf532f07477c08b"
+      ],
       "prefer-addition-subtraction-assignments": [
         "6aafff7f15e886f10787dba66e3d30f1"
       ],
@@ -1405,10 +1271,6 @@
       ]
     },
     "lib/src/features/training/widgets/reservation_list_tile.dart": {
-      "avoid-shadowing": [
-        "c322d3de29d2b0c5e2e011dad5e77df2",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "member-ordering": [
         "e7b10c30f6880588447935eca98978b3"
       ],
@@ -1432,18 +1294,18 @@
       "avoid-passing-default-values": [
         "fd60e9353c3e4ddba2c24c3bda725ef2"
       ],
-      "avoid-redundant-async": [
-        "0df93e34273b367bb63bad28c94c78d5"
+      "avoid-shadowing": [
+        "c322d3de29d2b0c5e2e011dad5e77df2",
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-inferrable-type-arguments": [
         "3f63415e4669117ff49f73960a4719d0"
+      ],
+      "avoid-redundant-async": [
+        "0df93e34273b367bb63bad28c94c78d5"
       ]
     },
     "lib/src/features/training/widgets/training_list.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "prefer-returning-conditional-expressions": [
         "3f3775f5f86d98b60ef4e69ec899d499"
       ],
@@ -1452,6 +1314,10 @@
       ],
       "arguments-ordering": [
         "6079f6821f7157a81997d1cbcfee1f72"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-unsafe-collection-methods": [
         "51f3b7375c8a8c841bc292985b131624"
@@ -1530,26 +1396,19 @@
       "member-ordering": [
         "0e331b0afc89c3f48ebacfbba6f21883"
       ],
-      "parameters-ordering": [
-        "369c18bb61d300e1921f76d66356252a"
-      ],
       "unnecessary-trailing-comma": [
         "b3f9e529bbb0bb534363a79c34dd63bc"
       ],
-      "avoid-async-call-in-sync-function": [
-        "b0b48bcdcd3f4dbf7083adea472a77cb",
-        "33389196b567ba104065e46432e0f5de"
-      ],
       "avoid-missing-image-alt": [
         "f94f3c72a52580ac40784f011ac9a3b5"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "33389196b567ba104065e46432e0f5de"
       ]
     },
     "lib/src/features/gallery/widgets/folder_button.dart": {
       "member-ordering": [
         "b5287624905e1afe6625d586663065ff"
-      ],
-      "parameters-ordering": [
-        "369c18bb61d300e1921f76d66356252a"
       ],
       "unnecessary-trailing-comma": [
         "b3f9e529bbb0bb534363a79c34dd63bc"
@@ -1577,10 +1436,6 @@
         "245ca712c9ea9ebfd7b67519ab5232f8",
         "b3f6e71825104a2c459b35b10c848e9d"
       ],
-      "parameters-ordering": [
-        "8b2290c27e4aa6b8da5ba44083597ac4",
-        "206c2d1f7e4f9c9d02f32202105d71a8"
-      ],
       "avoid-unnecessary-nullable-return-type": [
         "cebc960ee9d6d57480b196e82302ab66"
       ]
@@ -1591,23 +1446,8 @@
       ]
     },
     "lib/src/features/admin/groups/manage_groups_page.dart": {
-      "avoid-shadowing": [
-        "84cdc76cabf41bd7c961f6ab12f117d8",
-        "599dcce2998a6b40b1e38e8c6006cb0a",
-        "84cdc76cabf41bd7c961f6ab12f117d8",
-        "599dcce2998a6b40b1e38e8c6006cb0a",
-        "599dcce2998a6b40b1e38e8c6006cb0a",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "prefer-action-button-tooltip": [
-        "0445ff34c7cb7daeb53b14a33d693b5f"
-      ],
       "prefer-widget-private-members": [
         "13187c1fd48ae9b9ec60a78dfe5760ce"
-      ],
-      "parameters-ordering": [
-        "b54c640dd3c39f147827572268bbb89d",
-        "f768c29d0ca363b7587895e33630d0f9"
       ],
       "unnecessary-trailing-comma": [
         "a52b54f756d6a92fdfbc90b03b51ce93",
@@ -1627,6 +1467,14 @@
         "1ce4498afe7021e5bb1aa015de6862cb",
         "b731a9aacd68a78f74537f63ba35f913"
       ],
+      "avoid-shadowing": [
+        "84cdc76cabf41bd7c961f6ab12f117d8",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "84cdc76cabf41bd7c961f6ab12f117d8",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "599dcce2998a6b40b1e38e8c6006cb0a",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -1642,10 +1490,6 @@
       "prefer-dedicated-media-query-methods": [
         "8bf8854bebe108183caeb845c7676ae4"
       ],
-      "prefer-moving-to-variable": [
-        "746db8154745aa87b02f085411792be6",
-        "09b3a598bc49599a1e034f9fcdc63253"
-      ],
       "map-keys-ordering": [
         "c538af39067630a8eb9ee456bbf3ca16",
         "bcd301e2a4c5fbafa2760d7ca6277705"
@@ -1656,31 +1500,24 @@
       "prefer-define-hero-tag": [
         "0445ff34c7cb7daeb53b14a33d693b5f"
       ],
+      "prefer-action-button-tooltip": [
+        "0445ff34c7cb7daeb53b14a33d693b5f"
+      ],
+      "prefer-moving-to-variable": [
+        "746db8154745aa87b02f085411792be6",
+        "09b3a598bc49599a1e034f9fcdc63253"
+      ],
       "avoid-unused-ignores": [
         "5d1ddb1fbc851e185045c97c57e03089"
       ]
     },
     "lib/src/features/admin/groups/edit_group_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "member-ordering": [
         "7e65286d5bc037aa739856542a289385"
       ],
-      "prefer-action-button-tooltip": [
-        "7fd2e7c16e92f083b7c651d35a453a1c"
-      ],
       "prefer-widget-private-members": [
         "628b17c82dc8bba33c3d441800109e4d",
-        "6ef7d260b0ab237e06bd4a8c5d76e66b",
         "e4f6e91758f008549780a0764cd15681"
-      ],
-      "parameters-ordering": [
-        "46b25971c67198831b6f095d450fca00",
-        "85edb247a15a5230eb58f2b2f9aec9b6",
-        "76e84d6fc3ddfe3fb9a26f7830115d42",
-        "400ab66415af2d934d02f13412b3764c"
       ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32",
@@ -1694,16 +1531,16 @@
       "map-keys-ordering": [
         "8382bd9ee86fce815be1623d152b0614"
       ],
-      "avoid-similar-names": [
-        "48a264a6a4feb37b587d108961dc041d",
-        "48a264a6a4feb37b587d108961dc041d"
-      ],
       "arguments-ordering": [
         "cd80137c86a48ab7a9dad049b5d0fa72",
         "268612e9fc8efc2022c34014b5dab022"
       ],
       "avoid-long-functions": [
         "e391ee7db973154a8881af061c86f8c4"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-unsafe-collection-methods": [
         "4edd2d5e63f9feedeb14b969185cd65d",
@@ -1716,26 +1553,26 @@
         "72eaf420d0fb0415d252daca31420310",
         "810f56170b3e833b30b620fddb14fdcb"
       ],
+      "avoid-similar-names": [
+        "48a264a6a4feb37b587d108961dc041d",
+        "48a264a6a4feb37b587d108961dc041d"
+      ],
       "prefer-define-hero-tag": [
         "7fd2e7c16e92f083b7c651d35a453a1c"
       ],
+      "prefer-action-button-tooltip": [
+        "7fd2e7c16e92f083b7c651d35a453a1c"
+      ],
       "avoid-unused-ignores": [
-        "5d1ddb1fbc851e185045c97c57e03089",
         "5d1ddb1fbc851e185045c97c57e03089",
         "5d1ddb1fbc851e185045c97c57e03089"
       ]
     },
     "lib/src/features/admin/groups/widgets/role_dialog.dart": {
-      "parameters-ordering": [
-        "54438e7d025c66d378aabb1fb486cb35"
-      ],
       "unnecessary-trailing-comma": [
         "b88e511d8fcdc1668a8b8487852ded21",
         "437c848d31875f07b37161b021ff0529",
         "754ba00a1a2d98dcc25ddee801cc63e7"
-      ],
-      "dispose-fields": [
-        "55d384b7a56900b873503375d4825e79"
       ],
       "prefer-widget-private-members": [
         "dffe839f5c4a46ec9605be8e573fa51e",
@@ -1748,12 +1585,12 @@
       ],
       "avoid-passing-default-values": [
         "0d5e3214e11892bd1a2049da05c77b75"
+      ],
+      "dispose-fields": [
+        "55d384b7a56900b873503375d4825e79"
       ]
     },
     "lib/src/features/admin/push_notifications/create_push_notification_page.dart": {
-      "prefer-action-button-tooltip": [
-        "0f3de5b95fd76fce5f28ca1d95a4168f"
-      ],
       "avoid-explicit-type-declaration": [
         "27118326006d3829667a400ad23d5d98"
       ],
@@ -1779,6 +1616,9 @@
       ],
       "prefer-define-hero-tag": [
         "0f3de5b95fd76fce5f28ca1d95a4168f"
+      ],
+      "prefer-action-button-tooltip": [
+        "0f3de5b95fd76fce5f28ca1d95a4168f"
       ]
     },
     "lib/src/features/admin/vaarverbod/manage_vaarverbod_page.dart": {
@@ -1787,9 +1627,6 @@
       ]
     },
     "lib/src/features/admin/vaarverbod/vaarverbod_form_widget.dart": {
-      "parameters-ordering": [
-        "2c9bae5f35d70e03b01e7d1275c1ed32"
-      ],
       "prefer-widget-private-members": [
         "9acb44549b41563697bb490144ec6258",
         "78e731027d8fd50ed642340b7c9a63b3"
@@ -1815,13 +1652,6 @@
       ]
     },
     "lib/src/features/admin/events/create_event_bottom_sheet.dart": {
-      "dispose-fields": [
-        "1c093bb0ffd1ab9664c080644615d25d",
-        "57b6448965fbe8fd718863bdf893a6a6",
-        "400a8c6734dc69ab49a546b6408902b9",
-        "fdc62b0f9b4cecc35b36004f3b59bd1f",
-        "60a041ae3e0260136f42771344c3c65c"
-      ],
       "prefer-widget-private-members": [
         "b5895b44f966ada96873a32298c5ec33",
         "bfcea4347645151eb83dfd180acf2ec4",
@@ -1839,16 +1669,16 @@
       ],
       "prefer-dedicated-media-query-methods": [
         "8bf8854bebe108183caeb845c7676ae4"
+      ],
+      "dispose-fields": [
+        "1c093bb0ffd1ab9664c080644615d25d",
+        "57b6448965fbe8fd718863bdf893a6a6",
+        "400a8c6734dc69ab49a546b6408902b9",
+        "fdc62b0f9b4cecc35b36004f3b59bd1f",
+        "60a041ae3e0260136f42771344c3c65c"
       ]
     },
     "lib/src/features/admin/events/manage_events_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "prefer-action-button-tooltip": [
-        "a475010bd5fcb348b8c965449f67b8f5"
-      ],
       "unnecessary-trailing-comma": [
         "bd94dc9a0a4f3bc4fdece6dd052aef99",
         "a699b75c875df0a65967f7d77a5fd197",
@@ -1858,6 +1688,10 @@
       "arguments-ordering": [
         "c9ddecb1b44e9f37fd832499c68eb85c"
       ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
       "avoid-unsafe-collection-methods": [
         "d2283e39f2d0f9a435397bd99fe60f05"
       ],
@@ -1865,6 +1699,9 @@
         "a4ecfc70574394990cf17bd83df499f7"
       ],
       "prefer-define-hero-tag": [
+        "a475010bd5fcb348b8c965449f67b8f5"
+      ],
+      "prefer-action-button-tooltip": [
         "a475010bd5fcb348b8c965449f67b8f5"
       ],
       "prefer-correct-error-name": [
@@ -1876,18 +1713,15 @@
       ]
     },
     "lib/src/features/admin/pages/admin_page.dart": {
-      "avoid-similar-names": [
-        "d898cbc8648feaab0daf7cbb0972e7c9"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-similar-names": [
+        "d898cbc8648feaab0daf7cbb0972e7c9"
       ]
     },
     "lib/src/features/polls/model/poll.dart": {
-      "parameters-ordering": [
-        "a02ebdacc093a009000d4fd1b90bee8b"
-      ],
       "map-keys-ordering": [
         "06493865dafd81bd0d7ce693fd166100",
         "6fd6f1b67dc1b8fb61dc2b21c892f22b",
@@ -1895,9 +1729,6 @@
       ]
     },
     "lib/src/features/polls/model/poll_answer.dart": {
-      "parameters-ordering": [
-        "f75a1f340f11d4913431b9110fc708b1"
-      ],
       "avoid-negated-conditions": [
         "d634d7338363a8e2c5f7cae69782d1a1"
       ],
@@ -1926,12 +1757,6 @@
       ]
     },
     "lib/src/features/polls/api/upsert_poll_answer.dart": {
-      "avoid-shadowing": [
-        "c322d3de29d2b0c5e2e011dad5e77df2"
-      ],
-      "parameters-ordering": [
-        "71b0b041ac3a584cf3096734fca44340"
-      ],
       "move-variable-closer-to-its-usage": [
         "e02357f2798517796b5941e341d569a2"
       ],
@@ -1940,6 +1765,9 @@
         "a32a2002765212c0bc5137a5000bf290",
         "c506ff134babdd6e68ab3e6350e95305"
       ],
+      "avoid-shadowing": [
+        "c322d3de29d2b0c5e2e011dad5e77df2"
+      ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5",
         "8b04d5e3775d298e78455efc5ca404d5",
@@ -1947,6 +1775,10 @@
       ],
       "avoid-redundant-else": [
         "566b140f411c93b20b59fb53fc8c2d54"
+      ],
+      "avoid-unnecessary-return": [
+        "505b97969baa28c3f607a38ee02f4f2d",
+        "505b97969baa28c3f607a38ee02f4f2d"
       ],
       "unnecessary-trailing-comma": [
         "b686eaeafe43632342918aed0b4521f6"
@@ -1969,18 +1801,15 @@
       ]
     },
     "lib/src/features/polls/pages/polls_page.dart": {
+      "unnecessary-trailing-comma": [
+        "60a2e4210df9931888257e908589394b"
+      ],
       "avoid-shadowing": [
         "5c18ef72771564b7f43c497dc507aeab",
         "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "unnecessary-trailing-comma": [
-        "60a2e4210df9931888257e908589394b"
       ]
     },
     "lib/src/features/polls/widgets/poll_card.dart": {
-      "parameters-ordering": [
-        "b7562a97fd59599dcbf1125c3277df90"
-      ],
       "unnecessary-trailing-comma": [
         "f3a90aa8335c159dc464d6ad8149366e"
       ],
@@ -2028,17 +1857,14 @@
       ]
     },
     "lib/src/features/announcements/pages/announcement_page.dart": {
-      "parameters-ordering": [
-        "4ba53e803f9d3606f8904d065d597785"
-      ],
-      "avoid-similar-names": [
-        "e85bc9931f8d0aafa8e85105703066fa"
-      ],
       "unnecessary-trailing-comma": [
         "21d1c119ca74ff54f7a480efb3fa38d6"
       ],
       "prefer-returning-conditional-expressions": [
         "dab72726c6ec65ab5db49dc4b1401761"
+      ],
+      "avoid-similar-names": [
+        "e85bc9931f8d0aafa8e85105703066fa"
       ],
       "avoid-unused-ignores": [
         "664958aa9815e94645737b835a61f100"
@@ -2047,10 +1873,6 @@
     "lib/src/features/announcements/widgets/announcement_body_widget.dart": {
       "prefer-widget-private-members": [
         "2d76ee9cb3d05f1726953d774d4702de"
-      ],
-      "parameters-ordering": [
-        "c03af65b490293c0b75025dcb75a8fc4",
-        "b9087d29306132b0023fd708cfccc177"
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -2062,12 +1884,12 @@
       "prefer-correct-handler-name": [
         "2d76ee9cb3d05f1726953d774d4702de"
       ],
-      "avoid-async-call-in-sync-function": [
-        "2782f10de2f4da3c9d16906a4c9a51a8"
-      ],
       "avoid-dynamic": [
         "b14a7b8059d9c055954c92674ce60032",
         "18f05aeddc212b523b40818fa2b87b33"
+      ],
+      "avoid-async-call-in-sync-function": [
+        "2782f10de2f4da3c9d16906a4c9a51a8"
       ]
     },
     "lib/src/features/shared/model/hive_cache.dart": {
@@ -2082,9 +1904,6 @@
       ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32"
-      ],
-      "parameters-ordering": [
-        "4d6e8032ddf112bd9f40b58db8860b2d"
       ],
       "avoid-passing-default-values": [
         "0d5e3214e11892bd1a2049da05c77b75"
@@ -2119,11 +1938,11 @@
         "97e7c9a7d06eac006a28bf05467fcc8b",
         "c584750a5bbb1f57cc41dbf37c762806"
       ],
-      "avoid-unnecessary-futures": [
-        "0df93e34273b367bb63bad28c94c78d5"
-      ],
       "avoid-nullable-interpolation": [
         "bc20797b5ee5f171a1b952e0dc2b9301"
+      ],
+      "avoid-unnecessary-futures": [
+        "0df93e34273b367bb63bad28c94c78d5"
       ],
       "unnecessary-trailing-comma": [
         "22638d8967b060f758eb2f37f1a63591"
@@ -2162,27 +1981,21 @@
         "3b9a9c3cc04222a5d7f683dff0b64098",
         "35c1ee377a7855a38415b0ca6f5d66bc"
       ],
-      "prefer-getter-over-method": [
-        "5297a7f83b2ccd2e0111718e47bb1f04"
-      ],
       "avoid-async-call-in-sync-function": [
         "802c780ddd69091cc8f975f9f955cadb",
         "a668c07d85c37034fe4cf7f08386d0bc"
       ]
     },
     "lib/src/features/shared/model/cached_image.dart": {
-      "parameters-ordering": [
-        "39212f4c230af862ab9e6cd2135a6810"
-      ],
-      "avoid-similar-names": [
-        "db78baa41182b79dc4f6ed2b465e6b26",
-        "6b3d3bd421e012ae41d7d531a841b85e"
-      ],
       "prefer-returning-conditional-expressions": [
         "d7e51946800d49dd888f5e0b9a96c66d"
       ],
       "avoid-missing-image-alt": [
         "81f2155245f9b507d6b524be6b54d4fb"
+      ],
+      "avoid-similar-names": [
+        "db78baa41182b79dc4f6ed2b465e6b26",
+        "6b3d3bd421e012ae41d7d531a841b85e"
       ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32"
@@ -2211,20 +2024,17 @@
       ]
     },
     "lib/src/features/shared/widgets/zoomable_image.dart": {
-      "parameters-ordering": [
-        "9000ba5359e1c53c7d4faf6e635375c1"
-      ],
       "prefer-correct-handler-name": [
         "a841e865c5a9494764ab9bacf112c122"
+      ],
+      "avoid-returning-widgets": [
+        "8d16f60cdd4d8aecc784b643db6f82bc"
       ],
       "avoid-async-call-in-sync-function": [
         "8d16f60cdd4d8aecc784b643db6f82bc"
       ]
     },
     "lib/src/features/shared/widgets/future_wrapper.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "member-ordering": [
         "1f17f18439c95789cd70c9c66de80789"
       ],
@@ -2238,14 +2048,11 @@
         "cb5e100e5a9a3e7f6d1fd97512215282",
         "260ca9dd8a4577fc00b7bd5810298076"
       ],
-      "parameters-ordering": [
-        "0ef824c1480f00273ea7f92d6589695b"
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
       ]
     },
     "lib/src/features/shared/widgets/shimmer_widget.dart": {
-      "parameters-ordering": [
-        "d34e4952f7223cf51af4790b549d97fa"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -2262,9 +2069,6 @@
     "lib/src/features/shared/widgets/logo_widget.dart": {
       "member-ordering": [
         "c2a68c6ec621a0c4581c1ca56c788fa4"
-      ],
-      "parameters-ordering": [
-        "037d0c6b8f0183ecb17424eb90f1f562"
       ],
       "unnecessary-trailing-comma": [
         "487515888f39214fbca22951f46d0517"
@@ -2283,9 +2087,6 @@
       ]
     },
     "lib/src/features/shared/widgets/rounded_elevated_button.dart": {
-      "parameters-ordering": [
-        "7beedae63bec7c35cfbc620c98e3998e"
-      ],
       "unnecessary-trailing-comma": [
         "0ad20225601e17689e843b76352fff05"
       ]
@@ -2299,9 +2100,6 @@
     "lib/src/features/shared/widgets/error_card_widget.dart": {
       "avoid-importing-entrypoint-exports": [
         "6107c03e4f0cfc414d8a74dcf38c6b0d"
-      ],
-      "parameters-ordering": [
-        "beea46cbfaae2dd5515e8ed73cab028c"
       ],
       "avoid-explicit-type-declaration": [
         "cb5feb1b7314637725a2e73bdc9f7295",
@@ -2336,12 +2134,12 @@
     "lib/src/features/more/pages/notifications_page.dart": {
       "unnecessary-trailing-comma": [
         "4566851804d5f563ee45576c8f4e06c3"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "a4ce78f10642531236c337ef3ce2df5b"
       ]
     },
     "lib/src/features/more/pages/advanced_settings_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "prefer-widget-private-members": [
         "6626f34a59a3145b3ff9d14949218847"
       ],
@@ -2355,6 +2153,9 @@
       "avoid-async-call-in-sync-function": [
         "1131684fcfae2132147482b4c324983a",
         "7ac9f91317e6486f6799bdf29c2cfa84"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
       ]
     },
     "lib/src/features/more/pages/about_this_app_page.dart": {
@@ -2364,19 +2165,7 @@
       ]
     },
     "lib/src/features/more/pages/contact_page.dart": {
-      "avoid-stateless-widget-initialized-fields": [
-        "28be9fec83a3e9bd21320e01f0ca7938",
-        "88c37014c78a6b672207384101d319c7",
-        "a51e8b53cf0161fae1537f7f3cab16e4",
-        "d9a8f9a0b1b8527b6103f5a57817a49b",
-        "9cc82550e118152ce50fa6ba657703cb",
-        "11b30e2cbdb3357f7d2120543fd09ad1",
-        "90e60461760c7a815d8f4ffc6fe94f2f",
-        "bf59054207e26d1f2974ae48102dc7d7"
-      ],
       "avoid-explicit-type-declaration": [
-        "e8cd7da078a86726031ad64f35f5a6c0",
-        "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -2408,9 +2197,6 @@
       ]
     },
     "lib/src/features/more/pages/more_page.dart": {
-      "prefer-action-button-tooltip": [
-        "d5d69522c51af9af5be8d4f46a1da442"
-      ],
       "avoid-explicit-type-declaration": [
         "b58c9c680bd90cf247875ad833162935"
       ],
@@ -2426,13 +2212,13 @@
         "72e2475e94681b6d462ffe2cc3c6f9af",
         "d22c99c4062c3f95740bdc65f7164783"
       ],
-      "prefer-dedicated-media-query-methods": [
-        "8bf8854bebe108183caeb845c7676ae4"
-      ],
       "arguments-ordering": [
         "702d8c1ed18e30c6d59abc00fa18d191"
       ],
       "prefer-define-hero-tag": [
+        "d5d69522c51af9af5be8d4f46a1da442"
+      ],
+      "prefer-action-button-tooltip": [
         "d5d69522c51af9af5be8d4f46a1da442"
       ],
       "avoid-async-call-in-sync-function": [
@@ -2462,9 +2248,6 @@
         "0b189e6754039529d540f373d788c820",
         "e329b27943961ccab9dc7a8ac2edb666"
       ],
-      "parameters-ordering": [
-        "65dfed790fccb1f792a0a7da03989929"
-      ],
       "prefer-named-boolean-parameters": [
         "e431d687bf4b2c65fbd94b12ae0cb5d9"
       ],
@@ -2474,14 +2257,14 @@
       "avoid-unnecessary-return": [
         "505b97969baa28c3f607a38ee02f4f2d"
       ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
+      ],
       "prefer-correct-handler-name": [
         "0b189e6754039529d540f373d788c820"
       ]
     },
     "lib/src/features/more/widgets/more_link_tile.dart": {
-      "parameters-ordering": [
-        "2382536a4f9e6e911298b2f1747a9818"
-      ],
       "prefer-correct-handler-name": [
         "7b329e47ae19f617b22c3b6e3cc3f111"
       ],
@@ -2493,9 +2276,6 @@
       ]
     },
     "lib/src/features/more/widgets/instagram_row_widget.dart": {
-      "parameters-ordering": [
-        "2f990e5df0f783d4470f941b81be7834"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -2510,9 +2290,6 @@
       ]
     },
     "lib/src/features/dashboard/model/vaarverbod.dart": {
-      "parameters-ordering": [
-        "eebc5f27f78d1215903f8573a34b9175"
-      ],
       "unnecessary-trailing-comma": [
         "500c7f6a8edc923300d4a55829032ca8",
         "623003f5989b9357d7f446de092f48f2",
@@ -2558,15 +2335,14 @@
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
-      "avoid-similar-names": [
-        "76aa3d239dc231452be71420ba0906bf"
-      ],
       "prefer-dedicated-media-query-methods": [
-        "8bf8854bebe108183caeb845c7676ae4",
         "8bf8854bebe108183caeb845c7676ae4"
       ],
       "prefer-correct-handler-name": [
         "009fbfe28b20c0817c02f168b16f0d44"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "00a3270f172fa9c8cd2ddb17db4fd26b"
       ],
       "avoid-missing-image-alt": [
         "4276732d4bb43d9de454e85990dffc1c"
@@ -2575,14 +2351,14 @@
         "f7122ace13a92ed0a0c32e2df10ebd3c",
         "ea323d0b266d137855187186f3b9c772"
       ],
+      "avoid-similar-names": [
+        "76aa3d239dc231452be71420ba0906bf"
+      ],
       "avoid-unused-ignores": [
         "6b00b93f57c995516a9f1d7062befd49"
       ]
     },
     "lib/src/features/dashboard/widgets/announcements_widget.dart": {
-      "avoid-similar-names": [
-        "d27163d0d6e476a2d97133d0239d105d"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -2596,6 +2372,9 @@
       ],
       "avoid-async-call-in-sync-function": [
         "5bda767be99946727710e40a2b39b516"
+      ],
+      "avoid-similar-names": [
+        "d27163d0d6e476a2d97133d0239d105d"
       ],
       "avoid-unused-ignores": [
         "5d1ddb1fbc851e185045c97c57e03089"
@@ -2625,9 +2404,6 @@
       ]
     },
     "lib/src/features/dashboard/widgets/weather_metric_widget.dart": {
-      "parameters-ordering": [
-        "9efcdfa07d33426363e2a72ff875491a"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -2646,9 +2422,6 @@
       ]
     },
     "lib/src/features/dashboard/widgets/widget_header.dart": {
-      "parameters-ordering": [
-        "74fc98f34a3f76d43d74aa2ffa4e4101"
-      ],
       "prefer-correct-callback-field-name": [
         "40ec734dff1bcb17c2da875deae00219"
       ],
@@ -2672,9 +2445,6 @@
         "77ca7aa82362c30aa005cd8eadb0046d",
         "4689cb787b114e2948a6f7b6be407210"
       ],
-      "parameters-ordering": [
-        "744c9ca340194442ef1ae8ad1ae09a68"
-      ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5"
       ],
@@ -2689,9 +2459,6 @@
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
-      ],
-      "parameters-ordering": [
-        "2695ef03de7016b5cbe6e31ca341f48a"
       ],
       "avoid-similar-names": [
         "ea4e69c434c7b607f19cff93338cb389",
@@ -2711,10 +2478,6 @@
       "avoid-redundant-else": [
         "7ce6979082cf7050c11af7a08372498c"
       ],
-      "avoid-similar-names": [
-        "b2acb3fce35164d51c7e606e49c3fcfd",
-        "b2acb3fce35164d51c7e606e49c3fcfd"
-      ],
       "avoid-long-functions": [
         "42b8abb792d46883241756f1ac534c60"
       ],
@@ -2722,6 +2485,10 @@
         "fa7153f7ed1cb6c0fcf2ffb2fac21748",
         "c506ff134babdd6e68ab3e6350e95305",
         "27118326006d3829667a400ad23d5d98"
+      ],
+      "avoid-similar-names": [
+        "b2acb3fce35164d51c7e606e49c3fcfd",
+        "b2acb3fce35164d51c7e606e49c3fcfd"
       ]
     },
     "lib/src/features/dashboard/widgets/vaarverbod_widget.dart": {
@@ -2799,16 +2566,9 @@
       "member-ordering": [
         "0e331b0afc89c3f48ebacfbba6f21883"
       ],
-      "parameters-ordering": [
-        "369c18bb61d300e1921f76d66356252a"
-      ],
       "unnecessary-trailing-comma": [
         "b3f9e529bbb0bb534363a79c34dd63bc",
         "9cdf237875649cb50b3be5d35c1596d2"
-      ],
-      "prefer-moving-to-variable": [
-        "84802b2f3e1a3a04ff02c503fc93cada",
-        "84802b2f3e1a3a04ff02c503fc93cada"
       ],
       "avoid-explicit-type-declaration": [
         "994d06622c761cbceb384fd10a0b53f3",
@@ -2826,14 +2586,15 @@
       ],
       "avoid-async-call-in-sync-function": [
         "2e7b729a4454a40475996986fd36c091"
+      ],
+      "prefer-moving-to-variable": [
+        "84802b2f3e1a3a04ff02c503fc93cada",
+        "84802b2f3e1a3a04ff02c503fc93cada"
       ]
     },
     "lib/src/features/documents/widgets/folder_button.dart": {
       "member-ordering": [
         "b5287624905e1afe6625d586663065ff"
-      ],
-      "parameters-ordering": [
-        "369c18bb61d300e1921f76d66356252a"
       ],
       "unnecessary-trailing-comma": [
         "b3f9e529bbb0bb534363a79c34dd63bc"
@@ -2864,15 +2625,6 @@
       "member-ordering": [
         "363dec11a641cfc698d977d308469d99"
       ],
-      "parameters-ordering": [
-        "35813d313900c254b2a9b0597ee54488"
-      ],
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab",
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "proper-super-calls": [
         "cc2563519e56b89837b76f1e49606f16"
       ],
@@ -2883,6 +2635,15 @@
       "unnecessary-trailing-comma": [
         "cef66c0e19ad455164da33d4744cd9f2",
         "6a8a0314878b9fccf5266ad9d979d4be"
+      ],
+      "avoid-inferrable-type-arguments": [
+        "522f80fe4e09f921d5023c49dd15d422"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab",
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-negated-conditions": [
         "39b7d01851fdef32e6f09afa134f2b1a",
@@ -2896,26 +2657,20 @@
       "member-ordering": [
         "68f3d3c3907f0eb870401bfecebe618a"
       ],
-      "parameters-ordering": [
-        "973ae26be3c044f52e7b9f8b6d7ead0a"
+      "avoid-explicit-type-declaration": [
+        "e8cd7da078a86726031ad64f35f5a6c0"
       ],
       "dispose-fields": [
         "f27d1931a8857164e8f246da29a51048"
-      ],
-      "avoid-explicit-type-declaration": [
-        "e8cd7da078a86726031ad64f35f5a6c0"
       ]
     },
     "lib/src/features/profiles/choice/huis_choice_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "parameters-ordering": [
-        "8ee4e7e430ea2676f17aa41983db6f10"
-      ],
       "unnecessary-trailing-comma": [
         "bc4297f86801e088fb765d0383b4ad75",
         "e3155645df2733cdcd985511e0758e08"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-unsafe-collection-methods": [
         "ea86d048704d5c0f70ea55d8eefd7f9e",
@@ -2924,14 +2679,11 @@
       ]
     },
     "lib/src/features/profiles/choice/substructure_choice_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
-      "parameters-ordering": [
-        "8ee4e7e430ea2676f17aa41983db6f10"
-      ],
       "unnecessary-trailing-comma": [
         "bc4297f86801e088fb765d0383b4ad75"
+      ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
       ],
       "avoid-unsafe-collection-methods": [
         "ea86d048704d5c0f70ea55d8eefd7f9e",
@@ -2940,9 +2692,6 @@
       ]
     },
     "lib/src/features/profiles/choice/commissie_choice_page.dart": {
-      "avoid-shadowing": [
-        "5c18ef72771564b7f43c497dc507aeab"
-      ],
       "unnecessary-trailing-comma": [
         "b9a31e3ad8476141549ba7db913840d3",
         "1d58714e789c6d7293f5e08c68eaab2c",
@@ -2953,6 +2702,9 @@
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
+      "avoid-shadowing": [
+        "5c18ef72771564b7f43c497dc507aeab"
+      ],
       "avoid-unsafe-collection-methods": [
         "ea86d048704d5c0f70ea55d8eefd7f9e",
         "ea86d048704d5c0f70ea55d8eefd7f9e",
@@ -2960,9 +2712,6 @@
       ]
     },
     "lib/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart": {
-      "parameters-ordering": [
-        "9b8ed3e14c17a42478526056f48789ce"
-      ],
       "prefer-dedicated-media-query-methods": [
         "8bf8854bebe108183caeb845c7676ae4"
       ],
@@ -2977,9 +2726,6 @@
       ]
     },
     "lib/src/features/profiles/choice/ploeg_choice_page.dart": {
-      "parameters-ordering": [
-        "6aa668426f3c2a20f748799a8670f4c0"
-      ],
       "unnecessary-trailing-comma": [
         "887967a56fbebf6c0f9e8a07283dec56",
         "cb041e542646fa2971a79ec0778b5740",
@@ -3007,9 +2753,6 @@
       "prefer-declaring-const-constructor": [
         "1bab8900a13da0cbb8cf8b2fec057d30"
       ],
-      "parameters-ordering": [
-        "da90697a715d74367b1fdc1026e0d4cf"
-      ],
       "unnecessary-trailing-comma": [
         "1a69fa2964293e4764b676ad9d794541"
       ],
@@ -3017,53 +2760,30 @@
         "b2145aac704ce76dbe1ac7adac535b23"
       ],
       "avoid-unsafe-collection-methods": [
-        "8b04d5e3775d298e78455efc5ca404d5",
         "8b04d5e3775d298e78455efc5ca404d5"
       ]
     },
     "lib/src/features/profiles/models/user.dart": {
       "avoid-unnecessary-nullable-return-type": [
         "cebc960ee9d6d57480b196e82302ab66"
-      ],
-      "parameters-ordering": [
-        "512d4b9608cf383f2da8acb854183a50"
       ]
     },
     "lib/src/features/profiles/models/address.dart": {
-      "parameters-ordering": [
-        "8eb25f9be260ba1bef4a128231ffa404"
-      ],
       "map-keys-ordering": [
         "6663cc573452c49bed6fcd08130e61d0",
         "b0835664fc7f6f2f211388487c24c23d"
       ]
     },
     "lib/src/features/profiles/models/firestore_user.dart": {
-      "parameters-ordering": [
-        "f72339d66c8bd985370b7abcf05237f8",
-        "a49971a3a811600e303eaeb1303b7118"
-      ],
       "map-keys-ordering": [
         "3d111d969cb80c1931e0d8e36ad0444b",
         "21da25709d8d1e54f0bf7dcf9609ba05",
         "6d7a65337120795519db223808db60fb",
         "afd46879401d495d02e9fc59b4fce1b8",
         "542799487271a473a16fbbfa3384c482"
-      ],
-      "arguments-ordering": [
-        "4154b1a16d4f5f3bda6ba86e3f8a1aad"
-      ],
-      "avoid-incomplete-copy-with": [
-        "a49971a3a811600e303eaeb1303b7118"
-      ],
-      "avoid-self-compare": [
-        "6031b70fcdb2bad7ca53e936016a93f7"
       ]
     },
     "lib/src/features/profiles/models/almanak.dart": {
-      "parameters-ordering": [
-        "120755620de96fa36716712fb7ea1376"
-      ],
       "avoid-negated-conditions": [
         "7f5bf6efcc18616882e072673d8ff677"
       ]
@@ -3074,15 +2794,6 @@
       ],
       "prefer-declaring-const-constructor": [
         "a9e3d6564d8c41176032bf33905719fa"
-      ],
-      "parameters-ordering": [
-        "707d8be5024f1ef8bcbd4b5a10c11938",
-        "cfd94d91a18e90221077fa9b66fbc877"
-      ]
-    },
-    "lib/src/features/profiles/edit_my_profile/models/group_entry.dart": {
-      "parameters-ordering": [
-        "d52630f5412ad966dc7406ecad5eb5ff"
       ]
     },
     "lib/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart": {
@@ -3110,13 +2821,6 @@
         "0e36df938181570b4479e53a3835a2a3",
         "001752f3a2d36e96f07a602dc0874ddd"
       ],
-      "avoid-shadowing": [
-        "cdd638e00095e76c42db80d69dfdec30"
-      ],
-      "prefer-action-button-tooltip": [
-        "39986c24c2ea69607853431e5b0d4eb5",
-        "79aa83e4875f84c34a92f920fcf3d0a1"
-      ],
       "prefer-widget-private-members": [
         "864000ee4756ab9f25984fc2fbf5934b",
         "a1f86c5413c3cd87c53ce6d363d66083"
@@ -3130,6 +2834,10 @@
       "arguments-ordering": [
         "4d97f4bbf3c7e5fb36c9234c0d12b5b9"
       ],
+      "prefer-action-button-tooltip": [
+        "39986c24c2ea69607853431e5b0d4eb5",
+        "79aa83e4875f84c34a92f920fcf3d0a1"
+      ],
       "prefer-correct-handler-name": [
         "a1f86c5413c3cd87c53ce6d363d66083"
       ],
@@ -3137,15 +2845,15 @@
         "f8bb47130d2b201a4214f82f257c3534",
         "4ca8df21973c96a86ef409bbe28717a3"
       ],
-      "parameters-ordering": [
-        "e3f2ce0172542a5d9a82a24b4e8a3019"
-      ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5",
         "8b04d5e3775d298e78455efc5ca404d5"
       ],
       "prefer-correct-error-name": [
         "56bd7107802ebe56c6918992f0608ec6"
+      ],
+      "avoid-shadowing": [
+        "cdd638e00095e76c42db80d69dfdec30"
       ],
       "avoid-missing-image-alt": [
         "28ce8d1ccd6d9de9273e1065c5c306bc"
@@ -3185,11 +2893,6 @@
       "avoid-long-functions": [
         "90cbca580d917016bb6f33f1ca76f2ca"
       ],
-      "parameters-ordering": [
-        "e3f2ce0172542a5d9a82a24b4e8a3019",
-        "1480765a7ccc9cfc3dd8a1480f8fd483",
-        "ffd2b92a1af20ccd42bace912f5a995c"
-      ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5"
       ],
@@ -3208,13 +2911,13 @@
       "prefer-correct-handler-name": [
         "a4818b5aa8d28dc0cba95dbeaa9b1d3c"
       ],
+      "prefer-named-boolean-parameters": [
+        "e431d687bf4b2c65fbd94b12ae0cb5d9"
+      ],
       "avoid-async-call-in-sync-function": [
         "3d4706535e68ba8aa08511f379d89114",
         "114196169555c0d87837dbd1fefdecbb",
         "c55e62bc65d73ff707ae2c8e234c91e5"
-      ],
-      "prefer-named-boolean-parameters": [
-        "e431d687bf4b2c65fbd94b12ae0cb5d9"
       ]
     },
     "lib/src/features/profiles/edit_my_profile/widgets/edit_profile_picture_widget.dart": {
@@ -3237,9 +2940,6 @@
       ]
     },
     "lib/src/features/profiles/edit_my_profile/widgets/form_section.dart": {
-      "parameters-ordering": [
-        "00062fc21530119446ef2019f76fa98f"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -3252,12 +2952,12 @@
       ]
     },
     "lib/src/features/profiles/api/user_commissies.dart": {
+      "avoid-unsafe-collection-methods": [
+        "8b04d5e3775d298e78455efc5ca404d5"
+      ],
       "avoid-similar-names": [
         "8fd3b566a39e1be3d939a35a00f0b4d6",
         "91d77905eb655327c06059498d3f51f4"
-      ],
-      "avoid-unsafe-collection-methods": [
-        "8b04d5e3775d298e78455efc5ca404d5"
       ]
     },
     "lib/src/features/profiles/api/firestore_user.dart": {
@@ -3288,9 +2988,6 @@
     "lib/src/features/profiles/api/groups_for_user_provider.dart": {
       "avoid-explicit-type-declaration": [
         "f81070c04fa594f3f497241575e6eee3"
-      ],
-      "unnecessary-trailing-comma": [
-        "7bf666898a2315a4419536cc008b6bf1"
       ]
     },
     "lib/src/features/profiles/api/njord_year.dart": {
@@ -3318,22 +3015,11 @@
       "prefer-declaring-const-constructor": [
         "a028bbb97986df23325ee55c6330a7ec"
       ],
-      "parameters-ordering": [
-        "f6b69a411f0dcaa3c5bcb0116369e717"
-      ],
       "avoid-negated-conditions": [
         "5dff0a55481b737b6c45bd96e8cc8179"
       ]
     },
-    "lib/src/features/profiles/almanak_profile/model/tag.dart": {
-      "parameters-ordering": [
-        "1a6d50feab364e8d3f74f42f2e5127fa"
-      ]
-    },
     "lib/src/features/profiles/almanak_profile/widgets/almanak_user_profile_view.dart": {
-      "parameters-ordering": [
-        "02e5fb87bafbe74d7e577792b388c409"
-      ],
       "unnecessary-trailing-comma": [
         "82347ef0642cf430dbd124df39a91b39",
         "70623d96ac2e03af814c12d092c446fc",
@@ -3389,12 +3075,12 @@
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
+      ],
+      "avoid-returning-widgets": [
+        "5b6efd2dfed37c8297a0ff59fd31d8b7"
       ]
     },
     "lib/src/features/profiles/almanak_profile/widgets/user_address_widget.dart": {
-      "parameters-ordering": [
-        "09dc12998d8e3763227f3d5bd3d00148"
-      ],
       "unnecessary-trailing-comma": [
         "5bdae45839d23cc8e796fd114edd96a1",
         "f54a542e6412cd0f0f4104d6dd7b0e2b"
@@ -3408,9 +3094,6 @@
       ]
     },
     "lib/src/features/profiles/almanak_profile/widgets/group_info_tile.dart": {
-      "parameters-ordering": [
-        "87f5eaec8595fbf81d6aae134f3c629a"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -3428,32 +3111,19 @@
       "unnecessary-trailing-comma": [
         "78ce9a58e62e784c947b25044ef51675",
         "cb35f49439b3d3e80a8043bd1faf7f6e"
-      ],
-      "parameters-ordering": [
-        "d84fbf90c88f1311d8cb493b0f0d28f5"
       ]
     },
     "lib/src/features/profiles/substructures/model/group_django_user.dart": {
       "prefer-declaring-const-constructor": [
         "fc898af67e24ccd556a6f964b111a49b"
-      ],
-      "parameters-ordering": [
-        "2bf0997275557c701577487fa2261660"
       ]
     },
     "lib/src/features/profiles/substructures/model/group_info.dart": {
-      "parameters-ordering": [
-        "e4f3f2adb30d999ea1f972a3d7f4e3da"
-      ],
       "unnecessary-trailing-comma": [
         "05e3175c0d1df717a3588db2ecf25b45"
       ]
     },
     "lib/src/features/profiles/substructures/model/huis_info.dart": {
-      "parameters-ordering": [
-        "6fa83ae91f15a2d6b122a1c002f4b376",
-        "3737fee4782e727a9f77f9893aa3d3a7"
-      ],
       "avoid-inferrable-type-arguments": [
         "91fb37915e0b137471ffed358a98df47"
       ],
@@ -3466,19 +3136,12 @@
       ]
     },
     "lib/src/features/profiles/substructures/model/commissie_info.dart": {
-      "parameters-ordering": [
-        "b97c7d169a5afd3d63bec241f8fc1427"
-      ],
       "unnecessary-trailing-comma": [
-        "aa0ef3169600936422a3ee6b230cf5ec",
-        "d346b4ff98b49ec1c814f0b6638a8fbc"
+        "aa0ef3169600936422a3ee6b230cf5ec"
       ],
       "avoid-negated-conditions": [
         "55814a51661b5574d99be98276e61370",
         "86c0170219305347a644f9422480b0d8"
-      ],
-      "avoid-incomplete-copy-with": [
-        "df60bd4909a82b7b5cf568909acaa250"
       ],
       "avoid-inferrable-type-arguments": [
         "91fb37915e0b137471ffed358a98df47"
@@ -3491,11 +3154,11 @@
       "avoid-importing-entrypoint-exports": [
         "747be5f0d3a4e73572f97bcd29222bcf"
       ],
-      "avoid-similar-names": [
-        "c4600ef14066816b25e1a9375975693a"
-      ],
       "unnecessary-trailing-comma": [
         "bc73aec90f746e7864984339debc6450"
+      ],
+      "avoid-similar-names": [
+        "c4600ef14066816b25e1a9375975693a"
       ],
       "avoid-collection-mutating-methods": [
         "cadc8c8db42409733582cb3e2298ef87"
@@ -3539,27 +3202,21 @@
       ],
       "avoid-collection-mutating-methods": [
         "cadc8c8db42409733582cb3e2298ef87"
+      ],
+      "avoid-returning-widgets": [
+        "70ee77da38d32a7e1c94b3d17076e739"
       ]
     },
     "lib/src/features/profiles/substructures/pages/almanak_commissie_page.dart": {
-      "dispose-fields": [
-        "00cf38620cc5e22c929be7004e042d85"
-      ],
       "prefer-widget-private-members": [
         "3d05941ea4377344565cb366c0c38c49",
-        "71003f562397d206d95806c81a6af6d6",
-        "d58b403579d510d1a7aad897b2620efc",
         "13983a11ce399ad09da91c3c864f3d57",
-        "58bc777e4ad794de449b03a3dc6c5266",
         "48e186ac175e6d8f496c2ffd87c1f152",
         "3c43ae639b0c949f450b482f54257a89",
         "79b8b1c8be3ee6c6e4ffe7cfac22e24d",
         "706ce6a9bad393d6c0f5739976ee40dc"
       ],
       "avoid-explicit-type-declaration": [
-        "e8cd7da078a86726031ad64f35f5a6c0",
-        "e8cd7da078a86726031ad64f35f5a6c0",
-        "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
         "8a9d94a502474b3f7e2cb785e4ce5439",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -3579,12 +3236,15 @@
       ],
       "avoid-collection-mutating-methods": [
         "cadc8c8db42409733582cb3e2298ef87"
+      ],
+      "avoid-returning-widgets": [
+        "bdbaa6e637b928c360f2f1bfd0bcd37c"
+      ],
+      "dispose-fields": [
+        "00cf38620cc5e22c929be7004e042d85"
       ]
     },
     "lib/src/features/profiles/substructures/pages/almanak_ploeg_page.dart": {
-      "avoid-shadowing": [
-        "84cdc76cabf41bd7c961f6ab12f117d8"
-      ],
       "prefer-widget-private-members": [
         "61eb24435b37e1c3cd6ee1a88a3faf02",
         "79b8b1c8be3ee6c6e4ffe7cfac22e24d",
@@ -3602,17 +3262,17 @@
         "796db6aeb10f16b65b816e647287d7c4",
         "b62516172149aa161feda969957d1109"
       ],
+      "avoid-shadowing": [
+        "84cdc76cabf41bd7c961f6ab12f117d8"
+      ],
       "avoid-collection-mutating-methods": [
         "cadc8c8db42409733582cb3e2298ef87"
+      ],
+      "avoid-returning-widgets": [
+        "bdbaa6e637b928c360f2f1bfd0bcd37c"
       ]
     },
     "lib/src/features/profiles/substructures/pages/almanak_huis_page.dart": {
-      "avoid-shadowing": [
-        "843bbe76636a810374d1852d64904d1a"
-      ],
-      "parameters-ordering": [
-        "59c632ee3159e0345fccffd76054171c"
-      ],
       "unnecessary-trailing-comma": [
         "fa262f6dd4d124c629c1f8fc761d8cc3",
         "e64c246f1a6fbb61eabe33083da144df"
@@ -3625,11 +3285,11 @@
         "3405181263779a9d7188c9518a71dbee",
         "c6c8b4601c8c28d16aaca8a8c3b92641"
       ],
+      "avoid-shadowing": [
+        "843bbe76636a810374d1852d64904d1a"
+      ],
       "avoid-unsafe-collection-methods": [
         "8b04d5e3775d298e78455efc5ca404d5"
-      ],
-      "avoid-inferrable-type-arguments": [
-        "64d0333cf654a2dd73c21d1a4e625170"
       ]
     },
     "lib/src/features/profiles/substructures/pages/almanak_substructuur_page.dart": {
@@ -3649,18 +3309,12 @@
       "prefer-widget-private-members": [
         "79b8b1c8be3ee6c6e4ffe7cfac22e24d"
       ],
-      "parameters-ordering": [
-        "a9bb2d7a4bdeebdd4f7efb15474900c8"
-      ],
       "prefer-correct-callback-field-name": [
         "1f83af4e41052f8eb52dec322580a88d"
       ],
       "prefer-explicit-parameter-names": [
         "b1fd515f513e8e4dbb53f81c53c6b134",
         "b1fd515f513e8e4dbb53f81c53c6b134"
-      ],
-      "avoid-similar-names": [
-        "75e7fc7c61c7dcbee8fb5c06aaa8bd4d"
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -3671,12 +3325,15 @@
         "a29e8f9bc7ee84f8f63cd3a7a79c0844",
         "796db6aeb10f16b65b816e647287d7c4",
         "b8f2a4da7a3584820e130728ca003a51"
+      ],
+      "avoid-returning-widgets": [
+        "bdbaa6e637b928c360f2f1bfd0bcd37c"
+      ],
+      "avoid-similar-names": [
+        "75e7fc7c61c7dcbee8fb5c06aaa8bd4d"
       ]
     },
     "lib/src/features/profiles/substructures/widgets/substructure_description_widget.dart": {
-      "parameters-ordering": [
-        "55bff19f35a57215631bb922ec48732d"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -3690,9 +3347,6 @@
     "lib/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart": {
       "avoid-importing-entrypoint-exports": [
         "6107c03e4f0cfc414d8a74dcf38c6b0d"
-      ],
-      "parameters-ordering": [
-        "373a0b1405d8fbd6227f67020df33043"
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -3741,9 +3395,6 @@
         "cd08f334155a2b4a2b1940bdd7a3e9d2",
         "cd08f334155a2b4a2b1940bdd7a3e9d2",
         "e3b303bb6d766a6192b4c71e8863ca86"
-      ],
-      "prefer-dedicated-media-query-methods": [
-        "8bf8854bebe108183caeb845c7676ae4"
       ]
     },
     "lib/src/features/profiles/widgets/profile_picture_list_tile_widget.dart": {
@@ -3781,11 +3432,7 @@
         "fd1d69f13fd1a329632594b124029de0",
         "135e606fdf5156d69e1934da10132797",
         "8d744bc7de307f8ad16161230576791f",
-        "d58b403579d510d1a7aad897b2620efc",
         "5d51f19afef455ff47fecb8608746dba"
-      ],
-      "parameters-ordering": [
-        "e06c3cd71beb2a729c86108c6042f18c"
       ],
       "avoid-explicit-type-declaration": [
         "fa7153f7ed1cb6c0fcf2ffb2fac21748"
@@ -3801,13 +3448,6 @@
       ]
     },
     "lib/src/features/profiles/widgets/almanak_user_tile.dart": {
-      "parameters-ordering": [
-        "e7f035bf7b2e5c8d8c124560801a295d"
-      ],
-      "avoid-similar-names": [
-        "80e99a59fa6f8f0d59e12ce9dde8aecb",
-        "73611866308df1206e32202f0717c3d4"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -3822,21 +3462,18 @@
       ],
       "avoid-async-call-in-sync-function": [
         "abc688d255d184ffff177e0fbc119670"
+      ],
+      "avoid-similar-names": [
+        "80e99a59fa6f8f0d59e12ce9dde8aecb",
+        "73611866308df1206e32202f0717c3d4"
       ]
     },
     "lib/src/features/profiles/widgets/profile_picture_widget.dart": {
-      "parameters-ordering": [
-        "21264b99f6eefa1094c88f92cb66e6a0"
-      ],
       "arguments-ordering": [
         "ef405815354e043d0ae597b879354fb2"
       ]
     },
     "lib/src/features/events/models/event.dart": {
-      "parameters-ordering": [
-        "fea37b1c0c37b50e34022fa712bd2d4b",
-        "ba6d60edd26d28c6038164ad1abc652b"
-      ],
       "avoid-negated-conditions": [
         "85eeab13b3f191327c5f638f5a3edc7e"
       ],
@@ -3866,9 +3503,6 @@
       ]
     },
     "lib/src/features/events/widgets/upcoming_event_widget.dart": {
-      "parameters-ordering": [
-        "c9addb5829e1d57ec16796c07ae2d02c"
-      ],
       "unnecessary-trailing-comma": [
         "8481ba9377d3a6a4f2a9bbaa89a29526",
         "37a4c5a93c4930e7ab0b004df120577d",
@@ -3886,9 +3520,6 @@
       ]
     },
     "lib/src/features/events/widgets/coming_week_events_widget.dart": {
-      "avoid-stateless-widget-initialized-fields": [
-        "811e1c4e651925bc423433049ae543e9"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -3924,18 +3555,21 @@
       ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32"
+      ],
+      "avoid-unnecessary-return": [
+        "505b97969baa28c3f607a38ee02f4f2d"
       ]
     },
     "lib/src/features/messaging/init_messaging_info.dart": {
-      "avoid-similar-names": [
-        "ec4e85f092fb81e190310b00f20c2e51",
-        "ec4e85f092fb81e190310b00f20c2e51"
+      "avoid-passing-default-values": [
+        "72e77ad55c40a9d3bba4dd5f891a2832"
       ],
       "avoid-async-call-in-sync-function": [
         "1d9225155957ca080f464c8cde2be99c"
       ],
-      "avoid-passing-default-values": [
-        "72e77ad55c40a9d3bba4dd5f891a2832"
+      "avoid-similar-names": [
+        "ec4e85f092fb81e190310b00f20c2e51",
+        "ec4e85f092fb81e190310b00f20c2e51"
       ]
     },
     "lib/src/features/authentication/model/auth_model.dart": {
@@ -3945,10 +3579,6 @@
       "avoid-async-call-in-sync-function": [
         "e2dbc0daf2039677eb413aae6e276aa1",
         "3eb6f6c4e3dabed6cfb9aff738f8e907"
-      ],
-      "parameters-ordering": [
-        "ff640c90f223249056fd97e204351329",
-        "ff640c90f223249056fd97e204351329"
       ],
       "prefer-correct-error-name": [
         "e1671797c52e15f763380b45e841ec32",
@@ -4009,9 +3639,6 @@
       ]
     },
     "lib/src/features/authentication/widgets/form_card.dart": {
-      "parameters-ordering": [
-        "867ee5143ac044c40a3a84faa2284bac"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0",
         "e8cd7da078a86726031ad64f35f5a6c0",
@@ -4027,16 +3654,8 @@
       ]
     },
     "lib/src/features/authentication/widgets/login_form.dart": {
-      "member-ordering": [
-        "7b9bfd2673d751f1ed5e05da94637f8d"
-      ],
       "prefer-widget-private-members": [
-        "d990cc6c8e04c7105292368cd122d0c8",
         "d56b699830e77ba53855679cb1d252da"
-      ],
-      "dispose-fields": [
-        "4b2a2e394437135cca7ba9df89e5b3e4",
-        "af8314cd77d4b22e39a53f630afbd2c0"
       ],
       "avoid-explicit-type-declaration": [
         "84e70ab518a8ac8c3b228bae00543396",
@@ -4050,6 +3669,9 @@
       "prefer-returning-conditional-expressions": [
         "9f10cb7679f3c7f2fecadfd4a2b4833c"
       ],
+      "avoid-inferrable-type-arguments": [
+        "1ab9c067f25ede23c3983e75ff6ccee5"
+      ],
       "avoid-passing-default-values": [
         "90b61f1fa6bb292b537f8825b9b235e8",
         "e9aba03706e20d5b309e69be6db5a0ac"
@@ -4059,6 +3681,10 @@
       ],
       "unnecessary-trailing-comma": [
         "26227033528b136ed27339c254987adf"
+      ],
+      "dispose-fields": [
+        "4b2a2e394437135cca7ba9df89e5b3e4",
+        "af8314cd77d4b22e39a53f630afbd2c0"
       ],
       "avoid-unused-ignores": [
         "5d1ddb1fbc851e185045c97c57e03089"
@@ -4107,9 +3733,6 @@
         "74ad5fec51dbb546c36c76261cfe9820",
         "edf0b992ae287d53f890c4dcc8778fa2"
       ],
-      "parameters-ordering": [
-        "412d3555a5af4f1889c2016dab85256e"
-      ],
       "prefer-explicit-parameter-names": [
         "74b8ad799e29434bd681e2a3ceddbdbd",
         "cea6914125e609f557ee7aecc3c0c422"
@@ -4132,9 +3755,6 @@
       "avoid-importing-entrypoint-exports": [
         "6107c03e4f0cfc414d8a74dcf38c6b0d"
       ],
-      "prefer-action-button-tooltip": [
-        "4223746048e6888c8c5bad23a6f7f690"
-      ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
       ],
@@ -4149,6 +3769,9 @@
       "prefer-define-hero-tag": [
         "4223746048e6888c8c5bad23a6f7f690"
       ],
+      "prefer-action-button-tooltip": [
+        "4223746048e6888c8c5bad23a6f7f690"
+      ],
       "avoid-async-call-in-sync-function": [
         "568923614a654fb0954a8c2bd6de483c"
       ]
@@ -4156,9 +3779,6 @@
     "lib/src/routes/unauthorized_route_page.dart": {
       "avoid-importing-entrypoint-exports": [
         "6107c03e4f0cfc414d8a74dcf38c6b0d"
-      ],
-      "prefer-action-button-tooltip": [
-        "c1a10cbf5fcae9cb93980a108d415a7e"
       ],
       "avoid-explicit-type-declaration": [
         "e8cd7da078a86726031ad64f35f5a6c0"
@@ -4172,6 +3792,9 @@
         "afe930bb0ce3cc550db105d1ca3bafe6"
       ],
       "prefer-define-hero-tag": [
+        "c1a10cbf5fcae9cb93980a108d415a7e"
+      ],
+      "prefer-action-button-tooltip": [
         "c1a10cbf5fcae9cb93980a108d415a7e"
       ]
     }
