@@ -73,6 +73,7 @@ class PostWidget extends ConsumerWidget {
             .when(
               data: (image) => Image(
                 image: image,
+                width: MediaQuery.of(context).size.width,
                 semanticLabel: "Post Image",
                 fit: BoxFit.cover,
               ),
