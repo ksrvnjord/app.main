@@ -23,21 +23,21 @@ class PostWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = snapshot.data();
-    const contentMaxLines = 12;
+    const int contentMaxLines = 12;
 
-    const headerPadding = 4.0;
-    const postStatisticsTopPadding = 4.0;
+    const double headerPadding = 4;
+    const double postStatisticsTopPadding = 4;
 
     bool darkMode = Theme.of(context).brightness == Brightness.dark;
 
     Map<String, Color> topicColors = {
-      "Gevonden voorwerpen":
-          darkMode ? Colors.green.shade900 : Colors.green.shade100,
-      // ignore: prefer-moving-to-variable
-      "Gezocht": darkMode ? Colors.orange.shade900 : Colors.orange.shade100,
-      "Kaartjes": darkMode ? Colors.yellow.shade900 : Colors.yellow.shade100,
       "Promotie": darkMode ? Colors.red.shade900 : Colors.red.shade100,
       "Wandelgangen": darkMode ? Colors.blue.shade900 : Colors.blue.shade100,
+      "Kaartjes": darkMode ? Colors.yellow.shade900 : Colors.yellow.shade100,
+      // ignore: prefer-moving-to-variable
+      "Gezocht": darkMode ? Colors.orange.shade900 : Colors.orange.shade100,
+      "Gevonden voorwerpen":
+          darkMode ? Colors.green.shade900 : Colors.green.shade100,
     };
     final postTopic = post?.topic ?? "";
 
@@ -73,13 +73,12 @@ class PostWidget extends ConsumerWidget {
             .when(
               data: (image) => Image(
                 image: image,
-                semanticLabel: "Post Image",
                 width: MediaQuery.of(context).size.width,
+                semanticLabel: "Post Image",
                 fit: BoxFit.cover,
               ),
               error: (error, stackTrace) => const Icon(Icons.error),
-              loading: () =>
-                  const Center(child: CircularProgressIndicator.adaptive()),
+              loading: () => const Center(child: CircularProgressIndicator()),
             ),
       Chip(
         label: Text(postTopic),
@@ -92,7 +91,11 @@ class PostWidget extends ConsumerWidget {
       PostStatisticsBar(snapshot: snapshot)
           .padding(top: postStatisticsTopPadding),
       const Divider(),
-      PostBottomActionBar(snapshot: snapshot),
-    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
+      PostBottomActionBar(
+        snapshot: snapshot,
+      ),
+    ].toColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
   }
 }
