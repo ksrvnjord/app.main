@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_bottom_action_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_header_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_statistics_bar.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/providers/firebasestorage_cached_image_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -42,7 +43,9 @@ class PostWidget extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    return [
+    final postImageRef = post?.imageRef;
+
+    return <Widget>[
       PostHeaderBar(snapshot: snapshot).padding(bottom: headerPadding),
       Text(
         post?.title ?? "",
@@ -64,6 +67,20 @@ class PostWidget extends ConsumerWidget {
           ),
         ),
       ].toRow(),
+      if (postImageRef != null)
+        ref
+            .watch(firebaseStorageCachedImageProvider(postImageRef.fullPath))
+            .when(
+              data: (image) => Image(
+                image: image,
+                semanticLabel: "Post Image",
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              error: (error, stackTrace) => const Icon(Icons.error),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
+            ),
       Chip(
         label: Text(postTopic),
         side: BorderSide.none,
