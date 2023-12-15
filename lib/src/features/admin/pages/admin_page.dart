@@ -45,12 +45,12 @@ class AdminPage extends StatelessWidget {
           const MoreLinkTile(
             leading: Icon(Icons.description),
             label: "Beheer Polls",
-            url: "https://heimdall.njord.nl/polls",
+            url: "https://heimdall.njord.nl/admin/polls",
           ),
           const MoreLinkTile(
             leading: Icon(Icons.announcement),
             label: "Beheer Aankondigingen",
-            url: "https://heimdall.njord.nl/announcements",
+            url: "https://heimdall.njord.nl/admin/announcements",
           ),
 
           FormSection(
@@ -59,7 +59,7 @@ class AdminPage extends StatelessWidget {
               const MoreLinkTile(
                 leading: Icon(Icons.people),
                 label: "Beheer Leeden",
-                url: "https://heimdall.njord.nl/users",
+                url: "https://heimdall.njord.nl/admin/users",
               ),
               ListTile(
                 leading: const Icon(Icons.group),
@@ -75,17 +75,17 @@ class AdminPage extends StatelessWidget {
               MoreLinkTile(
                 leading: Icon(Icons.calendar_today),
                 label: "Maak (herhalende) Afschrijving",
-                url: "https://heimdall.njord.nl/rowing/reservations/new",
+                url: "https://heimdall.njord.nl/admin/rowing/reservations/new",
               ),
               MoreLinkTile(
                 leading: Icon(Icons.warning),
                 label: "Beheer Schades",
-                url: "https://heimdall.njord.nl/rowing/damages",
+                url: "https://heimdall.njord.nl/admin/rowing/damages",
               ),
               MoreLinkTile(
                 leading: Icon(Icons.directions_boat),
                 label: "Beheer Boten",
-                url: "https://heimdall.njord.nl/rowing/equipment",
+                url: "https://heimdall.njord.nl/admin/rowing/equipment",
               ),
               ListTile(
                 leading: Icon(Icons.perm_identity, color: Colors.grey),
