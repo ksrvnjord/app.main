@@ -126,11 +126,11 @@ class AdminPage extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.warning),
                 title: const Text("Beheer Schades"),
-                trailing: const Text("Heimdall"),
+                trailing: const Text("Retool"),
                 visualDensity: VisualDensity.standard,
                 // ignore: prefer-correct-handler-name
                 onTap: () => unawaited(launchUrl(Uri.parse(
-                  "https://heimdall.njord.nl/admin/rowing/damages",
+                  "https://ksrvnjord.retool.com/apps/373edd2a-9c0f-11ee-a7ef-375aea3b6e12/Afschrijfsysteem%20-%20Schades%20(RD)",
                 ))),
               ),
               ListTile(
