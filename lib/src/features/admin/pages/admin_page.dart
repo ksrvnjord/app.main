@@ -85,7 +85,8 @@ class AdminPage extends StatelessWidget {
               MoreLinkTile(
                 leading: Icon(Icons.directions_boat),
                 label: "Beheer Boten",
-                url: "https://heimdall.njord.nl/rowing/equipment",
+                url:
+                    "https://ksrvnjord.retool.com/apps/406a9678-8a53-11ee-8a54-d3ac821edb1c/Afschrijfsysteem%20-%20Objecten%20CRUD",
               ),
               ListTile(
                 leading: Icon(Icons.perm_identity, color: Colors.grey),
