@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
@@ -33,6 +34,7 @@ class User {
   Address? get address => _firestore?.address;
   bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
   int get djangoId => _django.id;
+  List<GroupDjangoEntry> get groups => _django.groups;
 
   // INFERRED FIELDS.
   String get fullName => '$firstName $lastName';

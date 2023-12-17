@@ -24,6 +24,7 @@ class MorePage extends ConsumerWidget {
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
+      "Lustrum Goede Doel": "Charity",
       "Over deze app": "About this app",
       if (firebaseAuthUser != null) "Bekijk de agenda": "Events",
       "Contacteer het bestuur / commissies": "Contact",
