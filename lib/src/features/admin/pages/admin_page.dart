@@ -65,9 +65,13 @@ class AdminPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.event),
-            title: const Text('Beheer Evenementen'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.goNamed('Manage Events'),
+            title: const Text("Beheer Evenementen"),
+            trailing: const Text("Retool"),
+            visualDensity: VisualDensity.standard,
+            // ignore: prefer-correct-handler-name
+            onTap: () => unawaited(launchUrl(Uri.parse(
+              "https://ksrvnjord.retool.com/apps/6c363b96-9c68-11ee-a9e1-f7ed1c21743e/Evenementen%20-%20CRUD",
+            ))),
           ),
           ListTile(
             leading: const Icon(Icons.description),
@@ -82,11 +86,11 @@ class AdminPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.announcement),
             title: const Text("Beheer Aankondigingen"),
-            trailing: const Text("Heimdall"),
+            trailing: const Text("Retool"),
             visualDensity: VisualDensity.standard,
             // ignore: prefer-correct-handler-name
             onTap: () => unawaited(launchUrl(Uri.parse(
-              "https://heimdall.njord.nl/admin/announcements",
+              "https://ksrvnjord.retool.com/apps/746434de-9c55-11ee-9791-27361826cb35/Aankondigingen%20-%20CRUD",
             ))),
           ),
 
