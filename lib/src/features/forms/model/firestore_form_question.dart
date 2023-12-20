@@ -1,7 +1,7 @@
 class FirestoreFormQuestion {
-  final String label;
-  final FormQuestionType type;
-  final List<String>? options;
+  String label;
+  FormQuestionType type;
+  List<String>? options;
 
   FirestoreFormQuestion({
     required this.label,
@@ -23,7 +23,7 @@ class FirestoreFormQuestion {
   Map<String, dynamic> toJson() {
     return {
       'Label': label,
-      'Type': type,
+      'Type': type.name,
       'Choices': options,
     };
   }

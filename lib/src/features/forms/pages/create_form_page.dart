@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends StatefulWidget {
   @override
@@ -6,184 +11,139 @@ class CreateFormPage extends StatefulWidget {
 }
 
 class _MyFormPageState extends State<CreateFormPage> {
-  List<Map<String, dynamic>> questions = [];
+  List<FirestoreFormQuestion> questions = [];
 
   DateTime openUntil = DateTime.now();
-  String? description;
-  String formName = '';
+  TextEditingController? description;
+  TextEditingController formName = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Form Page'),
+        title: const Text('Maak een form aan'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Formulier naam',
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            TextFormField(
+              controller: formName,
+              decoration: const InputDecoration(labelText: 'Formulier naam'),
             ),
-            onFieldSubmitted: (String value) => formName = value,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Beschrijving form',
+            TextFormField(
+              controller: description,
+              decoration: const InputDecoration(
+                labelText: 'Beschrijving form',
+              ),
             ),
-            onFieldSubmitted: (String value) => description = value,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          InputDatePickerFormField(
-            fieldLabelText: 'Open tot',
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-            onDateSubmitted: (DateTime selectedDate) {
-              openUntil = selectedDate;
-            },
-          ),
-          ...questions.map((label) {
-            return Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Question',
+            const SizedBox(
+              height: 16,
+            ),
+            InputDatePickerFormField(
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              // ignore: prefer-extracting-callbacks
+              onDateSaved: (DateTime selectedDate) {
+                setState(() {
+                  openUntil = selectedDate;
+                });
+              },
+              fieldLabelText: 'Open tot:',
+            ),
+            ...questions.asMap().entries.map((questionEntry) {
+              int index = questionEntry.key;
+              FirestoreFormQuestion question = questionEntry.value;
+
+              return Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Vraag ${index + 1}',
+                    ),
+                    onChanged: (String value) => question.label = value,
                   ),
-                  onChanged: (String value) {
-                    // You can handle the changes in each TextFormField here
-                  },
-                ),
-                DropdownButton<String>(
-                  value: label['type'],
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      label['type'] = newValue!;
-                    });
-                    // You can handle the changes in the dropdown selection here
-                  },
-                  items: <String>['Single Select', 'Text']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
-            );
-          }).toList(),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                questions.add({
-                  'label': '', // Add an empty label for the new TextFormField
-                  'type': 'Single Select',
-                }); // Add an empty label for the new TextFormField
-              });
-            },
-            child: Icon(Icons.add),
-          ),
-        ],
+                  DropdownButton<FormQuestionType>(
+                    items: FormQuestionType.values
+                        .map<DropdownMenuItem<FormQuestionType>>(
+                      (FormQuestionType value) {
+                        return DropdownMenuItem<FormQuestionType>(
+                          value: value,
+                          child: Text(value.name.toString()),
+                        );
+                      },
+                    ).toList(),
+                    value: question.type,
+                    onChanged: (FormQuestionType? newValue) => setState(
+                      () => question.type = newValue!,
+                    ),
+                  ),
+                  if (question.type == FormQuestionType.singleChoice)
+                    ...(question.options ?? [])
+                        .asMap()
+                        .entries
+                        .map((optionEntry) {
+                      int optionIndex = optionEntry.key;
+                      String option = optionEntry.value;
+
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Optie ${optionIndex + 1}',
+                        ),
+                        onChanged: (String value) => option = value,
+                      );
+                    }).toList(),
+                  if (question.type == FormQuestionType.singleChoice)
+                    ElevatedButton(
+                      onPressed: () =>
+                          setState(() => question.options!.add('')),
+                      child: const Icon(Icons.add),
+                    ),
+                  ElevatedButton(
+                    onPressed: () => setState(() => questions.removeAt(index)),
+                    child: const Text("Verwijder vraag"),
+                  ),
+                  const SizedBox(height: 32),
+                ],
+              );
+            }).toList(),
+            ElevatedButton(
+              onPressed: () => setState(
+                () => questions.add(FirestoreFormQuestion(
+                  label: '',
+                  type: FormQuestionType.singleChoice,
+                  options: [],
+                )), // Add an empty label for the new TextFormField
+              ),
+              child: const Icon(Icons.add),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: submitForm,
+        icon: const Icon(Icons.send),
+        label: const Text('Maak nieuwe form.'),
       ),
     );
   }
+
+  void submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      FormRepository.upsertCreateForm(
+        form: FirestoreForm(
+          formName: formName.text,
+          questions: questions,
+          openUntil: openUntil,
+        ),
+      );
+
+      context.goNamed('Admin');
+    }
+  }
 }
-                
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:intl/intl.dart';
-// import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
-// import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-// import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-// import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-// import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
-// import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-// import 'package:styled_widget/styled_widget.dart';
-
-// class CreateFormPage extends ConsumerWidget {
-//   // Constructor which takes a String formId.
-//   // const FormPage({Key? key, required this.formId}) : super(key: key);
-
-//   // final String formId;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     String formName;
-//     DateTime openUntil;
-//     String? description;
-
-//     final List<FirestoreFormQuestion> questions = [
-//       // final String label;
-//       // final FormQuestionType type;
-//       // final List<String>? options;
-//     ];
-
-//     List<CreateFormQuestion> formQuestions = [];
-
-//     List<Widget> generalQuestions = [
-//       TextFormField(
-//         decoration: const InputDecoration(
-//           labelText: 'Formulier naam',
-//         ),
-//         onFieldSubmitted: (String value) => formName = value,
-//       ),
-//       TextFormField(
-//         decoration: const InputDecoration(
-//           labelText: 'Beschrijving form',
-//         ),
-//         onFieldSubmitted: (String value) => description = value,
-//       ),
-//       Text(""),
-//       InputDatePickerFormField(
-//         fieldLabelText: 'Open tot',
-//         initialDate: DateTime.now(),
-//         firstDate: DateTime(2000),
-//         lastDate: DateTime(2100),
-//         onDateSubmitted: (DateTime selectedDate) {
-//           openUntil = selectedDate;
-//         },
-//       ),
-//     ];
-
-//     List<String> questionLabels = [];
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Form aanmaken'),
-//       ),
-//       body: ListView(
-//         padding: const EdgeInsets.all(16),
-//         children: [
-//           ...generalQuestions,
-//           ElevatedButton(
-//             onPressed: () {
-//               questionLabels
-//                   .add(""); // Add an empty label for the new TextFormField
-//             },
-//             child: Icon(Icons.add),
-//           ),
-//           // Create a list of TextFormField based on questionLabels
-//           Column(
-//             children: questionLabels.map((label) {
-//               return TextFormField(
-//                 decoration: InputDecoration(
-//                   labelText: 'Question',
-//                 ),
-//                 onChanged: (String value) {
-//                   // You can handle the changes in each TextFormField here
-//                 },
-//               );
-//             }).toList(),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

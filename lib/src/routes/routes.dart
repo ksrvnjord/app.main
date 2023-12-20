@@ -205,11 +205,6 @@ class Routes {
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            _route(
-              path: 'nieuw',
-              name: "Create Form",
-              child: CreateFormPage(),
-            ), // forms/nieuw
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
@@ -617,6 +612,11 @@ class Routes {
             name: "Manage Vaarverbod",
           ),
         ),
+        _route(
+          path: 'nieuw',
+          name: "Create Form",
+          child: CreateFormPage(),
+        ), // admin/nieuw
         _route(
           path: "maak-push-notificatie",
           name: "Create Push Notification",

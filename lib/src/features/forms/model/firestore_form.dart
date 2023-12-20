@@ -13,7 +13,7 @@ class FirestoreForm {
       FirebaseFirestore.instance.collection('forms').withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
-            toFirestore: (answer, _) => answer.toJson(),
+            toFirestore: (form, _) => form.toJson(),
           );
 
   const FirestoreForm({
