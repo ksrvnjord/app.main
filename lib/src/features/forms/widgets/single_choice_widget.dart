@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 /// A widget for displaying a single choice question.
@@ -10,7 +13,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 /// This widget takes a [FirestoreFormQuestion] and displays it as a list of radio buttons.
 /// The user can select one option from the list.
 ///
-/// The [initialValue] is the answer that was previously given for this question, if any.
+/// The [initialValue] is the initial value of the question.
 /// The [formQuestion] is the question to be displayed.
 /// The [form] is the form that contains the question.
 /// The [docRef] is the document reference of the form.
@@ -18,8 +21,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 /// The [onChanged] function is called when the user selects an option.
 ///
 /// If the [formQuestion] does not have any options, an error message is displayed.
+
 class SingleChoiceWidget extends StatelessWidget {
-  final String? initialValue; // Given answer.
+  final String? initialValue;
   final FirestoreFormQuestion formQuestion;
   final FirestoreForm form;
   final DocumentReference<FirestoreForm> docRef;
@@ -48,7 +52,7 @@ class SingleChoiceWidget extends StatelessWidget {
             children: options
                 .map((choice) => RadioListTile<String>(
                       value: choice,
-                      groupValue: null,
+                      groupValue: initialValue,
                       onChanged: onChanged,
                       toggleable: true,
                       title: Text(choice),
