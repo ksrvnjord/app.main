@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_agenda.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_helped_visualisation.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_progress_indicator.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_section_text.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_section_title.dart';
