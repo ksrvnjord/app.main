@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_agenda_item.dart';
 
 class CharityAgenda extends StatelessWidget {
-  const CharityAgenda({Key? key});
+  const CharityAgenda({super.key});
 
   @override
   Widget build(BuildContext context) {
