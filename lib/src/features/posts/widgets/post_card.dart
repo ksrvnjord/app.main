@@ -6,16 +6,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({
+    this.expandContent = false,
     Key? key,
     required this.snapshot,
-    this.elevation = true,
-    this.squareBorder = false,
-    this.expandContent = false,
   }) : super(key: key);
 
   final DocumentSnapshot<Post> snapshot;
-  final bool elevation;
-  final bool squareBorder;
   final bool expandContent;
 
   @override

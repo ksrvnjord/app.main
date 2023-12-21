@@ -32,8 +32,6 @@ class CachedProfilePicture {
   static String thumbnailPath(String userId) =>
       "$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
 // 21203/thumbnails/profile_picture_200x200.png.
-  static Future<ImageProvider<Object>> getMyProfilePicture() =>
-      get(FirebaseAuth.instance.currentUser?.uid ?? "");
 
   static UploadTask uploadMyProfilePicture(File file) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? "";

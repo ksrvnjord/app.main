@@ -23,10 +23,7 @@ class AlmanakPage extends StatelessWidget {
         title: const Text("Almanak"),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: [

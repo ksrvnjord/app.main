@@ -2,7 +2,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_by_identifier.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 
 part 'firestore_user.g.dart';
@@ -81,61 +80,5 @@ class FirestoreUser {
       'substructures': substructures,
       'allergies': allergies,
     };
-  }
-
-  FirestoreUser mergeWithHeimdallProfile(
-    Query$AlmanakProfileByIdentifier$userByIdentifier$fullContact$public u,
-  ) {
-    return copyWith(
-      email: u.email,
-      phonePrimary: u.phone_primary,
-      address: Address(
-        street: u.street,
-        houseNumber: u.housenumber,
-        houseNumberAddition: u.housenumber_addition,
-        postalCode: u.zipcode,
-        city: u.city,
-      ),
-    );
-  }
-
-  FirestoreUser copyWith({
-    String? firstName,
-    String? lastName,
-    String? identifier,
-    String? ploeg,
-    String? board,
-    String? study,
-    String? otherAssociation,
-    String? bestuursFunctie,
-    String? huis,
-    bool? dubbellid,
-    List<String>? substructures,
-    List<String>? allergies,
-    String? email,
-    required Address address,
-    String? phonePrimary,
-    bool? isAdmin,
-  }) {
-    return FirestoreUser(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      identifier: identifier ?? this.identifier,
-      ploeg: ploeg ?? this.ploeg,
-      board: board ?? this.board,
-      study: study ?? this.study,
-      otherAssociation: otherAssociation ?? this.otherAssociation,
-      bestuursFunctie: bestuursFunctie ?? this.bestuursFunctie,
-      huis: huis ?? this.huis,
-      dubbellid: dubbellid ?? this.dubbellid,
-      email: email ?? this.email,
-      address: address,
-      phonePrimary: phonePrimary ?? this.phonePrimary,
-      substructures: substructures ?? this.substructures,
-      allergies: allergies ?? this.allergies,
-      canBookTrainingFarInAdvance:
-          canBookTrainingFarInAdvance ?? canBookTrainingFarInAdvance,
-      isAdmin: isAdmin ?? this.isAdmin,
-    );
   }
 }

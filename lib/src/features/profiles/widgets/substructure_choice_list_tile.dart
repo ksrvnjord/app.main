@@ -7,7 +7,6 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   static const imageWidth = 80.0;
   static const imageHeight = 72.0;
   static const imageRightPadding = 16.0;
-  static const titleFontSize = 16.0;
   static const iconHorizontalPadding = 16.0;
 
   const SubstructureChoiceListTile({

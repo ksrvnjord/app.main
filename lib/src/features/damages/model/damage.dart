@@ -22,20 +22,6 @@ class Damage {
   final bool critical;
   final bool active;
 
-  const Damage({
-    this.reference,
-    this.image,
-    this.critical = false,
-    this.active = false,
-    this.cause = '',
-    required this.parent,
-    required this.description,
-    required this.createdTime,
-    required this.creatorId,
-    required this.name,
-    required this.type,
-  });
-
   Damage.fromJson(Map<String, Object?> json)
       : reference = json['reference'] as DocumentReference?,
         parent = json['parent']! as DocumentReference,

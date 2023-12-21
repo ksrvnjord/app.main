@@ -39,14 +39,6 @@ class AuthConstants {
     }
   }
 
-  Uri oauthEndpoint() {
-    return Uri.parse('$baseURL/oauth/token');
-  }
-
-  Uri jwtEndpoint() {
-    return Uri.parse('$baseURL/api/v1/auth/firebase');
-  }
-
   static Uri oauthEndpointFor(Environment environment) {
     switch (environment) {
       case Environment.production:
@@ -56,6 +48,14 @@ class AuthConstants {
       default:
         throw Exception('Environment not set.');
     }
+  }
+
+  Uri oauthEndpoint() {
+    return Uri.parse('$baseURL/oauth/token');
+  }
+
+  Uri jwtEndpoint() {
+    return Uri.parse('$baseURL/api/v1/auth/firebase');
   }
 }
 
