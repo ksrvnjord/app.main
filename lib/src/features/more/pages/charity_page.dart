@@ -127,13 +127,14 @@ class CharityPage extends ConsumerWidget {
                     Center(
                       child: InkWell(
                         child: const Text(
-                          'https://www.leontienhuis.nl/',
+                          'Doneer!',
                           style: TextStyle(
                               color: Colors.blue,
                               decoration: TextDecoration.underline),
                         ),
                         onTap: () {
-                          final url = Uri.parse('https://www.leontienhuis.nl/');
+                          final url = Uri.parse(
+                              'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=D4hUZtibSEO3Y7Yniml2ww');
                           launchUrl(url);
                         },
                       ),
