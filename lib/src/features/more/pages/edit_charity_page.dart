@@ -72,7 +72,6 @@ class EditCharityPage extends StatelessWidget {
       ),
       body: CustomPaint(
         painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
           pageOffset: pageOffset,
         ),
         child: Padding(

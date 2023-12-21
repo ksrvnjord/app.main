@@ -76,7 +76,6 @@ class CharityPage extends ConsumerWidget {
           ),
           body: CustomPaint(
             painter: LustrumBackgroundWidget(
-              screenSize: MediaQuery.of(context).size,
               pageOffset: pageOffset,
             ),
             child: Padding(
@@ -133,7 +132,7 @@ class CharityPage extends ConsumerWidget {
                         ),
                         onTap: () {
                           final url = Uri.parse(
-                              'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=D4hUZtibSEO3Y7Yniml2ww');
+                              'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=E-Sbs4ZuQHibS8OxtPLRiQ');
                           launchUrl(url);
                         },
                       ),
