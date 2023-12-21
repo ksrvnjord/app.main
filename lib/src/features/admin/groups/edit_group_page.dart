@@ -48,34 +48,6 @@ class EditGroupPage extends ConsumerWidget {
     ref.invalidate(groupByIdProvider(groupId));
   }
 
-  Future<void> addUserToGroup(
-    String userId,
-    WidgetRef ref,
-    BuildContext ctx,
-  ) async {
-    final dio = ref.read(dioProvider);
-    final res = await dio
-        .post("/api/users/groups/$groupId/delete/", data: {"user": userId});
-
-    const httpOK = 200;
-    if (res.statusCode != httpOK && ctx.mounted) {
-      // ignore: avoid-ignoring-return-values
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(content: Text("Er is iets fout gegaan.")),
-      );
-
-      return;
-    }
-
-    if (!ctx.mounted) return;
-    // ignore: avoid-ignoring-return-values
-    ScaffoldMessenger.of(ctx).showSnackBar(
-      const SnackBar(content: Text("Gebruiker is verwijderd van de groep.")),
-    );
-    // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupByIdProvider(groupId));
-  }
-
   Future<void> Function(int) addUserToGroupCallBack(
     Map<String, dynamic> group,
     WidgetRef ref,

@@ -38,10 +38,10 @@ done
 # create an array containing the commands
 commands=(
     "dart format --set-exit-if-changed ."
-    "dart run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console"
-    "dart run dart_code_metrics:metrics check-unused-files --exclude=/**.graphql.dart lib"
-    "dart run dart_code_metrics:metrics check-unnecessary-nullable lib"
-    "dart run dart_code_metrics:metrics check-unused-code lib --fatal-unused --monorepo"
+    "dcm analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console"
+    "dcm check-unused-files --exclude=/**.graphql.dart lib"
+    "dcm check-unnecessary-nullable lib"
+    "dcm check-unused-code lib --fatal-unused --monorepo"
     "dart run dependency_validator"
     "flutter analyze"
 )

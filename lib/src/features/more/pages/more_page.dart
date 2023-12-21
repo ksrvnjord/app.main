@@ -40,10 +40,7 @@ class MorePage extends ConsumerWidget {
         title: const Text('Meer'),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: ListView(
           children: [
             ...optionRouteMap.entries.map(

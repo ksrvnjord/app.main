@@ -131,20 +131,6 @@ class DjangoUser {
     return DjangoUser.fromJson(user);
   }
 
-  static Future<DjangoUser> getById(
-    String id,
-    AutoDisposeStreamProviderRef<DjangoUser> ref,
-  ) async {
-    final dio = ref.watch(dioProvider);
-
-    final res = await dio.get("/api/users/user/$id");
-    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
-    final results = data["results"] as List;
-    final user = results.first as Map<String, dynamic>;
-
-    return DjangoUser.fromJson(user);
-  }
-
   static Future<Query$AlmanakProfile$user?> getByIdGraphQL(
     String id,
     StreamProviderRef<User> ref,

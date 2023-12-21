@@ -1,10 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProgressNotifier extends StateNotifier<bool> {
-  get isInProgress => state;
-  get isDone => !state;
-  get isNotInProgress => !state;
-
   ProgressNotifier() : super(false);
 
   void inProgress() {

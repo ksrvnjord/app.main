@@ -76,10 +76,7 @@ class PostsPage extends ConsumerWidget {
         ],
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: const FirebaseWidget(
           onAuthenticated: PostList(),
           onUnauthenticated:

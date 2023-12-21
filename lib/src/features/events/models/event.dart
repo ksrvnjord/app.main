@@ -35,9 +35,6 @@ class Event {
     );
   }
 
-  factory Event.fromJson(String source) =>
-      Event.fromMap(json.decode(source) as Map<String, dynamic>);
-
   Event copyWith({
     String? title,
     Timestamp? startTime,
