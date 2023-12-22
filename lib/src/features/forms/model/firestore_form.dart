@@ -9,6 +9,13 @@ class FirestoreForm {
   final DateTime openUntil;
   final String? description;
 
+  static final CollectionReference<FirestoreForm> firestoreConvert =
+      FirebaseFirestore.instance.collection('forms').withConverter(
+            fromFirestore: (snapshot, _) =>
+                FirestoreForm.fromJson(snapshot.data() ?? {}),
+            toFirestore: (form, _) => form.toJson(),
+          );
+
   const FirestoreForm({
     required this.formName,
     required this.questions,
@@ -31,6 +38,11 @@ class FirestoreForm {
 
   // Create toJson method.
   Map<String, dynamic> toJson() {
-    return {};
+    return {
+      'FormName': formName,
+      'Vragen': questions.map((vraag) => vraag.toJson()).toList(),
+      'OpenUntil': Timestamp.fromDate(openUntil),
+      if (description != null) 'Description': description,
+    };
   }
 }

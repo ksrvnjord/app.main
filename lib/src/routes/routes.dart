@@ -1,6 +1,7 @@
 // ignore_for_file: prefer-match-file-name
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/events/manage_events_page.dart';
@@ -15,6 +16,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
@@ -206,7 +208,7 @@ class Routes {
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
-              path: ':formId',
+              path: ':formId', // forms/fgdgdf789dfg7df9dg789
               name: "Form",
               pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
                           null &&
@@ -610,6 +612,11 @@ class Routes {
             name: "Manage Vaarverbod",
           ),
         ),
+        _route(
+          path: 'nieuw',
+          name: "Create Form",
+          child: CreateFormPage(),
+        ), // admin/nieuw
         _route(
           path: "maak-push-notificatie",
           name: "Create Push Notification",

@@ -66,6 +66,16 @@ class AdminPage extends StatelessWidget {
               onTap: () => context.goNamed('Manage Groups'),
             ),
           ]).paddingDirectional(vertical: sectionPadding),
+
+          FormSection(title: 'Beheer forms', children: [
+            ListTile(
+              leading: const Icon(Icons.add),
+              title: const Text('Maak een form aan'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => context.goNamed('Create Form'),
+            ),
+          ]).paddingDirectional(vertical: sectionVPadding),
+
           const FormSection(title: 'Afschrijfsysteem', children: [
             MoreLinkTile(
               leading: Icon(Icons.calendar_today),
