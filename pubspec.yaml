@@ -2,7 +2,7 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1726.14+13
+version: 1.1726.15+13
 
 environment:
   sdk: "^3.0.0" # Dart SDK version: https://dart.dev/get-dart/archive
