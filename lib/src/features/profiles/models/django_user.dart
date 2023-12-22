@@ -60,7 +60,7 @@ class DjangoUser {
 
   final List<GroupDjangoEntry> groups;
 
-  DjangoUser({
+  const DjangoUser({
     required this.id,
     required this.lichting,
     required this.isSuperuser,

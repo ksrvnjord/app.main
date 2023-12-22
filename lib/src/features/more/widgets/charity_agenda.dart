@@ -6,23 +6,20 @@ class CharityAgenda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const width2 = 400.0;
+    const height2 = 200.0;
+
     return SizedBox(
-      width: 400,
-      height: 200,
+      width: width2,
+      height: height2,
       child: ListView(
         children: const [
-          CharityAgendaItem(
-            date: '22 december',
-            eventName: 'Kerstmarkt',
-          ),
+          CharityAgendaItem(date: '22 december', eventName: 'Kerstmarkt'),
           CharityAgendaItem(
             date: '21 januari',
             eventName: 'Lustrumsyposium',
           ),
-          CharityAgendaItem(
-            date: '22 januari',
-            eventName: 'Duinloop',
-          ),
+          CharityAgendaItem(date: '22 januari', eventName: 'Duinloop'),
         ],
       ),
     );

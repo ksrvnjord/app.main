@@ -1,4 +1,4 @@
-// ignore_for_file: prefer-match-file-name
+// ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -480,14 +480,14 @@ class Routes {
             ),
             name: "Ploegen",
           ),
-          redirect:
-              (context, state) => // Default route is ploegen for currentYear.
-                  state.uri.queryParameters['year'] == null
-                      ? Uri(
-                          path: state.matchedLocation,
-                          queryParameters: {'year': getNjordYear().toString()},
-                        ).toString()
-                      : null,
+          redirect: (context, state) =>
+              // Default route is ploegen for currentYear.
+              state.uri.queryParameters['year'] == null
+                  ? Uri(
+                      path: state.matchedLocation,
+                      queryParameters: {'year': getNjordYear().toString()},
+                    ).toString()
+                  : null,
           routes: [
             _route(
               path: ":name",

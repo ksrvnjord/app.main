@@ -31,7 +31,6 @@ class User {
   // DJANGO SPECIFIC FIELDS.
   Address? get address => _firestore?.address;
   bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
-  //int get djangoId => _django.id;
   List<GroupDjangoEntry> get groups => _django.groups;
 
   // INFERRED FIELDS.
