@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class CreateFormPage extends StatefulWidget {
+class CreateFormPage extends ConsumerStatefulWidget {
   @override
   _MyFormPageState createState() => _MyFormPageState();
 }
 
-class _MyFormPageState extends State<CreateFormPage> {
+class _MyFormPageState extends ConsumerState<CreateFormPage> {
   List<FirestoreFormQuestion> questions = [];
 
   DateTime openUntil = DateTime.now();
@@ -18,6 +21,15 @@ class _MyFormPageState extends State<CreateFormPage> {
   TextEditingController formName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  FirestoreUser? firebaseUser;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseUser = ref.read(
+      currentFirestoreUserProvider,
+    ); // TODO: Moet dit in deze specifieke state?
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +152,8 @@ class _MyFormPageState extends State<CreateFormPage> {
           formName: formName.text,
           questions: questions,
           openUntil: openUntil,
+          description: description?.text,
+          authorId: firebaseUser?.identifier ?? '', //TODO: Beter om een error te geven voor non-users.
         ),
       );
 
