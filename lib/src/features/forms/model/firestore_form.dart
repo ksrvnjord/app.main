@@ -8,6 +8,7 @@ class FirestoreForm {
   final List<FirestoreFormQuestion> questions;
   final DateTime openUntil;
   final String? description;
+  final String authorId;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance.collection('forms').withConverter(
@@ -21,6 +22,7 @@ class FirestoreForm {
     required this.questions,
     required this.openUntil,
     this.description,
+    required this.authorId,
   });
 
   // Create fromJson method.
@@ -33,6 +35,7 @@ class FirestoreForm {
           .toList(),
       openUntil: (json['OpenUntil'] as Timestamp).toDate(),
       description: json['Description'],
+      authorId: json['AuthorId'],
     );
   }
 
@@ -43,6 +46,7 @@ class FirestoreForm {
       'Vragen': questions.map((vraag) => vraag.toJson()).toList(),
       'OpenUntil': Timestamp.fromDate(openUntil),
       if (description != null) 'Description': description,
+      'AuthorId': authorId,
     };
   }
 }
