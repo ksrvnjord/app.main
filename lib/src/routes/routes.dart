@@ -1,4 +1,4 @@
-// ignore_for_file: prefer-match-file-name
+// ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +16,8 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_pass
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
@@ -478,14 +480,14 @@ class Routes {
             ),
             name: "Ploegen",
           ),
-          redirect:
-              (context, state) => // Default route is ploegen for currentYear.
-                  state.uri.queryParameters['year'] == null
-                      ? Uri(
-                          path: state.matchedLocation,
-                          queryParameters: {'year': getNjordYear().toString()},
-                        ).toString()
-                      : null,
+          redirect: (context, state) =>
+              // Default route is ploegen for currentYear.
+              state.uri.queryParameters['year'] == null
+                  ? Uri(
+                      path: state.matchedLocation,
+                      queryParameters: {'year': getNjordYear().toString()},
+                    ).toString()
+                  : null,
           routes: [
             _route(
               path: ":name",
@@ -580,6 +582,18 @@ class Routes {
           path: "contact",
           name: "Contact",
           child: const ContactPage(),
+        ),
+        _route(
+          path: "charity",
+          name: "Charity",
+          child: const CharityPage(),
+          routes: [
+            _route(
+              path: "edit",
+              name: "CharityEdit",
+              child: const EditCharityPage(),
+            ),
+          ],
         ),
       ],
     ),

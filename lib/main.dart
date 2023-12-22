@@ -65,7 +65,7 @@ Future<void> appRunner() async {
   }
 
   /// Don't collect crash reports in debug mode.
-  if (kDebugMode) {
+  if (kDebugMode && !kIsWeb) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     FirebaseCrashlytics.instance.deleteUnsentReports();
   }

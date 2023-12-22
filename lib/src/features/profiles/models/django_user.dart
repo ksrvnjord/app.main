@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
@@ -56,7 +57,10 @@ class DjangoUser {
   final String phonePrimary;
 
   final int identifier;
-  DjangoUser({
+
+  final List<GroupDjangoEntry> groups;
+
+  const DjangoUser({
     required this.id,
     required this.lichting,
     required this.isSuperuser,
@@ -73,6 +77,7 @@ class DjangoUser {
     required this.country,
     required this.phonePrimary,
     required this.identifier,
+    required this.groups,
   });
 
   factory DjangoUser.fromHeimdallDemoEnv(
@@ -101,6 +106,7 @@ class DjangoUser {
       phonePrimary: publicContact?.phone_primary ?? "0612345678",
       // ignore: no-equal-arguments
       identifier: userId,
+      groups: [],
     );
   }
 

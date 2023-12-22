@@ -72,6 +72,7 @@ dart_code_metrics:
     - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
     - prefer-typedefs-for-callbacks: false
     - parameters-ordering: false
+    - avoid-missing-image-alt: false # Users can all see properly
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests
