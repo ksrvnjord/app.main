@@ -1,5 +1,5 @@
 {
-  "date": "2023-12-15 16:14:56.506878Z",
+  "date": "2023-12-22 14:52:48.936745Z",
   "paths": {
     "lib/main.dart": {
       "avoid-unnecessary-futures": [
@@ -3796,6 +3796,14 @@
       ],
       "prefer-action-button-tooltip": [
         "c1a10cbf5fcae9cb93980a108d415a7e"
+      ]
+    },
+    "lib/src/features/more/widgets/charity_progress_indicator.dart": {
+      "no-magic-number": [
+        "d645920e395fedad7bbbed0eca3fe2e0"
+      ],
+      "avoid-non-ascii-symbols": [
+        "3964ad948a26de2302753ca92adaff35"
       ]
     }
   }

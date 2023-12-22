@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_agenda.dart';
+import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/charity_progress_indicator.dart';
@@ -46,38 +47,24 @@ class CharityPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/leontienhuis.png',
+                  'assets/images/leontienhuis.png',
                   width: 32,
                   height: 32,
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
-                const Text(
-                  'Lustrumgoededoel',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
+                const SizedBox(width: 20),
+                const Text('Lustrumgoededoel'),
+                const SizedBox(width: 20),
                 Image.asset(
-                  'images/leontienhuis-mirrored.png',
+                  'assets/images/leontienhuis-mirrored.png',
                   width: 32,
                   height: 32,
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
+                const SizedBox(width: 20),
               ],
             ),
           ),
           body: CustomPaint(
-            painter: LustrumBackgroundWidget(
-              pageOffset: pageOffset,
-            ),
+            painter: LustrumBackgroundWidget(pageOffset: pageOffset),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -114,7 +101,8 @@ class CharityPage extends ConsumerWidget {
                       fontSize: 16,
                     ),
                     const SizedBox(height: sizedBoxHeight),
-                    CharityProgressIndicator(charityData: charityData),
+                    CharityProgressIndicator(charityData: charityData)
+                        .padding(right: 60),
                     const SizedBox(height: sizedBoxHeight),
                     const CharitySectionText(
                       text:
@@ -127,22 +115,21 @@ class CharityPage extends ConsumerWidget {
                         child: const Text(
                           'Doneer!',
                           style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline),
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                         onTap: () {
                           final url = Uri.parse(
-                              'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=E-Sbs4ZuQHibS8OxtPLRiQ');
+                            'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=E-Sbs4ZuQHibS8OxtPLRiQ',
+                          );
                           launchUrl(url);
                         },
                       ),
                     ),
                     const Divider(),
                     const SizedBox(height: sizedBoxHeight),
-                    const CharitySectionTitle(
-                      text: 'Agenda',
-                      fontSize: 18,
-                    ),
+                    const CharitySectionTitle(text: 'Agenda', fontSize: 18),
                     const CharityAgenda(),
                     const Divider(),
                     const SizedBox(height: sizedBoxHeight),
@@ -170,7 +157,7 @@ class CharityPage extends ConsumerWidget {
                       ),
                     ),
                     Image.asset(
-                      'images/leontienhuis.png',
+                      'assets/images/leontienhuis.png',
                       width: 300,
                       height: 200,
                     ),
@@ -205,12 +192,12 @@ class CharityPage extends ConsumerWidget {
                     )
                   : null;
             },
-            loading: () => const SizedBox.shrink(),
             error: (e, s) {
               FirebaseCrashlytics.instance.recordError(e, s);
 
               return const SizedBox.shrink();
             },
+            loading: () => const SizedBox.shrink(),
           ),
         );
       },
