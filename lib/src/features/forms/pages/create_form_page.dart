@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
@@ -102,12 +103,19 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
                       int optionIndex = optionEntry.key;
                       String option = optionEntry.value;
 
-                      return TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Optie ${optionIndex + 1}',
+                      return [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Optie ${optionIndex + 1}',
+                          ),
+                          onChanged: (String value) => option = value,
                         ),
-                        onChanged: (String value) => option = value,
-                      );
+                        ElevatedButton(
+                          onPressed: () => setState(
+                              () => question.options!.removeAt(optionIndex)),
+                          child: const Text("Verwijder optie"),
+                        ),
+                      ].toColumn();
                     }).toList(),
                   if (question.type == FormQuestionType.singleChoice)
                     ElevatedButton(
@@ -153,11 +161,12 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
           questions: questions,
           openUntil: openUntil,
           description: description?.text,
-          authorId: firebaseUser?.identifier ?? '', //TODO: Beter om een error te geven voor non-users.
+          authorId: firebaseUser?.identifier ??
+              '', //TODO: Beter om een error te geven voor non-users.
         ),
       );
 
-      context.goNamed('Admin');
+      context.goNamed(RouteName.forms);
     }
   }
 }
