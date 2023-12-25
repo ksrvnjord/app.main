@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
@@ -43,11 +44,11 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            TextFormField(
+            TextFormField( // Kies form naam.
               controller: formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
             ),
-            TextFormField(
+            TextFormField( // Kies beschrijving form.
               controller: description,
               decoration: const InputDecoration(
                 labelText: 'Beschrijving form',
@@ -56,7 +57,7 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
             const SizedBox(
               height: 16,
             ),
-            InputDatePickerFormField(
+            InputDatePickerFormField( // Kies sluitdatum form.
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
               lastDate: DateTime(2100),
@@ -69,66 +70,13 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
               fieldLabelText: 'Open tot:',
             ),
             ...questions.asMap().entries.map((questionEntry) {
-              int index = questionEntry.key;
-              FirestoreFormQuestion question = questionEntry.value;
-
-              return Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Vraag ${index + 1}',
-                    ),
-                    onChanged: (String value) => question.label = value,
-                  ),
-                  DropdownButton<FormQuestionType>(
-                    items: FormQuestionType.values
-                        .map<DropdownMenuItem<FormQuestionType>>(
-                      (FormQuestionType value) {
-                        return DropdownMenuItem<FormQuestionType>(
-                          value: value,
-                          child: Text(value.name.toString()),
-                        );
-                      },
-                    ).toList(),
-                    value: question.type,
-                    onChanged: (FormQuestionType? newValue) => setState(
-                      () => question.type = newValue!,
-                    ),
-                  ),
-                  if (question.type == FormQuestionType.singleChoice)
-                    ...(question.options ?? [])
-                        .asMap()
-                        .entries
-                        .map((optionEntry) {
-                      int optionIndex = optionEntry.key;
-                      String option = optionEntry.value;
-
-                      return [
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Optie ${optionIndex + 1}',
-                          ),
-                          onChanged: (String value) => option = value,
-                        ),
-                        ElevatedButton(
-                          onPressed: () => setState(
-                              () => question.options!.removeAt(optionIndex)),
-                          child: const Text("Verwijder optie"),
-                        ),
-                      ].toColumn();
-                    }).toList(),
-                  if (question.type == FormQuestionType.singleChoice)
-                    ElevatedButton(
-                      onPressed: () =>
-                          setState(() => question.options!.add('')),
-                      child: const Icon(Icons.add),
-                    ),
-                  ElevatedButton(
-                    onPressed: () => setState(() => questions.removeAt(index)),
-                    child: const Text("Verwijder vraag"),
-                  ),
-                  const SizedBox(height: 32),
-                ],
+              return CreateFormQuestion(
+                key: ValueKey(questionEntry.key),
+                index: questionEntry.key,
+                question: questionEntry.value,
+                onChanged: () => setState(() {}),
+                deleteQusetion: (int index) =>
+                    setState(() => questions.removeAt(index)),
               );
             }).toList(),
             ElevatedButton(
