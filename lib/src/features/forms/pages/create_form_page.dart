@@ -19,7 +19,7 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
   List<FirestoreFormQuestion> questions = [];
 
   DateTime openUntil = DateTime.now();
-  TextEditingController? description;
+  TextEditingController? description = TextEditingController();
   TextEditingController formName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
