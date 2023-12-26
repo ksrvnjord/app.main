@@ -17,9 +17,53 @@ class CreateFormQuestion extends ConsumerWidget {
   final VoidCallback onChanged;
   final Function(int) deleteQusetion;
 
+  Widget _buildQuestionExtras(
+    BuildContext context,
+    WidgetRef ref,
+    FirestoreFormQuestion question,
+    VoidCallback onChanged,
+  ) {
+    switch (question.type) {
+      case FormQuestionType.singleChoice:
+        return [
+          ...(question.options ?? []).asMap().entries.map((optionEntry) {
+            int optionIndex = optionEntry.key;
+            TextEditingController option =
+                TextEditingController(text: optionEntry.value);
+
+            return [
+              TextFormField(
+                controller: option,
+                decoration: InputDecoration(
+                  labelText: 'Optie ${optionIndex + 1}',
+                ),
+                onChanged: (String value) =>
+                    {question.options![optionIndex] = value},
+              ),
+              ElevatedButton(
+                onPressed: () => {
+                  question.options!.removeAt(optionIndex),
+                  onChanged(),
+                },
+                child: const Text("Verwijder optie"),
+              ),
+            ].toColumn();
+          }).toList(),
+          if (question.type == FormQuestionType.singleChoice)
+            ElevatedButton(
+              onPressed: () => {question.options!.add(''), onChanged()},
+              child: const Icon(Icons.add),
+            ),
+        ].toColumn();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController? questionController = TextEditingController(text: question.label);
+    TextEditingController? questionController =
+        TextEditingController(text: question.label);
 
     return Column(
       children: [
@@ -44,32 +88,7 @@ class CreateFormQuestion extends ConsumerWidget {
           onChanged: (FormQuestionType? newValue) =>
               {question.type = newValue!, onChanged()},
         ),
-        if (question.type == FormQuestionType.singleChoice)
-          ...(question.options ?? []).asMap().entries.map((optionEntry) {
-            int optionIndex = optionEntry.key;
-            String option = optionEntry.value;
-
-            return [
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Optie ${optionIndex + 1}',
-                ),
-                onChanged: (String value) => {option = value, onChanged()},
-              ),
-              ElevatedButton(
-                onPressed: () => {
-                  question.options!.removeAt(optionIndex),
-                  onChanged(),
-                },
-                child: const Text("Verwijder optie"),
-              ),
-            ].toColumn();
-          }).toList(),
-        if (question.type == FormQuestionType.singleChoice)
-          ElevatedButton(
-            onPressed: () => {question.options!.add(''), onChanged()},
-            child: const Icon(Icons.add),
-          ),
+        _buildQuestionExtras(context, ref, question, onChanged),
         ElevatedButton(
           onPressed: () => deleteQusetion(index),
           child: const Text("Verwijder vraag"),
