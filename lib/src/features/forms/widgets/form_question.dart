@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -42,7 +41,6 @@ class FormQuestion extends ConsumerWidget {
     ];
 
     final answerStream = ref.watch(formAnswerProvider(docRef));
-    
 
     // ignore: avoid-ignoring-return-values
     answerStream.when(data: (data) {

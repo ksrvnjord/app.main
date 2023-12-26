@@ -19,6 +19,8 @@ import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_p
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/show_forms_results_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
@@ -616,7 +618,24 @@ class Routes {
           path: 'nieuw',
           name: "Create Form",
           child: CreateFormPage(),
-        ), // admin/nieuw
+        ),
+        _route(
+          path: 'bekijk-forms',
+          name: "View Forms",
+          child: const ShowFormsResultsPage(),
+          routes: [
+            _route(
+              path: ':formId',
+              name: "View Form",
+              pageBuilder: (context, state) => _getPage(
+                child: ShowFormResultsPage(
+                  formId: state.pathParameters['formId']!,
+                ),
+                name: "View Form",
+              ),
+            ),
+          ],
+        ),
         _route(
           path: "maak-push-notificatie",
           name: "Create Push Notification",

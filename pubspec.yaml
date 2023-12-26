@@ -63,6 +63,7 @@ dependencies:
   share_plus: ^8.0.0
   expandable: ^5.0.1
   weather_icons: ^3.0.0
+  csv: any
   stack_trace: ^1.11.0
   firebase_analytics: ^10.5.1
   firebase_crashlytics: ^3.3.7

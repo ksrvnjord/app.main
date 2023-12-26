@@ -44,11 +44,13 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            TextFormField( // Kies form naam.
+            TextFormField(
+              // Kies form naam.
               controller: formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
             ),
-            TextFormField( // Kies beschrijving form.
+            TextFormField(
+              // Kies beschrijving form.
               controller: description,
               decoration: const InputDecoration(
                 labelText: 'Beschrijving form',
@@ -57,7 +59,8 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
             const SizedBox(
               height: 16,
             ),
-            InputDatePickerFormField( // Kies sluitdatum form.
+            InputDatePickerFormField(
+              // Kies sluitdatum form.
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
               lastDate: DateTime(2100),
@@ -108,6 +111,7 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
           formName: formName.text,
           questions: questions,
           openUntil: openUntil,
+          createdTime: DateTime.now(),
           description: description?.text,
           authorId: firebaseUser?.identifier ??
               '', //TODO: Beter om een error te geven voor non-users.
