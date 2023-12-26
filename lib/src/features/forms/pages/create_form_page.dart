@@ -35,6 +35,8 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Maak een form aan'),
@@ -44,11 +46,13 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            TextFormField( // Kies form naam.
+            TextFormField(
+              // Kies form naam.
               controller: formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
             ),
-            TextFormField( // Kies beschrijving form.
+            TextFormField(
+              // Kies beschrijving form.
               controller: description,
               decoration: const InputDecoration(
                 labelText: 'Beschrijving form',
@@ -57,7 +61,8 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
             const SizedBox(
               height: 16,
             ),
-            InputDatePickerFormField( // Kies sluitdatum form.
+            InputDatePickerFormField(
+              // Kies sluitdatum form.
               initialDate: DateTime.now(),
               firstDate: DateTime(2000),
               lastDate: DateTime(2100),
@@ -71,7 +76,6 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
             ),
             ...questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(
-                key: ValueKey(questionEntry.key),
                 index: questionEntry.key,
                 question: questionEntry.value,
                 onChanged: () => setState(() {}),
@@ -85,17 +89,29 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
                   label: '',
                   type: FormQuestionType.singleChoice,
                   options: [],
-                )), // Add an empty label for the new TextFormField
+                )), // Add an empty label for the new TextFormField.
               ),
               child: const Icon(Icons.add),
             ),
+            const SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: submitForm,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.primaryContainer,
+                foregroundColor: colorScheme.onPrimaryContainer,
+              ),
+              child: const [
+                Icon(Icons.send),
+                SizedBox(
+                  width: 16,
+                ),
+                Text('Maak nieuwe form'),
+              ].toRow(mainAxisAlignment: MainAxisAlignment.center),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: submitForm,
-        icon: const Icon(Icons.send),
-        label: const Text('Maak nieuwe form.'),
       ),
     );
   }
