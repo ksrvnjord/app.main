@@ -124,6 +124,7 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
           formName: formName.text,
           questions: questions,
           openUntil: openUntil,
+          createdTime: DateTime.now(),
           description: description?.text,
           authorId: firebaseUser?.identifier ??
               '', //TODO: Beter om een error te geven voor non-users.

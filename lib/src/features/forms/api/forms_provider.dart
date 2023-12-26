@@ -40,6 +40,19 @@ final allFormsProvider =
 });
 
 // ignore: prefer-static-class
+final allFormsOnCreationProvider =
+    StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
+  return ref.watch(firebaseAuthUserProvider).value != null
+      ? formsCollection
+          .orderBy(
+            'createdTime',
+            descending: true,
+          ) // Show the form with closest deadline first.
+          .snapshots()
+      : const Stream.empty();
+});
+
+// ignore: prefer-static-class
 final formProvider =
     StreamProvider.family<DocumentSnapshot<FirestoreForm>, String>(
   (ref, formId) => ref.watch(firebaseAuthUserProvider).value != null

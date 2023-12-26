@@ -74,6 +74,12 @@ class AdminPage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => context.goNamed('Create Form'),
             ),
+            ListTile(
+              leading: const Icon(Icons.remove_red_eye),
+              title: const Text('Bekijk forms resultaten'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => context.goNamed('View Forms'),
+            ),
           ]).paddingDirectional(vertical: sectionVPadding),
 
           const FormSection(title: 'Afschrijfsysteem', children: [

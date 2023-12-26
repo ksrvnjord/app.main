@@ -7,6 +7,7 @@ class FirestoreForm {
   final String formName;
   final List<FirestoreFormQuestion> questions;
   final DateTime openUntil;
+  final DateTime createdTime;
   final String? description;
   final String authorId;
 
@@ -18,6 +19,7 @@ class FirestoreForm {
           );
 
   const FirestoreForm({
+    required this.createdTime,
     required this.formName,
     required this.questions,
     required this.openUntil,
@@ -28,14 +30,14 @@ class FirestoreForm {
   // Create fromJson method.
   factory FirestoreForm.fromJson(Map<String, dynamic> json) {
     return FirestoreForm(
-      formName: json['FormName'],
-      // ignore: avoid-dynamic
-      questions: (json['Vragen'] as List<dynamic>)
+      createdTime: (json['createdTime'] as Timestamp).toDate(),
+      formName: json['formName'],
+      questions: (json['question'] as List<dynamic>)
           .map((vraag) => FirestoreFormQuestion.fromJson(vraag))
           .toList(),
-      openUntil: (json['OpenUntil'] as Timestamp).toDate(),
-      description: json['Description'],
-      authorId: json['AuthorId'],
+      openUntil: (json['openUntil'] as Timestamp).toDate(),
+      description: json['description'],
+      authorId: json['authorId'],
     );
   }
 
@@ -47,6 +49,7 @@ class FirestoreForm {
       'OpenUntil': Timestamp.fromDate(openUntil),
       if (description != null) 'Description': description,
       'AuthorId': authorId,
+      'CreatedTime': Timestamp.fromDate(createdTime),
     };
   }
 }
