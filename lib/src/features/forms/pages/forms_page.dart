@@ -56,9 +56,10 @@ class FormsPage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'Create Form',
         onPressed: () => context.pushNamed('Create Form'),
-        icon: const Icon(Icons.report),
-        label: const Text('Maak nieuwe form.'),
+        icon: const Icon(Icons.add),
+        label: const Text('Maak nieuwe form'),
       ),
     );
   }

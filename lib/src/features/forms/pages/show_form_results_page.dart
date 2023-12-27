@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/download_csv_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/show_form_results_info_box.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class ShowFormResultsPage extends ConsumerWidget {
   final String formId;
@@ -18,6 +23,45 @@ class ShowFormResultsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bekijk Formresultaten'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              showDialog(
+                context: context,
+                builder: (innerContext) => AlertDialog(
+                  title: const Text('Verwijderen'),
+                  content: const Text(
+                    'Weet je zeker dat je deze form wilt verwijderen?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(innerContext).pop(),
+                      child: const Text('Annuleren'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        if (innerContext.mounted) {
+                          Navigator.of(innerContext).pop();
+                          if (context.mounted) context.pop();
+                        }
+                        final String? formPath = FirebaseFirestore.instance
+                            .doc('forms/$formId')
+                            .path;
+
+                        if (formPath != null) {
+                          // ignore: avoid-ignoring-return-values
+                          await FormRepository.deleteForm(formPath);
+                        }
+                      },
+                      child: const Text('Verwijderen').textColor(Colors.red),
+                    ),
+                  ],
+                ),
+              );
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: form.when(
         data: (documentSnapshot) {

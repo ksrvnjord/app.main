@@ -61,22 +61,6 @@ class FormPage extends ConsumerWidget {
     final formVal = ref.watch(formProvider(formId));
 
     final FirestoreForm? form = formVal.value?.data();
-    final formAuthorId = form?.authorId ?? "";
-    final firebaseUser = ref.watch(currentFirestoreUserProvider);
-
-    void deletePost() async {
-      if (context.mounted) {
-        Navigator.of(context, rootNavigator: true).pop();
-        context.pop();
-        context.goNamed(RouteName.forms);
-      }
-      final String? formPath = formVal.value?.reference.path;
-
-      if (formPath != null) {
-        // ignore: avoid-ignoring-return-values
-        await FormRepository.deletePost(formPath);
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -112,32 +96,6 @@ class FormPage extends ConsumerWidget {
               return [
                 [
                   Text(form.formName, style: textTheme.titleLarge),
-                  if (firebaseUser != null &&
-                      (firebaseUser.isBestuur ||
-                          (formAuthorId == firebaseUser.identifier)))
-                    InkWell(
-                      child: const Icon(Icons.delete_outlined),
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Verwijderen'),
-                          content: const Text(
-                            'Weet je zeker dat je dit bericht wilt verwijderen?',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Annuleren'),
-                            ),
-                            TextButton(
-                              onPressed: deletePost,
-                              child: const Text('Verwijderen')
-                                  .textColor(Colors.red),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                 ].toRow(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
@@ -162,49 +120,53 @@ class FormPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
               );
             },
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
             error: (error, stack) =>
                 ErrorCardWidget(errorMessage: error.toString()),
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
           ),
         ],
       ),
-      floatingActionButton: // FA 'Verwijder mijn form reactie
-          ref
-              .watch(formAnswerProvider(
-                FirebaseFirestore.instance.doc('forms/$formId'),
-              ))
-              .when(
-                data: (snapshot) => snapshot.size == 0
-                    ? const SizedBox.shrink()
-                    : FloatingActionButton.extended(
-                        onPressed: () async {
-                          final res = await deleteMyFormAnswer(ref, context);
-                          if (res == true) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Jouw Form reactie is verwijderd'),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'Het is niet gelukt jouw Form reactie te verwijderen'),
-                              ),
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.errorContainer,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onErrorContainer,
-                        label: Text("Verwijder mijn form reactie")),
-                error: (err, stk) => const SizedBox.shrink(),
-                loading: () => const SizedBox.shrink(),
-              ),
+      floatingActionButton: ref
+          .watch(formAnswerProvider(
+            FirebaseFirestore.instance.doc('forms/$formId'),
+          ))
+          .when(
+            data: (snapshot) => snapshot.size == 0
+                ? const SizedBox.shrink()
+                : FloatingActionButton.extended(
+                    foregroundColor:
+                        Theme.of(context).colorScheme.onErrorContainer,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.errorContainer,
+                    heroTag: "delete-my-form-answer",
+                    // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
+                    onPressed: () async {
+                      final res = await deleteMyFormAnswer(ref, context);
+                      if (res == true) {
+                        // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Jouw formreactie is verwijderd'),
+                          ),
+                        );
+                      } else {
+                        // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Het is niet gelukt jouw formreactie te verwijderen',
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.delete),
+                    label: const Text("Verwijder mijn formreactie"),
+                  ),
+            error: (err, stk) => const SizedBox.shrink(),
+            loading: () => const SizedBox.shrink(),
+          ),
     );
   }
 }

@@ -76,7 +76,7 @@ class AdminPage extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.remove_red_eye),
-              title: const Text('Bekijk forms resultaten'),
+              title: const Text('Bekijk / Verwijder Forms'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => context.goNamed('View Forms'),
             ),

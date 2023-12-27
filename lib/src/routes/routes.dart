@@ -20,7 +20,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dar
 import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/pages/show_forms_results_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/admin_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
@@ -622,7 +622,7 @@ class Routes {
         _route(
           path: 'bekijk-forms',
           name: "View Forms",
-          child: const ShowFormsResultsPage(),
+          child: const AdminFormPage(),
           routes: [
             _route(
               path: ':formId',

@@ -54,7 +54,7 @@ class FormRepository {
     return await FirestoreForm.firestoreConvert.add(form);
   }
 
-  static deletePost(String path) async {
+  static deleteForm(String path) async {
     await FirebaseFirestore.instance.doc(path).delete();
   }
 
