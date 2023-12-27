@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
@@ -10,8 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormPage extends ConsumerWidget {
@@ -60,8 +56,6 @@ class FormPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formVal = ref.watch(formProvider(formId));
 
-    final FirestoreForm? form = formVal.value?.data();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Form'), // TODO: Misschien verwijderen.
@@ -92,6 +86,8 @@ class FormPage extends ConsumerWidget {
 
               final textTheme = Theme.of(context).textTheme;
 
+              const double sizedBoxHeight = 32;
+
               // ignore: arguments-ordering
               return [
                 [
@@ -101,18 +97,23 @@ class FormPage extends ConsumerWidget {
                 ),
                 Text(
                   '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
-                  style:
-                      textTheme.bodySmall?.copyWith(color: colorScheme.outline),
+                  style: textTheme.bodySmall?.copyWith(
+                    color: formIsOpen ? Colors.green : colorScheme.outline,
+                  ),
                 ),
                 if (description != null)
                   Text(description, style: textTheme.bodyMedium)
                       .padding(vertical: descriptionVPadding),
+                const SizedBox(
+                  height: sizedBoxHeight,
+                ),
                 for (final question in questions) ...[
                   FormQuestion(
                     formQuestion: question,
                     formPath: formDoc.reference.path,
                     form: form,
                     docRef: formDoc.reference,
+                    formIsOpen: formIsOpen,
                   ),
                   const SizedBox(height: 32),
                 ],

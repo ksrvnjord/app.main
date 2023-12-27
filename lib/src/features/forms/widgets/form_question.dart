@@ -17,6 +17,7 @@ class FormQuestion extends ConsumerWidget {
     required this.formPath,
     required this.form,
     required this.docRef,
+    required this.formIsOpen,
   }) : super(key: key);
 
   final FirestoreFormQuestion formQuestion;
@@ -27,9 +28,12 @@ class FormQuestion extends ConsumerWidget {
 
   final DocumentReference<FirestoreForm> docRef;
 
+  final bool formIsOpen;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     final type = formQuestion.type;
 
@@ -43,71 +47,83 @@ class FormQuestion extends ConsumerWidget {
     final answerStream = ref.watch(formAnswerProvider(docRef));
 
     // ignore: avoid-ignoring-return-values
-    answerStream.when(data: (data) {
-      String? answerValue;
+    answerStream.when(
+      data: (data) {
+        String? answerValue;
 
-      if (data.docs.isNotEmpty) {
-        final List<FormQuestionAnswer> formAnswers =
-            data.docs.first.data().answers;
+        if (data.docs.isNotEmpty) {
+          final List<FormQuestionAnswer> formAnswers =
+              data.docs.first.data().answers;
 
-        // String? answerValue;
-        for (final entry in formAnswers) {
-          if (entry.question == formQuestion.label) {
-            answerValue = entry.answer;
+          for (final entry in formAnswers) {
+            if (entry.question == formQuestion.label) {
+              answerValue = entry.answer;
+            }
           }
         }
-      }
 
-      switch (type) {
-        case FormQuestionType.text:
-          questionWidgets.add(
-            TextFormField(
-              controller:
-                  answerValue != null ? null : TextEditingController(text: ""),
+        switch (type) {
+          case FormQuestionType.text:
+            questionWidgets.add(
+              TextFormField(
+                controller: answerValue != null
+                    ? null
+                    : TextEditingController(text: ""),
+                initialValue: answerValue,
+                onFieldSubmitted: (String value) => {
+                  FormRepository.upsertFormAnswer(
+                    question: formQuestion.label,
+                    newValue: value,
+                    form: form,
+                    docRef: docRef,
+                    ref: ref,
+                  ),
+                },
+                enabled: formIsOpen,
+              ),
+            );
+            break;
+          case FormQuestionType.singleChoice:
+            questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
-              onFieldSubmitted: (String value) => {
-                FormRepository.upsertFormAnswer(
-                  question: formQuestion.label,
-                  newValue: value,
-                  form: form,
-                  docRef: docRef,
-                  ref: ref,
-                ),
-              },
-            ),
-          );
-          break;
-        case FormQuestionType.singleChoice:
-          questionWidgets.add(SingleChoiceWidget(
-            initialValue: answerValue,
-            formQuestion: formQuestion,
-            form: form,
-            docRef: docRef,
-            ref: ref,
-            onChanged: (String? value) => FormRepository.upsertFormAnswer(
-              newValue: value,
-              question: formQuestion.label,
-              docRef: docRef,
+              formQuestion: formQuestion,
               form: form,
+              docRef: docRef,
               ref: ref,
-            ),
-          ));
-          break;
-        default:
-          return const ErrorCardWidget(
-            errorMessage: 'Onbekend type vraag',
-          );
-      }
-    }, error: (error, stackTrace) {
-      return const ErrorCardWidget(
-        errorMessage: 'Er is iets misgegaan',
-      );
-    }, loading: () {
-      return const CircularProgressIndicator();
-    });
+              onChanged: (String? value) => FormRepository.upsertFormAnswer(
+                newValue: value,
+                question: formQuestion.label,
+                docRef: docRef,
+                form: form,
+                ref: ref,
+              ),
+              formIsOpen: formIsOpen,
+            ));
+            break;
+          default:
+            return const ErrorCardWidget(
+              errorMessage: 'Onbekend type vraag',
+            );
+        }
+      },
+      error: (error, stackTrace) {
+        return const ErrorCardWidget(
+          errorMessage: 'Er is iets misgegaan',
+        );
+      },
+      loading: () {
+        return const CircularProgressIndicator();
+      },
+    );
 
-    return questionWidgets.toColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          border: Border.all(color: colorScheme.primary),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+      child: questionWidgets.toColumn(
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
     );
   }
 }
