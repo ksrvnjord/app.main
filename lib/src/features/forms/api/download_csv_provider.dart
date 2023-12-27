@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
@@ -45,20 +46,35 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
     final currentTime = DateTime.now();
     final formattedTime = DateFormat('yyyy-MM-dd-HHmm').format(currentTime);
 
-    if (!kIsWeb) {
-      final directory = await getDownloadsDirectory();
-      final file = File('${directory!.path}/${formName}_$formattedTime.csv');
-      await file.writeAsString(csvData);
-    } else {
-      final blob = html.Blob([Uint8List.fromList(utf8.encode(csvData))]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
+    try {
+      if (!kIsWeb) {
+        final csvBytes = Uint8List.fromList(utf8.encode(csvData));
 
-      html.AnchorElement(href: url)
-        ..target = 'blank'
-        ..download = '${formName}_$formattedTime.csv'
-        ..click();
+        // ignore: avoid-ignoring-return-values
+        await Share.shareXFiles(
+          [
+            XFile.fromData(
+              csvBytes,
+              mimeType: "text/csv",
+              name: "${formName}_$formattedTime.csv",
+              length: csvBytes.lengthInBytes,
+            ),
+          ],
+          subject: "$formName antwoorden",
+        );
+      } else {
+        final blob = html.Blob([Uint8List.fromList(utf8.encode(csvData))]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
 
-      html.Url.revokeObjectUrl(url);
+        html.AnchorElement(href: url)
+          ..target = 'blank'
+          ..download = '${formName}_$formattedTime.csv'
+          ..click();
+
+        html.Url.revokeObjectUrl(url);
+      }
+    } catch (e) {
+      print("Error: $e");
     }
   },
 );

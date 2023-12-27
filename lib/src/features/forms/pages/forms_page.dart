@@ -47,7 +47,10 @@ class FormsPage extends ConsumerWidget {
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
             },
-            error: (error, stack) => Text(error.toString()),
+            error: (error, stack) => ErrorCardWidget(
+              errorMessage: error.toString(),
+              stackTrace: stack,
+            ),
             loading: () => const CircularProgressIndicator.adaptive(),
           ),
         ],

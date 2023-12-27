@@ -16,9 +16,9 @@ final openFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value != null
       ? formsCollection
-          .where('OpenUntil', isGreaterThanOrEqualTo: Timestamp.now())
+          .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .orderBy(
-            'OpenUntil',
+            'openUntil',
             descending: false,
           ) // Show the form with closest deadline first.
           .limit(3)
@@ -32,7 +32,7 @@ final allFormsProvider =
   return ref.watch(firebaseAuthUserProvider).value != null
       ? formsCollection
           .orderBy(
-            'OpenUntil',
+            'openUntil',
             descending: true,
           ) // Show the form with closest deadline first.
           .snapshots()
