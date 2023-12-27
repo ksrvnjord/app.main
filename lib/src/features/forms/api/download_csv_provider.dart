@@ -46,35 +46,31 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
     final currentTime = DateTime.now();
     final formattedTime = DateFormat('yyyy-MM-dd-HHmm').format(currentTime);
 
-    try {
-      if (!kIsWeb) {
-        final csvBytes = Uint8List.fromList(utf8.encode(csvData));
+    if (!kIsWeb) {
+      final csvBytes = Uint8List.fromList(utf8.encode(csvData));
 
-        // ignore: avoid-ignoring-return-values
-        await Share.shareXFiles(
-          [
-            XFile.fromData(
-              csvBytes,
-              mimeType: "text/csv",
-              name: "${formName}_$formattedTime.csv",
-              length: csvBytes.lengthInBytes,
-            ),
-          ],
-          subject: "$formName antwoorden",
-        );
-      } else {
-        final blob = html.Blob([Uint8List.fromList(utf8.encode(csvData))]);
-        final url = html.Url.createObjectUrlFromBlob(blob);
+      // ignore: avoid-ignoring-return-values
+      await Share.shareXFiles(
+        [
+          XFile.fromData(
+            csvBytes,
+            mimeType: "text/csv",
+            name: "${formName}_$formattedTime.csv",
+            length: csvBytes.lengthInBytes,
+          ),
+        ],
+        subject: "$formName antwoorden",
+      );
+    } else {
+      final blob = html.Blob([Uint8List.fromList(utf8.encode(csvData))]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
 
-        html.AnchorElement(href: url)
-          ..target = 'blank'
-          ..download = '${formName}_$formattedTime.csv'
-          ..click();
+      html.AnchorElement(href: url)
+        ..target = 'blank'
+        ..download = '${formName}_$formattedTime.csv'
+        ..click();
 
-        html.Url.revokeObjectUrl(url);
-      }
-    } catch (e) {
-      print("Error: $e");
+      html.Url.revokeObjectUrl(url);
     }
   },
 );
