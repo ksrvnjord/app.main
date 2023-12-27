@@ -47,7 +47,7 @@ class FirestoreForm {
       'formName': formName,
       'questions': questions.map((vraag) => vraag.toJson()).toList(),
       'openUntil': Timestamp.fromDate(openUntil),
-      if (description != null) 'Description': description,
+      if (description != null) 'description': description,
       'authorId': authorId,
       'createdTime': Timestamp.fromDate(createdTime),
     };

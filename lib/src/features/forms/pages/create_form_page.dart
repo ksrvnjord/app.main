@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
@@ -36,6 +38,9 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    const double sizedBoxHeight = 16;
+    const double sizedBoxWidth = 16;
+    const double sizedBoxWidthButton = 256;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,77 +64,99 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: sizedBoxHeight,
             ),
-            InputDatePickerFormField(
-              // Kies sluitdatum form.
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2100),
-              // ignore: prefer-extracting-callbacks
-              onDateSaved: (DateTime selectedDate) {
-                setState(() {
-                  openUntil = selectedDate;
-                });
-              },
-              fieldLabelText: 'Open tot:',
+            CreateFormDateTimePicker(
+              initialDate: openUntil,
+              onDateTimeChanged: (DateTime dateTime) =>
+                  setState(() => openUntil = dateTime),
             ),
             ...questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(
                 index: questionEntry.key,
                 question: questionEntry.value,
                 onChanged: () => setState(() {}),
-                deleteQusetion: (int index) =>
+                deleteQuestion: (int index) =>
                     setState(() => questions.removeAt(index)),
               );
             }).toList(),
-            ElevatedButton(
-              onPressed: () => setState(
-                () => questions.add(FirestoreFormQuestion(
-                  label: '',
-                  type: FormQuestionType.singleChoice,
-                  options: [],
-                )), // Add an empty label for the new TextFormField.
-              ),
-              child: const Icon(Icons.add),
+            const SizedBox(
+              height: sizedBoxHeight,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                SizedBox(
+                  width: sizedBoxWidthButton,
+                  child: ElevatedButton(
+                    onPressed: () => setState(
+                      () => questions.add(FirestoreFormQuestion(
+                        label: '',
+                        type: FormQuestionType.singleChoice,
+                        options: [],
+                      )), // Add an empty label for the new TextFormField.
+                    ),
+                    child: const Text('Voeg vraag toe aan form'),
+                  ),
+                ),
+                const Spacer(),
+              ],
             ),
             const SizedBox(
-              height: 16,
+              height: sizedBoxHeight,
             ),
-            ElevatedButton(
-              onPressed: submitForm,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: colorScheme.primaryContainer,
-                foregroundColor: colorScheme.onPrimaryContainer,
-              ),
-              child: const [
-                Icon(Icons.send),
-                SizedBox(
-                  width: 16,
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              const Spacer(),
+              SizedBox(
+                width: sizedBoxWidthButton,
+                child: ElevatedButton(
+                  onPressed: () => submitForm(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primaryContainer,
+                    foregroundColor: colorScheme.onPrimaryContainer,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.send),
+                      SizedBox(width: sizedBoxWidth),
+                      Text('Maak nieuwe form'),
+                    ],
+                  ),
                 ),
-                Text('Maak nieuwe form'),
-              ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-            ),
+              ),
+            ]),
           ],
         ),
       ),
     );
   }
 
-  void submitForm() {
+  Future<void> submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      FormRepository.upsertCreateForm(
-        form: FirestoreForm(
-          formName: formName.text,
-          questions: questions,
-          openUntil: openUntil,
-          createdTime: DateTime.now(),
-          description: description?.text,
-          authorId: firebaseUser?.identifier ??
-              '', //TODO: Beter om een error te geven voor non-users.
-        ),
+      final form = FirestoreForm(
+        createdTime: DateTime.now(),
+        formName: formName.text,
+        questions: questions,
+        openUntil: openUntil,
+        description: description?.text,
+        authorId: firebaseUser?.identifier ?? '',
       );
+
+      final result = await FormRepository.upsertCreateForm(form: form);
+
+      if (result != null) {
+        final snackBarMessage = 'Form gemaakt met id: ${result.id}';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(snackBarMessage),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
 
       context.goNamed(RouteName.forms);
     }
