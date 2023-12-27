@@ -58,6 +58,10 @@ class FormRepository {
     await FirebaseFirestore.instance.doc(path).delete();
   }
 
+  static Future<void> deleteMyFormAnswer(String path) async {
+    await FirebaseFirestore.instance.doc(path).delete();
+  }
+
   static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
     required QueryDocumentSnapshot<FormAnswer> doc,
     required String question,
