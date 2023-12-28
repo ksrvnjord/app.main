@@ -86,6 +86,8 @@ class FormPage extends ConsumerWidget {
 
               final textTheme = Theme.of(context).textTheme;
 
+              final _formKey = GlobalKey<FormState>();
+
               const double sizedBoxHeight = 32;
 
               // ignore: arguments-ordering
@@ -107,16 +109,21 @@ class FormPage extends ConsumerWidget {
                 const SizedBox(
                   height: sizedBoxHeight,
                 ),
-                for (final question in questions) ...[
-                  FormQuestion(
-                    formQuestion: question,
-                    formPath: formDoc.reference.path,
-                    form: form,
-                    docRef: formDoc.reference,
-                    formIsOpen: formIsOpen,
-                  ),
-                  const SizedBox(height: 32),
-                ],
+                Form(
+                  key: _formKey,
+                  child: [
+                    for (final question in questions) ...[
+                      FormQuestion(
+                        formQuestion: question,
+                        formPath: formDoc.reference.path,
+                        form: form,
+                        docRef: formDoc.reference,
+                        formIsOpen: formIsOpen,
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                  ].toColumn(),
+                ),
               ].toColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
               );

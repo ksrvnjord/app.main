@@ -64,13 +64,13 @@ class FormQuestion extends ConsumerWidget {
 
         switch (type) {
           case FormQuestionType.text:
+            TextEditingController answer =
+                TextEditingController(text: answerValue);
+
             questionWidgets.add(
               TextFormField(
-                controller: answerValue != null
-                    ? null
-                    : TextEditingController(text: ""),
-                initialValue: answerValue,
-                onFieldSubmitted: (String value) => {
+                controller: answer,
+                onFieldSubmitted: (String? value) => {
                   FormRepository.upsertFormAnswer(
                     question: formQuestion.label,
                     newValue: value,
