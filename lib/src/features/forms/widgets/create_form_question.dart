@@ -9,13 +9,13 @@ class CreateFormQuestion extends ConsumerWidget {
     required this.index,
     required this.question,
     required this.onChanged,
-    required this.deleteQusetion,
+    required this.deleteQuestion,
   }) : super(key: key);
 
   final int index;
   final FirestoreFormQuestion question;
   final VoidCallback onChanged;
-  final Function(int) deleteQusetion;
+  final Function(int) deleteQuestion;
 
   Widget _buildQuestionExtras(
     BuildContext context,
@@ -32,28 +32,47 @@ class CreateFormQuestion extends ConsumerWidget {
                 TextEditingController(text: optionEntry.value);
 
             return [
-              TextFormField(
-                controller: option,
-                decoration: InputDecoration(
-                  labelText: 'Optie ${optionIndex + 1}',
-                ),
-                onChanged: (String value) =>
-                    {question.options![optionIndex] = value},
-              ),
-              ElevatedButton(
-                onPressed: () => {
-                  question.options!.removeAt(optionIndex),
-                  onChanged(),
-                },
-                child: const Text("Verwijder optie"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(
+                    width: 32,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: option,
+                      decoration: InputDecoration(
+                        labelText: 'Optie ${optionIndex + 1}',
+                      ),
+                      onChanged: (String value) =>
+                          {question.options![optionIndex] = value},
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () => {
+                        question.options!.removeAt(optionIndex),
+                        onChanged(),
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red.shade700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ].toColumn();
           }).toList(),
           if (question.type == FormQuestionType.singleChoice)
-            ElevatedButton(
-              onPressed: () => {question.options!.add(''), onChanged()},
-              child: const Icon(Icons.add),
+            const SizedBox(
+              height: 16,
             ),
+          ElevatedButton(
+            onPressed: () => {question.options!.add(''), onChanged()},
+            child: const Text('Voeg een optie toe'),
+          ),
         ].toColumn();
       default:
         return const SizedBox.shrink();
@@ -65,15 +84,14 @@ class CreateFormQuestion extends ConsumerWidget {
     TextEditingController? questionController =
         TextEditingController(text: question.label);
 
-    return Column(
-      children: [
-        TextFormField(
-          controller: questionController,
-          decoration: InputDecoration(
-            labelText: 'Vraag ${index + 1}',
-          ),
-          onChanged: (String value) => {question.label = value},
-        ),
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: const BoxDecoration(
+        border: Border.fromBorderSide(BorderSide(color: Colors.grey)),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      margin: const EdgeInsets.all(8.0),
+      child: Column(children: [
         DropdownButton<FormQuestionType>(
           items:
               FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
@@ -88,13 +106,23 @@ class CreateFormQuestion extends ConsumerWidget {
           onChanged: (FormQuestionType? newValue) =>
               {question.type = newValue!, onChanged()},
         ),
-        _buildQuestionExtras(context, ref, question, onChanged),
-        ElevatedButton(
-          onPressed: () => deleteQusetion(index),
-          child: const Text("Verwijder vraag"),
+        TextFormField(
+          controller: questionController,
+          decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
+          onChanged: (String value) => {question.label = value},
         ),
-        const SizedBox(height: 32),
-      ],
+        _buildQuestionExtras(context, ref, question, onChanged),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            margin: const EdgeInsets.only(top: 16),
+            child: ElevatedButton(
+              onPressed: () => deleteQuestion(index),
+              child: const Text("Verwijder vraag"),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }

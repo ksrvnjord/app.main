@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 /// A widget for displaying a single choice question.
@@ -29,6 +26,7 @@ class SingleChoiceWidget extends StatelessWidget {
   final DocumentReference<FirestoreForm> docRef;
   final WidgetRef ref;
   final void Function(String?) onChanged;
+  final bool formIsOpen;
 
   const SingleChoiceWidget({
     this.initialValue,
@@ -37,6 +35,7 @@ class SingleChoiceWidget extends StatelessWidget {
     required this.docRef,
     required this.ref,
     required this.onChanged,
+    required this.formIsOpen,
     Key? key,
   }) : super(key: key);
 
@@ -53,8 +52,7 @@ class SingleChoiceWidget extends StatelessWidget {
                 .map((choice) => RadioListTile<String>(
                       value: choice,
                       groupValue: initialValue,
-                      onChanged: onChanged,
-                      toggleable: true,
+                      onChanged: formIsOpen ? onChanged : null,
                       title: Text(choice),
                     ))
                 .toList(),

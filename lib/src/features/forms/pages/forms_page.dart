@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -16,6 +18,8 @@ class FormsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formsAndPolls = ref.watch(formsPollsCombinationProvider);
+    final currentUserVal = ref.watch(currentUserProvider);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,11 +59,26 @@ class FormsPage extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'Create Form',
-        onPressed: () => context.pushNamed('Create Form'),
-        icon: const Icon(Icons.add),
-        label: const Text('Maak nieuwe form'),
+      floatingActionButton: currentUserVal.when(
+        data: (currentUser) {
+          final canAccesAdminPanel = currentUser.isAdmin;
+
+          return canAccesAdminPanel
+              ? FloatingActionButton.extended(
+                  foregroundColor: colorScheme.onTertiaryContainer,
+                  backgroundColor: colorScheme.tertiaryContainer,
+                  onPressed: () => context.goNamed('Create Form'),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Maak een nieuwe form'),
+                )
+              : null;
+        },
+        loading: () => const SizedBox.shrink(),
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
