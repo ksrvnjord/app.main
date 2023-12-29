@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
@@ -10,14 +9,15 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questi
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
+  const CreateFormPage({Key? key}) : super(key: key);
+
   @override
-  _MyFormPageState createState() => _MyFormPageState();
+  _CreateFormPageState createState() => _CreateFormPageState();
 }
 
-class _MyFormPageState extends ConsumerState<CreateFormPage> {
+class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   List<FirestoreFormQuestion> questions = [];
 
   DateTime openUntil = DateTime.now();
@@ -137,49 +137,37 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   Future<void> submitForm(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
+    final currentState = _formKey.currentState;
+    if (currentState?.validate() ?? false) {
       if (questions.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Formulier moet minimaal 1 vraag hebben.'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
-          ),
+        const snackBar = SnackBar(
+          content: Text('Formulier moet minimaal 1 vraag hebben.'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
         );
+        // ignore: avoid_ignoring_return_values
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
         return;
       }
 
       for (FirestoreFormQuestion question in questions) {
+        var questionOptions = question.options;
         if (question.type == FormQuestionType.singleChoice &&
-            (question.options == null || question.options!.isEmpty)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text(
-                  'SingleChoice vraag moet minimaal een keuze bevatten.'),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
+            (questionOptions == null || questionOptions.isEmpty)) {
+          const snackBar = SnackBar(
+            content: Text(
+              'SingleChoice vraag moet minimaal een keuze bevatten.',
             ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
           );
 
-          return;
-        }
-
-        if (question.type == FormQuestionType.singleChoice &&
-            (question.options == null || question.options!.isEmpty)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Vraag moet minimaal 1 optie hebben.'),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-
-          return;
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       }
 
-      _formKey.currentState!.save();
+      currentState?.save();
       final form = FirestoreForm(
         createdTime: DateTime.now(),
         formName: formName.text,
@@ -191,16 +179,13 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
 
       final result = await FormRepository.upsertCreateForm(form: form);
 
-      if (result != null) {
-        final snackBarMessage = 'Form gemaakt met id: ${result.id}';
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(snackBarMessage),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
+      final snackBarMessage = 'Form gemaakt met id: ${result.id}';
+      final SnackBar snackBar = SnackBar(
+        content: Text(snackBarMessage),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 3),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       context.goNamed(RouteName.forms);
     }
