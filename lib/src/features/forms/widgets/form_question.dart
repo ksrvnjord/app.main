@@ -46,6 +46,10 @@ class FormQuestion extends ConsumerWidget {
     ];
 
     final answerStream = ref.watch(formAnswerProvider(docRef));
+    final formQuestionControllerProvider =
+        StateNotifierProvider.autoDispose<FormQuestionController, FocusNode>(
+      (ref) => FormQuestionController(),
+    );
 
     // ignore: avoid-ignoring-return-values
     answerStream.when(
@@ -67,7 +71,7 @@ class FormQuestion extends ConsumerWidget {
           case FormQuestionType.text:
             TextEditingController answer =
                 TextEditingController(text: answerValue);
-            FocusNode answerNode = FocusNode();
+            final answerNode = ref.watch(formQuestionControllerProvider);
             answerNode.addListener(() {
               if (!answerNode.hasFocus) {
                 FormRepository.upsertFormAnswer(
@@ -142,5 +146,15 @@ class FormQuestion extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
+  }
+}
+
+class FormQuestionController extends StateNotifier<FocusNode> {
+  FormQuestionController() : super(FocusNode());
+
+  @override
+  void dispose() {
+    state.dispose();
+    super.dispose();
   }
 }
