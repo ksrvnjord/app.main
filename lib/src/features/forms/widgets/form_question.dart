@@ -79,6 +79,9 @@ class FormQuestion extends ConsumerWidget {
                     ref: ref,
                   ),
                 },
+                validator: ((value) => (value == null || value.isEmpty)
+                    ? 'Antwoord kan niet leeg zijn.'
+                    : null),
                 enabled: formIsOpen,
               ),
             );
