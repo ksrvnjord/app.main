@@ -46,6 +46,9 @@ class CreateFormQuestion extends ConsumerWidget {
                       ),
                       onChanged: (String value) =>
                           {question.options![optionIndex] = value},
+                      validator: (value) => (value == null || value.isEmpty)
+                          ? 'Optie kan niet leeg zijn.'
+                          : null,
                     ),
                   ),
                   Align(
@@ -110,6 +113,9 @@ class CreateFormQuestion extends ConsumerWidget {
           controller: questionController,
           decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
           onChanged: (String value) => {question.label = value},
+          validator: (value) => (value == null || value.isEmpty)
+              ? 'Geef een naam op voor de vraag.'
+              : null,
         ),
         _buildQuestionExtras(context, ref, question, onChanged),
         Align(

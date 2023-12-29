@@ -28,7 +28,7 @@ class FormCard extends ConsumerWidget {
 
     final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
 
-    final userAnswerProvider = ref.read(formAnswerProvider(formDoc.reference));
+    final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
     final colorScheme = Theme.of(context).colorScheme;
 

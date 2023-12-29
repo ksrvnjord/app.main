@@ -55,6 +55,9 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
               // Kies form naam.
               controller: formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
+              validator: (value) => (value == null || value.isEmpty)
+                  ? 'Naam van de form kan niet leeg zijn.'
+                  : null,
             ),
             TextFormField(
               // Kies beschrijving form.
@@ -135,6 +138,47 @@ class _MyFormPageState extends ConsumerState<CreateFormPage> {
 
   Future<void> submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      if (questions.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Formulier moet minimaal 1 vraag hebben.'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+
+        return;
+      }
+
+      for (FirestoreFormQuestion question in questions) {
+        if (question.type == FormQuestionType.singleChoice &&
+            (question.options == null || question.options!.isEmpty)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                  'SingleChoice vraag moet minimaal een keuze bevatten.'),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+
+          return;
+        }
+
+        if (question.type == FormQuestionType.singleChoice &&
+            (question.options == null || question.options!.isEmpty)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Vraag moet minimaal 1 optie hebben.'),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+
+          return;
+        }
+      }
+
       _formKey.currentState!.save();
       final form = FirestoreForm(
         createdTime: DateTime.now(),
