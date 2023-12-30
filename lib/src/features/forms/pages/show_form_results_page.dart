@@ -12,9 +12,9 @@ import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ShowFormResultsPage extends ConsumerWidget {
-  final String formId;
-
   const ShowFormResultsPage({Key? key, required this.formId}) : super(key: key);
+
+  final String formId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +25,7 @@ class ShowFormResultsPage extends ConsumerWidget {
         title: const Text('Bekijk Formresultaten'),
         actions: [
           IconButton(
-            onPressed: () async {
+            onPressed: () {
               showDialog(
                 context: context,
                 builder: (innerContext) => AlertDialog(
@@ -44,14 +44,12 @@ class ShowFormResultsPage extends ConsumerWidget {
                           Navigator.of(innerContext).pop();
                           if (context.mounted) context.pop();
                         }
-                        final String? formPath = FirebaseFirestore.instance
+                        final formPath = FirebaseFirestore.instance
                             .doc('forms/$formId')
                             .path;
 
-                        if (formPath != null) {
-                          // ignore: avoid-ignoring-return-values
-                          await FormRepository.deleteForm(formPath);
-                        }
+                        // ignore: avoid-ignoring-return-values
+                        await FormRepository.deleteForm(formPath);
                       },
                       child: const Text('Verwijderen').textColor(Colors.red),
                     ),
@@ -65,7 +63,7 @@ class ShowFormResultsPage extends ConsumerWidget {
       ),
       body: form.when(
         data: (documentSnapshot) {
-          final FirestoreForm? formData = documentSnapshot.data();
+          final formData = documentSnapshot.data();
           if (documentSnapshot.data() == null) {
             return const Center(child: Text('No data available'));
           }
@@ -95,9 +93,7 @@ class ShowFormResultsPage extends ConsumerWidget {
                 value: formData?.createdTime.toString() ?? 'N/A',
               ),
               Consumer(builder: (context, ref, _) {
-                final answerVal = ref.watch(
-                  allFormAnswersProvider(formId),
-                );
+                final answerVal = ref.watch(allFormAnswersProvider(formId));
 
                 return answerVal.when(
                   data: (snapshot) {
@@ -112,22 +108,22 @@ class ShowFormResultsPage extends ConsumerWidget {
                       label: const Text('Download Resultaten als CSV'),
                     );
                   },
-                  loading: () {
-                    return const CircularProgressIndicator();
-                  },
                   error: (error, stackTrace) {
                     return Text('Error: $error');
+                  },
+                  loading: () {
+                    return const CircularProgressIndicator.adaptive();
                   },
                 );
               }),
             ],
           );
         },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
         error: (error, stack) {
           return Center(child: Text('Error: $error'));
+        },
+        loading: () {
+          return const Center(child: CircularProgressIndicator.adaptive());
         },
       ),
     );

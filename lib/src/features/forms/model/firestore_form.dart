@@ -32,8 +32,9 @@ class FirestoreForm {
     return FirestoreForm(
       createdTime: (json['createdTime'] as Timestamp).toDate(),
       formName: json['formName'],
-      questions: (json['questions'] as List<Map<String, dynamic>>)
-          .map((vraag) => FirestoreFormQuestion.fromJson(vraag))
+      questions: (json['questions'] as List<dynamic>)
+          .map((vraag) =>
+              FirestoreFormQuestion.fromJson(vraag as Map<String, dynamic>))
           .toList(),
       openUntil: (json['openUntil'] as Timestamp).toDate(),
       description: json['description'],

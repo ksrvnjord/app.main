@@ -14,6 +14,12 @@ class PostHeaderBar extends ConsumerWidget {
 
   const PostHeaderBar({Key? key, required this.snapshot}) : super(key: key);
 
+  void _deletePost(BuildContext context) async {
+    Navigator.of(context, rootNavigator: true).pop();
+    // ignore: avoid-ignoring-return-values
+    await PostService.deletePost(snapshot);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = snapshot.data();
@@ -25,12 +31,6 @@ class PostHeaderBar extends ConsumerWidget {
     final postAuthor = ref.watch(firestoreUserProvider(postAuthorId));
 
     final firebaseUser = ref.watch(currentFirestoreUserProvider);
-
-    void deletePost() async {
-      Navigator.of(context, rootNavigator: true).pop();
-      // ignore: avoid-ignoring-return-values
-      await PostService.deletePost(snapshot.reference.path);
-    }
 
     return [
       [
@@ -64,6 +64,7 @@ class PostHeaderBar extends ConsumerWidget {
           (postAuthorId == firebaseUser.identifier || firebaseUser.isBestuur))
         InkWell(
           child: const Icon(Icons.delete_outlined),
+          // ignore: avoid-async-call-in-sync-function
           onTap: () => showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -77,7 +78,8 @@ class PostHeaderBar extends ConsumerWidget {
                   child: const Text('Annuleren'),
                 ),
                 TextButton(
-                  onPressed: deletePost,
+                  // ignore: prefer-correct-handler-name
+                  onPressed: () => _deletePost(context),
                   child: const Text('Verwijderen').textColor(Colors.red),
                 ),
               ],

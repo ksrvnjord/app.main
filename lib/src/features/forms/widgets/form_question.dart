@@ -37,11 +37,8 @@ class FormQuestion extends ConsumerWidget {
 
     final type = formQuestion.type;
 
-    final List<Widget> questionWidgets = [
-      Text(
-        formQuestion.label,
-        style: textTheme.titleLarge,
-      ),
+    final questionWidgets = [
+      Text(formQuestion.label, style: textTheme.titleLarge),
     ];
 
     final answerStream = ref.watch(formAnswerProvider(docRef));
@@ -52,8 +49,7 @@ class FormQuestion extends ConsumerWidget {
         String? answerValue;
 
         if (data.docs.isNotEmpty) {
-          final List<FormQuestionAnswer> formAnswers =
-              data.docs.first.data().answers;
+          final formAnswers = data.docs.first.data().answers;
 
           for (final entry in formAnswers) {
             if (entry.question == formQuestion.label) {
@@ -86,6 +82,7 @@ class FormQuestion extends ConsumerWidget {
               ),
             );
             break;
+
           case FormQuestionType.singleChoice:
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
@@ -94,15 +91,16 @@ class FormQuestion extends ConsumerWidget {
               docRef: docRef,
               ref: ref,
               onChanged: (String? value) => FormRepository.upsertFormAnswer(
-                newValue: value,
                 question: formQuestion.label,
-                docRef: docRef,
+                newValue: value,
                 form: form,
+                docRef: docRef,
                 ref: ref,
               ),
               formIsOpen: formIsOpen,
             ));
             break;
+
           default:
             return const ErrorCardWidget(
               errorMessage: 'Onbekend type vraag',
@@ -110,20 +108,19 @@ class FormQuestion extends ConsumerWidget {
         }
       },
       error: (error, stackTrace) {
-        return const ErrorCardWidget(
-          errorMessage: 'Er is iets misgegaan',
-        );
+        return const ErrorCardWidget(errorMessage: 'Er is iets misgegaan');
       },
       loading: () {
-        return const CircularProgressIndicator();
+        return const CircularProgressIndicator.adaptive();
       },
     );
 
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          border: Border.all(color: colorScheme.primary),
-          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+        border: Border.all(color: colorScheme.primary),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+      ),
       child: questionWidgets.toColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
       ),

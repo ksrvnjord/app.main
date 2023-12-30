@@ -11,9 +11,7 @@ class AdminFormPage extends ConsumerWidget {
     final formsVal = ref.watch(allFormsOnCreationProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bekijk / Verwijder Forms'),
-      ),
+      appBar: AppBar(title: const Text('Bekijk / Verwijder Forms')),
       body: formsVal.when(
         data: (snapshot) => snapshot.docs.isEmpty
             ? const Center(child: Text('Geen forms gevonden'))
@@ -33,7 +31,8 @@ class AdminFormPage extends ConsumerWidget {
                 itemCount: snapshot.size,
               ),
         error: (error, stack) => Center(child: Text('Error: $error')),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
       ),
     );
   }

@@ -121,3 +121,5 @@ metrics/
 
 /old_structure/**
 .firebase/
+# We need to add the baseline for cross compatibility between Windows and Linux/MacOS
+dcm_baseline.json
