@@ -15,6 +15,11 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
@@ -32,7 +37,6 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
@@ -197,21 +201,35 @@ class Routes {
         child: const HomePage(),
       ),
       routes: [
-        // Route for viewing all forms.
+        // Route for viewing all forms (NEW FEATURE).
         _route(
-          path: 'forms', // Used for Deeplinking-pilot, so don't change this.
+          path: 'forms',
           name: RouteName.forms,
-          child: const PollsPage(),
+          child: const FormsPage(),
           routes: [
+            _route(
+              path: 'nieuw',
+              name: "Forms -> Create Form",
+              child: const CreateFormPage(),
+            ),
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
               path: ':formId',
+              // Forms/fgdgdf789dfg7df9dg789.
               name: "Form",
-              pageBuilder: (context, state) => _getPage(
-                child: PollPage(pollId: state.pathParameters['formId']!),
-                name: "Form",
-              ),
+              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
+                          null &&
+                      state.uri.queryParameters['v'] ==
+                          '2' // TODO: Remove this after migration.
+                  ? _getPage(
+                      child: FormPage(formId: state.pathParameters['formId']!),
+                      name: "Form",
+                    )
+                  : _getPage(
+                      child: PollPage(pollId: state.pathParameters['formId']!),
+                      name: "Poll",
+                    ),
             ),
           ],
         ),
@@ -613,6 +631,29 @@ class Routes {
             child: const ManageVaarverbodPage(),
             name: "Manage Vaarverbod",
           ),
+        ),
+
+        _route(
+          path: 'forms',
+          name: "Manage Forms",
+          child: const ManageFormsPage(),
+          routes: [
+            _route(
+              path: 'nieuw',
+              name: "Admin -> Create Form",
+              child: const CreateFormPage(),
+            ),
+            _route(
+              path: ':formId',
+              name: "View Form",
+              pageBuilder: (context, state) => _getPage(
+                child: ShowFormResultsPage(
+                  formId: state.pathParameters['formId']!,
+                ),
+                name: "View Form",
+              ),
+            ),
+          ],
         ),
         _route(
           path: "maak-push-notificatie",

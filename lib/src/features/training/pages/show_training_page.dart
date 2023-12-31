@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -66,22 +68,24 @@ class ShowTrainingPage extends ConsumerWidget {
             const Center(child: CircularProgressIndicator.adaptive()),
       ),
       floatingActionButton: reservationVal.when(
-        data:
-            (snapshot) => // Only show delete button if the current user is the creator of the reservation.
-                currentUser?.identifier.toString() == snapshot.data()?.creatorId
-                    ? FloatingActionButton.extended(
-                        tooltip: "Afschrijving verwijderen",
-                        onPressed: () => showDeleteReservationDialogForTraining(
-                          context,
-                          reservationDocumentId,
-                        ),
-                        label: const Row(
-                          children: [Text("Verwijderen  "), Icon(Icons.delete)],
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-        loading: () => const SizedBox.shrink(),
+        data: (snapshot) =>
+            // Only show delete button if the current user is the creator of the reservation.
+            currentUser?.identifier.toString() == snapshot.data()?.creatorId
+                ? FloatingActionButton.extended(
+                    tooltip: "Afschrijving verwijderen",
+                    heroTag: "deleteReservation",
+                    onPressed: () =>
+                        unawaited(showDeleteReservationDialogForTraining(
+                      context,
+                      reservationDocumentId,
+                    )),
+                    label: const Row(
+                      children: [Text("Verwijderen  "), Icon(Icons.delete)],
+                    ),
+                  )
+                : const SizedBox.shrink(),
         error: (err, stk) => const SizedBox.shrink(),
+        loading: () => const SizedBox.shrink(),
       ),
     );
   }

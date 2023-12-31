@@ -17,6 +17,8 @@ class AdminPage extends StatelessWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
 
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -32,7 +34,7 @@ class AdminPage extends StatelessWidget {
             leading: const Icon(Icons.info),
             title: Text(
               "We zijn op dit moment bezig met het vernieuwen van het admin panel. De app wordt het nieuwe startpunt voor admin-taken.",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: textTheme.bodyMedium,
             ),
             // ignore: prefer-moving-to-variable, no-magic-number
             backgroundColor: colorScheme.primaryContainer.withOpacity(0.2),
@@ -68,41 +70,54 @@ class AdminPage extends StatelessWidget {
             title: const Text("Beheer Evenementen"),
             trailing: const Text("Retool"),
             visualDensity: VisualDensity.standard,
-            // ignore: prefer-correct-handler-name
             onTap: () => unawaited(launchUrl(Uri.parse(
               "https://ksrvnjord.retool.com/apps/6c363b96-9c68-11ee-a9e1-f7ed1c21743e/Evenementen%20-%20CRUD",
             ))),
           ),
-          ListTile(
-            leading: const Icon(Icons.description),
-            title: const Text("Beheer Polls"),
-            trailing: const Text("Heimdall"),
-            visualDensity: VisualDensity.standard,
-            // ignore: prefer-correct-handler-name
-            onTap: () => unawaited(launchUrl(Uri.parse(
-              "https://heimdall.njord.nl/admin/polls",
-            ))),
-          ),
+
           ListTile(
             leading: const Icon(Icons.announcement),
             title: const Text("Beheer Aankondigingen"),
             trailing: const Text("Retool"),
             visualDensity: VisualDensity.standard,
-            // ignore: prefer-correct-handler-name
             onTap: () => unawaited(launchUrl(Uri.parse(
               "https://ksrvnjord.retool.com/apps/746434de-9c55-11ee-9791-27361826cb35/Aankondigingen%20-%20CRUD",
             ))),
           ),
 
+          FormSection(title: 'Beheer forms / polls', children: [
+            Text(
+              // ignore: avoid-non-ascii-symbols
+              "Forms bestaan uit één of meerdere vragen, een poll heeft altijd één vraag.",
+              // ignore: prefer-moving-to-variable
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Colors.grey,
+                  ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.description),
+              title: const Text('Beheer Forms'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => context.goNamed('View Forms'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.question_mark),
+              title: const Text("Beheer Polls"),
+              trailing: const Text("Heimdall"),
+              visualDensity: VisualDensity.standard,
+              onTap: () => unawaited(launchUrl(Uri.parse(
+                "https://heimdall.njord.nl/admin/polls",
+              ))),
+            ),
+          ]).paddingDirectional(vertical: sectionVPadding),
           FormSection(
             title: "Leedenadministratie",
             children: [
               ListTile(
-                leading: const Icon(Icons.people),
+                leading: const Icon(Icons.person),
                 title: const Text("Beheer Leeden"),
                 trailing: const Text("Heimdall"),
                 visualDensity: VisualDensity.standard,
-                // ignore: prefer-correct-handler-name
                 onTap: () => unawaited(launchUrl(Uri.parse(
                   "https://heimdall.njord.nl/admin/users",
                 ))),
@@ -122,7 +137,6 @@ class AdminPage extends StatelessWidget {
                 leading: const Icon(Icons.calendar_today),
                 title: const Text("Maak (herhalende) Afschrijving"),
                 trailing: const Text("Heimdall"),
-                // ignore: prefer-correct-handler-name
                 onTap: () => unawaited(launchUrl(Uri.parse(
                   "https://heimdall.njord.nl/admin/rowing/reservations/new",
                 ))),
@@ -132,7 +146,6 @@ class AdminPage extends StatelessWidget {
                 title: const Text("Beheer Schades"),
                 trailing: const Text("Retool"),
                 visualDensity: VisualDensity.standard,
-                // ignore: prefer-correct-handler-name
                 onTap: () => unawaited(launchUrl(Uri.parse(
                   "https://ksrvnjord.retool.com/apps/373edd2a-9c0f-11ee-a7ef-375aea3b6e12/Afschrijfsysteem%20-%20Schades%20(RD)",
                 ))),
@@ -142,7 +155,6 @@ class AdminPage extends StatelessWidget {
                 title: const Text("Beheer boten"),
                 trailing: const Text("Retool"),
                 visualDensity: VisualDensity.standard,
-                // ignore: prefer-correct-handler-name
                 onTap: () => unawaited(launchUrl(Uri.parse(
                   "https://ksrvnjord.retool.com/apps/406a9678-8a53-11ee-8a54-d3ac821edb1c/Afschrijfsysteem%20-%20Objecten%20CRUD",
                 ))),
