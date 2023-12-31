@@ -19,7 +19,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dar
 import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/pages/admin_form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
@@ -207,6 +207,11 @@ class Routes {
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
+            _route(
+              path: 'nieuw',
+              name: "Forms -> Create Form",
+              child: const CreateFormPage(),
+            ),
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
@@ -627,16 +632,17 @@ class Routes {
             name: "Manage Vaarverbod",
           ),
         ),
+
         _route(
-          path: 'nieuw',
-          name: "Create Form",
-          child: const CreateFormPage(),
-        ),
-        _route(
-          path: 'bekijk-forms',
-          name: "View Forms",
-          child: const AdminFormPage(),
+          path: 'forms',
+          name: "Manage Forms",
+          child: const ManageFormsPage(),
           routes: [
+            _route(
+              path: 'nieuw',
+              name: "Admin -> Create Form",
+              child: const CreateFormPage(),
+            ),
             _route(
               path: ':formId',
               name: "View Form",

@@ -69,7 +69,7 @@ class FormsPage extends ConsumerWidget {
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
                   heroTag: "Create Form",
-                  onPressed: () => context.goNamed('Create Form'),
+                  onPressed: () => context.goNamed('Forms -> Create Form'),
                   icon: const Icon(Icons.add),
                   label: const Text('Maak een nieuwe form'),
                 )

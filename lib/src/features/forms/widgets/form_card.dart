@@ -34,11 +34,26 @@ class FormCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    const iconSize = 16.0;
-    const trailingWidth = 128.0;
-
     return ListTile(
-      title: Text(form.formName),
+      title: <Widget>[
+        Text(form.formName),
+        userAnswerProvider.when(
+          data: (snapshot) {
+            bool formIsAnswered = snapshot.docs.isNotEmpty;
+
+            return formIsAnswered
+                ? Card(
+                    color: colorScheme.secondaryContainer,
+                    child: Text("Ingevuld", style: textTheme.labelLarge)
+                        // ignore: no-magic-number
+                        .padding(horizontal: 8, vertical: 2),
+                  )
+                : const SizedBox.shrink();
+          },
+          error: (err, stack) => Text('Error: $err'),
+          loading: () => const SizedBox.shrink(),
+        ),
+      ].toRow(separator: const SizedBox(width: 4)),
       subtitle: Text(
         formIsOpen
             ? "Sluit ${timeago.format(
@@ -49,35 +64,7 @@ class FormCard extends ConsumerWidget {
             : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
         style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
-      trailing: SizedBox(
-        width: trailingWidth,
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          userAnswerProvider.when(
-            data: (snapshot) {
-              bool formIsAnswered = snapshot.docs.isNotEmpty;
-
-              return Text(
-                formIsAnswered ? "Ingevuld" : "Niet ingevuld",
-                style: textTheme.bodySmall?.copyWith(
-                  color: formIsAnswered ? Colors.green : colorScheme.outline,
-                ),
-              );
-            },
-            error: (err, stack) => Text('Error: $err'),
-            loading: () => const SizedBox(
-              width: 12.0,
-              height: 12.0,
-              child: CircularProgressIndicator.adaptive(),
-            ),
-          ),
-          const SizedBox(width: 32.0),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: iconSize,
-            color: colorScheme.primary,
-          ),
-        ]),
-      ),
+      trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
       onTap: () => unawaited(context.pushNamed(
         "Form",
         pathParameters: {"formId": formDoc.reference.id},

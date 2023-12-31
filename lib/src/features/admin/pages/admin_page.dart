@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,6 +16,8 @@ class AdminPage extends StatelessWidget {
     const double sectionVPadding = 8;
 
     final colorScheme = Theme.of(context).colorScheme;
+
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +34,7 @@ class AdminPage extends StatelessWidget {
             leading: const Icon(Icons.info),
             title: Text(
               "We zijn op dit moment bezig met het vernieuwen van het admin panel. De app wordt het nieuwe startpunt voor admin-taken.",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: textTheme.bodyMedium,
             ),
             // ignore: prefer-moving-to-variable, no-magic-number
             backgroundColor: colorScheme.primaryContainer.withOpacity(0.2),
@@ -73,15 +74,7 @@ class AdminPage extends StatelessWidget {
               "https://ksrvnjord.retool.com/apps/6c363b96-9c68-11ee-a9e1-f7ed1c21743e/Evenementen%20-%20CRUD",
             ))),
           ),
-          ListTile(
-            leading: const Icon(Icons.description),
-            title: const Text("Beheer Polls"),
-            trailing: const Text("Heimdall"),
-            visualDensity: VisualDensity.standard,
-            onTap: () => unawaited(launchUrl(Uri.parse(
-              "https://heimdall.njord.nl/admin/polls",
-            ))),
-          ),
+
           ListTile(
             leading: const Icon(Icons.announcement),
             title: const Text("Beheer Aankondigingen"),
@@ -92,39 +85,36 @@ class AdminPage extends StatelessWidget {
             ))),
           ),
 
-          FormSection(title: "Leedenadministratie", children: [
-            const MoreLinkTile(
-              leading: Icon(Icons.people),
-              label: "Beheer Leeden",
-              url: "https://heimdall.njord.nl/users",
+          FormSection(title: 'Beheer forms / polls', children: [
+            Text(
+              // ignore: avoid-non-ascii-symbols
+              "Forms bestaan uit één of meerdere vragen, een poll heeft altijd één vraag.",
+              // ignore: prefer-moving-to-variable
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Colors.grey,
+                  ),
             ),
             ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text('Beheer Groepen'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Manage Groups'),
-            ),
-          ]).paddingDirectional(vertical: sectionPadding),
-
-          FormSection(title: 'Beheer forms', children: [
-            ListTile(
-              leading: const Icon(Icons.add),
-              title: const Text('Maak een form aan'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('Create Form'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.remove_red_eye),
-              title: const Text('Bekijk / Beheer Forms'),
+              leading: const Icon(Icons.description),
+              title: const Text('Beheer Forms'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => context.goNamed('View Forms'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.question_mark),
+              title: const Text("Beheer Polls"),
+              trailing: const Text("Heimdall"),
+              visualDensity: VisualDensity.standard,
+              onTap: () => unawaited(launchUrl(Uri.parse(
+                "https://heimdall.njord.nl/admin/polls",
+              ))),
             ),
           ]).paddingDirectional(vertical: sectionVPadding),
           FormSection(
             title: "Leedenadministratie",
             children: [
               ListTile(
-                leading: const Icon(Icons.people),
+                leading: const Icon(Icons.person),
                 title: const Text("Beheer Leeden"),
                 trailing: const Text("Heimdall"),
                 visualDensity: VisualDensity.standard,
