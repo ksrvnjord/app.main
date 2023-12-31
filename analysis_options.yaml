@@ -73,6 +73,11 @@ dart_code_metrics:
     - prefer-typedefs-for-callbacks: false
     - parameters-ordering: false
     - avoid-missing-image-alt: false # Users can all see properly
+    - prefer-correct-handler-name:
+        name-pattern: ^(handle[A-Z]|unawaited|setState)+ # Handler may be wrapped in unawaited if the handler is not awaited
+
+        # ignore-functions: true
+        # ignore-public: true
 
   rules-exclude:
     - test/** # exclude test files because we don't have any tests

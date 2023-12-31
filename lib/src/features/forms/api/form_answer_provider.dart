@@ -8,18 +8,17 @@ final formAnswerProvider =
     StreamProvider.family<QuerySnapshot<FormAnswer>, DocumentReference>(
   (ref, docRef) {
     final user = ref.watch(firebaseAuthUserProvider).value;
-    if (user == null) {
-      return const Stream.empty();
-    }
 
-    return FirebaseFirestore.instance
-        .collection('${docRef.path}/answers')
-        .withConverter<FormAnswer>(
-          fromFirestore: (snapshot, _) =>
-              FormAnswer.fromJson(snapshot.data() ?? {}),
-          toFirestore: (answer, _) => answer.toJson(),
-        )
-        .where('userId', isEqualTo: user.uid)
-        .snapshots();
+    return user == null
+        ? const Stream.empty()
+        : FirebaseFirestore.instance
+            .collection('${docRef.path}/answers')
+            .withConverter<FormAnswer>(
+              fromFirestore: (snapshot, _) =>
+                  FormAnswer.fromJson(snapshot.data() ?? {}),
+              toFirestore: (answer, _) => answer.toJson(),
+            )
+            .where('userId', isEqualTo: user.uid)
+            .snapshots();
   },
 );

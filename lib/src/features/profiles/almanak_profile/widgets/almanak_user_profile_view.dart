@@ -50,6 +50,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
           thumbnail: false,
         ).padding(all: elementPadding).center(),
         profile.when(
+          // ignore: avoid-long-functions
           data: (u) {
             return [
               Text(
@@ -148,8 +149,8 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 ),
               if (u.huis != null)
                 DataTextListTile(name: "Huis", value: u.huis as String),
-              if (u.dubbellid != null &&
-                  u.dubbellid as bool) // Only show if true.
+              if (u.dubbellid != null && u.dubbellid as bool)
+                // Only show if true.
                 DataTextListTile(
                   name: "Dubbellid",
                   value: u.dubbellid as bool ? "Ja" : "Nee",
@@ -173,11 +174,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
               ),
             ].toColumn();
           },
-          loading: () =>
-              const Center(child: CircularProgressIndicator.adaptive()),
           error: (error, stacktrace) => ErrorCardWidget(
             errorMessage: "$error $stacktrace",
           ),
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
         ),
       ],
     );

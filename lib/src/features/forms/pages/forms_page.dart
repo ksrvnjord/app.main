@@ -22,9 +22,7 @@ class FormsPage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forms'),
-      ),
+      appBar: AppBar(title: const Text('Forms')),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
@@ -38,10 +36,12 @@ class FormsPage extends ConsumerWidget {
                         return FormCard(
                           formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
                         );
+
                       case "_WithConverterQueryDocumentSnapshot<Poll>":
                         return PollCard(
                           pollDoc: item as QueryDocumentSnapshot<Poll>,
                         );
+
                       default:
                         return const ErrorCardWidget(
                           errorMessage: "Onbekend formtype",
@@ -65,20 +65,23 @@ class FormsPage extends ConsumerWidget {
 
           return canAccesAdminPanel
               ? FloatingActionButton.extended(
+                  tooltip: 'Maak een nieuwe form aan',
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
+                  heroTag: "Create Form",
                   onPressed: () => context.goNamed('Create Form'),
                   icon: const Icon(Icons.add),
                   label: const Text('Maak een nieuwe form'),
                 )
               : null;
         },
-        loading: () => const SizedBox.shrink(),
         error: (e, s) {
+          // ignore: avoid-async-call-in-sync-function
           FirebaseCrashlytics.instance.recordError(e, s);
 
           return const SizedBox.shrink();
         },
+        loading: () => const SizedBox.shrink(),
       ),
     );
   }

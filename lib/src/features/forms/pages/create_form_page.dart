@@ -14,38 +14,100 @@ class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
 
   @override
-  _CreateFormPageState createState() => _CreateFormPageState();
+  createState() => _CreateFormPageState();
 }
 
 class _CreateFormPageState extends ConsumerState<CreateFormPage> {
-  List<FirestoreFormQuestion> questions = [];
+  final _questions = <FirestoreFormQuestion>[];
 
-  DateTime openUntil = DateTime.now();
-  TextEditingController? description = TextEditingController();
-  TextEditingController formName = TextEditingController();
+  final _description = TextEditingController();
+  final _formName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  FirestoreUser? firebaseUser;
+  DateTime _openUntil = DateTime.now();
+  FirestoreUser? _firebaseUser;
 
   @override
   void initState() {
     super.initState();
-    firebaseUser = ref.read(
-      currentFirestoreUserProvider,
-    ); // TODO: Moet dit in deze specifieke state?
+    _firebaseUser = ref.read(currentFirestoreUserProvider);
+  }
+
+  Future<void> _submitForm(BuildContext context) async {
+    final currentState = _formKey.currentState;
+    if (currentState?.validate() ?? false) {
+      if (_questions.isEmpty) {
+        const snackBar = SnackBar(
+          content: Text('Formulier moet minimaal 1 vraag hebben.'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        );
+        // ignore: avoid-ignoring-return-values
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        return;
+      }
+
+      for (FirestoreFormQuestion question in _questions) {
+        final questionOptions = question.options;
+        if (question.type == FormQuestionType.singleChoice &&
+            (questionOptions == null || questionOptions.isEmpty)) {
+          const snackBar = SnackBar(
+            content: Text(
+              'SingleChoice vraag moet minimaal een keuze bevatten.',
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          );
+
+          // ignore: avoid-ignoring-return-values
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      }
+
+      currentState?.save();
+      final form = FirestoreForm(
+        createdTime: DateTime.now(),
+        formName: _formName.text,
+        questions: _questions,
+        openUntil: _openUntil,
+        description: _description.text,
+        authorId: _firebaseUser?.identifier ?? '',
+      );
+
+      final result = await FormRepository.upsertCreateForm(form: form);
+
+      final snackBarMessage = 'Form gemaakt met id: ${result.id}';
+      final snackBar = SnackBar(
+        content: Text(snackBarMessage),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 3),
+      );
+      if (!mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      context.goNamed(RouteName.forms);
+    }
+  }
+
+  @override
+  void dispose() {
+    _description.dispose();
+    _formName.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    const double sizedBoxHeight = 16;
-    const double sizedBoxWidth = 16;
-    const double sizedBoxWidthButton = 256;
+    const sizedBoxHeight = 16.0;
+    const sizedBoxWidth = 16.0;
+    // ignore: avoid-similar-names
+    const sizedBoxWidthButton = 256.0;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Maak een form aan'),
-      ),
+      appBar: AppBar(title: const Text('Maak een form aan')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -53,7 +115,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           children: [
             TextFormField(
               // Kies form naam.
-              controller: formName,
+              controller: _formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
               validator: (value) => (value == null || value.isEmpty)
                   ? 'Naam van de form kan niet leeg zijn.'
@@ -61,31 +123,28 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
             ),
             TextFormField(
               // Kies beschrijving form.
-              controller: description,
+              controller: _description,
               decoration: const InputDecoration(
                 labelText: 'Beschrijving form',
               ),
             ),
-            const SizedBox(
-              height: sizedBoxHeight,
-            ),
+            const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
-              initialDate: openUntil,
+              initialDate: _openUntil,
               onDateTimeChanged: (DateTime dateTime) =>
-                  setState(() => openUntil = dateTime),
+                  setState(() => _openUntil = dateTime),
             ),
-            ...questions.asMap().entries.map((questionEntry) {
+            ..._questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(
                 index: questionEntry.key,
                 question: questionEntry.value,
-                onChanged: () => setState(() {}),
+                onChanged: () => setState(() => {}),
                 deleteQuestion: (int index) =>
-                    setState(() => questions.removeAt(index)),
+                    // ignore: avoid-collection-mutating-methods
+                    setState(() => _questions.removeAt(index)),
               );
             }).toList(),
-            const SizedBox(
-              height: sizedBoxHeight,
-            ),
+            const SizedBox(height: sizedBoxHeight),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -94,7 +153,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   width: sizedBoxWidthButton,
                   child: ElevatedButton(
                     onPressed: () => setState(
-                      () => questions.add(FirestoreFormQuestion(
+                      // ignore: avoid-collection-mutating-methods
+                      () => _questions.add(FirestoreFormQuestion(
                         label: '',
                         type: FormQuestionType.singleChoice,
                         options: [],
@@ -106,18 +166,17 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 const Spacer(),
               ],
             ),
-            const SizedBox(
-              height: sizedBoxHeight,
-            ),
+            const SizedBox(height: sizedBoxHeight),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               const Spacer(),
               SizedBox(
                 width: sizedBoxWidthButton,
                 child: ElevatedButton(
-                  onPressed: () => submitForm(context),
+                  // ignore: prefer-correct-handler-name, avoid-async-call-in-sync-function
+                  onPressed: () => _submitForm(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primaryContainer,
                     foregroundColor: colorScheme.onPrimaryContainer,
+                    backgroundColor: colorScheme.primaryContainer,
                   ),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,60 +193,5 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         ),
       ),
     );
-  }
-
-  Future<void> submitForm(BuildContext context) async {
-    final currentState = _formKey.currentState;
-    if (currentState?.validate() ?? false) {
-      if (questions.isEmpty) {
-        const snackBar = SnackBar(
-          content: Text('Formulier moet minimaal 1 vraag hebben.'),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 3),
-        );
-        // ignore: avoid_ignoring_return_values
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-        return;
-      }
-
-      for (FirestoreFormQuestion question in questions) {
-        var questionOptions = question.options;
-        if (question.type == FormQuestionType.singleChoice &&
-            (questionOptions == null || questionOptions.isEmpty)) {
-          const snackBar = SnackBar(
-            content: Text(
-              'SingleChoice vraag moet minimaal een keuze bevatten.',
-            ),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          );
-
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      }
-
-      currentState?.save();
-      final form = FirestoreForm(
-        createdTime: DateTime.now(),
-        formName: formName.text,
-        questions: questions,
-        openUntil: openUntil,
-        description: description?.text,
-        authorId: firebaseUser?.identifier ?? '',
-      );
-
-      final result = await FormRepository.upsertCreateForm(form: form);
-
-      final snackBarMessage = 'Form gemaakt met id: ${result.id}';
-      final SnackBar snackBar = SnackBar(
-        content: Text(snackBarMessage),
-        backgroundColor: Colors.green,
-        duration: const Duration(seconds: 3),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-      context.goNamed(RouteName.forms);
-    }
   }
 }

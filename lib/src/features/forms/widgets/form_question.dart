@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -14,15 +15,12 @@ class FormQuestion extends ConsumerWidget {
   const FormQuestion({
     Key? key,
     required this.formQuestion,
-    required this.formPath,
     required this.form,
     required this.docRef,
     required this.formIsOpen,
   }) : super(key: key);
 
   final FirestoreFormQuestion formQuestion;
-
-  final String formPath;
 
   final FirestoreForm form;
 
@@ -37,7 +35,7 @@ class FormQuestion extends ConsumerWidget {
 
     final type = formQuestion.type;
 
-    final questionWidgets = [
+    final questionWidgets = <Widget>[
       Text(formQuestion.label, style: textTheme.titleLarge),
     ];
 
@@ -45,19 +43,18 @@ class FormQuestion extends ConsumerWidget {
 
     // ignore: avoid-ignoring-return-values
     answerStream.when(
+      // ignore: avoid-long-functions
       data: (data) {
         String? answerValue;
-
         if (data.docs.isNotEmpty) {
+          // ignore: avoid-unsafe-collection-methods
           final formAnswers = data.docs.first.data().answers;
-
           for (final entry in formAnswers) {
             if (entry.question == formQuestion.label) {
               answerValue = entry.answer;
             }
           }
         }
-
         switch (type) {
           case FormQuestionType.text:
             TextEditingController answer =
@@ -66,15 +63,14 @@ class FormQuestion extends ConsumerWidget {
             questionWidgets.add(
               TextFormField(
                 controller: answer,
-                onFieldSubmitted: (String? value) => {
-                  FormRepository.upsertFormAnswer(
-                    question: formQuestion.label,
-                    newValue: value,
-                    form: form,
-                    docRef: docRef,
-                    ref: ref,
-                  ),
-                },
+                onFieldSubmitted: (String? value) =>
+                    unawaited(FormRepository.upsertFormAnswer(
+                  question: formQuestion.label,
+                  newValue: value,
+                  form: form,
+                  docRef: docRef,
+                  ref: ref,
+                )),
                 validator: ((value) => (value == null || value.isEmpty)
                     ? 'Antwoord kan niet leeg zijn.'
                     : null),
@@ -87,15 +83,14 @@ class FormQuestion extends ConsumerWidget {
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
               formQuestion: formQuestion,
-              form: form,
-              docRef: docRef,
-              ref: ref,
-              onChanged: (String? value) => FormRepository.upsertFormAnswer(
-                question: formQuestion.label,
-                newValue: value,
-                form: form,
-                docRef: docRef,
-                ref: ref,
+              onChanged: (String? value) => unawaited(
+                FormRepository.upsertFormAnswer(
+                  question: formQuestion.label,
+                  newValue: value,
+                  form: form,
+                  docRef: docRef,
+                  ref: ref,
+                ),
               ),
               formIsOpen: formIsOpen,
             ));

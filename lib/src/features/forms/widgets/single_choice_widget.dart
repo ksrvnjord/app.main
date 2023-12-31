@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -20,24 +17,19 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 /// If the [formQuestion] does not have any options, an error message is displayed.
 
 class SingleChoiceWidget extends StatelessWidget {
-  final String? initialValue;
-  final FirestoreFormQuestion formQuestion;
-  final FirestoreForm form;
-  final DocumentReference<FirestoreForm> docRef;
-  final WidgetRef ref;
-  final void Function(String?) onChanged;
-  final bool formIsOpen;
-
   const SingleChoiceWidget({
     this.initialValue,
     required this.formQuestion,
-    required this.form,
-    required this.docRef,
-    required this.ref,
     required this.onChanged,
     required this.formIsOpen,
     Key? key,
   }) : super(key: key);
+
+  final String? initialValue;
+  final FirestoreFormQuestion formQuestion;
+  // ignore: prefer-explicit-parameter-names
+  final void Function(String?) onChanged;
+  final bool formIsOpen;
 
   @override
   Widget build(BuildContext context) {

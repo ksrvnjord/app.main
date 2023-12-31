@@ -16,13 +16,14 @@ class AdminFormPage extends ConsumerWidget {
         data: (snapshot) => snapshot.docs.isEmpty
             ? const Center(child: Text('Geen forms gevonden'))
             : ListView.builder(
-                itemBuilder: (context, index) {
+                itemBuilder: (innerContext, index) {
+                  // ignore: avoid-unsafe-collection-methods
                   final form = snapshot.docs[index];
 
                   return ListTile(
                     title: Text(form['formName']),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => context.goNamed(
+                    onTap: () => innerContext.goNamed(
                       'View Form',
                       pathParameters: {'formId': form.id},
                     ),

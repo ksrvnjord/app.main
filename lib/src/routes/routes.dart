@@ -1,7 +1,6 @@
 // ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/events/manage_events_page.dart';
@@ -76,7 +75,6 @@ import 'package:upgrader/upgrader.dart';
 @immutable
 class RouteName {
   static const forms = "Forms";
-  static const polls = "Polls";
   static const postComments = "Post -> Comments";
   static const editMyVisibility = "Edit my visibility";
   static const reservation = "Reservation";
@@ -212,7 +210,8 @@ class Routes {
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
-              path: ':formId', // forms/fgdgdf789dfg7df9dg789
+              path: ':formId',
+              // Forms/fgdgdf789dfg7df9dg789.
               name: "Form",
               pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
                           null &&
@@ -631,7 +630,7 @@ class Routes {
         _route(
           path: 'nieuw',
           name: "Create Form",
-          child: CreateFormPage(),
+          child: const CreateFormPage(),
         ),
         _route(
           path: 'bekijk-forms',

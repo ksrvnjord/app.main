@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,16 +11,13 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class FormCard extends ConsumerWidget {
-  const FormCard({
-    Key? key,
-    required this.formDoc,
-  }) : super(key: key);
+  const FormCard({Key? key, required this.formDoc}) : super(key: key);
 
   final DocumentSnapshot<FirestoreForm> formDoc;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final FirestoreForm? form = formDoc.data();
+    final form = formDoc.data();
 
     if (form == null) {
       return const ErrorCardWidget(
@@ -26,7 +25,7 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    final bool formIsOpen = DateTime.now().isBefore(form.openUntil);
+    final formIsOpen = DateTime.now().isBefore(form.openUntil);
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
@@ -37,7 +36,6 @@ class FormCard extends ConsumerWidget {
     const iconSize = 16.0;
     const trailingWidth = 256.0;
 
-    // ignore: arguments-ordering
     return ListTile(
       title: Text(form.formName),
       subtitle: Text(
@@ -74,20 +72,20 @@ class FormCard extends ConsumerWidget {
           ),
         ]),
       ),
-      onTap: () => context.pushNamed(
+      onTap: () => unawaited(context.pushNamed(
         "Form",
         pathParameters: {"formId": formDoc.reference.id},
         queryParameters: {"v": "2"},
-      ),
+      )),
     ).card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      elevation: 0,
       // Transparant color.
       color: Colors.transparent,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: colorScheme.primary),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
+      margin: const EdgeInsets.symmetric(vertical: 4),
     );
   }
 }

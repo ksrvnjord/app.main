@@ -55,18 +55,17 @@ void upsertPollAnswer(
     await snapshot.docs.first.reference.delete();
 
     return;
-  } else {
-    // User picked a different answer.
-    await snapshot.docs.first.reference.update({
-      'answer': choice,
-      'answeredAt': Timestamp.now(),
-      if (poll.question.contains(
-        "Eten",
-      )) // TODO: send allergies only where the poll is of a certain type, not based on the question.
-        'allergies':
-            // User can't be null if using poll feature.
-            // ignore: avoid-non-null-assertion
-            currentUser.allergies,
-    });
   }
+  // User picked a different answer.
+  await snapshot.docs.first.reference.update({
+    'answer': choice,
+    'answeredAt': Timestamp.now(),
+    if (poll.question.contains(
+      "Eten",
+    ))
+      'allergies':
+          // User can't be null if using poll feature.
+          // ignore: avoid-non-null-assertion
+          currentUser.allergies,
+  });
 }

@@ -150,7 +150,6 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                 if (_galleryFile == null) ...[
                   TextButton(
                     onPressed: () =>
-                        // ignore: prefer-correct-handler-name
                         unawaited(_showPicker(prevContext: context)),
                     child: const Text("Afbeelding toevoegen"),
                   ),

@@ -6,9 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provi
 import 'package:ksrvnjord_main_app/src/features/forms/api/download_csv_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/show_form_results_info_box.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ShowFormResultsPage extends ConsumerWidget {
@@ -25,7 +23,9 @@ class ShowFormResultsPage extends ConsumerWidget {
         title: const Text('Bekijk Formresultaten'),
         actions: [
           IconButton(
+            // ignore: prefer-extracting-callbacks
             onPressed: () {
+              // ignore: avoid-ignoring-return-values, avoid-async-call-in-sync-function
               showDialog(
                 context: context,
                 builder: (innerContext) => AlertDialog(
@@ -39,6 +39,7 @@ class ShowFormResultsPage extends ConsumerWidget {
                       child: const Text('Annuleren'),
                     ),
                     TextButton(
+                      // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
                       onPressed: () async {
                         if (innerContext.mounted) {
                           Navigator.of(innerContext).pop();
@@ -62,62 +63,58 @@ class ShowFormResultsPage extends ConsumerWidget {
         ],
       ),
       body: form.when(
+        // ignore: avoid-long-functions
         data: (documentSnapshot) {
           final formData = documentSnapshot.data();
-          if (documentSnapshot.data() == null) {
-            return const Center(child: Text('No data available'));
-          }
 
-          return Column(
-            children: [
-              const SizedBox(height: 16),
-              const Divider(),
-              ShowFormResultsInfoBox(
-                field: 'Form naam',
-                value: formData?.formName ?? 'N/A',
-              ),
-              ShowFormResultsInfoBox(
-                field: 'Formauteur',
-                value: formData?.authorId ?? 'N/A',
-              ),
-              ShowFormResultsInfoBox(
-                field: 'Beschrijving',
-                value: formData?.description ?? 'N/A',
-              ),
-              ShowFormResultsInfoBox(
-                field: 'Open tot',
-                value: formData?.openUntil.toString() ?? 'N/A',
-              ),
-              ShowFormResultsInfoBox(
-                field: 'Gecreerd op',
-                value: formData?.createdTime.toString() ?? 'N/A',
-              ),
-              Consumer(builder: (context, ref, _) {
-                final answerVal = ref.watch(allFormAnswersProvider(formId));
-
-                return answerVal.when(
-                  data: (snapshot) {
-                    return ElevatedButton.icon(
-                      onPressed: () => ref.read(downloadCsvProvider(
-                        DownloadCsvParams(
-                          formName: formData?.formName ?? '',
-                          snapshot: snapshot,
-                        ),
-                      )),
-                      icon: const Icon(Icons.download),
-                      label: const Text('Download Resultaten als CSV'),
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return Text('Error: $error');
-                  },
-                  loading: () {
-                    return const CircularProgressIndicator.adaptive();
-                  },
+          return formData == null
+              ? const Center(child: Text('No data available'))
+              : Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    ShowFormResultsInfoBox(
+                      field: 'Form naam',
+                      value: formData.formName,
+                    ),
+                    ShowFormResultsInfoBox(
+                      field: 'Formauteur',
+                      value: formData.authorId,
+                    ),
+                    ShowFormResultsInfoBox(
+                      field: 'Beschrijving',
+                      value: formData.description ?? 'N/A',
+                    ),
+                    ShowFormResultsInfoBox(
+                      field: 'Open tot',
+                      value: formData.openUntil.toString(),
+                    ),
+                    ShowFormResultsInfoBox(
+                      field: 'Gecreerd op',
+                      value: formData.createdTime.toString(),
+                    ),
+                    ref.watch(allFormAnswersProvider(formId)).when(
+                      data: (snapshot) {
+                        return ElevatedButton.icon(
+                          onPressed: () => ref.read(downloadCsvProvider(
+                            DownloadCsvParams(
+                              formName: formData.formName,
+                              snapshot: snapshot,
+                            ),
+                          )),
+                          icon: const Icon(Icons.download),
+                          label: const Text('Download Resultaten als CSV'),
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        return Text('Error: $error');
+                      },
+                      loading: () {
+                        return const CircularProgressIndicator.adaptive();
+                      },
+                    ),
+                  ],
                 );
-              }),
-            ],
-          );
         },
         error: (error, stack) {
           return Center(child: Text('Error: $error'));
