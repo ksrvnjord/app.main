@@ -14,10 +14,10 @@ class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
 
   @override
-  _CreateFormPageState createState() => _CreateFormPageState();
+  CreateFormPageState createState() => CreateFormPageState();
 }
 
-class _CreateFormPageState extends ConsumerState<CreateFormPage> {
+class CreateFormPageState extends ConsumerState<CreateFormPage> {
   List<FirestoreFormQuestion> questions = [];
 
   DateTime openUntil = DateTime.now();
@@ -146,7 +146,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           duration: Duration(seconds: 3),
         );
         // ignore: avoid_ignoring_return_values
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        final _ = ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
         return;
       }
@@ -163,7 +163,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
             duration: Duration(seconds: 3),
           );
 
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          final _ = ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       }
 
@@ -185,7 +185,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         backgroundColor: Colors.green,
         duration: const Duration(seconds: 3),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      final _ = ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       context.goNamed(RouteName.forms);
     }

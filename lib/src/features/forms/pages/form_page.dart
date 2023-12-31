@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/delete_form_answer_button.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/submit_form_button.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -18,7 +17,16 @@ class FormPage extends ConsumerWidget {
 
   final String formId;
 
-  Future<dynamic> deleteMyFormAnswer(
+  Future<void> deleteAnswerAndCloseDialog(
+    BuildContext context,
+    String answerPath,
+  ) async {
+    await FormRepository.deleteMyFormAnswer(answerPath);
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop(true);
+  }
+
+  Future<bool?> deleteMyFormAnswer(
     WidgetRef ref,
     BuildContext context,
   ) async {
@@ -43,10 +51,10 @@ class FormPage extends ConsumerWidget {
               child: const Text('Annuleren'),
             ),
             TextButton(
-              onPressed: () async {
-                await FormRepository.deleteMyFormAnswer(answerPath);
-                Navigator.of(context).pop(true);
-              },
+              onPressed: () => deleteAnswerAndCloseDialog(
+                context,
+                answerPath,
+              ),
               child: const Text('Verwijderen').textColor(Colors.red),
             ),
           ],

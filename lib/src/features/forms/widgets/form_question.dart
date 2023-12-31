@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'dart:async';
 
 class FormQuestion extends ConsumerWidget {
   const FormQuestion({
