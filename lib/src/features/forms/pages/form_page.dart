@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
@@ -21,8 +21,7 @@ class FormPage extends ConsumerWidget {
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(FirebaseFirestore.instance.doc('forms/$formId'))
-          .future,
+      formAnswerProvider(formsCollection.doc(formId)).future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -59,7 +58,9 @@ class FormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formVal = ref.watch(formProvider(formId));
+    final doc = formsCollection.doc(formId);
+
+    final formVal = ref.watch(formProvider(doc));
 
     return Scaffold(
       appBar: AppBar(title: const Text('Form')),
@@ -129,14 +130,9 @@ class FormPage extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: ref
-          .watch(formAnswerProvider(
-            FirebaseFirestore.instance.doc('forms/$formId'),
-          ))
-          .when(
-            data: (snapshot) => snapshot.size == 0
-                ? const SizedBox.shrink()
-                : FloatingActionButton.extended(
+      floatingActionButton: ref.watch(canRemoveFormAnswerProvider(doc)).when(
+            data: (canRemove) => canRemove
+                ? FloatingActionButton.extended(
                     tooltip: "Verwijder mijn form reactie",
                     foregroundColor:
                         Theme.of(context).colorScheme.onErrorContainer,
@@ -166,7 +162,8 @@ class FormPage extends ConsumerWidget {
                     },
                     icon: const Icon(Icons.delete),
                     label: const Text("Verwijder mijn formreactie"),
-                  ),
+                  )
+                : const SizedBox.shrink(),
             error: (err, stk) => const SizedBox.shrink(),
             loading: () => const SizedBox.shrink(),
           ),

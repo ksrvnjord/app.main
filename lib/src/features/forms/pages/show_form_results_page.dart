@@ -16,7 +16,7 @@ class ShowFormResultsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = ref.watch(formProvider(formId));
+    final form = ref.watch(formProvider(formsCollection.doc(formId)));
 
     return Scaffold(
       appBar: AppBar(

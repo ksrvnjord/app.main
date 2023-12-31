@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
   const FormCard({Key? key, required this.formDoc}) : super(key: key);
@@ -34,14 +35,19 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     const iconSize = 16.0;
-    const trailingWidth = 256.0;
+    const trailingWidth = 128.0;
 
     return ListTile(
       title: Text(form.formName),
       subtitle: Text(
-        '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
-        style: textTheme.bodySmall
-            ?.copyWith(color: formIsOpen ? Colors.green : colorScheme.outline),
+        formIsOpen
+            ? "Sluit ${timeago.format(
+                form.openUntil,
+                locale: 'nl',
+                allowFromNow: true,
+              )}"
+            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
+        style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
       trailing: SizedBox(
         width: trailingWidth,
@@ -51,7 +57,7 @@ class FormCard extends ConsumerWidget {
               bool formIsAnswered = snapshot.docs.isNotEmpty;
 
               return Text(
-                'Status: ${formIsAnswered ? "Ingevuld" : "Niet ingevuld"}',
+                formIsAnswered ? "Ingevuld" : "Niet ingevuld",
                 style: textTheme.bodySmall?.copyWith(
                   color: formIsAnswered ? Colors.green : colorScheme.outline,
                 ),

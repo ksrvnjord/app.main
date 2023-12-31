@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +25,33 @@ class FormQuestion extends ConsumerWidget {
   final DocumentReference<FirestoreForm> docRef;
 
   final bool formIsOpen;
+
+  // ignore: avoid-long-parameter-list
+  _handleChangeOfFormAnswer({
+    required String question,
+    required String? newValue, // Given answer.
+    required FirestoreForm f,
+    required DocumentReference<FirestoreForm> d,
+    required WidgetRef ref,
+    required BuildContext context,
+  }) async {
+    try {
+      // ignore: avoid-ignoring-return-values
+      await FormRepository.upsertFormAnswer(
+        question: formQuestion.label,
+        newValue: newValue,
+        form: f,
+        docRef: d,
+        ref: ref,
+      );
+    } on Exception catch (error) {
+      if (!context.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,14 +88,14 @@ class FormQuestion extends ConsumerWidget {
             questionWidgets.add(
               TextFormField(
                 controller: answer,
-                onFieldSubmitted: (String? value) =>
-                    unawaited(FormRepository.upsertFormAnswer(
+                onFieldSubmitted: (String? value) => _handleChangeOfFormAnswer(
                   question: formQuestion.label,
                   newValue: value,
-                  form: form,
-                  docRef: docRef,
+                  f: form,
+                  d: docRef,
                   ref: ref,
-                )),
+                  context: context,
+                ),
                 validator: ((value) => (value == null || value.isEmpty)
                     ? 'Antwoord kan niet leeg zijn.'
                     : null),
@@ -83,14 +108,13 @@ class FormQuestion extends ConsumerWidget {
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
               formQuestion: formQuestion,
-              onChanged: (String? value) => unawaited(
-                FormRepository.upsertFormAnswer(
-                  question: formQuestion.label,
-                  newValue: value,
-                  form: form,
-                  docRef: docRef,
-                  ref: ref,
-                ),
+              onChanged: (String? value) => _handleChangeOfFormAnswer(
+                question: formQuestion.label,
+                newValue: value,
+                f: form,
+                d: docRef,
+                ref: ref,
+                context: context,
               ),
               formIsOpen: formIsOpen,
             ));
