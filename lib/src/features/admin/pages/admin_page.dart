@@ -98,7 +98,7 @@ class AdminPage extends StatelessWidget {
               leading: const Icon(Icons.description),
               title: const Text('Beheer Forms'),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => context.goNamed('View Forms'),
+              onTap: () => context.goNamed('Manage Forms'),
             ),
             ListTile(
               leading: const Icon(Icons.question_mark),
