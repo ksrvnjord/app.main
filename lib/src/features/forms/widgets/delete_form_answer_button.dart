@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 
 class DeleteFormAnswerButton extends ConsumerWidget {
   final Function deleteMyFormAnswer;
@@ -18,9 +19,7 @@ class DeleteFormAnswerButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final snapshot = ref.watch(
-      formAnswerProvider(
-        FirebaseFirestore.instance.doc('forms/$formId'),
-      ),
+      formAnswerProvider(formsCollection.doc(formId)),
     );
 
     return snapshot.when(
