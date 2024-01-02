@@ -5,7 +5,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -14,7 +13,6 @@ class FormQuestion extends ConsumerWidget {
   const FormQuestion({
     Key? key,
     required this.formQuestion,
-    required this.formPath,
     required this.form,
     required this.docRef,
     required this.formIsOpen,
@@ -22,13 +20,38 @@ class FormQuestion extends ConsumerWidget {
 
   final FirestoreFormQuestion formQuestion;
 
-  final String formPath;
-
   final FirestoreForm form;
 
   final DocumentReference<FirestoreForm> docRef;
 
   final bool formIsOpen;
+
+  // ignore: avoid-long-parameter-list
+  _handleChangeOfFormAnswer({
+    required String question,
+    required String? newValue, // Given answer.
+    required FirestoreForm f,
+    required DocumentReference<FirestoreForm> d,
+    required WidgetRef ref,
+    required BuildContext context,
+  }) async {
+    try {
+      // ignore: avoid-ignoring-return-values
+      await FormRepository.upsertFormAnswer(
+        question: formQuestion.label,
+        newValue: newValue,
+        form: f,
+        docRef: d,
+        ref: ref,
+      );
+    } on Exception catch (error) {
+      if (!context.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,11 +60,8 @@ class FormQuestion extends ConsumerWidget {
 
     final type = formQuestion.type;
 
-    final List<Widget> questionWidgets = [
-      Text(
-        formQuestion.label,
-        style: textTheme.titleLarge,
-      ),
+    final questionWidgets = <Widget>[
+      Text(formQuestion.label, style: textTheme.titleLarge),
     ];
 
     final answerStream = ref.watch(formAnswerProvider(docRef));
@@ -52,33 +72,34 @@ class FormQuestion extends ConsumerWidget {
 
     // ignore: avoid-ignoring-return-values
     answerStream.when(
+      // ignore: avoid-long-functions
       data: (data) {
         String? answerValue;
-
         if (data.docs.isNotEmpty) {
-          final List<FormQuestionAnswer> formAnswers =
-              data.docs.first.data().answers;
-
+          // ignore: avoid-unsafe-collection-methods
+          final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
             if (entry.question == formQuestion.label) {
               answerValue = entry.answer;
             }
           }
         }
-
         switch (type) {
           case FormQuestionType.text:
             TextEditingController answer =
                 TextEditingController(text: answerValue);
+
             final answerNode = ref.watch(formQuestionControllerProvider);
             answerNode.addListener(() {
               if (!answerNode.hasFocus) {
-                FormRepository.upsertFormAnswer(
+                // ignore: avoid-ignoring-return-values
+                _handleChangeOfFormAnswer(
                   question: formQuestion.label,
                   newValue: answer.text,
-                  form: form,
-                  docRef: docRef,
+                  f: form,
+                  d: docRef,
                   ref: ref,
+                  context: context,
                 );
               }
             });
@@ -86,16 +107,14 @@ class FormQuestion extends ConsumerWidget {
             questionWidgets.add(
               TextFormField(
                 controller: answer,
-                focusNode: answerNode,
-                onFieldSubmitted: (String? value) => {
-                  FormRepository.upsertFormAnswer(
-                    question: formQuestion.label,
-                    newValue: value,
-                    form: form,
-                    docRef: docRef,
-                    ref: ref,
-                  ),
-                },
+                onFieldSubmitted: (String? value) => _handleChangeOfFormAnswer(
+                  question: formQuestion.label,
+                  newValue: value,
+                  f: form,
+                  d: docRef,
+                  ref: ref,
+                  context: context,
+                ),
                 validator: ((value) => (value == null || value.isEmpty)
                     ? 'Antwoord kan niet leeg zijn.'
                     : null),
@@ -103,23 +122,23 @@ class FormQuestion extends ConsumerWidget {
               ),
             );
             break;
+
           case FormQuestionType.singleChoice:
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
               formQuestion: formQuestion,
-              form: form,
-              docRef: docRef,
-              ref: ref,
-              onChanged: (String? value) => FormRepository.upsertFormAnswer(
-                newValue: value,
+              onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: formQuestion.label,
-                docRef: docRef,
-                form: form,
+                newValue: value,
+                f: form,
+                d: docRef,
                 ref: ref,
+                context: context,
               ),
               formIsOpen: formIsOpen,
             ));
             break;
+
           default:
             return const ErrorCardWidget(
               errorMessage: 'Onbekend type vraag',
@@ -127,20 +146,19 @@ class FormQuestion extends ConsumerWidget {
         }
       },
       error: (error, stackTrace) {
-        return const ErrorCardWidget(
-          errorMessage: 'Er is iets misgegaan',
-        );
+        return const ErrorCardWidget(errorMessage: 'Er is iets misgegaan');
       },
       loading: () {
-        return const CircularProgressIndicator();
+        return const CircularProgressIndicator.adaptive();
       },
     );
 
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          border: Border.all(color: colorScheme.primary),
-          borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+        border: Border.all(color: colorScheme.primary),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+      ),
       child: questionWidgets.toColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
       ),

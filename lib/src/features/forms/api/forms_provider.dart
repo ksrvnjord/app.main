@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 
 // ignore: prefer-static-class
-final CollectionReference<FirestoreForm> formsCollection =
+final formsCollection =
     FirebaseFirestore.instance.collection('forms').withConverter<FirestoreForm>(
           fromFirestore: (snapshot, _) =>
               FirestoreForm.fromJson(snapshot.data() ?? {}),
@@ -14,48 +14,35 @@ final CollectionReference<FirestoreForm> formsCollection =
 // ignore: prefer-static-class
 final openFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? formsCollection
+  return ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : formsCollection
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-          .orderBy(
-            'openUntil',
-            descending: false,
-          ) // Show the form with closest deadline first.
+          .orderBy('openUntil', descending: false)
           .limit(3)
-          .snapshots()
-      : const Stream.empty();
+          .snapshots();
 });
 
 // ignore: prefer-static-class
 final allFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? formsCollection
-          .orderBy(
-            'openUntil',
-            descending: true,
-          ) // Show the form with closest deadline first.
-          .snapshots()
-      : const Stream.empty();
+  return ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : formsCollection.orderBy('openUntil', descending: true).snapshots();
 });
 
 // ignore: prefer-static-class
 final allFormsOnCreationProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? formsCollection
-          .orderBy(
-            'createdTime',
-            descending: true,
-          ) // Show the form with closest deadline first.
-          .snapshots()
-      : const Stream.empty();
+  return ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : formsCollection.orderBy('createdTime', descending: true).snapshots();
 });
 
 // ignore: prefer-static-class
-final formProvider =
-    StreamProvider.family<DocumentSnapshot<FirestoreForm>, String>(
-  (ref, formId) => ref.watch(firebaseAuthUserProvider).value != null
-      ? formsCollection.doc(formId).snapshots()
-      : const Stream.empty(),
+final formProvider = StreamProvider.family<DocumentSnapshot<FirestoreForm>,
+    DocumentReference<FirestoreForm>>(
+  (ref, formId) => ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : formId.snapshots(),
 );
