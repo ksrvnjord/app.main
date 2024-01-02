@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ShowFormResultsInfoBox extends StatelessWidget {
-  final String field;
-  final String value;
-
   const ShowFormResultsInfoBox({
     Key? key,
     required this.field,
     required this.value,
   }) : super(key: key);
+
+  final String field;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,7 @@ class ShowFormResultsInfoBox extends StatelessWidget {
             children: [
               Text(
                 field,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(width: sizedBoxWidth),
               Text(value),

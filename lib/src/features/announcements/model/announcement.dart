@@ -37,25 +37,6 @@ class Announcement {
     );
   }
 
-  factory Announcement.fromJson(String source) =>
-      Announcement.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  Announcement copyWith({
-    String? author,
-    String? contents,
-    Timestamp? createdAt,
-    String? title,
-    Timestamp? updatedAt,
-  }) {
-    return Announcement(
-      author: author ?? this.author,
-      contents: contents ?? this.contents,
-      createdAt: createdAt ?? this.createdAt,
-      title: title ?? this.title,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
-
   @override
   bool operator ==(covariant Announcement other) {
     if (identical(this, other)) return true;

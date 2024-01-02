@@ -7,15 +7,6 @@ import '../widgets/calendar/filters/model/boat_types.dart';
 
 class ReservationObjectTypeFiltersNotifier
     extends StateNotifier<Map<String, List<String>>> {
-  // Has no filters.
-  bool get isEmpty {
-    for (final entry in state.entries) {
-      if (entry.value.isNotEmpty) return false;
-    }
-
-    return true;
-  }
-
   ReservationObjectTypeFiltersNotifier(Map<String, List<String>> filters)
       : super(filters);
 

@@ -29,23 +29,20 @@ class FormRepository {
     final answerSnapshot = await ref.watch(formAnswerProvider(docRef).future);
 
     final docs = answerSnapshot.docs;
-    // Document exists, so we update it.
-    if (docs.isNotEmpty) {
-      return _updateExistingFormAnswer(
-        doc: docs.first,
-        question: question,
-        newValue: newValue,
-      );
-    }
 
-    // No document found for the user, so we create a new one.
-    return FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
-      userId: user.identifier.toString(),
-      answers: [
-        FormQuestionAnswer(question: question, answer: newValue),
-      ],
-      answeredAt: DateTime.now(),
-    ));
+    // Document exists, so we update it.
+    return docs.isNotEmpty
+        ? _updateExistingFormAnswer(
+            // ignore: avoid-unsafe-collection-methods
+            doc: docs.first,
+            question: question,
+            newValue: newValue,
+          )
+        : FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
+            userId: user.identifier.toString(),
+            answers: [FormQuestionAnswer(question: question, answer: newValue)],
+            answeredAt: DateTime.now(),
+          ));
   }
 
   static Future<DocumentReference<FirestoreForm>> upsertCreateForm({
@@ -67,7 +64,7 @@ class FormRepository {
     required String question,
     required String? newValue,
   }) async {
-    final List<FormQuestionAnswer> formAnswers = doc.data().answers;
+    final formAnswers = doc.data().answers;
 
     final formQuestionAnswer = formAnswers.firstWhere(
       (a) => a.question == question,

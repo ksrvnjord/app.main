@@ -19,13 +19,8 @@ class GroupDjangoUser {
     required this.id,
   });
 
-  factory GroupDjangoUser.fromMap(Map<String, dynamic> map) =>
-      _$GroupDjangoUserFromJson(map);
-
   factory GroupDjangoUser.fromJson(Map<String, dynamic> json) =>
       _$GroupDjangoUserFromJson(json);
-
-  Map<String, dynamic> toMap() => _$GroupDjangoUserToJson(this);
 
   Map<String, dynamic> toJson() => _$GroupDjangoUserToJson(this);
 }

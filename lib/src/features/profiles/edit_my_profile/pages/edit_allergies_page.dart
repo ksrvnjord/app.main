@@ -1,3 +1,5 @@
+// ignore_for_file: avoid-long-functions
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +57,8 @@ class EditAllergiesPage extends ConsumerWidget {
       'Weekdieren',
     ]..sort();
 
-    final String customAllergy = // Allergy that is not in the list.
+    final String customAllergy =
+        // Allergy that is not in the list.
         myAllergies.firstWhere(
       (allergy) => !allergies.contains(allergy),
       orElse: () => '',

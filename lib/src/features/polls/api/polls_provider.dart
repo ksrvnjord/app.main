@@ -28,12 +28,7 @@ final openPollsProvider =
 // ignore: prefer-static-class
 final allPollsProvider = StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value != null
-      ? pollsCollection
-          .orderBy(
-            'openUntil',
-            descending: true,
-          ) // Show the poll with closest deadline first.
-          .snapshots()
+      ? pollsCollection.orderBy('openUntil', descending: true).snapshots()
       : const Stream.empty();
 });
 

@@ -19,6 +19,7 @@ class CreateFormPage extends ConsumerStatefulWidget {
 
 class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _questions = <FirestoreFormQuestion>[];
+
   final _description = TextEditingController();
   final _formName = TextEditingController();
 
