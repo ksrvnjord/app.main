@@ -23,6 +23,9 @@ DjangoUser _$DjangoUserFromJson(Map<String, dynamic> json) => DjangoUser(
       country: json['country'] as String,
       phonePrimary: json['phone_primary'] as String,
       identifier: json['identifier'] as int,
+      groups: (json['groups'] as List<dynamic>)
+          .map((e) => GroupDjangoEntry.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$DjangoUserToJson(DjangoUser instance) =>
@@ -43,4 +46,5 @@ Map<String, dynamic> _$DjangoUserToJson(DjangoUser instance) =>
       'country': instance.country,
       'phone_primary': instance.phonePrimary,
       'identifier': instance.identifier,
+      'groups': instance.groups,
     };

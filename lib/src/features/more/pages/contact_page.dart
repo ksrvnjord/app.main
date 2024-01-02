@@ -12,14 +12,11 @@ class ContactPage extends ConsumerWidget {
   const ContactPage({Key? key}) : super(key: key);
 
   final double padding = 16;
-  final double fontSizeSingleText = 16;
   final double horizontalPadding = 8;
   final double emailIconPadding = 8;
   final double widgetPadding = 8;
   final double cardElevation = 2;
   final double cardRadius = 16;
-
-  final double expansionTileFontSize = 20;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

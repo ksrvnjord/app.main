@@ -20,11 +20,12 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
     if (snapshot.docs.isEmpty) {
       return;
     }
+    // ignore: avoid-unsafe-collection-methods
     final firstDocument = snapshot.docs.first;
     final questions =
         firstDocument.data().answers.map((a) => a.question).toList();
 
-    final List<List<String?>> rows = snapshot.docs.map((formAnswer) {
+    final rows = snapshot.docs.map((formAnswer) {
       final answers = formAnswer.data().answers;
       final userId = formAnswer.data().userId;
       final answeredAt = formAnswer.data().answeredAt.toString();
@@ -44,6 +45,7 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
     final currentTime = DateTime.now();
     final formattedTime = DateFormat('yyyy-MM-dd-HHmm').format(currentTime);
 
+    // ignore: avoid-negated-conditions
     if (!kIsWeb) {
       final csvBytes = Uint8List.fromList(utf8.encode(csvData));
 
@@ -78,5 +80,5 @@ class DownloadCsvParams {
   final String formName;
   final QuerySnapshot<FormAnswer> snapshot;
 
-  DownloadCsvParams({required this.formName, required this.snapshot});
+  const DownloadCsvParams({required this.formName, required this.snapshot});
 }

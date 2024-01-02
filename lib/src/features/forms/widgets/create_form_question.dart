@@ -15,18 +15,18 @@ class CreateFormQuestion extends ConsumerWidget {
   final int index;
   final FirestoreFormQuestion question;
   final VoidCallback onChanged;
+  // ignore: prefer-correct-callback-field-name, prefer-explicit-parameter-names
   final Function(int) deleteQuestion;
 
   Widget _buildQuestionExtras(
-    BuildContext context,
-    WidgetRef ref,
-    FirestoreFormQuestion question,
-    VoidCallback onChanged,
+    FirestoreFormQuestion q,
+    VoidCallback onChange,
+    // ignore: avoid-long-functions
   ) {
-    switch (question.type) {
+    switch (q.type) {
       case FormQuestionType.singleChoice:
         return [
-          ...(question.options ?? []).asMap().entries.map((optionEntry) {
+          ...(q.options ?? []).asMap().entries.map((optionEntry) {
             int optionIndex = optionEntry.key;
             TextEditingController option =
                 TextEditingController(text: optionEntry.value);
@@ -35,9 +35,7 @@ class CreateFormQuestion extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(
-                    width: 32,
-                  ),
+                  const SizedBox(width: 32),
                   Expanded(
                     child: TextFormField(
                       controller: option,
@@ -45,7 +43,8 @@ class CreateFormQuestion extends ConsumerWidget {
                         labelText: 'Optie ${optionIndex + 1}',
                       ),
                       onChanged: (String value) =>
-                          {question.options![optionIndex] = value},
+                          // ignore: avoid-collection-mutating-methods, avoid-non-null-assertion
+                          {q.options![optionIndex] = value},
                       validator: (value) => (value == null || value.isEmpty)
                           ? 'Optie kan niet leeg zijn.'
                           : null,
@@ -55,28 +54,27 @@ class CreateFormQuestion extends ConsumerWidget {
                     alignment: Alignment.center,
                     child: IconButton(
                       onPressed: () => {
-                        question.options!.removeAt(optionIndex),
-                        onChanged(),
+                        // ignore: avoid-non-null-assertion, avoid-collection-mutating-methods
+                        q.options!.removeAt(optionIndex),
+                        onChange(),
                       },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red.shade700,
-                      ),
+                      icon: Icon(Icons.delete, color: Colors.red.shade700),
                     ),
                   ),
                 ],
               ),
             ].toColumn();
           }).toList(),
-          if (question.type == FormQuestionType.singleChoice)
-            const SizedBox(
-              height: 16,
-            ),
+          if (q.type == FormQuestionType.singleChoice)
+            const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () => {question.options!.add(''), onChanged()},
+            // ignore: avoid-non-null-assertion, avoid-collection-mutating-methods
+            onPressed: () => {q.options!.add(''), onChange()},
             child: const Text('Voeg een optie toe'),
           ),
         ].toColumn();
+
+      case FormQuestionType.text:
       default:
         return const SizedBox.shrink();
     }
@@ -107,6 +105,7 @@ class CreateFormQuestion extends ConsumerWidget {
           ).toList(),
           value: question.type,
           onChanged: (FormQuestionType? newValue) =>
+              // ignore: avoid-non-null-assertion
               {question.type = newValue!, onChanged()},
         ),
         TextFormField(
@@ -117,7 +116,8 @@ class CreateFormQuestion extends ConsumerWidget {
               ? 'Geef een naam op voor de vraag.'
               : null,
         ),
-        _buildQuestionExtras(context, ref, question, onChanged),
+        // ignore: avoid-returning-widgets
+        _buildQuestionExtras(question, onChanged),
         Align(
           alignment: Alignment.centerRight,
           child: Container(

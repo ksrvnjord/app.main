@@ -15,18 +15,17 @@ class FirestoreFormQuestion {
       label: json['Label'],
       type: FormQuestionType.values.byName(json['Type']),
       options:
-          json['Choices'] != null ? List<String>.from(json['Choices']) : null,
+          json['Choices'] == null ? null : List<String>.from(json['Choices']),
     );
   }
 
   // Create toJson method.
   Map<String, dynamic> toJson() {
-    return {
-      'Label': label,
-      'Type': type.name,
-      'Choices': options,
-    };
+    return {'Choices': options, 'Label': label, 'Type': type.name};
   }
 }
 
-enum FormQuestionType { text, singleChoice }
+enum FormQuestionType {
+  singleChoice,
+  text,
+}

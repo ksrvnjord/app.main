@@ -17,16 +17,13 @@ class FormsWidget extends ConsumerWidget {
     super.key,
   });
 
-  Widget _buildOpenFormsList(
-    List<Object> forms,
-    BuildContext context,
-  ) {
+  Widget _buildOpenFormsList(List<Object> forms, BuildContext context) {
     if (forms.isEmpty) {
       return const Text("Geen open forms op dit moment")
           .textColor(Theme.of(context).colorScheme.secondary);
     }
 
-    const double hPadding = 8;
+    const hPadding = 8.0;
 
     return [
       ...forms.map((item) {
@@ -36,14 +33,12 @@ class FormsWidget extends ConsumerWidget {
             return FormCard(
               formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
             );
+
           case "_WithConverterQueryDocumentSnapshot<Poll>":
-            return PollCard(
-              pollDoc: item as QueryDocumentSnapshot<Poll>,
-            );
+            return PollCard(pollDoc: item as QueryDocumentSnapshot<Poll>);
+
           default:
-            return const ErrorCardWidget(
-              errorMessage: "Onbekend formtype",
-            );
+            return const ErrorCardWidget(errorMessage: "Onbekend formtype");
         }
       }),
     ].toColumn().padding(horizontal: hPadding);
@@ -64,10 +59,10 @@ class FormsWidget extends ConsumerWidget {
       ),
       openForms.when(
         data: (data) => _buildOpenFormsList(data, context),
-        loading: () => const CircularProgressIndicator.adaptive(),
         error: (error, stack) => Text(
           error.toString(),
         ),
+        loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();
   }

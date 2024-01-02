@@ -25,18 +25,18 @@ class FormAnswer {
           .map((e) => FormQuestionAnswer.fromJson(e))
           .toList(),
       answeredAt: (json['answeredAt'] as Timestamp).toDate(),
-      allergies: json['allergies'] != null
-          ? List<String>.from(json['allergies'])
-          : null,
+      allergies: json['allergies'] == null
+          ? null
+          : List<String>.from(json['allergies']),
     );
   }
 
   // Create toJson method.
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'answers': answers.map((e) => e.toJson()).toList(),
       'answeredAt': Timestamp.fromDate(answeredAt),
+      'answers': answers.map((e) => e.toJson()).toList(),
+      'userId': userId,
       if (allergies != null) 'allergies': allergies,
     };
   }

@@ -7,36 +7,37 @@ De Flut-ter versie.
 
 ## How do I?
 
-- Volg [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
-- Clone de repository
-- Ga aan de slag in je eigen branch (`git checkout -b`)
-- Download de dependencies: `flutter pub get`
-- Start een emulator of sluit je telefoon aan
-- Run de app: `flutter run`
+- Follow [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
+- Clone the repository
+- Start working in your own branch (`git checkout -b`)
+- Download the dependencies: `flutter pub get`
+- Start an emulator or connect your phone
+- Run the app: `flutter run`
 
 
-## Code genereren
-Codegeneratie voor JSON-serialisatie en -deserialisatie biedt een geautomatiseerde aanpak voor het omzetten van objecten naar JSON en vice versa. Het gebruik ervan bespaart niet alleen waardevolle ontwikkeltijd door het vermijden van handmatige codecreatie, maar zorgt ook voor een consistente en foutvrije verwerking van data. Deze techniek is bijzonder nuttig wanneer datamodellen evolueren, aangezien wijzigingen in serialisatie- en deserialisatiecode automatisch kunnen worden doorgevoerd, wat zorgt voor consistentie tussen het schema en de code. Bovendien kan codegeneratie optimalisaties toepassen die handmatige implementaties overtreffen, terwijl het tegelijkertijd typeveiligheid waarborgt in sterk getypeerde programmeertalen. Wanneer men te maken heeft met meerdere platforms of talen, garandeert het ook een uniforme serialisatie/deserialisatie logica. Kortom, codegeneratie voor JSON-interacties verhoogt de efficiëntie, vermindert fouten en vergemakkelijkt onderhoud en debugging.
-We gebruiken [json_serializable](https://pub.dev/packages/json_serializable) voor het genereren van code. 
-Run de code generatie met:
+## Code Generation
+Code generation for JSON serialization and deserialization provides an automated approach to converting objects to and from JSON. It not only saves valuable development time by avoiding manual code creation but also ensures consistent and error-free data processing. This technique is particularly useful when data models evolve, as changes in serialization and deserialization code can be automatically implemented, ensuring consistency between the schema and code. Furthermore, code generation can apply optimizations that outperform manual implementations, while also ensuring type safety in strongly typed programming languages. When dealing with multiple platforms or languages, it also guarantees uniform serialization/deserialization logic. In short, code generation for JSON interactions enhances efficiency, reduces errors, and facilitates maintenance and debugging.
+We use [json_serializable](https://pub.dev/packages/json_serializable) for code generation. 
+Run the code generation with:
+
 ```bash
 dart run build_runner watch
 ```
 
 
-### Automatisch static analysis runnen
-Als je een Pull Request opent dan wordt er automatisch een static analysis uitgevoerd, dit kan een aantal minuten duren, we raden je aan om dit lokaal te doen voordat je een Pull Request opent.
-- Run het volgende command in de root van dit project om deze pre-push hook te installeren:
+### Automatically Running Static Analysis
+When you open a Pull Request, a static analysis is automatically performed, which may take a few minutes. We recommend running this locally before opening a Pull Request.
+- Run the following command in the root of this project to install this pre-push hook:
 ```bash
 chmod +x run_static_analysis.sh; cp run_static_analysis.sh .git/hooks/pre-push; chmod 700 .git/hooks/pre-push
 ```
-Deze runt alle static analysis tools die we gebruiken.
+This runs all the static analysis tools we use.
 
-## Architectuur
-Via ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html) kan je navigeren tussen de verschillende pages.
+## Architecture
+You can navigate between different pages using ["named routes" (Navigator)](https://api.flutter.dev/flutter/widgets/Navigator-class.html).
 
-### Project Structuur
-De folderstructuur is feature-based. Dit wil zeggen dat alle code die bij een feature hoort, in een aparte folder staat. Dit maakt het makkelijker om te navigeren in de code en om te weten waar je moet zijn om iets aan te passen. De code van features is dan verder opgedeeld in mappen die elk een bepaalde rol hebben. De structuur ziet er ongeveer zo uit:
+### Project Structure
+The folder structure is feature-based. This means that all code related to a feature is in a separate folder. This makes it easier to navigate the code and to know where to go to make changes. The code for features is further divided into folders each serving a specific role. The structure looks like this:
 
 
 - **lib**
@@ -52,40 +53,54 @@ De folderstructuur is feature-based. Dit wil zeggen dat alle code die bij een fe
             - ...
 
 
-Een feature heeft dus een map `api`, `models`, `pages` en `widgets`. De `api` map bevat de code die de app gebruikt om data op te halen van de server. De `models` map bevat de modellen die gebruikt worden om data op te halen en te versturen naar de server. De `pages` map bevat de code voor de verschillende pagina's die bij de feature horen. De `widgets` map bevat de code voor de widgets die op de verschillende pagina's gebruikt worden.
+A feature thus has an `api`, `models`, `pages`, and `widgets` folder. The `api` folder contains the code the app uses to fetch data from the server. The `models` folder contains the models used to fetch and send data to the server. The `pages` folder contains the code for the various pages associated with the feature. The `widgets` folder contains the code for widgets used on the various pages.
 
 ---
 ## Continuous Integration / Continuous Deployment
-### Hoe breng ik een nieuwe versie uit in de App Store / Google Play Store?
-Er worden automatisch builds gemaakt door Codemagic op basis van git tags.
-De tags worden op hun beurt automatisch gegeneerd op basis van de versie in `pubspec.yaml` op de `main` branch met behulp van Github Actions.
+### How do I release a new version in the App Store / Google Play Store?
+Builds are automatically created by Codemagic based on git tags.
+The tags are in turn automatically generated based on the version in `pubspec.yaml` on the `main` branch using Github Actions.
 
- > Stel je hebt een branch met een nieuwe feature die je wilt uitbrengen. Je hebt de branch `feature/new-feature` en je hebt de versie in `pubspec.yaml` verhoogd naar `1.0.0+1`. Je maakt een pull request naar de `main` branch en wacht tot deze is goedgekeurd en gemerged. 
-1. Zodra je branch is gemerged, wordt er automatisch een nieuwe git tag aangemaakt op basis van de versie in `pubspec.yaml`. De tag zal `1.0.0` zijn.
-2. Codemagic zal dan een nieuwe build maken op basis van de tag. Deze build zal dan in de App Store / Google Play Store beschikbaar komen voor de interne testgroep.
+ > Suppose you have a branch with a new feature that you want to release. You have the branch `feature/new-feature` and you have increased the version in `pubspec.yaml` to `1.0.0+1`. You create a pull request to the `main` branch and wait until it is approved and merged. 
+1. As soon as your branch is merged, a new git tag is automatically created based on the version in `pubspec.yaml`. The tag will be `1.0.0`.
+2. Codemagic will then create a new build based on the tag. This build will then become available in the App Store / Google Play Store for the internal test group.
 
 ### Code Quality & Style
-Code quality wordt gecontroleerd door verschillende tools. Als er fouten zijn, zal de pull request falen en zal je de fouten moeten oplossen. Je kan de tools ook lokaal uitvoeren om fouten op te sporen.
-Er zijn verschillende checks die worden uitgevoerd als onderdeel van de CI/CD pipeline. Deze checks worden uitgevoerd op elke push en pull request naar `main`.
+Code quality is checked by various tools. If there are errors, the pull request will fail and you will need to resolve the errors. You can also run the tools locally to detect errors.
+There are various checks that are performed as part of the CI/CD pipeline. These checks are performed on every push and pull request to `main`.
 
 #### Dart Code Linter
-We gebruiken de Dart Code Linter om de code te analyseren op fouten en om de code te formatteren.
-Je runt de linter lokaal met:
+We use the Dart Code Linter to analyze the code for errors and to format the code.
+You run the linter locally with:
 ```bash
 $ flutter analyze
 ```
 
 #### Dart Code Metrics
-We gebruiken de Dart Code Metrics om de code te analyseren op code smells.  
-Je runt dart code metrics lokaal met:
+We use Dart Code Metrics to analyze the code for code smells.  
+You run dart code metrics locally with:
 ```bash
-$ flutter pub run dart_code_metrics:metrics analyze lib
+$ dcm analyze lib
 ```
-Dit zal de `lib` folder analyseren.
+This will analyze the `lib` folder.
 
 #### Flutter Format
-We gebruiken de Flutter Format om de code te formatteren. 
-Je kunt de formatter lokaal uitvoeren met:
+We use Flutter Format to format the code. 
+You can run the formatter locally with:
 ```bash
-$ flutter format .
+$ dart format .
 ```
+
+
+## Acknowledgments
+
+### Dart Code Metrics
+
+We are grateful to Dmitry Zhifarsky for generously providing us with a Dart Code Metrics Teams version free of charge. As a nonprofit, resources like these are invaluable in helping us achieve our mission.
+
+Dmitry Zhifarsky's support plays a crucial role in our development process, enabling us to perform static analysis more effectively. His commitment to supporting nonprofit initiatives aligns closely with our organizational values and objectives.
+
+For more information about Dmitry Zhifarsky and Dart Code Metrics, visit his website: https://dcm.dev/
+
+---
+

@@ -21,8 +21,6 @@ class PostList extends ConsumerWidget {
       query: query,
       itemBuilder: (context, snapshot, index) => PostCard(
         snapshot: snapshot,
-        elevation: false,
-        squareBorder: true,
       ),
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       limit: docsPerQuery,

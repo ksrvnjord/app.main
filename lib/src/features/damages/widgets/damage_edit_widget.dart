@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widg
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageEditWidget extends ConsumerWidget {
-  final double borderRadius = 12;
   final double padding = 16;
   final String damageDocumentId;
   final String reservationObjectId;

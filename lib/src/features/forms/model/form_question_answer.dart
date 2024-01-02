@@ -15,9 +15,6 @@ class FormQuestionAnswer {
 
   // Create toJson method.
   Map<String, dynamic> toJson() {
-    return {
-      'name': question,
-      'answer': answer,
-    };
+    return {'answer': answer, 'name': question};
   }
 }
