@@ -26,6 +26,7 @@ class MorePage extends ConsumerWidget {
     final Map<String, String> optionRouteMap = {
       "Over deze App": "About this app",
       // ignore: map-keys-ordering
+      "Bekijk het Privacy Beleid": "More -> Privacy Beleid",
       "Contacteer het Bestuur / Commissies": "Contact",
       // The order isn't alphabetical, but the order in which the options are displayed.
       // ignore: map-keys-ordering
