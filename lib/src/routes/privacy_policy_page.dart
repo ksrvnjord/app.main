@@ -42,7 +42,8 @@ class PrivacyPolicyPage extends ConsumerWidget {
               fitContent: false,
             ),
             error: (error, stackTrace) => Center(child: Text(error.toString())),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
           ),
         ],
       ),
