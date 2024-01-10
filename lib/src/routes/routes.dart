@@ -68,6 +68,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dar
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
+import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unauthorized_route_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
@@ -602,6 +603,11 @@ class Routes {
           child: const ContactPage(),
         ),
         _route(
+          path: 'privacy-beleid',
+          name: "More -> Privacy Beleid",
+          child: const PrivacyPolicyPage(),
+        ),
+        _route(
           path: "charity",
           name: "Charity",
           child: const CharityPage(),
@@ -711,6 +717,11 @@ class Routes {
       name: 'Forgot Password',
       pageBuilder: (child, state) =>
           _getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+    ),
+    _route(
+      path: '/privacy-beleid',
+      name: "Privacy Beleid",
+      child: const PrivacyPolicyPage(),
     ),
   ];
 
