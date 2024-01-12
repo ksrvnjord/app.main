@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_web_libraries_in_flutter, avoid-long-functions
 
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
@@ -15,27 +15,37 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
   (ref, params) async {
     final formName = params.formName;
+    final allQuestions = params.formQuestions;
     final snapshot = params.snapshot;
 
     if (snapshot.docs.isEmpty) {
       return;
     }
-    // ignore: avoid-unsafe-collection-methods
-    final firstDocument = snapshot.docs.first;
-    final questions =
-        firstDocument.data().answers.map((a) => a.question).toList();
 
     final rows = snapshot.docs.map((formAnswer) {
-      final answers = formAnswer.data().answers;
+      final individualAnswers =
+          formAnswer.data().answers.map((e) => e.answer).toList();
+      final individualQuestions =
+          formAnswer.data().answers.map((e) => e.question).toList();
       final userId = formAnswer.data().userId;
       final answeredAt = formAnswer.data().answeredAt.toString();
 
-      return [userId, for (final answer in answers) answer.answer, answeredAt];
+      final sortedAnswers = List.filled(allQuestions.length, '');
+
+      for (int i = 0; i < allQuestions.length; i += 1) {
+        // ignore: avoid-unsafe-collection-methods
+        final index = individualQuestions.indexOf(allQuestions[i]);
+        if (index != -1) {
+          sortedAnswers[i] = individualAnswers.elementAtOrNull(index) ?? '';
+        }
+      }
+
+      return [userId, ...sortedAnswers, answeredAt];
     }).toList();
 
     final firstRow = [
       'Lidnummer',
-      for (final question in questions) question,
+      for (final question in allQuestions) question,
       'Invultijdstip',
     ];
     rows.insert(0, firstRow);
@@ -78,7 +88,12 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
 // ignore: prefer-match-file-name
 class DownloadCsvParams {
   final String formName;
+  final List<String> formQuestions;
   final QuerySnapshot<FormAnswer> snapshot;
 
-  const DownloadCsvParams({required this.formName, required this.snapshot});
+  const DownloadCsvParams({
+    required this.formName,
+    required this.formQuestions,
+    required this.snapshot,
+  });
 }
