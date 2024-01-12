@@ -39,16 +39,32 @@ class FormCard extends ConsumerWidget {
         Text(form.formName),
         userAnswerProvider.when(
           data: (snapshot) {
-            bool formIsAnswered = snapshot.docs.isNotEmpty;
-
-            return formIsAnswered
-                ? Card(
-                    color: colorScheme.secondaryContainer,
-                    child: Text("Ingevuld", style: textTheme.labelLarge)
-                        // ignore: no-magic-number
-                        .padding(horizontal: 8, vertical: 2),
-                  )
-                : const SizedBox.shrink();
+            if (snapshot.docs.isNotEmpty) {
+              final completed = snapshot.docs.first.data().completed;
+              if (completed) {
+                return Card(
+                  color: colorScheme.secondaryContainer,
+                  child: Text("Ingevuld", style: textTheme.labelLarge)
+                      // ignore: no-magic-number
+                      .padding(horizontal: 8, vertical: 2),
+                );
+              } else {
+                return Card(
+                  color: colorScheme.secondaryContainer,
+                  child: Text("Niet (volledig) ingevuld",
+                          style: textTheme.labelLarge)
+                      // ignore: no-magic-number
+                      .padding(horizontal: 8, vertical: 2),
+                );
+              }
+            } else {
+              return Card(
+                color: Colors.grey,
+                child: Text("Niet ingevuld", style: textTheme.labelLarge)
+                    // ignore: no-magic-number
+                    .padding(horizontal: 8, vertical: 2),
+              );
+            }
           },
           error: (err, stack) => Text('Error: $err'),
           loading: () => const SizedBox.shrink(),

@@ -7,12 +7,14 @@ class FormAnswer {
   final String userId;
   final List<FormQuestionAnswer> answers; // User can choose to not answer.
   final DateTime answeredAt;
+  final bool completed;
   final List<String>? allergies;
 
   const FormAnswer({
     required this.userId,
     required this.answers,
     required this.answeredAt,
+    required this.completed,
     this.allergies,
   });
 
@@ -25,6 +27,7 @@ class FormAnswer {
           .map((e) => FormQuestionAnswer.fromJson(e))
           .toList(),
       answeredAt: (json['answeredAt'] as Timestamp).toDate(),
+      completed: json['completed'],
       allergies: json['allergies'] == null
           ? null
           : List<String>.from(json['allergies']),
@@ -37,6 +40,7 @@ class FormAnswer {
       'answeredAt': Timestamp.fromDate(answeredAt),
       'answers': answers.map((e) => e.toJson()).toList(),
       'userId': userId,
+      'completed': completed,
       if (allergies != null) 'allergies': allergies,
     };
   }

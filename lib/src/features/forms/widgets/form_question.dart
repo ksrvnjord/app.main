@@ -62,6 +62,10 @@ class FormQuestion extends ConsumerWidget {
 
     final questionWidgets = <Widget>[
       Text(formQuestion.label, style: textTheme.titleLarge),
+      if (formQuestion.isRequired)
+        const Text(
+          'Verplicht',
+        ),
     ];
 
     final answerStream = ref.watch(formAnswerProvider(docRef));

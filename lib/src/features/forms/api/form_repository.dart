@@ -42,6 +42,7 @@ class FormRepository {
             userId: user.identifier.toString(),
             answers: [FormQuestionAnswer(question: question, answer: newValue)],
             answeredAt: DateTime.now(),
+            completed: true, // TODO: Add logic.
           ));
   }
 
@@ -80,6 +81,7 @@ class FormRepository {
     await doc.reference.update({
       'answers': formAnswers.map((answer) => answer.toJson()).toList(),
       'answeredAt': Timestamp.now(),
+      'completed': true, // TODO: Add logic.
     });
 
     return doc.reference;
