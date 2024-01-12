@@ -43,7 +43,7 @@ jobs:
         uses: CQLabs/setup-dcm@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ env.flutter_version }}
+          version: ${{ env.dcm_version }}
 
       - name: Check unnecessary nullable parameters
         run: dcm check-unused-code lib --fatal-unused --monorepo
@@ -81,7 +81,7 @@ jobs:
         uses: CQLabs/setup-dcm@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ env.flutter_version }}
+          version: ${{ env.dcm_version }}
 
       - name: Dart Code Metrics Analyze
         run: dcm analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
@@ -124,7 +124,7 @@ jobs:
         uses: CQLabs/setup-dcm@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ env.flutter_version }}
+          version: ${{ env.dcm_version }}
 
       - name: Check unnecessary nullable parameters
         run: dcm check-unnecessary-nullable lib
