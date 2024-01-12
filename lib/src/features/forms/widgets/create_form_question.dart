@@ -93,21 +93,32 @@ class CreateFormQuestion extends ConsumerWidget {
       ),
       margin: const EdgeInsets.all(8.0),
       child: Column(children: [
-        DropdownButton<FormQuestionType>(
-          items:
-              FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
-            (FormQuestionType value) {
-              return DropdownMenuItem<FormQuestionType>(
-                value: value,
-                child: Text(value.name.toString()),
-              );
-            },
-          ).toList(),
-          value: question.type,
-          onChanged: (FormQuestionType? newValue) =>
-              // ignore: avoid-non-null-assertion
-              {question.type = newValue!, onChanged()},
-        ),
+        [
+          DropdownButton<FormQuestionType>(
+            items:
+                FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
+              (FormQuestionType value) {
+                return DropdownMenuItem<FormQuestionType>(
+                  value: value,
+                  child: Text(value.name.toString()),
+                );
+              },
+            ).toList(),
+            value: question.type,
+            onChanged: (FormQuestionType? newValue) =>
+                // ignore: avoid-non-null-assertion
+                {question.type = newValue!, onChanged()},
+          ),
+          [
+            const Text('Verplicht',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+            Switch(
+              value: question.isRequired,
+              onChanged: (bool value) =>
+                  {question.isRequired = value, onChanged()},
+            )
+          ].toRow()
+        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         TextFormField(
           controller: questionController,
           decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
