@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
+// ignore_for_file: avoid_web_libraries_in_flutter, avoid-long-functions
 
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
@@ -31,12 +31,12 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
       final answeredAt = formAnswer.data().answeredAt.toString();
 
       final sortedAnswers = List.filled(allQuestions.length, '');
-      for (var i = 0; i < allQuestions.length; i++) {
+
+      for (int i = 0; i < allQuestions.length; i += 1) {
+        // ignore: avoid-unsafe-collection-methods
         final index = individualQuestions.indexOf(allQuestions[i]);
         if (index != -1) {
-          sortedAnswers[i] = individualAnswers[index] ?? '';
-        } else {
-          sortedAnswers[i] = '';
+          sortedAnswers[i] = individualAnswers.elementAtOrNull(index) ?? '';
         }
       }
 
@@ -91,8 +91,9 @@ class DownloadCsvParams {
   final List<String> formQuestions;
   final QuerySnapshot<FormAnswer> snapshot;
 
-  const DownloadCsvParams(
-      {required this.formName,
-      required this.formQuestions,
-      required this.snapshot});
+  const DownloadCsvParams({
+    required this.formName,
+    required this.formQuestions,
+    required this.snapshot,
+  });
 }
