@@ -84,11 +84,20 @@ class FormQuestion extends ConsumerWidget {
           case FormQuestionType.text:
             TextEditingController answer =
                 TextEditingController(text: answerValue);
+            answer.addListener(() {});
 
             questionWidgets.add(
               TextFormField(
                 controller: answer,
                 onFieldSubmitted: (String? value) => _handleChangeOfFormAnswer(
+                  question: formQuestion.label,
+                  newValue: value,
+                  f: form,
+                  d: docRef,
+                  ref: ref,
+                  context: context,
+                ),
+                onSaved: (String? value) => _handleChangeOfFormAnswer(
                   question: formQuestion.label,
                   newValue: value,
                   f: form,

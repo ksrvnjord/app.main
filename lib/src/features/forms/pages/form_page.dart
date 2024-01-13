@@ -9,11 +9,20 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FormPage extends ConsumerWidget {
+class FormPage extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
   const FormPage({Key? key, required this.formId}) : super(key: key);
 
   final String formId;
+
+  @override
+  createState() => _FormPageState();
+}
+
+class _FormPageState extends ConsumerState<FormPage> {
+  // Constructor which takes a String formId.
+
+  final _formKey = GlobalKey<FormState>();
 
   // ignore: avoid-dynamic
   Future<dynamic> _deleteMyFormAnswer(
@@ -21,7 +30,7 @@ class FormPage extends ConsumerWidget {
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(formsCollection.doc(formId)).future,
+      formAnswerProvider(formsCollection.doc(widget.formId)).future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -56,117 +65,140 @@ class FormPage extends ConsumerWidget {
     throw Exception("Geen antwoord gevonden om te verwijderen");
   }
 
+  /// This method is used to unfocus the current form field when the user taps outside of it.
+  /// This is useful in cases where the keyboard should be dismissed or the current field's
+  /// state should be saved when the user taps outside of the field.
+  void _handleTapOutsidePrimaryFocus() {
+    final focus = FocusManager.instance.primaryFocus;
+    // Guard clause: if there's no focus or it doesn't have primary focus, return early.
+    if (focus == null || !focus.hasPrimaryFocus) {
+      return;
+    }
+    // Unfocus the current form field.
+    focus.unfocus();
+
+    final state = _formKey.currentState;
+    // Guard clause: if the state is null or it's not valid, return early.
+    if (state == null || !state.validate()) {
+      return;
+    }
+    // Save the form state, this will call the onSaved method of each form field.
+    state.save();
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final doc = formsCollection.doc(formId);
+  Widget build(BuildContext context) {
+    final doc = formsCollection.doc(widget.formId);
 
     final formVal = ref.watch(formProvider(doc));
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Form')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          formVal.when(
-            data: (formDoc) {
-              if (!formDoc.exists) {
-                return const ErrorCardWidget(
-                  errorMessage: 'Deze form bestaat niet (meer)',
-                );
-              }
-              // Since the form exists, we can safely assume that the data is not null.
-              // ignore: avoid-non-null-assertion
-              final form = formDoc.data()!;
+    // ignore: arguments-ordering
+    return GestureDetector(
+      onTap: _handleTapOutsidePrimaryFocus,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Form')),
+        body: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            formVal.when(
+              data: (formDoc) {
+                if (!formDoc.exists) {
+                  return const ErrorCardWidget(
+                    errorMessage: 'Deze form bestaat niet (meer)',
+                  );
+                }
+                // Since the form exists, we can safely assume that the data is not null.
+                // ignore: avoid-non-null-assertion
+                final form = formDoc.data()!;
 
-              final formIsOpen = DateTime.now().isBefore(form.openUntil);
+                final formIsOpen = DateTime.now().isBefore(form.openUntil);
 
-              const descriptionVPadding = 16.0;
+                const descriptionVPadding = 16.0;
 
-              final colorScheme = Theme.of(context).colorScheme;
+                final colorScheme = Theme.of(context).colorScheme;
 
-              final description = form.description;
+                final description = form.description;
 
-              final questions = form.questions;
+                final questions = form.questions;
 
-              final textTheme = Theme.of(context).textTheme;
+                final textTheme = Theme.of(context).textTheme;
 
-              final formKey = GlobalKey<FormState>();
+                const sizedBoxHeight = 32.0;
 
-              const sizedBoxHeight = 32.0;
-
-              return [
-                [Text(form.formName, style: textTheme.titleLarge)]
-                    .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                Text(
-                  '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
-                  style: textTheme.bodySmall?.copyWith(
-                    color: formIsOpen ? Colors.green : colorScheme.outline,
+                return [
+                  [Text(form.formName, style: textTheme.titleLarge)]
+                      .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                  Text(
+                    '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
+                    style: textTheme.bodySmall?.copyWith(
+                      color: formIsOpen ? Colors.green : colorScheme.outline,
+                    ),
                   ),
-                ),
-                if (description != null)
-                  Text(description, style: textTheme.bodyMedium)
-                      .padding(vertical: descriptionVPadding),
-                const SizedBox(height: sizedBoxHeight),
-                Form(
-                  key: formKey,
-                  child: [
-                    for (final question in questions) ...[
-                      FormQuestion(
-                        formQuestion: question,
-                        form: form,
-                        docRef: formDoc.reference,
-                        formIsOpen: formIsOpen,
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-                  ].toColumn(),
-                ),
-              ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
-            },
-            error: (error, stack) =>
-                ErrorCardWidget(errorMessage: error.toString()),
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
-          ),
-        ],
-      ),
-      floatingActionButton: ref.watch(canRemoveFormAnswerProvider(doc)).when(
-            data: (canRemove) => canRemove
-                ? FloatingActionButton.extended(
-                    tooltip: "Verwijder mijn form reactie",
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onErrorContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.errorContainer,
-                    heroTag: "delete-my-form-answer",
-                    // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-                    onPressed: () async {
-                      final res = await _deleteMyFormAnswer(ref, context);
-                      if (res == true) {
-                        // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Jouw formreactie is verwijderd'),
-                          ),
-                        );
-                      } else {
-                        // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Het is niet gelukt jouw formreactie te verwijderen',
+                  if (description != null)
+                    Text(description, style: textTheme.bodyMedium)
+                        .padding(vertical: descriptionVPadding),
+                  const SizedBox(height: sizedBoxHeight),
+                  Form(
+                    key: _formKey,
+                    child: [
+                      for (final question in questions) ...[
+                        FormQuestion(
+                          formQuestion: question,
+                          form: form,
+                          docRef: formDoc.reference,
+                          formIsOpen: formIsOpen,
+                        ),
+                        const SizedBox(height: 32),
+                      ],
+                    ].toColumn(),
+                  ),
+                ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
+              },
+              error: (error, stack) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
+            ),
+          ],
+        ),
+        floatingActionButton: ref.watch(canRemoveFormAnswerProvider(doc)).when(
+              data: (canRemove) => canRemove
+                  ? FloatingActionButton.extended(
+                      tooltip: "Verwijder mijn form reactie",
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onErrorContainer,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.errorContainer,
+                      heroTag: "delete-my-form-answer",
+                      // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
+                      onPressed: () async {
+                        final res = await _deleteMyFormAnswer(ref, context);
+                        if (res == true) {
+                          // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Jouw formreactie is verwijderd'),
                             ),
-                          ),
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.delete),
-                    label: const Text("Verwijder mijn formreactie"),
-                  )
-                : const SizedBox.shrink(),
-            error: (err, stk) => const SizedBox.shrink(),
-            loading: () => const SizedBox.shrink(),
-          ),
+                          );
+                        } else {
+                          // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Het is niet gelukt jouw formreactie te verwijderen',
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.delete),
+                      label: const Text("Verwijder mijn formreactie"),
+                    )
+                  : const SizedBox.shrink(),
+              error: (err, stk) => const SizedBox.shrink(),
+              loading: () => const SizedBox.shrink(),
+            ),
+      ),
     );
   }
 }
