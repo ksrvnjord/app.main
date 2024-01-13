@@ -84,7 +84,6 @@ class FormQuestion extends ConsumerWidget {
           case FormQuestionType.text:
             TextEditingController answer =
                 TextEditingController(text: answerValue);
-            answer.addListener(() {});
 
             questionWidgets.add(
               TextFormField(
