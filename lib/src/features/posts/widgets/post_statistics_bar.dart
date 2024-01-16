@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/comments_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostStatisticsBar extends ConsumerWidget {
@@ -54,13 +55,13 @@ class PostStatisticsBar extends ConsumerWidget {
                       ),
                 ),
                 onTap: () => context.goNamed(
-                  "Comments",
+                  RouteName.postComments,
                   pathParameters: {'id': snapshot.id},
                 ),
               )
             : const SizedBox.shrink(),
-        loading: () => const SizedBox.shrink(),
         error: (error, stack) => Text(error.toString()),
+        loading: () => const SizedBox.shrink(),
       ),
     ].toRow(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
