@@ -67,7 +67,6 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
             final date = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              // ignore: no-equal-arguments
               firstDate: DateTime.now(),
               lastDate: DateTime(DateTime.now().year + 5),
             );
@@ -112,7 +111,6 @@ class _CreateEventBottomSheetState extends State<CreateEventBottomSheet> {
             final date = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              // ignore: no-equal-arguments
               firstDate: DateTime.now(),
               lastDate: DateTime(DateTime.now().year + 5),
             );
