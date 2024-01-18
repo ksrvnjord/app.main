@@ -79,7 +79,7 @@ class _FormPageState extends ConsumerState<FormPage> {
 
     final state = _formKey.currentState;
     // Guard clause: if the state is null or it's not valid, return early.
-    if (state == null || !state.validate()) {
+    if (state == null) {
       return;
     }
     // Save the form state, this will call the onSaved method of each form field.
