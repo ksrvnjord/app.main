@@ -23,7 +23,7 @@ class MorePage extends ConsumerWidget {
     final currentUserVal = ref.watch(currentUserProvider);
     const pageOffset = 0.0;
 
-    final Map<String, String> optionRouteMap = {
+    final optionRouteMap = {
       "Over deze App": "About this app",
       // ignore: map-keys-ordering
       "Bekijk het Privacy Beleid": "More -> Privacy Beleid",
@@ -31,6 +31,8 @@ class MorePage extends ConsumerWidget {
       // The order isn't alphabetical, but the order in which the options are displayed.
       // ignore: map-keys-ordering
       "Bekijk het Lustrum Goede Doel": "Charity",
+      // ignore: map-keys-ordering
+      "Bekijk de Zwanenhals": "Zwanenhals",
       if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
@@ -40,9 +42,7 @@ class MorePage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meer'),
-      ),
+      appBar: AppBar(title: const Text('Meer')),
       body: CustomPaint(
         painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: ListView(
@@ -51,14 +51,8 @@ class MorePage extends ConsumerWidget {
               // Make a list of options to display and navigate to.
               // Each option is a tile with a divider below it.
               (entry) => [
-                MoreListTile(
-                  label: entry.key,
-                  routeName: entry.value,
-                ),
-                const Divider(
-                  height: 0,
-                  thickness: 0.5,
-                ),
+                MoreListTile(label: entry.key, routeName: entry.value),
+                const Divider(height: 0, thickness: 0.5),
               ].toColumn(),
             ),
             ListTile(
@@ -66,9 +60,7 @@ class MorePage extends ConsumerWidget {
                 "Geef Feedback over de App",
                 style: textTheme.titleMedium,
               ),
-              trailing: const Icon(
-                Icons.feedback_outlined,
-              ),
+              trailing: const Icon(Icons.feedback_outlined),
               onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
                 name: GetIt.I<CurrentUser>()
                         .user
@@ -77,49 +69,32 @@ class MorePage extends ConsumerWidget {
                     "Anoniem",
               ),
             ),
-            const Divider(
-              height: 0,
-              thickness: 0.5,
-            ),
+            const Divider(height: 0, thickness: 0.5),
             const MoreLinkTile(
               label: "Ga naar de Webshop",
               url: "https://k-s-r-v-njord.myshopify.com/",
             ),
-            const Divider(
-              height: 0,
-              thickness: 0.5,
-            ),
+            const Divider(height: 0, thickness: 0.5),
             const MoreLinkTile(
               label: "Ga naar de Intekenlijst Instaposts",
               url:
                   "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
             ),
-            const Divider(
-              height: 0,
-              thickness: 0.5,
-            ),
+            const Divider(height: 0, thickness: 0.5),
             const MoreLinkTile(
               label: 'Declareer Kosten aan de Quaestor',
               url:
                   'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
             ),
-            const Divider(
-              height: 0,
-              thickness: 0.5,
-            ),
+            const Divider(height: 0, thickness: 0.5),
             const MoreLinkTile(
               label: 'Handige Linkjes - Linktree',
               url: 'https://linktr.ee/ksrvnjord_intern',
             ),
-            const Divider(
-              height: 0,
-              thickness: 0.5,
-            ),
+            const Divider(height: 0, thickness: 0.5),
             ListTile(
-              title: Text(
-                'Uitloggen',
-                style: textTheme.titleMedium,
-              ).textColor(Colors.red),
+              title: Text('Uitloggen', style: textTheme.titleMedium)
+                  .textColor(Colors.red),
               trailing: const Icon(Icons.logout, color: Colors.red),
               visualDensity: VisualDensity.standard,
               onTap: () => ref.read(authModelProvider).logout(),
@@ -142,12 +117,12 @@ class MorePage extends ConsumerWidget {
                 )
               : null;
         },
-        loading: () => const SizedBox.shrink(),
         error: (e, s) {
           FirebaseCrashlytics.instance.recordError(e, s);
 
           return const SizedBox.shrink();
         },
+        loading: () => const SizedBox.shrink(),
       ),
     );
   }
