@@ -18,7 +18,7 @@ class FirestoreFormQuestion {
       type: FormQuestionType.values.byName(json['Type']),
       options:
           json['Choices'] == null ? null : List<String>.from(json['Choices']),
-      isRequired: json['IsRequired'],
+      isRequired: json['IsRequired'] ?? true, // TODO: Remove this.
     );
   }
 
