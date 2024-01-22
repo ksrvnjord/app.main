@@ -13,8 +13,8 @@ class ShowFiltersPage extends ConsumerWidget {
     Key? key,
   }) : super(key: key);
 
-  final Map<String, List<MultiSelectItem<String>>>
-      availableFilters = // Build a map of categories and their types.
+  final Map<String, List<MultiSelectItem<String>>> availableFilters =
+      // Build a map of categories and their types.
       reservationObjectTypes.map((category, types) => MapEntry(
             category,
             types

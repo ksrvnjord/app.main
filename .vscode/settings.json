@@ -1,5 +1,6 @@
 {
-    "yaml.schemas": {
-        "https://json.schemastore.org/pubspec.json": "file:///Users/alex/Documents/njord/app.main/pubspec.yaml"
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.dcm.fixAll": "explicit"
     }
 }

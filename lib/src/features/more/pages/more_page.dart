@@ -24,11 +24,16 @@ class MorePage extends ConsumerWidget {
     const pageOffset = 0.0;
 
     final Map<String, String> optionRouteMap = {
-      "Over deze app": "About this app",
-      if (firebaseAuthUser != null) "Bekijk de agenda": "Events",
-      "Contacteer het bestuur / commissies": "Contact",
-      if (firebaseAuthUser != null) 'Bekijk de fotogalerij': 'Gallery',
-      if (firebaseAuthUser != null) 'Lees verenigingsdocumenten': 'Documents',
+      "Over deze App": "About this app",
+      // ignore: map-keys-ordering
+      "Bekijk het Privacy Beleid": "More -> Privacy Beleid",
+      "Contacteer het Bestuur / Commissies": "Contact",
+      // The order isn't alphabetical, but the order in which the options are displayed.
+      // ignore: map-keys-ordering
+      "Bekijk het Lustrum Goede Doel": "Charity",
+      if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
+      if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
+      if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
     };
 
     final textTheme = Theme.of(context).textTheme;
@@ -39,10 +44,7 @@ class MorePage extends ConsumerWidget {
         title: const Text('Meer'),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: ListView(
           children: [
             ...optionRouteMap.entries.map(
@@ -61,7 +63,7 @@ class MorePage extends ConsumerWidget {
             ),
             ListTile(
               title: Text(
-                "Geef feedback over de app",
+                "Geef Feedback over de App",
                 style: textTheme.titleMedium,
               ),
               trailing: const Icon(
@@ -80,7 +82,7 @@ class MorePage extends ConsumerWidget {
               thickness: 0.5,
             ),
             const MoreLinkTile(
-              label: "Ga naar de webshop",
+              label: "Ga naar de Webshop",
               url: "https://k-s-r-v-njord.myshopify.com/",
             ),
             const Divider(
@@ -88,7 +90,7 @@ class MorePage extends ConsumerWidget {
               thickness: 0.5,
             ),
             const MoreLinkTile(
-              label: "Ga naar de intekenlijst instaposts",
+              label: "Ga naar de Intekenlijst Instaposts",
               url:
                   "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
             ),
@@ -97,7 +99,7 @@ class MorePage extends ConsumerWidget {
               thickness: 0.5,
             ),
             const MoreLinkTile(
-              label: 'Declareer kosten aan de Quaestor',
+              label: 'Declareer Kosten aan de Quaestor',
               url:
                   'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
             ),
@@ -106,7 +108,7 @@ class MorePage extends ConsumerWidget {
               thickness: 0.5,
             ),
             const MoreLinkTile(
-              label: 'Handige linkjes - Linktree',
+              label: 'Handige Linkjes - Linktree',
               url: 'https://linktr.ee/ksrvnjord_intern',
             ),
             const Divider(

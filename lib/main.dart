@@ -1,4 +1,4 @@
-// ignore_for_file: prefer-static-class
+// ignore_for_file: prefer-static-class, avoid-redundant-async, no-empty-block
 
 import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -29,7 +29,6 @@ import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
-// ignore: no-empty-block,avoid-redundant-async
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage _) async {}
 
 Future<void> appRunner() async {
@@ -65,7 +64,7 @@ Future<void> appRunner() async {
   }
 
   /// Don't collect crash reports in debug mode.
-  if (kDebugMode) {
+  if (kDebugMode && !kIsWeb) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     FirebaseCrashlytics.instance.deleteUnsentReports();
   }
@@ -109,7 +108,7 @@ Future<void> main() async {
   ); // Store the cache in a separate folder.
   Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.
   // ignore: avoid-ignoring-return-values
-  Hive.openLazyBox<ImageCacheItem>('imageCache');
+  await Hive.openLazyBox<ImageCacheItem>('imageCache');
 
   timeago.setLocaleMessages('nl', timeago.NlMessages());
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());

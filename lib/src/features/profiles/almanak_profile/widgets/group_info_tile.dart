@@ -4,20 +4,18 @@ import 'package:styled_widget/styled_widget.dart';
 
 class GroupInfoTile extends StatelessWidget {
   const GroupInfoTile({
-    super.key,
-    required this.header,
-    required this.startYear,
     required this.endYear,
-    this.tags,
-    required this.groupPath,
+    required this.header,
+    super.key,
     required this.onTap,
+    required this.startYear,
+    this.tags,
   });
 
   final String header;
   final int startYear;
   final int endYear;
   final List<Tag>? tags;
-  final String groupPath;
   final void Function() onTap;
 
   @override

@@ -71,10 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: SizedBox(height: screenTopPadding),
       ),
       body: CustomPaint(
-        painter: LustrumBackgroundWidget(
-          screenSize: MediaQuery.of(context).size,
-          pageOffset: pageOffset,
-        ),
+        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: RefreshIndicator(
           // ignore: sort_child_properties_last
           child: ListView(
@@ -109,7 +106,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               FirebaseWidget(
                 onAuthenticated: const FormsWidget().padding(
                   vertical: elementVPadding,
-                  horizontal: elementHPadding,
                 ),
               ),
               const SwanDivider(),

@@ -26,6 +26,13 @@ final openPollsProvider =
 });
 
 // ignore: prefer-static-class
+final allPollsProvider = StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
+  return ref.watch(firebaseAuthUserProvider).value != null
+      ? pollsCollection.orderBy('openUntil', descending: true).snapshots()
+      : const Stream.empty();
+});
+
+// ignore: prefer-static-class
 final pollProvider = StreamProvider.autoDispose
     .family<DocumentSnapshot<Poll>, String>((ref, pollId) {
   return ref.watch(firebaseAuthUserProvider).value != null

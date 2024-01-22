@@ -36,7 +36,8 @@ class GroupDjangoRelation {
   /// Convert first letter of role to uppercase.
   static String? _roleFromJson(
     String? role,
-  ) => //
+  ) =>
+      //
       role == null
           ? null
           : ("${role.characters.getRange(0, 1).toUpperCase()}${role.characters.getRange(1)}");

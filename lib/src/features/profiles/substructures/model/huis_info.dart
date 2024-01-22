@@ -1,3 +1,5 @@
+// ignore_for_file: unused-code
+
 import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_info.dart';
 import 'dart:convert';
@@ -14,7 +16,7 @@ class HuisInfo extends GroupInfo {
 
   const HuisInfo({
     required String name,
-    String? description,
+    required String description,
     required this.allNjord,
     required this.composition,
     required this.houseNumber,
@@ -39,34 +41,8 @@ class HuisInfo extends GroupInfo {
       yearOfFoundation: map['yearOfFoundation'] as int,
     );
   }
-  factory HuisInfo.fromJson(String source) =>
-      HuisInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 
   String toJson() => json.encode(toMap());
-
-  HuisInfo copyWith({
-    bool? allNjord,
-    HouseComposition? composition,
-    String? houseNumber,
-    String? streetName,
-    String? postalCode,
-    int? numberOfHousemates,
-    int? yearOfFoundation,
-    String? name,
-    String? description,
-  }) {
-    return HuisInfo(
-      name: name ?? this.name,
-      description: description ?? this.description,
-      allNjord: allNjord ?? this.allNjord,
-      composition: composition ?? this.composition,
-      houseNumber: houseNumber ?? this.houseNumber,
-      streetName: streetName ?? this.streetName,
-      postalCode: postalCode ?? this.postalCode,
-      numberOfHousemates: numberOfHousemates ?? this.numberOfHousemates,
-      yearOfFoundation: yearOfFoundation ?? this.yearOfFoundation,
-    );
-  }
 
   @override
   String toString() {
@@ -87,8 +63,11 @@ class HuisInfo extends GroupInfo {
 }
 
 enum HouseComposition {
+  // ignore: unused-code
   male("Man"),
+  // ignore: unused-code
   female("Vrouw"),
+  // ignore: unused-code
   mixed("Man/Vrouw");
 
   final String value;

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_it/get_it.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 
 class PostService {
   static final postsCollection = FirebaseFirestore.instance
@@ -12,12 +14,17 @@ class PostService {
         toFirestore: (post, _) => post.toJson(),
       );
 
-  static deletePost(String path) async {
-    await FirebaseFirestore.instance.doc(path).delete();
+  static deletePost(DocumentSnapshot<Post> snapshot) async {
+    final post = snapshot.data();
+
+    if (post?.imageRef != null) {
+      await post?.imageRef?.delete();
+    }
+    snapshot.reference.delete();
   }
 
   static like(DocumentSnapshot<Post> snapshot) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = firebase_auth.FirebaseAuth.instance.currentUser?.uid;
     final post = snapshot.data();
     final likedByMe = post?.likedBy.contains(uid) ?? false;
     snapshot.reference.update({
@@ -31,23 +38,43 @@ class PostService {
     required String topic,
     required String title,
     required String content,
+    required User currentUser,
+    File? image,
   }) async {
-    final CurrentUser current = GetIt.I<CurrentUser>();
-    final user = current.user;
-    if (user == null) {
-      throw Exception("User is null");
+    final postRef = postsCollection.doc(); // Make a new document reference.
+
+    if (image == null) {
+      await postRef.set(
+        Post(
+          title: title,
+          content: content,
+          authorId: currentUser.identifier.toString(),
+          authorName: currentUser.fullName,
+          createdTime: Timestamp.now(),
+          topic: topic,
+        ),
+      );
+    } else {
+      final ref = FirebaseStorage.instance.ref("prikbord/${postRef.id}.png");
+      try {
+        // ignore: avoid-ignoring-return-values
+        await ref.putFile(image);
+        await postRef.set(
+          Post(
+            title: title,
+            content: content,
+            authorId: currentUser.identifier.toString(),
+            authorName: currentUser.fullName,
+            createdTime: Timestamp.now(),
+            topic: topic,
+            imageRef: ref,
+          ),
+        );
+
+        return;
+      } catch (error) {
+        rethrow;
+      }
     }
-
-    final currentUser = user.fullContact.public;
-
-    // ignore: avoid-ignoring-return-values
-    await postsCollection.add(Post(
-      title: title,
-      content: content,
-      authorId: user.identifier,
-      authorName: "${currentUser.first_name} ${currentUser.last_name}",
-      createdTime: Timestamp.now(),
-      topic: topic,
-    ));
   }
 }

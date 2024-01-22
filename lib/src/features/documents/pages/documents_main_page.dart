@@ -23,7 +23,6 @@ class _DocumentsMainPageState extends State<DocumentsMainPage> {
         onGenerateRoute: onGenerateRoute,
       ),
       onWillPop: () async => !await (_documentsNavigatorKey.currentState != null
-
           // TODO: Use different router to don't deal with this mess of two nagivators.
 
           // ignore: avoid-non-null-assertion

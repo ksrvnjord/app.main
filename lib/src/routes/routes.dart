@@ -1,4 +1,4 @@
-// ignore_for_file: prefer-match-file-name
+// ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,14 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
@@ -30,7 +37,6 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/polls_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
@@ -62,6 +68,7 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dar
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
+import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unauthorized_route_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
@@ -195,21 +202,35 @@ class Routes {
         child: const HomePage(),
       ),
       routes: [
-        // Route for viewing all forms.
+        // Route for viewing all forms (NEW FEATURE).
         _route(
-          path: 'forms', // Used for Deeplinking-pilot, so don't change this.
+          path: 'forms',
           name: RouteName.forms,
-          child: const PollsPage(),
+          child: const FormsPage(),
           routes: [
+            _route(
+              path: 'nieuw',
+              name: "Forms -> Create Form",
+              child: const CreateFormPage(),
+            ),
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
               path: ':formId',
+              // Forms/fgdgdf789dfg7df9dg789.
               name: "Form",
-              pageBuilder: (context, state) => _getPage(
-                child: PollPage(pollId: state.pathParameters['formId']!),
-                name: "Form",
-              ),
+              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
+                          null &&
+                      state.uri.queryParameters['v'] ==
+                          '2' // TODO: Remove this after migration.
+                  ? _getPage(
+                      child: FormPage(formId: state.pathParameters['formId']!),
+                      name: "Form",
+                    )
+                  : _getPage(
+                      child: PollPage(pollId: state.pathParameters['formId']!),
+                      name: "Poll",
+                    ),
             ),
           ],
         ),
@@ -478,14 +499,14 @@ class Routes {
             ),
             name: "Ploegen",
           ),
-          redirect:
-              (context, state) => // Default route is ploegen for currentYear.
-                  state.uri.queryParameters['year'] == null
-                      ? Uri(
-                          path: state.matchedLocation,
-                          queryParameters: {'year': getNjordYear().toString()},
-                        ).toString()
-                      : null,
+          redirect: (context, state) =>
+              // Default route is ploegen for currentYear.
+              state.uri.queryParameters['year'] == null
+                  ? Uri(
+                      path: state.matchedLocation,
+                      queryParameters: {'year': getNjordYear().toString()},
+                    ).toString()
+                  : null,
           routes: [
             _route(
               path: ":name",
@@ -581,6 +602,23 @@ class Routes {
           name: "Contact",
           child: const ContactPage(),
         ),
+        _route(
+          path: 'privacy-beleid',
+          name: "More -> Privacy Beleid",
+          child: const PrivacyPolicyPage(),
+        ),
+        _route(
+          path: "charity",
+          name: "Charity",
+          child: const CharityPage(),
+          routes: [
+            _route(
+              path: "edit",
+              name: "CharityEdit",
+              child: const EditCharityPage(),
+            ),
+          ],
+        ),
       ],
     ),
   ];
@@ -600,6 +638,29 @@ class Routes {
             name: "Manage Vaarverbod",
           ),
         ),
+
+        _route(
+          path: 'forms',
+          name: "Manage Forms",
+          child: const ManageFormsPage(),
+          routes: [
+            _route(
+              path: 'nieuw',
+              name: "Admin -> Create Form",
+              child: const CreateFormPage(),
+            ),
+            _route(
+              path: ':formId',
+              name: "View Form",
+              pageBuilder: (context, state) => _getPage(
+                child: ShowFormResultsPage(
+                  formId: state.pathParameters['formId']!,
+                ),
+                name: "View Form",
+              ),
+            ),
+          ],
+        ),
         _route(
           path: "maak-push-notificatie",
           name: "Create Push Notification",
@@ -616,17 +677,6 @@ class Routes {
         _route(
           path: "beheer-groepen",
           name: "Manage Groups",
-          pageBuilder: (context, state) => _getPage(
-            child: ManageGroupsPage(
-              year: state.uri.queryParameters['year'] != null
-                  ? int.parse(state.uri.queryParameters['year']!)
-                  : getNjordYear(),
-              type: state.uri.queryParameters['type'] != null
-                  ? state.uri.queryParameters['type']!
-                  : null,
-            ),
-            name: "Manage Groups",
-          ),
           routes: [
             _route(
               path: "groep/:id",
@@ -639,6 +689,15 @@ class Routes {
               ),
             ),
           ],
+          pageBuilder: (context, state) => _getPage(
+            child: ManageGroupsPage(
+              year: state.uri.queryParameters['year'] != null
+                  ? int.parse(state.uri.queryParameters['year']!)
+                  : getNjordYear(),
+              type: state.uri.queryParameters['type'],
+            ),
+            name: "Manage Groups",
+          ),
         ),
       ],
     ),
@@ -656,6 +715,11 @@ class Routes {
       name: 'Forgot Password',
       pageBuilder: (child, state) =>
           _getPage(child: const ForgotPasswordPage(), name: "Forgot Password"),
+    ),
+    _route(
+      path: '/privacy-beleid',
+      name: "Privacy Beleid",
+      child: const PrivacyPolicyPage(),
     ),
   ];
 
