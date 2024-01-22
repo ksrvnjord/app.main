@@ -66,8 +66,7 @@ class _FormPageState extends ConsumerState<FormPage> {
   }
 
   /// This method is used to unfocus the current form field when the user taps outside of it.
-  /// This is useful in cases where the keyboard should be dismissed or the current field's
-  /// state should be saved when the user taps outside of the field.
+  /// This is useful in cases where the keyboard should be dismissed.
   void _handleTapOutsidePrimaryFocus() {
     final focus = FocusManager.instance.primaryFocus;
     // Guard clause: if there's no focus or it doesn't have primary focus, return early.
@@ -76,14 +75,6 @@ class _FormPageState extends ConsumerState<FormPage> {
     }
     // Unfocus the current form field.
     focus.unfocus();
-
-    final state = _formKey.currentState;
-    // Guard clause: if the state is null or it's not valid, return early.
-    if (state == null) {
-      return;
-    }
-    // Save the form state, this will call the onSaved method of each form field.
-    state.save();
   }
 
   @override
