@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
@@ -28,6 +31,11 @@ class LoginPage extends ConsumerWidget {
                     .loading // Wait for try login into Firebase and Heimdall.
             ? const LoginLoadingWidget()
             : const LoginForm(),
+        // Textbutton to navigate to the privacy policy page.
+        TextButton(
+          onPressed: () => unawaited(context.pushNamed("Privacy Beleid")),
+          child: const Text('Bekijk het Privacy Beleid van deze app'),
+        ),
       ].toColumn(mainAxisAlignment: MainAxisAlignment.center),
     );
   }

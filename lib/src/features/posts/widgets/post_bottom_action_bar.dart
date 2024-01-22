@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_service.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
+import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostBottomActionBar extends StatelessWidget {
@@ -52,7 +53,7 @@ class PostBottomActionBar extends StatelessWidget {
           const Icon(Icons.mode_comment_outlined, size: iconSize),
           const Text("Reageer").fontSize(fontSize),
         ].toRow(separator: const SizedBox(width: 4)),
-        onTap: () => context.goNamed('Post -> Comments', pathParameters: {
+        onTap: () => context.goNamed(RouteName.postComments, pathParameters: {
           'id': snapshot.id,
         }),
       ),
