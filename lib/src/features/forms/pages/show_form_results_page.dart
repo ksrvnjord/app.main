@@ -99,6 +99,9 @@ class ShowFormResultsPage extends ConsumerWidget {
                           onPressed: () => ref.read(downloadCsvProvider(
                             DownloadCsvParams(
                               formName: formData.title,
+                              formQuestions: formData.questions
+                                  .map((e) => e.title)
+                                  .toList(),
                               snapshot: snapshot,
                             ),
                           )),

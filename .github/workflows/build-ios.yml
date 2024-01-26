@@ -7,7 +7,7 @@ on:
     types: [published]
 
 env:
-  flutter_version: "3.10.0"
+  flutter_version: "3.16.7"
 
 jobs:
   build_ios:
@@ -26,13 +26,12 @@ jobs:
         with:
           path: /Users/runner/hostedtoolcache/flutter # NOTE: This path differs from Linux
           key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
-    
+
       - name: Flutter action
         uses: subosito/flutter-action@v2.12.0
         with:
           flutter-version: ${{ env.flutter_version }}
-          channel: 'stable'
-    
+          channel: "stable"
 
       - name: Restore packages
         run: flutter pub get
