@@ -1,30 +1,41 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'firestore_form_question.g.dart';
+
+@JsonSerializable()
 class FirestoreFormQuestion {
-  String label;
+  String title;
   FormQuestionType type;
   List<String>? options;
   bool isRequired;
 
   FirestoreFormQuestion({
-    required this.label,
+    required this.title,
     required this.type,
+    required this.isRequired,
     this.options,
-    this.isRequired = true,
   });
 
   // Create fromJson method.
-  factory FirestoreFormQuestion.fromJson(Map<String, dynamic> json) {
-    return FirestoreFormQuestion(
-      label: json['Label'],
-      type: FormQuestionType.values.byName(json['Type']),
-      options:
-          json['Choices'] == null ? null : List<String>.from(json['Choices']),
-      isRequired: json['IsRequired'] ?? true, // TODO: Remove this.
-    );
-  }
+  factory FirestoreFormQuestion.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreFormQuestionFromJson(json);
 
   // Create toJson method.
-  Map<String, dynamic> toJson() {
-    return {'Choices': options, 'Label': label, 'Type': type.name, 'IsRequired': isRequired};
+  Map<String, dynamic> toJson() => _$FirestoreFormQuestionToJson(this);
+
+  // copyWith method.
+  FirestoreFormQuestion copyWith({
+    String? label,
+    FormQuestionType? type,
+    List<String>? options,
+    bool? isRequired,
+  }) {
+    return FirestoreFormQuestion(
+      title: label ?? title,
+      type: type ?? this.type,
+      options: options ?? this.options,
+      isRequired: isRequired ?? this.isRequired,
+    );
   }
 }
 

@@ -3,11 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormRepository {
   static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
@@ -23,7 +21,7 @@ class FormRepository {
       throw Exception('User is null');
     }
 
-    if (DateTime.now().isAfter(form.openUntil)) {
+    if (DateTime.now().isAfter(form.openUntil.toDate())) {
       throw Exception('Form is closed');
     }
 
@@ -31,6 +29,11 @@ class FormRepository {
     final answerSnapshot = await ref.watch(formAnswerProvider(docRef).future);
 
     final docs = answerSnapshot.docs;
+
+    final FormQuestionAnswer formQuestionAnswer = FormQuestionAnswer(
+      questionTitle: question,
+      answer: newValue,
+    );
 
     // Document exists, so we update it.
     return docs.isNotEmpty
@@ -43,9 +46,10 @@ class FormRepository {
           )
         : FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
             userId: user.identifier.toString(),
-            answers: [FormQuestionAnswer(question: question, answer: newValue)],
-            answeredAt: DateTime.now(),
-            completed: true, // TODO: Add logic.
+            answers: [formQuestionAnswer],
+            answeredAt: Timestamp.now(),
+            isCompleted: checkIfFormIsCompleted(
+                form: form, formAnswers: [formQuestionAnswer]),
           ));
   }
 
@@ -63,6 +67,31 @@ class FormRepository {
     await FirebaseFirestore.instance.doc(path).delete();
   }
 
+  static bool checkIfFormIsCompleted({
+    required FirestoreForm form,
+    required List<FormQuestionAnswer> formAnswers,
+  }) {
+    for (final question in form.questions) {
+      if (question.isRequired) {
+        try {
+          final myAnswer = formAnswers.firstWhere(
+            (a) => a.questionTitle == question.title,
+          );
+          final filledInRequiredQuestion =
+              myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
+          if (!filledInRequiredQuestion) {
+            return false;
+          }
+        } catch (e) {
+          // Answer not found for required question.
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
     required QueryDocumentSnapshot<FormAnswer> doc,
     required String question,
@@ -72,49 +101,24 @@ class FormRepository {
     final formAnswers = doc.data().answers;
 
     final formQuestionAnswer = formAnswers.firstWhere(
-      (a) => a.question == question,
-      orElse: () => FormQuestionAnswer(question: question, answer: newValue),
+      (a) => a.questionTitle == question,
+      orElse: () =>
+          FormQuestionAnswer(questionTitle: question, answer: newValue),
     );
 
     formQuestionAnswer.answer = newValue;
-
-    formQuestionAnswer.isRequiredAndCompleted = form.questions
-            .firstWhere(
-              (q) => q.label == question,
-              orElse: () => throw Exception('Question not found'),
-            )
-            .isRequired
-        ? newValue != null
-        : false;
 
     if (!formAnswers.contains(formQuestionAnswer)) {
       formAnswers.add(formQuestionAnswer);
     }
 
-    double countRequiredQuestions = 0;
-    double countCompletedRequiredQuestions = 0;
-    for (var question in form.questions) {
-      if (question.isRequired) {
-        countRequiredQuestions++;
-      }
-    }
-    for (var answer in formAnswers) {
-      print('answer: ${answer.isRequiredAndCompleted}');
-      if (answer.isRequiredAndCompleted) {
-        countCompletedRequiredQuestions++;
-      }
-    }
-
-    print('formAnswers: ${newValue == null}');
-    print('questionAnswers: ${formAnswers.length}');
-    print('countRequiredQuestions: $countRequiredQuestions');
-    print('countCompletedRequiredQuestions: $countCompletedRequiredQuestions');
+    final isCompleted =
+        checkIfFormIsCompleted(form: form, formAnswers: formAnswers);
 
     await doc.reference.update({
       'answers': formAnswers.map((answer) => answer.toJson()).toList(),
       'answeredAt': Timestamp.now(),
-      'completed': countRequiredQuestions ==
-          countCompletedRequiredQuestions, // TODO: Add logic.
+      'completed': isCompleted,
     });
 
     return doc.reference;

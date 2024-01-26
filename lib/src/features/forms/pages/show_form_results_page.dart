@@ -75,7 +75,7 @@ class ShowFormResultsPage extends ConsumerWidget {
                     const Divider(),
                     ShowFormResultsInfoBox(
                       field: 'Form naam',
-                      value: formData.formName,
+                      value: formData.title,
                     ),
                     ShowFormResultsInfoBox(
                       field: 'Formauteur',
@@ -93,12 +93,12 @@ class ShowFormResultsPage extends ConsumerWidget {
                       field: 'Gecreerd op',
                       value: formData.createdTime.toString(),
                     ),
-                    ref.watch(allFormAnswersProvider(formId)).when(
+                    ref.watch(allCompletedAnswersProvider(formId)).when(
                       data: (snapshot) {
                         return ElevatedButton.icon(
                           onPressed: () => ref.read(downloadCsvProvider(
                             DownloadCsvParams(
-                              formName: formData.formName,
+                              formName: formData.title,
                               snapshot: snapshot,
                             ),
                           )),

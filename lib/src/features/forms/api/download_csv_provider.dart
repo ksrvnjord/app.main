@@ -23,7 +23,7 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
     // ignore: avoid-unsafe-collection-methods
     final firstDocument = snapshot.docs.first;
     final questions =
-        firstDocument.data().answers.map((a) => a.question).toList();
+        firstDocument.data().answers.map((a) => a.questionTitle).toList();
 
     final rows = snapshot.docs.map((formAnswer) {
       final answers = formAnswer.data().answers;

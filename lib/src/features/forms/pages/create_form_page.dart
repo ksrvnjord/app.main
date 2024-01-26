@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,10 +68,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
       currentState?.save();
       final form = FirestoreForm(
-        createdTime: DateTime.now(),
-        formName: _formName.text,
+        createdTime: Timestamp.now(),
+        title: _formName.text,
         questions: _questions,
-        openUntil: _openUntil,
+        openUntil: Timestamp.fromDate(_openUntil),
         description: _description.text,
         authorId: _firebaseUser?.identifier ?? '',
       );
@@ -155,9 +156,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                     onPressed: () => setState(
                       // ignore: avoid-collection-mutating-methods
                       () => _questions.add(FirestoreFormQuestion(
-                        label: '',
+                        title: '',
                         type: FormQuestionType.singleChoice,
                         options: [],
+                        isRequired: true,
                       )), // Add an empty label for the new TextFormField.
                     ),
                     child: const Text('Voeg vraag toe aan form'),

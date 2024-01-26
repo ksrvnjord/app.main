@@ -26,7 +26,7 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    final formIsOpen = DateTime.now().isBefore(form.openUntil);
+    final formIsOpen = DateTime.now().isBefore(form.openUntil.toDate());
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
@@ -36,11 +36,11 @@ class FormCard extends ConsumerWidget {
 
     return ListTile(
       title: <Widget>[
-        Text(form.formName),
+        Text(form.title),
         userAnswerProvider.when(
           data: (snapshot) {
             if (snapshot.docs.isNotEmpty) {
-              final completed = snapshot.docs.first.data().completed;
+              final completed = snapshot.docs.first.data().isCompleted;
               if (completed) {
                 return Card(
                   color: colorScheme.secondaryContainer,
@@ -73,11 +73,11 @@ class FormCard extends ConsumerWidget {
       subtitle: Text(
         formIsOpen
             ? "Sluit ${timeago.format(
-                form.openUntil,
+                form.openUntil.toDate(),
                 locale: 'nl',
                 allowFromNow: true,
               )}"
-            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
+            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil.toDate())}",
         style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
       trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),

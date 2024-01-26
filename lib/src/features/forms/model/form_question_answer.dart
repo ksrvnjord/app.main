@@ -1,26 +1,25 @@
+import 'package:json_annotation/json_annotation.dart';
+
 /// Simple model class to hold the question and answer of a form.
+///
+///
+
+part 'form_question_answer.g.dart';
+
+@JsonSerializable()
 class FormQuestionAnswer {
-  final String question;
+  final String questionTitle;
   String? answer;
-  bool isRequiredAndCompleted;
 
   FormQuestionAnswer({
-    required this.question,
+    required this.questionTitle,
     required this.answer,
-    this.isRequiredAndCompleted = false,
   });
 
   // Create fromJson method.
-  factory FormQuestionAnswer.fromJson(Map<String, dynamic> json) {
-    return FormQuestionAnswer(
-      question: json['name'],
-      answer: json['answer'],
-      isRequiredAndCompleted: json['completed'],
-    );
-  }
+  factory FormQuestionAnswer.fromJson(Map<String, dynamic> json) =>
+      _$FormQuestionAnswerFromJson(json);
 
   // Create toJson method.
-  Map<String, dynamic> toJson() {
-    return {'answer': answer, 'name': question, 'completed': isRequiredAndCompleted};
-  }
+  Map<String, dynamic> toJson() => _$FormQuestionAnswerToJson(this);
 }

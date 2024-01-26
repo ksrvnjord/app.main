@@ -83,7 +83,7 @@ class CreateFormQuestion extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController? questionController =
-        TextEditingController(text: question.label);
+        TextEditingController(text: question.title);
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -105,9 +105,10 @@ class CreateFormQuestion extends ConsumerWidget {
               },
             ).toList(),
             value: question.type,
-            onChanged: (FormQuestionType? newValue) =>
-                // ignore: avoid-non-null-assertion
-                {question.type = newValue!, onChanged()},
+            onChanged: (FormQuestionType? newValue) {
+              question.type = newValue!;
+              onChanged();
+            },
           ),
           [
             const Text('Verplicht',
@@ -122,7 +123,7 @@ class CreateFormQuestion extends ConsumerWidget {
         TextFormField(
           controller: questionController,
           decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
-          onChanged: (String value) => {question.label = value},
+          onChanged: (String value) => {question.title = value},
           validator: (value) => (value == null || value.isEmpty)
               ? 'Geef een naam op voor de vraag.'
               : null,

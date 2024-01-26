@@ -38,7 +38,7 @@ class FormQuestion extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await FormRepository.upsertFormAnswer(
-        question: formQuestion.label,
+        question: formQuestion.title,
         newValue: newValue,
         form: f,
         docRef: d,
@@ -61,7 +61,7 @@ class FormQuestion extends ConsumerWidget {
     final type = formQuestion.type;
 
     final questionWidgets = <Widget>[
-      Text(formQuestion.label, style: textTheme.titleLarge),
+      Text(formQuestion.title, style: textTheme.titleLarge),
       if (formQuestion.isRequired)
         const Text(
           'Verplicht',
@@ -79,7 +79,7 @@ class FormQuestion extends ConsumerWidget {
           // ignore: avoid-unsafe-collection-methods
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
-            if (entry.question == formQuestion.label) {
+            if (entry.questionTitle == formQuestion.title) {
               answerValue = entry.answer;
             }
           }
@@ -93,7 +93,7 @@ class FormQuestion extends ConsumerWidget {
               TextFormField(
                 controller: answer,
                 onFieldSubmitted: (String? value) => _handleChangeOfFormAnswer(
-                  question: formQuestion.label,
+                  question: formQuestion.title,
                   newValue: value,
                   f: form,
                   d: docRef,
@@ -113,8 +113,8 @@ class FormQuestion extends ConsumerWidget {
               initialValue: answerValue,
               formQuestion: formQuestion,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
-                question: formQuestion.label,
-                newValue: value,
+                question: formQuestion.title,
+                newValue: answerValue == value ? null : value,
                 f: form,
                 d: docRef,
                 ref: ref,

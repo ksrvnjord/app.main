@@ -78,7 +78,8 @@ class FormPage extends ConsumerWidget {
               // ignore: avoid-non-null-assertion
               final form = formDoc.data()!;
 
-              final formIsOpen = DateTime.now().isBefore(form.openUntil);
+              final formIsOpen =
+                  DateTime.now().isBefore(form.openUntil.toDate());
 
               const descriptionVPadding = 16.0;
 
@@ -95,10 +96,10 @@ class FormPage extends ConsumerWidget {
               const sizedBoxHeight = 32.0;
 
               return [
-                [Text(form.formName, style: textTheme.titleLarge)]
+                [Text(form.title, style: textTheme.titleLarge)]
                     .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                 Text(
-                  '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
+                  '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil.toDate())}',
                   style: textTheme.bodySmall?.copyWith(
                     color: formIsOpen ? Colors.green : colorScheme.outline,
                   ),
