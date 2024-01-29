@@ -9,10 +9,7 @@ final allCompletedAnswersProvider = StreamProvider.autoDispose
       .collection('forms')
       .doc(docId)
       .collection('answers')
-      .where(
-        FormAnswer.isCompletedJSONKey,
-        isEqualTo: true,
-      )
+      .where(FormAnswer.isCompletedJSONKey, isEqualTo: true)
       .withConverter<FormAnswer>(
         fromFirestore: (snapshot, _) =>
             FormAnswer.fromJson(snapshot.data() ?? {}),

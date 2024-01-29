@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/download_csv_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
@@ -67,6 +68,8 @@ class ShowFormResultsPage extends ConsumerWidget {
         data: (documentSnapshot) {
           final formData = documentSnapshot.data();
 
+          final formatter = DateFormat('yyyy-MM-dd HH:mm');
+
           return formData == null
               ? const Center(child: Text('No data available'))
               : Column(
@@ -87,11 +90,11 @@ class ShowFormResultsPage extends ConsumerWidget {
                     ),
                     ShowFormResultsInfoBox(
                       field: 'Open tot',
-                      value: formData.openUntil.toString(),
+                      value: formatter.format(formData.openUntil.toDate()),
                     ),
                     ShowFormResultsInfoBox(
                       field: 'Gecreerd op',
-                      value: formData.createdTime.toString(),
+                      value: formatter.format(formData.createdTime.toDate()),
                     ),
                     ref.watch(allCompletedAnswersProvider(formId)).when(
                       data: (snapshot) {

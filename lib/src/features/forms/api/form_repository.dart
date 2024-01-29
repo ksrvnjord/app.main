@@ -30,7 +30,7 @@ class FormRepository {
 
     final docs = answerSnapshot.docs;
 
-    final FormQuestionAnswer formQuestionAnswer = FormQuestionAnswer(
+    final formQuestionAnswer = FormQuestionAnswer(
       questionTitle: question,
       answer: newValue,
     );
@@ -49,7 +49,9 @@ class FormRepository {
             answers: [formQuestionAnswer],
             answeredAt: Timestamp.now(),
             isCompleted: checkIfFormIsCompleted(
-                form: form, formAnswers: [formQuestionAnswer]),
+              form: form,
+              formAnswers: [formQuestionAnswer],
+            ),
           ));
   }
 
@@ -74,15 +76,17 @@ class FormRepository {
     for (final question in form.questions) {
       if (question.isRequired) {
         try {
+          // ignore: avoid-unsafe-collection-methods
           final myAnswer = formAnswers.firstWhere(
             (a) => a.questionTitle == question.title,
           );
           final filledInRequiredQuestion =
+              // ignore: avoid-non-null-assertion
               myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
           if (!filledInRequiredQuestion) {
             return false;
           }
-        } catch (e) {
+        } catch (error, _) {
           // Answer not found for required question.
           return false;
         }

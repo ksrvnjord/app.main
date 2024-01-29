@@ -26,7 +26,9 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    final formIsOpen = DateTime.now().isBefore(form.openUntil.toDate());
+    final openUntil = form.openUntil.toDate();
+
+    final formIsOpen = DateTime.now().isBefore(openUntil);
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
@@ -40,31 +42,33 @@ class FormCard extends ConsumerWidget {
         userAnswerProvider.when(
           data: (snapshot) {
             if (snapshot.docs.isNotEmpty) {
+              // ignore: avoid-unsafe-collection-methods
               final completed = snapshot.docs.first.data().isCompleted;
-              if (completed) {
-                return Card(
-                  color: colorScheme.secondaryContainer,
-                  child: Text("Ingevuld", style: textTheme.labelLarge)
-                      // ignore: no-magic-number
-                      .padding(horizontal: 8, vertical: 2),
-                );
-              } else {
-                return Card(
-                  color: colorScheme.secondaryContainer,
-                  child: Text("Niet (volledig) ingevuld",
-                          style: textTheme.labelLarge)
-                      // ignore: no-magic-number
-                      .padding(horizontal: 8, vertical: 2),
-                );
-              }
-            } else {
-              return Card(
-                color: Colors.grey,
-                child: Text("Niet ingevuld", style: textTheme.labelLarge)
-                    // ignore: no-magic-number
-                    .padding(horizontal: 8, vertical: 2),
-              );
+
+              return completed
+                  ? Card(
+                      color: colorScheme.secondaryContainer,
+                      child: Text("Ingevuld", style: textTheme.labelLarge)
+                          // ignore: no-magic-number
+                          .padding(horizontal: 8, vertical: 2),
+                    )
+                  : Card(
+                      color: colorScheme.secondaryContainer,
+                      child: Text(
+                        "Niet (volledig) ingevuld",
+                        style: textTheme.labelLarge,
+                      )
+                          // ignore: no-magic-number
+                          .padding(horizontal: 8, vertical: 2),
+                    );
             }
+
+            return Card(
+              color: Colors.grey,
+              child: Text("Niet ingevuld", style: textTheme.labelLarge)
+                  // ignore: no-magic-number
+                  .padding(horizontal: 8, vertical: 2),
+            );
           },
           error: (err, stack) => Text('Error: $err'),
           loading: () => const SizedBox.shrink(),
@@ -73,11 +77,11 @@ class FormCard extends ConsumerWidget {
       subtitle: Text(
         formIsOpen
             ? "Sluit ${timeago.format(
-                form.openUntil.toDate(),
+                openUntil,
                 locale: 'nl',
                 allowFromNow: true,
               )}"
-            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil.toDate())}",
+            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
         style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
       ),
       trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),

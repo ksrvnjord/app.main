@@ -101,9 +101,9 @@ class _FormPageState extends ConsumerState<FormPage> {
                 // Since the form exists, we can safely assume that the data is not null.
                 // ignore: avoid-non-null-assertion
                 final form = formDoc.data()!;
+                final openUntil = form.openUntil.toDate();
 
-                final formIsOpen =
-                    DateTime.now().isBefore(form.openUntil.toDate());
+                final formIsOpen = DateTime.now().isBefore(openUntil);
 
                 const descriptionVPadding = 16.0;
 
@@ -121,10 +121,10 @@ class _FormPageState extends ConsumerState<FormPage> {
                   [Text(form.title, style: textTheme.titleLarge)]
                       .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                   Text(
-                    '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil.toDate())}',
+                    '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
                     style: textTheme.bodySmall?.copyWith(
                       color: formIsOpen
-                          ? Theme.of(context).colorScheme.secondary
+                          ? colorScheme.secondary
                           : colorScheme.outline,
                     ),
                   ),

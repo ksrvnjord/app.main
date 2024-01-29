@@ -86,10 +86,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
     final questionWidgets = <Widget>[
       Text(widget.formQuestion.title, style: textTheme.titleLarge),
-      if (widget.formQuestion.isRequired)
-        const Text(
-          'Verplicht',
-        ),
+      if (widget.formQuestion.isRequired) const Text('Verplicht'),
     ];
 
     final answerStream = ref.watch(formAnswerProvider(widget.docRef));

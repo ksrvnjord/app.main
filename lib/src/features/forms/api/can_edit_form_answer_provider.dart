@@ -40,10 +40,11 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
       // Add a timer that updates the formIsOpen value when the form is closed.
       if (formIsOpen) {
         unawaited(
-          // ignore: prefer-async-await, avoid-non-null-assertion
+          // ignore: prefer-async-await
           Future.delayed(
-                  form.data()!.openUntil.toDate().difference(DateTime.now()))
-              .then((_) => ref.invalidateSelf()),
+            // ignore: avoid-non-null-assertion
+            form.data()!.openUntil.toDate().difference(DateTime.now()),
+          ).then((_) => ref.invalidateSelf()),
         );
       }
 

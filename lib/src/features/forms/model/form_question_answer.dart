@@ -11,10 +11,7 @@ class FormQuestionAnswer {
   final String questionTitle;
   String? answer;
 
-  FormQuestionAnswer({
-    required this.questionTitle,
-    required this.answer,
-  });
+  FormQuestionAnswer({required this.questionTitle, required this.answer});
 
   // Create fromJson method.
   factory FormQuestionAnswer.fromJson(Map<String, dynamic> json) =>

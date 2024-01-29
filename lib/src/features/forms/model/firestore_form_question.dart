@@ -22,21 +22,6 @@ class FirestoreFormQuestion {
 
   // Create toJson method.
   Map<String, dynamic> toJson() => _$FirestoreFormQuestionToJson(this);
-
-  // copyWith method.
-  FirestoreFormQuestion copyWith({
-    String? label,
-    FormQuestionType? type,
-    List<String>? options,
-    bool? isRequired,
-  }) {
-    return FirestoreFormQuestion(
-      title: label ?? title,
-      type: type ?? this.type,
-      options: options ?? this.options,
-      isRequired: isRequired ?? this.isRequired,
-    );
-  }
 }
 
 enum FormQuestionType {

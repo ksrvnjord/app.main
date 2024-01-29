@@ -105,20 +105,23 @@ class CreateFormQuestion extends ConsumerWidget {
               },
             ).toList(),
             value: question.type,
+            // ignore: prefer-extracting-callbacks
             onChanged: (FormQuestionType? newValue) {
-              question.type = newValue!;
+              question.type = newValue ?? question.type;
               onChanged();
             },
           ),
           [
-            const Text('Verplicht',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-            Switch(
+            const Text(
+              'Verplicht',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            Switch.adaptive(
               value: question.isRequired,
               onChanged: (bool value) =>
                   {question.isRequired = value, onChanged()},
-            )
-          ].toRow()
+            ),
+          ].toRow(),
         ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         TextFormField(
           controller: questionController,
