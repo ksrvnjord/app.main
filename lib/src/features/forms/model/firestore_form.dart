@@ -10,6 +10,8 @@ part 'firestore_form.g.dart';
 @JsonSerializable()
 class FirestoreForm {
   final String title;
+
+  @JsonKey(toJson: _questionsToJson)
   final List<FirestoreFormQuestion> questions;
 
   @TimestampDateTimeConverter()
@@ -42,4 +44,8 @@ class FirestoreForm {
 
   // Create toJson method.
   Map<String, dynamic> toJson() => _$FirestoreFormToJson(this);
+  static List<Map<String, dynamic>> _questionsToJson(
+    List<FirestoreFormQuestion> questions,
+  ) =>
+      questions.map((question) => question.toJson()).toList();
 }

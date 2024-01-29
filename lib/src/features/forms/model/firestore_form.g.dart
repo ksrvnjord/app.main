@@ -23,7 +23,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
     <String, dynamic>{
       'title': instance.title,
-      'questions': instance.questions,
+      'questions': FirestoreForm._questionsToJson(instance.questions),
       'openUntil':
           const TimestampDateTimeConverter().toJson(instance.openUntil),
       'createdTime':

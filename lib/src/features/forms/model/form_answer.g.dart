@@ -22,7 +22,7 @@ FormAnswer _$FormAnswerFromJson(Map<String, dynamic> json) => FormAnswer(
 Map<String, dynamic> _$FormAnswerToJson(FormAnswer instance) =>
     <String, dynamic>{
       'userId': instance.userId,
-      'answers': instance.answers,
+      'answers': FormAnswer._answersToJson(instance.answers),
       'answeredAt':
           const TimestampDateTimeConverter().toJson(instance.answeredAt),
       'isCompleted': instance.isCompleted,

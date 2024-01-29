@@ -12,6 +12,8 @@ class FormAnswer {
   static const isCompletedJSONKey = "isCompleted";
 
   final String userId;
+
+  @JsonKey(toJson: _answersToJson)
   final List<FormQuestionAnswer> answers; // User can choose to not answer.
 
   @TimestampDateTimeConverter()
@@ -42,4 +44,9 @@ class FormAnswer {
                 FormAnswer.fromJson(snapshot.data() ?? {}),
             toFirestore: (answer, _) => answer.toJson(),
           );
+
+  static List<Map<String, dynamic>> _answersToJson(
+    List<FormQuestionAnswer> answers,
+  ) =>
+      answers.map((answer) => answer.toJson()).toList();
 }
