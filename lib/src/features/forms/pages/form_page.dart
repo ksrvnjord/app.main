@@ -120,7 +120,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                 return [
                   [
                     Flexible(
-                        child: Text(form.title, style: textTheme.titleLarge))
+                      child: Text(form.title, style: textTheme.titleLarge),
+                    )
                   ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                   Text(
                     '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
