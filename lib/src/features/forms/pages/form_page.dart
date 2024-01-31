@@ -118,8 +118,11 @@ class _FormPageState extends ConsumerState<FormPage> {
                 const sizedBoxHeight = 32.0;
 
                 return [
-                  [Text(form.title, style: textTheme.titleLarge)]
-                      .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                  [
+                    Flexible(
+                        flex: 1,
+                        child: Text(form.title, style: textTheme.titleLarge))
+                  ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                   Text(
                     '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
                     style: textTheme.bodySmall?.copyWith(
