@@ -122,7 +122,7 @@ class FormRepository {
     await doc.reference.update({
       'answers': formAnswers.map((answer) => answer.toJson()).toList(),
       'answeredAt': Timestamp.now(),
-      'completed': isCompleted,
+      FormAnswer.isCompletedJSONKey: isCompleted,
     });
 
     return doc.reference;
