@@ -120,7 +120,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                 return [
                   [
                     Flexible(
-                      child: Text(form.title, style: textTheme.titleLarge),
+                      child: Text(form.title, style: textTheme.titleLarge)
                     )
                   ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                   Text(
