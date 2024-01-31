@@ -38,10 +38,7 @@ class FormCard extends ConsumerWidget {
 
     return ListTile(
       title: <Widget>[
-        Flexible(
-          flex: 2,
-          child: Text(form.title),
-        ),
+        Flexible(child: Text(form.title)),
         userAnswerProvider.when(
           data: (snapshot) {
             if (snapshot.docs.isNotEmpty) {
