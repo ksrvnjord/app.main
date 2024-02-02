@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_t
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
@@ -88,7 +87,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      context.goNamed(RouteName.forms);
+      context.pop();
     }
   }
 

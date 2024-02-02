@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -37,52 +38,33 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return ListTile(
-      title: <Widget>[
-        Flexible(child: Text(form.title)),
-        userAnswerProvider.when(
-          data: (snapshot) {
-            if (snapshot.docs.isNotEmpty) {
-              // ignore: avoid-unsafe-collection-methods
-              final completed = snapshot.docs.first.data().isCompleted;
-
-              return completed
-                  ? Card(
-                      color: colorScheme.secondaryContainer,
-                      child: Text("Ingevuld", style: textTheme.labelLarge)
-                          // ignore: no-magic-number
-                          .padding(horizontal: 8, vertical: 2),
-                    )
-                  : Card(
-                      color: colorScheme.secondaryContainer,
-                      child: Text(
-                        "Niet (volledig) ingevuld",
-                        style: textTheme.labelLarge,
-                      )
-                          // ignore: no-magic-number
-                          .padding(horizontal: 8, vertical: 2),
-                    );
-            }
-
-            return Card(
-              color: Colors.grey,
-              child: Text("Niet ingevuld", style: textTheme.labelLarge)
-                  // ignore: no-magic-number
-                  .padding(horizontal: 8, vertical: 2),
-            );
-          },
-          error: (err, stack) => Text('Error: $err'),
-          loading: () => const SizedBox.shrink(),
-        ),
-      ].toRow(separator: const SizedBox(width: 4)),
-      subtitle: Text(
-        formIsOpen
-            ? "Sluit ${timeago.format(
-                openUntil,
-                locale: 'nl',
-                allowFromNow: true,
-              )}"
-            : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
-        style: textTheme.bodySmall?.copyWith(color: colorScheme.outline),
+      title: <Widget>[Flexible(child: Text(form.title))]
+          .toRow(separator: const SizedBox(width: 4)),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            formIsOpen
+                ? "Sluit ${timeago.format(
+                    openUntil,
+                    locale: 'nl',
+                    allowFromNow: true,
+                  )}"
+                : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
+            style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+          ),
+          userAnswerProvider.when(
+            data: (snapshot) => AnswerStatusCard(
+              answerExists: snapshot.docs.isNotEmpty,
+              isCompleted: snapshot.docs.isNotEmpty &&
+                  // ignore: avoid-unsafe-collection-methods
+                  snapshot.docs.first.data().isCompleted,
+              textStyle: textTheme.labelLarge,
+            ),
+            error: (err, stack) => Text('Error: $err'),
+            loading: () => const SizedBox.shrink(),
+          ),
+        ],
       ),
       trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
       onTap: () => unawaited(context.pushNamed(

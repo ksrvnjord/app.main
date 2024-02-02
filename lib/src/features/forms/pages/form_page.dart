@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_p
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -89,9 +90,11 @@ class _FormPageState extends ConsumerState<FormPage> {
       child: Scaffold(
         appBar: AppBar(title: const Text('Form')),
         body: ListView(
-          padding: const EdgeInsets.all(16),
+          padding:
+              const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
           children: [
             formVal.when(
+              // ignore: avoid-long-functions
               data: (formDoc) {
                 if (!formDoc.exists) {
                   return const ErrorCardWidget(
@@ -102,20 +105,15 @@ class _FormPageState extends ConsumerState<FormPage> {
                 // ignore: avoid-non-null-assertion
                 final form = formDoc.data()!;
                 final openUntil = form.openUntil.toDate();
-
                 final formIsOpen = DateTime.now().isBefore(openUntil);
-
                 const descriptionVPadding = 16.0;
-
                 final colorScheme = Theme.of(context).colorScheme;
-
                 final description = form.description;
-
                 final questions = form.questions;
-
                 final textTheme = Theme.of(context).textTheme;
-
                 const sizedBoxHeight = 32.0;
+                final answerVal =
+                    ref.watch(formAnswerProvider(formDoc.reference));
 
                 return [
                   [
@@ -134,6 +132,32 @@ class _FormPageState extends ConsumerState<FormPage> {
                   if (description != null)
                     Text(description, style: textTheme.bodyMedium)
                         .padding(vertical: descriptionVPadding),
+                  answerVal.when(
+                    data: (answer) {
+                      final answerExists = answer.docs.isNotEmpty;
+
+                      const leftCardPadding = 8.0;
+
+                      return Row(
+                        children: [
+                          Text(
+                            "Je hebt deze form",
+                            style: textTheme.titleMedium,
+                          ),
+                          AnswerStatusCard(
+                            answerExists: answerExists,
+                            isCompleted: answerExists &&
+                                // ignore: avoid-unsafe-collection-methods
+                                answer.docs.first.data().isCompleted,
+                            textStyle: textTheme.titleMedium,
+                          ).padding(left: leftCardPadding),
+                        ],
+                      );
+                    },
+                    error: (error, stack) =>
+                        ErrorCardWidget(errorMessage: error.toString()),
+                    loading: () => const SizedBox.shrink(),
+                  ),
                   const SizedBox(height: sizedBoxHeight),
                   Form(
                     key: _formKey,

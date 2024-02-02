@@ -45,11 +45,11 @@ class PollCard extends ConsumerWidget {
 
     // ignore: arguments-ordering
     return ExpansionTile(
+      collapsedIconColor: colorScheme.primary,
       title: Text(poll.question),
       subtitle: Text(
         '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-        style: textTheme.bodySmall
-            ?.copyWith(color: pollIsOpen ? Colors.green : colorScheme.outline),
+        style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
       ),
       // ignore: avoid-non-null-assertion
       initiallyExpanded: isExpanded != null ? isExpanded! : pollIsOpen,
