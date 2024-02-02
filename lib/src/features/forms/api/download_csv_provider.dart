@@ -26,9 +26,10 @@ final downloadCsvProvider = FutureProviderFamily<void, DownloadCsvParams>(
       final individualAnswers =
           formAnswer.data().answers.map((e) => e.answer).toList();
       final individualQuestions =
-          formAnswer.data().answers.map((e) => e.question).toList();
+          formAnswer.data().answers.map((e) => e.questionTitle).toList();
       final userId = formAnswer.data().userId;
-      final answeredAt = formAnswer.data().answeredAt.toString();
+      final answeredAt = DateFormat('dd-MM-yyyy HH:mm:ss')
+          .format(formAnswer.data().answeredAt.toDate());
 
       final sortedAnswers = List.filled(allQuestions.length, '');
 

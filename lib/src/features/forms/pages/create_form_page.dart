@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_t
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
@@ -67,10 +67,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
       currentState?.save();
       final form = FirestoreForm(
-        createdTime: DateTime.now(),
-        formName: _formName.text,
+        createdTime: Timestamp.now(),
+        title: _formName.text,
         questions: _questions,
-        openUntil: _openUntil,
+        openUntil: Timestamp.fromDate(_openUntil),
         description: _description.text,
         authorId: _firebaseUser?.identifier ?? '',
       );
@@ -87,7 +87,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      context.goNamed(RouteName.forms);
+      context.pop();
     }
   }
 
@@ -155,8 +155,9 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                     onPressed: () => setState(
                       // ignore: avoid-collection-mutating-methods
                       () => _questions.add(FirestoreFormQuestion(
-                        label: '',
+                        title: '',
                         type: FormQuestionType.singleChoice,
+                        isRequired: true,
                         options: [],
                       )), // Add an empty label for the new TextFormField.
                     ),

@@ -51,7 +51,7 @@ class PollsMigration {
       case "_WithConverterQueryDocumentSnapshot<FirestoreForm>":
         // ignore: avoid-mutating-parameters
         a = a as QueryDocumentSnapshot<FirestoreForm>;
-        aOpenUntil = a.data().openUntil;
+        aOpenUntil = a.data().openUntil.toDate();
         break;
 
       case "_WithConverterQueryDocumentSnapshot<Poll>":
@@ -68,7 +68,7 @@ class PollsMigration {
       case "_WithConverterQueryDocumentSnapshot<FirestoreForm>":
         // ignore: avoid-mutating-parameters
         b = b as QueryDocumentSnapshot<FirestoreForm>;
-        bOpenUntil = b.data().openUntil;
+        bOpenUntil = b.data().openUntil.toDate();
         break;
 
       case "_WithConverterQueryDocumentSnapshot<Poll>":

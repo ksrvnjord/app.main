@@ -56,7 +56,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     try {
       // ignore: avoid-ignoring-return-values
       await FormRepository.upsertFormAnswer(
-        question: widget.formQuestion.label,
+        question: question,
         newValue: newValue,
         form: f,
         docRef: d,
@@ -85,7 +85,8 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     final type = widget.formQuestion.type;
 
     final questionWidgets = <Widget>[
-      Text(widget.formQuestion.label, style: textTheme.titleLarge),
+      Text(widget.formQuestion.title, style: textTheme.titleLarge),
+      if (widget.formQuestion.isRequired) const Text('Verplicht'),
     ];
 
     final answerStream = ref.watch(formAnswerProvider(widget.docRef));
@@ -99,7 +100,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
           // ignore: avoid-unsafe-collection-methods
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
-            if (entry.question == widget.formQuestion.label) {
+            if (entry.questionTitle == widget.formQuestion.title) {
               answerValue = entry.answer;
             }
           }
@@ -118,7 +119,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                       _focusNode, // The focus node controls when to save.
                   // ignore: avoid-async-call-in-sync-function
                   onSaved: (String? value) => _handleChangeOfFormAnswer(
-                    question: widget.formQuestion.label,
+                    question: widget.formQuestion.title,
                     newValue: value,
                     f: widget.form,
                     d: widget.docRef,
@@ -140,8 +141,8 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               formQuestion: widget.formQuestion,
               // ignore: avoid-async-call-in-sync-function
               onChanged: (String? value) => _handleChangeOfFormAnswer(
-                question: widget.formQuestion.label,
-                newValue: value,
+                question: widget.formQuestion.title,
+                newValue: answerValue == value ? null : value,
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,
