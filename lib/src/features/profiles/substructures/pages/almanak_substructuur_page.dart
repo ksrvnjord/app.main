@@ -22,7 +22,6 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
     final substructureUsers = ref.watch(substructureUsersProvider(name));
 
     const double pageHPadding = 12;
-    const double descriptionHPadding = pageHPadding + 4;
 
     final descriptionAsyncVal = ref.watch(
       substructureDescriptionProvider(name),

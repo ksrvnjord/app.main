@@ -21,6 +21,8 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
       data: (data) {
         const textPadding = 8.0;
 
+        const descriptionPreviewMaxLines = 8;
+
         return data == null
             ? const SizedBox.shrink()
             : [
@@ -33,7 +35,7 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
                   urlStyle: const TextStyle(color: Colors.blue),
                   // OnUrlTap: (url) => launchUrlString(url),.
                   style: Theme.of(context).textTheme.bodyLarge,
-                  maxLines: 8,
+                  maxLines: descriptionPreviewMaxLines,
                 ),
               ].toColumn().padding(all: textPadding);
       },
