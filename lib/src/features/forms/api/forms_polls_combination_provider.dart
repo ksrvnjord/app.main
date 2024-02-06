@@ -66,6 +66,7 @@ class PollsMigration {
         throw Exception('Unknown type ${a.runtimeType}');
     }
 
+    // ignore: avoid-similar-names
     final parentCollectionIdB = b.reference.parent.id;
 
     switch (parentCollectionIdB) {
