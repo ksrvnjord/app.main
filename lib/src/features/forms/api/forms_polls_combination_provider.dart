@@ -32,7 +32,7 @@ final openFormsPollsCombinationProvider =
   final querySnapshots = await Future.wait([forms, polls]);
 
   final alldocs = querySnapshots.expand((element) => element.docs).toList();
-  alldocs.sort(PollsMigration.comparePollsFormsCombination);
+  alldocs.sort(PollsMigration.comparePollsFormsCombinationReverse);
 
   return alldocs;
 });
@@ -82,5 +82,12 @@ class PollsMigration {
     }
 
     return aOpenUntil.compareTo(bOpenUntil) * -1;
+  }
+
+  static int comparePollsFormsCombinationReverse(
+    QueryDocumentSnapshot<Object> a,
+    QueryDocumentSnapshot<Object> b,
+  ) {
+    return PollsMigration.comparePollsFormsCombination(a, b) * -1;
   }
 }
