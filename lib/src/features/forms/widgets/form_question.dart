@@ -117,6 +117,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                   controller: answer,
                   focusNode:
                       _focusNode, // The focus node controls when to save.
+                  maxLines: null,
                   // ignore: avoid-async-call-in-sync-function
                   onSaved: (String? value) => _handleChangeOfFormAnswer(
                     question: widget.formQuestion.title,
