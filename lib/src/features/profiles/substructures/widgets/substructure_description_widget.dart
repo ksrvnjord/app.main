@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -17,14 +18,28 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
     const double loadingHeight = 120;
 
     return descriptionAsyncVal.when(
-      data: (data) => data == null
-          ? const SizedBox.shrink()
-          : [
-              Text(
-                data,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ).expanded(flex: 0),
-            ].toColumn(),
+      data: (data) {
+        const textPadding = 8.0;
+
+        return data == null
+            ? const SizedBox.shrink()
+            : [
+                ExpandableText(
+                  data,
+                  expandText: "meer",
+                  // Expanded: expanded,.
+                  linkColor: Colors.blueGrey,
+                  linkEllipsis: false,
+                  urlStyle: const TextStyle(color: Colors.blue),
+                  // OnUrlTap: (url) => launchUrlString(url),.
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  maxLines: 8,
+                ),
+              ].toColumn().padding(all: textPadding);
+      },
+      error: (error, stack) => ErrorCardWidget(
+        errorMessage: error.toString(),
+      ),
       loading: () => ShimmerWidget(
         child: Container(
           decoration: BoxDecoration(
@@ -33,9 +48,6 @@ class SubstructureDescriptionWidget extends ConsumerWidget {
           ),
           height: loadingHeight,
         ),
-      ),
-      error: (error, stack) => ErrorCardWidget(
-        errorMessage: error.toString(),
       ),
     );
   }
