@@ -7,12 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class ZwanehalzenFolderPage extends ConsumerWidget {
-  final String path;
+  const ZwanehalzenFolderPage({Key? key, required this.path}) : super(key: key);
 
-  const ZwanehalzenFolderPage({
-    Key? key,
-    required this.path,
-  }) : super(key: key);
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

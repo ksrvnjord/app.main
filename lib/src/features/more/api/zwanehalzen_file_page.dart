@@ -7,43 +7,30 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class ZwanehalzenFilePage extends ConsumerWidget {
-  final String path;
+  const ZwanehalzenFilePage({Key? key, required this.path}) : super(key: key);
 
-  const ZwanehalzenFilePage({
-    Key? key,
-    required this.path,
-  }) : super(key: key);
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (path.endsWith('pdf')) {
       final pdfData = ref.watch(zwanehalsUint8Provider(path));
-      final fileNameFull = path.split('/').last;
+      final fileNameFull = path.split('/').lastOrNull ?? '';
       final filename =
           fileNameFull.characters.getRange(0, fileNameFull.lastIndexOf("."));
 
       return Scaffold(
-        appBar: AppBar(
-          title: Text(filename.string),
-        ),
+        appBar: AppBar(title: Text(filename.string)),
         body: pdfData.when(
-          data: (pdf) => PDFView(
-            pdfData: pdf,
-          ),
+          data: (pdf) => PDFView(pdfData: pdf),
           error: (err, _) => ErrorCardWidget(errorMessage: err.toString()),
           loading: () => const CircularProgressIndicator.adaptive().center(),
         ),
       );
     }
 
-    if (path.endsWith('jpg') || path.endsWith('jpeg')) {
-      return GalleryFilePage(path: path);
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("File not supported."),
-      ),
-    );
+    return path.endsWith('jpg') || path.endsWith('jpeg')
+        ? GalleryFilePage(path: path)
+        : Scaffold(appBar: AppBar(title: const Text("File not supported.")));
   }
 }
