@@ -33,7 +33,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
     _firebaseUser = ref.read(currentFirestoreUserProvider);
   }
 
-  Future<void> _submitForm(BuildContext context) async {
+  Future<void> _handleSubmitForm(BuildContext context) async {
     final currentState = _formKey.currentState;
     if (currentState?.validate() ?? false) {
       if (_questions.isEmpty) {
@@ -102,8 +102,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     const sizedBoxHeight = 16.0;
-    const sizedBoxWidth = 16.0;
-    // ignore: avoid-similar-names
     const sizedBoxWidthButton = 256.0;
 
     return Scaffold(
@@ -111,12 +109,19 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding:
+              const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
           children: [
+            Text(
+              'Let op: Forms kunnen niet worden aangepast na het maken.',
+              style: TextStyle(color: colorScheme.outline),
+            ),
             TextFormField(
               // Kies form naam.
               controller: _formName,
               decoration: const InputDecoration(labelText: 'Formulier naam'),
+              maxLines: null,
+
               validator: (value) => (value == null || value.isEmpty)
                   ? 'Naam van de form kan niet leeg zijn.'
                   : null,
@@ -127,6 +132,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               decoration: const InputDecoration(
                 labelText: 'Beschrijving form',
               ),
+              maxLines: null,
             ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
@@ -167,31 +173,17 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 const Spacer(),
               ],
             ),
-            const SizedBox(height: sizedBoxHeight),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              const Spacer(),
-              SizedBox(
-                width: sizedBoxWidthButton,
-                child: ElevatedButton(
-                  // ignore: prefer-correct-handler-name, avoid-async-call-in-sync-function
-                  onPressed: () => _submitForm(context),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: colorScheme.onPrimaryContainer,
-                    backgroundColor: colorScheme.primaryContainer,
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.send),
-                      SizedBox(width: sizedBoxWidth),
-                      Text('Maak nieuwe form'),
-                    ],
-                  ),
-                ),
-              ),
-            ]),
           ],
         ),
+      ),
+      // Floatingactionbutton to submit a form.
+      floatingActionButton: FloatingActionButton.extended(
+        tooltip: 'Maak nieuwe form',
+        heroTag: 'submitForm',
+        // ignore: avoid-async-call-in-sync-function
+        onPressed: () => _handleSubmitForm(context),
+        icon: const Icon(Icons.send),
+        label: const Text('Maak nieuwe form'),
       ),
     );
   }
