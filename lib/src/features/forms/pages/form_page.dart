@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
@@ -7,7 +8,9 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormPage extends ConsumerStatefulWidget {
@@ -88,7 +91,45 @@ class _FormPageState extends ConsumerState<FormPage> {
     return GestureDetector(
       onTap: _handleTapOutsidePrimaryFocus,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Form')),
+        appBar: AppBar(
+          title: const Text('Form'),
+          actions: [
+            IconButton(
+              // ignore: prefer-extracting-callbacks
+              onPressed: () {
+                const snackbar = SnackBar(
+                  content: Text(
+                    'Er is iets misgegaan bij het delen van de form',
+                  ),
+                );
+                final routeInformation =
+                    GoRouter.of(context).routeInformationProvider.value;
+
+                final state = routeInformation.state as Map<Object?, Object?>?;
+                if (state == null) {
+                  // ignore: avoid-ignoring-return-values
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+                  return;
+                }
+                final imperativeMatches = state['imperativeMatches'] as List?;
+                if (imperativeMatches == null || imperativeMatches.isEmpty) {
+                  // ignore: avoid-ignoring-return-values
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+                  return;
+                }
+                final currentPath =
+                    imperativeMatches.elementAtOrNull(0)['location'] as String;
+
+                const prefixPath = RoutingConstants.appBaseUrl;
+                final url = "$prefixPath$currentPath";
+                Share.share(url).ignore();
+              },
+              icon: const Icon(Icons.share),
+            ),
+          ],
+        ),
         body: ListView(
           padding:
               const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
