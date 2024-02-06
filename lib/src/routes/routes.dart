@@ -94,7 +94,7 @@ class Routes {
   /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   ///
   /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
-  // ignore: prefer-static-class
+  // ignore: prefer-static-class, avoid-long-functions
   static final routerProvider = Provider((ref) {
     return GoRouter(
       routes: [
@@ -142,16 +142,17 @@ class Routes {
               : {'from': state.uri.toString()},
         ).toString();
 
+        final routeRequiresAuth =
+            !Routes._unauthenticated.any((route) => route.path == currentPath);
+
         switch (authState) {
           case AuthState.loading:
-            if (currentPath != loginPath) {
+            if (currentPath != loginPath && routeRequiresAuth) {
               // Loading happens on login page, as login page shows the loading widget.
               return loginPathWithRedirect;
             }
             break;
           case AuthState.unauthenticated:
-            final routeRequiresAuth = !Routes._unauthenticated
-                .any((route) => route.path == currentPath);
             if (routeRequiresAuth) {
               return loginPathWithRedirect;
             }
