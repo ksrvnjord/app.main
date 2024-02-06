@@ -47,14 +47,16 @@ class PollsMigration {
     // ignore: avoid-similar-names
     DateTime bOpenUntil = DateTime.now();
 
-    switch (a.runtimeType.toString()) {
-      case "_WithConverterQueryDocumentSnapshot<FirestoreForm>":
+    final parentCollectionIdA = a.reference.parent.id;
+
+    switch (parentCollectionIdA) {
+      case "forms":
         // ignore: avoid-mutating-parameters
         a = a as QueryDocumentSnapshot<FirestoreForm>;
         aOpenUntil = a.data().openUntil.toDate();
         break;
 
-      case "_WithConverterQueryDocumentSnapshot<Poll>":
+      case "polls":
         // ignore: avoid-mutating-parameters
         a = a as QueryDocumentSnapshot<Poll>;
         aOpenUntil = a.data().openUntil;
@@ -64,14 +66,16 @@ class PollsMigration {
         throw Exception('Unknown type ${a.runtimeType}');
     }
 
-    switch (b.runtimeType.toString()) {
-      case "_WithConverterQueryDocumentSnapshot<FirestoreForm>":
+    final parentCollectionIdB = b.reference.parent.id;
+
+    switch (parentCollectionIdB) {
+      case "forms":
         // ignore: avoid-mutating-parameters
         b = b as QueryDocumentSnapshot<FirestoreForm>;
         bOpenUntil = b.data().openUntil.toDate();
         break;
 
-      case "_WithConverterQueryDocumentSnapshot<Poll>":
+      case "polls":
         // ignore: avoid-mutating-parameters
         b = b as QueryDocumentSnapshot<Poll>;
         bOpenUntil = b.data().openUntil;
