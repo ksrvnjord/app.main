@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/form_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
@@ -47,10 +48,30 @@ class PollCard extends ConsumerWidget {
     return ExpansionTile(
       collapsedIconColor: colorScheme.primary,
       title: Text(poll.question),
-      subtitle: Text(
-        '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
-        style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
-      ),
+      subtitle: [
+        Text(
+          '${pollIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(poll.openUntil)}',
+          style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+        ),
+        answerStream.when(
+          data: (snapshot) {
+            final bool hasFilledIn = snapshot.size != 0;
+
+            return hasFilledIn
+                ? AnswerStatusCard(
+                    answerExists: hasFilledIn,
+                    // ignore: no-equal-arguments
+                    isCompleted: hasFilledIn,
+                    textStyle: textTheme.labelLarge,
+                  )
+                : const SizedBox.shrink();
+          },
+          error: (error, stackTrace) => const ErrorCardWidget(
+            errorMessage: 'Het is mislukt om het aantal antwoorden te laden',
+          ),
+          loading: () => const CircularProgressIndicator.adaptive(),
+        ),
+      ].toColumn(crossAxisAlignment: CrossAxisAlignment.start),
       // ignore: avoid-non-null-assertion
       initiallyExpanded: isExpanded != null ? isExpanded! : pollIsOpen,
       expandedCrossAxisAlignment: CrossAxisAlignment.center,
