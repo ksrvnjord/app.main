@@ -32,7 +32,7 @@ class MorePage extends ConsumerWidget {
       // ignore: map-keys-ordering
       "Bekijk het Lustrum Goede Doel": "Charity",
       // ignore: map-keys-ordering
-      "Bekijk de Zwanenhals": "Zwanenhals",
+      "Bekijk de Zwanehalzen": "Zwanehalzen",
       if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',

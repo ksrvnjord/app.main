@@ -609,8 +609,8 @@ class Routes {
           child: const PrivacyPolicyPage(),
         ),
         _route(
-          path: 'zwanenhals',
-          name: 'Zwanenhals',
+          path: 'zwanehalzen',
+          name: 'Zwanehalzen',
           child: const ZwanehalzenMainPage(),
         ),
         _route(

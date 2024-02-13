@@ -12,31 +12,7 @@ class ZwanehalzenMainPage extends StatefulWidget {
 class _ZwanehalzenMainPageState extends State<ZwanehalzenMainPage> {
   final _zwanehalzenNavigatorKey = GlobalKey<NavigatorState>();
 
-  @override
-  Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
-    return WillPopScope(
-      child: Navigator(
-        key: _zwanehalzenNavigatorKey,
-        // TODO: Fix ignore below.
-        // ignore: prefer-correct-handler-name
-        onGenerateRoute: onGenerateRoute,
-      ),
-      // TODO: Fix ignore below.
-      // ignore: avoid-negated-conditions
-      onWillPop: () async => !await (_zwanehalzenNavigatorKey.currentState !=
-              null
-          // TODO: Use different router to don't deal with this mess of two nagivators.
-
-          // ignore: avoid-non-null-assertion
-          ? _zwanehalzenNavigatorKey.currentState!.maybePop()
-          : Future.value(false)),
-    );
-  }
-
-  // TODO: Fix ignore below.
-  // ignore: prefer-widget-private-members
-  Route onGenerateRoute(RouteSettings settings) {
+  Route _onGenerateRoute(RouteSettings settings) {
     if ((settings.name ?? '').startsWith('_file/')) {
       final name = (settings.name ?? '').replaceFirst('_file/', '');
 
@@ -49,6 +25,25 @@ class _ZwanehalzenMainPageState extends State<ZwanehalzenMainPage> {
     return MaterialPageRoute(
       builder: (_) => ZwanehalzenFolderPage(path: settings.name ?? ''),
       settings: settings,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      child: Navigator(
+        key: _zwanehalzenNavigatorKey,
+        // ignore: prefer-correct-handler-name
+        onGenerateRoute: _onGenerateRoute,
+      ),
+      onWillPop: () async => await (_zwanehalzenNavigatorKey.currentState ==
+              null
+          // TODO: Use different router to don't deal with this mess of two nagivators.
+
+          // ignore: avoid-non-null-assertion
+          ? _zwanehalzenNavigatorKey.currentState!.maybePop()
+          : Future.value(false)),
     );
   }
 }
