@@ -7,8 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
@@ -24,71 +23,89 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  DateTime _openUntil = DateTime.now();
-  FirestoreUser? _firebaseUser;
+  DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
-  @override
-  void initState() {
-    super.initState();
-    _firebaseUser = ref.read(currentFirestoreUserProvider);
+  bool get _formHasUnfilledSingleChoiceQuestions {
+    for (FirestoreFormQuestion question in _questions) {
+      final questionOptions = question.options;
+      if (question.type == FormQuestionType.singleChoice &&
+          (questionOptions == null || questionOptions.isEmpty)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
-  Future<void> _handleSubmitForm(BuildContext context) async {
+  bool get _formsHasNoQuestions => _questions.isEmpty;
+
+  // ignore: avoid-long-functions
+  Future<void> _handleSubmitForm(BuildContext context, WidgetRef ref) async {
     final currentState = _formKey.currentState;
-    if (currentState?.validate() ?? false) {
-      if (_questions.isEmpty) {
-        const snackBar = SnackBar(
-          content: Text('Formulier moet minimaal 1 vraag hebben.'),
+    if (currentState?.validate() == false) {
+      return;
+    }
+    currentState?.save();
+
+    if (_formsHasNoQuestions) {
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Formulier moet minimaal 1 vraag hebben.'),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
+
+      return;
+    }
+
+    if (!_formHasUnfilledSingleChoiceQuestions) {
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          'SingleChoice vraag moet minimaal een keuze bevatten.',
+        ),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+      ));
+
+      return;
+    }
+
+    final currentUser = ref.read(currentUserNotifierProvider);
+    if (currentUser == null) {
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Gebruiker is niet ingelogd.'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
-        );
-        // ignore: avoid-ignoring-return-values
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ),
+      );
 
-        return;
-      }
+      return;
+    }
 
-      for (FirestoreFormQuestion question in _questions) {
-        final questionOptions = question.options;
-        if (question.type == FormQuestionType.singleChoice &&
-            (questionOptions == null || questionOptions.isEmpty)) {
-          const snackBar = SnackBar(
-            content: Text(
-              'SingleChoice vraag moet minimaal een keuze bevatten.',
-            ),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          );
-
-          // ignore: avoid-ignoring-return-values
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      }
-
-      currentState?.save();
-      final form = FirestoreForm(
+    final result = await FormRepository.createForm(
+      form: FirestoreForm(
         createdTime: Timestamp.now(),
         title: _formName.text,
         questions: _questions,
         openUntil: Timestamp.fromDate(_openUntil),
         description: _description.text,
-        authorId: _firebaseUser?.identifier ?? '',
-      );
+        authorId: currentUser.identifier.toString(),
+        authorName: currentUser.fullName,
+      ),
+    );
 
-      final result = await FormRepository.upsertCreateForm(form: form);
+    if (!mounted) return;
+    // ignore: avoid-ignoring-return-values
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Form gemaakt met id: ${result.id}'),
+      backgroundColor: Colors.green,
+      duration: const Duration(seconds: 3),
+    ));
 
-      final snackBarMessage = 'Form gemaakt met id: ${result.id}';
-      final snackBar = SnackBar(
-        content: Text(snackBarMessage),
-        backgroundColor: Colors.green,
-        duration: const Duration(seconds: 3),
-      );
-      if (!mounted) return;
-      // ignore: avoid-ignoring-return-values
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-      context.pop();
-    }
+    context.pop();
   }
 
   @override
@@ -181,7 +198,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         tooltip: 'Maak nieuwe form',
         heroTag: 'submitForm',
         // ignore: avoid-async-call-in-sync-function
-        onPressed: () => _handleSubmitForm(context),
+        onPressed: () => _handleSubmitForm(context, ref),
         icon: const Icon(Icons.send),
         label: const Text('Maak nieuwe form'),
       ),
