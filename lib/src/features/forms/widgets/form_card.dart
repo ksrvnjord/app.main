@@ -54,13 +54,15 @@ class FormCard extends ConsumerWidget {
             style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
           ),
           userAnswerProvider.when(
-            data: (snapshot) => AnswerStatusCard(
-              answerExists: snapshot.docs.isNotEmpty,
-              isCompleted: snapshot.docs.isNotEmpty &&
-                  // ignore: avoid-unsafe-collection-methods
-                  snapshot.docs.first.data().isCompleted,
-              textStyle: textTheme.labelLarge,
-            ),
+            data: (snapshot) => snapshot.docs.isEmpty
+                ? const SizedBox.shrink()
+                : AnswerStatusCard(
+                    answerExists: snapshot.docs.isNotEmpty,
+                    isCompleted: snapshot.docs.isNotEmpty &&
+                        // ignore: avoid-unsafe-collection-methods
+                        snapshot.docs.first.data().isCompleted,
+                    textStyle: textTheme.labelLarge,
+                  ),
             error: (err, stack) => Text('Error: $err'),
             loading: () => const SizedBox.shrink(),
           ),

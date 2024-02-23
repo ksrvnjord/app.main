@@ -34,7 +34,7 @@ class AnswerStatusCard extends StatelessWidget {
             ).padding(horizontal: horizontalPadding, vertical: verticalPadding),
           )
         : Card(
-            color: colorScheme.outlineVariant,
+            color: colorScheme.tertiaryContainer,
             elevation: 0,
             margin: EdgeInsets.zero,
             child: Text("Niet ingevuld", style: textStyle).padding(
