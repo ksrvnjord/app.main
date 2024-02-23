@@ -21,6 +21,7 @@ class FirestoreForm {
 
   final String? description;
   final String authorId;
+  final String authorName;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance.collection('forms').withConverter(
@@ -36,6 +37,7 @@ class FirestoreForm {
     required this.openUntil,
     this.description,
     required this.authorId,
+    required this.authorName,
   });
 
   // Create fromJson method.

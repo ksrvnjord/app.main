@@ -18,6 +18,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
           .fromJson(json['openUntil'] as Timestamp),
       description: json['description'] as String?,
       authorId: json['authorId'] as String,
+      authorName: json['authorName'] as String,
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
@@ -30,4 +31,5 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
           const TimestampDateTimeConverter().toJson(instance.createdTime),
       'description': instance.description,
       'authorId': instance.authorId,
+      'authorName': instance.authorName,
     };

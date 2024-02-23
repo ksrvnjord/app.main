@@ -55,7 +55,7 @@ class FormRepository {
           ));
   }
 
-  static Future<DocumentReference<FirestoreForm>> upsertCreateForm({
+  static Future<DocumentReference<FirestoreForm>> createForm({
     required FirestoreForm form,
   }) async {
     return await FirestoreForm.firestoreConvert.add(form);

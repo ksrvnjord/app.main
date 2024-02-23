@@ -22,7 +22,10 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
     final substructureUsers = ref.watch(substructureUsersProvider(name));
 
     const double pageHPadding = 12;
-    const double descriptionHPadding = pageHPadding + 4;
+
+    final descriptionAsyncVal = ref.watch(
+      substructureDescriptionProvider(name),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -38,10 +41,9 @@ class AlmanakSubstructuurPage extends ConsumerWidget {
             ),
           ).padding(horizontal: pageHPadding),
           SubstructureDescriptionWidget(
-            descriptionAsyncVal: ref.watch(
-              substructureDescriptionProvider(name),
-            ),
-          ).padding(all: descriptionHPadding),
+            descriptionAsyncVal: descriptionAsyncVal,
+          ),
+          const SizedBox(height: pageHPadding),
           substructureUsers.when(
             data: (snapshot) =>
                 LeedenList(name: name, almanakProfileSnapshot: snapshot),

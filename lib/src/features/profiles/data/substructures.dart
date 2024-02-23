@@ -9,4 +9,5 @@ final SplayTreeSet<String> substructures = SplayTreeSet<String>.of({
   'Verdandi',
   'Waka',
   'Walkuren',
+  "Naucrates",
 });
