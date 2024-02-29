@@ -1,22 +1,20 @@
-import 'package:graphql/client.dart';
-import '../api/almanak.graphql.dart';
+import 'dart:convert';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 // ignore: prefer-static-class
-Future<Query$Almanak$users?> almanakUsers(
-  int first,
+Future<Map<String, dynamic>> almanakUsers(
   int page,
   String search,
-  GraphQLClient client,
+  WidgetRef ref,
 ) async {
-  final result = await client.query$Almanak(Options$Query$Almanak(
-    variables: Variables$Query$Almanak(
-      search: search != '' ? search : null,
-      first: first,
-      page: page,
-    ),
-  ));
+  final dio = ref.watch(dioProvider);
 
-  final parsedData = result.parsedData;
+  final res = await dio.get("/api/users/users/", queryParameters: {
+    "page": page,
+    "search": search,
+  });
 
-  return parsedData?.users;
+  return jsonDecode(res.toString()) as Map<String, dynamic>;
 }
