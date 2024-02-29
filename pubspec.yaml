@@ -17,7 +17,6 @@ dependencies:
   cloud_firestore:
   url_launcher: ^6.1.5
   sentry_flutter: ^7.10.1
-  gql: ^0.14.0
   styled_widget: ^0.4.0+3
   oauth2: ^2.0.0
   get_it: ^7.2.0
