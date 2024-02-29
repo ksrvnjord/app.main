@@ -1,31 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/almanak.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_button_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
-class AlmanakScrollingWidget extends StatefulWidget {
-  final GraphQLClient client;
+class AlmanakScrollingWidget extends ConsumerStatefulWidget {
+  const AlmanakScrollingWidget({Key? key, this.search = '', this.onTap})
+      : super(key: key);
+
   final String search;
   final void Function(int userId)? onTap;
-
-  const AlmanakScrollingWidget({
-    Key? key,
-    required this.client,
-    this.search = '',
-    this.onTap,
-  }) : super(key: key);
 
   @override
   createState() => _AlmanakScrollingState();
 }
 
-class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
-  final _pagingController = PagingController<int, Query$Almanak$users$data>(
+class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
+  final _pagingController = PagingController<int, DjangoUser>(
     firstPageKey: 1,
   );
 
@@ -40,18 +35,21 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
   Future<void> _fetchPage(
     int pageKey,
   ) async {
-    int usersPerPage = 25;
-    Query$Almanak$users? result =
-        await almanakUsers(usersPerPage, pageKey, widget.search, widget.client);
+    const amountOfResults = 100;
+    final result = await almanakUsers(pageKey, widget.search, ref);
 
-    if (result != null) {
-      List<Query$Almanak$users$data>? page = result.data;
-      if (result.paginatorInfo.hasMorePages) {
-        _pagingController.appendPage(page, pageKey + 1);
-      } else {
-        _pagingController.appendLastPage(page);
-      }
+    final users = result['results'] as List;
+
+    List<DjangoUser>? page = users
+        .map((user) => DjangoUser.fromJson(user as Map<String, dynamic>))
+        .toList();
+
+    if (result['count'] / amountOfResults > pageKey) {
+      _pagingController.appendPage(page, pageKey + 1);
+
+      return;
     }
+    _pagingController.appendLastPage(page);
   }
 
   @override
@@ -67,19 +65,20 @@ class _AlmanakScrollingState extends State<AlmanakScrollingWidget> {
     final onTap = widget.onTap;
 
     return RefreshIndicator(
-      child: PagedListView<int, Query$Almanak$users$data>.separated(
+      child: PagedListView<int, DjangoUser>.separated(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<Query$Almanak$users$data>(
+        builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, item, index) => AlmanakUserButtonWidget(
             item,
             onTap: () => onTap != null
-                ? onTap(int.parse(item.identifier))
+                ? onTap(int.parse(item.identifier.toString()))
+                // ignore: avoid-async-call-in-sync-function
                 : context.pushNamed(
                     "Lid",
                     pathParameters: {
                       "id": FirebaseAuth.instance.currentUser != null
-                          ? item.identifier
-                          : item.id,
+                          ? item.identifier.toString()
+                          : item.id.toString(),
                     },
                   ),
           ),
