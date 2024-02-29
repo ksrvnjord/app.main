@@ -4,9 +4,6 @@ targets:
       graphql_codegen:
         options:
           generatedFileHeader: "// ignore_for_file: type=lint\n"
-          clients:
-            - graphql
-            - graphql_flutter
           scalars:
             DateTime:
               type: DateTime
