@@ -150,9 +150,13 @@ class _EditAlmanakProfilePageState
               ),
               ListTile(
                 title: const Text('Bekijk mijn persoonsgegevens'),
+                subtitle: const Text(
+                  "In verband met een gegevensmigratie zijn je persoonsgegevens op dit moment niet in te zien. Neem contact op met de ab-actis als je deze wilt inzien.",
+                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
+                enabled: false,
                 onTap: () => context.goNamed(
                   "Sensitive Data",
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.

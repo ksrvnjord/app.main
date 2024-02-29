@@ -57,8 +57,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
@@ -268,11 +266,6 @@ class Routes {
               ),
             ),
             _route(
-              path: 'gevoelige-data',
-              name: "Sensitive Data",
-              child: const MePage(),
-            ),
-            _route(
               path: 'permissies',
               name: "My Permissions",
               child: const MyPermissionsPage(),
@@ -297,11 +290,6 @@ class Routes {
                   path: 'notificatie-voorkeuren',
                   name: "Notification Preferences",
                   child: const NotificationsPage(),
-                ),
-                _route(
-                  path: 'zichtbaarheid',
-                  name: RouteName.editMyVisibility,
-                  child: const MePrivacyPage(),
                 ),
               ],
             ),

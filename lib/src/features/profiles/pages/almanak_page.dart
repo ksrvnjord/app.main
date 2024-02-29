@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakPage extends StatelessWidget {
+class AlmanakPage extends ConsumerWidget {
   const AlmanakPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const double choiceWidgetPadding = 8;
     const pageOffset = 0.0;
-
-    final currentUser = GetIt.I<CurrentUser>();
-    final bool isVisibleInAlmanak = currentUser.user?.listed ?? true;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,18 +22,6 @@ class AlmanakPage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: [
-            if (!isVisibleInAlmanak)
-              MaterialBanner(
-                content: const Text('Je bent niet zichtbaar in de almanak.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => context.goNamed('Visibility'),
-                    child: const Text('Wijzig'),
-                  ),
-                ],
-                leading: const CircleAvatar(child: Icon(Icons.visibility_off)),
-                dividerColor: Colors.transparent,
-              ),
             const AlmanakStructureChoiceWidget(
               pushRoute: "Leeden",
               title: "Leeden",

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 
 @immutable
 class Comment {
@@ -47,12 +45,8 @@ class Comment {
   static Future<DocumentReference<Comment>> createComment({
     required String content,
     required String postId,
+    required String authorName,
   }) {
-    final current = GetIt.I<CurrentUser>();
-    final private = current.user?.fullContact.private;
-    final firstName = private?.first_name;
-    final lastName = private?.last_name;
-
     return FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
@@ -64,7 +58,7 @@ class Comment {
         )
         .add(Comment(
           authorId: FirebaseAuth.instance.currentUser?.uid ?? "",
-          authorName: "$firstName $lastName",
+          authorName: authorName,
           content: content,
           createdTime: Timestamp.now(),
         ));
