@@ -191,6 +191,7 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
                         fields[idx][key]?['changed'] =
                             (label['initial'] != label['controller'].text);
                       }),
+                      enabled: false,
                     ).padding(all: fieldPadding);
                   }),
                 );
@@ -198,20 +199,11 @@ class _MeWidgetState extends ConsumerState<MeWidget> {
               .toList()
               .toRow();
         }).toList(),
-        ElevatedButton(
-          onPressed: () => save(context, client),
-          child: saving
-              ? const SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: CircularProgressIndicator.adaptive(),
-                ).center().padding(all: onSaveButtonPadding)
-              : const Text('Verstuur wijzigingsverzoek'),
-        ).padding(all: saveButtonPadding),
       ],
     );
   }
 
+// ignore: unused-code
   void save(BuildContext context, GraphQLClient client) async {
     setState(() {
       saving = true;

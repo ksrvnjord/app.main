@@ -30,6 +30,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
+                enabled: false,
+                // TODO: Implement this feature with new API.
                 onTap: () => context.goNamed(
                   RouteName.editMyVisibility,
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
