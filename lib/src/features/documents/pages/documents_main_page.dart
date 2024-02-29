@@ -14,6 +14,24 @@ class DocumentsMainPage extends StatefulWidget {
 class _DocumentsMainPageState extends State<DocumentsMainPage> {
   final _documentsNavigatorKey = GlobalKey<NavigatorState>();
 
+  Route onGenerateRoute(RouteSettings settings) {
+    debugPrint('Route name: ${settings.name}');
+
+    if ((settings.name ?? '').startsWith('_file/')) {
+      final name = (settings.name ?? '').replaceFirst('_file/', '');
+
+      return MaterialPageRoute(
+        builder: (_) => DocumentsFilePage(path: name),
+        settings: settings,
+      );
+    }
+
+    return MaterialPageRoute(
+      builder: (_) => DocumentsFolderPage(path: settings.name ?? ''),
+      settings: settings,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
@@ -28,22 +46,6 @@ class _DocumentsMainPageState extends State<DocumentsMainPage> {
           // ignore: avoid-non-null-assertion
           ? _documentsNavigatorKey.currentState!.maybePop()
           : Future.value(false)),
-    );
-  }
-
-  Route onGenerateRoute(RouteSettings settings) {
-    if ((settings.name ?? '').startsWith('_file/')) {
-      final name = (settings.name ?? '').replaceFirst('_file/', '');
-
-      return MaterialPageRoute(
-        builder: (_) => DocumentsFilePage(path: name),
-        settings: settings,
-      );
-    }
-
-    return MaterialPageRoute(
-      builder: (_) => DocumentsFolderPage(path: settings.name ?? ''),
-      settings: settings,
     );
   }
 }

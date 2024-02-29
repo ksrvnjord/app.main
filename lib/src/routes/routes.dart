@@ -595,7 +595,7 @@ class Routes {
         _route(
           path: "documenten",
           name: "Documents",
-          child: const DocumentsMainPage(),
+          child: const ZwanehalzenMainPage(), //DocumentsMainPage(),
         ),
         // Route for contact page.
         _route(

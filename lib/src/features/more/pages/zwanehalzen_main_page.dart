@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/zwanehalzen_file_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/zwanehalzen_folder_page.dart';
@@ -13,6 +14,11 @@ class _ZwanehalzenMainPageState extends State<ZwanehalzenMainPage> {
   final _zwanehalzenNavigatorKey = GlobalKey<NavigatorState>();
 
   Route _onGenerateRoute(RouteSettings settings) {
+    final route = ModalRoute.of(context);
+    final routeName = route?.settings.name?.toLowerCase();
+    debugPrint('Route name: $routeName');
+    settings = RouteSettings(name: '/$routeName${settings.name ?? ''}');
+
     if ((settings.name ?? '').startsWith('_file/')) {
       final name = (settings.name ?? '').replaceFirst('_file/', '');
 

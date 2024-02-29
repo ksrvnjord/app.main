@@ -17,13 +17,19 @@ class ZwanehalzenFolderPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: path == '/'
-            ? IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.arrow_back),
-              )
-            : null,
-        title: Text(path == '/' ? "Documenten" : path.replaceAll('-', ' ')),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: const Icon(Icons.arrow_back),
+        ),
+        // path == '/'                OLD CODE UNSURE WHY IT WAS HERE
+        //     ? IconButton(
+        //         onPressed: () => context.pop(),
+        //         icon: const Icon(Icons.arrow_back),
+        //       )
+        //     : null,
+        title: Text(path == '/'
+            ? "Documenten"
+            : path.replaceAll('-', ' ').replaceAll('/', '')),
       ),
       body: RefreshIndicator(
         child: rootFolder.when(
