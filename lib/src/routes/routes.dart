@@ -36,6 +36,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/advanced_settings_pag
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -318,6 +319,17 @@ class Routes {
               postDocId: state.pathParameters['id']!,
             ),
             name: RouteName.postComments,
+          ),
+        ),
+        _route(
+          path: ':id/liked-by',
+          name: "Liked By",
+          pageBuilder: (context, state) => _getPage(
+            child: LikedByPage(
+              // PostDocId: state.pathParameters['id']!,.
+              snapshotId: state.pathParameters['id']!,
+            ),
+            name: "Liked By",
           ),
         ),
       ],

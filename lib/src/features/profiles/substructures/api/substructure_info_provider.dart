@@ -11,5 +11,17 @@ final substructureDescriptionProvider =
   String yaml = await rootBundle.loadString(AssetData.substructuren);
   final YamlMap doc = loadYaml(yaml);
 
+  final contains = doc.containsKey(name);
+  if (!contains) {
+    return null;
+  }
+
+  final bool hasDescription = doc[name].containsKey('description');
+
+  if (!hasDescription) {
+    return null;
+  }
+
+  // ignore: prefer-returning-conditional-expressions
   return doc[name]['description'];
 });

@@ -14,12 +14,13 @@ class CharityAgenda extends StatelessWidget {
       height: height2,
       child: ListView(
         children: const [
-          CharityAgendaItem(date: '22 december', eventName: 'Kerstmarkt'),
+          CharityAgendaItem(date: '12 maart', eventName: 'Hollandia Borrel'),
           CharityAgendaItem(
-            date: '21 januari',
-            eventName: 'Lustrumsyposium',
+            date: '19,20,21 maart',
+            eventName: 'Hollandia Lustrum Wedstrijden',
           ),
-          CharityAgendaItem(date: '22 januari', eventName: 'Duinloop'),
+          CharityAgendaItem(date: '28 april', eventName: 'Haringparty'),
+          CharityAgendaItem(date: '9 mei', eventName: 'Lustrum Wielerronde'),
         ],
       ),
     );
