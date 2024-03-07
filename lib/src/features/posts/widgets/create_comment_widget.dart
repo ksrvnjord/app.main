@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/comment.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class CreateCommentWidget extends StatefulWidget {
+class CreateCommentWidget extends ConsumerStatefulWidget {
   const CreateCommentWidget({
     Key? key,
     required this.postDocId,
@@ -15,7 +18,7 @@ class CreateCommentWidget extends StatefulWidget {
   CreateCommentWidgetState createState() => CreateCommentWidgetState();
 }
 
-class CreateCommentWidgetState extends State<CreateCommentWidget> {
+class CreateCommentWidgetState extends ConsumerState<CreateCommentWidget> {
   static const double sendIconPadding = 8;
 
   final _formKey = GlobalKey<FormState>();
@@ -27,6 +30,8 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
     const inputMaxLength = 1726;
 
     final colorScheme = Theme.of(context).colorScheme;
+
+    final currentUser = ref.watch(currentUserNotifierProvider);
 
     return Form(
       key: _formKey,
@@ -49,13 +54,13 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
         InkWell(
           // ignore: sort_child_properties_last
           child: const Icon(Icons.send).padding(all: sendIconPadding),
-          onTap: submitForm,
+          onTap: currentUser == null ? null : () => submitForm(currentUser),
         ), // Expand in the cross axis.
       ].toRow().backgroundColor(colorScheme.surfaceVariant),
     );
   }
 
-  void submitForm() async {
+  void submitForm(User u) async {
     final formState = _formKey.currentState;
     if (formState != null && !formState.validate()) {
       return;
@@ -66,6 +71,7 @@ class CreateCommentWidgetState extends State<CreateCommentWidget> {
     await Comment.createComment(
       content: _commentContent,
       postId: widget.postDocId,
+      authorName: u.fullName,
     );
 
     formState?.reset(); // Reset the form.

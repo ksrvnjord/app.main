@@ -45,6 +45,7 @@ class SingleChoiceWidget extends StatelessWidget {
                       value: choice,
                       groupValue: initialValue,
                       onChanged: formIsOpen ? onChanged : null,
+                      toggleable: true,
                       title: Text(choice),
                     ))
                 .toList(),

@@ -56,11 +56,9 @@ final userProvider = StreamProvider.family<User, String>(
 
     if (user == null) {
       // If in DEMO mode, the lidnummer is the heimdall id.
-      final profile = await DjangoUser.getByIdGraphQL(lidnummer, ref);
+      final profile = await DjangoUser.getById(lidnummer, ref);
 
-      yield User(
-        django: DjangoUser.fromHeimdallDemoEnv(profile),
-      );
+      yield User(django: profile);
 
       return;
     }

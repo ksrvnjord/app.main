@@ -36,6 +36,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/advanced_settings_pag
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
+import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -57,8 +58,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/pages/me_page.dart';
-import 'package:ksrvnjord_main_app/src/features/settings/pages/me_privacy_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
@@ -94,7 +93,7 @@ class Routes {
   /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
   ///
   /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
-  // ignore: prefer-static-class
+  // ignore: prefer-static-class, avoid-long-functions
   static final routerProvider = Provider((ref) {
     return GoRouter(
       routes: [
@@ -142,16 +141,17 @@ class Routes {
               : {'from': state.uri.toString()},
         ).toString();
 
+        final routeRequiresAuth =
+            !Routes._unauthenticated.any((route) => route.path == currentPath);
+
         switch (authState) {
           case AuthState.loading:
-            if (currentPath != loginPath) {
+            if (currentPath != loginPath && routeRequiresAuth) {
               // Loading happens on login page, as login page shows the loading widget.
               return loginPathWithRedirect;
             }
             break;
           case AuthState.unauthenticated:
-            final routeRequiresAuth = !Routes._unauthenticated
-                .any((route) => route.path == currentPath);
             if (routeRequiresAuth) {
               return loginPathWithRedirect;
             }
@@ -267,11 +267,6 @@ class Routes {
               ),
             ),
             _route(
-              path: 'gevoelige-data',
-              name: "Sensitive Data",
-              child: const MePage(),
-            ),
-            _route(
               path: 'permissies',
               name: "My Permissions",
               child: const MyPermissionsPage(),
@@ -296,11 +291,6 @@ class Routes {
                   path: 'notificatie-voorkeuren',
                   name: "Notification Preferences",
                   child: const NotificationsPage(),
-                ),
-                _route(
-                  path: 'zichtbaarheid',
-                  name: RouteName.editMyVisibility,
-                  child: const MePrivacyPage(),
                 ),
               ],
             ),
@@ -329,6 +319,17 @@ class Routes {
               postDocId: state.pathParameters['id']!,
             ),
             name: RouteName.postComments,
+          ),
+        ),
+        _route(
+          path: ':id/liked-by',
+          name: "Liked By",
+          pageBuilder: (context, state) => _getPage(
+            child: LikedByPage(
+              // PostDocId: state.pathParameters['id']!,.
+              snapshotId: state.pathParameters['id']!,
+            ),
+            name: "Liked By",
           ),
         ),
       ],

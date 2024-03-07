@@ -41,9 +41,9 @@ class CharityPage extends ConsumerWidget {
               // ignore: no-equal-arguments
               height: logoSize,
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 8),
             const Text('Lustrumgoededoel'),
-            const SizedBox(width: 20),
+            const SizedBox(width: 8),
             Image.asset(
               'assets/images/leontienhuis-mirrored.png',
               width: logoSize,

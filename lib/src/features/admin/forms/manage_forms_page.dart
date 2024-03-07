@@ -22,14 +22,15 @@ class ManageFormsPage extends ConsumerWidget {
             : ListView.builder(
                 itemBuilder: (innerContext, index) {
                   // ignore: avoid-unsafe-collection-methods
-                  final form = snapshot.docs[index];
+                  final doc = snapshot.docs[index];
+                  final form = doc.data();
 
                   return ListTile(
-                    title: Text(form['formName']),
+                    title: Text(form.title),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () => innerContext.goNamed(
                       'View Form',
-                      pathParameters: {'formId': form.id},
+                      pathParameters: {'formId': doc.id},
                     ),
                   );
                 },

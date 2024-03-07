@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
@@ -11,7 +10,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_backgr
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/current_user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class MorePage extends ConsumerWidget {
@@ -60,11 +58,7 @@ class MorePage extends ConsumerWidget {
               ),
               trailing: const Icon(Icons.feedback_outlined),
               onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
-                name: GetIt.I<CurrentUser>()
-                        .user
-                        ?.username ?? // CurrentUser might not be filled yet.
-                    FirebaseAuth.instance.currentUser?.uid ??
-                    "Anoniem",
+                name: FirebaseAuth.instance.currentUser?.uid ?? "Anoniem",
               ),
             ),
             const Divider(height: 0, thickness: 0.5),
