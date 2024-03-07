@@ -18,7 +18,7 @@ class FolderButton extends ConsumerWidget {
     const iconSize = 64.0;
 
     List<String> splitPath = item.fullPath.split('documents/');
-
+    
     final itemChildrenVal = ref.watch(storagePathChildrenProvider(item));
 
     final textTheme = Theme.of(context).textTheme;

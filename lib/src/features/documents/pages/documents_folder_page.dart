@@ -7,26 +7,34 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class DocumentsFolderPage extends ConsumerWidget {
-  final String path;
-
   const DocumentsFolderPage({
     Key? key,
     required this.path,
+    required this.rootPath,
   }) : super(key: key);
+
+  final String path;
+  final String rootPath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final rootFolder = ref.watch(documentsFolderRef(path));
 
+    final storageNameToAppNameMap = {'zwanehalzen': 'Zwanehalzen'};
+
+    final appFolderName = storageNameToAppNameMap[rootPath] ?? 'Documenten';
+
     return Scaffold(
       appBar: AppBar(
-        leading: path == '/'
+        leading: path == '$rootPath//'
             ? IconButton(
                 onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back),
               )
             : null,
-        title: Text(path == '/' ? "Documenten" : path.replaceAll('-', ' ')),
+        title: Text(path == '$rootPath//'
+            ? appFolderName
+            : path.replaceAll('-', ' ').replaceAll('$rootPath/', '')),
       ),
       body: RefreshIndicator(
         child: rootFolder.when(

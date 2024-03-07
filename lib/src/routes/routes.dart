@@ -23,7 +23,6 @@ import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.da
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
-import 'package:ksrvnjord_main_app/src/features/more/pages/zwanehalzen_main_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
@@ -595,7 +594,7 @@ class Routes {
         _route(
           path: "documenten",
           name: "Documents",
-          child: const ZwanehalzenMainPage(), //DocumentsMainPage(),
+          child: const DocumentsMainPage(),
         ),
         // Route for contact page.
         _route(
@@ -611,7 +610,7 @@ class Routes {
         _route(
           path: 'zwanehalzen',
           name: 'Zwanehalzen',
-          child: const ZwanehalzenMainPage(),
+          child: const DocumentsMainPage(),
         ),
         _route(
           path: "charity",

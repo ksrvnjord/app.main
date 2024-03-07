@@ -14,21 +14,28 @@ class DocumentsMainPage extends StatefulWidget {
 class _DocumentsMainPageState extends State<DocumentsMainPage> {
   final _documentsNavigatorKey = GlobalKey<NavigatorState>();
 
-  Route onGenerateRoute(RouteSettings settings) {
-    debugPrint('Route name: ${settings.name}');
+  Route onGenerateRoute(RouteSettings settingsInsideFolder) {
+    final route = ModalRoute.of(context);
+    final rootPath = route?.settings.name?.toLowerCase();
+    RouteSettings settingsFolder = RouteSettings(
+      name: '${rootPath ?? ''}/${settingsInsideFolder.name ?? ''}',
+    );
 
-    if ((settings.name ?? '').startsWith('_file/')) {
-      final name = (settings.name ?? '').replaceFirst('_file/', '');
+    if ((settingsInsideFolder.name ?? '').startsWith('_file/')) {
+      final name = (settingsInsideFolder.name ?? '').replaceFirst('_file/', '');
 
       return MaterialPageRoute(
         builder: (_) => DocumentsFilePage(path: name),
-        settings: settings,
+        settings: settingsInsideFolder,
       );
     }
 
     return MaterialPageRoute(
-      builder: (_) => DocumentsFolderPage(path: settings.name ?? ''),
-      settings: settings,
+      builder: (_) => DocumentsFolderPage(
+        path: settingsFolder.name ?? '',
+        rootPath: rootPath ?? '',
+      ),
+      settings: settingsFolder,
     );
   }
 
