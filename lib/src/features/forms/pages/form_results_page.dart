@@ -118,12 +118,19 @@ class FormResultsPage extends ConsumerWidget {
     final formVal = ref.watch(formProvider(formsCollection.doc(formId)));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Form Reacties')),
+      appBar: AppBar(
+        title: Text('Volledige Reacties (${completedAnswersVal.maybeWhen(
+          data: (answers) => "${answers.size}",
+          orElse: () => "",
+        )})'),
+      ),
       body: completedAnswersVal.when(
         data: (answers) {
           return answers.size == 0
               ? const Center(
-                  child: Text('Er zijn nog geen reacties op deze form'),
+                  child: Text(
+                    'Er zijn nog geen (volledige ingevulde) reacties op deze form',
+                  ),
                 )
               : ListView.builder(
                   padding: const EdgeInsets.only(bottom: 80),

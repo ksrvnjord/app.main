@@ -99,14 +99,14 @@ class ManageFormPage extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        tooltip: 'Bekijk form reacties',
+        tooltip: 'Bekijk (volledige ingevulde) reacties',
         heroTag: 'form_results',
         onPressed: () => context.pushNamed(
           'Form Results',
           pathParameters: {'formId': formId},
         ).ignore(),
         icon: const Icon(Icons.list),
-        label: const Text('Bekijk form reacties'),
+        label: const Text('Bekijk (volledig ingevulde) reacties'),
       ),
     );
   }

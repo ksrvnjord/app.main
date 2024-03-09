@@ -2,6 +2,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/forms/form_reaction_count_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
@@ -25,8 +27,18 @@ class ManageFormsPage extends ConsumerWidget {
                   final doc = snapshot.docs[index];
                   final form = doc.data();
 
+                  final formIsOpen =
+                      form.openUntil.toDate().isAfter(DateTime.now());
+
+                  final partialReactionVal = ref.watch(
+                    formPartialReactionCountProvider(doc.id),
+                  );
+
                   return ListTile(
                     title: Text(form.title),
+                    subtitle: Text(
+                      "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}${partialReactionVal.maybeWhen(data: (count) => " - Volledig ingevulde + Onvolledig ingevulde reacties: $count", orElse: () => "")}",
+                    ),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () => innerContext.goNamed(
                       'View Form',
