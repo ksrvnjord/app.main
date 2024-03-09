@@ -17,8 +17,9 @@ import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/form_results_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/pages/show_form_results_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/manage_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
@@ -658,8 +659,20 @@ class Routes {
             _route(
               path: ':formId',
               name: "View Form",
+              routes: [
+                _route(
+                  path: 'resultaten',
+                  name: "Form Results",
+                  pageBuilder: (context, state) => _getPage(
+                    child: FormResultsPage(
+                      formId: state.pathParameters['formId']!,
+                    ),
+                    name: "Form Results",
+                  ),
+                ),
+              ],
               pageBuilder: (context, state) => _getPage(
-                child: ShowFormResultsPage(
+                child: ManageFormPage(
                   formId: state.pathParameters['formId']!,
                 ),
                 name: "View Form",
