@@ -65,8 +65,8 @@ class FileButton extends ConsumerWidget {
                   ? DateFormat("dd/MM/yyyy").format(updated)
                   : "";
             },
+            error: (err, trace) => "Metadata niet beschikbaar",
             loading: () => "Laden...",
-            error: (err, trace) => err.toString(),
           ),
           style: labelSmall,
           textAlign: TextAlign.center,

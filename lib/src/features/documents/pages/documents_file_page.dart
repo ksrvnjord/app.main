@@ -16,11 +16,16 @@ class DocumentsFilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (path.endsWith('pdf')) {
+    final isPDF = path.endsWith('pdf');
+    final isImage = path.endsWith('jpg') || path.endsWith('jpeg');
+    // Extract the filename extension.
+    final fileNameWithExtension = path.split('/').last;
+    final fileExtension = fileNameWithExtension.split('.').last;
+
+    if (isPDF) {
       final pdfData = ref.watch(documentUint8Provider(path));
-      final fileNameFull = path.split('/').last;
-      final filename =
-          fileNameFull.characters.getRange(0, fileNameFull.lastIndexOf("."));
+      final filename = fileNameWithExtension.characters
+          .getRange(0, fileNameWithExtension.lastIndexOf("."));
 
       return Scaffold(
         appBar: AppBar(
@@ -34,15 +39,16 @@ class DocumentsFilePage extends ConsumerWidget {
           loading: () => const CircularProgressIndicator.adaptive().center(),
         ),
       );
-    }
-
-    if (path.endsWith('jpg') || path.endsWith('jpeg')) {
+    } else if (isImage) {
       return GalleryFilePage(path: path);
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("File not supported."),
+      appBar: AppBar(title: const Text("Foutmelding")),
+      body: Center(
+        child: ErrorCardWidget(
+          errorMessage: "Bestandstype $fileExtension niet ondersteund",
+        ),
       ),
     );
   }
