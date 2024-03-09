@@ -10,7 +10,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provi
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
 
