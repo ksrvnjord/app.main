@@ -24,12 +24,14 @@ class _DocumentsMainPageState extends State<DocumentsMainPage> {
     if ((settingsInsideFolder.name ?? '').startsWith('_file/')) {
       final name = (settingsInsideFolder.name ?? '').replaceFirst('_file/', '');
 
+      // ignore: avoid-undisposed-instances
       return MaterialPageRoute(
         builder: (_) => DocumentsFilePage(path: name),
         settings: settingsInsideFolder,
       );
     }
 
+    // ignore: avoid-undisposed-instances
     return MaterialPageRoute(
       builder: (_) => DocumentsFolderPage(
         path: settingsFolder.name ?? '',

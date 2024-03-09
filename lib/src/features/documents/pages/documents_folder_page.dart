@@ -20,9 +20,16 @@ class DocumentsFolderPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final rootFolder = ref.watch(documentsFolderRef(path));
 
-    final storageNameToAppNameMap = {'zwanehalzen': 'Zwanehalzen'};
+    final appFolderName = {
+      'documents': 'Documenten',
+      'zwanehalzen': 'Zwanehalzen',
+    }[rootPath];
 
-    final appFolderName = storageNameToAppNameMap[rootPath] ?? 'Documenten';
+    if (appFolderName == null) {
+      throw UnimplementedError(
+        'No app folder name found for rootPath: $rootPath',
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +41,7 @@ class DocumentsFolderPage extends ConsumerWidget {
             : null,
         title: Text(path == '$rootPath//'
             ? appFolderName
-            : path.replaceAll('-', ' ').replaceAll('$rootPath/', '')),
+            : path.replaceAll('-', ' ').replaceFirst('$rootPath/', '')),
       ),
       body: RefreshIndicator(
         child: rootFolder.when(

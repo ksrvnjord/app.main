@@ -37,18 +37,23 @@ class MorePage extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
+    const dividerThickness = 0.5;
+
+    const bottomPagePadding = 80.0;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Meer')),
       body: CustomPaint(
         painter: LustrumBackgroundWidget(pageOffset: pageOffset),
         child: ListView(
+          padding: const EdgeInsets.only(bottom: bottomPagePadding),
           children: [
             ...optionRouteMap.entries.map(
               // Make a list of options to display and navigate to.
               // Each option is a tile with a divider below it.
               (entry) => [
                 MoreListTile(label: entry.key, routeName: entry.value),
-                const Divider(height: 0, thickness: 0.5),
+                const Divider(height: 0, thickness: dividerThickness),
               ].toColumn(),
             ),
             ListTile(
@@ -61,33 +66,33 @@ class MorePage extends ConsumerWidget {
                 name: FirebaseAuth.instance.currentUser?.uid ?? "Anoniem",
               ),
             ),
-            const Divider(height: 0, thickness: 0.5),
+            const Divider(height: 0, thickness: dividerThickness),
             const MoreLinkTile(
               label: "Ga naar de Webshop",
               url: "https://k-s-r-v-njord.myshopify.com/",
             ),
-            const Divider(height: 0, thickness: 0.5),
+            const Divider(height: 0, thickness: dividerThickness),
             const MoreLinkTile(
               label: "Ga naar de Intekenlijst Instaposts",
               url:
                   "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
             ),
-            const Divider(height: 0, thickness: 0.5),
+            const Divider(height: 0, thickness: dividerThickness),
             const MoreLinkTile(
               label: 'Declareer Kosten aan de Quaestor',
               url:
                   'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
             ),
-            const Divider(height: 0, thickness: 0.5),
+            const Divider(height: 0, thickness: dividerThickness),
             const MoreLinkTile(
               label: 'Handige Linkjes - Linktree',
               url: 'https://linktr.ee/ksrvnjord_intern',
             ),
-            const Divider(height: 0, thickness: 0.5),
+            const Divider(height: 0, thickness: dividerThickness),
             ListTile(
               title: Text('Uitloggen', style: textTheme.titleMedium)
-                  .textColor(Colors.red),
-              trailing: const Icon(Icons.logout, color: Colors.red),
+                  .textColor(colorScheme.error),
+              trailing: Icon(Icons.logout, color: colorScheme.error),
               visualDensity: VisualDensity.standard,
               onTap: () => ref.read(authModelProvider).logout(),
             ),
