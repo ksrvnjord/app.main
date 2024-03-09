@@ -142,17 +142,8 @@ class FormResultsPage extends ConsumerWidget {
 
                     final userId = answer.userId;
 
-                    final userVal = ref.watch(userProvider(userId));
-
                     return ListTile(
-                      title: userVal.when(
-                        data: (user) => Text(
-                          "${user.fullName} (${user.identifier})",
-                        ),
-                        error: (error, stackTrace) =>
-                            Text('Fout met laden van Lid $userId'),
-                        loading: () => const Text('Loading...'),
-                      ),
+                      title: Text(userId),
                       subtitle: Text(
                         "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
                       ),

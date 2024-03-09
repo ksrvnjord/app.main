@@ -71,25 +71,28 @@ class ManageFormPage extends ConsumerWidget {
           return formData == null
               ? const ErrorCardWidget(errorMessage: 'Formulier niet gevonden')
                   .center()
-              : ListView(children: [
-                  DataTextListTile(name: "Form naam", value: formData.title),
-                  DataTextListTile(
-                    name: 'Open tot',
-                    value: formatter.format(formData.openUntil.toDate()),
-                  ),
-                  DataTextListTile(
-                    name: 'Beschrijving',
-                    value: formData.description ?? 'N/A',
-                  ),
-                  DataTextListTile(
-                    name: 'Formauteur',
-                    value: formData.authorId,
-                  ),
-                  DataTextListTile(
-                    name: 'Gecreerd op',
-                    value: formatter.format(formData.createdTime.toDate()),
-                  ),
-                ]);
+              : ListView(
+                  padding: const EdgeInsets.only(bottom: 104),
+                  children: [
+                    DataTextListTile(name: "Form naam", value: formData.title),
+                    DataTextListTile(
+                      name: 'Open tot',
+                      value: formatter.format(formData.openUntil.toDate()),
+                    ),
+                    DataTextListTile(
+                      name: 'Beschrijving',
+                      value: formData.description ?? 'N/A',
+                    ),
+                    DataTextListTile(
+                      name: 'Formauteur',
+                      value: formData.authorId,
+                    ),
+                    DataTextListTile(
+                      name: 'Gecreerd op',
+                      value: formatter.format(formData.createdTime.toDate()),
+                    ),
+                  ],
+                );
         },
         error: (error, stack) {
           return Center(child: Text('Error: $error'));

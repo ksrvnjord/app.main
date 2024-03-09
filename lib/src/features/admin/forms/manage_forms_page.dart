@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/form_reaction_count_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class ManageFormsPage extends ConsumerWidget {
   const ManageFormsPage({super.key});
@@ -22,6 +23,7 @@ class ManageFormsPage extends ConsumerWidget {
         data: (snapshot) => snapshot.docs.isEmpty
             ? const Center(child: Text('Geen forms gevonden'))
             : ListView.builder(
+                padding: const EdgeInsets.only(bottom: 80),
                 itemBuilder: (innerContext, index) {
                   // ignore: avoid-unsafe-collection-methods
                   final doc = snapshot.docs[index];
@@ -36,9 +38,16 @@ class ManageFormsPage extends ConsumerWidget {
 
                   return ListTile(
                     title: Text(form.title),
-                    subtitle: Text(
-                      "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}${partialReactionVal.maybeWhen(data: (count) => " - Volledig ingevulde + Onvolledig ingevulde reacties: $count", orElse: () => "")}",
-                    ),
+                    subtitle: [
+                      Text(
+                        "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}",
+                      ),
+                      Text(partialReactionVal.maybeWhen(
+                        data: (count) =>
+                            "Volledig + onvolledig ingevulde reacties: $count",
+                        orElse: () => "",
+                      )),
+                    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start),
                     trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () => innerContext.goNamed(
                       'View Form',
