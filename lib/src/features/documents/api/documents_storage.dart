@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 // ignore: prefer-static-class
 final documentsFolderRef =
     FutureProvider.autoDispose.family<ListResult, String>((ref, path) {
-  return FirebaseStorage.instance.ref().child("documents/$path").listAll();
+  return FirebaseStorage.instance.ref().child(path).listAll();
 });
 
 // ignore: prefer-static-class

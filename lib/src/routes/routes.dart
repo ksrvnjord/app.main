@@ -609,6 +609,11 @@ class Routes {
           child: const PrivacyPolicyPage(),
         ),
         _route(
+          path: 'zwanehalzen',
+          name: 'Zwanehalzen',
+          child: const DocumentsMainPage(),
+        ),
+        _route(
           path: "charity",
           name: "Charity",
           child: const CharityPage(),
