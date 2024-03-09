@@ -164,7 +164,8 @@ class FormResultsPage extends ConsumerWidget {
         error: (error, stackTrace) {
           return Center(child: Text('Error: $error'));
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
       ),
       floatingActionButton: formVal.maybeWhen(
         data: (formSnapshot) => completedAnswersVal.maybeWhen(
