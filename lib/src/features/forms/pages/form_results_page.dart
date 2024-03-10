@@ -1,3 +1,6 @@
+// ignore_for_file: avoid-long-functions, avoid-non-ascii-symbols
+
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,61 +12,89 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
+
+// This is used for the export options, the key is the name of the option, the value is a function that returns the value of the option, this makes it possible to asynchronously look up the user's name and allergies if necessary.
+typedef ExportOptionFunction = Future<String> Function(String userId);
 
 class FormResultsPage extends ConsumerWidget {
   const FormResultsPage({Key? key, required this.formId}) : super(key: key);
 
   final String formId;
 
+  /// Returns the answer for a specific question in a form.
+  ///
+  /// This method takes a [FirestoreFormQuestion] and a [FormAnswer] as parameters.
+  /// It tries to find the user's answer to the given question in the form answer.
+  /// If the user has answered the question, it returns the answer.
+  /// If the user has not answered the question, it returns an empty string.
+  /// If the user has explicitly answered with nothing, it also returns an empty string.
+  /// If an error occurs while searching for the answer, it returns an empty string.
+  String _getAnswerForQuestion(
+    FirestoreFormQuestion formQuestion,
+    FormAnswer formAnswer,
+  ) {
+    try {
+      // ignore: avoid-unsafe-collection-methods
+      final usersAnswerToAQuestion = formAnswer.answers.firstWhere(
+        (formQuestionAnswer) =>
+            formQuestionAnswer.questionTitle == formQuestion.title,
+      );
+
+      return usersAnswerToAQuestion.answer ??
+          ""; // If user explicitly answered with nothing, return that.
+    } catch (_) {
+      // Error can occur when firstWhere if no element satisfies the condition.
+      // This is fine, because it means the user didn't answer this question at all.
+
+      return "";
+    }
+  }
+
   void _handleDownloadButtonTap({
+    required BuildContext context,
+    required WidgetRef ref,
     required QuerySnapshot<FormAnswer> answersSnapshot,
     required DocumentSnapshot<FirestoreForm> formSnapshot,
   }) async {
+    final exportOptions = await _showExportOptionsDialog(context, ref);
+    if (exportOptions == null) {
+      // User cancelled the dialog.
+      return;
+    }
+
     final answerDocs = answersSnapshot.docs;
 
     // Form is guaranteed to exist if user can access this page.
     // ignore: avoid-non-null-assertion
     final form = formSnapshot.data()!;
 
-    final rows = [
+    final answers = answerDocs.map((doc) => doc.data()).toList();
+
+    final rows = <List<String>>[
       // HEADER ROW.
       [
         'Lidnummer',
+        ...exportOptions.keys, // Include the export options as headers.
         ...form.questions.map((formQuestion) => formQuestion.title),
         'Invultijdstip',
       ],
       // DATA ROWS.
-      ...answerDocs.map((formAnswerSnapshot) {
-        final formAnswer = formAnswerSnapshot.data();
-
-        return [
-          formAnswer.userId,
-          // This is a list of all the answers to the questions in the form ordered by the order of the questions.
-          ...form.questions.map((formQuestion) {
-            // Find answer in formQuestionAnswers based on questionTitle.
-            try {
-              // ignore: avoid-unsafe-collection-methods
-              final usersAnswerToAQuestion = formAnswer.answers.firstWhere(
-                (formQuestionAnswer) =>
-                    formQuestionAnswer.questionTitle == formQuestion.title,
-              );
-
-              return usersAnswerToAQuestion.answer ??
-                  ""; // If user explicitly answered with nothing, return that.
-            } catch (_) {
-              // Error can occur when firstWhere if no element satisfies the condition.
-              // This is fine, because it means the user didn't answer this question at all.
-
-              return "";
-            }
-          }),
-          DateFormat('dd-MM-yyyy HH:mm:ss')
-              .format(formAnswer.answeredAt.toDate()),
-        ];
-      }),
+      // This lets us to asynchronously generate a CSV row for each form answer.
+      for (final answer in answers)
+        // This List represents a single DATA row in the CSV.
+        [
+          answer.userId,
+          for (final function in exportOptions.values)
+            await function(answer.userId),
+          for (final formQuestion in form.questions)
+            _getAnswerForQuestion(formQuestion, answer),
+          DateFormat('dd-MM-yyyy HH:mm:ss').format(answer.answeredAt.toDate()),
+        ],
     ];
 
     final csvString = const ListToCsvConverter().convert(rows);
@@ -75,14 +106,78 @@ class FormResultsPage extends ConsumerWidget {
     if (kIsWeb) {
       _handleDownloadForWeb(csvString, fileName);
     } else {
-      await _handleDownloadForMobile(csvString, fileName);
+      _handleDownloadForMobile(csvString, fileName);
     }
   }
 
-  Future<void> _handleDownloadForMobile(
-    String csvData,
-    String fileName,
-  ) async {
+  Future<LinkedHashMap<String, ExportOptionFunction>?> _showExportOptionsDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
+    // ignore: avoid-inferrable-type-arguments
+    return showDialog<LinkedHashMap<String, ExportOptionFunction>>(
+      context: context,
+      builder: (outerContext) {
+        // This map will contain the options the user selected.
+        // The key is the name of the option, the value is a function that returns the value of the option.
+        // ignore: avoid-explicit-type-declaration
+        final LinkedHashMap<String, ExportOptionFunction> availableOptions =
+            LinkedHashMap.from({
+          'Volledige naam': (String userId) async =>
+              (await ref.read(userProvider(userId).future)).fullName,
+          'Allergieën': (String userId) async =>
+              (await ref.read(userProvider(userId).future))
+                  .allergies
+                  .join(', '),
+        });
+
+        LinkedHashMap<String, ExportOptionFunction> options =
+            LinkedHashMap.from({});
+
+        return StatefulBuilder(
+          builder: (innerContext, setState) {
+            return AlertDialog(
+              title: const Text('Exporteer opties'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Let op: Exporteer alleen extra gegevens die je écht nodig hebt, zo ben je in overeenstemming met de AVG.',
+                    style:
+                        Theme.of(outerContext).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(outerContext).colorScheme.error,
+                            ),
+                  ),
+                  for (final MapEntry(key: fieldName, value: callBack)
+                      in availableOptions.entries)
+                    CheckboxListTile(
+                      value: options.containsKey(fieldName),
+                      onChanged: (bool? selected) => setState(() {
+                        if (selected == true) {
+                          options[fieldName] = callBack;
+                        } else {
+                          // ignore: avoid-ignoring-return-values
+                          options.remove(fieldName);
+                        }
+                      }),
+                      title: Text(fieldName),
+                    ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(innerContext).pop(options),
+                  child: const Text('Exporteer'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _handleDownloadForMobile(String csvData, String fileName) async {
     final csvBytes = Uint8List.fromList(utf8.encode(csvData));
 
     // ignore: avoid-ignoring-return-values
@@ -163,6 +258,8 @@ class FormResultsPage extends ConsumerWidget {
             tooltip: 'Download resultaten als CSV',
             heroTag: 'downloadCSV',
             onPressed: () => _handleDownloadButtonTap(
+              context: context,
+              ref: ref,
               answersSnapshot: answersSnapshot,
               formSnapshot: formSnapshot,
             ),
