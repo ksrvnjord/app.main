@@ -15,5 +15,7 @@ final allCompletedAnswersProvider = StreamProvider.autoDispose
             FormAnswer.fromJson(snapshot.data() ?? {}),
         toFirestore: (answer, _) => answer.toJson(),
       )
+      .orderBy('answeredAt', descending: true)
+      // Relevant for admin view of form answers.
       .snapshots();
 });

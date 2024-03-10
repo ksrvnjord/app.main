@@ -42,7 +42,7 @@ final allFormsOnCreationProvider =
 // ignore: prefer-static-class
 final formProvider = StreamProvider.family<DocumentSnapshot<FirestoreForm>,
     DocumentReference<FirestoreForm>>(
-  (ref, formId) => ref.watch(firebaseAuthUserProvider).value == null
+  (ref, docRef) => ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : formId.snapshots(),
+      : docRef.snapshots(),
 );
