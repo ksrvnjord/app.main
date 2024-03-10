@@ -168,6 +168,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       if (mounted) {
         setState(() {
           _isLoading = false;
+          _progressCounter = 0;
         });
       }
     }
