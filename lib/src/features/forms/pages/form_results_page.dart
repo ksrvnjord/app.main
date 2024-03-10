@@ -139,7 +139,9 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           // This List represents a single DATA row in the CSV.
           [
             await _incrementProgressCounterAndReturnUserId(
-                answer.userId, answers.length),
+              answer.userId,
+              answers.length,
+            ),
             for (final function in exportOptions.extraFields.values)
               await function(answer.userId),
             for (final formQuestion in form.questions)
