@@ -84,28 +84,38 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
       return;
     }
+    try {
+      final result = await FormRepository.createForm(
+        form: FirestoreForm(
+          createdTime: Timestamp.now(),
+          title: _formName.text,
+          questions: _questions,
+          openUntil: Timestamp.fromDate(_openUntil),
+          description: _description.text,
+          authorId: currentUser.identifier.toString(),
+          authorName: currentUser.fullName,
+        ),
+      );
+      if (!mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Form gemaakt met id: ${result.id}'),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 3),
+      ));
 
-    final result = await FormRepository.createForm(
-      form: FirestoreForm(
-        createdTime: Timestamp.now(),
-        title: _formName.text,
-        questions: _questions,
-        openUntil: Timestamp.fromDate(_openUntil),
-        description: _description.text,
-        authorId: currentUser.identifier.toString(),
-        authorName: currentUser.fullName,
-      ),
-    );
-
-    if (!mounted) return;
-    // ignore: avoid-ignoring-return-values
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Form gemaakt met id: ${result.id}'),
-      backgroundColor: Colors.green,
-      duration: const Duration(seconds: 3),
-    ));
-
-    context.pop();
+      context.pop();
+    } catch (error) {
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('Er is iets fout gegaan bij het maken van de form: $error'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   @override
