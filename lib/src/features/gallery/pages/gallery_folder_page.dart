@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_storage.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/utils/gridOrListViewProvider.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/utils/gallery_view_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
