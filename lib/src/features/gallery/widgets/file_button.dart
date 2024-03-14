@@ -5,12 +5,9 @@ import 'package:ksrvnjord_main_app/src/features/gallery/utils/get_thumbnail_refe
 import 'package:styled_widget/styled_widget.dart';
 
 class FileButton extends ConsumerWidget {
-  final Reference item;
-  const FileButton({
-    Key? key,
-    required this.item,
-  }) : super(key: key);
+  const FileButton({Key? key, required this.item}) : super(key: key);
 
+  final Reference item;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = getThumbnailReference(item).getDownloadURL();
