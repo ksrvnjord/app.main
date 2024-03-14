@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,18 +10,15 @@ import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class GalleryFilePage extends ConsumerWidget {
-  final String path;
+  const GalleryFilePage({Key? key, required this.path}) : super(key: key);
 
-  const GalleryFilePage({
-    Key? key,
-    required this.path,
-  }) : super(key: key);
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final imageVal = ref.watch(galleryImageProvider(path));
 
-    const double padding = 12;
+    const padding = 12.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +35,7 @@ class GalleryFilePage extends ConsumerWidget {
                   ),
                 ],
                 subject: "Foto",
-              ),
+              ).ignore(),
               icon: const Icon(Icons.share),
             ),
             error: (err, _) => const SizedBox.shrink(),
@@ -49,12 +48,12 @@ class GalleryFilePage extends ConsumerWidget {
           borderRadius: const BorderRadius.all(Radius.circular(padding)),
           child: InkWell(
             child: Image.memory(image.bytes, fit: BoxFit.cover),
-            onTap: () => showImageViewer(
+            onTap: () => unawaited(showImageViewer(
               context,
               image,
               swipeDismissible: true,
               doubleTapZoomable: true,
-            ),
+            )),
           ),
         ).padding(all: padding),
         error: (err, trace) => ErrorCardWidget(errorMessage: err.toString()),
