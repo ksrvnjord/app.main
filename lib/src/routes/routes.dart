@@ -689,11 +689,6 @@ class Routes {
           ),
         ),
         _route(
-          path: "events",
-          name: "Manage Events",
-          child: const ManageEventsPage(),
-        ),
-        _route(
           path: "beheer-groepen",
           name: "Manage Groups",
           routes: [
