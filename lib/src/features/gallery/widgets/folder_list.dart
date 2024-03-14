@@ -31,14 +31,10 @@ class _FolderListState extends ConsumerState<FolderList> {
     double childAspect = 1.0;
     const itemSpacing = 8.0;
 
-    // bool gridOrList = true;
-    // scrolling list:
-    // crossAxisCount (scrolling: 1, grid: 3)
-    // childAspectRatio (scrolling: 1.5, grid: 1)
-
     if (gridOrList) {
       crossAxisCount = 1;
-      childAspect = 1.5;
+      const d = 1.5;
+      childAspect = d;
     }
 
     return GridView.count(

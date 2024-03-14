@@ -28,7 +28,7 @@ class FileButton extends ConsumerWidget {
               )
             : const Icon(Icons.image, size: iconSize),
       ).borderRadius(all: padding),
-      onTap: () => navigator.pushNamed("_file/${item.fullPath}"),
+      onTap: () => navigator.pushNamed("_file/${item.fullPath}").ignore(),
       splashColor: Colors.blue,
     );
   }
