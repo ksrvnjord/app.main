@@ -1,7 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: prefer-static-class
-Reference getThumbnailReference(Reference ref) {
+Reference getThumbnailReference(Reference ref, String size) {
   if (ref.parent == null) {
     throw Exception(
       'Thumbnail for the root reference was requested.',
@@ -22,7 +22,7 @@ Reference getThumbnailReference(Reference ref) {
   //// Example: image.jpg -> image_200x200.jpg
   pathComponents.last = pathComponents.last.replaceFirst(
     '.',
-    '_400x400.',
+    '$size.',
     pathComponents.last.lastIndexOf('.'),
   );
 
