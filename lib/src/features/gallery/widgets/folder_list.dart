@@ -33,8 +33,8 @@ class _FolderListState extends ConsumerState<FolderList> {
 
     if (gridOrList) {
       crossAxisCount = 1;
-      const d = 1.5;
-      childAspect = d;
+      const num = 1.5;
+      childAspect = num;
     }
 
     return GridView.count(
