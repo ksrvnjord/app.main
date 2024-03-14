@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class RoleDialog extends StatefulWidget {
@@ -7,7 +8,7 @@ class RoleDialog extends StatefulWidget {
     required this.groupType,
   }) : super(key: key);
 
-  final String groupType;
+  final GroupType groupType;
 
   @override
   State<RoleDialog> createState() => _RoleDialogState();
@@ -19,6 +20,7 @@ class _RoleDialogState extends State<RoleDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // This is the groupType that is passed to the dialog.
     return AlertDialog(
       title: const Text('Selecteer een rol'),
       content: Column(
@@ -28,7 +30,7 @@ class _RoleDialogState extends State<RoleDialog> {
             'Selecteer een rol voor de gebruiker.',
           ),
           const SizedBox(height: 16),
-          if (widget.groupType == 'commissie') ...[
+          if (widget.groupType == GroupType.commissie) ...[
             DropdownButtonFormField<String>(
               items: const [
                 DropdownMenuItem(value: 'Praeses', child: Text('Praeses')),
@@ -44,8 +46,8 @@ class _RoleDialogState extends State<RoleDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-          ] else if (widget.groupType == 'competitieploeg' ||
-              widget.groupType == 'wedstrijdploeg') ...[
+          ] else if (widget.groupType == GroupType.competitieploeg ||
+              widget.groupType == GroupType.wedstrijdsectie) ...[
             DropdownButtonFormField<String>(
               items: [
                 for (String role in ["Roeier", "Coach", "Stuur", "Anders"])
@@ -59,7 +61,7 @@ class _RoleDialogState extends State<RoleDialog> {
                 border: OutlineInputBorder(),
               ),
             ),
-          ] else if (widget.groupType == 'bestuur') ...[
+          ] else if (widget.groupType == GroupType.bestuur) ...[
             DropdownButtonFormField<String>(
               items: [
                 for (String role in [
