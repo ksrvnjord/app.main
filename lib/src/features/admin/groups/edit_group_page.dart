@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/widgets/role_dialog.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -61,7 +62,7 @@ class EditGroupPage extends ConsumerWidget {
       final role = await showDialog<String>(
         context: ctx,
         builder: (context) => RoleDialog(
-          groupType: group['type'],
+          groupType: GroupType.values.byName(group['type']),
         ),
       );
 
