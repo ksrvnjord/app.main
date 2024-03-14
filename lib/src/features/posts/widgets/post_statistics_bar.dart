@@ -27,24 +27,31 @@ class PostStatisticsBar extends ConsumerWidget {
 
     return [
       if (post != null && post.likedBy.isNotEmpty)
-        [
-          Text(
-            // ignore: avoid-non-ascii-symbols
-            "${post.likedBy.length.toString()}x ",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: colorScheme.outline),
-          ),
-          SvgPicture.asset(
-            Svgs.swanWhite,
-            width: swanIconSize,
-            // ignore: no-equal-arguments
-            height: swanIconSize,
-            // ignore: deprecated_member_use
-            color: colorScheme.primary,
-          ),
-        ].toRow(),
+        GestureDetector(
+          child: [
+            Text(
+              // ignore: avoid-non-ascii-symbols
+              "${post.likedBy.length.toString()}x ",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(color: colorScheme.outline),
+            ),
+            SvgPicture.asset(
+              Svgs.swanWhite,
+              width: swanIconSize,
+              // ignore: no-equal-arguments
+              height: swanIconSize,
+              // ignore: deprecated_member_use
+              color: colorScheme.primary,
+            ),
+          ].toRow(),
+          // ignore: prefer-extracting-callbacks
+          onTap: () {
+            // Ga naar aparte pagina.
+            context.goNamed("Liked By", pathParameters: {'id': snapshot.id});
+          },
+        ),
       commentsVal.when(
         data: (data) => data.size > 0
             ? InkWell(

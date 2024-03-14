@@ -2,13 +2,10 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_flutter/graphql_flutter.dart' as gql;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/profile.graphql.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/graphql_model.dart';
 
 part 'django_user.g.dart';
 
@@ -80,36 +77,6 @@ class DjangoUser {
     required this.groups,
   });
 
-  factory DjangoUser.fromHeimdallDemoEnv(
-    Query$AlmanakProfile$user? user,
-  ) {
-    final publicContact = user?.fullContact.public;
-
-    var userId = int.parse(user?.identifier ?? "42069");
-
-    return DjangoUser(
-      id: userId,
-      // ignore: no-magic-number
-      lichting: 2020,
-      isSuperuser: false,
-      username: user?.username ?? "example",
-      firstName: publicContact?.first_name ?? "Onbekend",
-      lastName: publicContact?.last_name ?? "Onbekend",
-      email: user?.email ?? "example@example.org",
-      isStaff: false,
-      zipcode: publicContact?.zipcode ?? "1234AB",
-      housenumber: publicContact?.housenumber ?? "69",
-      housenumberAddition: publicContact?.housenumber_addition ?? "A",
-      street: publicContact?.street ?? "Onbekend",
-      city: publicContact?.city ?? "Onbekend",
-      country: "NL",
-      phonePrimary: publicContact?.phone_primary ?? "0612345678",
-      // ignore: no-equal-arguments
-      identifier: userId,
-      groups: [],
-    );
-  }
-
   factory DjangoUser.fromJson(Map<String, dynamic> json) =>
       _$DjangoUserFromJson(json);
 
@@ -131,19 +98,16 @@ class DjangoUser {
     return DjangoUser.fromJson(user);
   }
 
-  static Future<Query$AlmanakProfile$user?> getByIdGraphQL(
+  static Future<DjangoUser> getById(
     String id,
     StreamProviderRef<User> ref,
   ) async {
-    final client = ref.watch(graphQLClientProvider);
+    final dio = ref.watch(dioProvider);
 
-    final result = await client.query$AlmanakProfile(
-      Options$Query$AlmanakProfile(
-        variables: Variables$Query$AlmanakProfile(profileId: id),
-        fetchPolicy: gql.FetchPolicy.cacheFirst,
-      ),
-    );
+    final res = await dio.get("/api/users/users/$id/");
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final user = data;
 
-    return result.parsedData?.user;
+    return DjangoUser.fromJson(user);
   }
 }

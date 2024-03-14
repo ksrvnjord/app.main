@@ -83,7 +83,7 @@ class CreateFormQuestion extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController? questionController =
-        TextEditingController(text: question.label);
+        TextEditingController(text: question.title);
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -93,25 +93,40 @@ class CreateFormQuestion extends ConsumerWidget {
       ),
       margin: const EdgeInsets.all(8.0),
       child: Column(children: [
-        DropdownButton<FormQuestionType>(
-          items:
-              FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
-            (FormQuestionType value) {
-              return DropdownMenuItem<FormQuestionType>(
-                value: value,
-                child: Text(value.name.toString()),
-              );
+        [
+          DropdownButton<FormQuestionType>(
+            items:
+                FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
+              (FormQuestionType value) {
+                return DropdownMenuItem<FormQuestionType>(
+                  value: value,
+                  child: Text(value.name.toString()),
+                );
+              },
+            ).toList(),
+            value: question.type,
+            // ignore: prefer-extracting-callbacks
+            onChanged: (FormQuestionType? newValue) {
+              question.type = newValue ?? question.type;
+              onChanged();
             },
-          ).toList(),
-          value: question.type,
-          onChanged: (FormQuestionType? newValue) =>
-              // ignore: avoid-non-null-assertion
-              {question.type = newValue!, onChanged()},
-        ),
+          ),
+          [
+            const Text(
+              'Verplicht',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            Switch.adaptive(
+              value: question.isRequired,
+              onChanged: (bool value) =>
+                  {question.isRequired = value, onChanged()},
+            ),
+          ].toRow(),
+        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         TextFormField(
           controller: questionController,
           decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
-          onChanged: (String value) => {question.label = value},
+          onChanged: (String value) => {question.title = value},
           validator: (value) => (value == null || value.isEmpty)
               ? 'Geef een naam op voor de vraag.'
               : null,

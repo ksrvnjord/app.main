@@ -24,6 +24,7 @@ class User {
   String? get bestuursFunctie => _firestore?.bestuursFunctie;
   String? get board => _firestore?.board;
   List<String>? get substructures => _firestore?.substructures;
+  List<String> get allergies => _firestore?.allergies ?? [];
   String? get huis => _firestore?.huis;
   bool? get dubbellid => _firestore?.dubbellid;
   String? get otherAssociation => _firestore?.otherAssociation;

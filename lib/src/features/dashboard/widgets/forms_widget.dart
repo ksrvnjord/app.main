@@ -27,14 +27,16 @@ class FormsWidget extends ConsumerWidget {
 
     return [
       ...forms.map((item) {
-        switch (item.runtimeType.toString()) {
+        final parentCollectionId =
+            (item as QueryDocumentSnapshot).reference.parent.id;
+        switch (parentCollectionId) {
           // Unfortunate workaround for the fact that the type of the item is not a known type.
-          case "_WithConverterQueryDocumentSnapshot<FirestoreForm>":
+          case "forms":
             return FormCard(
               formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
             );
 
-          case "_WithConverterQueryDocumentSnapshot<Poll>":
+          case "polls":
             return PollCard(pollDoc: item as QueryDocumentSnapshot<Poll>);
 
           default:

@@ -2,25 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/download_csv_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/show_form_results_info_box.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ShowFormResultsPage extends ConsumerWidget {
-  const ShowFormResultsPage({Key? key, required this.formId}) : super(key: key);
+class ManageFormPage extends ConsumerWidget {
+  const ManageFormPage({Key? key, required this.formId}) : super(key: key);
 
   final String formId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = ref.watch(formProvider(formsCollection.doc(formId)));
+    final formVal = ref.watch(formProvider(formsCollection.doc(formId)));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bekijk Formresultaten'),
+        title: const Text('Beheer Form'),
         actions: [
           IconButton(
             // ignore: prefer-extracting-callbacks
@@ -62,59 +62,34 @@ class ShowFormResultsPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: form.when(
-        // ignore: avoid-long-functions
-        data: (documentSnapshot) {
-          final formData = documentSnapshot.data();
+      body: formVal.when(
+        data: (formSnapshot) {
+          final formData = formSnapshot.data();
+
+          final formatter = DateFormat('yyyy-MM-dd HH:mm');
 
           return formData == null
-              ? const Center(child: Text('No data available'))
-              : Column(
+              ? const ErrorCardWidget(errorMessage: 'Formulier niet gevonden')
+                  .center()
+              : ListView(
+                  padding: const EdgeInsets.only(bottom: 104),
                   children: [
-                    const SizedBox(height: 16),
-                    const Divider(),
-                    ShowFormResultsInfoBox(
-                      field: 'Form naam',
-                      value: formData.formName,
+                    DataTextListTile(name: "Form naam", value: formData.title),
+                    DataTextListTile(
+                      name: 'Open tot',
+                      value: formatter.format(formData.openUntil.toDate()),
                     ),
-                    ShowFormResultsInfoBox(
-                      field: 'Formauteur',
-                      value: formData.authorId,
-                    ),
-                    ShowFormResultsInfoBox(
-                      field: 'Beschrijving',
+                    DataTextListTile(
+                      name: 'Beschrijving',
                       value: formData.description ?? 'N/A',
                     ),
-                    ShowFormResultsInfoBox(
-                      field: 'Open tot',
-                      value: formData.openUntil.toString(),
+                    DataTextListTile(
+                      name: 'Formauteur',
+                      value: formData.authorId,
                     ),
-                    ShowFormResultsInfoBox(
-                      field: 'Gecreerd op',
-                      value: formData.createdTime.toString(),
-                    ),
-                    ref.watch(allFormAnswersProvider(formId)).when(
-                      data: (snapshot) {
-                        return ElevatedButton.icon(
-                          onPressed: () => ref.read(downloadCsvProvider(
-                            DownloadCsvParams(
-                              formName: formData.formName,
-                              formQuestions: formData.questions
-                                  .map((e) => e.label)
-                                  .toList(),
-                              snapshot: snapshot,
-                            ),
-                          )),
-                          icon: const Icon(Icons.download),
-                          label: const Text('Download Resultaten als CSV'),
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        return Text('Error: $error');
-                      },
-                      loading: () {
-                        return const CircularProgressIndicator.adaptive();
-                      },
+                    DataTextListTile(
+                      name: 'Gecreerd op',
+                      value: formatter.format(formData.createdTime.toDate()),
                     ),
                   ],
                 );
@@ -125,6 +100,16 @@ class ShowFormResultsPage extends ConsumerWidget {
         loading: () {
           return const Center(child: CircularProgressIndicator.adaptive());
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        tooltip: 'Bekijk (volledige ingevulde) reacties',
+        heroTag: 'form_results',
+        onPressed: () => context.pushNamed(
+          'Form Results',
+          pathParameters: {'formId': formId},
+        ).ignore(),
+        icon: const Icon(Icons.list),
+        label: const Text('Bekijk (volledig ingevulde) reacties'),
       ),
     );
   }

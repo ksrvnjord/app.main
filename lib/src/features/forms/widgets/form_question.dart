@@ -9,7 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widg
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FormQuestion extends ConsumerWidget {
+class FormQuestion extends ConsumerStatefulWidget {
   const FormQuestion({
     Key? key,
     required this.formQuestion,
@@ -26,8 +26,26 @@ class FormQuestion extends ConsumerWidget {
 
   final bool formIsOpen;
 
+  @override
+  createState() => _FormQuestionState();
+}
+
+class _FormQuestionState extends ConsumerState<FormQuestion> {
+  final _focusNode = FocusNode(debugLabel: "FormQuestionState_textfield");
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        _formKey.currentState?.save();
+      }
+    });
+  }
+
   // ignore: avoid-long-parameter-list
-  _handleChangeOfFormAnswer({
+  Future<void> _handleChangeOfFormAnswer({
     required String question,
     required String? newValue, // Given answer.
     required FirestoreForm f,
@@ -38,7 +56,7 @@ class FormQuestion extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await FormRepository.upsertFormAnswer(
-        question: formQuestion.label,
+        question: question,
         newValue: newValue,
         form: f,
         docRef: d,
@@ -54,17 +72,24 @@ class FormQuestion extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final type = formQuestion.type;
+    final type = widget.formQuestion.type;
 
     final questionWidgets = <Widget>[
-      Text(formQuestion.label, style: textTheme.titleLarge),
+      Text(widget.formQuestion.title, style: textTheme.titleLarge),
+      if (widget.formQuestion.isRequired) const Text('Verplicht'),
     ];
 
-    final answerStream = ref.watch(formAnswerProvider(docRef));
+    final answerStream = ref.watch(formAnswerProvider(widget.docRef));
 
     // ignore: avoid-ignoring-return-values
     answerStream.when(
@@ -75,7 +100,7 @@ class FormQuestion extends ConsumerWidget {
           // ignore: avoid-unsafe-collection-methods
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
-            if (entry.question == formQuestion.label) {
+            if (entry.questionTitle == widget.formQuestion.title) {
               answerValue = entry.answer;
             }
           }
@@ -86,20 +111,27 @@ class FormQuestion extends ConsumerWidget {
                 TextEditingController(text: answerValue);
 
             questionWidgets.add(
-              TextFormField(
-                controller: answer,
-                onFieldSubmitted: (String? value) => _handleChangeOfFormAnswer(
-                  question: formQuestion.label,
-                  newValue: value,
-                  f: form,
-                  d: docRef,
-                  ref: ref,
-                  context: context,
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: answer,
+                  focusNode:
+                      _focusNode, // The focus node controls when to save.
+                  maxLines: null,
+                  // ignore: avoid-async-call-in-sync-function
+                  onSaved: (String? value) => _handleChangeOfFormAnswer(
+                    question: widget.formQuestion.title,
+                    newValue: value,
+                    f: widget.form,
+                    d: widget.docRef,
+                    ref: ref,
+                    context: context,
+                  ),
+                  validator: ((value) => (value == null || value.isEmpty)
+                      ? 'Antwoord kan niet leeg zijn.'
+                      : null),
+                  enabled: widget.formIsOpen,
                 ),
-                validator: ((value) => (value == null || value.isEmpty)
-                    ? 'Antwoord kan niet leeg zijn.'
-                    : null),
-                enabled: formIsOpen,
               ),
             );
             break;
@@ -107,16 +139,17 @@ class FormQuestion extends ConsumerWidget {
           case FormQuestionType.singleChoice:
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
-              formQuestion: formQuestion,
+              formQuestion: widget.formQuestion,
+              // ignore: avoid-async-call-in-sync-function
               onChanged: (String? value) => _handleChangeOfFormAnswer(
-                question: formQuestion.label,
-                newValue: value,
-                f: form,
-                d: docRef,
+                question: widget.formQuestion.title,
+                newValue: answerValue == value ? null : value,
+                f: widget.form,
+                d: widget.docRef,
                 ref: ref,
                 context: context,
               ),
-              formIsOpen: formIsOpen,
+              formIsOpen: widget.formIsOpen,
             ));
             break;
 
