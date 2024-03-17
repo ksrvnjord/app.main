@@ -79,7 +79,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     });
 
     // This is a intentional delay to prevent our bare-bones Google Cloud SQL server from getting overwhelmed.
-    // The delay is exponential, so the first few answers are generated slow, but the last few quickly.
+    // The delay is exponential, so the first few answers are generated quickly, but the last few slow.
     const growthRate = 0.1874;
     const maximum = 1726 * 4;
     final randomMax = maximum /
@@ -123,7 +123,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       final form = formSnapshot.data()!;
 
       final answers = answerDocs.map((doc) => doc.data()).toList();
-
       final rows = <List<String>>[
         // HEADER ROW.
         [
@@ -179,7 +178,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     WidgetRef ref,
   ) {
     // ignore: avoid-inferrable-type-arguments
-    return showDialog<FormAnswersExportOptions>(
+    return showModalBottomSheet<FormAnswersExportOptions>(
       context: context,
       builder: (outerContext) {
         // This map will contain the options the user selected.
@@ -203,78 +202,81 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         return StatefulBuilder(
           builder: (innerContext, setState) {
             final textTheme = Theme.of(outerContext).textTheme;
-            final titleMedium = textTheme.titleMedium;
 
-            return AlertDialog(
-              title: const Text('Antwoorden van form exporteren naar CSV'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Extra gegevens exporteren", style: titleMedium)
-                      .alignment(Alignment.centerLeft),
-                  Text(
-                    'Let op: Exporteer alleen extra gegevens die je écht nodig hebt, zo ben je in overeenstemming met de AVG.',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(outerContext).colorScheme.error,
-                    ),
-                  ),
-                  for (final MapEntry(key: fieldName, value: callBack)
-                      in availableOptions.entries)
-                    CheckboxListTile(
-                      value: options.containsKey(fieldName),
-                      onChanged: (bool? selected) => setState(() {
-                        if (selected == true) {
-                          options[fieldName] = callBack;
-                        } else {
-                          // ignore: avoid-ignoring-return-values
-                          options.remove(fieldName);
-                        }
-                      }),
-                      title: Text(fieldName),
-                    ),
-                  // Dropdown to select delimiter of the CSV file.
-                  const SizedBox(height: 16), // ignore: avoid-magic-numbers
-                  Text("CSV opties", style: titleMedium)
-                      .alignment(Alignment.centerLeft),
-                  ListTile(
-                    title: const Text('Kies een scheidingsteken'),
-                    subtitle: const Text(
-                      'Dit teken wordt gebruikt om de kolommen van elkaar te scheiden in het CSV bestand.',
-                    ),
-                    trailing: DropdownButton<String>(
-                      items: const [
-                        DropdownMenuItem<String>(
-                          value: ',',
-                          child: Text('Komma (,)'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: ';',
-                          child: Text('Puntkomma (;)'),
-                        ),
-                      ],
-                      value: delimiter,
-                      onChanged: (String? value) => setState(() {
-                        delimiter = value ?? ',';
-                      }),
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(innerContext).pop(
-                    FormAnswersExportOptions(
-                      extraFields: options,
-                      delimiter: delimiter,
-                    ),
-                  ),
-                  child: const Text('Start exporteren'),
+            const sheetPadding = 16.0;
+            const sheetBottomPadding = 32.0;
+
+            return [
+              Text(
+                'Exporteer naar CSV',
+                style: Theme.of(context).textTheme.titleLarge,
+              ).alignment(Alignment.centerLeft),
+              const SizedBox(height: 8), // ignore: avoid-magic-numbers
+              Text("Extra gegevens exporteren", style: textTheme.titleMedium)
+                  .alignment(Alignment.centerLeft),
+              Text(
+                'Let op: Exporteer alleen extra gegevens die je écht nodig hebt, zo ben je in overeenstemming met de AVG.',
+                style: textTheme.labelMedium?.copyWith(
+                  color: Theme.of(outerContext).colorScheme.error,
                 ),
-              ],
-            );
+              ),
+              for (final MapEntry(key: fieldName, value: callBack)
+                  in availableOptions.entries)
+                CheckboxListTile(
+                  value: options.containsKey(fieldName),
+                  onChanged: (bool? selected) => setState(() {
+                    if (selected == true) {
+                      options[fieldName] = callBack;
+                    } else {
+                      // ignore: avoid-ignoring-return-values
+                      options.remove(fieldName);
+                    }
+                  }),
+                  title: Text(fieldName),
+                ),
+              // Dropdown to select delimiter of the CSV file.
+              const SizedBox(height: 16), // ignore: avoid-magic-numbers
+              Text("CSV opties", style: textTheme.titleMedium)
+                  .alignment(Alignment.centerLeft),
+              ListTile(
+                title: const Text('Kies een scheidingsteken'),
+                subtitle: Text(
+                  'Voor de meeste programma\'s is een komma (,) het standaard scheidingsteken. Als je problemen hebt met het importeren van het CSV bestand, probeer dan een puntkomma (;).',
+                  style: textTheme.labelMedium,
+                ),
+                trailing: DropdownButton<String>(
+                  items: const [
+                    DropdownMenuItem<String>(
+                      value: ',',
+                      child: Text('Komma (,)'),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: ';',
+                      child: Text('Puntkomma (;)'),
+                    ),
+                  ],
+                  value: delimiter,
+                  onChanged: (String? value) => setState(() {
+                    delimiter = value ?? ',';
+                  }),
+                ),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(innerContext).pop(
+                  FormAnswersExportOptions(
+                    extraFields: options,
+                    delimiter: delimiter,
+                  ),
+                ),
+                child: const Text('Start export'),
+              ),
+            ]
+                .toColumn(mainAxisSize: MainAxisSize.min)
+                .padding(all: sheetPadding, bottom: sheetBottomPadding);
           },
         );
       },
+      isScrollControlled: true,
     );
   }
 
