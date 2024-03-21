@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class PostList extends ConsumerWidget {
   const PostList({Key? key}) : super(key: key);
@@ -20,7 +21,19 @@ class PostList extends ConsumerWidget {
             : ListView(
                 padding: const EdgeInsets.only(bottom: 80),
                 children: [
-                  Image.asset('assets/images/sponsors/bohemian_birds.png'),
+                  [
+                    Text(
+                      "Advertentie",
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                    ),
+                    Image.asset(
+                      'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
+                      height: 80,
+                    ),
+                  ].toColumn(),
+                  const Divider(),
                   for (final post in posts.docs) PostCard(snapshot: post),
                 ],
               );
