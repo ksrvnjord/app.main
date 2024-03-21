@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -107,6 +108,7 @@ class EditGroupPage extends ConsumerWidget {
 
     return Scaffold(
       body: groupVal.when(
+        // ignore: avoid-long-functions
         data: (data) {
           final String name = data['name'];
           final int year = data['year'];
@@ -146,14 +148,14 @@ class EditGroupPage extends ConsumerWidget {
                       try {
                         // ignore: avoid-ignoring-return-values
                         await dio.delete("/api/users/groups/$groupId/");
-                      } catch (e) {
+                      } on DioException catch (e) {
                         if (!context.mounted) return;
 
                         // ignore: avoid-ignoring-return-values
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            "Het is niet gelukt om de groep te verwijderen.",
+                            e.message ??
+                                "Het is niet gelukt om de groep te verwijderen.",
                           ),
                         ));
 
@@ -204,11 +206,11 @@ class EditGroupPage extends ConsumerWidget {
             ],
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
         error: (error, stack) => ErrorCardWidget(
           errorMessage: error.toString(),
+        ),
+        loading: () => const Center(
+          child: CircularProgressIndicator.adaptive(),
         ),
       ),
       // Extended floating action button to add a new user to the group.

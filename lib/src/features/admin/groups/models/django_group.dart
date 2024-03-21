@@ -8,8 +8,11 @@ part 'django_group.g.dart';
 
 @JsonSerializable()
 class DjangoGroup {
+  @JsonKey(includeFromJson: true, includeToJson: false)
   // ignore: prefer-correct-identifier-length
   final int? id;
+
+  @JsonKey(includeFromJson: true, includeToJson: false)
   final List<GroupDjangoRelation>? users;
   final String name;
 
@@ -20,9 +23,13 @@ class DjangoGroup {
   final String type;
   final int year;
 
-  DjangoGroup({
+  // ignore: unused-code
+  final List<String> rights;
+
+  const DjangoGroup({
     this.id,
     this.users,
+    this.rights = const [],
     required this.name,
     required this.type,
     required this.year,
@@ -39,10 +46,12 @@ class DjangoGroup {
     String? name,
     String? type,
     int? year,
+    List<String>? rights,
   }) =>
       DjangoGroup(
         id: id ?? this.id,
         users: users ?? this.users,
+        rights: rights ?? this.rights,
         name: name ?? this.name,
         type: type ?? this.type,
         year: year ?? this.year,
