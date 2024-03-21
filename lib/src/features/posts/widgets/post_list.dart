@@ -16,6 +16,8 @@ class PostList extends ConsumerWidget {
 
     return postsVal.when(
       data: (posts) {
+        const sponsorImageHeight = 80.0;
+
         return posts.docs.isEmpty
             ? const Center(child: Text('No posts'))
             : ListView(
@@ -30,7 +32,7 @@ class PostList extends ConsumerWidget {
                     ),
                     Image.asset(
                       'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
-                      height: 80,
+                      height: sponsorImageHeight,
                     ),
                   ].toColumn(),
                   const Divider(),
