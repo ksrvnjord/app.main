@@ -23,15 +23,17 @@ final postProvider =
   },
 );
 
-final postQueryProvider = Provider.family.autoDispose<Query<Post>, String?>(
+final postsProvider =
+    StreamProvider.family.autoDispose<QuerySnapshot<Post>, String?>(
   (ref, topic) {
     // ignore: avoid-ignoring-return-values
     ref.watch(firebaseAuthUserProvider);
 
     return topic == null
-        ? postsCollection.orderBy('createdTime', descending: true)
+        ? postsCollection.orderBy('createdTime', descending: true).snapshots()
         : postsCollection
             .where('topic', isEqualTo: topic)
-            .orderBy('createdTime', descending: true);
+            .orderBy('createdTime', descending: true)
+            .snapshots();
   },
 );
