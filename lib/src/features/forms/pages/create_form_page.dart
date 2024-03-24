@@ -190,7 +190,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                       () => _questions.add(FirestoreFormQuestion(
                         title: '',
                         type: FormQuestionType.singleChoice,
-                        isRequired: true,
+                        isRequired: false,
                         options: [],
                       )), // Add an empty label for the new TextFormField.
                     ),
