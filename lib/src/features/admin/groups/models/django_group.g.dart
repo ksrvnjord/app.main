@@ -11,6 +11,10 @@ DjangoGroup _$DjangoGroupFromJson(Map<String, dynamic> json) => DjangoGroup(
       users: (json['users'] as List<dynamic>?)
           ?.map((e) => GroupDjangoRelation.fromJson(e as Map<String, dynamic>))
           .toList(),
+      rights: (json['rights'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       name: json['name'] as String,
       type: DjangoGroup._typeFromJson(json['type'] as String),
       year: json['year'] as int,
@@ -18,9 +22,8 @@ DjangoGroup _$DjangoGroupFromJson(Map<String, dynamic> json) => DjangoGroup(
 
 Map<String, dynamic> _$DjangoGroupToJson(DjangoGroup instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'users': instance.users,
       'name': instance.name,
       'type': DjangoGroup._typeToJson(instance.type),
       'year': instance.year,
+      'rights': instance.rights,
     };

@@ -33,7 +33,7 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.post(
-        '/api/vaarverbod/',
+        '/api/v2/vaarverbod/',
         data: {
           'status': status,
           'message': message,
