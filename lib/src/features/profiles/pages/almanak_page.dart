@@ -22,18 +22,22 @@ class AlmanakPage extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: [
-            const AlmanakStructureChoiceWidget(
-              pushRoute: "Leeden",
-              title: "Leeden",
-              imagePath: 'assets/images/leeden.png',
-            ).padding(bottom: choiceWidgetPadding),
+            const FirebaseWidget(
+              onAuthenticated: AlmanakStructureChoiceWidget(
+                pushRoute: "Bestuur",
+                title: "Bestuur",
+                imagePath: 'assets/images/bestuur.jpg',
+              ),
+            ),
+            [
+              const AlmanakStructureChoiceWidget(
+                pushRoute: "Leeden",
+                title: "Leeden",
+                imagePath: 'assets/images/leeden.png',
+              ).expanded(),
+            ].toRow(),
             FirebaseWidget(
               onAuthenticated: [
-                const AlmanakStructureChoiceWidget(
-                  pushRoute: "Bestuur",
-                  title: "Bestuur",
-                  imagePath: 'assets/images/bestuur.jpg',
-                ),
                 [
                   const AlmanakStructureChoiceWidget(
                     pushRoute: "Commissies",

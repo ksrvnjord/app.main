@@ -22,29 +22,47 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
 
+    const bottomTextPadding = 6.0;
+
     return InkWell(
       child: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            // ignore: no-equal-arguments
-            topRight: Radius.circular(12),
-          ),
-          child: Image(
-            image: AssetImage(imagePath),
-            width: double.infinity,
-            height: imageHeight,
-            fit: BoxFit.cover,
-            isAntiAlias: true,
-          ),
+        Stack(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: Image(
+                image: AssetImage(imagePath),
+                width: double.infinity,
+                height: imageHeight,
+                fit: BoxFit.cover,
+                isAntiAlias: true,
+              ),
+            ),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      Colors.black.withOpacity(1),
+                      Colors.transparent,
+                    ],
+                    stops: const [0.0, 0.8],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         Text(
           title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: colorScheme.onPrimaryContainer,
+              // Color: colorScheme.onPrimaryContainer,.
               ),
-        ).alignment(Alignment.center),
-      ].toColumn().card(
+        ).padding(bottom: bottomTextPadding),
+      ].toStack(alignment: Alignment.bottomCenter).card(
             color: colorScheme.primaryContainer,
           ),
       onTap: () => context.goNamed(pushRoute),
