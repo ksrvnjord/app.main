@@ -7,7 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
@@ -21,6 +23,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
+  bool _isGroupspecific = false;
+  String? _selectedGroup;
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -161,22 +165,41 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ),
               maxLines: null,
             ),
+            [
+              const Text(
+                'groep specifiek? ',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Switch.adaptive(
+                value: _isGroupspecific,
+                onChanged: (bool value) =>
+                    setState(() => _isGroupspecific = value),
+              ),
+            ].toRow(),
+            if (_isGroupspecific)
+              SelectGroupWidget(
+                initialValue: _selectedGroup,
+                onChanged: (String? value) =>
+                    setState(() => _selectedGroup = value),
+              ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,
               onDateTimeChanged: (DateTime dateTime) =>
                   setState(() => _openUntil = dateTime),
             ),
-            ..._questions.asMap().entries.map((questionEntry) {
-              return CreateFormQuestion(
-                index: questionEntry.key,
-                question: questionEntry.value,
-                onChanged: () => setState(() => {}),
-                deleteQuestion: (int index) =>
-                    // ignore: avoid-collection-mutating-methods
-                    setState(() => _questions.removeAt(index)),
-              );
-            }).toList(),
+            ..._questions
+                .asMap()
+                .entries
+                .map((questionEntry) => CreateFormQuestion(
+                      index: questionEntry.key,
+                      question: questionEntry.value,
+                      onChanged: () => setState(() => {}),
+                      deleteQuestion: (int index) =>
+                          // ignore: avoid-collection-mutating-methods
+                          setState(() => _questions.removeAt(index)),
+                    ))
+                .toList(),
             const SizedBox(height: sizedBoxHeight),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
