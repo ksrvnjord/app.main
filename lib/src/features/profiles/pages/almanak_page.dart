@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
@@ -68,6 +69,13 @@ class AlmanakPage extends ConsumerWidget {
                 ].toRow(
                   separator: const SizedBox(
                     width: choiceWidgetPadding,
+                  ),
+                ),
+                const FirebaseWidget(
+                  onAuthenticated: AlmanakStructureChoiceWidget(
+                    pushRoute: 'Partners',
+                    title: "Partners & Sponsors",
+                    imagePath: 'assets/images/sponsors/XXL Nutrition.png',
                   ),
                 ),
               ].toColumn(

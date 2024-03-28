@@ -18,7 +18,7 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 8;
+    final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 7.3;
 
     final colorScheme = Theme.of(context).colorScheme;
 
