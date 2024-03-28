@@ -176,12 +176,12 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                     setState(() => _isGroupspecific = value),
               ),
             ].toRow(),
-            if (_isGroupspecific)
-              SelectGroupWidget(
-                initialValue: _selectedGroup,
-                onChanged: (String? value) =>
-                    setState(() => _selectedGroup = value),
-              ),
+            // if (_isGroupspecific) TODO: Implement group specific forms.
+            //   SelectGroupWidget(
+            //     initialValue: _selectedGroups,
+            //     onChanged: (String? group, bool? value) =>
+            //         setState(() => _selectedGroups = value),
+            //   ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,
