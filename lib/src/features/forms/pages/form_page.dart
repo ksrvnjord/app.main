@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_p
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_not_completed_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
@@ -179,18 +180,38 @@ class _FormPageState extends ConsumerState<FormPage> {
 
                       const leftCardPadding = 8.0;
 
-                      return Row(
+                      return Column(
                         children: [
-                          Text(
-                            "Je hebt deze form",
-                            style: textTheme.titleMedium,
+                          Row(
+                            children: [
+                              Text(
+                                "Je hebt deze form ",
+                                style: textTheme.titleMedium,
+                              ),
+                              AnswerStatusCard(
+                                answerExists: answerExists,
+                                isCompleted: answerExists &&
+                                    // ignore: avoid-unsafe-collection-methods
+                                    answer.docs.first.data().isCompleted,
+                                textStyle: textTheme.titleMedium,
+                              ).padding(left: leftCardPadding),
+                            ],
                           ),
-                          AnswerStatusCard(
-                            answerExists: answerExists,
-                            isCompleted: answerExists &&
-                                // ignore: avoid-unsafe-collection-methods
-                                answer.docs.first.data().isCompleted,
-                            textStyle: textTheme.titleMedium,
+                          Card(
+                            color: colorScheme.errorContainer,
+                            child: Row(children: [
+                              Text(
+                                "Pas op! Je antwoord is niet opgeslagen",
+                                style: textTheme.titleMedium,
+                                selectionColor: colorScheme.error,
+                              ),
+                              AnswerNotCompletedWarningCard(
+                                answerExists: answerExists,
+                                isCompleted: answerExists &&
+                                    // ignore: avoid-unsafe-collection-methods
+                                    answer.docs.first.data().isCompleted,
+                              ),
+                            ]),
                           ).padding(left: leftCardPadding),
                         ],
                       );
