@@ -19,7 +19,7 @@ dependencies:
   sentry_flutter: ^7.10.1
   styled_widget: ^0.4.0+3
   oauth2: ^2.0.0
-  get_it: ^7.2.0
+  get_it: ^7.6.8
   intl: ^0.18.0
   flutter_markdown: ^0.6.18
   flutter_secure_storage: ^9.0.0
