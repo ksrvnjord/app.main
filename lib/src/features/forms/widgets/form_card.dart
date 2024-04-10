@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card_thumbnail.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -16,6 +17,8 @@ class FormCard extends ConsumerWidget {
   const FormCard({Key? key, required this.formDoc}) : super(key: key);
 
   final DocumentSnapshot<FirestoreForm> formDoc;
+
+  final borderWidth = 2.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,7 +59,7 @@ class FormCard extends ConsumerWidget {
           userAnswerProvider.when(
             data: (snapshot) => snapshot.docs.isEmpty
                 ? const SizedBox.shrink()
-                : AnswerStatusCard(
+                : AnswerStatusCardThumbnail(
                     answerExists: snapshot.docs.isNotEmpty,
                     isCompleted: snapshot.docs.isNotEmpty &&
                         // ignore: avoid-unsafe-collection-methods
@@ -79,7 +82,14 @@ class FormCard extends ConsumerWidget {
       color: Colors.transparent,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: colorScheme.primary),
+        side: userAnswerProvider.when(
+          data: (snapshot) => snapshot.docs.isNotEmpty &&
+                  !snapshot.docs.first.data().isCompleted
+              ? BorderSide(color: colorScheme.error, width: borderWidth)
+              : BorderSide(color: colorScheme.primary),
+          error: (err, stack) => BorderSide(color: colorScheme.primary),
+          loading: () => BorderSide(color: colorScheme.primary),
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       margin: const EdgeInsets.symmetric(vertical: 4),
