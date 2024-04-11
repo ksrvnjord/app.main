@@ -62,6 +62,7 @@ class PollCard extends ConsumerWidget {
                     answerExists: hasFilledIn,
                     // ignore: no-equal-arguments
                     isCompleted: hasFilledIn,
+                    showIcon: true,
                     textStyle: textTheme.labelLarge,
                   )
                 : const SizedBox.shrink();

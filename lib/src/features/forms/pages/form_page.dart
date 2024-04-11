@@ -6,9 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_p
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_not_completed_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card_thumbnail.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -86,6 +84,7 @@ class _FormPageState extends ConsumerState<FormPage> {
   @override
   Widget build(BuildContext context) {
     final doc = formsCollection.doc(widget.formId);
+    final colorScheme = Theme.of(context).colorScheme;
 
     final formVal = ref.watch(formProvider(doc));
 
@@ -150,7 +149,6 @@ class _FormPageState extends ConsumerState<FormPage> {
                 final openUntil = form.openUntil.toDate();
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 const descriptionVPadding = 16.0;
-                final colorScheme = Theme.of(context).colorScheme;
                 final description = form.description;
                 final questions = form.questions;
                 final textTheme = Theme.of(context).textTheme;
@@ -184,17 +182,29 @@ class _FormPageState extends ConsumerState<FormPage> {
 
                       const leftCardPadding = 8.0;
 
-                      return Row(
+                      return Column(
+                        // Move all child widgets to the left.
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Je hebt deze form ",
-                            style: textTheme.titleMedium,
+                          Row(
+                            children: [
+                              Text(
+                                "Je hebt deze form ",
+                                style: textTheme.titleMedium,
+                              ),
+                              AnswerStatusCard(
+                                answerExists: answerExists,
+                                isCompleted: answerIsCompleted,
+                                showIcon: false,
+                                textStyle: textTheme.titleMedium,
+                              ).padding(left: leftCardPadding),
+                            ],
                           ),
-                          AnswerStatusCardThumbnail(
-                            answerExists: answerExists,
-                            isCompleted: answerIsCompleted,
-                            textStyle: textTheme.titleMedium,
-                          ).padding(left: leftCardPadding),
+                          if (answerExists && !answerIsCompleted)
+                            Text(
+                              "Vul alle verplichte vragen in om je antwoord te versturen.",
+                              style: TextStyle(color: colorScheme.error),
+                            ),
                         ],
                       );
                     },
@@ -224,45 +234,53 @@ class _FormPageState extends ConsumerState<FormPage> {
               loading: () =>
                   const Center(child: CircularProgressIndicator.adaptive()),
             ),
+            ref.watch(canRemoveFormAnswerProvider(doc)).when(
+                  data: (canRemove) => canRemove
+                      ? ElevatedButton(
+                          // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
+                          onPressed: () async {
+                            final res = await _deleteMyFormAnswer(ref, context);
+                            if (res == true) {
+                              // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Jouw formreactie is verwijderd'),
+                                ),
+                              );
+                            } else {
+                              // ignore: use_build_context_synchronously, avoid-ignoring-return-values
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Het is niet gelukt jouw formreactie te verwijderen',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              colorScheme.errorContainer,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              colorScheme.onErrorContainer,
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.delete),
+                              Text("Verwijder mijn formreactie"),
+                            ],
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  error: (err, stk) => const SizedBox.shrink(),
+                  loading: () => const SizedBox.shrink(),
+                ),
           ],
         ),
-        floatingActionButton: ref.watch(canRemoveFormAnswerProvider(doc)).when(
-              data: (canRemove) => canRemove
-                  ? FloatingActionButton.extended(
-                      tooltip: "Verwijder mijn form reactie",
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onErrorContainer,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.errorContainer,
-                      heroTag: "delete-my-form-answer",
-                      // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-                      onPressed: () async {
-                        final res = await _deleteMyFormAnswer(ref, context);
-                        if (res == true) {
-                          // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Jouw formreactie is verwijderd'),
-                            ),
-                          );
-                        } else {
-                          // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Het is niet gelukt jouw formreactie te verwijderen',
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text("Verwijder mijn formreactie"),
-                    )
-                  : const SizedBox.shrink(),
-              error: (err, stk) => const SizedBox.shrink(),
-              loading: () => const SizedBox.shrink(),
-            ),
       ),
     );
   }
