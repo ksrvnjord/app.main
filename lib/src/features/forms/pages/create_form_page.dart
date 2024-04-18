@@ -7,7 +7,9 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({Key? key}) : super(key: key);
@@ -21,6 +23,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
+  bool _isGroupSpecific = false;
+  Map<String, bool>? _selectedGroups;
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -161,6 +165,21 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ),
               maxLines: null,
             ),
+            [
+              const Text(
+                'groep specifiek? ',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Switch.adaptive(
+                value: _isGroupSpecific,
+                onChanged: (bool value) =>
+                    setState(() => _isGroupSpecific = value),
+              ),
+            ].toRow(),
+            if (_isGroupSpecific)
+              // TODO: Implement group specific forms.
+              const SelectGroupWidget(
+                  groups: ['Competitiesectie', 'Wedstrijdsectie']),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,
