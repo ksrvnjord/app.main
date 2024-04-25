@@ -24,7 +24,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _description = TextEditingController();
   final _formName = TextEditingController();
   bool _isGroupSpecific = false;
-  Map<String, bool>? _selectedGroups;
+  List<String> _visibleForGroups = [];
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -177,9 +177,11 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ),
             ].toRow(),
             if (_isGroupSpecific)
-              // TODO: Implement group specific forms.
-              const SelectGroupWidget(
-                  groups: ['Competitiesectie', 'Wedstrijdsectie']),
+              SelectGroupWidget(
+                visibleForGroups: _visibleForGroups,
+                onChanged: (List<String> newSelectedGroups) =>
+                    setState(() => _visibleForGroups = newSelectedGroups),
+              ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,

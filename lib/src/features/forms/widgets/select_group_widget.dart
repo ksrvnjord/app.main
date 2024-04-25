@@ -1,69 +1,34 @@
 import 'package:flutter/material.dart';
 
-// class SelectGroupWidget extends StatefulWidget {
-//   const SelectGroupWidget({
-//     // Required this.initialValue,.
-//     // required this.onChanged,
-//     this.groupsSelected,
-//     this.groups = const [],
-//     Key? key,
-//   }) : super(key: key);
-
-//   // Final String? initialValue;.
-//   // final void Function(String?, bool?) onChanged;
-//   final Map<String, bool>? groupsSelected;
-//   final List<String> groups;
-
-//   @override
-//   createState() => _SelectGroupWidgetState();
-// }
-
 class SelectGroupWidget extends StatelessWidget {
   const SelectGroupWidget({
-    // Required this.initialValue,.
-    // required this.onChanged,
-    this.groupsSelected,
-    this.groups = const [],
+    required this.onChanged,
+    this.visibleForGroups = const [],
     Key? key,
   }) : super(key: key);
 
-  // Final String? initialValue;.
-  // final void Function(String?, bool?) onChanged;
-  final Map<String, bool>? groupsSelected;
-  final List<String> groups;
+  final void Function(List<String>) onChanged;
+  final List<String> visibleForGroups;
+
   @override
   Widget build(BuildContext context) {
-    final groupChoices = ["Competitiesectie", "Wedstrijdsectie", "Club8+"];
-    // final groupsSelected = {
-    //   "Competitiesectie": false,
-    //   "Wedstrijdsectie": true,
-    // };
-
-    // return Column(
-    //   children: (groupsSelected ?? {"Test": false})
-    //       .entries
-    //       .map((group) => CheckboxListTile(
-    //             value: group.value,
-    //             onChanged: ((bool? value) => {
-    //                   // ((String? group.key, bool? value) => onChanged(group.key, value)),.
-    //                   if (value ?? true)
-    //                     {onChanged(group.key, value)}
-    //                   else
-    //                     {onChanged(null, value)},
-    //                 }),
-    //             title: Text(group.key),
-    //           ))
-    //       .toList(),
-    // );
+    final groupChoices = [
+      "Competitiesectie",
+      "Wedstrijdsectie",
+      "Club8+",
+      "TopC4+"
+    ]; // TODO: This list should include all groups available
+    var newGroups = visibleForGroups;
 
     return Column(
       children: groupChoices
           .map((group) => CheckboxListTile(
-                value: groups.contains(group),
+                value: newGroups.contains(group),
                 onChanged: ((bool? value) => {
-                      if (value ?? false) {groups.add(group)},
-                      if (!(value ?? true) && groups.contains(group))
-                        {groups.remove(group)},
+                      if (value ?? false) {newGroups.add(group)},
+                      if (!(value ?? true) && newGroups.contains(group))
+                        {newGroups.remove(group)},
+                      onChanged(newGroups)
                     }),
                 title: Text(group),
               ))
