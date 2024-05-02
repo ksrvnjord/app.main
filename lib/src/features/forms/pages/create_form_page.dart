@@ -2,13 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_repository.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
@@ -98,6 +102,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
+          visibleForGroups: await convertToIds(_visibleForGroups),
         ),
       );
       if (!mounted) return;
@@ -234,5 +239,31 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         label: const Text('Maak nieuwe form'),
       ),
     );
+  }
+
+  Future<List<String>> convertToIds(List<String> visibleForGroups) async {
+    final dio = ref.watch(dioProvider);
+
+    final List<String> visibleForGroupIDs = [];
+    // For every String in visibleForGroups do something
+    if (visibleForGroups.isNotEmpty) {
+      for (String group in visibleForGroups) {
+        if ((group == "Wedstrijdsectie") || (group == "Competitiesectie")) {
+          final result = await GroupRepository.listGroups(
+            type: (group == "Wedstrijdsectie")
+                ? GroupType.wedstrijdsectie
+                : GroupType.competitieploeg,
+            year: getNjordYear(),
+            dio: dio,
+          );
+          for (final group in result) {
+            visibleForGroupIDs.add(group.id!.toString());
+          }
+        }
+      }
+      return visibleForGroupIDs;
+    } else {
+      return [];
+    }
   }
 }

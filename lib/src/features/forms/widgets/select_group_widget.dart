@@ -16,7 +16,7 @@ class SelectGroupWidget extends StatelessWidget {
       "Competitiesectie",
       "Wedstrijdsectie",
       "Club8+",
-      "TopC4+"
+      "TopC4+",
     ]; // TODO: This list should include all groups available
     var newGroups = visibleForGroups;
 
