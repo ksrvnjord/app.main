@@ -16,7 +16,7 @@ class AllTrainingPage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     final currentUser = ref.watch(currentFirestoreUserProvider);
-    
+
     final DateTime now = DateTime.now();
     final int isAfter1726 = (now.hour >= 17 && now.minute >= 26) ? 1 : 0;
     final int amountOfDaysUserCanBookInAdvance = currentUser
