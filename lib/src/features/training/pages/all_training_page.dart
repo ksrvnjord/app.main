@@ -26,7 +26,7 @@ class AllTrainingPage extends ConsumerWidget {
             currentUser?.isAppCo == true
         ? 31 // Bestuur and AppCo and other users who are able to can book 28 days in the advance.
         : 4; // User can book 4 days in the advance.
-    
+
     final List<DateTime> days = List.generate(
       amountOfDaysUserCanBookInAdvance + isAfter1726,
       (index) => now.add(Duration(days: index)),
