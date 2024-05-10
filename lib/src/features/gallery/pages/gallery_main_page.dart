@@ -4,8 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_folder_pag
 
 class GalleryMainPage extends StatefulWidget {
   const GalleryMainPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<GalleryMainPage> createState() => _GalleryMainPageState();

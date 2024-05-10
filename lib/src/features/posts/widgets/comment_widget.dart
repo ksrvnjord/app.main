@@ -15,7 +15,7 @@ import 'package:styled_widget/styled_widget.dart';
 class CommentWidget extends ConsumerWidget {
   final QueryDocumentSnapshot<Comment> snapshot;
 
-  const CommentWidget({Key? key, required this.snapshot}) : super(key: key);
+  const CommentWidget({super.key, required this.snapshot});
 
   // Wrapper function for usage in the CupertinoContextMenu.
   void popAnd(

@@ -10,11 +10,11 @@ class DamageTileWidget extends StatelessWidget {
   final void Function() editDamage;
 
   const DamageTileWidget({
-    Key? key,
+    super.key,
     required this.showDamage,
     required this.editDamage,
     required this.damageSnapshot,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

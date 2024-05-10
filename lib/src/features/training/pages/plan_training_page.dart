@@ -24,16 +24,15 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
   final String objectName;
 
   PlanTrainingPage({
-    Key? key,
+    super.key,
     required this.reservationObject,
     required this.startTime,
     required this.objectName,
-  })  : date = DateTime(
+  }) : date = DateTime(
           startTime.year,
           startTime.month,
           startTime.day,
-        ),
-        super(key: key);
+        );
 
   @override
   createState() => _PlanTrainingPageState();

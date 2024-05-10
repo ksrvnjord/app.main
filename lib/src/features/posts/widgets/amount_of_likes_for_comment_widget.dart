@@ -6,8 +6,7 @@ import 'package:styled_widget/styled_widget.dart';
 class AmountOfLikesForCommentWidget extends StatelessWidget {
   final int amountOfLikes;
 
-  const AmountOfLikesForCommentWidget({Key? key, required this.amountOfLikes})
-      : super(key: key);
+  const AmountOfLikesForCommentWidget({super.key, required this.amountOfLikes});
 
   @override
   Widget build(BuildContext context) {

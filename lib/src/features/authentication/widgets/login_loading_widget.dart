@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginLoadingWidget extends StatelessWidget {
-  const LoginLoadingWidget({Key? key}) : super(key: key);
+  const LoginLoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

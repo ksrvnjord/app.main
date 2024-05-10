@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class ZoomableImage extends StatelessWidget {
   const ZoomableImage({
-    Key? key,
+    super.key,
     required this.imageProvider,
     required this.image,
-  }) : super(key: key);
+  });
 
   final ImageProvider imageProvider;
   final Widget image;

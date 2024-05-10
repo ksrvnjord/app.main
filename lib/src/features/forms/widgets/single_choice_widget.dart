@@ -22,8 +22,8 @@ class SingleChoiceWidget extends StatelessWidget {
     required this.formQuestion,
     required this.onChanged,
     required this.formIsOpen,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String? initialValue;
   final FirestoreFormQuestion formQuestion;

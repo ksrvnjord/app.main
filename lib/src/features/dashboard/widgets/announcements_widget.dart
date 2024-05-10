@@ -10,7 +10,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class AnnouncementsWidget extends ConsumerWidget {
-  const AnnouncementsWidget({Key? key}) : super(key: key);
+  const AnnouncementsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

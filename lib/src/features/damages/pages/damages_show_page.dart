@@ -8,10 +8,10 @@ class DamagesShowPage extends StatelessWidget {
   final String reservationObjectId;
 
   const DamagesShowPage({
-    Key? key,
+    super.key,
     required this.damageDocumentId,
     required this.reservationObjectId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

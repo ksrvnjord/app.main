@@ -9,9 +9,9 @@ class FileButton extends ConsumerWidget {
   final Reference item;
 
   const FileButton({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

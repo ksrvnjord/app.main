@@ -10,8 +10,8 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.d
 
 class PostsPage extends ConsumerWidget {
   const PostsPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

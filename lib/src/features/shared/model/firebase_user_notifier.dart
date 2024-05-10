@@ -5,7 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 
 class FirebaseUserNotifier extends StateNotifier<FirestoreUser?> {
-  FirebaseUserNotifier(FirestoreUser? user) : super(user);
+  FirebaseUserNotifier(super.user);
 }
 
 // ignore: prefer-static-class

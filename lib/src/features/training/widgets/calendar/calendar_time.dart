@@ -5,8 +5,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CalendarTime extends StatelessWidget {
   CalendarTime({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<DateTime> timestamps = List.generate(
     CalendarMeasurement.amountOfSlots,

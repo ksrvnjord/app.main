@@ -4,9 +4,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CalendarBackground extends StatelessWidget {
   const CalendarBackground({
-    Key? key,
+    super.key,
     this.available = true,
-  }) : super(key: key);
+  });
 
   final bool available;
 

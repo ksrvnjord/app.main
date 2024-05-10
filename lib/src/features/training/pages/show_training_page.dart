@@ -12,8 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_lis
 
 class ShowTrainingPage extends ConsumerWidget {
   final String reservationDocumentId;
-  const ShowTrainingPage({Key? key, required this.reservationDocumentId})
-      : super(key: key);
+  const ShowTrainingPage({super.key, required this.reservationDocumentId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -9,8 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_bu
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class AlmanakScrollingWidget extends ConsumerStatefulWidget {
-  const AlmanakScrollingWidget({Key? key, this.search = '', this.onTap})
-      : super(key: key);
+  const AlmanakScrollingWidget({super.key, this.search = '', this.onTap});
 
   final String search;
   final void Function(int userId)? onTap;

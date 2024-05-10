@@ -8,10 +8,10 @@ import 'package:styled_widget/styled_widget.dart';
 /// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class SubstructureChoicePage extends ConsumerWidget {
   const SubstructureChoicePage({
-    Key? key,
+    super.key,
     required this.title,
     required this.choices,
-  }) : super(key: key);
+  });
 
   final String title;
   final List<String> choices;

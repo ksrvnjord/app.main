@@ -12,9 +12,9 @@ import 'package:tuple/tuple.dart';
 /// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class CommissieChoicePage extends ConsumerWidget {
   const CommissieChoicePage({
-    Key? key,
+    super.key,
     required this.year,
-  }) : super(key: key);
+  });
 
   final int year;
 

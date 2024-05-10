@@ -5,11 +5,11 @@ import 'package:styled_widget/styled_widget.dart';
 
 class FormCard extends StatelessWidget {
   const FormCard({
-    Key? key,
+    super.key,
     required this.explanation,
     required this.buttonText,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final String explanation;
   final String buttonText;

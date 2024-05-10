@@ -10,9 +10,9 @@ class DamagesCreatePage extends ConsumerWidget {
   final String? reservationObjectId;
 
   const DamagesCreatePage({
-    Key? key,
+    super.key,
     this.reservationObjectId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

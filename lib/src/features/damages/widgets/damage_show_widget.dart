@@ -11,9 +11,9 @@ class DamageShowWidget extends StatelessWidget {
   final double padding = 8;
 
   const DamageShowWidget({
-    Key? key,
+    super.key,
     required this.damage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.d
 import 'package:styled_widget/styled_widget.dart';
 
 class TrainingPage extends StatelessWidget {
-  const TrainingPage({Key? key}) : super(key: key);
+  const TrainingPage({super.key});
 
   static const double spacingFloatingButtons = 10;
   static const double runSpacingFloatingButtons = 12;

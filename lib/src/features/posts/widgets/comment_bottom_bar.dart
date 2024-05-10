@@ -9,7 +9,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class CommentBottomBar extends StatelessWidget {
   final QueryDocumentSnapshot<Comment> snapshot;
 
-  const CommentBottomBar({Key? key, required this.snapshot}) : super(key: key);
+  const CommentBottomBar({super.key, required this.snapshot});
 
   @override
   Widget build(BuildContext context) {

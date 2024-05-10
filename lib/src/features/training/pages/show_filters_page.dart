@@ -10,8 +10,8 @@ import '../api/reservation_object_type_filters_notifier.dart';
 
 class ShowFiltersPage extends ConsumerWidget {
   ShowFiltersPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Map<String, List<MultiSelectItem<String>>> availableFilters =
       // Build a map of categories and their types.
@@ -52,42 +52,40 @@ class ShowFiltersPage extends ConsumerWidget {
         padding: const EdgeInsets.all(pagePadding),
         children: [
           // Make a MultiSelectChipField for each category in availableFilters dynamically.
-          ...availableFilters.keys
-              .map(
-                (String key) => [
-                  // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
-                  MultiSelectChipField<String?>(
-                    items: availableFilters[key] ?? [],
-                    decoration: const BoxDecoration(),
-                    chipColor: Theme.of(context).colorScheme.surface,
-                    selectedChipColor:
-                        Theme.of(context).brightness == Brightness.light
-                            ? categoryColors[key]?.shade100
-                            : categoryColors[key]?.shade900,
-                    textStyle: textTheme.bodyMedium,
-                    selectedTextStyle: Theme.of(context).textTheme.bodyMedium,
-                    chipShape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    onTap: (values) => ref
-                        .read(reservationTypeFiltersProvider.notifier)
-                        .updateFiltersForCategory(
-                          key,
-                          values.whereType<String>().toList(),
-                        ),
-                    title: Text(key, style: textTheme.titleLarge),
-                    scroll: false,
-                    headerColor: Colors.transparent,
-                    initialValue: activeFilters[key] ?? [],
-                    showHeader: true,
-                  ).padding(bottom: categoryPadding).card(
-                        elevation: 0,
-                      ),
-                ].toColumn(
-                  separator: const SizedBox(height: categoryPadding),
+          ...availableFilters.keys.map(
+            (String key) => [
+              // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
+              MultiSelectChipField<String?>(
+                items: availableFilters[key] ?? [],
+                decoration: const BoxDecoration(),
+                chipColor: Theme.of(context).colorScheme.surface,
+                selectedChipColor:
+                    Theme.of(context).brightness == Brightness.light
+                        ? categoryColors[key]?.shade100
+                        : categoryColors[key]?.shade900,
+                textStyle: textTheme.bodyMedium,
+                selectedTextStyle: Theme.of(context).textTheme.bodyMedium,
+                chipShape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
-              )
-              .toList(),
+                onTap: (values) => ref
+                    .read(reservationTypeFiltersProvider.notifier)
+                    .updateFiltersForCategory(
+                      key,
+                      values.whereType<String>().toList(),
+                    ),
+                title: Text(key, style: textTheme.titleLarge),
+                scroll: false,
+                headerColor: Colors.transparent,
+                initialValue: activeFilters[key] ?? [],
+                showHeader: true,
+              ).padding(bottom: categoryPadding).card(
+                    elevation: 0,
+                  ),
+            ].toColumn(
+              separator: const SizedBox(height: categoryPadding),
+            ),
+          ),
         ],
       ),
     );

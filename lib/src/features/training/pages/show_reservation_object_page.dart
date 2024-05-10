@@ -18,10 +18,10 @@ class ShowReservationObjectPage extends ConsumerWidget {
   final String name;
 
   const ShowReservationObjectPage({
-    Key? key,
+    super.key,
     required this.documentId,
     required this.name,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

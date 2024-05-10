@@ -22,8 +22,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class EditAlmanakProfilePage extends ConsumerStatefulWidget {
   const EditAlmanakProfilePage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   createState() => _EditAlmanakProfilePageState();

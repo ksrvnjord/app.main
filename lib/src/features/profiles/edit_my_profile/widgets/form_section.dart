@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormSection extends StatelessWidget {
-  const FormSection({Key? key, required this.title, required this.children})
-      : super(key: key);
+  const FormSection({super.key, required this.title, required this.children});
 
   final String title;
   final List<Widget> children;

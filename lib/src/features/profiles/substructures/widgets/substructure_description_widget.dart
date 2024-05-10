@@ -7,9 +7,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class SubstructureDescriptionWidget extends ConsumerWidget {
   const SubstructureDescriptionWidget({
-    Key? key,
+    super.key,
     required this.descriptionAsyncVal,
-  }) : super(key: key);
+  });
 
   final AsyncValue<String?> descriptionAsyncVal;
 

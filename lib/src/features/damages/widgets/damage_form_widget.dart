@@ -6,8 +6,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class DamageFormWidget extends ConsumerWidget {
   const DamageFormWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -9,10 +9,10 @@ class FirebaseWidget extends ConsumerWidget {
   final Widget? onUnauthenticated;
 
   const FirebaseWidget({
-    Key? key,
+    super.key,
     required this.onAuthenticated,
     this.onUnauthenticated,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

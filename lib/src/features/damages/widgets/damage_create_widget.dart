@@ -12,8 +12,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class DamageCreateWidget extends ConsumerStatefulWidget {
   const DamageCreateWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   createState() => _DamageCreateWidgetState();

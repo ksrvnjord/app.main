@@ -7,8 +7,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
   final DjangoUser user;
   final void Function() onTap;
 
-  const AlmanakUserButtonWidget(this.user, {Key? key, required this.onTap})
-      : super(key: key);
+  const AlmanakUserButtonWidget(this.user, {super.key, required this.onTap});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(

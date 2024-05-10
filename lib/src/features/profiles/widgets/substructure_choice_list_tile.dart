@@ -10,11 +10,11 @@ class SubstructureChoiceListTile extends ConsumerWidget {
   static const iconHorizontalPadding = 16.0;
 
   const SubstructureChoiceListTile({
-    Key? key,
+    super.key,
     required this.name,
     required this.imageProvider, // The imageProvider for the choice.
     required this.onTap,
-  }) : super(key: key);
+  });
   final String name;
 
   final void Function() onTap;

@@ -8,12 +8,12 @@ class AuthorWidget extends StatelessWidget {
   final double fontSize;
 
   const AuthorWidget({
-    Key? key,
+    super.key,
     required this.postAuthor,
     required this.authorName,
     // ignore: no-magic-number
     this.fontSize = 18.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

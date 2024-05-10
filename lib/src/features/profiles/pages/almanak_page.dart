@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.d
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends ConsumerWidget {
-  const AlmanakPage({Key? key}) : super(key: key);
+  const AlmanakPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

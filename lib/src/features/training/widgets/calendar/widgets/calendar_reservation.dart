@@ -10,10 +10,10 @@ class CalendarReservation extends StatelessWidget {
   final String reservationDocumentId;
 
   const CalendarReservation({
-    Key? key,
+    super.key,
     required this.data,
     required this.reservationDocumentId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

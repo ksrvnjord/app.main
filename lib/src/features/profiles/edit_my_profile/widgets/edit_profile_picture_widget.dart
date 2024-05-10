@@ -10,8 +10,8 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.da
 
 class EditProfilePictureWidget extends ConsumerStatefulWidget {
   const EditProfilePictureWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   createState() => _EditProfilePictureWidgetState();

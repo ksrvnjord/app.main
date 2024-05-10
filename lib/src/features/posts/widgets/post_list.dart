@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostList extends ConsumerWidget {
-  const PostList({Key? key}) : super(key: key);
+  const PostList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

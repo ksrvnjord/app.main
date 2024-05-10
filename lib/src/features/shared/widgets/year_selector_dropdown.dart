@@ -3,10 +3,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart
 
 class YearSelectorDropdown extends StatelessWidget {
   const YearSelectorDropdown({
-    Key? key,
+    super.key,
     required this.onChanged,
     required this.selectedYear,
-  }) : super(key: key);
+  });
 
   final void Function(int?) onChanged;
   final int selectedYear;

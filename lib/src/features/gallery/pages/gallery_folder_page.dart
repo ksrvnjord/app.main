@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_list.dart
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class GalleryFolderPage extends ConsumerWidget {
-  const GalleryFolderPage({Key? key, required this.path}) : super(key: key);
+  const GalleryFolderPage({super.key, required this.path});
 
   final String path;
 

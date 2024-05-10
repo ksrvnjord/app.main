@@ -9,10 +9,10 @@ class DamagesEditPage extends ConsumerWidget {
   final String reservationObjectId;
 
   const DamagesEditPage({
-    Key? key,
+    super.key,
     required this.damageDocumentId,
     required this.reservationObjectId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

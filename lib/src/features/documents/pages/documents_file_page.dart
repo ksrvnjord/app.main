@@ -10,9 +10,9 @@ class DocumentsFilePage extends ConsumerWidget {
   final String path;
 
   const DocumentsFilePage({
-    Key? key,
+    super.key,
     required this.path,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

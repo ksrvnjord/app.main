@@ -12,10 +12,10 @@ class DamageEditWidget extends ConsumerWidget {
   final String reservationObjectId;
 
   const DamageEditWidget({
-    Key? key,
+    super.key,
     required this.damageDocumentId,
     required this.reservationObjectId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

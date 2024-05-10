@@ -7,9 +7,9 @@ import 'package:styled_widget/styled_widget.dart';
 class PostCard extends StatelessWidget {
   const PostCard({
     this.expandContent = false,
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final DocumentSnapshot<Post> snapshot;
   final bool expandContent;

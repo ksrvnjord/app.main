@@ -9,7 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class EditAllergiesPage extends ConsumerWidget {
-  const EditAllergiesPage({Key? key}) : super(key: key);
+  const EditAllergiesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

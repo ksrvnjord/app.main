@@ -7,8 +7,7 @@ import '../widgets/calendar/filters/model/boat_types.dart';
 
 class ReservationObjectTypeFiltersNotifier
     extends StateNotifier<Map<String, List<String>>> {
-  ReservationObjectTypeFiltersNotifier(Map<String, List<String>> filters)
-      : super(filters);
+  ReservationObjectTypeFiltersNotifier(super.filters);
 
   void updateFiltersForCategory(String category, List<String> filters) {
     state = {...state, category: filters};

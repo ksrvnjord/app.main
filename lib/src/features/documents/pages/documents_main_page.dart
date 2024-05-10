@@ -4,8 +4,8 @@ import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_folder
 
 class DocumentsMainPage extends StatefulWidget {
   const DocumentsMainPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DocumentsMainPage> createState() => _DocumentsMainPageState();

@@ -8,8 +8,8 @@ import 'package:styled_widget/styled_widget.dart';
 
 class DamageSelectWidget extends ConsumerWidget {
   const DamageSelectWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final double padding = 16;
 

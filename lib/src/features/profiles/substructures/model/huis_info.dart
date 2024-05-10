@@ -15,8 +15,8 @@ class HuisInfo extends GroupInfo {
   final int yearOfFoundation;
 
   const HuisInfo({
-    required String name,
-    required String description,
+    required super.name,
+    required String super.description,
     required this.allNjord,
     required this.composition,
     required this.houseNumber,
@@ -24,7 +24,7 @@ class HuisInfo extends GroupInfo {
     required this.postalCode,
     required this.numberOfHousemates,
     required this.yearOfFoundation,
-  }) : super(name: name, description: description);
+  });
 
   factory HuisInfo.fromMap(Map<String, dynamic> map) {
     return HuisInfo(

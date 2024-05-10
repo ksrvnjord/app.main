@@ -13,7 +13,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard({Key? key, required this.formDoc}) : super(key: key);
+  const FormCard({super.key, required this.formDoc});
 
   final DocumentSnapshot<FirestoreForm> formDoc;
 

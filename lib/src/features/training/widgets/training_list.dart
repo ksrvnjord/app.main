@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/training/api/my_reservations_pro
 import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
 
 class TrainingList extends ConsumerWidget {
-  const TrainingList({Key? key}) : super(key: key);
+  const TrainingList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

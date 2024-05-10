@@ -13,6 +13,6 @@ final formPartialReactionCountProvider = FutureProvider.family<int, String>(
         .count()
         .get();
 
-    return snapshot.count;
+    return snapshot.count!;
   },
 );

@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class GalleryFilePage extends ConsumerWidget {
-  const GalleryFilePage({Key? key, required this.path}) : super(key: key);
+  const GalleryFilePage({super.key, required this.path});
 
   final String path;
 

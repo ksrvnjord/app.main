@@ -9,9 +9,9 @@ class ReservationListTile extends StatelessWidget {
   final QueryDocumentSnapshot<Reservation> snapshot;
 
   const ReservationListTile({
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

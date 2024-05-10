@@ -10,9 +10,9 @@ class CalendarOverview extends ConsumerStatefulWidget {
   final DateTime date;
 
   const CalendarOverview({
-    Key? key,
+    super.key,
     required this.date,
-  }) : super(key: key);
+  });
 
   @override
   createState() => _CalendarOverview();

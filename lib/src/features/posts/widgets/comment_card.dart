@@ -10,8 +10,8 @@ class CommentCard extends StatelessWidget {
   final Comment comment;
   final FirestoreUser? postAuthor;
 
-  const CommentCard({Key? key, required this.postAuthor, required this.comment})
-      : super(key: key);
+  const CommentCard(
+      {super.key, required this.postAuthor, required this.comment});
 
   @override
   Widget build(BuildContext context) {

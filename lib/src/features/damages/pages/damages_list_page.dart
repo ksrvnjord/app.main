@@ -9,8 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widg
 
 class DamagesListPage extends ConsumerWidget {
   const DamagesListPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

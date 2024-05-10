@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/gallery/widgets/file_button.dart
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_button.dart';
 
 class FolderList extends ConsumerStatefulWidget {
-  const FolderList({Key? key, required this.listResult}) : super(key: key);
+  const FolderList({super.key, required this.listResult});
   final ListResult listResult;
 
   @override

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AdvancedSettingsPage extends StatelessWidget {
-  const AdvancedSettingsPage({Key? key}) : super(key: key);
+  const AdvancedSettingsPage({super.key});
 
   // Create  a function that clear the cache and exits the app.
   Future<void> clearAppData() async {

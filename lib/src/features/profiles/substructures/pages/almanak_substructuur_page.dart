@@ -11,9 +11,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakSubstructuurPage extends ConsumerWidget {
   const AlmanakSubstructuurPage({
-    Key? key,
+    super.key,
     required this.name,
-  }) : super(key: key);
+  });
 
   final String name;
 

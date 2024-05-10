@@ -8,9 +8,9 @@ class FolderList extends ConsumerWidget {
   final ListResult listResult;
 
   const FolderList({
-    Key? key,
+    super.key,
     required this.listResult,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

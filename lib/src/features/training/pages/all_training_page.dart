@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calend
 import 'package:styled_widget/styled_widget.dart';
 
 class AllTrainingPage extends ConsumerWidget {
-  const AllTrainingPage({Key? key}) : super(key: key);
+  const AllTrainingPage({super.key});
 
   // Generate a list of the coming 14 days.
 
