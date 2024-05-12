@@ -17,7 +17,9 @@ class BlikkenLijstController
           .limit(50)
           .get();
 
-      lastDocument = snapshot.docs.last;
+      if (snapshot.docs.isNotEmpty) {
+        lastDocument = snapshot.docs.last;
+      }
       state = AsyncValue.data(snapshot.docs);
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.empty);
@@ -40,9 +42,11 @@ class BlikkenLijstController
 
       if (snapshot.docs.isNotEmpty) {
         lastDocument = snapshot.docs.last;
-        state.whenData((currentDocs) {
-          state = AsyncValue.data(currentDocs + snapshot.docs);
-        });
+        if (state is AsyncData<List<QueryDocumentSnapshot<Object?>>>) {
+          state.whenData((currentDocs) {
+            state = AsyncValue.data(currentDocs + snapshot.docs);
+          });
+        }
       }
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.empty);
