@@ -14,9 +14,9 @@ class BlikkenLijstItem extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Aantal blikken: ${document['aantal_blikken']}'),
-            Text('Aantal premies: ${document['aantal_premies']}'),
-            Text('Periode: ${document['periode']}'),
+            Text('Aantal blikken: ${document['blikken']}'),
+            Text('Aantal premies: ${document['premies']}'),
+            Text('Periode: ${document['period']}'),
           ],
         ),
       ),
