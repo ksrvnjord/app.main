@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/get_blikkenlijst.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_item.dart';
+import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_tab_content.dart';
 
 class BlikkenLijstPage extends ConsumerStatefulWidget {
   const BlikkenLijstPage({super.key});
@@ -54,51 +55,13 @@ class _BlikkenLijstPageState extends ConsumerState<BlikkenLijstPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Blikkenlijst tab content
-          blikkenLijstState.when(
-            data: (docs) {
-              if (docs.isEmpty) {
-                return const Center(child: Text('Niemand gevonden'));
-              } else {
-                return ListView.builder(
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    if (index >= docs.length - 1) {
-                      ref
-                          .read(blikkenLijstProvider.notifier)
-                          .fetchMoreBlikkenLijst(
-                              _tabController.index == 0 ? 'regulier' : 'stuur');
-                    }
-                    return BlikkenLijstItem(document: docs[index]);
-                  },
-                );
-              }
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, _) => Center(child: Text('Error: $error')),
+          BlikkenLijstTabContent(
+            state: blikkenLijstState,
+            type: 'regulier',
           ),
-          // Stuurblikkenlijst tab content
-          blikkenLijstState.when(
-            data: (data) {
-              if (data.isEmpty) {
-                return const Center(child: Text('Niemand gevonden'));
-              } else {
-                return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    if (index >= data.length - 15) {
-                      ref
-                          .read(blikkenLijstProvider.notifier)
-                          .fetchMoreBlikkenLijst(
-                              _tabController.index == 0 ? 'regulier' : 'stuur');
-                    }
-                    return BlikkenLijstItem(document: data[index]);
-                  },
-                );
-              }
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, _) => Center(child: Text('Error: $error')),
+          BlikkenLijstTabContent(
+            state: blikkenLijstState,
+            type: 'stuur',
           ),
         ],
       ),
