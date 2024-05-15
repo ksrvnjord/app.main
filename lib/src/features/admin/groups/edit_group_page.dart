@@ -12,7 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 class EditGroupPage extends ConsumerWidget {
   final int groupId;
 
-  const EditGroupPage({Key? key, required this.groupId}) : super(key: key);
+  const EditGroupPage({super.key, required this.groupId});
 
   Future<void> removeUserFromGroup(
     int userId,
