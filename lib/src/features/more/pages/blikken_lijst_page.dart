@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/get_blikkenlijst.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_item.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_tab_content.dart';
 
 class BlikkenLijstPage extends ConsumerStatefulWidget {

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/get_blikkenlijst.dart';
-import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_item.dart';
 
 class BlikkenLijstTabContent extends ConsumerWidget {
   final AsyncValue<List<QueryDocumentSnapshot<Object?>>> state;
