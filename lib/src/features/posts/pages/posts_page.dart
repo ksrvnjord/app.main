@@ -29,6 +29,7 @@ class PostsPage extends ConsumerWidget {
                 builder: (_) => ProviderScope(
                   // When using a provider inside a modal bottom sheet, you need to wrap it in a ProviderScope, because the sheet is placed at the top of the widget tree.
 
+                  // ignore: deprecated_member_use
                   parent: ProviderScope.containerOf(
                     context,
                   ), // The new provider scope will share the same providers as the parent scope.
