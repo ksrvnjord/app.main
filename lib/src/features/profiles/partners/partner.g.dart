@@ -9,9 +9,9 @@ part of 'partner.dart';
 Partner _$PartnerFromJson(Map<String, dynamic> json) => Partner(
       name: json['name'] as String,
       logoUrl: json['logoUrl'] as String,
-      websiteUrl: json['websiteUrl'] as String,
-      description: json['description'] as String,
-      type: json['type'] as String,
+      websiteUrl: json['websiteUrl'] as String?,
+      description: json['description'] as String?,
+      type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$PartnerToJson(Partner instance) => <String, dynamic>{
