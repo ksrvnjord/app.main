@@ -91,7 +91,6 @@ dev_dependencies:
   dependency_validator: ^3.2.2
   dart_code_metrics_presets: ^2.6.0
   json_serializable: ^6.7.1
-  analyzer: ^5.12.0
 
 flutter:
   uses-material-design: true
