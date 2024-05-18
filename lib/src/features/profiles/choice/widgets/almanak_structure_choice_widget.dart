@@ -44,12 +44,20 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
-                    end: Alignment.center,
+                    end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withOpacity(1),
+                      // Slides from full opacity to 50% transparant at 0.25, then fade out.
+                      colorScheme.background,
+                      colorScheme.background.withOpacity(0.5),
+                      colorScheme.background.withOpacity(0.1),
                       Colors.transparent,
                     ],
-                    stops: const [0.0, 0.8],
+                    stops: const [
+                      0,
+                      0.25, // 0.25 covers the Text widget.
+                      0.4, // Till 0.4 the gradient fades out quickly, and then very gradually.
+                      1,
+                    ],
                   ),
                 ),
               ),
@@ -58,13 +66,12 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
         ),
         Text(
           title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              // Color: colorScheme.onPrimaryContainer,.
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(fontWeight: FontWeight.w600),
         ).padding(bottom: bottomTextPadding),
-      ].toStack(alignment: Alignment.bottomCenter).card(
-            color: colorScheme.primaryContainer,
-          ),
+      ].toStack(alignment: Alignment.bottomCenter).card(),
       onTap: () => context.goNamed(pushRoute),
     );
   }

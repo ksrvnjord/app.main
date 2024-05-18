@@ -74,7 +74,7 @@ class AlmanakPage extends ConsumerWidget {
                   onAuthenticated: AlmanakStructureChoiceWidget(
                     pushRoute: 'Partners',
                     title: "Partners & Sponsors",
-                    imagePath: 'assets/images/sponsors/XXL Nutrition.png',
+                    imagePath: 'assets/images/partners.jpeg',
                   ),
                 ),
               ].toColumn(
