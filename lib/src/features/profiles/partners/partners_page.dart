@@ -29,8 +29,10 @@ class PartnersPage extends ConsumerWidget {
           const dividerDim = 2.0;
 
           return ListView(
+            // Own implementation of staggered grid view, not very efficient.
             children: [
               IntrinsicHeight(
+                // Needed to layout the vertical divider.
                 child: [
                   for (final half in [firstHalf, secondHalf])
                     [
