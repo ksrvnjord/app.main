@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -14,6 +15,7 @@ class PartnersPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Partners & Sponsors")),
       body: partnersVal.when(
+        // ignore: avoid-long-functions
         data: (snapshot) {
           if (snapshot.docs.isEmpty) {
             return const Center(child: Text("No partners found"));
@@ -24,26 +26,49 @@ class PartnersPage extends ConsumerWidget {
           final firstHalf = docs.sublist(0, docs.length ~/ 2);
           final secondHalf = docs.sublist(docs.length ~/ 2);
 
+          const dividerDim = 2.0;
+
           return ListView(
             children: [
-              [
-                for (final half in [firstHalf, secondHalf])
-                  half
-                      .map((doc) => doc.data())
-                      .map((partner) => Container(
-                            color: Colors.white,
-                            width: double.infinity,
-                            child: Image.network(
-                              partner.logoUrl,
-                              fit: BoxFit.cover,
+              IntrinsicHeight(
+                child: [
+                  for (final half in [firstHalf, secondHalf])
+                    half
+                        .map(
+                          (partner) => InkWell(
+                            child: Container(
+                              color: Colors.white,
+                              width: double.infinity,
+                              child: Image.network(
+                                partner.data().logoUrl,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ))
-                      .toList()
-                      .toColumn(separator: const SizedBox(height: 2))
-                      .expanded(),
-              ].toRow(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                separator: const SizedBox(width: 2),
+                            onTap: () => context.goNamed(
+                              "Partner Details",
+                              pathParameters: {"partnerId": partner.id},
+                            ),
+                          ),
+                        )
+                        .toList()
+                        .toColumn(
+                          separator: Divider(
+                            height: dividerDim,
+                            // ignore: no-equal-arguments
+                            thickness: dividerDim,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                        )
+                        .expanded(),
+                ].toRow(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  separator: VerticalDivider(
+                    width: dividerDim,
+                    // ignore: no-equal-arguments
+                    thickness: dividerDim,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                ),
               ),
             ],
           );

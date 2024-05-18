@@ -53,6 +53,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_details_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
@@ -436,7 +437,23 @@ class Routes {
       name: "Almanak",
       child: const AlmanakPage(),
       routes: [
-        _route(path: 'partners', name: 'Partners', child: const PartnersPage()),
+        _route(
+          path: 'partners',
+          name: 'Partners',
+          child: const PartnersPage(),
+          routes: [
+            _route(
+              path: ':partnerId',
+              name: "Partner Details",
+              pageBuilder: (context, state) => _getPage(
+                child: PartnerDetailsPage(
+                  partnerId: state.pathParameters['partnerId']!,
+                ),
+                name: "Partner Details",
+              ),
+            ),
+          ],
+        ),
         _route(
           path: "leeden",
           name: "Leeden",
