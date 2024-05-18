@@ -48,7 +48,9 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
                     colors: [
                       // Slides from full opacity to 50% transparant at 0.25, then fade out.
                       colorScheme.background,
+                      // ignore: no-magic-number
                       colorScheme.background.withOpacity(0.5),
+                      // ignore: no-magic-number
                       colorScheme.background.withOpacity(0.1),
                       Colors.transparent,
                     ],

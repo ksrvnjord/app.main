@@ -33,30 +33,30 @@ class PartnersPage extends ConsumerWidget {
               IntrinsicHeight(
                 child: [
                   for (final half in [firstHalf, secondHalf])
-                    half
-                        .map(
-                          (partner) => InkWell(
-                            child: Container(
-                              color: Colors.white,
-                              width: double.infinity,
-                              child: Image.network(
-                                partner.data().logoUrl,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            onTap: () => context.goNamed(
-                              "Partner Details",
-                              pathParameters: {"partnerId": partner.id},
+                    [
+                      for (final partner in half)
+                        InkWell(
+                          child: Container(
+                            color: Colors.white,
+                            width: double.infinity,
+                            child: Image.network(
+                              partner.data().logoUrl,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        )
+                          onTap: () => context.goNamed(
+                            "Partner Details",
+                            pathParameters: {"partnerId": partner.id},
+                          ),
+                        ),
+                    ]
                         .toList()
                         .toColumn(
                           separator: Divider(
                             height: dividerDim,
                             // ignore: no-equal-arguments
                             thickness: dividerDim,
-                            color: Theme.of(context).dividerColor,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         )
                         .expanded(),
@@ -66,7 +66,7 @@ class PartnersPage extends ConsumerWidget {
                     width: dividerDim,
                     // ignore: no-equal-arguments
                     thickness: dividerDim,
-                    color: Theme.of(context).dividerColor,
+                    color: Theme.of(context).colorScheme.outline,
                   ),
                 ),
               ),
