@@ -6,12 +6,12 @@ import 'package:ksrvnjord_main_app/src/features/documents/api/file_metadata_prov
 import 'package:styled_widget/styled_widget.dart';
 
 class FileButton extends ConsumerWidget {
-  final Reference item;
-
   const FileButton({
     super.key,
     required this.item,
   });
+
+  final Reference item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -6,14 +6,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.da
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageShowWidget extends StatelessWidget {
-  final Damage? damage;
-  final double borderRadius = 12;
-  final double padding = 8;
-
   const DamageShowWidget({
     super.key,
     required this.damage,
   });
+
+  final Damage? damage;
+  final double borderRadius = 12;
+  final double padding = 8;
 
   @override
   Widget build(BuildContext context) {

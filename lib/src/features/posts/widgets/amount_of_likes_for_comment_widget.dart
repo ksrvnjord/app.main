@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/assets/svgs.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AmountOfLikesForCommentWidget extends StatelessWidget {
-  final int amountOfLikes;
-
   const AmountOfLikesForCommentWidget({super.key, required this.amountOfLikes});
+
+  final int amountOfLikes;
 
   @override
   Widget build(BuildContext context) {

@@ -196,9 +196,9 @@ class Routes {
       name: "Home",
       child: UpgradeAlert(
         upgrader: Upgrader(
-          messages: DutchUpgradeMessages(),
           countryCode: 'nl',
           languageCode: 'nl',
+          messages: DutchUpgradeMessages(),
         ),
         child: const HomePage(),
       ),
@@ -627,9 +627,10 @@ class Routes {
           ],
         ),
         _route(
-            path: "blikkenlijst",
-            name: "Blikkenlijst",
-            child: const BlikkenLijstPage()),
+          path: "blikkenlijst",
+          name: "Blikkenlijst",
+          child: const BlikkenLijstPage(),
+        ),
       ],
     ),
   ];

@@ -18,11 +18,6 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
 class PlanTrainingPage extends ConsumerStatefulWidget {
-  final DocumentReference<ReservationObject> reservationObject;
-  final DateTime startTime;
-  final DateTime date;
-  final String objectName;
-
   PlanTrainingPage({
     super.key,
     required this.reservationObject,
@@ -33,6 +28,11 @@ class PlanTrainingPage extends ConsumerStatefulWidget {
           startTime.month,
           startTime.day,
         );
+
+  final DocumentReference<ReservationObject> reservationObject;
+  final DateTime startTime;
+  final DateTime date;
+  final String objectName;
 
   @override
   createState() => _PlanTrainingPageState();

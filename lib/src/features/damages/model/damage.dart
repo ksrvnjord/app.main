@@ -22,6 +22,7 @@ class Damage {
   final bool critical;
   final bool active;
 
+  // ignore: sort_constructors_first
   Damage.fromJson(Map<String, Object?> json)
       : reference = json['reference'] as DocumentReference?,
         parent = json['parent']! as DocumentReference,
@@ -34,7 +35,6 @@ class Damage {
         cause = (json['cause'] ?? '') as String,
         critical = (json['critical'] ?? false) as bool,
         active = (json['active'] ?? false) as bool;
-
   Map<String, Object?> toJson() {
     return {
       'reference': reference,

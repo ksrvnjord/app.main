@@ -13,6 +13,7 @@ final formPartialReactionCountProvider = FutureProvider.family<int, String>(
         .count()
         .get();
 
+    // ignore: avoid-non-null-assertion
     return snapshot.count!;
   },
 );

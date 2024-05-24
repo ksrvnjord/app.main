@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LogoWidget extends StatelessWidget {
-  final String image;
-
   const LogoWidget({
     super.key,
     required this.image,
   });
+
+  final String image;
 
   @override
   Widget build(BuildContext context) {

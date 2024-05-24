@@ -5,9 +5,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class SwanDivider extends StatelessWidget {
-  const SwanDivider({
-    super.key,
-  });
+  const SwanDivider({super.key});
 
   @override
   Widget build(BuildContext context) {

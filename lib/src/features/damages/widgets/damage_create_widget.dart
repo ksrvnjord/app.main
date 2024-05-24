@@ -11,9 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/providers/progress_notifi
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageCreateWidget extends ConsumerStatefulWidget {
-  const DamageCreateWidget({
-    super.key,
-  });
+  const DamageCreateWidget({super.key});
 
   @override
   createState() => _DamageCreateWidgetState();

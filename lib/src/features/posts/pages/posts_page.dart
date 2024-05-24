@@ -9,9 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 
 class PostsPage extends ConsumerWidget {
-  const PostsPage({
-    super.key,
-  });
+  const PostsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,6 +22,7 @@ class PostsPage extends ConsumerWidget {
         actions: [
           FirebaseWidget(
             onAuthenticated: IconButton(
+              // ignore: avoid-async-call-in-sync-function
               onPressed: () => showModalBottomSheet(
                 context: context,
                 builder: (_) => ProviderScope(

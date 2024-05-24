@@ -3,9 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page.
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_folder_page.dart';
 
 class GalleryMainPage extends StatefulWidget {
-  const GalleryMainPage({
-    super.key,
-  });
+  const GalleryMainPage({super.key});
 
   @override
   State<GalleryMainPage> createState() => _GalleryMainPageState();

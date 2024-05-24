@@ -8,14 +8,8 @@ class PollAnswer {
   final DateTime answeredAt;
   final List<String>? allergies;
 
-  const PollAnswer({
-    required this.userId,
-    required this.answer,
-    required this.answeredAt,
-    this.allergies,
-  });
-
   // Create fromJson method.
+  // ignore: sort_constructors_first
   factory PollAnswer.fromJson(Map<String, dynamic> json) {
     return PollAnswer(
       userId: json['userId'],
@@ -27,6 +21,13 @@ class PollAnswer {
     );
   }
 
+  // ignore: sort_constructors_first
+  const PollAnswer({
+    required this.userId,
+    required this.answer,
+    required this.answeredAt,
+    this.allergies,
+  });
   // Create toJson method.
   Map<String, dynamic> toJson() {
     return {

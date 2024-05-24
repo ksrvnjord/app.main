@@ -7,11 +7,14 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CommentCard extends StatelessWidget {
+  const CommentCard({
+    super.key,
+    required this.postAuthor,
+    required this.comment,
+  });
+
   final Comment comment;
   final FirestoreUser? postAuthor;
-
-  const CommentCard(
-      {super.key, required this.postAuthor, required this.comment});
 
   @override
   Widget build(BuildContext context) {

@@ -13,9 +13,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notif
 import 'package:styled_widget/styled_widget.dart';
 
 class CommentWidget extends ConsumerWidget {
-  final QueryDocumentSnapshot<Comment> snapshot;
-
   const CommentWidget({super.key, required this.snapshot});
+
+  final QueryDocumentSnapshot<Comment> snapshot;
 
   // Wrapper function for usage in the CupertinoContextMenu.
   void popAnd(

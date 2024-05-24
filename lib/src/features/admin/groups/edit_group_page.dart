@@ -10,9 +10,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 
 /// Page to perform CRD operations on group-members for a specific group (which is a year and groupname).
 class EditGroupPage extends ConsumerWidget {
-  final int groupId;
-
   const EditGroupPage({super.key, required this.groupId});
+
+  final int groupId;
 
   Future<void> removeUserFromGroup(
     int userId,

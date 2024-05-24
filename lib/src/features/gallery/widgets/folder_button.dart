@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FolderButton extends ConsumerWidget {
-  final Reference item;
-
   const FolderButton({
     super.key,
     required this.item,
   });
+
+  final Reference item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

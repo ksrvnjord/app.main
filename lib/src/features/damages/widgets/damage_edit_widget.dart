@@ -7,15 +7,15 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_form_widg
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageEditWidget extends ConsumerWidget {
-  final double padding = 16;
-  final String damageDocumentId;
-  final String reservationObjectId;
-
   const DamageEditWidget({
     super.key,
     required this.damageDocumentId,
     required this.reservationObjectId,
   });
+
+  final double padding = 16;
+  final String damageDocumentId;
+  final String reservationObjectId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -7,12 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
 class DamagesCreatePage extends ConsumerWidget {
-  final String? reservationObjectId;
-
   const DamagesCreatePage({
     super.key,
     this.reservationObjectId,
   });
+
+  final String? reservationObjectId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

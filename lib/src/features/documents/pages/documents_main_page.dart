@@ -3,9 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_file_p
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_folder_page.dart';
 
 class DocumentsMainPage extends StatefulWidget {
-  const DocumentsMainPage({
-    super.key,
-  });
+  const DocumentsMainPage({super.key});
 
   @override
   State<DocumentsMainPage> createState() => _DocumentsMainPageState();

@@ -9,9 +9,7 @@ import 'package:styled_widget/styled_widget.dart';
 import '../api/reservation_object_type_filters_notifier.dart';
 
 class ShowFiltersPage extends ConsumerWidget {
-  ShowFiltersPage({
-    super.key,
-  });
+  ShowFiltersPage({super.key});
 
   final Map<String, List<MultiSelectItem<String>>> availableFilters =
       // Build a map of categories and their types.
@@ -82,9 +80,7 @@ class ShowFiltersPage extends ConsumerWidget {
               ).padding(bottom: categoryPadding).card(
                     elevation: 0,
                   ),
-            ].toColumn(
-              separator: const SizedBox(height: categoryPadding),
-            ),
+            ].toColumn(separator: const SizedBox(height: categoryPadding)),
           ),
         ],
       ),

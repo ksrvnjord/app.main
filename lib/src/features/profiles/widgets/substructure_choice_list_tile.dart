@@ -4,17 +4,17 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SubstructureChoiceListTile extends ConsumerWidget {
-  static const imageWidth = 80.0;
-  static const imageHeight = 72.0;
-  static const imageRightPadding = 16.0;
-  static const iconHorizontalPadding = 16.0;
-
   const SubstructureChoiceListTile({
     super.key,
     required this.name,
     required this.imageProvider, // The imageProvider for the choice.
     required this.onTap,
   });
+
+  static const imageWidth = 80.0;
+  static const imageHeight = 72.0;
+  static const imageRightPadding = 16.0;
+  static const iconHorizontalPadding = 16.0;
   final String name;
 
   final void Function() onTap;

@@ -7,12 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/more/mutations/toggle_topic_fcm.
 import 'package:styled_widget/styled_widget.dart';
 
 class NotificationsList extends StatefulWidget {
-  final Box topics;
-
   const NotificationsList({
     super.key,
     required this.topics,
   });
+
+  final Box topics;
 
   @override
   State<NotificationsList> createState() => _NotificationsListState();

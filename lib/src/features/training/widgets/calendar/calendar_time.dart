@@ -4,9 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calend
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarTime extends StatelessWidget {
-  CalendarTime({
-    super.key,
-  });
+  CalendarTime({super.key});
 
   final List<DateTime> timestamps = List.generate(
     CalendarMeasurement.amountOfSlots,

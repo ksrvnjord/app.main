@@ -7,5 +7,6 @@ class Images {
 
   static const unknownRoute404 = "assets/images/404.png";
 
+  // ignore: sort_constructors_first
   Images._();
 }

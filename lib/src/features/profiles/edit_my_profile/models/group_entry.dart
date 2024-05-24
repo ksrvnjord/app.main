@@ -7,7 +7,7 @@ class GroupEntry {
 
   final String groupType;
   final String? role;
-
+  // ignore: sort_constructors_first
   const GroupEntry({
     required this.groupType,
     required this.name,

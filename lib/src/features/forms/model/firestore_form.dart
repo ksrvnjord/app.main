@@ -30,6 +30,7 @@ class FirestoreForm {
             toFirestore: (form, _) => form.toJson(),
           );
 
+  // ignore: sort_constructors_first
   const FirestoreForm({
     required this.createdTime,
     required this.title,
@@ -41,6 +42,7 @@ class FirestoreForm {
   });
 
   // Create fromJson method.
+  // ignore: sort_constructors_first
   factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFormFromJson(json);
 

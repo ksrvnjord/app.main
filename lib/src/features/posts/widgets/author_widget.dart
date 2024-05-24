@@ -3,10 +3,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.d
 import 'package:styled_widget/styled_widget.dart';
 
 class AuthorWidget extends StatelessWidget {
-  final String authorName;
-  final FirestoreUser? postAuthor;
-  final double fontSize;
-
   const AuthorWidget({
     super.key,
     required this.postAuthor,
@@ -14,6 +10,10 @@ class AuthorWidget extends StatelessWidget {
     // ignore: no-magic-number
     this.fontSize = 18.0,
   });
+
+  final String authorName;
+  final FirestoreUser? postAuthor;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {

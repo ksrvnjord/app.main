@@ -21,9 +21,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EditAlmanakProfilePage extends ConsumerStatefulWidget {
-  const EditAlmanakProfilePage({
-    super.key,
-  });
+  const EditAlmanakProfilePage({super.key});
 
   @override
   createState() => _EditAlmanakProfilePageState();

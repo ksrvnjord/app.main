@@ -11,6 +11,7 @@ class CommissieInfo extends GroupInfo {
   const CommissieInfo({
     required super.name,
     super.description,
+    // ignore: unnecessary-trailing-comma
     this.email,
   });
 
