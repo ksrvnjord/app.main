@@ -46,11 +46,14 @@ class BlikkenLijstTabContent extends ConsumerWidget {
                       docs.length,
                       (index) => DataRow(cells: [
                         DataCell(
-                            Text(docs.elementAtOrNull(index)?['name'] ?? '')),
+                          Text(docs.elementAtOrNull(index)?['name'] ?? ''),
+                        ),
                         DataCell(
-                            Text('${docs.elementAtOrNull(index)?['blikken']}')),
+                          Text('${docs.elementAtOrNull(index)?['blikken']}'),
+                        ),
                         DataCell(
-                            Text('${docs.elementAtOrNull(index)?['premies']}')),
+                          Text('${docs.elementAtOrNull(index)?['premies']}'),
+                        ),
                         DataCell(Text(docs.elementAtOrNull(index)?['period'])),
                       ]),
                     ),
