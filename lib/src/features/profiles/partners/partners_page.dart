@@ -22,9 +22,10 @@ class PartnersPage extends ConsumerWidget {
           }
 
           final docs = snapshot.docs;
+          final shuffled = docs..shuffle();
           // Divide the docs over two lists.
-          final firstHalf = docs.sublist(0, docs.length ~/ 2);
-          final secondHalf = docs.sublist(docs.length ~/ 2);
+          final firstHalf = shuffled.sublist(0, shuffled.length ~/ 2);
+          final secondHalf = shuffled.sublist(shuffled.length ~/ 2);
 
           const dividerDim = 2.0;
 
