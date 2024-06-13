@@ -30,6 +30,7 @@ class _BlikkenLijstPageState extends ConsumerState<BlikkenLijstPage>
     if (_tabController.indexIsChanging) {
       ref
           .read(blikkenLijstProvider.notifier)
+          // ignore: avoid-async-call-in-sync-function
           .fetchBlikkenLijst(_tabController.index == 0 ? 'regulier' : 'stuur');
     }
   }
