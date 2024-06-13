@@ -38,6 +38,10 @@ class DamageShowWidget extends StatelessWidget {
         name: 'Aangemaakt',
         value: damage?.createdTime.toString() ?? '',
       ),
+      DataTextListTile(
+        name: "Update Reparatie",
+        value: damage?.updateReperation ?? '',
+      ),
       damageImage != null
           ? ListTile(
               title: const Text(

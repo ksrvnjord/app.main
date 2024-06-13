@@ -17,6 +17,7 @@ class Damage {
   final String type;
   final String creatorId;
   final String cause;
+  final String updateReperation;
   final DateTime createdTime;
   final String description;
   final bool critical;
@@ -29,6 +30,7 @@ class Damage {
         name = (json['name'] ?? '') as String,
         type = (json['type'] ?? '') as String,
         creatorId = json['creatorId']! as String,
+        updateReperation = (json['update_reparation'] ?? '') as String,
         createdTime = (json['createdTime'] as Timestamp).toDate(),
         description = json['description']! as String,
         cause = (json['cause'] ?? '') as String,
@@ -37,17 +39,18 @@ class Damage {
 
   Map<String, Object?> toJson() {
     return {
-      'reference': reference,
-      'image': image,
-      'critical': critical,
       'active': active,
-      'parent': parent,
-      'description': description,
       'cause': cause,
       'createdTime': createdTime,
       'creatorId': creatorId,
+      'critical': critical,
+      'description': description,
+      'image': image,
       'name': name,
+      'parent': parent,
+      'reference': reference,
       'type': type,
+      'update_reparation': updateReperation,
     };
   }
 
