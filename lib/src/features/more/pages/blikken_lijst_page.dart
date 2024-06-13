@@ -19,7 +19,7 @@ class _BlikkenLijstPageState extends ConsumerState<BlikkenLijstPage>
   @override
   void initState() {
     super.initState();
-    const defaultTabLimit = 22;
+    const defaultTabLimit = 2;
     _tabController = TabController(length: defaultTabLimit, vsync: this);
     _tabController.addListener(_handleTabSelection);
     // ignore: avoid-async-call-in-sync-function
@@ -28,7 +28,6 @@ class _BlikkenLijstPageState extends ConsumerState<BlikkenLijstPage>
 
   void _handleTabSelection() {
     if (_tabController.indexIsChanging) {
-      // ignore: avoid-async-call-in-sync-function
       ref
           .read(blikkenLijstProvider.notifier)
           .fetchBlikkenLijst(_tabController.index == 0 ? 'regulier' : 'stuur');

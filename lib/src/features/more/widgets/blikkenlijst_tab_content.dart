@@ -42,7 +42,7 @@ class BlikkenLijstTabContent extends ConsumerWidget {
                       DataColumn(label: Text('Periode')),
                     ],
                     columnSpacing: defaultColumnSpacing,
-                    rows: List<DataRow>.generate(
+                    rows: List.generate(
                       docs.length,
                       (index) => DataRow(cells: [
                         DataCell(
