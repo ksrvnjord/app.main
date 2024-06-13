@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/blikkenlijst_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,10 +30,9 @@ class _BlikkenLijstPageState extends ConsumerState<BlikkenLijstPage>
 
   void _handleTabSelection() {
     if (_tabController.indexIsChanging) {
-      ref
+      unawaited(ref
           .read(blikkenLijstProvider.notifier)
-          // ignore: avoid-async-call-in-sync-function
-          .fetchBlikkenLijst(_tabController.index == 0 ? 'regulier' : 'stuur');
+          .fetchBlikkenLijst(_tabController.index == 0 ? 'regulier' : 'stuur'));
     }
   }
 
