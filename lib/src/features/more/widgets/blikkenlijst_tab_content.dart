@@ -17,7 +17,6 @@ class BlikkenLijstTabContent extends ConsumerWidget {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        // ignore: avoid-async-call-in-sync-function
         ref
             .watch(blikkenLijstProvider(blikType).notifier)
             .fetchMoreBlikkenLijst(blikType);
