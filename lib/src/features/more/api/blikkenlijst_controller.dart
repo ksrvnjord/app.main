@@ -2,53 +2,59 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BlikkenLijstController
-    extends StateNotifier<AsyncValue<List<QueryDocumentSnapshot<Object?>>>> {
-  DocumentSnapshot? lastDocument;
-  // ignore: sort_constructors_first
-  BlikkenLijstController() : super(const AsyncValue.loading());
+    extends FamilyAsyncNotifier<List<QueryDocumentSnapshot<Object?>>, String> {
+  DocumentSnapshot? _lastDocument;
+  Map<String, List<QueryDocumentSnapshot<Object?>>> _cache =
+      {}; // Cache initial list for fast loading.
 
-  Future<void> fetchBlikkenLijst(String type) async {
-    state = const AsyncValue.loading();
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('eeuwige_blikkenlijst')
-          // ignore: avoid-missing-interpolation
-          .where('type', isEqualTo: type)
-          .orderBy('blikken', descending: true)
-          .limit(50)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        lastDocument = snapshot.docs.lastOrNull;
-      }
-      state = AsyncValue.data(snapshot.docs);
-    } catch (error) {
-      state = AsyncValue.error(error, StackTrace.empty);
+  Future<List<QueryDocumentSnapshot<Object?>>> initialBlikkenLijst(
+    String blikType,
+  ) async {
+    if (_cache.containsKey(blikType)) {
+      return _cache[blikType]!;
     }
+    // State = const AsyncValue.loading();.
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('eeuwige_blikkenlijst')
+        .where('type', isEqualTo: blikType)
+        .orderBy('blikken', descending: true)
+        .limit(50)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      _lastDocument = snapshot.docs.lastOrNull;
+    }
+    final docs = snapshot.docs;
+    _cache = {..._cache, blikType: docs};
+
+    return docs;
   }
 
-  Future<void> fetchMoreBlikkenLijst(String type) async {
-    if (lastDocument == null) {
+  @override
+  Future<List<QueryDocumentSnapshot<Object?>>> build(String arg) =>
+      initialBlikkenLijst(arg);
+
+  Future<void> fetchMoreBlikkenLijst(String blikType) async {
+    if (_lastDocument == null) {
       return;
     }
 
     try {
       Query query = FirebaseFirestore.instance
           .collection('eeuwige_blikkenlijst')
-          // ignore: avoid-missing-interpolation
-          .where('type', isEqualTo: type)
+          .where('type', isEqualTo: blikType)
           .orderBy('blikken', descending: true)
           .limit(30);
 
-      if (lastDocument != null) {
+      if (_lastDocument != null) {
         // ignore: avoid-non-null-assertion
-        query = query.startAfterDocument(lastDocument!);
+        query = query.startAfterDocument(_lastDocument!);
       }
 
       QuerySnapshot snapshot = await query.get();
 
       if (snapshot.docs.isNotEmpty) {
-        lastDocument = snapshot.docs.lastOrNull;
+        _lastDocument = snapshot.docs.lastOrNull;
         if (state is AsyncData<List<QueryDocumentSnapshot<Object?>>>) {
           // ignore: avoid-ignoring-return-values
           state.whenData((currentDocs) {
@@ -63,7 +69,7 @@ class BlikkenLijstController
 }
 
 // ignore: prefer-static-class
-final blikkenLijstProvider = StateNotifierProvider<BlikkenLijstController,
-    AsyncValue<List<QueryDocumentSnapshot<Object?>>>>(
-  (ref) => BlikkenLijstController(),
-);
+final blikkenLijstProvider = AsyncNotifierProvider.family<
+    BlikkenLijstController,
+    List<QueryDocumentSnapshot<Object?>>,
+    String>(BlikkenLijstController.new);
