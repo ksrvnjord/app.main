@@ -12,6 +12,7 @@ class ImageCacheItem extends HiveObject {
 
   @HiveField(1)
   final DateTime expire;
+  // ignore: sort_constructors_first
   ImageCacheItem({
     required this.data,
     required this.expire,

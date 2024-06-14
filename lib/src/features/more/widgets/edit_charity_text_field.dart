@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class EditCharityTextField extends StatefulWidget {
   const EditCharityTextField({
-    Key? key,
+    super.key,
     required this.name,
     required this.initialValue,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final String name;
   final String initialValue;

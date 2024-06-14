@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class MoreListTile extends StatelessWidget {
-  final String label;
-  final String routeName;
-
   const MoreListTile({
     super.key,
     required this.label,
     required this.routeName,
   });
+  final String label;
+  final String routeName;
 
   @override
   Widget build(BuildContext context) {

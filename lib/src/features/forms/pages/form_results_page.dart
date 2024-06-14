@@ -25,7 +25,7 @@ import 'dart:math' as math;
 typedef ExportOptionFunction = Future<String> Function(String userId);
 
 class FormResultsPage extends ConsumerStatefulWidget {
-  const FormResultsPage({Key? key, required this.formId}) : super(key: key);
+  const FormResultsPage({super.key, required this.formId});
 
   final String formId;
 

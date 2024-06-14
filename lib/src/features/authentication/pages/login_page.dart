@@ -12,9 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/logo_widget.dart'
 import 'package:styled_widget/styled_widget.dart';
 
 class LoginPage extends ConsumerWidget {
-  const LoginPage({
-    Key? key,
-  }) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

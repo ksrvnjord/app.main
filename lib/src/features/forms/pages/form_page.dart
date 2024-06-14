@@ -15,7 +15,7 @@ import 'package:styled_widget/styled_widget.dart';
 
 class FormPage extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
-  const FormPage({Key? key, required this.formId}) : super(key: key);
+  const FormPage({super.key, required this.formId});
 
   final String formId;
 

@@ -12,15 +12,16 @@ class GroupDjangoUser {
   // ignore: prefer-correct-identifier-length
   final int id;
 
+  // ignore: sort_constructors_first
+  factory GroupDjangoUser.fromJson(Map<String, dynamic> json) =>
+      _$GroupDjangoUserFromJson(json);
+
+  // ignore: sort_constructors_first
   GroupDjangoUser({
     required this.firstName,
     required this.lastName,
     required this.identifier,
     required this.id,
   });
-
-  factory GroupDjangoUser.fromJson(Map<String, dynamic> json) =>
-      _$GroupDjangoUserFromJson(json);
-
   Map<String, dynamic> toJson() => _$GroupDjangoUserToJson(this);
 }

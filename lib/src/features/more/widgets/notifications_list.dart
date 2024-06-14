@@ -7,12 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/more/mutations/toggle_topic_fcm.
 import 'package:styled_widget/styled_widget.dart';
 
 class NotificationsList extends StatefulWidget {
-  final Box topics;
-
   const NotificationsList({
-    Key? key,
+    super.key,
     required this.topics,
-  }) : super(key: key);
+  });
+
+  final Box topics;
 
   @override
   State<NotificationsList> createState() => _NotificationsListState();
@@ -70,15 +70,13 @@ class _NotificationsListState extends State<NotificationsList> {
         visualDensity: VisualDensity.standard,
       ),
       const Divider(height: 0),
-      ...topics
-          .map((e) => SwitchListTile(
-                value: widget.topics.get(e['topic']!) ?? false,
-                onChanged: (value) =>
-                    toggleTopic(e['topic']!, value, messenger, e['title']!),
-                title: Text(e['title']!),
-                visualDensity: VisualDensity.standard,
-              ))
-          .toList(),
+      ...topics.map((e) => SwitchListTile(
+            value: widget.topics.get(e['topic']!) ?? false,
+            onChanged: (value) =>
+                toggleTopic(e['topic']!, value, messenger, e['title']!),
+            title: Text(e['title']!),
+            visualDensity: VisualDensity.standard,
+          )),
     ]);
   }
 }

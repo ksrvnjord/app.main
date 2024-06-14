@@ -13,6 +13,7 @@ class Post {
   final String topic;
   final Reference? imageRef;
 
+  // ignore: sort_constructors_first
   const Post({
     required this.title,
     required this.content,
@@ -24,6 +25,7 @@ class Post {
     this.imageRef,
   });
 
+  // ignore: sort_constructors_first
   factory Post.fromJson(Map<String, dynamic> data) {
     return Post(
       title: data['title'],

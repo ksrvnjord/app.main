@@ -4,11 +4,10 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_list_tile_widget.dart';
 
 class AlmanakUserButtonWidget extends ConsumerWidget {
+  const AlmanakUserButtonWidget(this.user, {super.key, required this.onTap});
+
   final DjangoUser user;
   final void Function() onTap;
-
-  const AlmanakUserButtonWidget(this.user, {Key? key, required this.onTap})
-      : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(

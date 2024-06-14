@@ -11,7 +11,8 @@
     <application android:label="K.S.R.V. Njord"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher">
+        android:roundIcon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
 
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_stat_ic_launcher_foreground" />

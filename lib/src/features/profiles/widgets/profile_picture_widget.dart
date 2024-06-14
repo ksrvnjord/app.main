@@ -7,12 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/zoomable_image.da
 /// Zoomable profile picture widget.
 class ProfilePictureWidget extends ConsumerWidget {
   const ProfilePictureWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.size,
     this.zoomable = true,
     this.thumbnail = false,
-  }) : super(key: key);
+  });
 
   final String userId;
   final double size;

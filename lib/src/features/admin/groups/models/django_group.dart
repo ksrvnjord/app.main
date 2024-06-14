@@ -26,6 +26,11 @@ class DjangoGroup {
   // ignore: unused-code
   final List<String> rights;
 
+  // ignore: sort_constructors_first
+  factory DjangoGroup.fromJson(Map<String, dynamic> json) =>
+      _$DjangoGroupFromJson(json);
+
+  // ignore: sort_constructors_first
   const DjangoGroup({
     this.id,
     this.users,
@@ -34,9 +39,6 @@ class DjangoGroup {
     required this.type,
     required this.year,
   });
-
-  factory DjangoGroup.fromJson(Map<String, dynamic> json) =>
-      _$DjangoGroupFromJson(json);
 
   Map<String, dynamic> toJson() => _$DjangoGroupToJson(this);
 

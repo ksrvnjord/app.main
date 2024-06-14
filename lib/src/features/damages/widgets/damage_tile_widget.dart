@@ -5,16 +5,16 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageTileWidget extends StatelessWidget {
-  final DocumentSnapshot<Damage> damageSnapshot;
-  final void Function() showDamage;
-  final void Function() editDamage;
-
   const DamageTileWidget({
-    Key? key,
+    super.key,
     required this.showDamage,
     required this.editDamage,
     required this.damageSnapshot,
-  }) : super(key: key);
+  });
+
+  final DocumentSnapshot<Damage> damageSnapshot;
+  final void Function() showDamage;
+  final void Function() editDamage;
 
   @override
   Widget build(BuildContext context) {

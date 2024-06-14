@@ -3,12 +3,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class AnswerStatusCard extends StatelessWidget {
   const AnswerStatusCard({
-    Key? key,
+    super.key,
     required this.answerExists,
     required this.isCompleted,
     required this.showIcon,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final bool answerExists;
   final bool isCompleted;

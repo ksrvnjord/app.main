@@ -5,12 +5,12 @@ import 'package:ksrvnjord_main_app/src/features/documents/api/storage_path_child
 import 'package:styled_widget/styled_widget.dart';
 
 class FolderButton extends ConsumerWidget {
-  final Reference item;
-
   const FolderButton({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
+
+  final Reference item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

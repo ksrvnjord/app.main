@@ -5,12 +5,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormQuestion extends ConsumerWidget {
   const CreateFormQuestion({
-    Key? key,
+    super.key,
     required this.index,
     required this.question,
     required this.onChanged,
     required this.deleteQuestion,
-  }) : super(key: key);
+  });
 
   final int index;
   final FirestoreFormQuestion question;
@@ -64,7 +64,7 @@ class CreateFormQuestion extends ConsumerWidget {
                 ],
               ),
             ].toColumn();
-          }).toList(),
+          }),
           if (q.type == FormQuestionType.singleChoice)
             const SizedBox(height: 16),
           ElevatedButton(

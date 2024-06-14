@@ -31,6 +31,8 @@ class MorePage extends ConsumerWidget {
       if (firebaseAuthUser != null) "Bekijk het Lustrum Goede Doel": "Charity",
       if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
+      if (firebaseAuthUser != null)
+        'Bekijk de Eeuwige Blikkenlijst': "Blikkenlijst",
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
     };
 

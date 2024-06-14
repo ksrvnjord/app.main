@@ -4,14 +4,14 @@ import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_show_widg
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 
 class DamagesShowPage extends StatelessWidget {
-  final String damageDocumentId;
-  final String reservationObjectId;
-
   const DamagesShowPage({
-    Key? key,
+    super.key,
     required this.damageDocumentId,
     required this.reservationObjectId,
-  }) : super(key: key);
+  });
+
+  final String damageDocumentId;
+  final String reservationObjectId;
 
   @override
   Widget build(BuildContext context) {

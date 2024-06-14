@@ -6,8 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class AnnouncementPage extends ConsumerWidget {
-  const AnnouncementPage({Key? key, required this.announcementId})
-      : super(key: key);
+  const AnnouncementPage({super.key, required this.announcementId});
 
   final String announcementId;
 

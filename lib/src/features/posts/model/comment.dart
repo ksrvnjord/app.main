@@ -11,6 +11,7 @@ class Comment {
   final List<String> likedBy;
   final bool likedByMe;
 
+  // ignore: sort_constructors_first
   const Comment({
     required this.authorId,
     required this.authorName,
@@ -20,6 +21,7 @@ class Comment {
     this.likedByMe = false,
   });
 
+  // ignore: sort_constructors_first
   factory Comment.fromMap(Map<String, dynamic> map) {
     return Comment(
       authorId: map['authorId'] as String,

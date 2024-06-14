@@ -3,8 +3,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/leeden/widgets/almanak_
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakSearchableListWidget extends StatefulWidget {
-  const AlmanakSearchableListWidget({Key? key, required this.onTap})
-      : super(key: key);
+  const AlmanakSearchableListWidget({super.key, required this.onTap});
 
   final void Function(int userId)? onTap;
 

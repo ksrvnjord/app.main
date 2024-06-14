@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FileButton extends ConsumerWidget {
-  const FileButton({Key? key, required this.item}) : super(key: key);
+  const FileButton({super.key, required this.item});
 
   final Reference item;
   @override

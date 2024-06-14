@@ -9,12 +9,12 @@ class WidgetHeader extends StatelessWidget {
   /// The [onTap] is the callback when the [onTapName] is clicked.
   /// Note: Place this widget only in full-width containers, as this widget is already padded.
   const WidgetHeader({
-    Key? key,
+    super.key,
     required this.title,
     required this.titleIcon,
     this.onTapName,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final String title;
   final String? onTapName;

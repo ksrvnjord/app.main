@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/charity_get_leontien_huis.dart';
 
 class CharityProgressIndicator extends ConsumerWidget {
-  const CharityProgressIndicator({Key? key}) : super(key: key);
+  const CharityProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

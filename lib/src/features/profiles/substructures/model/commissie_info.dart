@@ -9,13 +9,11 @@ class CommissieInfo extends GroupInfo {
   final String? email;
 
   const CommissieInfo({
-    required String name,
-    String? description,
+    required super.name,
+    super.description,
+    // ignore: unnecessary-trailing-comma
     this.email,
-  }) : super(
-          name: name,
-          description: description,
-        );
+  });
 
   factory CommissieInfo.fromMap(Map<String, dynamic> map) {
     return CommissieInfo(

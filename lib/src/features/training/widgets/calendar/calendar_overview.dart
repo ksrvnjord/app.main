@@ -7,12 +7,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 // Shows all available objects for a given day and filters.
 class CalendarOverview extends ConsumerStatefulWidget {
-  final DateTime date;
-
   const CalendarOverview({
-    Key? key,
+    super.key,
     required this.date,
-  }) : super(key: key);
+  });
+
+  final DateTime date;
 
   @override
   createState() => _CalendarOverview();

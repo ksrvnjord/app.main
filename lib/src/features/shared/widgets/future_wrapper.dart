@@ -11,6 +11,16 @@ Widget onEmpty<T>(T arg) {
 
 @immutable
 class FutureWrapper<T> extends StatelessWidget {
+  const FutureWrapper({
+    super.key,
+    required this.future,
+    required this.success,
+    this.loading = const LoadingWidget(),
+    this.error = onEmpty,
+    this.onNoData = empty,
+    this.initialData,
+  });
+
   static Widget empty() => const SizedBox.shrink();
   final Future<T> future;
   final Widget loading;
@@ -18,16 +28,6 @@ class FutureWrapper<T> extends StatelessWidget {
   final Widget Function(T data) success;
   final Widget Function() onNoData;
   final T? initialData;
-
-  const FutureWrapper({
-    Key? key,
-    required this.future,
-    required this.success,
-    this.loading = const LoadingWidget(),
-    this.error = onEmpty,
-    this.onNoData = empty,
-    this.initialData,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

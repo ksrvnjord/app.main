@@ -15,13 +15,13 @@ import 'api/reservations_for_object_provider.dart';
 import 'model/reservations_query.dart';
 
 class ObjectCalendar extends ConsumerStatefulWidget {
-  final DateTime date;
-  final QueryDocumentSnapshot<ReservationObject> boat;
   const ObjectCalendar({
-    Key? key,
+    super.key,
     required this.date,
     required this.boat,
-  }) : super(key: key);
+  });
+  final DateTime date;
+  final QueryDocumentSnapshot<ReservationObject> boat;
 
   @override
   createState() => _ObjectCalendar();

@@ -20,6 +20,7 @@ class ReservationObject {
   final String? brand;
   final bool critical;
 
+  // ignore: sort_constructors_first
   ReservationObject.fromJson(Map<String, Object?> json)
       : reference = json['reference'] as DocumentReference?,
         name = json['name']! as String,
@@ -33,7 +34,6 @@ class ReservationObject {
         year = json['year'] as int?,
         brand = json['brand'] as String?,
         critical = (json['critical'] as bool?) ?? false;
-
   Map<String, Object?> toJson() {
     return {
       'reference': reference,

@@ -10,6 +10,7 @@ class Partner {
   final String? description;
   final String? type;
 
+  // ignore: sort_constructors_first
   const Partner({
     required this.name,
     required this.logoUrl,
@@ -18,7 +19,7 @@ class Partner {
     this.type,
   });
 
-  // ignore: unused-code
+  // ignore: unused-code, sort_constructors_first
   factory Partner.fromJson(Map<String, dynamic> json) =>
       _$PartnerFromJson(json);
 

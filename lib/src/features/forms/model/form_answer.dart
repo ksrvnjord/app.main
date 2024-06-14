@@ -23,6 +23,7 @@ class FormAnswer {
   final bool isCompleted;
   final List<String>? allergies;
 
+  // ignore: sort_constructors_first
   const FormAnswer({
     required this.userId,
     required this.answers,
@@ -32,6 +33,7 @@ class FormAnswer {
   });
 
   // Create fromJson method.
+  // ignore: sort_constructors_first
   factory FormAnswer.fromJson(Map<String, dynamic> json) =>
       _$FormAnswerFromJson(json);
 

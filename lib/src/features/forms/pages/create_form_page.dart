@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questi
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
-  const CreateFormPage({Key? key}) : super(key: key);
+  const CreateFormPage({super.key});
 
   @override
   createState() => _CreateFormPageState();
@@ -176,7 +176,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                     // ignore: avoid-collection-mutating-methods
                     setState(() => _questions.removeAt(index)),
               );
-            }).toList(),
+            }),
             const SizedBox(height: sizedBoxHeight),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

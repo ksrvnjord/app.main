@@ -39,6 +39,7 @@ class Reservation {
   @JsonKey(includeFromJson: false, includeToJson: false)
   DateTime get endTime => endTimestamp.toDate();
 
+  // ignore: sort_constructors_first
   const Reservation({
     required this.startTimestamp,
     required this.endTimestamp,
@@ -48,6 +49,7 @@ class Reservation {
     required this.creatorName,
   });
 
+  // ignore: sort_constructors_first
   factory Reservation.fromJson(Map<String, dynamic> json) =>
       _$ReservationFromJson(json);
 

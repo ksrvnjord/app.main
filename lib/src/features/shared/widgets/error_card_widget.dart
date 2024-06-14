@@ -5,10 +5,10 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 
 class ErrorCardWidget extends StatelessWidget {
   const ErrorCardWidget({
-    Key? key,
+    super.key,
     required this.errorMessage,
     this.stackTrace,
-  }) : super(key: key);
+  });
 
   final String errorMessage;
   final StackTrace? stackTrace;

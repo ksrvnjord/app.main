@@ -8,10 +8,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.da
 
 class DocumentsFolderPage extends ConsumerWidget {
   const DocumentsFolderPage({
-    Key? key,
+    super.key,
     required this.path,
     required this.rootPath,
-  }) : super(key: key);
+  });
 
   final String path;
   final String rootPath;

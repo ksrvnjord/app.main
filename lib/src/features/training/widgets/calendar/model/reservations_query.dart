@@ -10,8 +10,8 @@ class ReservationsQuery {
   @override
   int get hashCode => date.hashCode ^ docRef.hashCode;
 
+  // ignore: sort_constructors_first
   const ReservationsQuery(this.date, this.docRef);
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

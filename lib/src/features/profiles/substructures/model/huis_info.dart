@@ -14,9 +14,10 @@ class HuisInfo extends GroupInfo {
   final int numberOfHousemates;
   final int yearOfFoundation;
 
+  // ignore: sort_constructors_first
   const HuisInfo({
-    required String name,
-    required String description,
+    required super.name,
+    required String super.description,
     required this.allNjord,
     required this.composition,
     required this.houseNumber,
@@ -24,8 +25,9 @@ class HuisInfo extends GroupInfo {
     required this.postalCode,
     required this.numberOfHousemates,
     required this.yearOfFoundation,
-  }) : super(name: name, description: description);
+  });
 
+  // ignore: sort_constructors_first
   factory HuisInfo.fromMap(Map<String, dynamic> map) {
     return HuisInfo(
       name: map['name'] as String,
@@ -72,5 +74,6 @@ enum HouseComposition {
 
   final String value;
 
+  // ignore: sort_constructors_first
   const HouseComposition(this.value);
 }

@@ -5,12 +5,12 @@ import 'package:ksrvnjord_main_app/src/features/documents/widgets/file_button.da
 import 'package:ksrvnjord_main_app/src/features/documents/widgets/folder_button.dart';
 
 class FolderList extends ConsumerWidget {
-  final ListResult listResult;
-
   const FolderList({
-    Key? key,
+    super.key,
     required this.listResult,
-  }) : super(key: key);
+  });
+
+  final ListResult listResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

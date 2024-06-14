@@ -7,9 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageSelectWidget extends ConsumerWidget {
-  const DamageSelectWidget({
-    Key? key,
-  }) : super(key: key);
+  const DamageSelectWidget({super.key});
 
   final double padding = 16;
 

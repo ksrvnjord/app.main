@@ -14,14 +14,14 @@ import '../widgets/availability_header.dart';
 import '../widgets/calendar/widgets/chip_widget.dart';
 
 class ShowReservationObjectPage extends ConsumerWidget {
-  final String documentId;
-  final String name;
-
   const ShowReservationObjectPage({
-    Key? key,
+    super.key,
     required this.documentId,
     required this.name,
-  }) : super(key: key);
+  });
+
+  final String documentId;
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
