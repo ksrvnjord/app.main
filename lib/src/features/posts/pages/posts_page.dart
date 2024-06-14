@@ -22,7 +22,6 @@ class PostsPage extends ConsumerWidget {
         actions: [
           FirebaseWidget(
             onAuthenticated: IconButton(
-              // ignore: avoid-async-call-in-sync-function
               onPressed: () => showModalBottomSheet(
                 context: context,
                 builder: (_) => UncontrolledProviderScope(
