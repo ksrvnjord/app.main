@@ -97,16 +97,20 @@ class Routes {
   // ignore: prefer-static-class, avoid-long-functions
   static final routerProvider = Provider((ref) {
     final authNotifier = ValueNotifier<AsyncValue<Auth?>>(
-        const AsyncLoading()); // This is the notifier that will be used to refresh the router
-
+      const AsyncLoading(),
+    );
+    // This is the notifier that will be used to refresh the router.
     ref
       ..onDispose(authNotifier.dispose)
       ..listen(
-          authControllerProvider.select((data) => data.whenData((value) =>
-              value)), // When user is authenticated, update the notifier
-          (previous, next) {
-        authNotifier.value = next;
-      });
+        authControllerProvider
+            .select((data) => data.whenData((value) => value)),
+        // When user is authenticated, update the notifier.
+        (previous, next) {
+          authNotifier.value = next;
+        },
+      );
+
     return GoRouter(
       routes: [
         // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
@@ -163,9 +167,9 @@ class Routes {
               : null;
         }
 
-        if (authState.hasError) {
-          return loginPathWithRedirect;
-        }
+        // if (authState.hasError) {
+        //   return loginPathWithRedirect;
+        // }
 
         if (!authenticated) {
           return routeRequiresAuth ? loginPathWithRedirect : null;
@@ -186,6 +190,7 @@ class Routes {
         if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
           return '/401';
         }
+
         return null;
       },
       refreshListenable: authNotifier,

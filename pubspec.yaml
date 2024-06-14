@@ -28,17 +28,17 @@ dependencies:
   syncfusion_flutter_calendar: ^23.1.36
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: ^4.10.1
+  firebase_auth: any
   time_range_picker: ^2.2.0
-  firebase_core: ^2.11.0
+  firebase_core: any
   shared_preferences: ^2.0.15
-  firebase_messaging: ^14.6.9
+  firebase_messaging: any
   flutter_local_notifications: ^15.1.2
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
   cloud_functions: ^4.4.1
-  firebase_storage: ^11.2.8
+  firebase_storage: any
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
@@ -49,7 +49,7 @@ dependencies:
   firebase_app_check: ^0.2.0
   tuple: ^2.0.1
   path_provider: ^2.0.2
-  flutter_riverpod: ^2.4.3
+  flutter_riverpod: ^2.5.1
   timeago: ^3.3.0
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
@@ -60,8 +60,8 @@ dependencies:
   weather_icons: ^3.0.0
   csv: any
   stack_trace: ^1.11.0
-  firebase_analytics: ^10.5.1
-  firebase_crashlytics: ^3.3.7
+  firebase_analytics: any
+  firebase_crashlytics: any
   upgrader: any
   sliver_tools: ^0.2.12
   flutter_pdfview: ^1.3.1
@@ -78,6 +78,7 @@ dependencies:
   image_picker: ^1.0.5
   riverpod_annotation: ^2.3.5
   freezed_annotation: any
+  autologin: ^1.0.0
 
 dependency_overrides:
   package_info_plus: any

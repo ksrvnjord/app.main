@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:autologin/autologin.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -51,6 +52,7 @@ class AuthController extends _$AuthController {
     if (expiration.isBefore(DateTime.now())) {
       // Token is expired, delete it.
       await _storage.delete(key: 'access_token');
+
       return Auth(authenticated: false);
     }
 
@@ -69,20 +71,69 @@ class AuthController extends _$AuthController {
     );
   }
 
-  Future<(bool, String?)> login(String username, String password) async {
+  Future<(bool, String?)> login(String email, String password) async {
     _authConstants.environment =
-        username == "demo" ? Environment.demo : Environment.production;
+        email == "demo" ? Environment.demo : Environment.production;
     await _storage.write(
       key: 'environment',
       value: "${_authConstants.environment}",
     );
-    final (loggedIn, error) = await _heimdallLogin(username, password);
+    final (loggedIn, error) = await _heimdallLogin(email, password);
     if (!loggedIn) {
       return (false, error);
     }
 
+    // ignore: avoid-ignoring-return-values
+    try {
+      await AutologinPlugin.saveCredentials(
+        Credential(
+          username: email,
+          password: password,
+          domain: "app.njord.nl",
+        ),
+      );
+    } catch (e, st) {
+      print(e);
+    }
     await _firebaseLogin();
+
     return (true, "");
+  }
+
+  void logout() async {
+    await unsubscribeAllTopics();
+    await _storage.delete(key: 'access_token');
+    await _storage.delete(key: 'access_exp');
+    await FirebaseAuth.instance.signOut();
+    state = AsyncValue.data(Auth(authenticated: false));
+  }
+
+  Future<void> unsubscribeAllTopics() async {
+    final box = await Hive.openBox<bool>('topics');
+    if (!kIsWeb) {
+      for (String key in box.keys) {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+      }
+    }
+    // ignore: avoid-ignoring-return-values
+    await box.clear();
+  }
+
+  Future<void> subscribeDefaultTopics(String userId) async {
+    try {
+      // Required topics to subscribe to.
+      if (!kIsWeb) {
+        await FirebaseMessaging.instance.subscribeToTopic(userId);
+        await FirebaseMessaging.instance.subscribeToTopic("all");
+      }
+
+      // Store the subscribed topics in a local cache.
+      Box cache = await Hive.openBox<bool>('topics');
+      await cache.put(userId, true);
+      await cache.put('all', true);
+    } catch (e, st) {
+      FirebaseCrashlytics.instance.recordError(e, st);
+    }
   }
 
   // Tries to login into Heimdall and Firebase.
@@ -123,16 +174,17 @@ class AuthController extends _$AuthController {
       return;
     }
 
-    final String? token = await _storage.read(key: 'access_token');
+    final token = await _storage.read(key: 'access_token');
     // Only fire this if an access token is available.
     if (token == null) {
       throw Exception('No access token found.');
     }
 
     // Get the token for the configured (constant) endpoint JWT.
+    print("Bearer $token");
     final response = await Dio().get(
       _authConstants.jwtEndpoint().toString(),
-      options: Options(headers: {'Authorization': 'Bearer $_accessToken'}),
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
 
     // The token is returned as JSON, decode it.
@@ -147,8 +199,7 @@ class AuthController extends _$AuthController {
       String? uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null) {
         FirebaseCrashlytics.instance.setUserIdentifier(
-          uid,
-        ); // Link crashes to users, so we can reach out to them if needed.
+            uid); // Link crashes to users, so we can reach out to them if needed.
         // Subscribe the user to FirebaseMessaging as well.
         if (!kIsWeb) {
           requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
@@ -158,46 +209,6 @@ class AuthController extends _$AuthController {
           initMessagingInfo();
         }
       }
-    }
-  }
-
-  void logout() async {
-    await unsubscribeAllTopics();
-    await _storage.delete(key: 'access_token');
-    await _storage.delete(key: 'access_exp');
-    await FirebaseAuth.instance.signOut();
-    state = AsyncValue.data(Auth(
-      authenticated: false,
-    ));
-  }
-
-  Future<void> unsubscribeAllTopics() async {
-    final box = await Hive.openBox<bool>('topics');
-    if (!kIsWeb) {
-      for (String key in box.keys) {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(key);
-      }
-    }
-    // ignore: avoid-ignoring-return-values
-    await box.clear();
-  }
-
-  Future<void> subscribeDefaultTopics(String userId) async {
-    try {
-      // Required topics to subscribe to.
-      if (!kIsWeb) {
-        await FirebaseMessaging.instance.subscribeToTopic(userId);
-        await FirebaseMessaging.instance.subscribeToTopic("all");
-      }
-
-      // Store the subscribed topics in a local cache.
-      Box cache = await Hive.openBox<bool>('topics');
-      await cache.put(userId, true);
-      await cache.put('all', true);
-    } catch (e, st) {
-      FirebaseCrashlytics.instance.recordError(e, st);
-
-      return;
     }
   }
 }

@@ -57,6 +57,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  autologin:
+    dependency: "direct main"
+    description:
+      name: autologin
+      sha256: "0a34e1ae2c9bac8c1ec022690cf1801345bb5fb4877bddbe77e6502add3c9678"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_android:
+    dependency: transitive
+    description:
+      name: autologin_android
+      sha256: "2a3bb9f1ff13bdd3bb58ac3f041ee31f3824fb1c9546d05f79571826cd847a08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_darwin:
+    dependency: transitive
+    description:
+      name: autologin_darwin
+      sha256: b3d6b9a1e4d84b6b7c02a03939fc80405886d8dad91a7dc6b32f07d227e79e3b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_linux:
+    dependency: transitive
+    description:
+      name: autologin_linux
+      sha256: "73be1095be5550713748861fd46baf08031c1494f50e74f849e4774f1120e387"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_platform_interface:
+    dependency: transitive
+    description:
+      name: autologin_platform_interface
+      sha256: a2a87c16c90675da04ed98dc70aca44fbb22fa6ca3390a5a739f345c05371563
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_web:
+    dependency: transitive
+    description:
+      name: autologin_web
+      sha256: "8e81bb4f5d40c346f1d26a188cfb6effa4c4a670b032992ea45c001ef062409a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  autologin_windows:
+    dependency: transitive
+    description:
+      name: autologin_windows
+      sha256: "6c462081344ee057384d4b5e4dd24d38edeb1dcd5b1aeb3516965c9b7b6a840e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -728,10 +784,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: e667e406a74d67715f1fa0bd941d9ded49aff72f3a9f4440a36aece4e8d457a7
+      sha256: "0f1974eff5bbe774bf1d870e406fc6f29e3d6f1c46bd9c58e7172ff68a785d7d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.3"
+    version: "2.5.1"
   flutter_secure_storage:
     dependency: "direct main"
     description:

@@ -1,3 +1,4 @@
+import 'package:autologin/autologin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,26 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   final _email = TextEditingController();
   final _password = TextEditingController();
+
+  // Initstate.
+  @override
+  void initState() {
+    super.initState();
+    AutologinPlugin.setup(
+      domain: 'app.njord.nl',
+      appId: "com.ksrvnjord.app",
+      appName: "Njord",
+    );
+
+    // ignore: prefer-async-await, avoid-async-call-in-sync-function
+    AutologinPlugin.requestCredentials().then((credentials) {
+      if (credentials == null) return;
+      _email.text = credentials.username ?? '';
+      _password.text = credentials.password ?? '';
+    }).onError((error, stackTrace) {
+      print(error);
+    });
+  }
 
   @override
   void dispose() {
@@ -41,12 +62,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
     return <Widget>[
       auth.when(
-          data: (data) => (data.error != '')
-              ? Text(data.error, style: const TextStyle(color: Colors.red))
-                  .padding(all: errorTextPadding)
-              : const SizedBox.shrink(),
-          loading: () => const CircularProgressIndicator(),
-          error: (e, _) => ErrorCardWidget(errorMessage: e.toString())),
+        data: (data) => (data.error != '')
+            ? Text(data.error, style: const TextStyle(color: Colors.red))
+                .padding(all: errorTextPadding)
+            : const SizedBox.shrink(),
+        error: (e, _) => ErrorCardWidget(errorMessage: e.toString()),
+        loading: () => const CircularProgressIndicator(),
+      ),
       Form(
         key: _formKey,
         child: <Widget>[
