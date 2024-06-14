@@ -9,10 +9,10 @@ import 'package:tuple/tuple.dart';
 /// Page that shows a list of choices, and pushes a new page when a choice is chosen.
 class HuisChoicePage extends ConsumerWidget {
   const HuisChoicePage({
-    Key? key,
+    super.key,
     required this.title,
     required this.choices,
-  }) : super(key: key);
+  });
 
   final String title;
   final List<String> choices;

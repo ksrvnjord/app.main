@@ -5,11 +5,7 @@ class Vaarverbod {
   final bool status;
   final String message;
 
-  const Vaarverbod({
-    required this.status,
-    required this.message,
-  });
-
+  // ignore: sort_constructors_first
   factory Vaarverbod.fromJson(Map<String, dynamic> json) {
     return Vaarverbod(
       status: json['status'],
@@ -17,6 +13,11 @@ class Vaarverbod {
     );
   }
 
+  // ignore: sort_constructors_first
+  const Vaarverbod({
+    required this.status,
+    required this.message,
+  });
   Map<String, dynamic> toJson() {
     return {
       'status': status,

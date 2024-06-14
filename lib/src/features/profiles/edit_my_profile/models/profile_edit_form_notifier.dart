@@ -50,6 +50,7 @@ class ProfileForm {
   final String? huis;
   final File? profilePicture;
 
+  // ignore: sort_constructors_first
   ProfileForm({
     this.study,
     this.board,

@@ -7,9 +7,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class UserGroupsListWidget extends StatelessWidget {
   const UserGroupsListWidget({
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final List<GroupEntry> snapshot;
 

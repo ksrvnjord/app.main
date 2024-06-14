@@ -16,10 +16,10 @@ import 'package:tuple/tuple.dart';
 
 class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
-    Key? key,
+    super.key,
     required this.name,
     required this.year,
-  }) : super(key: key);
+  });
 
   final String name;
   final int year;
@@ -113,11 +113,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     const double notFoundPadding = 16;
 
     return <Widget>[
-      ...entries
-          .map(
-            (doc) => toListTile(doc),
-          )
-          .toList(),
+      ...entries.map(
+        (doc) => toListTile(doc),
+      ),
       if (entries.isEmpty)
         const Text("Geen Leeden gevonden voor deze commissie in dit jaar")
             .center()

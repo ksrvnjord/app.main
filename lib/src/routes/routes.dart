@@ -21,6 +21,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/manage_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
@@ -197,9 +198,9 @@ class Routes {
       name: "Home",
       child: UpgradeAlert(
         upgrader: Upgrader(
-          messages: DutchUpgradeMessages(),
           countryCode: 'nl',
           languageCode: 'nl',
+          messages: DutchUpgradeMessages(),
         ),
         child: const HomePage(),
       ),
@@ -643,6 +644,11 @@ class Routes {
               child: const EditCharityPage(),
             ),
           ],
+        ),
+        _route(
+          path: "blikkenlijst",
+          name: "Blikkenlijst",
+          child: const BlikkenLijstPage(),
         ),
       ],
     ),

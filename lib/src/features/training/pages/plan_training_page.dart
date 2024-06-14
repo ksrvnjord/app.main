@@ -18,22 +18,21 @@ import 'package:time_range_picker/time_range_picker.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 
 class PlanTrainingPage extends ConsumerStatefulWidget {
+  PlanTrainingPage({
+    super.key,
+    required this.reservationObject,
+    required this.startTime,
+    required this.objectName,
+  }) : date = DateTime(
+          startTime.year,
+          startTime.month,
+          startTime.day,
+        );
+
   final DocumentReference<ReservationObject> reservationObject;
   final DateTime startTime;
   final DateTime date;
   final String objectName;
-
-  PlanTrainingPage({
-    Key? key,
-    required this.reservationObject,
-    required this.startTime,
-    required this.objectName,
-  })  : date = DateTime(
-          startTime.year,
-          startTime.month,
-          startTime.day,
-        ),
-        super(key: key);
 
   @override
   createState() => _PlanTrainingPageState();

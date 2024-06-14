@@ -130,7 +130,7 @@ Future<void> main() async {
 // Main is not a nice class name, but it is the main class of the app.
 // ignore: prefer-match-file-name
 class Application extends ConsumerWidget {
-  const Application({Key? key}) : super(key: key);
+  const Application({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -70,6 +70,7 @@ class DamageForm extends ChangeNotifier {
     }
   }
 
+  // ignore: sort_constructors_first
   DamageForm({
     String? type,
     String? name,

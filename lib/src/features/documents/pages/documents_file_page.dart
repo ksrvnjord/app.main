@@ -7,12 +7,12 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class DocumentsFilePage extends ConsumerWidget {
-  final String path;
-
   const DocumentsFilePage({
-    Key? key,
+    super.key,
     required this.path,
-  }) : super(key: key);
+  });
+
+  final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

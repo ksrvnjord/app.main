@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets
 
 class AlmanakProfilePage extends ConsumerWidget {
   const AlmanakProfilePage({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   final String userId;
 

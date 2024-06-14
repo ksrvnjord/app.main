@@ -10,9 +10,9 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostHeaderBar extends ConsumerWidget {
-  final DocumentSnapshot<Post> snapshot;
+  const PostHeaderBar({super.key, required this.snapshot});
 
-  const PostHeaderBar({Key? key, required this.snapshot}) : super(key: key);
+  final DocumentSnapshot<Post> snapshot;
 
   void _deletePost(BuildContext context) async {
     Navigator.of(context, rootNavigator: true).pop();

@@ -6,14 +6,14 @@ import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CalendarReservation extends StatelessWidget {
-  final Map<String, dynamic> data;
-  final String reservationDocumentId;
-
   const CalendarReservation({
-    Key? key,
+    super.key,
     required this.data,
     required this.reservationDocumentId,
-  }) : super(key: key);
+  });
+
+  final Map<String, dynamic> data;
+  final String reservationDocumentId;
 
   @override
   Widget build(BuildContext context) {

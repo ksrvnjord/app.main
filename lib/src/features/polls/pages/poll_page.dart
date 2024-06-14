@@ -7,7 +7,7 @@ import 'package:styled_widget/styled_widget.dart';
 
 class PollPage extends ConsumerWidget {
   // Constructor which takes a String pollId.
-  const PollPage({Key? key, required this.pollId}) : super(key: key);
+  const PollPage({super.key, required this.pollId});
 
   final String pollId;
 

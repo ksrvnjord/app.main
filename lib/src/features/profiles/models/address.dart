@@ -8,6 +8,7 @@ class Address {
   final String? postalCode;
   final String? city;
 
+  // ignore: sort_constructors_first
   const Address({
     this.street,
     this.houseNumber,
@@ -17,6 +18,7 @@ class Address {
   });
 
   // Add a factory constructor that takes a Map<String, dynamic> and returns an Address.
+  // ignore: sort_constructors_first
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'] as String?,

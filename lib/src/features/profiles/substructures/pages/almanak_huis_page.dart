@@ -17,9 +17,9 @@ import '../widgets/almanak_substructure_cover_picture.dart';
 
 class AlmanakHuisPage extends ConsumerWidget {
   const AlmanakHuisPage({
-    Key? key,
+    super.key,
     required this.houseName,
-  }) : super(key: key);
+  });
 
   final String houseName;
 

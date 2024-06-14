@@ -9,7 +9,7 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactPage extends ConsumerWidget {
-  const ContactPage({Key? key}) : super(key: key);
+  const ContactPage({super.key});
 
   final double padding = 16;
   final double horizontalPadding = 8;

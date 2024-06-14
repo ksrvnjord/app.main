@@ -41,6 +41,7 @@ class AuthModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ignore: sort_constructors_first
   AuthModel() {
     // ignore: prefer-async-await
     _boot().whenComplete(() {
@@ -48,7 +49,6 @@ class AuthModel extends ChangeNotifier {
           _client == null ? AuthState.unauthenticated : AuthState.authenticated;
     });
   }
-
   // Login with State and config Management.
   // SHOULD ONLY BE CALLED ON THE LOGIN PAGE.
   Future<void> login(String username, String password) async {

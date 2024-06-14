@@ -5,10 +5,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementBodyWidget extends StatelessWidget {
   const AnnouncementBodyWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.text,
-  }) : super(key: key);
+  });
 
   final String title;
   final String text;

@@ -4,10 +4,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 class VaarverbodFormWidget extends ConsumerStatefulWidget {
   const VaarverbodFormWidget({
-    Key? key,
+    super.key,
     required this.status,
     required this.message,
-  }) : super(key: key);
+  });
 
   final bool status;
   final String message;

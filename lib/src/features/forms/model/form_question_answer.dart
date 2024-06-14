@@ -11,9 +11,11 @@ class FormQuestionAnswer {
   final String questionTitle;
   String? answer;
 
+  // ignore: sort_constructors_first
   FormQuestionAnswer({required this.questionTitle, required this.answer});
 
   // Create fromJson method.
+  // ignore: sort_constructors_first
   factory FormQuestionAnswer.fromJson(Map<String, dynamic> json) =>
       _$FormQuestionAnswerFromJson(json);
 
