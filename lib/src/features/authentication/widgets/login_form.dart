@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/rounded_elevated_button.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -18,11 +19,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  void login(AuthModel auth) async {
-    // ignore: avoid-ignoring-return-values
-    await auth.login(_email.text, _password.text);
-  }
-
   @override
   void dispose() {
     _email.dispose();
@@ -32,7 +28,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authModelProvider);
+    final auth = ref.watch(authControllerProvider);
 
     const double errorTextPadding = 8;
     const double textFormFieldPadding = 8;
@@ -44,17 +40,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     const double cardPadding = 16;
 
     return <Widget>[
-      AnimatedBuilder(
-        animation: auth,
-        builder: (_, __) {
-          if (auth.error != '') {
-            return Text(auth.error, style: const TextStyle(color: Colors.red))
-                .padding(all: errorTextPadding);
-          }
-
-          return Container();
-        },
-      ),
+      auth.when(
+          data: (data) => (data.error != '')
+              ? Text(data.error, style: const TextStyle(color: Colors.red))
+                  .padding(all: errorTextPadding)
+              : const SizedBox.shrink(),
+          loading: () => const CircularProgressIndicator(),
+          error: (e, _) => ErrorCardWidget(errorMessage: e.toString())),
       Form(
         key: _formKey,
         child: <Widget>[
@@ -92,7 +84,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       ),
       <Widget>[
         RoundedElevatedButton(
-          onPressed: () => login(auth),
+          onPressed: () => ref
+              .read(authControllerProvider.notifier)
+              .login(_email.text, _password.text),
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(

@@ -33,6 +33,7 @@ analyzer:
     - lib/**.graphql.dart # exclude generated files
     - lib/firebase_options.dart # exclude generated files
   plugins:
+    - custom_lint
 
 # DART CODE METRICS - The code metrics you don't want but need
 # Documentation at https://dcm.dev/

@@ -51,7 +51,6 @@ dependencies:
   tuple: ^2.0.1
   path_provider: ^2.0.2
   flutter_riverpod: ^2.4.3
-  riverpod_generator: ^2.3.3
   timeago: ^3.3.0
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
@@ -78,6 +77,8 @@ dependencies:
   json_annotation: ^4.8.1
   universal_html: ^2.2.4
   image_picker: ^1.0.5
+  riverpod_annotation: ^2.3.5
+  freezed_annotation: any
 
 dependency_overrides:
   package_info_plus: any
@@ -91,6 +92,10 @@ dev_dependencies:
   dependency_validator: ^3.2.2
   dart_code_metrics_presets: ^2.6.0
   json_serializable: ^6.7.1
+  custom_lint: any
+  riverpod_generator: any
+  riverpod_lint: any
+  freezed: any
 
 flutter:
   uses-material-design: true

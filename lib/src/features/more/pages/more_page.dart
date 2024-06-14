@@ -4,7 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
@@ -94,7 +94,7 @@ class MorePage extends ConsumerWidget {
                   .textColor(colorScheme.error),
               trailing: Icon(Icons.logout, color: colorScheme.error),
               visualDensity: VisualDensity.standard,
-              onTap: () => ref.read(authModelProvider).logout(),
+              onTap: () => ref.read(authControllerProvider.notifier).logout(),
             ),
           ],
         ),
