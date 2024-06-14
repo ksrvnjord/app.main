@@ -59,7 +59,7 @@ class AuthController extends _$AuthController {
     );
   }
 
-  Future<(bool, String?)> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
     _authConstants.environment =
         email == "demo" ? Environment.demo : Environment.production;
@@ -67,12 +67,22 @@ class AuthController extends _$AuthController {
       key: 'environment',
       value: "${_authConstants.environment}",
     );
-    final (loggedIn, error) = await _heimdallLogin(email, password);
+    final (loggedIn, _) = await _heimdallLogin(email, password);
+
     if (!loggedIn) {
       state = AsyncValue.data(Auth(authenticated: false));
 
-      return (false, error);
+      return;
     }
+    if (_authConstants.environment == Environment.demo) {
+      state = AsyncValue.data(Auth(
+        accessToken: await _storage.read(key: 'access_token') ?? '',
+        authenticated: true,
+      ));
+
+      return;
+    }
+
     try {
       // ignore: avoid-ignoring-return-values
       await AutologinPlugin.saveCredentials(
@@ -93,8 +103,6 @@ class AuthController extends _$AuthController {
       accessToken: await _storage.read(key: 'access_token') ?? '',
       authenticated: true,
     ));
-
-    return (true, "");
   }
 
   void logout() async {
@@ -146,8 +154,11 @@ class AuthController extends _$AuthController {
 
     try {
       final result = await Dio().post(_authConstants.oauthEndpoint, data: {
-        'email': email,
         'password': password,
+        if (_authConstants.environment == Environment.demo)
+          'username': email, // Only send username in demo mode.
+        if (_authConstants.environment == Environment.production)
+          'email': email,
       });
       // Write the credentials to the secure storage.
       final String token = result.data['access'];
