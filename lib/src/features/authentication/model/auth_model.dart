@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -15,8 +16,6 @@ import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.da
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
-import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:oauth2/oauth2.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 // ignore: prefer-static-class
@@ -24,17 +23,52 @@ final authModelProvider = ChangeNotifierProvider((ref) => AuthModel());
 
 // TODO: make this class immutable.
 class AuthModel extends ChangeNotifier {
-  String error = '';
+  String _error = '';
+
+  String _accessToken = '';
 
   AuthState _authState = AuthState.loading; // Default to loading on startup.
 
-  oauth2.Client? _client;
   final _storage = const FlutterSecureStorage();
 
   final _authConstants = GetIt.I.get<AuthConstants>();
 
-  oauth2.Client? get client => _client;
+  String get error => _error;
+
+  get accessToken => _accessToken;
+
+  // Oauth2.Client? get client => _client;.
   AuthState get authState => _authState;
+
+  // On Startup, try to login with the stored credentials.
+  // If the credentials are not expired, try to login to Firebase as well.
+  Future<bool> get _boot async {
+    // Get stored credentials.
+    String? exp = await _storage.read(key: "access_exp");
+    if (exp == null) {
+      return false;
+    }
+
+    final expiration = int.parse(exp);
+    // ignore: no-magic-number
+    if ((expiration * 1000) < DateTime.now().millisecondsSinceEpoch) {
+      // Token is expired, delete it.
+      await _storage.delete(key: 'access_token');
+
+      throw Exception('Token expired.');
+    }
+
+    // Change the environment based on the token endpoint.
+    _authConstants.environment =
+        await _storage.read(key: 'environment') == "${Environment.demo}"
+            ? Environment.demo
+            : Environment.production;
+    _accessToken = await _storage.read(key: 'access_token') ?? '';
+    authState = AuthState.authenticated;
+    await _firebaseLogin();
+
+    return true;
+  }
 
   set authState(AuthState value) {
     _authState = value;
@@ -43,9 +77,13 @@ class AuthModel extends ChangeNotifier {
 
   AuthModel() {
     // ignore: prefer-async-await
-    _boot().whenComplete(() {
+    authState = AuthState.loading;
+    // ignore: avoid-async-call-in-sync-function, prefer-async-await
+    _boot.then((loggedIn) {
       authState =
-          _client == null ? AuthState.unauthenticated : AuthState.authenticated;
+          loggedIn ? AuthState.authenticated : AuthState.unauthenticated;
+    }).onError((_, __) {
+      authState = AuthState.unauthenticated;
     });
   }
 
@@ -53,20 +91,28 @@ class AuthModel extends ChangeNotifier {
   // SHOULD ONLY BE CALLED ON THE LOGIN PAGE.
   Future<void> login(String username, String password) async {
     // ignore: avoid-ignoring-return-values
-    error = ""; // Reset error message.
+    _error = ""; // Reset error message.
     authState = AuthState.loading;
     _authConstants.environment =
         username == "demo" ? Environment.demo : Environment.production;
+    await _storage.write(
+      key: 'environment',
+      value: "${_authConstants.environment}",
+    );
+    final loggedIn = await _heimdallLogin(username, password);
+    if (!loggedIn) {
+      authState = AuthState.unauthenticated;
 
-    await _heimdallLogin(username, password);
+      return;
+    }
     await _firebaseLogin();
-    authState =
-        _client == null ? AuthState.unauthenticated : AuthState.authenticated;
+    authState = AuthState.authenticated;
   }
 
   void logout() async {
     await unsubscribeAllTopics();
-    await _storage.delete(key: 'oauth2_credentials');
+    await _storage.delete(key: 'access_token');
+    await _storage.delete(key: 'access_exp');
     await FirebaseAuth.instance.signOut();
     authState = AuthState.unauthenticated;
   }
@@ -102,61 +148,34 @@ class AuthModel extends ChangeNotifier {
   }
 
   // Tries to login into Heimdall and Firebase.
-  Future<void> _heimdallLogin(String username, String password) async {
-    if (username.isEmpty || password.isEmpty) {
-      error = 'Both username and password fields are required.';
+  Future<bool> _heimdallLogin(String email, String password) async {
+    if (email.isEmpty || password.isEmpty) {
+      _error = 'Both email and password fields are required.';
 
-      return;
+      // Throw Exception('Both email and password fields are required.');.
+      return false;
     }
 
     try {
-      _client = await oauth2.resourceOwnerPasswordGrant(
-        _authConstants.oauthEndpoint(),
-        username,
-        password,
-        identifier: _authConstants.oauthId,
-        secret: _authConstants.oauthSecret,
+      final result = await Dio().post(_authConstants.oauthEndpoint, data: {
+        'email': email,
+        'password': password,
+      });
+      // Write the credentials to the secure storage.
+      final String token = result.data['access'];
+      _accessToken = token;
+      await _storage.write(key: 'access_token', value: token);
+      await _storage.write(
+        key: "access_exp",
+        value: result.data['data']['exp'].toString(),
       );
+
+      return true;
     } catch (e) {
-      error = e.toString();
+      _error = (e as DioException).response?.data['detail'] ?? 'Unknown error';
 
-      return;
+      return false;
     }
-    Credentials? credentials = _client?.credentials;
-    if (credentials == null) {
-      error = 'Credentials are null.';
-
-      return;
-    }
-
-    // Write the credentials to the secure storage.
-    await _storage.write(
-      key: 'oauth2_credentials',
-      value: credentials.toJson(),
-    );
-  }
-
-  // On Startup, try to login with the stored credentials.
-  // If the credentials are not expired, try to login to Firebase as well.
-  Future<void> _boot() async {
-    // Get stored credentials.
-    String? storedCreds = await _storage.read(key: 'oauth2_credentials');
-    Map<String, dynamic> credentials = jsonDecode(storedCreds ?? '{}');
-    // Change the environment based on the token endpoint.
-    _authConstants.environment = credentials['tokenEndpoint'] ==
-            AuthConstants.oauthEndpointFor(Environment.demo).path
-        ? Environment.demo
-        : Environment.production;
-
-    // If token doesn't exist or is expired, let user login again.
-    if (credentials['expiration'] == null ||
-        DateTime.fromMillisecondsSinceEpoch(credentials['expiration'])
-            .isBefore(DateTime.now())) {
-      return;
-    }
-    // Credentials not expired, try to login to Firebase.
-    _client = oauth2.Client(oauth2.Credentials.fromJson(storedCreds ?? ""));
-    await _firebaseLogin();
   }
 
   // Login to Firebase with the stored credentials.
@@ -167,27 +186,26 @@ class AuthModel extends ChangeNotifier {
       return;
     }
 
-    final String? accessToken = _client?.credentials.accessToken;
+    final String? token = await _storage.read(key: 'access_token');
     // Only fire this if an access token is available.
-    if (accessToken == null) {
-      return;
+    if (token == null) {
+      throw Exception('No access token found.');
     }
 
     try {
       // Get the token for the configured (constant) endpoint JWT.
       final response = await Dio().get(
         _authConstants.jwtEndpoint().toString(),
-        options: Options(headers: {
-          'Authorization': 'Bearer $accessToken',
-        }),
+        options: Options(headers: {'Authorization': 'Bearer $_accessToken'}),
       );
 
       // The token is returned as JSON, decode it.
       final data = json.decode(response.data);
 
       // If we have data and we have the token in our data, proceed to login.
+      // ignore: avoid-missing-interpolation
       if (data != null && data['token'] != null) {
-        // ignore: avoid-ignoring-return-values
+        // ignore: avoid-ignoring-return-values, avoid-missing-interpolation
         await FirebaseAuth.instance.signInWithCustomToken(data['token']);
 
         String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -209,7 +227,7 @@ class AuthModel extends ChangeNotifier {
       // If it fails, we don't want to die just yet - but do send
       // the exception to Sentry for further research.
       // ignore: avoid-ignoring-return-values
-      Sentry.captureException(error, stackTrace: st);
+      Sentry.captureException(_error, stackTrace: st);
     }
   }
 }

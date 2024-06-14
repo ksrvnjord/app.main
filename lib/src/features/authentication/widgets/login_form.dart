@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
@@ -16,12 +15,19 @@ class LoginForm extends ConsumerStatefulWidget {
 class _LoginFormState extends ConsumerState<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey(debugLabel: 'LoginForm');
 
-  final _username = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
 
   void login(AuthModel auth) async {
     // ignore: avoid-ignoring-return-values
-    await auth.login(_username.text, _password.text);
+    await auth.login(_email.text, _password.text);
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,11 +59,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         key: _formKey,
         child: <Widget>[
           TextFormField(
-            controller: _username,
+            controller: _email,
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
-              labelText: 'Njord-account',
-              hintText: "james.cohen.stuart",
+              labelText: 'Email',
+              hintText: "praeses@njord.nl",
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -67,9 +73,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             obscureText: false,
             autocorrect: false,
             enableSuggestions: false,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp('[a-z\\.]')),
-            ],
           ).padding(all: textFormFieldPadding),
           TextFormField(
             controller: _password,

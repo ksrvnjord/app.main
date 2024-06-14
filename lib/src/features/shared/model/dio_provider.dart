@@ -9,7 +9,6 @@ final dioProvider = Provider<Dio>((ref) {
   final authConstants = GetIt.instance.get<AuthConstants>();
 
   return Dio(BaseOptions(baseUrl: authConstants.baseURL, headers: {
-    'Authorization':
-        'Bearer ${ref.watch(authModelProvider).client?.credentials.accessToken}',
+    'Authorization': 'Bearer ${ref.watch(authModelProvider).accessToken}',
   }));
 });
