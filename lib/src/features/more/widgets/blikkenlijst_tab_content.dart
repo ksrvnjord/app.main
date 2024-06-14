@@ -15,8 +15,9 @@ class BlikkenLijstTabContent extends ConsumerWidget {
     final blikkenLijstVal = ref.watch(blikkenLijstProvider(blikType));
 
     scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+      final almostAtEndOfList = scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 128;
+      if (almostAtEndOfList) {
         ref
             .watch(blikkenLijstProvider(blikType).notifier)
             .fetchMoreBlikkenLijst(blikType);
