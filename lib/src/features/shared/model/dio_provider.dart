@@ -7,9 +7,11 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart
 // ignore: prefer-static-class
 final dioProvider = Provider<Dio>((ref) {
   final authConstants = GetIt.instance.get<AuthConstants>();
+  final _ = ref.watch(authControllerProvider);
 
   return Dio(BaseOptions(baseUrl: authConstants.baseURL, headers: {
     'Authorization':
+        // ignore: avoid-nullable-interpolation
         'Bearer ${ref.read(authControllerProvider).asData?.value.accessToken}',
   }));
 });

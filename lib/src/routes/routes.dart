@@ -167,10 +167,6 @@ class Routes {
               : null;
         }
 
-        // if (authState.hasError) {
-        //   return loginPathWithRedirect;
-        // }
-
         if (!authenticated) {
           return routeRequiresAuth ? loginPathWithRedirect : null;
         }
@@ -191,6 +187,7 @@ class Routes {
           return '/401';
         }
 
+        // ignore: prefer-returning-conditional-expressions
         return null;
       },
       refreshListenable: authNotifier,

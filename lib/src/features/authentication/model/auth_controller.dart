@@ -20,26 +20,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'auth_controller.g.dart';
 part 'auth_controller.freezed.dart';
 
-@freezed
-class Auth with _$Auth {
-  factory Auth({
-    String? accessToken,
-    DateTime? expiration,
-    @Default('') String error,
-    required bool authenticated,
-  }) = _Auth;
-}
-
 @Riverpod(keepAlive: true)
 class AuthController extends _$AuthController {
   final _storage = const FlutterSecureStorage();
 
   final _authConstants = GetIt.I.get<AuthConstants>();
 
-  String? _accessToken;
-
   @override
-  FutureOr<Auth> build() async {
+  Future<Auth> build() async {
     // Get stored credentials.
     String? exp = await _storage.read(key: "access_exp");
     if (exp == null) {
@@ -49,7 +37,6 @@ class AuthController extends _$AuthController {
     final expiration =
         DateTime.fromMillisecondsSinceEpoch(int.parse(exp) * 1000);
 
-    // ignore: no-magic-number
     if (expiration.isBefore(DateTime.now())) {
       // Token is expired, delete it.
       await _storage.delete(key: 'access_token');
@@ -96,12 +83,16 @@ class AuthController extends _$AuthController {
         ),
       );
     } on PlatformException catch (error) {
+      FirebaseCrashlytics.instance
+          .recordError(error, StackTrace.current, reason: "PLATFORM EXCEPTION");
+    } catch (error) {
       FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
-    } catch (e) {
-      FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
     }
     await _firebaseLogin();
-    state = AsyncValue.data(Auth(authenticated: true));
+    state = AsyncValue.data(Auth(
+      accessToken: await _storage.read(key: 'access_token') ?? '',
+      authenticated: true,
+    ));
 
     return (true, "");
   }
@@ -121,8 +112,8 @@ class AuthController extends _$AuthController {
       for (String key in box.keys) {
         try {
           await FirebaseMessaging.instance.unsubscribeFromTopic(key);
-        } catch (e, _) {
-          FirebaseCrashlytics.instance.recordError(e, _);
+        } catch (error, stk) {
+          FirebaseCrashlytics.instance.recordError(error, stk);
         }
       }
     }
@@ -142,8 +133,8 @@ class AuthController extends _$AuthController {
       Box cache = await Hive.openBox<bool>('topics');
       await cache.put(userId, true);
       await cache.put('all', true);
-    } catch (e, st) {
-      FirebaseCrashlytics.instance.recordError(e, st);
+    } catch (error, st) {
+      FirebaseCrashlytics.instance.recordError(error, st);
     }
   }
 
@@ -160,7 +151,6 @@ class AuthController extends _$AuthController {
       });
       // Write the credentials to the secure storage.
       final String token = result.data['access'];
-      _accessToken = token;
       await _storage.write(key: 'access_token', value: token);
       await _storage.write(
         key: "access_exp",
@@ -168,10 +158,10 @@ class AuthController extends _$AuthController {
       );
 
       return (true, '');
-    } catch (e) {
+    } catch (error) {
       return (
         false,
-        ((e as DioException).response?.data['detail'] ?? 'Unknown error')
+        ((error as DioException).response?.data['detail'] ?? 'Unknown error')
             .toString(),
       );
     }
@@ -207,22 +197,29 @@ class AuthController extends _$AuthController {
       await FirebaseAuth.instance.signInWithCustomToken(data['token']);
 
       String? uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid != null) {
-        FirebaseCrashlytics.instance.setUserIdentifier(
-            uid); // Link crashes to users, so we can reach out to them if needed.
-        // Subscribe the user to FirebaseMessaging as well.
-        if (!kIsWeb) {
-          try {
-            await requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
-            await subscribeDefaultTopics(uid);
-            // Web does not support messaging, also user should be logged in to Firebase for it to work.
-            await saveMessagingToken(); // TODO: Retry on no internet connection.
-            await initMessagingInfo();
-          } catch (error) {
-            FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
-          }
+      // Subscribe the user to FirebaseMessaging as well.
+      if (uid != null && !kIsWeb) {
+        try {
+          FirebaseCrashlytics.instance.setUserIdentifier(uid);
+          await requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
+          await subscribeDefaultTopics(uid);
+          // Web does not support messaging, also user should be logged in to Firebase for it to work.
+          await saveMessagingToken(); // TODO: Retry on no internet connection.
+          await initMessagingInfo();
+        } catch (error) {
+          FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
         }
       }
     }
   }
+}
+
+@freezed
+class Auth with _$Auth {
+  factory Auth({
+    String? accessToken,
+    DateTime? expiration,
+    @Default('') String error,
+    required bool authenticated,
+  }) = _Auth;
 }

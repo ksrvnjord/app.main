@@ -14,6 +14,8 @@ De Flut-ter versie.
 - Start an emulator or connect your phone
 - Run the app: `flutter run`
 
+> For running the app on web, use `flutter run -d chrome --web-browser-flag "--disable-web-security"`
+
 
 ## Code Generation
 Code generation for JSON serialization and deserialization provides an automated approach to converting objects to and from JSON. It not only saves valuable development time by avoiding manual code creation but also ensures consistent and error-free data processing. This technique is particularly useful when data models evolve, as changes in serialization and deserialization code can be automatically implemented, ensuring consistency between the schema and code. Furthermore, code generation can apply optimizations that outperform manual implementations, while also ensuring type safety in strongly typed programming languages. When dealing with multiple platforms or languages, it also guarantees uniform serialization/deserialization logic. In short, code generation for JSON interactions enhances efficiency, reduces errors, and facilitates maintenance and debugging.

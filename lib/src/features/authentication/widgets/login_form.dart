@@ -115,7 +115,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         RoundedElevatedButton(
           onPressed: () => ref
               .read(authControllerProvider.notifier)
-              .login(_email.text, _password.text),
+              .login(_email.text, _password.text)
+              .ignore(),
           child: const Text("Inloggen"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
         RoundedElevatedButton(
