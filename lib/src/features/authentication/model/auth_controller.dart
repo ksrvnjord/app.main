@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -72,6 +73,7 @@ class AuthController extends _$AuthController {
   }
 
   Future<(bool, String?)> login(String email, String password) async {
+    state = const AsyncValue.loading();
     _authConstants.environment =
         email == "demo" ? Environment.demo : Environment.production;
     await _storage.write(
@@ -80,11 +82,12 @@ class AuthController extends _$AuthController {
     );
     final (loggedIn, error) = await _heimdallLogin(email, password);
     if (!loggedIn) {
+      state = AsyncValue.data(Auth(authenticated: false));
+
       return (false, error);
     }
-
-    // ignore: avoid-ignoring-return-values
     try {
+      // ignore: avoid-ignoring-return-values
       await AutologinPlugin.saveCredentials(
         Credential(
           username: email,
@@ -92,15 +95,19 @@ class AuthController extends _$AuthController {
           domain: "app.njord.nl",
         ),
       );
-    } catch (e, st) {
-      print(e);
+    } on PlatformException catch (error) {
+      FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
+    } catch (e) {
+      FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
     }
     await _firebaseLogin();
+    state = AsyncValue.data(Auth(authenticated: true));
 
     return (true, "");
   }
 
   void logout() async {
+    state = const AsyncValue.loading();
     await unsubscribeAllTopics();
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'access_exp');
@@ -112,7 +119,11 @@ class AuthController extends _$AuthController {
     final box = await Hive.openBox<bool>('topics');
     if (!kIsWeb) {
       for (String key in box.keys) {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+        try {
+          await FirebaseMessaging.instance.unsubscribeFromTopic(key);
+        } catch (e, _) {
+          FirebaseCrashlytics.instance.recordError(e, _);
+        }
       }
     }
     // ignore: avoid-ignoring-return-values
@@ -181,7 +192,6 @@ class AuthController extends _$AuthController {
     }
 
     // Get the token for the configured (constant) endpoint JWT.
-    print("Bearer $token");
     final response = await Dio().get(
       _authConstants.jwtEndpoint().toString(),
       options: Options(headers: {'Authorization': 'Bearer $token'}),
@@ -202,11 +212,15 @@ class AuthController extends _$AuthController {
             uid); // Link crashes to users, so we can reach out to them if needed.
         // Subscribe the user to FirebaseMessaging as well.
         if (!kIsWeb) {
-          requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
-          subscribeDefaultTopics(uid);
-          // Web does not support messaging, also user should be logged in to Firebase for it to work.
-          saveMessagingToken(); // TODO: Retry on no internet connection.
-          initMessagingInfo();
+          try {
+            await requestMessagingPermission(); // TODO: Only prompt if the user is able to give permission, ie. not when user already gave permissies or denied them.
+            await subscribeDefaultTopics(uid);
+            // Web does not support messaging, also user should be logged in to Firebase for it to work.
+            await saveMessagingToken(); // TODO: Retry on no internet connection.
+            await initMessagingInfo();
+          } catch (error) {
+            FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
+          }
         }
       }
     }

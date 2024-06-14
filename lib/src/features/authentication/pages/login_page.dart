@@ -28,8 +28,8 @@ class LoginPage extends ConsumerWidget {
             .padding(bottom: logoPadding),
         auth.when(
           data: (_) => const LoginForm(),
-          loading: () => const LoginLoadingWidget(),
           error: (e, _) => ErrorCardWidget(errorMessage: e.toString()),
+          loading: () => const LoginLoadingWidget(),
         ),
         // Textbutton to navigate to the privacy policy page.
         TextButton(

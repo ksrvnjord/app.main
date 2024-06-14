@@ -1,4 +1,5 @@
 import 'package:autologin/autologin.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,11 +25,17 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   void initState() {
     super.initState();
-    AutologinPlugin.setup(
-      domain: 'app.njord.nl',
-      appId: "com.ksrvnjord.app",
-      appName: "Njord",
-    );
+    try {
+      AutologinPlugin.setup(
+        domain: 'app.njord.nl',
+        appId: "com.ksrvnjord.app",
+        appName: "Njord",
+      );
+    } catch (error) {
+      FirebaseCrashlytics.instance
+          .recordError(error, StackTrace.current)
+          .ignore();
+    }
 
     // ignore: prefer-async-await, avoid-async-call-in-sync-function
     AutologinPlugin.requestCredentials().then((credentials) {
@@ -36,7 +43,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       _email.text = credentials.username ?? '';
       _password.text = credentials.password ?? '';
     }).onError((error, stackTrace) {
-      print(error);
+      FirebaseCrashlytics.instance.recordError(error, stackTrace).ignore();
     });
   }
 
