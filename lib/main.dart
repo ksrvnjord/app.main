@@ -84,8 +84,8 @@ Future<void> appRunner() async {
   // ignore: avoid-ignoring-return-values
   GetIt.I.registerSingleton(AuthConstants());
 
-  runApp(const BetterFeedback(
-    child: ProviderScope(
+  runApp(const ProviderScope(
+    child: BetterFeedback(
       child: Application(),
     ),
   ));

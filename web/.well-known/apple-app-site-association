@@ -1,11 +1,18 @@
 {
   "applinks": {
-      "apps": [],
-      "details": [
+    "apps": [],
+    "details": [
       {
         "appID": "L5JPUD4Y73.com.ksrvnjord.app",
-        "paths": ["*"]
+        "paths": [
+          "*"
+        ]
       }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "L5JPUD4Y73.com.ksrvnjord.app"
     ]
   }
 }
