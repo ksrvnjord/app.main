@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ReservationListTile extends StatelessWidget {
+class ReservationListTile extends ConsumerWidget {
   final QueryDocumentSnapshot<Reservation> snapshot;
 
   const ReservationListTile({
@@ -14,13 +16,24 @@ class ReservationListTile extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(favoriteObjectsProvider);
     final reservation = snapshot.data();
 
     final colorScheme = Theme.of(context).colorScheme;
+    final isFavorite = favorites.contains(reservation.objectName);
 
     return ListTile(
-      leading: [Icon(Icons.fitness_center, color: colorScheme.primary)]
+      leading: [
+        IconButton(
+          color: isFavorite ? colorScheme.errorContainer : colorScheme.outline,
+          onPressed: () => ref
+              .read(favoriteObjectsProvider.notifier)
+              .toggleObjectFavorite(snapshot.data().objectName),
+          icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+        ),
+      ]
+          // [Icon(Icons.favorite_border, color: colorScheme.primary)].
           .toColumn(mainAxisAlignment: MainAxisAlignment.center),
       title: Text(reservation.objectName),
       subtitle: Text(

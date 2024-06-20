@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/future_wrapper.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_tile_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -25,6 +26,9 @@ class ShowReservationObjectPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(favoriteObjectsProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
@@ -33,10 +37,36 @@ class ShowReservationObjectPage extends ConsumerWidget {
         future: ref.watch(reservationObjectProvider(documentId).future),
         success: (snapshot) => showObjectDetails(snapshot, context, ref),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.pushNamed('Create Damage'),
-        icon: const Icon(Icons.report),
-        label: Text('Meld schade voor "$name"'),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            tooltip: "Object aan favorieten toevoegen",
+            onPressed: () => ref
+                .read(favoriteObjectsProvider.notifier)
+                .toggleObjectFavorite(name),
+            label: Row(
+              children: [
+                const Text("Favorieten  "),
+                Icon(favorites.contains(name)
+                    ? Icons.favorite
+                    : Icons.favorite_border),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          FloatingActionButton.extended(
+            tooltip: "Schade melden",
+            backgroundColor: colorScheme.errorContainer,
+            onPressed: () => context.pushNamed('Create Damage'),
+            icon: Icon(Icons.report, color: colorScheme.onErrorContainer),
+            label: Text(
+              'Meld schade voor "$name"',
+              style: TextStyle(color: colorScheme.onErrorContainer),
+            ),
+          ),
+        ],
       ),
     );
   }

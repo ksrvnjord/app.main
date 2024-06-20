@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/filters/model/boat_types.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -33,6 +34,7 @@ class ShowFiltersPage extends ConsumerWidget {
 
     final Map<String, MaterialColor> categoryColors = {
       'Binnen': Colors.blue,
+      'Favorieten': Colors.pink,
       '1 roeier': Colors.red,
       '2 roeiers': Colors.orange,
       '4 roeiers': Colors.green,
@@ -51,6 +53,20 @@ class ShowFiltersPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(pagePadding),
         children: [
+          [
+            // The SwitchListTile for Favorieten filter.
+            SwitchListTile(
+              value: ref.read(showFavoritesProvider.notifier).state,
+              // ignore: prefer-extracting-callbacks
+              onChanged: (newValue) {
+                final state = ref.read(showFavoritesProvider.notifier);
+                state.state = !state.state;
+                ref.read(reservationTypeFiltersProvider.notifier).reset();
+              },
+              title: Text("Favorieten  ", style: textTheme.headlineSmall),
+              secondary: const Icon(Icons.favorite_border),
+            ),
+          ].toColumn(separator: const SizedBox(height: categoryPadding)),
           // Make a MultiSelectChipField for each category in availableFilters dynamically.
           ...availableFilters.keys
               .map(
@@ -69,12 +85,15 @@ class ShowFiltersPage extends ConsumerWidget {
                     chipShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
-                    onTap: (values) => ref
-                        .read(reservationTypeFiltersProvider.notifier)
-                        .updateFiltersForCategory(
-                          key,
-                          values.whereType<String>().toList(),
-                        ),
+                    onTap: (values) {
+                      ref
+                          .read(reservationTypeFiltersProvider.notifier)
+                          .updateFiltersForCategory(
+                            key,
+                            values.whereType<String>().toList(),
+                          );
+                      ref.read(showFavoritesProvider.notifier).state = false;
+                    },
                     title: Text(key, style: textTheme.titleLarge),
                     scroll: false,
                     headerColor: Colors.transparent,

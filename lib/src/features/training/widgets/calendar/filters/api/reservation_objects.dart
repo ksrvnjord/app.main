@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 
@@ -9,6 +10,17 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation_objec
 final availableReservationObjectsProvider =
     StreamProvider<QuerySnapshot<ReservationObject>>((ref) {
   final filters = ref.watch(reservationTypeFiltersListProvider);
+
+  final showFavorites = ref.watch(showFavoritesProvider);
+  if (showFavorites) {
+    final favorites = ref.watch(favoriteObjectsProvider);
+
+    // TODO: retrieve all favorites.
+    return ReservationObject.firestoreConverter
+        .where("name", whereIn: favorites)
+        .orderBy('name')
+        .snapshots();
+  }
 
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
