@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_type_filters_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart';
@@ -42,9 +43,10 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
   @override
   Widget build(BuildContext context) {
     final List<String> filters = ref.watch(reservationTypeFiltersListProvider);
+    final showFavorites = ref.watch(showFavoritesProvider);
     const double iconPadding = 8;
 
-    return filters.isEmpty
+    return filters.isEmpty && !showFavorites
         ? <Widget>[
             const Icon(Icons.waves).padding(all: iconPadding),
             const Text(

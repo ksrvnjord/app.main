@@ -3,6 +3,7 @@
         "source.fixAll": "explicit",
         "source.dcm.fixAll": "explicit"
     },
+
     "cmake.ignoreCMakeListsMissing": true,
     "cmake.configureOnOpen": true
 }

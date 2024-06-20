@@ -14,6 +14,14 @@ class ReservationObjectTypeFiltersNotifier
     _saveToSharedPrefs();
   }
 
+  void reset() {
+    final map = <String, List<String>>{};
+    for (final key in state.keys) {
+      map[key] = [];
+    }
+    state = map;
+  }
+
   // Create private method that saves state to shared preferences.
   void _saveToSharedPrefs() async {
     List<String> allFilters = [];
