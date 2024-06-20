@@ -13,10 +13,10 @@ import 'package:tuple/tuple.dart';
 
 class ManageGroupsPage extends ConsumerWidget {
   const ManageGroupsPage({
-    Key? key,
+    super.key,
     required this.year,
     this.type,
-  }) : super(key: key);
+  });
 
   final int year;
   final String? type;

@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 
 class RoleDialog extends StatefulWidget {
   const RoleDialog({
-    Key? key,
+    super.key,
     required this.groupType,
-  }) : super(key: key);
+  });
 
   final GroupType groupType;
 

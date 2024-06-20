@@ -36,7 +36,7 @@ class User {
 
   // INFERRED FIELDS.
   String get fullName => '$firstName $lastName';
-
+  // ignore: sort_constructors_first
   const User({FirestoreUser? firestore, required DjangoUser django})
       : _django = django,
         _firestore = firestore;

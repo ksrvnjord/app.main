@@ -4,7 +4,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/api/liked_by_users_provide
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 
 class LikedByPage extends ConsumerWidget {
-  const LikedByPage({Key? key, required this.snapshotId}) : super(key: key);
+  const LikedByPage({super.key, required this.snapshotId});
 
   final String snapshotId;
 

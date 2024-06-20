@@ -10,9 +10,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CommentsPage extends ConsumerWidget {
   const CommentsPage({
-    Key? key,
+    super.key,
     required this.postDocId,
-  }) : super(key: key);
+  });
 
   final String postDocId;
 

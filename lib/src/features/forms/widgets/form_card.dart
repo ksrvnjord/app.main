@@ -13,9 +13,11 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard({Key? key, required this.formDoc}) : super(key: key);
+  const FormCard({super.key, required this.formDoc});
 
   final DocumentSnapshot<FirestoreForm> formDoc;
+
+  final borderWidth = 2.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,6 +63,7 @@ class FormCard extends ConsumerWidget {
                     isCompleted: snapshot.docs.isNotEmpty &&
                         // ignore: avoid-unsafe-collection-methods
                         snapshot.docs.first.data().isCompleted,
+                    showIcon: true,
                     textStyle: textTheme.labelLarge,
                   ),
             error: (err, stack) => Text('Error: $err'),
@@ -79,7 +82,18 @@ class FormCard extends ConsumerWidget {
       color: Colors.transparent,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: colorScheme.primary),
+        side: userAnswerProvider.when(
+          data: (snapshot) => snapshot.docs.isNotEmpty &&
+                  // ignore: avoid-unsafe-collection-methods
+                  !snapshot.docs.first.data().isCompleted
+              ? BorderSide(
+                  color: colorScheme.errorContainer,
+                  width: borderWidth,
+                )
+              : BorderSide(color: colorScheme.primary),
+          error: (err, stack) => BorderSide(color: colorScheme.primary),
+          loading: () => BorderSide(color: colorScheme.primary),
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
       margin: const EdgeInsets.symmetric(vertical: 4),

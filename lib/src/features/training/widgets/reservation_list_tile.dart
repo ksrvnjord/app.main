@@ -7,13 +7,15 @@ import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+
 class ReservationListTile extends ConsumerWidget {
   final QueryDocumentSnapshot<Reservation> snapshot;
-
   const ReservationListTile({
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
+
+  final QueryDocumentSnapshot<Reservation> snapshot;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

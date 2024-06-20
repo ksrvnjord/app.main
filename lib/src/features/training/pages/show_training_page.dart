@@ -11,9 +11,8 @@ import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_
 import 'package:ksrvnjord_main_app/src/features/training/widgets/reservation_list_tile.dart';
 
 class ShowTrainingPage extends ConsumerWidget {
+  const ShowTrainingPage({super.key, required this.reservationDocumentId});
   final String reservationDocumentId;
-  const ShowTrainingPage({Key? key, required this.reservationDocumentId})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

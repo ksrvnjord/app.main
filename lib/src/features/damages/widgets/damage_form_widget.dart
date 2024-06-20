@@ -5,9 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageFormWidget extends ConsumerWidget {
-  const DamageFormWidget({
-    Key? key,
-  }) : super(key: key);
+  const DamageFormWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

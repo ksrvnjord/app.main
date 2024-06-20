@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class ManageFormPage extends ConsumerWidget {
-  const ManageFormPage({Key? key, required this.formId}) : super(key: key);
+  const ManageFormPage({super.key, required this.formId});
 
   final String formId;
 

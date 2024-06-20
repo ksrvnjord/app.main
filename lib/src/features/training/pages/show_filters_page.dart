@@ -10,9 +10,7 @@ import 'package:styled_widget/styled_widget.dart';
 import '../api/reservation_object_type_filters_notifier.dart';
 
 class ShowFiltersPage extends ConsumerWidget {
-  ShowFiltersPage({
-    Key? key,
-  }) : super(key: key);
+  ShowFiltersPage({super.key});
 
   final Map<String, List<MultiSelectItem<String>>> availableFilters =
       // Build a map of categories and their types.
@@ -104,9 +102,24 @@ class ShowFiltersPage extends ConsumerWidget {
                       ),
                 ].toColumn(
                   separator: const SizedBox(height: categoryPadding),
+
                 ),
-              )
-              .toList(),
+                onTap: (values) => ref
+                    .read(reservationTypeFiltersProvider.notifier)
+                    .updateFiltersForCategory(
+                      key,
+                      values.whereType<String>().toList(),
+                    ),
+                title: Text(key, style: textTheme.titleLarge),
+                scroll: false,
+                headerColor: Colors.transparent,
+                initialValue: activeFilters[key] ?? [],
+                showHeader: true,
+              ).padding(bottom: categoryPadding).card(
+                    elevation: 0,
+                  ),
+            ].toColumn(separator: const SizedBox(height: categoryPadding)),
+          ),
         ],
       ),
     );

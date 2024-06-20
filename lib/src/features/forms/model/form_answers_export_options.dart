@@ -8,6 +8,7 @@ class FormAnswersExportOptions {
   final LinkedHashMap<String, ExportOptionFunction> extraFields;
   final String delimiter;
 
+  // ignore: sort_constructors_first
   const FormAnswersExportOptions({
     required this.extraFields,
     required this.delimiter,

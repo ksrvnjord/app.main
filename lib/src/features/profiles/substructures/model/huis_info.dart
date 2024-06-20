@@ -1,65 +1,28 @@
 // ignore_for_file: unused-code
 
 import 'package:flutter/foundation.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_info.dart';
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class HuisInfo extends GroupInfo {
-  final bool allNjord;
-  final HouseComposition composition;
-  final String houseNumber;
-  final String streetName;
-  final String postalCode;
-  final int numberOfHousemates;
-  final int yearOfFoundation;
+part 'huis_info.freezed.dart';
+part 'huis_info.g.dart';
 
-  const HuisInfo({
+@freezed
+class HuisInfo with _$HuisInfo {
+  // ignore: sort_constructors_first
+  factory HuisInfo({
     required String name,
     required String description,
-    required this.allNjord,
-    required this.composition,
-    required this.houseNumber,
-    required this.streetName,
-    required this.postalCode,
-    required this.numberOfHousemates,
-    required this.yearOfFoundation,
-  }) : super(name: name, description: description);
+    required bool allNjord,
+    required HouseComposition composition,
+    required String houseNumber,
+    required String streetName,
+    required String postalCode,
+    required int numberOfHousemates,
+    required int yearOfFoundation,
+  }) = _HuisInfo;
 
-  factory HuisInfo.fromMap(Map<String, dynamic> map) {
-    return HuisInfo(
-      name: map['name'] as String,
-      description: map['description'] as String,
-      allNjord: map['allNjord'] as bool,
-      composition: HouseComposition.values.byName(
-        map['composition'] as String,
-      ),
-      houseNumber: map['houseNumber'] as String,
-      streetName: map['streetName'] as String,
-      postalCode: map['postalCode'] as String,
-      numberOfHousemates: map['numberOfHousemates'] as int,
-      yearOfFoundation: map['yearOfFoundation'] as int,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  @override
-  String toString() {
-    return 'HuisInfo(allNjord: $allNjord, composition: $composition, houseNumber: $houseNumber, streetName: $streetName, postalCode: $postalCode, numberOfHousemates: $numberOfHousemates, yearOfFoundation: $yearOfFoundation)';
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'allNjord': allNjord,
-      'composition': composition.name,
-      'houseNumber': houseNumber,
-      'streetName': streetName,
-      'postalCode': postalCode,
-      'numberOfHousemates': numberOfHousemates,
-      'yearOfFoundation': yearOfFoundation,
-    };
-  }
+  factory HuisInfo.fromJson(Map<String, dynamic> json) =>
+      _$HuisInfoFromJson(json);
 }
 
 enum HouseComposition {
@@ -72,5 +35,6 @@ enum HouseComposition {
 
   final String value;
 
+  // ignore: sort_constructors_first
   const HouseComposition(this.value);
 }

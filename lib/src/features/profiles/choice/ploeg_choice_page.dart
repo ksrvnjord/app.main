@@ -10,12 +10,10 @@ import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
   const PloegChoicePage({
-    Key? key,
+    super.key,
     required this.ploegYear,
     required this.ploegType,
-  }) : super(
-          key: key,
-        );
+  });
 
   final int ploegYear;
   final String ploegType;
@@ -74,29 +72,27 @@ class PloegChoicePage extends ConsumerWidget {
                   ? Text("Geen $ploegType gevonden voor $ploegYear-${ploegYear + 1}")
                       .center()
                   : const SizedBox(),
-              ...data
-                  .map(
-                    (ploeg) => ListTile(
-                      title: Text(
-                        ploeg.name,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      // ignore: prefer-extracting-callbacks
-                      onTap: () => context.goNamed(
-                        "Ploeg",
-                        queryParameters: {
-                          "year": ploegYear.toString(),
-                          "type": ploegType,
-                        },
-                        pathParameters: {"name": ploeg.name},
-                      ),
-                    ),
-                  )
-                  .toList(),
+              ...data.map(
+                (ploeg) => ListTile(
+                  title: Text(
+                    ploeg.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  // ignore: prefer-extracting-callbacks
+                  onTap: () => context.goNamed(
+                    "Ploeg",
+                    pathParameters: {"name": ploeg.name},
+                    queryParameters: {
+                      "year": ploegYear.toString(),
+                      "type": ploegType,
+                    },
+                  ),
+                ),
+              ),
             ].toColumn(),
             error: (error, _) =>
                 ErrorCardWidget(errorMessage: error.toString()),

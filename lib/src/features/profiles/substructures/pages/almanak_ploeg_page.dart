@@ -12,10 +12,10 @@ import 'package:tuple/tuple.dart';
 
 class AlmanakPloegPage extends ConsumerWidget {
   const AlmanakPloegPage({
-    Key? key,
+    super.key,
     required this.ploegName,
     required this.year,
-  }) : super(key: key);
+  });
 
   final String ploegName;
 

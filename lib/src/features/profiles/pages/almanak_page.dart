@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.d
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakPage extends ConsumerWidget {
-  const AlmanakPage({Key? key}) : super(key: key);
+  const AlmanakPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,18 +22,22 @@ class AlmanakPage extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: [
-            const AlmanakStructureChoiceWidget(
-              pushRoute: "Leeden",
-              title: "Leeden",
-              imagePath: 'assets/images/leeden.png',
-            ).padding(bottom: choiceWidgetPadding),
+            const FirebaseWidget(
+              onAuthenticated: AlmanakStructureChoiceWidget(
+                pushRoute: "Bestuur",
+                title: "Bestuur",
+                imagePath: 'assets/images/bestuur.jpg',
+              ),
+            ),
+            [
+              const AlmanakStructureChoiceWidget(
+                pushRoute: "Leeden",
+                title: "Leeden",
+                imagePath: 'assets/images/leeden.png',
+              ).expanded(),
+            ].toRow(),
             FirebaseWidget(
               onAuthenticated: [
-                const AlmanakStructureChoiceWidget(
-                  pushRoute: "Bestuur",
-                  title: "Bestuur",
-                  imagePath: 'assets/images/bestuur.jpg',
-                ),
                 [
                   const AlmanakStructureChoiceWidget(
                     pushRoute: "Commissies",
@@ -64,6 +68,13 @@ class AlmanakPage extends ConsumerWidget {
                 ].toRow(
                   separator: const SizedBox(
                     width: choiceWidgetPadding,
+                  ),
+                ),
+                const FirebaseWidget(
+                  onAuthenticated: AlmanakStructureChoiceWidget(
+                    pushRoute: 'Partners',
+                    title: "Partners & Sponsors",
+                    imagePath: 'assets/images/partners.jpeg',
                   ),
                 ),
               ].toColumn(

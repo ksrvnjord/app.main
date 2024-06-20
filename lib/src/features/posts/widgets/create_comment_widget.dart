@@ -8,9 +8,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class CreateCommentWidget extends ConsumerStatefulWidget {
   const CreateCommentWidget({
-    Key? key,
+    super.key,
     required this.postDocId,
-  }) : super(key: key);
+  });
 
   final String postDocId;
 

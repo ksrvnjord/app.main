@@ -4,9 +4,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class UserAddressWidget extends StatelessWidget {
   const UserAddressWidget({
-    Key? key,
+    super.key,
     required this.address,
-  }) : super(key: key);
+  });
 
   final Address address;
 

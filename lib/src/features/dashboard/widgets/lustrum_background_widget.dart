@@ -8,8 +8,8 @@ class LustrumBackgroundWidget extends CustomPainter {
 
   final double pageOffset;
 
+  // ignore: sort_constructors_first
   LustrumBackgroundWidget({required this.pageOffset});
-
   @override
   void paint(Canvas canvas, Size size) {
     const opacity = 0.16;

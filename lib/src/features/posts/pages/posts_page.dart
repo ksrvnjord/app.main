@@ -9,9 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 
 class PostsPage extends ConsumerWidget {
-  const PostsPage({
-    Key? key,
-  }) : super(key: key);
+  const PostsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,10 +24,10 @@ class PostsPage extends ConsumerWidget {
             onAuthenticated: IconButton(
               onPressed: () => showModalBottomSheet(
                 context: context,
-                builder: (_) => ProviderScope(
+                builder: (_) => UncontrolledProviderScope(
                   // When using a provider inside a modal bottom sheet, you need to wrap it in a ProviderScope, because the sheet is placed at the top of the widget tree.
 
-                  parent: ProviderScope.containerOf(
+                  container: ProviderScope.containerOf(
                     context,
                   ), // The new provider scope will share the same providers as the parent scope.
 
@@ -69,7 +67,7 @@ class PostsPage extends ConsumerWidget {
                   ),
                 ),
                 isScrollControlled: true,
-              ),
+              ).ignore(),
               icon: const Icon(Icons.filter_list),
             ),
           ),

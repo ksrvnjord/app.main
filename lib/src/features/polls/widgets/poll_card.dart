@@ -12,10 +12,10 @@ import 'package:styled_widget/styled_widget.dart';
 
 class PollCard extends ConsumerWidget {
   const PollCard({
-    Key? key,
+    super.key,
     required this.pollDoc,
     this.isExpanded,
-  }) : super(key: key);
+  });
 
   final DocumentSnapshot<Poll> pollDoc;
   final bool? isExpanded;
@@ -62,6 +62,7 @@ class PollCard extends ConsumerWidget {
                     answerExists: hasFilledIn,
                     // ignore: no-equal-arguments
                     isCompleted: hasFilledIn,
+                    showIcon: true,
                     textStyle: textTheme.labelLarge,
                   )
                 : const SizedBox.shrink();

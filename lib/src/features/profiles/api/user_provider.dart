@@ -24,7 +24,7 @@ final currentUserProvider = StreamProvider.autoDispose<User>(
 
 // ignore: prefer-match-file-name
 class UserNotifier extends StateNotifier<User?> {
-  UserNotifier(User? user) : super(user);
+  UserNotifier(super.user);
 }
 
 final currentUserNotifierProvider = StateNotifierProvider<UserNotifier, User?>(

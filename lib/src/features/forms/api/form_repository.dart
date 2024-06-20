@@ -1,4 +1,3 @@
-/// Class to handle all the form related operations.
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';

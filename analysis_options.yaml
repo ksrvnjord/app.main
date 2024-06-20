@@ -22,6 +22,7 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
+      sort_constructors_first: true
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 
@@ -33,6 +34,7 @@ analyzer:
     - lib/**.graphql.dart # exclude generated files
     - lib/firebase_options.dart # exclude generated files
   plugins:
+    - custom_lint
 
 # DART CODE METRICS - The code metrics you don't want but need
 # Documentation at https://dcm.dev/

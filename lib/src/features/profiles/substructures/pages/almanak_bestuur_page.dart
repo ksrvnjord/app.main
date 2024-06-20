@@ -11,7 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dro
 import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
-  const AlmanakBestuurPage({Key? key, required this.year}) : super(key: key);
+  const AlmanakBestuurPage({super.key, required this.year});
 
   final int year;
 

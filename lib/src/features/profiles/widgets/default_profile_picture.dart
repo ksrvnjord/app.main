@@ -4,9 +4,9 @@ import 'package:ksrvnjord_main_app/assets/images.dart';
 
 class DefaultProfilePicture extends StatelessWidget {
   const DefaultProfilePicture({
-    Key? key,
+    super.key,
     this.radius,
-  }) : super(key: key);
+  });
 
   final double? radius;
 

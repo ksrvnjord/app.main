@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 
 class CreateFormDateTimePicker extends StatefulWidget {
   const CreateFormDateTimePicker({
-    Key? key,
+    super.key,
     required this.initialDate,
     required this.onDateTimeChanged,
-  }) : super(key: key);
+  });
 
   final DateTime initialDate;
   // ignore: prefer-explicit-parameter-names

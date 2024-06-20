@@ -3,14 +3,16 @@ import 'package:styled_widget/styled_widget.dart';
 
 class AnswerStatusCard extends StatelessWidget {
   const AnswerStatusCard({
-    Key? key,
+    super.key,
     required this.answerExists,
     required this.isCompleted,
+    required this.showIcon,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   final bool answerExists;
   final bool isCompleted;
+  final bool showIcon;
   final TextStyle? textStyle;
 
   @override
@@ -21,17 +23,32 @@ class AnswerStatusCard extends StatelessWidget {
 
     const verticalPadding = 2.0;
 
+    const iconSize = 32.0;
+
     return answerExists
-        ? Card(
-            color: isCompleted
-                ? colorScheme.primaryContainer
-                : colorScheme.secondaryContainer,
-            elevation: 0,
-            margin: EdgeInsets.zero,
-            child: Text(
-              isCompleted ? "Ingevuld" : "Onvolledig Ingevuld",
-              style: textStyle,
-            ).padding(horizontal: horizontalPadding, vertical: verticalPadding),
+        ? Row(
+            children: [
+              Card(
+                color: isCompleted
+                    ? colorScheme.primaryContainer
+                    : colorScheme.errorContainer, // Was secondaryContainer.
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                child: Text(
+                  isCompleted ? "Ingevuld" : "Niet Verzonden",
+                  style: textStyle,
+                ).padding(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
+                ),
+              ),
+              if (!isCompleted && showIcon)
+                Icon(
+                  Icons.warning_rounded,
+                  size: iconSize,
+                  color: colorScheme.errorContainer,
+                ),
+            ],
           )
         : Card(
             color: colorScheme.tertiaryContainer,

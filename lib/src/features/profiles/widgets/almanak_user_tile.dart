@@ -10,12 +10,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakUserTile extends ConsumerWidget {
   const AlmanakUserTile({
-    Key? key,
+    super.key,
     required this.firstName,
     required this.lastName,
     this.subtitle,
     required this.lidnummer,
-  }) : super(key: key);
+  });
   final String firstName;
   final String lastName;
   final String? subtitle;

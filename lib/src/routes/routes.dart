@@ -9,8 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_model.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_state.dart';
+import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/pages/documents_main_page.dart';
@@ -21,6 +20,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/pages/forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/manage_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/manage_forms_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
@@ -53,6 +53,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/huis_choice_page
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/commissie_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_details_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
@@ -95,6 +97,21 @@ class Routes {
   /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
   // ignore: prefer-static-class, avoid-long-functions
   static final routerProvider = Provider((ref) {
+    final authNotifier = ValueNotifier<AsyncValue<Auth?>>(
+      const AsyncLoading(),
+    );
+    // This is the notifier that will be used to refresh the router.
+    ref
+      ..onDispose(authNotifier.dispose)
+      ..listen(
+        authControllerProvider
+            .select((data) => data.whenData((value) => value)),
+        // When user is authenticated, update the notifier.
+        (previous, next) {
+          authNotifier.value = next;
+        },
+      );
+
     return GoRouter(
       routes: [
         // The StatefulShell approach enables us to have a bottom navigation bar that is persistent across all pages and have stateful navigation.
@@ -129,10 +146,11 @@ class Routes {
         name: "Unknown Route",
       ),
       redirect: (context, state) {
-        final AuthState authState = ref.read(authModelProvider).authState;
         const String loginPath = '/login';
         const String initialLocation = '/';
         final currentPath = state.uri.path;
+        final authState = authNotifier.value;
+        final authenticated = authState.asData?.value?.authenticated ?? false;
 
         final loginPathWithRedirect = Uri(
           path: loginPath,
@@ -144,40 +162,36 @@ class Routes {
         final routeRequiresAuth =
             !Routes._unauthenticated.any((route) => route.path == currentPath);
 
-        switch (authState) {
-          case AuthState.loading:
-            if (currentPath != loginPath && routeRequiresAuth) {
-              // Loading happens on login page, as login page shows the loading widget.
-              return loginPathWithRedirect;
-            }
-            break;
-          case AuthState.unauthenticated:
-            if (routeRequiresAuth) {
-              return loginPathWithRedirect;
-            }
-            break;
-          case AuthState.authenticated:
-            if (currentPath == loginPath) {
-              return state.uri.queryParameters['from'] ?? initialLocation;
-            }
-            final bool currentRouteRequiresAdmin =
-                Routes._adminRoutes.any((route) => route.path == currentPath);
-            final bool canAccesAdminRoutes = ref.read(
-                  currentUserNotifierProvider.select((value) => value?.isAdmin),
-                ) ??
-                false; // Watch for changes in the user's admin status.
-            if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
-              return '/401';
-            }
-
-            break;
-          default:
-            throw UnimplementedError("Unknown AuthState");
+        if (authState.isLoading) {
+          return (currentPath != loginPath && routeRequiresAuth)
+              ? loginPathWithRedirect
+              : null;
         }
 
+        if (!authenticated) {
+          return routeRequiresAuth ? loginPathWithRedirect : null;
+        }
+
+        if (currentPath == loginPath) {
+          return state.uri.queryParameters['from'] ?? initialLocation;
+        }
+
+        final bool currentRouteRequiresAdmin =
+            Routes._adminRoutes.any((route) => route.path == currentPath);
+
+        final bool canAccesAdminRoutes = ref.read(
+              currentUserNotifierProvider.select((value) => value?.isAdmin),
+            ) ??
+            false; // Watch for changes in the user's admin status.
+
+        if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
+          return '/401';
+        }
+
+        // ignore: prefer-returning-conditional-expressions
         return null;
       },
-      refreshListenable: ref.read(authModelProvider),
+      refreshListenable: authNotifier,
       initialLocation:
           _previousRouter?.routeInformationProvider.value.uri.path ??
               initialPath,
@@ -195,9 +209,9 @@ class Routes {
       name: "Home",
       child: UpgradeAlert(
         upgrader: Upgrader(
-          messages: DutchUpgradeMessages(),
           countryCode: 'nl',
           languageCode: 'nl',
+          messages: DutchUpgradeMessages(),
         ),
         child: const HomePage(),
       ),
@@ -436,6 +450,23 @@ class Routes {
       child: const AlmanakPage(),
       routes: [
         _route(
+          path: 'partners',
+          name: 'Partners',
+          child: const PartnersPage(),
+          routes: [
+            _route(
+              path: ':partnerId',
+              name: "Partner Details",
+              pageBuilder: (context, state) => _getPage(
+                child: PartnerDetailsPage(
+                  partnerId: state.pathParameters['partnerId']!,
+                ),
+                name: "Partner Details",
+              ),
+            ),
+          ],
+        ),
+        _route(
           path: "leeden",
           name: "Leeden",
           pageBuilder: (context, state) => _getPage(
@@ -527,7 +558,7 @@ class Routes {
         _route(
           path: "huizen",
           name: "Huizen",
-          child: const HuisChoicePage(title: "Huizen", choices: houseNames),
+          child: const HuisChoicePage(title: "Huizen", choices: kHouseNames),
           routes: [
             _route(
               path: ":name",
@@ -624,6 +655,11 @@ class Routes {
               child: const EditCharityPage(),
             ),
           ],
+        ),
+        _route(
+          path: "blikkenlijst",
+          name: "Blikkenlijst",
+          child: const BlikkenLijstPage(),
         ),
       ],
     ),

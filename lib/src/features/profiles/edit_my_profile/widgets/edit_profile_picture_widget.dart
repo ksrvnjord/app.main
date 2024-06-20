@@ -9,9 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notif
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
 
 class EditProfilePictureWidget extends ConsumerStatefulWidget {
-  const EditProfilePictureWidget({
-    Key? key,
-  }) : super(key: key);
+  const EditProfilePictureWidget({super.key});
 
   @override
   createState() => _EditProfilePictureWidgetState();

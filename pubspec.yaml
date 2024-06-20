@@ -2,7 +2,7 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1726.17+13
+version: 1.1726.19+13
 
 environment:
   sdk: "^3.0.0" # Dart SDK version: https://dart.dev/get-dart/archive
@@ -18,7 +18,6 @@ dependencies:
   url_launcher: ^6.1.5
   sentry_flutter: ^7.10.1
   styled_widget: ^0.4.0+3
-  oauth2: ^2.0.0
   get_it: ^7.2.0
   intl: ^0.18.0
   flutter_markdown: ^0.6.18
@@ -29,17 +28,17 @@ dependencies:
   syncfusion_flutter_calendar: ^23.1.36
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: ^4.10.1
+  firebase_auth: any
   time_range_picker: ^2.2.0
-  firebase_core: ^2.11.0
+  firebase_core: any
   shared_preferences: ^2.0.15
-  firebase_messaging: ^14.6.9
+  firebase_messaging: any
   flutter_local_notifications: ^15.1.2
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
   cloud_functions: ^4.4.1
-  firebase_storage: ^11.2.8
+  firebase_storage: any
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
   feedback_sentry: ^2.4.0
@@ -50,20 +49,19 @@ dependencies:
   firebase_app_check: ^0.2.0
   tuple: ^2.0.1
   path_provider: ^2.0.2
-  flutter_riverpod: ^2.4.3
-  riverpod_generator: ^2.3.3
+  flutter_riverpod: ^2.5.1
   timeago: ^3.3.0
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
   yaml: ^3.1.1
   flutter_svg: any
-  share_plus: ^8.0.0
+  share_plus: ^7.2.2
   expandable: ^5.0.1
   weather_icons: ^3.0.0
   csv: any
   stack_trace: ^1.11.0
-  firebase_analytics: ^10.5.1
-  firebase_crashlytics: ^3.3.7
+  firebase_analytics: any
+  firebase_crashlytics: any
   upgrader: any
   sliver_tools: ^0.2.12
   flutter_pdfview: ^1.3.1
@@ -75,9 +73,12 @@ dependencies:
     git:
       url: https://github.com/ksrvnjord/firebase_pagination
 
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
   universal_html: ^2.2.4
   image_picker: ^1.0.5
+  riverpod_annotation: ^2.3.5
+  freezed_annotation: any
+  autologin: ^1.0.0
 
 dependency_overrides:
   package_info_plus: any
@@ -91,10 +92,16 @@ dev_dependencies:
   dependency_validator: ^3.2.2
   dart_code_metrics_presets: ^2.6.0
   json_serializable: ^6.7.1
+  custom_lint: any
+  riverpod_generator: any
+  riverpod_lint: any
+  freezed: any
 
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
     - assets/images/
+    - assets/images/sponsors/
     - assets/data/
+    - assets/images/sponsors/

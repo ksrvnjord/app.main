@@ -3,5 +3,7 @@
         "source.fixAll": "explicit",
         "source.dcm.fixAll": "explicit"
     },
-    "cmake.sourceDirectory": "C:/Users/linde/app.main/build/windows/x64/extracted/firebase_cpp_sdk_windows"
+
+    "cmake.ignoreCMakeListsMissing": true,
+    "cmake.configureOnOpen": true
 }

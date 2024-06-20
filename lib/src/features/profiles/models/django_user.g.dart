@@ -7,8 +7,8 @@ part of 'django_user.dart';
 // **************************************************************************
 
 DjangoUser _$DjangoUserFromJson(Map<String, dynamic> json) => DjangoUser(
-      id: json['id'] as int,
-      lichting: json['lichting'] as int,
+      id: (json['id'] as num).toInt(),
+      lichting: (json['lichting'] as num).toInt(),
       isSuperuser: json['is_superuser'] as bool,
       username: json['username'] as String,
       firstName: json['first_name'] as String,
@@ -22,7 +22,7 @@ DjangoUser _$DjangoUserFromJson(Map<String, dynamic> json) => DjangoUser(
       city: json['city'] as String,
       country: json['country'] as String,
       phonePrimary: json['phone_primary'] as String,
-      identifier: json['identifier'] as int,
+      identifier: (json['identifier'] as num).toInt(),
       groups: (json['groups'] as List<dynamic>)
           .map((e) => GroupDjangoEntry.fromJson(e as Map<String, dynamic>))
           .toList(),

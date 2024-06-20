@@ -11,9 +11,9 @@ import 'package:styled_widget/styled_widget.dart';
 
 class PostStatisticsBar extends ConsumerWidget {
   const PostStatisticsBar({
-    Key? key,
+    super.key,
     required this.snapshot,
-  }) : super(key: key);
+  });
 
   final DocumentSnapshot<Post> snapshot;
 

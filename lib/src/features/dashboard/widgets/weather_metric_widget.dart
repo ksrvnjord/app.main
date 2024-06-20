@@ -4,13 +4,13 @@ import 'package:weather_icons/weather_icons.dart';
 
 class WeatherMetricWidget extends StatelessWidget {
   const WeatherMetricWidget({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.mainText,
     this.main,
     this.bottomText,
-  }) : super(key: key);
+  });
 
   final IconData icon;
   final String title;

@@ -5,14 +5,14 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 /// A widget that watches the current user from the database and only
 /// renders [child] when the user is non-null (and thus logged in).
 class FirebaseWidget extends ConsumerWidget {
-  final Widget onAuthenticated;
-  final Widget? onUnauthenticated;
-
   const FirebaseWidget({
-    Key? key,
+    super.key,
     required this.onAuthenticated,
     this.onUnauthenticated,
-  }) : super(key: key);
+  });
+
+  final Widget onAuthenticated;
+  final Widget? onUnauthenticated;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

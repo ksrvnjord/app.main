@@ -15,7 +15,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.d
 import 'package:styled_widget/styled_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   createState() => _HomePageState();

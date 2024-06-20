@@ -11,12 +11,12 @@ import 'package:styled_widget/styled_widget.dart';
 
 class FormQuestion extends ConsumerStatefulWidget {
   const FormQuestion({
-    Key? key,
+    super.key,
     required this.formQuestion,
     required this.form,
     required this.docRef,
     required this.formIsOpen,
-  }) : super(key: key);
+  });
 
   final FirestoreFormQuestion formQuestion;
 

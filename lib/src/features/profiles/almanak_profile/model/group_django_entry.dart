@@ -14,6 +14,7 @@ class GroupDjangoEntry {
   final String? role;
   final List<String> permissions;
 
+  // ignore: sort_constructors_first
   GroupDjangoEntry({
     required this.id,
     required this.group,
@@ -21,6 +22,7 @@ class GroupDjangoEntry {
     required this.permissions,
   });
 
+  // ignore: sort_constructors_first
   factory GroupDjangoEntry.fromJson(Map<String, dynamic> json) =>
       _$GroupDjangoEntryFromJson(json);
 

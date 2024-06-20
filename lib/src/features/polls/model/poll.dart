@@ -9,6 +9,7 @@ class Poll {
   final String? description;
   final String? imagePath;
 
+  // ignore: sort_constructors_first
   const Poll({
     required this.question,
     required this.options,
@@ -18,6 +19,7 @@ class Poll {
   });
 
   // Create fromJson method.
+  // ignore: sort_constructors_first
   factory Poll.fromJson(Map<String, dynamic> json) {
     return Poll(
       question: json['question'],
