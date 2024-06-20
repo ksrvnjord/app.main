@@ -12,7 +12,7 @@ part of 'auth_controller.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Auth {
@@ -77,9 +77,10 @@ class _$AuthCopyWithImpl<$Res, $Val extends Auth>
 }
 
 /// @nodoc
-abstract class _$$_AuthCopyWith<$Res> implements $AuthCopyWith<$Res> {
-  factory _$$_AuthCopyWith(_$_Auth value, $Res Function(_$_Auth) then) =
-      __$$_AuthCopyWithImpl<$Res>;
+abstract class _$$AuthImplCopyWith<$Res> implements $AuthCopyWith<$Res> {
+  factory _$$AuthImplCopyWith(
+          _$AuthImpl value, $Res Function(_$AuthImpl) then) =
+      __$$AuthImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -90,9 +91,10 @@ abstract class _$$_AuthCopyWith<$Res> implements $AuthCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_AuthCopyWithImpl<$Res> extends _$AuthCopyWithImpl<$Res, _$_Auth>
-    implements _$$_AuthCopyWith<$Res> {
-  __$$_AuthCopyWithImpl(_$_Auth _value, $Res Function(_$_Auth) _then)
+class __$$AuthImplCopyWithImpl<$Res>
+    extends _$AuthCopyWithImpl<$Res, _$AuthImpl>
+    implements _$$AuthImplCopyWith<$Res> {
+  __$$AuthImplCopyWithImpl(_$AuthImpl _value, $Res Function(_$AuthImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -103,7 +105,7 @@ class __$$_AuthCopyWithImpl<$Res> extends _$AuthCopyWithImpl<$Res, _$_Auth>
     Object? error = null,
     Object? authenticated = null,
   }) {
-    return _then(_$_Auth(
+    return _then(_$AuthImpl(
       accessToken: freezed == accessToken
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
@@ -126,8 +128,8 @@ class __$$_AuthCopyWithImpl<$Res> extends _$AuthCopyWithImpl<$Res, _$_Auth>
 
 /// @nodoc
 
-class _$_Auth with DiagnosticableTreeMixin implements _Auth {
-  _$_Auth(
+class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
+  _$AuthImpl(
       {this.accessToken,
       this.expiration,
       this.error = '',
@@ -160,10 +162,10 @@ class _$_Auth with DiagnosticableTreeMixin implements _Auth {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Auth &&
+            other is _$AuthImpl &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.expiration, expiration) ||
@@ -180,8 +182,8 @@ class _$_Auth with DiagnosticableTreeMixin implements _Auth {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AuthCopyWith<_$_Auth> get copyWith =>
-      __$$_AuthCopyWithImpl<_$_Auth>(this, _$identity);
+  _$$AuthImplCopyWith<_$AuthImpl> get copyWith =>
+      __$$AuthImplCopyWithImpl<_$AuthImpl>(this, _$identity);
 }
 
 abstract class _Auth implements Auth {
@@ -189,7 +191,7 @@ abstract class _Auth implements Auth {
       {final String? accessToken,
       final DateTime? expiration,
       final String error,
-      required final bool authenticated}) = _$_Auth;
+      required final bool authenticated}) = _$AuthImpl;
 
   @override
   String? get accessToken;
@@ -201,5 +203,6 @@ abstract class _Auth implements Auth {
   bool get authenticated;
   @override
   @JsonKey(ignore: true)
-  _$$_AuthCopyWith<_$_Auth> get copyWith => throw _privateConstructorUsedError;
+  _$$AuthImplCopyWith<_$AuthImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

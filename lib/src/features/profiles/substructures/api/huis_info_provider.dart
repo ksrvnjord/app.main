@@ -14,8 +14,8 @@ final huisInfoProvider = StreamProvider.autoDispose
           .collection('group_info')
           .withConverter<HuisInfo>(
             fromFirestore: (snapshot, _) =>
-                HuisInfo.fromMap(snapshot.data() ?? {}),
-            toFirestore: (HuisInfo huisInfo, _) => huisInfo.toMap(),
+                HuisInfo.fromJson(snapshot.data() ?? {}),
+            toFirestore: (HuisInfo huisInfo, _) => huisInfo.toJson(),
           )
           .where('name', isEqualTo: name)
           .snapshots();
