@@ -558,7 +558,7 @@ class Routes {
         _route(
           path: "huizen",
           name: "Huizen",
-          child: const HuisChoicePage(title: "Huizen", choices: houseNames),
+          child: const HuisChoicePage(title: "Huizen", choices: kHouseNames),
           routes: [
             _route(
               path: ":name",

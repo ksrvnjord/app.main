@@ -184,7 +184,7 @@ class _EditAlmanakProfilePageState
                   ),
                 ),
                 DropdownButtonFormField<String?>(
-                  items: ['Geen', ...houseNames]
+                  items: ['Geen', ...kHouseNames]
                       .map((house) => DropdownMenuItem<String>(
                             value: house,
                             child: Text(house),
