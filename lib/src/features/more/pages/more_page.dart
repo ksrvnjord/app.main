@@ -83,7 +83,7 @@ class MorePage extends ConsumerWidget {
             const MoreLinkTile(
               label: 'Declareer Kosten aan de Quaestor',
               url:
-                  'https://docs.google.com/forms/d/e/1FAIpQLSe75Utou3_t_Ja7Dmmjhasz2eVc5Ii3SkAOtKqnlwPACaBn4g/viewform',
+                  'https://docs.google.com/forms/d/e/1FAIpQLSfmh_QoyUeYbXVHI-naMJG7e7JVZb0hiW011N2zxXwvNZdzQA/viewform?usp=sf_link',
             ),
             const Divider(height: 0, thickness: dividerThickness),
             const MoreLinkTile(
