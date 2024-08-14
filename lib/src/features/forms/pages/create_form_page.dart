@@ -27,10 +27,11 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _isGroupSpecific = false;
+  bool _isTest = false;
   List<String> _visibleForGroups = [];
 
-  final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
   bool get _formHasUnfilledSingleChoiceQuestions {
@@ -102,7 +103,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
-          visibleForGroups: await convertToIds(_visibleForGroups),
+          visibleForGroups: await _convertToIds(_visibleForGroups),
+          isTest: _isTest,
         ),
       );
       if (!mounted) return;
@@ -125,6 +127,55 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         ),
       );
     }
+  }
+
+  Future<List<int?>?> _convertToIds(List<String> visibleForGroups) async {
+    final dio = ref.watch(dioProvider);
+
+    if (visibleForGroups.isNotEmpty) {
+      final visibleForGroupIDs = <int?>[];
+      for (String groupString in visibleForGroups) {
+        switch (groupString) {
+          case "Wedstrijdsectie" || "Competitiesectie":
+            {
+              final result = await GroupRepository.listGroups(
+                type: (groupString == "Wedstrijdsectie")
+                    ? GroupType.wedstrijdsectie
+                    : GroupType.competitieploeg,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              break;
+            }
+
+          case "Club8+" || "TopC4+" || "Sjaarzen":
+            {
+              if (groupString == "Sjaarzen") {
+                groupString = "Lichting";
+              }
+
+              final result = await GroupRepository.listGroups(
+                search: groupString,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              break;
+            }
+
+          default:
+        }
+      }
+
+      return visibleForGroupIDs;
+    }
+
+    return [];
   }
 
   @override
@@ -172,6 +223,16 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
             ),
             [
               const Text(
+                'Test form? (voor ontwikkelaars)',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Switch.adaptive(
+                value: _isTest,
+                onChanged: (bool value) => setState(() => _isTest = value),
+              ),
+            ].toRow(),
+            [
+              const Text(
                 'groep specifiek? ',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
@@ -183,9 +244,12 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
             ].toRow(),
             if (_isGroupSpecific)
               SelectGroupWidget(
+                onChanged: (List<String> newSelectedGroups) => setState(() {
+                  _visibleForGroups = newSelectedGroups;
+                  final groupIDs = _convertToIds(
+                      _visibleForGroups); // TODO: Used for debugging.
+                }),
                 visibleForGroups: _visibleForGroups,
-                onChanged: (List<String> newSelectedGroups) =>
-                    setState(() => _visibleForGroups = newSelectedGroups),
               ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
@@ -239,31 +303,5 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         label: const Text('Maak nieuwe form'),
       ),
     );
-  }
-
-  Future<List<String>> convertToIds(List<String> visibleForGroups) async {
-    final dio = ref.watch(dioProvider);
-
-    final List<String> visibleForGroupIDs = [];
-    // For every String in visibleForGroups do something
-    if (visibleForGroups.isNotEmpty) {
-      for (String group in visibleForGroups) {
-        if ((group == "Wedstrijdsectie") || (group == "Competitiesectie")) {
-          final result = await GroupRepository.listGroups(
-            type: (group == "Wedstrijdsectie")
-                ? GroupType.wedstrijdsectie
-                : GroupType.competitieploeg,
-            year: getNjordYear(),
-            dio: dio,
-          );
-          for (final group in result) {
-            visibleForGroupIDs.add(group.id!.toString());
-          }
-        }
-      }
-      return visibleForGroupIDs;
-    } else {
-      return [];
-    }
   }
 }

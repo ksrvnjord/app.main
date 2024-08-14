@@ -28,15 +28,34 @@ class FormsPage extends ConsumerWidget {
         children: [
           formsAndPolls.when(
             data: (data) {
+              debugPrint("type of data");
+              debugPrint(data.runtimeType.toString());
+
               return data
                   .map((item) {
                     final snapshot = item as QueryDocumentSnapshot;
-                    final parentCollectionId = snapshot.reference.parent.id;
+                    final parentCollectionId = snapshot.reference.parent.id ==
+                            "testforms"
+                        ? "forms"
+                        : snapshot.reference.parent.id; // TODO testenvironment.
                     switch (parentCollectionId) {
                       // Unfortunate workaround for the fact that the type of the item is not a known type.
                       case "forms":
                         return FormCard(
                           formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
+                          userGroups: currentUserVal.when(
+                            data: (currentUser) {
+                              return currentUser.groups
+                                  .map((group) => group.id);
+                            },
+                            error: (e, s) {
+                              // ignore: avoid-async-call-in-sync-function
+                              FirebaseCrashlytics.instance.recordError(e, s);
+
+                              return const [];
+                            },
+                            loading: () => const [],
+                          ),
                         );
 
                       case "polls":
@@ -53,10 +72,14 @@ class FormsPage extends ConsumerWidget {
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
             },
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
-              stackTrace: stack,
-            ),
+            error: (error, stack) {
+              debugPrint("errorcard formcard");
+
+              return ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stack,
+              );
+            },
             loading: () => const CircularProgressIndicator.adaptive(),
           ),
         ],

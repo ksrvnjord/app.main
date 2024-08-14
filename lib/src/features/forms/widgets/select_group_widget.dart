@@ -17,8 +17,9 @@ class SelectGroupWidget extends StatelessWidget {
       "Wedstrijdsectie",
       "Club8+",
       "TopC4+",
-    ]; // TODO: This list should include all groups available
-    var newGroups = visibleForGroups;
+      "Sjaarzen",
+    ]; // TODO: This list should include all groups available.
+    final newGroups = visibleForGroups;
 
     return Column(
       children: groupChoices
@@ -28,7 +29,7 @@ class SelectGroupWidget extends StatelessWidget {
                       if (value ?? false) {newGroups.add(group)},
                       if (!(value ?? true) && newGroups.contains(group))
                         {newGroups.remove(group)},
-                      onChanged(newGroups)
+                      onChanged(newGroups),
                     }),
                 title: Text(group),
               ))

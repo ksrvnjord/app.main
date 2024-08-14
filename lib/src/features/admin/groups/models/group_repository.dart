@@ -10,12 +10,15 @@ class GroupRepository {
     required Dio dio,
     String? ordering,
   }) async {
+    final typeValue = type?.value;
+
     final res = await dio.get(
       "/api/users/groups/",
       queryParameters: {
-        "type": type.toString(),
-        "year": year,
         "ordering": ordering,
+        "search": search,
+        "type": typeValue,
+        "year": year,
       },
     );
 

@@ -28,12 +28,15 @@ class FormsWidget extends ConsumerWidget {
     return [
       ...forms.map((item) {
         final parentCollectionId =
-            (item as QueryDocumentSnapshot).reference.parent.id;
+            (item as QueryDocumentSnapshot).reference.parent.id == "testforms"
+                ? "forms"
+                : (item).reference.parent.id; // TODO testenvironment.
         switch (parentCollectionId) {
           // Unfortunate workaround for the fact that the type of the item is not a known type.
           case "forms":
             return FormCard(
               formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
+              userGroups: const [],
             );
 
           case "polls":

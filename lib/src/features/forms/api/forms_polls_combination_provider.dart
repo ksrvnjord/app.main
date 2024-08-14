@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
@@ -17,7 +18,11 @@ final formsPollsCombinationProvider =
   final querySnapshots = await Future.wait([forms, polls]);
 
   final alldocs = querySnapshots.expand((element) => element.docs).toList();
+
+  debugPrint('formsPollsCombinationProvider alldocs1');
   alldocs.sort(PollsMigration.comparePollsFormsCombination);
+
+  debugPrint('formsPollsCombinationProvider alldocs');
 
   return alldocs;
 });
@@ -47,7 +52,10 @@ class PollsMigration {
     // ignore: avoid-similar-names
     DateTime bOpenUntil = DateTime.now();
 
-    final parentCollectionIdA = a.reference.parent.id;
+    final parentCollectionIdA = (a.reference.parent.id == "testforms")
+        ? "forms"
+        : a.reference.parent.id; // TODO testenvironment
+    // final parentCollectionIdA = a.reference.parent.id;
 
     switch (parentCollectionIdA) {
       case "forms":
@@ -67,7 +75,10 @@ class PollsMigration {
     }
 
     // ignore: avoid-similar-names
-    final parentCollectionIdB = b.reference.parent.id;
+    final parentCollectionIdB = (b.reference.parent.id == "testforms")
+        ? "forms"
+        : b.reference.parent.id; // TODO testenvironment
+    // final parentCollectionIdB = b.reference.parent.id;
 
     switch (parentCollectionIdB) {
       case "forms":

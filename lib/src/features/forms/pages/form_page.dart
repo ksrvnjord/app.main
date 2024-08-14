@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_p
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
@@ -34,7 +35,7 @@ class _FormPageState extends ConsumerState<FormPage> {
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(formsCollection.doc(widget.formId)).future,
+      formAnswerProvider(FirestoreForm.firestoreConvert.doc(widget.formId)).future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -83,7 +84,7 @@ class _FormPageState extends ConsumerState<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final doc = formsCollection.doc(widget.formId);
+    final doc = FirestoreForm.firestoreConvert.doc(widget.formId);
     final colorScheme = Theme.of(context).colorScheme;
 
     final formVal = ref.watch(formProvider(doc));

@@ -22,10 +22,12 @@ class FirestoreForm {
   final String? description;
   final String authorId;
   final String authorName;
-  final List<String>? visibleForGroups;
+  final List<int?>? visibleForGroups;
+  final bool isTest;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
-      FirebaseFirestore.instance.collection('forms').withConverter(
+      FirebaseFirestore.instance.collection('testforms').withConverter(
+            // TODO "testforms"this is used for debugging original is "forms".
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),
@@ -40,6 +42,7 @@ class FirestoreForm {
     required this.authorId,
     required this.authorName,
     this.visibleForGroups,
+    this.isTest = false,
   });
 
   // Create fromJson method.
