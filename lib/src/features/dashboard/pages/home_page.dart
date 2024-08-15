@@ -87,8 +87,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 onAuthenticated: IconButton(
                   iconSize: myProfileSize,
                   onPressed: () => context.goNamed("Edit Profile"),
-                  icon:
-                      const MyProfilePicture(profileIconSize: myProfileSize),
+                  icon: const MyProfilePicture(profileIconSize: myProfileSize),
                 ),
               ),
             ].toRow(

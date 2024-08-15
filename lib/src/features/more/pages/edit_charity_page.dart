@@ -64,7 +64,6 @@ class EditCharityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Map<String, TextEditingController> controllers = {
       'current_amount': TextEditingController(),
       'goal': TextEditingController(),
@@ -84,14 +83,14 @@ class EditCharityPage extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator.adaptive();
             }
-      
+
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error ?? 'Unknown error'}');
             }
-      
+
             Map<String, dynamic>? charityData =
                 snapshot.data?.data() as Map<String, dynamic>?;
-      
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

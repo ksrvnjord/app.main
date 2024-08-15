@@ -73,8 +73,7 @@ class PostsPage extends ConsumerWidget {
       ),
       body: const FirebaseWidget(
         onAuthenticated: PostList(),
-        onUnauthenticated:
-            Center(child: Text("Er zijn geen nieuwe berichten")),
+        onUnauthenticated: Center(child: Text("Er zijn geen nieuwe berichten")),
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: FloatingActionButton.extended(
