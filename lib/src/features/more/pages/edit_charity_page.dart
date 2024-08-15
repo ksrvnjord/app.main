@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/edit_charity_text_field.dart';
 
 class EditCharityPage extends StatelessWidget {
@@ -65,7 +64,6 @@ class EditCharityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const pageOffset = 0.0;
 
     Map<String, TextEditingController> controllers = {
       'current_amount': TextEditingController(),
@@ -75,59 +73,56 @@ class EditCharityPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Bedragen Aanpassen')),
-      body: CustomPaint(
-        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('charity')
-                .doc('leontienhuis')
-                .get(),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator.adaptive();
-              }
-
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error ?? 'Unknown error'}');
-              }
-
-              Map<String, dynamic>? charityData =
-                  snapshot.data?.data() as Map<String, dynamic>?;
-
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  EditCharityTextField(
-                    name: 'Huidig bedrag',
-                    initialValue:
-                        charityData?['current_amount']?.toString() ?? '',
-                    controller: controllers['current_amount']!,
-                  ),
-                  EditCharityTextField(
-                    name: 'Doelbedrag',
-                    initialValue: charityData?['goal']?.toString() ?? '',
-                    controller: controllers['goal']!,
-                  ),
-                  EditCharityTextField(
-                    name: 'Prijs per persoon',
-                    initialValue:
-                        charityData?['price_per_person']?.toString() ?? '',
-                    controller: controllers['price_per_person']!,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    // ignore: prefer-extracting-callbacks
-                    onPressed: () {
-                      unawaited(_saveValues(controllers, ctx));
-                    },
-                    child: const Text('Save'),
-                  ),
-                ],
-              );
-            },
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('charity')
+              .doc('leontienhuis')
+              .get(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator.adaptive();
+            }
+      
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error ?? 'Unknown error'}');
+            }
+      
+            Map<String, dynamic>? charityData =
+                snapshot.data?.data() as Map<String, dynamic>?;
+      
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                EditCharityTextField(
+                  name: 'Huidig bedrag',
+                  initialValue:
+                      charityData?['current_amount']?.toString() ?? '',
+                  controller: controllers['current_amount']!,
+                ),
+                EditCharityTextField(
+                  name: 'Doelbedrag',
+                  initialValue: charityData?['goal']?.toString() ?? '',
+                  controller: controllers['goal']!,
+                ),
+                EditCharityTextField(
+                  name: 'Prijs per persoon',
+                  initialValue:
+                      charityData?['price_per_person']?.toString() ?? '',
+                  controller: controllers['price_per_person']!,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  // ignore: prefer-extracting-callbacks
+                  onPressed: () {
+                    unawaited(_saveValues(controllers, ctx));
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
