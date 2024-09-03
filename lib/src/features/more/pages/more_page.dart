@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -19,7 +18,6 @@ class MorePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseAuthUser = ref.watch(firebaseAuthUserProvider).value;
     final currentUserVal = ref.watch(currentUserProvider);
-    const pageOffset = 0.0;
 
     final optionRouteMap = {
       "Over deze App": "About this app",
@@ -45,61 +43,58 @@ class MorePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Meer')),
-      body: CustomPaint(
-        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
-        child: ListView(
-          padding: const EdgeInsets.only(bottom: bottomPagePadding),
-          children: [
-            ...optionRouteMap.entries.map(
-              // Make a list of options to display and navigate to.
-              // Each option is a tile with a divider below it.
-              (entry) => [
-                MoreListTile(label: entry.key, routeName: entry.value),
-                const Divider(height: 0, thickness: dividerThickness),
-              ].toColumn(),
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: bottomPagePadding),
+        children: [
+          ...optionRouteMap.entries.map(
+            // Make a list of options to display and navigate to.
+            // Each option is a tile with a divider below it.
+            (entry) => [
+              MoreListTile(label: entry.key, routeName: entry.value),
+              const Divider(height: 0, thickness: dividerThickness),
+            ].toColumn(),
+          ),
+          ListTile(
+            title: Text(
+              "Geef Feedback over de App",
+              style: textTheme.titleMedium,
             ),
-            ListTile(
-              title: Text(
-                "Geef Feedback over de App",
-                style: textTheme.titleMedium,
-              ),
-              trailing: const Icon(Icons.feedback_outlined),
-              onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
-                name: FirebaseAuth.instance.currentUser?.uid ?? "Anoniem",
-              ),
+            trailing: const Icon(Icons.feedback_outlined),
+            onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
+              name: FirebaseAuth.instance.currentUser?.uid ?? "Anoniem",
             ),
-            const Divider(height: 0, thickness: dividerThickness),
-            const MoreLinkTile(
-              label: "Ga naar de Webshop",
-              url: "https://k-s-r-v-njord.myshopify.com/",
-            ),
-            const Divider(height: 0, thickness: dividerThickness),
-            const MoreLinkTile(
-              label: "Ga naar de Intekenlijst Instaposts",
-              url:
-                  "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
-            ),
-            const Divider(height: 0, thickness: dividerThickness),
-            const MoreLinkTile(
-              label: 'Declareer Kosten aan de Quaestor',
-              url:
-                  'https://docs.google.com/forms/d/e/1FAIpQLSfmh_QoyUeYbXVHI-naMJG7e7JVZb0hiW011N2zxXwvNZdzQA/viewform?usp=sf_link',
-            ),
-            const Divider(height: 0, thickness: dividerThickness),
-            const MoreLinkTile(
-              label: 'Handige Linkjes - Linktree',
-              url: 'https://linktr.ee/ksrvnjord_intern',
-            ),
-            const Divider(height: 0, thickness: dividerThickness),
-            ListTile(
-              title: Text('Uitloggen', style: textTheme.titleMedium)
-                  .textColor(colorScheme.error),
-              trailing: Icon(Icons.logout, color: colorScheme.error),
-              visualDensity: VisualDensity.standard,
-              onTap: () => ref.read(authControllerProvider.notifier).logout(),
-            ),
-          ],
-        ),
+          ),
+          const Divider(height: 0, thickness: dividerThickness),
+          const MoreLinkTile(
+            label: "Ga naar de Webshop",
+            url: "https://k-s-r-v-njord.myshopify.com/",
+          ),
+          const Divider(height: 0, thickness: dividerThickness),
+          const MoreLinkTile(
+            label: "Ga naar de Intekenlijst Instaposts",
+            url:
+                "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
+          ),
+          const Divider(height: 0, thickness: dividerThickness),
+          const MoreLinkTile(
+            label: 'Declareer Kosten aan de Quaestor',
+            url:
+                'https://docs.google.com/forms/d/e/1FAIpQLSfmh_QoyUeYbXVHI-naMJG7e7JVZb0hiW011N2zxXwvNZdzQA/viewform?usp=sf_link',
+          ),
+          const Divider(height: 0, thickness: dividerThickness),
+          const MoreLinkTile(
+            label: 'Handige Linkjes - Linktree',
+            url: 'https://linktr.ee/ksrvnjord_intern',
+          ),
+          const Divider(height: 0, thickness: dividerThickness),
+          ListTile(
+            title: Text('Uitloggen', style: textTheme.titleMedium)
+                .textColor(colorScheme.error),
+            trailing: Icon(Icons.logout, color: colorScheme.error),
+            visualDensity: VisualDensity.standard,
+            onTap: () => ref.read(authControllerProvider.notifier).logout(),
+          ),
+        ],
       ),
       // Floatingaction button to navigate to admin page.
       floatingActionButton: currentUserVal.when(

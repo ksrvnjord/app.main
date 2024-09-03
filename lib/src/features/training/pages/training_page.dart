@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,18 +12,13 @@ class TrainingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const pageOffset = 0.0;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mijn afschrijvingen'),
       ),
-      body: CustomPaint(
-        // ignore: sort_child_properties_last
-        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
-        child: const TrainingList(),
-      ),
+      body: const TrainingList(),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: Wrap(
           alignment: WrapAlignment.end,

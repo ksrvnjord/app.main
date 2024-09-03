@@ -58,7 +58,7 @@ class BlikkenLijstTabContent extends ConsumerWidget {
               ),
             ),
       error: (error, _) => Center(child: Text('Error: $error')),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
     );
   }
 }

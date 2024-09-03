@@ -2,7 +2,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/post_topics_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_list.dart';
@@ -14,7 +13,6 @@ class PostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topics = ref.watch(postTopicsProvider);
-    const pageOffset = 0.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -73,13 +71,9 @@ class PostsPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: CustomPaint(
-        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
-        child: const FirebaseWidget(
-          onAuthenticated: PostList(),
-          onUnauthenticated:
-              Center(child: Text("Er zijn geen nieuwe berichten")),
-        ),
+      body: const FirebaseWidget(
+        onAuthenticated: PostList(),
+        onUnauthenticated: Center(child: Text("Er zijn geen nieuwe berichten")),
       ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: FloatingActionButton.extended(

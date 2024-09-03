@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/lustrum_background_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
@@ -62,7 +61,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double bottomPaddingLogo = 10; // To align logo with the ProfileIcon.
 
     const double vaarverbodTopPadding = 4;
-    const pageOffset = 57.0;
 
     return Scaffold(
       // ignore: arguments-ordering
@@ -70,60 +68,56 @@ class _HomePageState extends ConsumerState<HomePage> {
         preferredSize: Size.fromHeight(screenTopPadding),
         child: SizedBox(height: screenTopPadding),
       ),
-      body: CustomPaint(
-        painter: LustrumBackgroundWidget(pageOffset: pageOffset),
-        child: RefreshIndicator(
-          // ignore: sort_child_properties_last
-          child: ListView(
-            padding: const EdgeInsets.only(bottom: 80),
-            children: <Widget>[
-              [
-                Image.asset(
-                  Theme.of(context).brightness == Brightness.light
-                      ? Images.appLogoBlue
-                      : Images.appLogo,
-                  height: logoHeight,
-                ).padding(
-                  bottom: bottomPaddingLogo,
-                  left: logoLeftPadding,
-                ), // To align logo with the ProfileIcon.
-                FirebaseWidget(
-                  onAuthenticated: IconButton(
-                    iconSize: myProfileSize,
-                    onPressed: () => context.goNamed("Edit Profile"),
-                    icon:
-                        const MyProfilePicture(profileIconSize: myProfileSize),
-                  ),
-                ),
-              ].toRow(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-              ),
-              const VaarverbodWidget().padding(
-                top: vaarverbodTopPadding,
-                horizontal: elementHPadding,
-              ),
+      body: RefreshIndicator(
+        // ignore: sort_child_properties_last
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 80),
+          children: <Widget>[
+            [
+              Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? Images.appLogoBlue
+                    : Images.appLogo,
+                height: logoHeight,
+              ).padding(
+                bottom: bottomPaddingLogo,
+                left: logoLeftPadding,
+              ), // To align logo with the ProfileIcon.
               FirebaseWidget(
-                onAuthenticated: const FormsWidget().padding(
-                  vertical: elementVPadding,
+                onAuthenticated: IconButton(
+                  iconSize: myProfileSize,
+                  onPressed: () => context.goNamed("Edit Profile"),
+                  icon: const MyProfilePicture(profileIconSize: myProfileSize),
                 ),
               ),
-              const SwanDivider(),
-              FirebaseWidget(
-                onAuthenticated: const ComingWeekEventsWidget().padding(
-                  vertical: elementVPadding,
-                ),
+            ].toRow(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+            ),
+            const VaarverbodWidget().padding(
+              horizontal: elementHPadding,
+              top: vaarverbodTopPadding,
+            ),
+            FirebaseWidget(
+              onAuthenticated: const FormsWidget().padding(
+                vertical: elementVPadding,
               ),
-              const SwanDivider(),
-              FirebaseWidget(
-                onAuthenticated: const AnnouncementsWidget().padding(
-                  vertical: elementVPadding,
-                ),
+            ),
+            const SwanDivider(),
+            FirebaseWidget(
+              onAuthenticated: const ComingWeekEventsWidget().padding(
+                vertical: elementVPadding,
               ),
-            ],
-          ),
-          onRefresh: _refresh,
+            ),
+            const SwanDivider(),
+            FirebaseWidget(
+              onAuthenticated: const AnnouncementsWidget().padding(
+                vertical: elementVPadding,
+              ),
+            ),
+          ],
         ),
+        onRefresh: _refresh,
       ),
     );
   }
