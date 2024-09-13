@@ -43,6 +43,7 @@ class ShowFiltersPage extends ConsumerWidget {
     const double categoryPadding = 8;
     const double pagePadding = 8;
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,8 +72,8 @@ class ShowFiltersPage extends ConsumerWidget {
               // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
               MultiSelectChipField<String?>(
                 items: availableFilters[key] ?? [],
-                decoration: const BoxDecoration(),
-                chipColor: Theme.of(context).colorScheme.surface,
+                decoration: BoxDecoration(color: colorScheme.background),
+                chipColor: colorScheme.background,
                 selectedChipColor:
                     Theme.of(context).brightness == Brightness.light
                         ? categoryColors[key]?.shade100
@@ -98,6 +99,7 @@ class ShowFiltersPage extends ConsumerWidget {
                 initialValue: activeFilters[key] ?? [],
                 showHeader: true,
               ).padding(bottom: categoryPadding).card(
+                    color: colorScheme.background,
                     elevation: 0,
                   ),
             ].toColumn(separator: const SizedBox(height: categoryPadding)),
