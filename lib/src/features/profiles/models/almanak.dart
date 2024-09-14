@@ -11,8 +11,8 @@ Future<Map<String, dynamic>> almanakUsers(
 ) async {
   final dio = ref.watch(dioProvider);
 
-  final res = await dio.get("/api/users/users/", queryParameters: {
-    "page": page,
+  final res = await dio.get("/api/v2/users/", queryParameters: {
+    "offset": page,
     "search": search,
   });
 

@@ -12,16 +12,13 @@ class GroupDjangoEntry {
 
   @JsonKey(fromJson: _roleFromJson)
   final String? role;
-  final List<String> permissions;
 
   // ignore: sort_constructors_first
-  GroupDjangoEntry({
+  const GroupDjangoEntry({
     required this.id,
     required this.group,
     required this.role,
-    required this.permissions,
   });
-
   // ignore: sort_constructors_first
   factory GroupDjangoEntry.fromJson(Map<String, dynamic> json) =>
       _$GroupDjangoEntryFromJson(json);

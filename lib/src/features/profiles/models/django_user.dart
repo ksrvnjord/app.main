@@ -1,9 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer-named-parameters
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/contact.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/permission_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
@@ -14,12 +19,6 @@ part 'django_user.g.dart';
 class DjangoUser {
   // ignore: prefer-correct-identifier-length
   final int id;
-  final int lichting;
-
-  // @JsonKey(name: "reserve_permissions")
-  // final List<Map<String, String> reservePermissions;
-
-  // TODO: Add groups field.
 
   @JsonKey(name: "is_superuser")
   final bool isSuperuser;
@@ -32,47 +31,53 @@ class DjangoUser {
   @JsonKey(name: "last_name")
   final String lastName;
 
-  final String email;
+  final String infix;
+
+  String email;
 
   @JsonKey(name: "is_staff")
   final bool isStaff;
 
-  final String zipcode;
-
-  final String housenumber;
-
-  @JsonKey(name: "housenumber_addition")
-  final String housenumberAddition;
-
-  final String street;
-
-  final String city;
-
-  final String country;
-
-  @JsonKey(name: "phone_primary")
-  final String phonePrimary;
-
+  @JsonKey(name: "iid")
   final int identifier;
+
+  @JsonKey(name: "birth_date")
+  final String birthDate;
+
+  String iban;
+
+  final String initials;
+
+  Address address;
+
+  Contact contact;
+
+  final KNRB? knrb;
+
+  Info info;
 
   final List<GroupDjangoEntry> groups;
 
-  const DjangoUser({
+  final List<PermissionEntry> permissions;
+
+  DjangoUser({
     required this.id,
-    required this.lichting,
     required this.isSuperuser,
     required this.username,
     required this.firstName,
     required this.lastName,
+    required this.infix,
     required this.email,
     required this.isStaff,
-    required this.zipcode,
-    required this.housenumber,
-    required this.housenumberAddition,
-    required this.street,
-    required this.city,
-    required this.country,
-    required this.phonePrimary,
+    required this.birthDate,
+    required this.initials,
+    required this.iban,
+    required this.address,
+    required this.contact,
+    this.knrb,
+    required this.permissions,
+    required this.info,
+    // Required this.phonePrimary,.
     required this.identifier,
     required this.groups,
   });
@@ -83,19 +88,15 @@ class DjangoUser {
   Map<String, dynamic> toJson() => _$DjangoUserToJson(this);
 
   static Future<DjangoUser> getByIdentifier(
-    String identifier,
     StreamProviderRef<User> ref,
+    String lidnummer,
   ) async {
     final dio = ref.watch(dioProvider);
 
-    final res = await dio.get("/api/users/users/", queryParameters: {
-      "search": identifier,
-    });
+    final res = await dio.get("/api/v2/users/$lidnummer/");
     final data = jsonDecode(res.toString()) as Map<String, dynamic>;
-    final results = data["results"] as List;
-    final user = results.first as Map<String, dynamic>;
 
-    return DjangoUser.fromJson(user);
+    return DjangoUser.fromJson(data);
   }
 
   static Future<DjangoUser> getById(
@@ -109,5 +110,69 @@ class DjangoUser {
     final user = data;
 
     return DjangoUser.fromJson(user);
+  }
+
+  static Future<void> updateByIdentifier(
+    WidgetRef ref,
+    DjangoUser updatedUser,
+  ) async {
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.patch(
+      "/api/v2/users/${updatedUser.identifier}/",
+      data: jsonEncode(updatedUser.toJson()),
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('Failed to update user');
+    }
+  }
+
+  void updateWithPartialData(Map<String, dynamic> partialData) {
+    partialData.forEach((key, value) {
+      switch (key) {
+        case 'city':
+          address.city = value;
+          break;
+
+        case 'email':
+          email = value;
+          contact.email = value;
+          break;
+
+        case 'houseNumber':
+          address.houseNumber = value;
+          break;
+
+        case 'houseNumberAddition':
+          address.houseNumberAddition = value;
+          break;
+
+        case 'iban':
+          iban = value;
+          break;
+
+        case 'phonePrimary':
+          contact.phonePrimary = value;
+          break;
+
+        case 'postalCode':
+          address.postalCode = value;
+          break;
+
+        case 'street':
+          address.street = value;
+          break;
+
+        case 'studie':
+          info.studie = value;
+          break;
+
+        case 'dubbellid':
+          info.dubbellid = value;
+          break;
+        // Add other fields as needed.
+      }
+    });
   }
 }

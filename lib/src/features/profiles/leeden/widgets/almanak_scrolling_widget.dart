@@ -20,7 +20,7 @@ class AlmanakScrollingWidget extends ConsumerStatefulWidget {
 
 class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
   final _pagingController = PagingController<int, DjangoUser>(
-    firstPageKey: 1,
+    firstPageKey: 0,
   );
 
   @override
@@ -37,7 +37,7 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
     const amountOfResults = 100;
     final result = await almanakUsers(pageKey, widget.search, ref);
 
-    final users = result['results'] as List;
+    final users = result['items'] as List;
 
     List<DjangoUser>? page = users
         .map((user) => DjangoUser.fromJson(user as Map<String, dynamic>))

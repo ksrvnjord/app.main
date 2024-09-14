@@ -64,7 +64,7 @@ final userProvider = StreamProvider.family<User, String>(
     }
 
     // Call both queries in parallel.
-    final heimdallFuture = DjangoUser.getByIdentifier(lidnummer, ref);
+    final heimdallFuture = DjangoUser.getByIdentifier(ref, lidnummer);
     final firestoreFuture =
         ref.watch(firestoreUserStreamProvider(lidnummer).future);
 

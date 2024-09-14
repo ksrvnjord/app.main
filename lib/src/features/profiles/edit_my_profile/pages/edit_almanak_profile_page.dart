@@ -154,7 +154,6 @@ class _EditAlmanakProfilePageState
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                enabled: false,
                 onTap: () => context.goNamed(
                   "Sensitive Data",
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
@@ -319,7 +318,6 @@ class _EditAlmanakProfilePageState
       return;
     }
     bool success = true; // On errors set to false.
-    // Get user id from FirebaseAuth.
     final currentUser = ref.watch(currentFirestoreUserProvider);
 
     // FIND DOCUMENT OF CURRENT USER.
@@ -327,8 +325,7 @@ class _EditAlmanakProfilePageState
         .where('identifier', isEqualTo: currentUser?.identifier ?? "")
         .get();
 
-    // SAVE FORM.
-    _formKey.currentState?.save();
+    formState?.save();
 
     // UPLOAD FORM TO FIRESTORE.
     final ProfileForm form = ref.read(profileEditFormNotifierProvider);
@@ -340,7 +337,6 @@ class _EditAlmanakProfilePageState
 
     ref.invalidate(firestoreUserStreamProvider); // Invalidate cache.
 
-    // PROFILE PICTURE UPLOAD.
     final File? newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {

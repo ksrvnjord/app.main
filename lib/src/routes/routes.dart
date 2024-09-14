@@ -45,6 +45,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/sensitive_data_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/leeden/pages/almanak_leeden_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/pages/almanak_page.dart';
@@ -75,7 +76,7 @@ import 'package:ksrvnjord_main_app/src/routes/unknown_route_page.dart';
 import 'package:upgrader/upgrader.dart';
 
 @immutable
-class RouteName {
+abstract final class RouteName {
   static const forms = "Forms";
   static const postComments = "Post -> Comments";
   static const editMyVisibility = "Edit my visibility";
@@ -89,13 +90,10 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 // ignore: prefer-static-class
 GoRouter? _previousRouter;
 
-class Routes {
+abstract final // ignore: prefer-single-declaration-per-file
+    class Routes {
   static const initialPath = '/'; // Default path is '/' for the home page.
 
-  /// We use a Provider for the routerconfiguration so we can access the Authentication State and redirect to the login page if the user is not logged in.
-  ///
-  /// DO NOT use `ref.watch()` in this provider, as it will cause the router to lose its state and thus the current route, instead use `ref.read()`.
-  // ignore: prefer-static-class, avoid-long-functions
   static final routerProvider = Provider((ref) {
     final authNotifier = ValueNotifier<AsyncValue<Auth?>>(
       const AsyncLoading(),
@@ -290,6 +288,11 @@ class Routes {
               path: 'allergieen',
               name: "My Allergies",
               child: const EditAllergiesPage(),
+            ),
+            _route(
+              path: 'personal',
+              name: "Sensitive Data",
+              child: const SensitiveDataPage(),
             ),
             _route(
               path: 'instellingen',
