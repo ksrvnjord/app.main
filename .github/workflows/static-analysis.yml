@@ -12,7 +12,7 @@ on:
       - "lib/**"
 
 env:
-  flutter_version: "3.16.7"
+  flutter_version: "3.24.3"
   dcm_version: "1.12.1"
 
 jobs:
