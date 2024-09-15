@@ -16,6 +16,6 @@ GroupDjangoEntry _$GroupDjangoEntryFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$GroupDjangoEntryToJson(GroupDjangoEntry instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'group': instance.group.toJson(),
+      'group': instance.group,
       'role': instance.role,
     };
