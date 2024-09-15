@@ -44,139 +44,153 @@ class AlmanakUserProfileView extends ConsumerWidget {
 
     return ListView(
       children: [
-        ProfilePictureWidget(
-          userId: identifier,
-          size: profilePictureSize,
-          thumbnail: false,
-        ).padding(all: elementPadding).center(),
+        ProfilePictureWidget(userId: identifier, size: profilePictureSize)
+            .padding(all: elementPadding)
+            .center(),
         profile.when(
           // ignore: avoid-long-functions
           data: (u) {
-            return [
-              Text(
-                '${u.firstName} ${u.lastName}',
-                style: textTheme.headlineSmall,
-              ).center(),
-              if (u.study != null)
+            return Column(
+              children: [
                 Text(
-                  u.study ?? "",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ).alignment(Alignment.center),
-              if (u.bestuursFunctie != null)
-                // Make list tile with lightblue background and white text.
-                Center(
-                  child: Card(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                  '${u.firstName} ${u.lastName}',
+                  style: textTheme.headlineSmall,
+                ).center(),
+                if (u.info.studie != null)
+                  Text(
+                    u.info.studie ?? "",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ).alignment(Alignment.center),
+                if (u.bestuursFunctie != null)
+                  // Make list tile with lightblue background and white text.
+                  Center(
+                    child: Card(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                      ),
+                      child: Text(
+                        u.bestuursFunctie ?? "",
+                        style: textTheme.titleSmall,
+                      ).padding(all: formFieldPadding),
                     ),
-                    child: Text(
-                      u.bestuursFunctie ?? "",
-                      style: textTheme.titleSmall,
-                    ).padding(all: formFieldPadding),
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (u.email.isNotEmpty && u.contact.emailVisible)
+                      ElevatedButton(
+                        onPressed: () =>
+                            launchUrl(Uri.parse("mailto:${u.email}")),
+                        child: const SizedBox(
+                          width: actionButtonSize,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                Icons.mail_outline_outlined,
+                              ),
+                              Text("Mail"),
+                            ],
+                          ),
+                        ),
+                      ).padding(all: formFieldPadding),
+                    if (u.phonePrimary != null &&
+                        (u.phonePrimary as String).isNotEmpty &&
+                        u.contact.phoneVisible)
+                      ElevatedButton(
+                        onPressed: () => showBottomActionSheet(
+                          context: context,
+                          children: const [
+                            Icon(Icons.phone, color: Colors.black),
+                            FaIcon(
+                              FontAwesomeIcons.whatsapp,
+                              color: Colors.black,
+                            ),
+                          ],
+                          actions: [
+                            () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
+                            () => launchUrl(Uri.parse(
+                                  "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
+                                )),
+                          ],
+                          descriptions: [
+                            const Text("Bel"),
+                            const Text("Whatsapp"),
+                          ],
+                          widgetPositioning: WidgetPositioning.mainAxis,
+                        ),
+                        child: const SizedBox(
+                          width: actionButtonSize,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.phone_iphone),
+                              Text("Telefoon"),
+                            ],
+                          ),
+                        ),
+                      ).padding(all: formFieldPadding),
+                  ],
+                ),
+                if (u.address.visible ?? false)
+                  UserAddressWidget(address: u.address),
+                DataTextListTile(
+                  name: "Aankomstjaar",
+                  value: "20$yearOfArrival",
+                ),
+                if (u.board != null && (u.board as String).isNotEmpty)
+                  DataTextListTile(
+                    name: "Voorkeurs boord",
+                    value: u.board as String,
+                  ),
+                if (u.info.blikken != 0)
+                  DataTextListTile(
+                    name: "Aantal blikken",
+                    value: u.info.blikken.toString(),
+                  ),
+                if (u.info.taarten != 0)
+                  DataTextListTile(
+                    name: "Aantal blikken",
+                    value: u.info.taarten.toString(),
+                  ),
+                if (u.substructures != null &&
+                    (u.substructures as List<String>).isNotEmpty)
+                  ChipWidget(
+                    title: "Substructuren",
+                    values: u.substructures as List<String>,
+                  ),
+                if (u.huis != null)
+                  DataTextListTile(name: "Huis", value: u.huis as String),
+                if (u.dubbellid != null && u.dubbellid as bool)
+                  // Only show if true.
+                  DataTextListTile(
+                    name: "Dubbellid",
+                    value: u.dubbellid as bool ? "Ja" : "Nee",
+                  ),
+                if (u.otherAssociation != null &&
+                    (u.otherAssociation as String).isNotEmpty)
+                  DataTextListTile(
+                    name: "Andere vereniging(en)",
+                    value: u.otherAssociation as String,
+                  ),
+                FirebaseWidget(
+                  onAuthenticated: userGroups.when(
+                    data: (snapshot) => UserGroupsListWidget(snapshot: snapshot)
+                        .padding(vertical: elementPadding),
+                    error: (error, stacktrace) =>
+                        ErrorCardWidget(errorMessage: error.toString()),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
                   ),
                 ),
-              [
-                if (u.email.isNotEmpty)
-                  ElevatedButton(
-                    onPressed: () => launchUrl(Uri.parse("mailto:${u.email}")),
-                    child: const SizedBox(
-                      width: actionButtonSize,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.mail_outline_outlined,
-                          ),
-                          Text("Mail"),
-                        ],
-                      ),
-                    ),
-                  ).padding(all: formFieldPadding),
-                if (u.phonePrimary != null &&
-                    (u.phonePrimary as String).isNotEmpty)
-                  ElevatedButton(
-                    onPressed: () => showBottomActionSheet(
-                      context: context,
-                      children: const [
-                        Icon(Icons.phone, color: Colors.black),
-                        FaIcon(
-                          FontAwesomeIcons.whatsapp,
-                          color: Colors.black,
-                        ),
-                      ],
-                      actions: [
-                        () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
-                        () => launchUrl(Uri.parse(
-                              "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
-                            )),
-                      ],
-                      descriptions: [
-                        const Text("Bel"),
-                        const Text("Whatsapp"),
-                      ],
-                      widgetPositioning: WidgetPositioning.mainAxis,
-                    ),
-                    child: const SizedBox(
-                      width: actionButtonSize,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(Icons.phone_iphone),
-                          Text("Telefoon"),
-                        ],
-                      ),
-                    ),
-                  ).padding(all: formFieldPadding),
-              ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-              if (u.address != null)
-                UserAddressWidget(address: u.address as Address),
-              DataTextListTile(
-                name: "Aankomstjaar",
-                value: "20$yearOfArrival",
-              ),
-              if (u.board != null && (u.board as String).isNotEmpty)
-                DataTextListTile(
-                  name: "Voorkeurs boord",
-                  value: u.board as String,
-                ),
-              if (u.substructures != null &&
-                  (u.substructures as List<String>).isNotEmpty)
-                ChipWidget(
-                  title: "Substructuren",
-                  values: u.substructures as List<String>,
-                ),
-              if (u.huis != null)
-                DataTextListTile(name: "Huis", value: u.huis as String),
-              if (u.dubbellid != null && u.dubbellid as bool)
-                // Only show if true.
-                DataTextListTile(
-                  name: "Dubbellid",
-                  value: u.dubbellid as bool ? "Ja" : "Nee",
-                ),
-              if (u.otherAssociation != null &&
-                  (u.otherAssociation as String).isNotEmpty)
-                DataTextListTile(
-                  name: "Andere vereniging(en)",
-                  value: u.otherAssociation as String,
-                ),
-              FirebaseWidget(
-                onAuthenticated: userGroups.when(
-                  data: (snapshot) => UserGroupsListWidget(
-                    snapshot: snapshot,
-                  ).padding(vertical: elementPadding),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator.adaptive()),
-                  error: (error, stacktrace) =>
-                      ErrorCardWidget(errorMessage: error.toString()),
-                ),
-              ),
-            ].toColumn();
+              ],
+            );
           },
-          error: (error, stacktrace) => ErrorCardWidget(
-            errorMessage: "$error $stacktrace",
-          ),
+          error: (error, stacktrace) =>
+              ErrorCardWidget(errorMessage: error.toString()),
           loading: () =>
               const Center(child: CircularProgressIndicator.adaptive()),
         ),

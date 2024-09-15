@@ -118,16 +118,6 @@ class _EditAlmanakProfilePageState
                 .center(),
             // ignore: avoid-non-ascii-symbols
             FormSection(title: "👤 Over mij", children: [
-              TextFormField(
-                initialValue: user.study,
-                decoration: const InputDecoration(
-                  labelText: 'Studie',
-                  hintText: 'Rechten, Geneeskunde, etc.',
-                ),
-                onSaved: (study) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setStudy(study),
-              ),
               DropdownButtonFormField<String?>(
                 items: ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
                     .map((board) => DropdownMenuItem<String>(
@@ -148,9 +138,6 @@ class _EditAlmanakProfilePageState
               ),
               ListTile(
                 title: const Text('Bekijk mijn persoonsgegevens'),
-                subtitle: const Text(
-                  "In verband met een gegevensmigratie zijn je persoonsgegevens op dit moment niet in te zien. Neem contact op met de ab-actis als je deze wilt inzien.",
-                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),

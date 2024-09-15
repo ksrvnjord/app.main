@@ -106,7 +106,7 @@ class DjangoUser {
   ) async {
     final dio = ref.watch(dioProvider);
 
-    final res = await dio.get("/api/users/users/$id/");
+    final res = await dio.get("/api/v2/users/$id/");
     final data = jsonDecode(res.toString()) as Map<String, dynamic>;
     final user = data;
 
