@@ -9,11 +9,7 @@ final profileEditFormNotifierProvider =
 );
 
 class ProfileEditFormNotifier extends StateNotifier<ProfileForm> {
-  ProfileEditFormNotifier() : super(ProfileForm());
-
-  void setStudy(String? study) {
-    state = state.copyWith(study: study);
-  }
+  ProfileEditFormNotifier() : super(const ProfileForm());
 
   void setBoard(String? board) {
     state = state.copyWith(board: board);
@@ -50,7 +46,7 @@ class ProfileForm {
   final String? huis;
   final File? profilePicture;
 
-  // ignore: sort_constructors_first
+  const // ignore: sort_constructors_first
   ProfileForm({
     this.study,
     this.board,
@@ -61,7 +57,6 @@ class ProfileForm {
     this.huis,
     this.profilePicture,
   });
-
   ProfileForm copyWith({
     String? study,
     String? board,

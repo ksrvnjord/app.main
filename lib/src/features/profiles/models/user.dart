@@ -25,7 +25,6 @@ class User {
       int.parse(_firestore?.identifier ?? _django.identifier.toString());
 
   // FIRESTORE SPECIFIC FIELDS.
-  String? get study => _firestore?.study;
   String? get bestuursFunctie => _firestore?.bestuursFunctie;
   String? get board => _firestore?.board;
   List<String>? get substructures => _firestore?.substructures;
@@ -47,7 +46,7 @@ class User {
   KNRB? get knrb => _django.knrb;
 
   List<GroupDjangoEntry> get groups => _django.groups;
-  List<PermissionEntry> get permissions => _django.permissions;
+  //List<PermissionEntry> get permissions => _django.permissions;
 
   // INFERRED FIELDS.
   String get fullName => '$firstName $lastName';
