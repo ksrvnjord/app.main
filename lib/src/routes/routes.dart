@@ -44,6 +44,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_pag
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_visibility_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/sensitive_data_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/settings_page.dart';
@@ -79,7 +80,6 @@ import 'package:upgrader/upgrader.dart';
 abstract final class RouteName {
   static const forms = "Forms";
   static const postComments = "Post -> Comments";
-  static const editMyVisibility = "Edit my visibility";
   static const reservation = "Reservation";
 }
 
@@ -293,6 +293,13 @@ abstract final // ignore: prefer-single-declaration-per-file
               path: 'personal',
               name: "Sensitive Data",
               child: const SensitiveDataPage(),
+              routes: [
+                _route(
+                  path: 'visibility',
+                  name: "Edit My Visibility",
+                  child: const EditVisibilityPage(),
+                ),
+              ],
             ),
             _route(
               path: 'instellingen',

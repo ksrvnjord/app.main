@@ -175,6 +175,18 @@ class DjangoUser {
         case 'dubbellid':
           info.dubbellid = value;
           break;
+
+        case 'addressVisible':
+          address.visible = value;
+          break;
+
+        case 'emailVisible':
+          contact.emailVisible = value;
+          break;
+
+        case 'phoneVisible':
+          contact.phoneVisible = value;
+          break;
         // Add other fields as needed.
       }
     });
