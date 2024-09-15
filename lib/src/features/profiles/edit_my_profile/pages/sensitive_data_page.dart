@@ -1,3 +1,5 @@
+// ignore_for_file: avoid-ignoring-return-values, no-magic-string
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,7 @@ class SensitiveDataPage extends ConsumerStatefulWidget {
 
 class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   final _formKey = GlobalKey<FormState>();
+  bool _buttonIsLoading = false;
 
   // Define controllers for each editable field.
   final _controllers = {
@@ -50,27 +53,55 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
     _dubbellidNotifier.value = user.info.dubbellid;
   }
 
-  void _handleSubmitForm(User user) {
-    // ignore: prefer-early-return
-    if (_formKey.currentState!.validate()) {
-      // Collect all form data.
-      final formData = {
-        'city': _controllers['city']?.text ?? '',
-        'email': _controllers['email']?.text ?? '',
-        'houseNumber': _controllers['houseNumber']?.text ?? '',
-        'houseNumberAddition': _controllers['houseNumberAddition']?.text ?? '',
-        'iban': _controllers['iban']?.text ?? '',
-        'phonePrimary': _controllers['phonePrimary']?.text ?? '',
-        'postalCode': _controllers['postalCode']?.text ?? '',
-        'street': _controllers['street']?.text ?? '',
-        'studie': _controllers['studie']?.text ?? '',
-      };
+  void _handleSubmitForm(User user) async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _buttonIsLoading = true;
+    });
 
-      // Update the user with the new data.
-      user.django.updateWithPartialData(formData);
+    // Collect all form data.
+    final formData = {
+      'city': _controllers['city']?.text ?? '',
+      'dubbellid': _dubbellidNotifier.value,
+      'email': _controllers['email']?.text ?? '',
+      'houseNumber': _controllers['houseNumber']?.text ?? '',
+      'houseNumberAddition': _controllers['houseNumberAddition']?.text ?? '',
+      'iban': _controllers['iban']?.text ?? '',
+      'phonePrimary': _controllers['phonePrimary']?.text ?? '',
+      'postalCode': _controllers['postalCode']?.text ?? '',
+      'street': _controllers['street']?.text ?? '',
+      'studie': _controllers['studie']?.text ?? '',
+    };
 
-      // Update the user in the database.
-      DjangoUser.updateByIdentifier(ref, user.django);
+    // Update the user with the new data.
+    user.django.updateWithPartialData(formData);
+
+    // Update the user in the database.
+    final success = await DjangoUser.updateByIdentifier(ref, user.django);
+
+    // ignore: use-setstate-synchronously
+    setState(() {
+      _buttonIsLoading = false;
+    });
+
+    if (success) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Veranderingen opgeslagen!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Er is iets misgegaan. Probeer het later opnieuw.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -179,8 +210,8 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   const Divider(),
                   const SensitiveDataSubsection('KNRB'),
                   SensitiveDataBoolFormfield(
-                    title: 'Is ingeschreven bij KNRB',
                     initialValue: user.knrb?.knrb ?? false,
+                    title: 'Is ingeschreven bij KNRB',
                     isEditable: false,
                   ),
                   SensitiveDataTextFormField(
@@ -197,7 +228,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   const SensitiveDataSubsection('Overig'),
                   SensitiveDataBoolFormfield(
                     title: 'Dubbellid',
-                    initialValue: user.info.dubbellid,
+                    valueNotifier: _dubbellidNotifier,
                     isEditable: true,
                   ),
                   SensitiveDataTextFormField(
@@ -218,7 +249,9 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   const Divider(),
                   ElevatedButton(
                     onPressed: () => _handleSubmitForm(user),
-                    child: const Text('Opslaan'),
+                    child: _buttonIsLoading
+                        ? const CircularProgressIndicator()
+                        : const Text('Opslaan'),
                   ),
                 ],
               ),

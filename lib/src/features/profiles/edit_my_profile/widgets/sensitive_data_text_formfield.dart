@@ -22,7 +22,9 @@ class SensitiveDataTextFormField extends StatelessWidget {
       initialValue: initialValue,
       decoration: InputDecoration(
         labelText: title,
-        helperText: subtext, // Add subtext as helper text.
+        helperText: subtext,
+        helperMaxLines: 3 // Add subtext as helper text.
+        ,
       ),
       enabled: isEditable,
     );

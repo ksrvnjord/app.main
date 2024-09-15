@@ -4,13 +4,15 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
   const SensitiveDataBoolFormfield({
     super.key,
     required this.title,
-    required this.initialValue,
+    this.valueNotifier,
+    this.initialValue,
     required this.isEditable,
     this.subtext, // Optional subtext parameter.
   });
 
   final String title;
-  final bool initialValue;
+  final ValueNotifier<bool>? valueNotifier;
+  final bool? initialValue;
   final bool isEditable;
   final String? subtext;
 
@@ -21,10 +23,23 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
       children: [
         Row(
           children: [
-            Checkbox(
-              value: initialValue,
-              onChanged: isEditable ? (bool? newValue) {} : null,
-            ),
+            if (isEditable && valueNotifier != null)
+              ValueListenableBuilder<bool>(
+                valueListenable: valueNotifier!,
+                builder: (context, value, child) {
+                  return Checkbox(
+                    value: value,
+                    // ignore: prefer-extracting-callbacks
+                    onChanged: (bool? newValue) {
+                      if (newValue != null) {
+                        valueNotifier!.value = newValue;
+                      }
+                    },
+                  );
+                },
+              )
+            else
+              Checkbox(value: initialValue ?? false, onChanged: null),
             Text(title),
           ],
         ),

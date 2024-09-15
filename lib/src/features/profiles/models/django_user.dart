@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer-named-parameters
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -112,19 +113,22 @@ class DjangoUser {
     return DjangoUser.fromJson(user);
   }
 
-  static Future<void> updateByIdentifier(
+  static Future<bool> updateByIdentifier(
     WidgetRef ref,
     DjangoUser updatedUser,
   ) async {
     final dio = ref.watch(dioProvider);
 
-    final res = await dio.patch(
-      "/api/v2/users/${updatedUser.identifier}/",
-      data: jsonEncode(updatedUser.toJson()),
-    );
+    try {
+      final res = await dio.patch(
+        "/api/v2/users/${updatedUser.identifier}/",
+        data: jsonEncode(updatedUser.toJson()),
+      );
 
-    if (res.statusCode != 200) {
-      throw Exception('Failed to update user');
+      return res.statusCode == 200;
+    } catch (error) {
+      // Handle any exceptions that might occur.
+      return false;
     }
   }
 
