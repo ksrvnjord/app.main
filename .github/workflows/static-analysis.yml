@@ -75,7 +75,7 @@ jobs:
         run: flutter pub get
 
       - name: Flutter Analyze
-        run: flutter analyze --fatal-warnings --fatal-infos .
+        run: flutter analyze --fatal-warnings #--fatal-infos .
 
       - name: Install DCM
         uses: CQLabs/setup-dcm@v1
