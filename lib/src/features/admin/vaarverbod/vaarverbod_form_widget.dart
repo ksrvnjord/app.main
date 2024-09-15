@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-single-declaration-per-file, no-magic-string
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
@@ -93,7 +95,7 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
                   onPressed: () {
                     final currentState = _formKey.currentState;
                     if (currentState != null && currentState.validate()) {
-                      _sendForm();
+                      _sendForm().ignore();
                     }
                   },
                   child: const Text('Wijzig Vaarverbod'),
