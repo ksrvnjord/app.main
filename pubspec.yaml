@@ -6,7 +6,7 @@ version: 1.1726.20+13
 
 environment:
   sdk: "^3.2.5" # Dart SDK version, TODO: update when codemagic updated: https://dart.dev/get-dart/archive
-  flutter: ^3.16.7 # Flutter SDK version: https://docs.flutter.dev/release/archive
+  flutter: ^3.16.8 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
