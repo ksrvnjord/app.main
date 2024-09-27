@@ -207,7 +207,7 @@ class _EditAlmanakProfilePageState
                   // ignore: no-equal-arguments
                   buttonText: const Text('Substructuren'),
                   selectedColor: colorScheme.primaryContainer,
-                  backgroundColor: colorScheme.surface,
+                  backgroundColor: colorScheme.background,
                   checkColor: colorScheme.onPrimaryContainer,
                   onSaved: (substructures) => ref
                       .read(profileEditFormNotifierProvider.notifier)
