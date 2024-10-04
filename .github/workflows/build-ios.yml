@@ -1,13 +1,15 @@
 name: Build iOS Application
 
 on:
-  pull_request_review:
-    types: [submitted] # on approval build iOS to be sure that it works
-  release:
-    types: [published]
+  pull_request:
+    branches:
+      - "main"
+      - "!dependabot/**" # Ignore automatic PRs from dependabot
+    paths:
+      - "lib/**"
 
 env:
-  flutter_version: "3.16.7"
+  flutter_version: "3.24.3"
 
 jobs:
   build_ios:
