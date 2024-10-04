@@ -2,7 +2,7 @@ name: Build & Deploy to Web Preview
 
 
 env:
-  flutter_version: "3.10.0"
+  flutter_version: "3.24.3"
 
 jobs:
   build:

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReservationObjectFavoritesNotifier extends StateNotifier<Set<String>> {
-  ReservationObjectFavoritesNotifier(Set<String> filters) : super(filters);
+  ReservationObjectFavoritesNotifier(super.filters);
 
   void toggleObjectFavorite(String object) {
     if (state.contains(object)) {
@@ -60,4 +60,4 @@ final favoritesFromSharedPrefsProvider =
 });
 
 // ignore: prefer-static-class
-final showFavoritesProvider = StateProvider<bool>((ref) => true);
+final showFavoritesProvider = StateProvider<bool>((ref) => false);

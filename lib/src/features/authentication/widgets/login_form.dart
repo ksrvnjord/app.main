@@ -74,7 +74,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 .padding(all: errorTextPadding)
             : const SizedBox.shrink(),
         error: (e, _) => ErrorCardWidget(errorMessage: e.toString()),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const CircularProgressIndicator.adaptive(),
       ),
       Form(
         key: _formKey,

@@ -2,11 +2,11 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.1726.19+13
+version: 2.0.0+13
 
 environment:
-  sdk: "^3.0.0" # Dart SDK version: https://dart.dev/get-dart/archive
-  flutter: ^3.16.7 # Flutter SDK version: https://docs.flutter.dev/release/archive
+  sdk: "^3.2.5" # Dart SDK version, TODO: update when codemagic updated: https://dart.dev/get-dart/archive
+  flutter: ^3.16.8 # Flutter SDK version: https://docs.flutter.dev/release/archive
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
@@ -16,24 +16,24 @@ dependencies:
     sdk: flutter
   cloud_firestore:
   url_launcher: ^6.1.5
-  sentry_flutter: ^7.10.1
+  sentry_flutter: ^8.9.0
   styled_widget: ^0.4.0+3
-  get_it: ^7.2.0
-  intl: ^0.18.0
-  flutter_markdown: ^0.6.18
+  get_it: ^8.0.0
+  intl: ^0.19.0
+  flutter_markdown: ^0.7.3+2
   flutter_secure_storage: ^9.0.0
   dio: ">=4.0.6 <6.0.0"
   shimmer: ^3.0.0
   infinite_scroll_pagination: ^4.0.0
-  syncfusion_flutter_calendar: ^25.2.3
+  syncfusion_flutter_calendar: ^27.1.51
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
-  firebase_auth: any
+  firebase_auth: ^4.20.0
   time_range_picker: ^2.2.0
   firebase_core: any
   shared_preferences: ^2.0.15
   firebase_messaging: any
-  flutter_local_notifications: ^15.1.2
+  flutter_local_notifications: ^17.2.3
   flutter_localizations:
     sdk: flutter
   image_picker_widget: ">=2.0.0 <3.0.0"
@@ -41,7 +41,7 @@ dependencies:
   firebase_storage: any
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
-  feedback_sentry: ^2.4.0
+  feedback_sentry: ^3.0.1
   action_sheet: ^1.0.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -55,7 +55,7 @@ dependencies:
   easy_image_viewer: ^1.2.0
   yaml: ^3.1.1
   flutter_svg: any
-  share_plus: ^7.2.2
+  share_plus: 10.0.0
   expandable: ^5.0.1
   weather_icons: ^3.0.0
   csv: any
@@ -65,7 +65,7 @@ dependencies:
   upgrader: any
   sliver_tools: ^0.2.12
   flutter_pdfview: ^1.3.1
-  go_router: ^11.1.2
+  go_router: ^14.2.9
   package_info_plus: ^4.1.0
   flutter_web_plugins:
     sdk: flutter
@@ -86,10 +86,10 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^5.0.0
   build_runner: ^2.4.6
   hive_generator: ^2.0.0
-  dependency_validator: ^3.2.2
+  dependency_validator: ^4.1.1
   dart_code_metrics_presets: ^2.6.0
   json_serializable: ^6.7.1
   custom_lint: any
