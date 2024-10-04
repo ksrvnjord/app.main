@@ -12,8 +12,8 @@ on:
       - "lib/**"
 
 env:
-  flutter_version: "3.16.8"
-  dcm_version: "1.12.1"
+  flutter_version: "3.24.3"
+  dcm_version: "1.22.0"
 
 jobs:
   check-unused:
