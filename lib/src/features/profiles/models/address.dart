@@ -1,42 +1,35 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'address.g.dart';
 
 @immutable
+@JsonSerializable()
 class Address {
-  final String? street;
-  final String? houseNumber;
-  final String? houseNumberAddition;
-  final String? postalCode;
-  final String? city;
-
-  // ignore: sort_constructors_first
-  const Address({
+  String? street;
+  @JsonKey(name: 'housenumber')
+  String? houseNumber;
+  @JsonKey(name: 'housenumber_addition')
+  String? houseNumberAddition;
+  @JsonKey(name: 'address_two')
+  String? addressTwo;
+  @JsonKey(name: 'zipcode')
+  String? postalCode;
+  String? city;
+  final String? country;
+  bool? visible;
+  Address({
     this.street,
     this.houseNumber,
     this.houseNumberAddition,
+    this.addressTwo,
     this.postalCode,
     this.city,
+    this.country,
+    this.visible,
   });
 
-  // Add a factory constructor that takes a Map<String, dynamic> and returns an Address.
-  // ignore: sort_constructors_first
-  factory Address.fromJson(Map<String, dynamic> json) {
-    return Address(
-      street: json['street'] as String?,
-      houseNumber: json['houseNumber'] as String?,
-      houseNumberAddition: json['houseNumberAddition'] as String?,
-      postalCode: json['postalCode'] as String?,
-      city: json['city'] as String?,
-    );
-  }
-
-  // Add a toJson method that returns a Map<String, dynamic>.
-  Map<String, dynamic> toJson() {
-    return {
-      'street': street,
-      'houseNumber': houseNumber,
-      'houseNumberAddition': houseNumberAddition,
-      'postalCode': postalCode,
-      'city': city,
-    };
-  }
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

@@ -96,6 +96,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   ///
   /// @param snapshot The [QuerySnapshot] of existing reservations.
   /// @return A [DateTimeRange] representing the available time range for a new reservation.
+  // ignore: prefer-named-parameters
   DateTimeRange findAvailableTimerange(
     QuerySnapshot<Reservation> snapshot,
     DateTime desiredStartTime,
@@ -213,7 +214,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                   interval: intervalOfSelector,
                   fromText: 'Starttijd',
                   toText: 'Eindtijd',
-                  use24HourFormat: true,
                   strokeColor: Colors.lightBlue,
                   handlerRadius: timeSelectorDialogHandlerRadius,
                   // ignore: no-equal-arguments

@@ -27,16 +27,11 @@ class SettingsPage extends ConsumerWidget {
             FormSection(title: "🕵️ Privacy", children: [
               ListTile(
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),
-                subtitle: const Text(
-                  'In verband met een gegevensmigratie is deze functie tijdelijk uitgeschakeld.',
-                ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                enabled: false,
-                // TODO: Implement this feature with new API.
                 onTap: () => context.goNamed(
-                  RouteName.editMyVisibility,
+                  'Edit My Visibility',
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
