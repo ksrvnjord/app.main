@@ -72,8 +72,8 @@ class ShowFiltersPage extends ConsumerWidget {
               // The MultiSelectChipField has to be of type String?, and not String because of the MultiSelectChipField package.
               MultiSelectChipField<String?>(
                 items: availableFilters[key] ?? [],
-                decoration: BoxDecoration(color: colorScheme.background),
-                chipColor: colorScheme.background,
+                decoration: BoxDecoration(color: colorScheme.surface),
+                chipColor: colorScheme.surface,
                 selectedChipColor:
                     Theme.of(context).brightness == Brightness.light
                         ? categoryColors[key]?.shade100
@@ -99,7 +99,7 @@ class ShowFiltersPage extends ConsumerWidget {
                 initialValue: activeFilters[key] ?? [],
                 showHeader: true,
               ).padding(bottom: categoryPadding).card(
-                    color: colorScheme.background,
+                    color: colorScheme.surface,
                     elevation: 0,
                   ),
             ].toColumn(separator: const SizedBox(height: categoryPadding)),

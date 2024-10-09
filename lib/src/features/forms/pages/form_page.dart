@@ -260,10 +260,10 @@ class _FormPageState extends ConsumerState<FormPage> {
                             }
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               colorScheme.errorContainer,
                             ),
-                            foregroundColor: MaterialStateProperty.all(
+                            foregroundColor: WidgetStateProperty.all(
                               colorScheme.onErrorContainer,
                             ),
                           ),

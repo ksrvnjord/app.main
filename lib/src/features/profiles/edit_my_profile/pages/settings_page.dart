@@ -30,9 +30,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.goNamed(
-                  'Edit My Visibility',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                onTap: () => context.goNamed('Edit My Visibility'),
+                // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
             // ignore: avoid-non-ascii-symbols

@@ -114,9 +114,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
                     valueNotifier: _notifiers['address']!,
                     isEditable: true,
                   ),
-                  const SizedBox(
-                      height:
-                          16.0), // Add some space between the fields and the button.
+                  const SizedBox(height: 16.0),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(

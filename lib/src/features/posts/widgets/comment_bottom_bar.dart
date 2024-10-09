@@ -26,7 +26,7 @@ class CommentBottomBar extends StatelessWidget {
           "Zwaan",
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color:
-                    likedByMe ? colorScheme.primary : colorScheme.onBackground,
+                    likedByMe ? colorScheme.primary : colorScheme.onSurface,
               ),
         ),
         onTap: () => CommentsService.like(snapshot),
