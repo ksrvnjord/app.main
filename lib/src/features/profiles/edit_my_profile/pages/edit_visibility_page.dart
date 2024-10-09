@@ -120,7 +120,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
                     child: ElevatedButton(
                       onPressed: () => _handleSubmitForm(user),
                       child: _buttonIsLoading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator.adaptive()
                           : const Text('Opslaan'),
                     ),
                   ),

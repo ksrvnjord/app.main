@@ -12,7 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class SensitiveDataPage extends ConsumerStatefulWidget {
-  const SensitiveDataPage({Key? key}) : super(key: key);
+  const SensitiveDataPage({super.key});
 
   @override
   _SensitiveDataPageState createState() => _SensitiveDataPageState();
@@ -210,8 +210,8 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   const Divider(),
                   const SensitiveDataSubsection('KNRB'),
                   SensitiveDataBoolFormfield(
-                    initialValue: user.knrb?.knrb ?? false,
                     title: 'Is ingeschreven bij KNRB',
+                    initialValue: user.knrb?.knrb ?? false,
                     isEditable: false,
                   ),
                   SensitiveDataTextFormField(
@@ -250,7 +250,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   ElevatedButton(
                     onPressed: () => _handleSubmitForm(user),
                     child: _buttonIsLoading
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator.adaptive()
                         : const Text('Opslaan'),
                   ),
                 ],
