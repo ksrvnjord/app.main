@@ -1,7 +1,6 @@
 # K.S.R.V. Njord App
 [![Static Analysis](https://github.com/ksrvnjord/app.main/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/ksrvnjord/app.main/actions/workflows/static-analysis.yml)
 [![iOS build](https://github.com/ksrvnjord/app.main/actions/workflows/build-ios.yml/badge.svg)](https://github.com/ksrvnjord/app.main/actions/workflows/build-ios.yml)
-[![Codemagic build status](https://api.codemagic.io/apps/639df4a27b07a355e8861df9/639df4a27b07a355e8861df8/status_badge.svg)](https://codemagic.io/apps/639df4a27b07a355e8861df9/639df4a27b07a355e8861df8/latest_build)
 [![Codemagic build status](https://api.codemagic.io/apps/66d76a60e20a048bd162379d/66d76a60e20a048bd162379c/status_badge.svg)](https://codemagic.io/app/66d76a60e20a048bd162379d/66d76a60e20a048bd162379c/latest_build)
 
 De Flut-ter versie.
