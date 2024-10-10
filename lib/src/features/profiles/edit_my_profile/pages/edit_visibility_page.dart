@@ -33,6 +33,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
   }
 
   void _handleSubmitForm(User user) async {
+    // ignore: avoid-non-null-assertion
     if (!_formKey.currentState!.validate()) {
       return;
     }

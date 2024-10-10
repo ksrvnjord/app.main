@@ -7,15 +7,11 @@ class SensitiveDataSubsection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.center, // Align children to the left.
-      children: [
-        Text(
-          headerName,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ],
+    return Center(
+      child: Text(
+        headerName,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

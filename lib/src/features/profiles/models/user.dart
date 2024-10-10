@@ -17,7 +17,7 @@ class User {
 
   // SHARED FIELDS.
   String get firstName => _firestore?.firstName ?? _django.firstName;
-  String get lastName => _firestore?.lastName ?? _django.lastName;
+  String get lastNameOnly => _firestore?.lastName ?? _django.lastName;
   String get email => _firestore?.email ?? _django.email;
   String? get phonePrimary =>
       _firestore?.phonePrimary ?? _django.contact.phonePrimary;
@@ -49,6 +49,7 @@ class User {
   //List<PermissionEntry> get permissions => _django.permissions;
 
   // INFERRED FIELDS.
+  String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
   String get identifierString => identifier.toString();
 

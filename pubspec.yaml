@@ -54,7 +54,7 @@ dependencies:
   expandable_text: ^2.3.0
   easy_image_viewer: ^1.2.0
   yaml: ^3.1.1
-  flutter_svg: any
+  flutter_svg: ^2.0.0
   share_plus: 10.0.0
   expandable: ^5.0.1
   weather_icons: ^3.0.0

@@ -94,6 +94,7 @@ abstract final // ignore: prefer-single-declaration-per-file
     class Routes {
   static const initialPath = '/'; // Default path is '/' for the home page.
 
+  // ignore: avoid-long-functions
   static final routerProvider = Provider((ref) {
     final authNotifier = ValueNotifier<AsyncValue<Auth?>>(
       const AsyncLoading(),

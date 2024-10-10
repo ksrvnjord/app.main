@@ -54,6 +54,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   }
 
   void _handleSubmitForm(User user) async {
+    // ignore: avoid-non-null-assertion
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -155,7 +156,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                     title: 'Achternaam',
                     isEditable: false,
                     initialValue: user.lastName,
-                    subtext:
+                    helperText:
                         'Mail naar ab-actis@njord.nl als je voornaam, voorletters, tussenvoegsel of achternaam verkeerd in het systeem staat.',
                   ),
                   SensitiveDataTextFormField(
@@ -177,7 +178,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                     title: 'Geboortedatum',
                     isEditable: false,
                     initialValue: user.birthDate,
-                    subtext:
+                    helperText:
                         "Mail naar abactis@njord.nl als je je geboortedatum wil aanpassen.",
                   ),
                   const Divider(),
