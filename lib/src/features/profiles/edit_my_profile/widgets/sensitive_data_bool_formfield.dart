@@ -28,7 +28,7 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
                 // ignore: avoid-non-null-assertion
                 valueListenable: valueNotifier!,
                 builder: (builderContext, value, child) {
-                  return Checkbox(
+                  return Checkbox.adaptive(
                     value: value,
                     // ignore: prefer-extracting-callbacks
                     onChanged: (bool? newValue) {
@@ -41,7 +41,7 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
                 },
               )
             else
-              Checkbox(value: initialValue ?? false, onChanged: null),
+              Checkbox.adaptive(value: initialValue ?? false, onChanged: null),
             Text(title),
           ],
         ),
