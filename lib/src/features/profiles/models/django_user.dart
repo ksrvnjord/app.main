@@ -134,6 +134,7 @@ class DjangoUser {
 
   void updateWithPartialData(Map<String, dynamic> partialData) {
     partialData.forEach((key, value) {
+      // ignore: prefer-correct-switch-length
       switch (key) {
         case 'city':
           address.city = value;

@@ -45,14 +45,16 @@ class User {
   KNRB? get knrb => _django.knrb;
 
   List<GroupDjangoEntry> get groups => _django.groups;
+  // TODO: fix below.
   //List<PermissionEntry> get permissions => _django.permissions;
 
-  // INFERRED FIELDS.
+  // Inferred fields.
   String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
   String get identifierString => identifier.toString();
 
   // EXPOSE DJANGO USER.
+  // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;
   // ignore: sort_constructors_first
   const User({FirestoreUser? firestore, required DjangoUser django})
