@@ -1,11 +1,9 @@
 // ignore_for_file: sort_constructors_first
 
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'info.g.dart';
 
-@immutable
 @JsonSerializable()
 class Info {
   final int blikken;

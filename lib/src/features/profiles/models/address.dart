@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'address.g.dart';
 
-@immutable
 @JsonSerializable()
 class Address {
   String? street;

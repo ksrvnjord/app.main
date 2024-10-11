@@ -149,6 +149,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     return DateTimeRange(start: earliestPossibleTime, end: latestPossibleTime);
   }
 
+  // TODO: Extract method.
+  // ignore: avoid-long-functions
   Widget renderPage(QuerySnapshot<Reservation> snapshot, User? currentUser) {
     if (currentUser == null) {
       return const ErrorCardWidget(

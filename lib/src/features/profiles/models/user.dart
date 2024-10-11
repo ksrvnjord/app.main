@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/permission_entry.dart';
 
 /// All the data we have on a user.
 /// Sources: [FirestoreUser] and [DjangoUser].

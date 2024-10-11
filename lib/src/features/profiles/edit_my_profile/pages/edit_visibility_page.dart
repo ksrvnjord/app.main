@@ -62,7 +62,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     if (success) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Veranderingen opgeslagen!'),
           backgroundColor: Colors.green,
         ),
@@ -70,7 +70,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Er is iets misgegaan. Probeer het later opnieuw.'),
           backgroundColor: Colors.red,
         ),

@@ -38,6 +38,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   };
 
   final _dubbellidNotifier = ValueNotifier<bool>(false);
+  ColorScheme get colorScheme => Theme.of(context).colorScheme;
 
   void _initializeControllersWithUserData(User user) {
     _controllers['city']!.text = user.address.city ?? '';
