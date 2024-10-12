@@ -298,30 +298,35 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         },
       );
       if (!context.mounted) return;
-
-      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Afschrijving gelukt!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (mounted) {
+        // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Afschrijving gelukt!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } else {
       if (!context.mounted) return;
 
-      final colorScheme = Theme.of(context).colorScheme;
-      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Afschrijving mislukt! ${res['error']}",
-          ).textColor(colorScheme.onErrorContainer),
-          backgroundColor: colorScheme.errorContainer,
-        ),
-      );
+      if (mounted) {
+        final colorScheme = Theme.of(context).colorScheme;
+        // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Afschrijving mislukt! ${res['error']}",
+            ).textColor(colorScheme.onErrorContainer),
+            backgroundColor: colorScheme.errorContainer,
+          ),
+        );
+      }
     }
-    // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-    context.pop();
+    if (mounted) {
+      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
+      context.pop();
+    }
   }
 
   Future<Map<String, dynamic>> createReservationCloud(Reservation r) async {

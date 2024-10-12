@@ -45,9 +45,8 @@ class ProfileForm {
   final List<String>? substructures;
   final String? huis;
   final File? profilePicture;
-
-  const // ignore: sort_constructors_first
-  ProfileForm({
+  // ignore: sort_constructors_first
+  const ProfileForm({
     this.study,
     this.board,
     this.ploeg,

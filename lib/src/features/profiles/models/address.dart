@@ -16,6 +16,10 @@ class Address {
   String? city;
   final String? country;
   bool? visible;
+  // ignore: sort_constructors_first
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+  // ignore: sort_constructors_first
   Address({
     this.street,
     this.houseNumber,
@@ -26,8 +30,5 @@ class Address {
     this.country,
     this.visible,
   });
-
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

@@ -13,6 +13,7 @@ class Contact {
   String? phoneSecondary;
   @JsonKey(name: 'phone_visible')
   bool phoneVisible;
+  // ignore: sort_constructors_first
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
   // ignore: sort_constructors_first

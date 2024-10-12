@@ -13,7 +13,7 @@ class EditVisibilityPage extends ConsumerStatefulWidget {
   const EditVisibilityPage({super.key});
 
   @override
-  _EditVisibilityPageState createState() => _EditVisibilityPageState();
+  createState() => _EditVisibilityPageState();
 }
 
 class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {

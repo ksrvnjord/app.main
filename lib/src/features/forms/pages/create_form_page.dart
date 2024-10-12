@@ -96,7 +96,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           authorName: currentUser.fullName,
         ),
       );
-      if (!mounted) return;
+      if (!context.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Form gemaakt met id: ${result.id}'),

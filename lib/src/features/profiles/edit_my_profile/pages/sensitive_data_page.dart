@@ -15,7 +15,7 @@ class SensitiveDataPage extends ConsumerStatefulWidget {
   const SensitiveDataPage({super.key});
 
   @override
-  _SensitiveDataPageState createState() => _SensitiveDataPageState();
+  createState() => _SensitiveDataPageState();
 }
 
 class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
