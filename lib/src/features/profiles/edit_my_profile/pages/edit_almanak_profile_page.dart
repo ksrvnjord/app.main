@@ -193,7 +193,7 @@ class _EditAlmanakProfilePageState
                   // ignore: no-equal-arguments
                   buttonText: const Text('Substructuren'),
                   selectedColor: colorScheme.primaryContainer,
-                  backgroundColor: colorScheme.background,
+                  backgroundColor: colorScheme.surface,
                   checkColor: colorScheme.onPrimaryContainer,
                   onSaved: (substructures) => ref
                       .read(profileEditFormNotifierProvider.notifier)
@@ -340,8 +340,8 @@ class _EditAlmanakProfilePageState
     }
 
     // SHOW CONFIRMATION TO USER.
-    if (context.mounted) {
-      if (success) {
+    if (success) {
+      if (mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -349,7 +349,9 @@ class _EditAlmanakProfilePageState
             backgroundColor: Colors.green,
           ),
         );
-      } else {
+      }
+    } else {
+      if (mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

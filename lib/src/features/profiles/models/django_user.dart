@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer-named-parameters
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -125,6 +124,7 @@ class DjangoUser {
         data: jsonEncode(updatedUser.toJson()),
       );
 
+      // ignore: no-magic-number
       return res.statusCode == 200;
     } catch (error) {
       // Handle any exceptions that might occur.
@@ -134,6 +134,7 @@ class DjangoUser {
 
   void updateWithPartialData(Map<String, dynamic> partialData) {
     partialData.forEach((key, value) {
+      // ignore: prefer-correct-switch-length
       switch (key) {
         case 'city':
           address.city = value;

@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/permission_entry.dart';
 
 /// All the data we have on a user.
 /// Sources: [FirestoreUser] and [DjangoUser].
@@ -17,7 +16,7 @@ class User {
 
   // SHARED FIELDS.
   String get firstName => _firestore?.firstName ?? _django.firstName;
-  String get lastName => _firestore?.lastName ?? _django.lastName;
+  String get lastNameOnly => _firestore?.lastName ?? _django.lastName;
   String get email => _firestore?.email ?? _django.email;
   String? get phonePrimary =>
       _firestore?.phonePrimary ?? _django.contact.phonePrimary;
@@ -46,13 +45,16 @@ class User {
   KNRB? get knrb => _django.knrb;
 
   List<GroupDjangoEntry> get groups => _django.groups;
+  // TODO: fix below.
   //List<PermissionEntry> get permissions => _django.permissions;
 
-  // INFERRED FIELDS.
+  // Inferred fields.
+  String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
   String get identifierString => identifier.toString();
 
   // EXPOSE DJANGO USER.
+  // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;
   // ignore: sort_constructors_first
   const User({FirestoreUser? firestore, required DjangoUser django})

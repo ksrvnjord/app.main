@@ -40,7 +40,8 @@ class _FormPageState extends ConsumerState<FormPage> {
       // ignore: avoid-unsafe-collection-methods
       final answerPath = answer.docs.first.reference.path;
 
-      // ignore: use_build_context_synchronously
+      if (!context.mounted) return;
+
       return showDialog(
         context: context,
         builder: (innerContext) => AlertDialog(
@@ -260,10 +261,10 @@ class _FormPageState extends ConsumerState<FormPage> {
                             }
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               colorScheme.errorContainer,
                             ),
-                            foregroundColor: MaterialStateProperty.all(
+                            foregroundColor: WidgetStateProperty.all(
                               colorScheme.onErrorContainer,
                             ),
                           ),

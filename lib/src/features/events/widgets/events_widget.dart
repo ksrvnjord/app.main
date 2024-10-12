@@ -25,7 +25,7 @@ class EventsWidget extends StatelessWidget {
 
     return SfCalendar(
       view: CalendarView.schedule,
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       dataSource: MeetingDataSource(events),
       headerStyle: CalendarHeaderStyle(
         textStyle: textTheme.titleLarge ?? const TextStyle(),
