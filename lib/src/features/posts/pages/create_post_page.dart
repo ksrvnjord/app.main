@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-single-declaration-per-file, prefer-extracting-function-callbacks
+
 import 'dart:async';
 import 'dart:io';
 

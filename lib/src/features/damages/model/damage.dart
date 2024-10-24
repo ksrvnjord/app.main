@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/get_damage.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/queries/object_by_type_and_name.dart';
@@ -35,6 +36,7 @@ class Damage {
         cause = (json['cause'] ?? '') as String,
         critical = (json['critical'] ?? false) as bool,
         active = (json['active'] ?? false) as bool;
+
   Map<String, Object?> toJson() {
     return {
       'reference': reference,
@@ -71,8 +73,8 @@ class Damage {
       await FirebaseStorage.instance.ref(path).delete();
     }
 
-    // First create the damages item, so we have an ID.
-    return await damage.reference.delete();
+    await damage.reference
+        .delete(); // First create the damages item, so we have an ID.
   }
 
   static Future<void> edit(
@@ -105,14 +107,12 @@ class Damage {
     });
 
     // Check if there's an image, if so, upload it.
-    File? image = damageForm.image;
+    XFile? image = damageForm.image;
     if (image != null) {
       final String path =
           '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
       // ignore: avoid-ignoring-return-values
-      FirebaseStorage.instance.ref(path).putFile(
-            image,
-          );
+      FirebaseStorage.instance.ref(path).putFile(File(image.path));
 
       // Then, store it in the addedDamage.
       damage.reference.update({'image': path});
@@ -159,14 +159,12 @@ class Damage {
         }).toJson());
 
     // Check if there's an image, if so, upload it.
-    File? image = damageForm.image;
+    XFile? image = damageForm.image;
     if (image != null) {
       final String path =
           '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
       // ignore: avoid-ignoring-return-values
-      FirebaseStorage.instance.ref(path).putFile(
-            image,
-          );
+      FirebaseStorage.instance.ref(path).putFile(File(image.path));
 
       // Then, store it in the addedDamage.
       addedDamage.update({'image': path});

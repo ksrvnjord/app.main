@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: prefer-static-class
 final damageFormProvider = ChangeNotifierProvider((ref) => DamageForm());
@@ -10,7 +11,7 @@ final damageFormProvider = ChangeNotifierProvider((ref) => DamageForm());
 class DamageForm extends ChangeNotifier {
   String? _type;
   String? _name;
-  File? _image;
+  XFile? _image;
   String? _description;
   String? _cause;
   bool _critical = false;
@@ -18,7 +19,7 @@ class DamageForm extends ChangeNotifier {
   String? get type => _type;
   String? get name => _name;
   String? get cause => _cause;
-  File? get image => _image;
+  XFile? get image => _image;
   String? get description => _description;
   bool get critical => _critical;
   bool get complete =>
@@ -42,7 +43,7 @@ class DamageForm extends ChangeNotifier {
     }
   }
 
-  set image(File? e) {
+  set image(XFile? e) {
     if (e != _image) {
       _image = e;
       notifyListeners();
@@ -75,7 +76,7 @@ class DamageForm extends ChangeNotifier {
     String? type,
     String? name,
     String? cause,
-    File? image,
+    XFile? image,
     String? description,
     bool critical = false,
   }) {

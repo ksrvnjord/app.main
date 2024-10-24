@@ -36,7 +36,6 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   flutter_localizations:
     sdk: flutter
-  image_picker_widget: ">=2.0.0 <3.0.0"
   cloud_functions: ^4.4.1
   firebase_storage: any
   multi_select_flutter: ^4.1.3
