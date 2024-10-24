@@ -12,10 +12,10 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
 class SensitiveDataPage extends ConsumerStatefulWidget {
-  const SensitiveDataPage({Key? key}) : super(key: key);
+  const SensitiveDataPage({super.key});
 
   @override
-  _SensitiveDataPageState createState() => _SensitiveDataPageState();
+  createState() => _SensitiveDataPageState();
 }
 
 class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
@@ -54,6 +54,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   }
 
   void _handleSubmitForm(User user) async {
+    // ignore: avoid-non-null-assertion
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -155,7 +156,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                     title: 'Achternaam',
                     isEditable: false,
                     initialValue: user.lastName,
-                    subtext:
+                    helperText:
                         'Mail naar ab-actis@njord.nl als je voornaam, voorletters, tussenvoegsel of achternaam verkeerd in het systeem staat.',
                   ),
                   SensitiveDataTextFormField(
@@ -177,7 +178,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                     title: 'Geboortedatum',
                     isEditable: false,
                     initialValue: user.birthDate,
-                    subtext:
+                    helperText:
                         "Mail naar abactis@njord.nl als je je geboortedatum wil aanpassen.",
                   ),
                   const Divider(),
@@ -210,8 +211,8 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   const Divider(),
                   const SensitiveDataSubsection('KNRB'),
                   SensitiveDataBoolFormfield(
-                    initialValue: user.knrb?.knrb ?? false,
                     title: 'Is ingeschreven bij KNRB',
+                    initialValue: user.knrb?.knrb ?? false,
                     isEditable: false,
                   ),
                   SensitiveDataTextFormField(
@@ -250,7 +251,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   ElevatedButton(
                     onPressed: () => _handleSubmitForm(user),
                     child: _buttonIsLoading
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator.adaptive()
                         : const Text('Opslaan'),
                   ),
                 ],

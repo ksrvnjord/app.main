@@ -84,7 +84,6 @@ jobs:
           version: ${{ env.dcm_version }}
 
       - name: Dart Code Metrics Analyze
-        if: github.ref == 'refs/heads/main'
         run: dcm analyze lib --fatal-style --fatal-performance --fatal-warnings --reporter=console
 
   other:

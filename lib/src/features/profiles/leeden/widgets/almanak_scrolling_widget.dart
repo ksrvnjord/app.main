@@ -81,7 +81,8 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
                     },
                   ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => const LoadingWidget(),
+          firstPageErrorIndicatorBuilder: (context) =>
+              const LoadingWidget(), // TODO: Error widget.
           noItemsFoundIndicatorBuilder: (context) => const Column(
             children: [
               Text('Geen Leeden gevonden met deze zoekterm.'),

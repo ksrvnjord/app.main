@@ -126,8 +126,9 @@ class DamageEditWidget extends ConsumerWidget {
         backgroundColor: Colors.red[900],
       ));
     }
-
-    // ignore: avoid-ignoring-return-values, use_build_context_synchronously
-    context.pop();
+    if (context.mounted) {
+      // ignore: avoid-ignoring-return-values
+      context.pop();
+    }
   }
 }

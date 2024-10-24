@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/blikkenlijst_tab_content.dart';
 
 class BlikkenLijstPage extends StatelessWidget {
-  const BlikkenLijstPage({Key? key}) : super(key: key);
+  const BlikkenLijstPage({super.key});
 
   @override
   Widget build(BuildContext context) {

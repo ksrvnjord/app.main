@@ -47,11 +47,11 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
                     end: Alignment.topCenter,
                     colors: [
                       // Slides from full opacity to 50% transparant at 0.25, then fade out.
-                      colorScheme.background,
+                      colorScheme.surface,
                       // ignore: no-magic-number
-                      colorScheme.background.withOpacity(0.5),
+                      colorScheme.surface.withOpacity(0.5),
                       // ignore: no-magic-number
-                      colorScheme.background.withOpacity(0.1),
+                      colorScheme.surface.withOpacity(0.1),
                       Colors.transparent,
                     ],
                     stops: const [

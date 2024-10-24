@@ -25,13 +25,15 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
           children: [
             if (isEditable && valueNotifier != null)
               ValueListenableBuilder<bool>(
+                // ignore: avoid-non-null-assertion
                 valueListenable: valueNotifier!,
-                builder: (context, value, child) {
-                  return Checkbox(
+                builder: (builderContext, value, child) {
+                  return Checkbox.adaptive(
                     value: value,
                     // ignore: prefer-extracting-callbacks
                     onChanged: (bool? newValue) {
                       if (newValue != null) {
+                        // ignore: avoid-non-null-assertion
                         valueNotifier!.value = newValue;
                       }
                     },
@@ -39,7 +41,7 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
                 },
               )
             else
-              Checkbox(value: initialValue ?? false, onChanged: null),
+              Checkbox.adaptive(value: initialValue ?? false, onChanged: null),
             Text(title),
           ],
         ),
@@ -47,6 +49,7 @@ class SensitiveDataBoolFormfield extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(
+              // ignore: avoid-non-null-assertion
               subtext!,
               style: Theme.of(context).textTheme.bodySmall,
             ),

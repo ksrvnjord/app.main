@@ -7,14 +7,17 @@ class SensitiveDataTextFormField extends StatelessWidget {
     required this.isEditable,
     this.initialValue,
     this.controller,
-    this.subtext, // Optional subtext parameter.
+    this.helperText, // Optional subtext parameter.
   });
 
   final String title;
   final String? initialValue;
   final bool isEditable;
   final TextEditingController? controller;
-  final String? subtext;
+  final String? helperText;
+  // ignore: avoid-stateless-widget-initialized-fields
+  final maxLines = 3;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -22,9 +25,8 @@ class SensitiveDataTextFormField extends StatelessWidget {
       initialValue: initialValue,
       decoration: InputDecoration(
         labelText: title,
-        helperText: subtext,
-        helperMaxLines: 3 // Add subtext as helper text.
-        ,
+        helperText: helperText,
+        helperMaxLines: maxLines, // Add subtext as helper text.
       ),
       enabled: isEditable,
     );

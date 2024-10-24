@@ -35,16 +35,14 @@ class GroupInfoTile extends StatelessWidget {
           labelPadding: const EdgeInsets.symmetric(horizontal: 2),
         ),
         if (tags != null)
-          ...(tags as List<Tag>)
-              .map((tag) => Chip(
-                    avatar: Icon(
-                      tag.icon,
-                    ),
-                    label: Text(tag.label),
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 2),
-                    backgroundColor: tag.backgroundColor,
-                  ))
-              .toList(),
+          ...(tags as List<Tag>).map((tag) => Chip(
+                avatar: Icon(
+                  tag.icon,
+                ),
+                label: Text(tag.label),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+                backgroundColor: tag.backgroundColor,
+              )),
       ].toWrap(spacing: chipSpacing, runSpacing: runSpacing),
       trailing: Icon(
         Icons.arrow_forward_ios,

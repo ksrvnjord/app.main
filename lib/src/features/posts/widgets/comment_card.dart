@@ -55,9 +55,9 @@ class CommentCard extends StatelessWidget {
         )
         .padding(all: cardPadding)
         .card(
-          margin: EdgeInsets.zero,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           elevation: 0,
-          color: Theme.of(context).colorScheme.surfaceVariant,
+          margin: EdgeInsets.zero,
         );
   }
 }

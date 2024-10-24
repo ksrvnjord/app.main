@@ -13,7 +13,7 @@ class EditVisibilityPage extends ConsumerStatefulWidget {
   const EditVisibilityPage({super.key});
 
   @override
-  _EditVisibilityPageState createState() => _EditVisibilityPageState();
+  createState() => _EditVisibilityPageState();
 }
 
 class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
@@ -33,6 +33,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
   }
 
   void _handleSubmitForm(User user) async {
+    // ignore: avoid-non-null-assertion
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -61,7 +62,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     if (success) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Veranderingen opgeslagen!'),
           backgroundColor: Colors.green,
         ),
@@ -69,7 +70,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Er is iets misgegaan. Probeer het later opnieuw.'),
           backgroundColor: Colors.red,
         ),
@@ -114,15 +115,13 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
                     valueNotifier: _notifiers['address']!,
                     isEditable: true,
                   ),
-                  const SizedBox(
-                      height:
-                          16.0), // Add some space between the fields and the button.
+                  const SizedBox(height: 16.0),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       onPressed: () => _handleSubmitForm(user),
                       child: _buttonIsLoading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator.adaptive()
                           : const Text('Opslaan'),
                     ),
                   ),

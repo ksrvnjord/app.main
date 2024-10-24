@@ -41,7 +41,7 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
           'message': message,
         },
       );
-      if (!context.mounted) return;
+      if (!mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Vaarverbod aangepast')),

@@ -8,6 +8,7 @@ part 'permission_entry.g.dart';
 @immutable
 @JsonSerializable()
 class PermissionEntry {
+  // ignore: prefer-correct-identifier-length
   final int id;
   final String name;
   final String description;
