@@ -6,6 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/default_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/custom_image_picker_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfilePictureWidget extends ConsumerStatefulWidget {
   const EditProfilePictureWidget({super.key});
@@ -24,33 +26,48 @@ class _EditProfilePictureWidgetState
     final myProfilePicture =
         ref.watch(profilePictureProvider(currentUser?.identifier ?? ""));
 
-    return Text('temp');
-    // return myProfilePicture.when(
-    //   data: (image) => ImagePickerWidget(
-    //     diameter: profilePictureSize,
-    //     initialImage: image,
-    //     isEditable: true,
-    //     shouldCrop: true,
-    //     onChange: ref
-    //         .read(profileEditFormNotifierProvider.notifier)
-    //         .setProfilePicture,
-    //     shape: ImagePickerWidgetShape.circle,
-    //   ),
-    //   error: (error, stk) => ImagePickerWidget(
-    //     diameter: profilePictureSize,
-    //     initialImage: Image.asset(Images.placeholderProfilePicture).image,
-    //     isEditable: true,
-    //     shouldCrop: true,
-    //     onChange: ref
-    //         .read(profileEditFormNotifierProvider.notifier)
-    //         .setProfilePicture,
-    //     shape: ImagePickerWidgetShape.circle,
-    //   ),
-    //   loading: () => const ShimmerWidget(
-    //     child: DefaultProfilePicture(
-    //       radius: profilePictureSize / 2,
-    //     ), // Profilepicture size is the diameter.
-    //   ),
-    // );
+    return myProfilePicture.when(
+      data: (image) => CustomImagePickerWidget(
+        diameter: profilePictureSize,
+        isEditable: true,
+        shouldCrop: true,
+        onChange: (XFile? xfile) {
+          if (xfile == null) {
+            ref
+                .read(profileEditFormNotifierProvider.notifier)
+                .setProfilePicture(null);
+          } else {
+            ref
+                .read(profileEditFormNotifierProvider.notifier)
+                .setProfilePicture(xfile);
+          }
+        },
+        shape: CustomImagePickerWidgetShape.circle,
+        initialImageProvider: image,
+      ),
+      error: (error, stk) => CustomImagePickerWidget(
+        diameter: profilePictureSize,
+        isEditable: true,
+        shouldCrop: true,
+        onChange: (XFile? xfile) {
+          if (xfile == null) {
+            ref
+                .read(profileEditFormNotifierProvider.notifier)
+                .setProfilePicture(null);
+          } else {
+            ref
+                .read(profileEditFormNotifierProvider.notifier)
+                .setProfilePicture(xfile);
+          }
+        },
+        shape: CustomImagePickerWidgetShape.circle,
+        initialImageProvider: AssetImage(Images.placeholderProfilePicture),
+      ),
+      loading: () => const ShimmerWidget(
+        child: DefaultProfilePicture(
+          radius: profilePictureSize / 2,
+        ), // Profile picture size is the diameter.
+      ),
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
@@ -324,16 +325,18 @@ class _EditAlmanakProfilePageState
 
     ref.invalidate(firestoreUserStreamProvider); // Invalidate cache.
 
-    final File? newprofilePicture = form.profilePicture;
+    final newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {
-        // ignore: avoid-ignoring-return-values
-        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
-        // ignore: avoid-ignoring-return-values
+        // Use XFile directly.
+        final imageData = await newprofilePicture.readAsBytes();
+
+        // Upload the picture (assuming CachedProfilePicture.uploadMyProfilePicture can work with Uint8List or XFile).
+        CachedProfilePicture.uploadMyProfilePicture(imageData);
         final currentUser = ref.watch(currentFirestoreUserProvider);
-        // ignore: avoid-ignoring-return-values
-        profilePictureProvider(currentUser?.identifier ?? "")
-            .overrideWith((ref) => Image.file(newprofilePicture).image);
+        profilePictureProvider(currentUser?.identifier ?? "").overrideWith(
+          (ref) => Image.memory(imageData).image,
+        );
       } on FirebaseException catch (_) {
         success = false;
       }

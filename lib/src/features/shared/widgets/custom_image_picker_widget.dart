@@ -1,5 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api, prefer-single-declaration-per-file, arguments-ordering
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 enum CustomImagePickerWidgetShape { circle, square }
 
@@ -11,7 +16,8 @@ class CustomImagePickerWidget extends StatefulWidget {
     required this.shouldCrop,
     required this.onChange,
     required this.shape,
-    this.initialImage,
+    this.initialImageXFile,
+    this.initialImageProvider,
   });
 
   final double diameter;
@@ -19,7 +25,8 @@ class CustomImagePickerWidget extends StatefulWidget {
   final bool shouldCrop;
   final Function(XFile?) onChange;
   final CustomImagePickerWidgetShape shape;
-  final XFile? initialImage;
+  final XFile? initialImageXFile;
+  final ImageProvider? initialImageProvider;
 
   @override
   _CustomImagePickerWidgetState createState() =>
@@ -28,12 +35,17 @@ class CustomImagePickerWidget extends StatefulWidget {
 
 class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
   XFile? _imageFile;
+  ImageProvider? _imageProvider;
   final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    _imageFile = widget.initialImage;
+    if (widget.initialImageXFile != null) {
+      _imageFile = widget.initialImageXFile;
+    } else if (widget.initialImageProvider != null) {
+      _imageProvider = widget.initialImageProvider;
+    }
   }
 
   Future<void> _pickImage() async {
@@ -41,6 +53,8 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
     if (pickedFile != null) {
       setState(() {
         _imageFile = pickedFile;
+        _imageProvider =
+            null; // Clear the ImageProvider if a new image is picked
       });
       widget.onChange(pickedFile);
     }
@@ -53,22 +67,28 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
       child: Container(
         width: widget.diameter,
         height: widget.diameter,
+        constraints: BoxConstraints(
+          maxWidth: widget.diameter,
+          maxHeight: widget.diameter,
+        ),
         decoration: BoxDecoration(
           shape: widget.shape == CustomImagePickerWidgetShape.circle
               ? BoxShape.circle
               : BoxShape.rectangle,
-          image: _imageFile != null
-              ? DecorationImage(
-                  image: NetworkImage(_imageFile!.path),
-                  fit: BoxFit.cover,
-                )
-              : null,
+          image: DecorationImage(
+            image: _imageFile != null
+                ? (kIsWeb
+                    ? NetworkImage(_imageFile!.path)
+                    : FileImage(File(_imageFile!.path))) as ImageProvider
+                : (widget.initialImageProvider ??
+                    AssetImage('assets/placeholder.png')),
+            fit: BoxFit.cover,
+          ),
           border: Border.all(color: Colors.grey),
         ),
-        child: _imageFile == null
+        child: _imageFile == null && _imageProvider == null
             ? Icon(
                 Icons.add_a_photo,
-                size: widget.diameter / 2,
                 color: Colors.grey,
               )
             : null,
