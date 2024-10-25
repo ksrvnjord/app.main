@@ -8,30 +8,48 @@ import 'package:tuple/tuple.dart';
 
 final commissiePictureProvider = FutureProvider.autoDispose
     .family<ImageProvider<Object>, Tuple2<String, int>>(
-  (ref, commissieAndYear) {
+  (ref, commissieAndYear) async {
     final commissie = commissieAndYear.item1;
     final year = commissieAndYear.item2;
 
-    return CachedImage.get(
+    final currentYearPicture = await CachedImage.get(
       firebaseStoragePath: "almanak/commissies/$commissie/$year/picture.jpg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(days: 14),
     );
+
+    return currentYearPicture == AssetImage(Images.placeholderProfilePicture)
+        ? CachedImage.get(
+            firebaseStoragePath:
+                "almanak/commissies/$commissie/${year - 1}/picture.jpg", // TODO:  Deze pakt hij niet.
+            placeholderImagePath: Images.placeholderProfilePicture,
+            maxAge: const Duration(days: 14),
+          )
+        : currentYearPicture;
   },
 );
 
 final commissieThumbnailProvider = FutureProvider.autoDispose
     .family<ImageProvider<Object>, Tuple2<String, int>>(
-  (ref, commissieAndYear) {
+  (ref, commissieAndYear) async {
     final commissie = commissieAndYear.item1;
     final year = commissieAndYear.item2;
 
-    return CachedImage.get(
+    final currentYearThumbnail = await CachedImage.get(
       firebaseStoragePath:
           "almanak/commissies/$commissie/$year/thumbnails/picture${Thumbnail.x200}.jpg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(days: 14),
     );
+
+    return currentYearThumbnail == AssetImage(Images.placeholderProfilePicture)
+        ? CachedImage.get(
+            firebaseStoragePath:
+                "almanak/commissies/$commissie/${year - 1}/thumbnails/picture${Thumbnail.x200}.jpg",
+            placeholderImagePath: Images.placeholderProfilePicture,
+            maxAge: const Duration(days: 14),
+          )
+        : currentYearThumbnail;
   },
 );
 
