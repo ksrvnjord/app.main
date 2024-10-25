@@ -64,34 +64,57 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.isEditable ? _pickImage : null,
-      child: Container(
+      child: SizedBox(
         width: widget.diameter,
         height: widget.diameter,
-        constraints: BoxConstraints(
-          maxWidth: widget.diameter,
-          maxHeight: widget.diameter,
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            Container(
+              width: widget.diameter,
+              height: widget.diameter,
+              constraints: BoxConstraints(
+                maxWidth: widget.diameter,
+                maxHeight: widget.diameter,
+              ),
+              decoration: BoxDecoration(
+                shape: widget.shape == CustomImagePickerWidgetShape.circle
+                    ? BoxShape.circle
+                    : BoxShape.rectangle,
+                image: (_imageFile != null || _imageProvider != null)
+                    ? DecorationImage(
+                        image: _imageFile != null
+                            ? (kIsWeb
+                                    ? NetworkImage(_imageFile!.path)
+                                    : FileImage(File(_imageFile!.path)))
+                                as ImageProvider
+                            : _imageProvider!,
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+                border: Border.all(color: Colors.grey),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // Background color of boundary
+                  shape: BoxShape.circle,
+                  border:
+                      Border.all(color: Colors.grey), // Boundary border color
+                ),
+                padding: EdgeInsets.all(4.0), // Padding around icon
+                child: Icon(
+                  Icons.add_a_photo,
+                  color: Colors.grey.shade600,
+                  size: widget.diameter / 6, // Adjust icon size as needed
+                ),
+              ),
+            ),
+          ],
         ),
-        decoration: BoxDecoration(
-          shape: widget.shape == CustomImagePickerWidgetShape.circle
-              ? BoxShape.circle
-              : BoxShape.rectangle,
-          image: DecorationImage(
-            image: _imageFile != null
-                ? (kIsWeb
-                    ? NetworkImage(_imageFile!.path)
-                    : FileImage(File(_imageFile!.path))) as ImageProvider
-                : (widget.initialImageProvider ??
-                    AssetImage('assets/placeholder.png')),
-            fit: BoxFit.cover,
-          ),
-          border: Border.all(color: Colors.grey),
-        ),
-        child: _imageFile == null && _imageProvider == null
-            ? Icon(
-                Icons.add_a_photo,
-                color: Colors.grey,
-              )
-            : null,
       ),
     );
   }

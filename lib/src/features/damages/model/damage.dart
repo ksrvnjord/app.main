@@ -164,7 +164,10 @@ class Damage {
       final String path =
           '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
       // ignore: avoid-ignoring-return-values
-      FirebaseStorage.instance.ref(path).putFile(File(image.path));
+      // Read image data as bytes.
+      final imageData = await image.readAsBytes();
+      // Upload data directly.
+      FirebaseStorage.instance.ref(path).putData(imageData).ignore();
 
       // Then, store it in the addedDamage.
       addedDamage.update({'image': path});
