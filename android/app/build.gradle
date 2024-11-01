@@ -34,6 +34,7 @@ android {
     compileSdkVersion 34
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -85,6 +86,8 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    namespace 'org.ksrvnjord.app'
 }
 
 flutter {
@@ -98,5 +101,6 @@ tasks.withType(JavaCompile) {
 dependencies {
     implementation 'com.google.firebase:firebase-appcheck-debug:17.1.1'
     implementation 'com.android.support:multidex:2.0.1'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 }
 
