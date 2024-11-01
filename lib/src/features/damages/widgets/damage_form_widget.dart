@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker_widget/image_picker_widget.dart';
+import 'package:image_picker/image_picker.dart';
+// Import 'package:image_picker_widget/image_picker_widget.dart';.
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/custom_image_picker_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class DamageFormWidget extends ConsumerWidget {
@@ -42,12 +46,16 @@ class DamageFormWidget extends ConsumerWidget {
         "Upload een foto van de schade indien mogelijk",
         style: Theme.of(context).textTheme.labelLarge,
       ),
-      ImagePickerWidget(
+      CustomImagePickerWidget(
         diameter: diameter,
         isEditable: true,
         shouldCrop: true,
-        onChange: (e) => formData.image = e,
-        shape: ImagePickerWidgetShape.square,
+        onChange: (XFile? e) {
+          formData.image = e;
+        },
+        shape: CustomImagePickerWidgetShape.square,
+        initialImageXFile:
+            formData.image, // Pass the initial image here if available.
       ),
     ].toColumn(
       separator: const SizedBox(height: padding),
