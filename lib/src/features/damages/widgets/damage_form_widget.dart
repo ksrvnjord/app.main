@@ -54,6 +54,7 @@ class DamageFormWidget extends ConsumerWidget {
           formData.image = e;
         },
         shape: CustomImagePickerWidgetShape.square,
+        icon_size_ratio: 1,
         initialImageXFile:
             formData.image, // Pass the initial image here if available.
       ),

@@ -16,6 +16,7 @@ class CustomImagePickerWidget extends StatefulWidget {
     required this.shouldCrop,
     required this.onChange,
     required this.shape,
+    required this.icon_size_ratio,
     this.initialImageXFile,
     this.initialImageProvider,
   });
@@ -25,6 +26,7 @@ class CustomImagePickerWidget extends StatefulWidget {
   final bool shouldCrop;
   final Function(XFile?) onChange;
   final CustomImagePickerWidgetShape shape;
+  final double icon_size_ratio;
   final XFile? initialImageXFile;
   final ImageProvider? initialImageProvider;
 
@@ -100,16 +102,25 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
               alignment: Alignment.bottomRight,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white, // Background color of boundary
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.6)
+                      : Colors.white
+                          .withOpacity(0.6), // Background adapts to theme
                   shape: BoxShape.circle,
-                  border:
-                      Border.all(color: Colors.grey), // Boundary border color
+                  border: Border.all(
+                    color: Colors
+                        .grey.shade400, // Lighter border color for subtlety
+                    width: 1.5,
+                  ),
                 ),
-                padding: EdgeInsets.all(4.0), // Padding around icon
+                padding:
+                    EdgeInsets.all(3.0), // Adjust padding for better sizing
                 child: Icon(
-                  Icons.add_a_photo,
-                  color: Colors.grey.shade600,
-                  size: widget.diameter / 6, // Adjust icon size as needed
+                  Icons
+                      .add_photo_alternate, // Circular arrows icon for "change"
+                  color: Colors.grey.shade700, // Subtle color
+                  size: widget.diameter *
+                      widget.icon_size_ratio, // Slightly smaller icon
                 ),
               ),
             ),

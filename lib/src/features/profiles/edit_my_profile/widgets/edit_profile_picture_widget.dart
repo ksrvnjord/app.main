@@ -43,6 +43,7 @@ class _EditProfilePictureWidgetState
           }
         },
         shape: CustomImagePickerWidgetShape.circle,
+        icon_size_ratio: 0.2,
         initialImageProvider: image,
       ),
       error: (error, stk) => CustomImagePickerWidget(
@@ -61,6 +62,7 @@ class _EditProfilePictureWidgetState
           }
         },
         shape: CustomImagePickerWidgetShape.circle,
+        icon_size_ratio: 0.2,
         initialImageProvider: AssetImage(Images.placeholderProfilePicture),
       ),
       loading: () => const ShimmerWidget(
