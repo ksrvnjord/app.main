@@ -14,25 +14,44 @@ class AlmanakSearchableListWidget extends StatefulWidget {
 class _AlmanakSearchableListWidgetState
     extends State<AlmanakSearchableListWidget> {
   final _search = TextEditingController();
+  final ValueNotifier<String> _searchText = ValueNotifier<String>('');
+
+  @override
+  void initState() {
+    super.initState();
+    _search.addListener(() {
+      _searchText.value = _search.text;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     const double searchBarPadding = 8;
 
     return <Widget>[
-      TextFormField(
-        controller: _search,
-        decoration: InputDecoration(
-          labelText: 'Zoek Leeden op naam',
-          labelStyle: Theme.of(context).textTheme.titleMedium,
-          hintText: "James Cohen Stuart",
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-        ),
-        autocorrect: false,
-        enableSuggestions: false,
-      ).padding(all: searchBarPadding),
+      ValueListenableBuilder<String>(
+        valueListenable: _searchText,
+        builder: (context, value, child) {        
+          return TextFormField(
+            controller: _search,
+            decoration: InputDecoration(
+              labelText: 'Zoek Leeden op naam',
+              labelStyle: Theme.of(context).textTheme.titleMedium,
+              hintText: "James Cohen Stuart",
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              suffixIcon: value.isNotEmpty ? IconButton(
+                onPressed: _search.clear,
+                icon: Icon(Icons.clear),
+              )
+              : null,
+            ),
+            autocorrect: false,
+            enableSuggestions: false,
+          ).padding(all: searchBarPadding);
+        },
+      ),
       AnimatedBuilder(
         animation: _search,
         builder: (_, __) => AlmanakScrollingWidget(
