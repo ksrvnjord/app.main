@@ -15,7 +15,7 @@ class LoginLoadingWidget extends StatelessWidget {
 
     final loadingMessages = [
       'Zwanen aan het voeren...',
-      'Nereïden aan het schoonmaken...',
+      'Nereïden maken schoon...',
     ];
 
     return <Widget>[
