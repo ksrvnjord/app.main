@@ -16,9 +16,10 @@ class CustomImagePickerWidget extends StatefulWidget {
     required this.shouldCrop,
     required this.onChange,
     required this.shape,
-    required this.icon_size_ratio,
+    required this.iconSizeRatio,
     this.initialImageXFile,
     this.initialImageProvider,
+    this.pickImageIconShouldRemainVisibleOnSelect = true,
   });
 
   final double diameter;
@@ -26,9 +27,10 @@ class CustomImagePickerWidget extends StatefulWidget {
   final bool shouldCrop;
   final Function(XFile?) onChange;
   final CustomImagePickerWidgetShape shape;
-  final double icon_size_ratio;
+  final double iconSizeRatio;
   final XFile? initialImageXFile;
   final ImageProvider? initialImageProvider;
+  final bool pickImageIconShouldRemainVisibleOnSelect;
 
   @override
   _CustomImagePickerWidgetState createState() =>
@@ -64,6 +66,9 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final shouldShowIcon = (_imageFile == null && _imageProvider == null) ||
+        widget.pickImageIconShouldRemainVisibleOnSelect;
+
     return GestureDetector(
       onTap: widget.isEditable ? _pickImage : null,
       child: SizedBox(
@@ -98,32 +103,33 @@ class _CustomImagePickerWidgetState extends State<CustomImagePickerWidget> {
                 border: Border.all(color: Colors.grey),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black.withOpacity(0.6)
-                      : Colors.white
-                          .withOpacity(0.6), // Background adapts to theme
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors
-                        .grey.shade400, // Lighter border color for subtlety
-                    width: 1.5,
+            if (shouldShowIcon)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black.withOpacity(0.6)
+                        : Colors.white
+                            .withOpacity(0.6), // Background adapts to theme
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors
+                          .grey.shade400, // Lighter border color for subtlety
+                      width: 1.5,
+                    ),
+                  ),
+                  padding:
+                      EdgeInsets.all(3.0), // Adjust padding for better sizing
+                  child: Icon(
+                    Icons
+                        .add_photo_alternate, // Circular arrows icon for "change"
+                    color: Colors.grey.shade700, // Subtle color
+                    size: widget.diameter *
+                        widget.iconSizeRatio, // Slightly smaller icon
                   ),
                 ),
-                padding:
-                    EdgeInsets.all(3.0), // Adjust padding for better sizing
-                child: Icon(
-                  Icons
-                      .add_photo_alternate, // Circular arrows icon for "change"
-                  color: Colors.grey.shade700, // Subtle color
-                  size: widget.diameter *
-                      widget.icon_size_ratio, // Slightly smaller icon
-                ),
               ),
-            ),
           ],
         ),
       ),
