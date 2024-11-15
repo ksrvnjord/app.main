@@ -1,56 +1,37 @@
+// ignore_for_file: prefer-extracting-function-callbacks
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/forms_polls_combination_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/widgets/poll_card.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormsWidget extends ConsumerWidget {
-  const FormsWidget({
-    super.key,
-  });
+  const FormsWidget({super.key});
 
-  Widget _buildOpenFormsList(List<Object> forms, BuildContext context) {
-    if (forms.isEmpty) {
-      return const Text("Geen open forms op dit moment")
-          .textColor(Theme.of(context).colorScheme.secondary);
-    }
-
-    const hPadding = 8.0;
-
+  Widget _buildOpenFormsList(
+    List<QueryDocumentSnapshot<FirestoreForm>> data,
+  ) {
     return [
-      ...forms.map((item) {
-        final parentCollectionId =
-            (item as QueryDocumentSnapshot).reference.parent.id;
-        switch (parentCollectionId) {
-          // Unfortunate workaround for the fact that the type of the item is not a known type.
-          case "forms":
-            return FormCard(
-              formDoc: item as QueryDocumentSnapshot<FirestoreForm>,
-            );
+      ...data.map((item) {
+        final form = item.data();
 
-          case "polls":
-            return PollCard(pollDoc: item as QueryDocumentSnapshot<Poll>);
-
-          default:
-            return const ErrorCardWidget(errorMessage: "Onbekend formtype");
-        }
+        return form.questions.length == 1
+            ? SingleQuestionFormCard(formDoc: item)
+            : FormCard(formDoc: item);
       }),
-    ].toColumn().padding(horizontal: hPadding);
+    ].toColumn().padding(horizontal: 16.0);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // This is the provider that combines the forms and polls (legacy).
-    // TODO: Remove this after migration of all the polls to forms.
-    final openForms = ref.watch(openFormsPollsCombinationProvider);
+    final openForms = ref.watch(openFormsProvider);
 
     return [
       WidgetHeader(
@@ -60,12 +41,17 @@ class FormsWidget extends ConsumerWidget {
         onTap: () => context.goNamed(RouteName.forms),
       ),
       openForms.when(
-        data: (data) => _buildOpenFormsList(data, context),
+        // ignore: prefer-extracting-function-callbacks
+        data: (querySnapshot) {
+          final forms = querySnapshot.docs;
+
+          return _buildOpenFormsList(forms);
+        },
         error: (error, stack) => Text(
           error.toString(),
         ),
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
-    ].toColumn();
+    ].toColumn().padding(horizontal: 16.0);
   }
 }

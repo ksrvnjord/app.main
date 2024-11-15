@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-extracting-function-callbacks
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -122,7 +124,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                   return;
                 }
                 final currentPath =
-                    imperativeMatches.elementAtOrNull(0)['location'] as String;
+                    imperativeMatches.firstOrNull['location'] as String;
 
                 const prefixPath = RoutingConstants.appBaseUrl;
                 final url = "$prefixPath$currentPath";

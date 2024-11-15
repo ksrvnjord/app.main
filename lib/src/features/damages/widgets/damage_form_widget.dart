@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-// Import 'package:image_picker_widget/image_picker_widget.dart';.
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/custom_image_picker_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
