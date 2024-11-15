@@ -11,9 +11,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/api/form_image_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -93,6 +90,10 @@ class _SingleQuestionFormCardState
 
     const maxHeight = 240;
 
+    const hPadding = 8.0;
+
+    const widthDeleteButton = 400.0;
+
     final descriptionHPadding = 16;
 
     // ignore: arguments-ordering
@@ -148,19 +149,18 @@ class _SingleQuestionFormCardState
                 docRef: widget.formDoc.reference,
                 formIsOpen: formIsOpen,
                 withoutBorder: true,
-              ),
-              const SizedBox(height: 32),
+              ).padding(horizontal: hPadding),
+              const SizedBox(height: 2),
             ],
           ].toColumn(),
         ),
         ref.watch(canRemoveFormAnswerProvider(doc)).when(
               data: (canRemove) => canRemove
                   ? Padding(
-                      padding: const EdgeInsets.all(
-                        16.0,
-                      ), // Add space around the button.
+                      padding: const EdgeInsets.all(hPadding),
+                      // Add space around the button.
                       child: SizedBox(
-                        width: 400, // Adjust the width as needed.
+                        width: widthDeleteButton, // Adjust the width as needed.
                         child: ElevatedButton(
                           // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
                           onPressed: () async {
@@ -196,9 +196,8 @@ class _SingleQuestionFormCardState
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.delete),
-                              SizedBox(
-                                width: 8,
-                              ), // Add space between the icon and text.
+                              SizedBox(width: hPadding),
+                              // Add space between the icon and text.
                               Text("Verwijder mijn formreactie"),
                             ],
                           ),

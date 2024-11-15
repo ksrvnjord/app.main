@@ -18,6 +18,8 @@ class FormsWidget extends ConsumerWidget {
   Widget _buildOpenFormsList(
     List<QueryDocumentSnapshot<FirestoreForm>> data,
   ) {
+    const hPadding = 8.0;
+
     return [
       ...data.map((item) {
         final form = item.data();
@@ -26,7 +28,7 @@ class FormsWidget extends ConsumerWidget {
             ? SingleQuestionFormCard(formDoc: item)
             : FormCard(formDoc: item);
       }),
-    ].toColumn().padding(horizontal: 16.0);
+    ].toColumn().padding(horizontal: hPadding);
   }
 
   @override
@@ -52,6 +54,6 @@ class FormsWidget extends ConsumerWidget {
         ),
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
-    ].toColumn().padding(horizontal: 16.0);
+    ].toColumn();
   }
 }
