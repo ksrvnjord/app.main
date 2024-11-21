@@ -6,12 +6,11 @@ PODS:
   - autologin_darwin (0.0.5):
     - Flutter
     - FlutterMacOS
-  - cloud_firestore (4.15.8):
+  - cloud_firestore (4.17.5):
     - Firebase/Firestore (= 10.22.0)
     - firebase_core
     - Flutter
-    - nanopb (< 2.30910.0, >= 2.30908.0)
-  - cloud_functions (4.6.8):
+  - cloud_functions (4.7.6):
     - Firebase/Functions (= 10.22.0)
     - firebase_core
     - Flutter
@@ -45,35 +44,35 @@ PODS:
   - Firebase/Storage (10.22.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.22.0)
-  - firebase_analytics (10.8.9):
+  - firebase_analytics (10.10.7):
     - Firebase/Analytics (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_app_check (0.2.1-17):
+  - firebase_app_check (0.2.2-7):
     - Firebase/CoreOnly (~> 10.22.0)
     - firebase_core
     - FirebaseAppCheck (~> 10.22.0-beta)
     - Flutter
-  - firebase_auth (4.17.8):
+  - firebase_auth (4.20.0):
     - Firebase/Auth (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.27.0):
+  - firebase_core (2.32.0):
     - Firebase/CoreOnly (= 10.22.0)
     - Flutter
-  - firebase_crashlytics (3.4.18):
+  - firebase_crashlytics (3.5.7):
     - Firebase/Crashlytics (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_database (10.4.9):
+  - firebase_database (10.5.7):
     - Firebase/Database (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.7.19):
+  - firebase_messaging (14.9.4):
     - Firebase/Messaging (= 10.22.0)
     - firebase_core
     - Flutter
-  - firebase_storage (11.6.9):
+  - firebase_storage (11.7.7):
     - Firebase/Storage (= 10.22.0)
     - firebase_core
     - Flutter
@@ -251,9 +250,6 @@ PODS:
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
   - GTMSessionFetcher/Core (3.4.1)
-  - image_cropper (0.0.4):
-    - Flutter
-    - TOCropViewController (~> 2.6.1)
   - image_picker_ios (0.0.1):
     - Flutter
   - leveldb-library (1.22.5)
@@ -271,17 +267,16 @@ PODS:
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
   - RecaptchaInterop (100.0.0)
-  - Sentry/HybridSDK (8.25.0)
-  - sentry_flutter (7.20.2):
+  - Sentry/HybridSDK (8.36.0)
+  - sentry_flutter (8.9.0):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.25.0)
+    - Sentry/HybridSDK (= 8.36.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -304,7 +299,6 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -350,7 +344,6 @@ SPEC REPOS:
     - PromisesSwift
     - RecaptchaInterop
     - Sentry
-    - TOCropViewController
 
 EXTERNAL SOURCES:
   autologin_darwin:
@@ -388,8 +381,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  image_cropper:
-    :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   package_info_plus:
@@ -413,18 +404,18 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AppCheckCore: db04d539b37794558391bc56bc65e2440b01a195
   autologin_darwin: 1240202b2da93971e3bb0a89a561cc651af664e7
-  cloud_firestore: 97e80651e196c32554cedcd31858b9615ac8a704
-  cloud_functions: a407598ce11f5a6537b9dd634ebd4fed0ea9ddae
-  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
+  cloud_firestore: 3d471f4603f6151ef68a185f292d63e7bc8d9c98
+  cloud_functions: d157fa62e383af81ad1d3e07e895841aedd3e5bf
+  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Firebase: 797fd7297b7e1be954432743a0b3f90038e45a71
-  firebase_analytics: b9ce200bfc2c54629076bb22d6a510f31c296ab8
-  firebase_app_check: dc9e6b62d00214f1337c4378bcddfa2ae5509d1d
-  firebase_auth: 4cf9d126dc9629a77dbcbd23723e903d8277ff5a
-  firebase_core: 100945864b4aedce3cfef0c62ab864858bf013cf
-  firebase_crashlytics: 2b9ca6246501a03427eb43280be7615027e32142
-  firebase_database: d2b693328f0cf71c8726a8516463bcfbeebc5c6f
-  firebase_messaging: e65050bf9b187511d80ea3a4de7cf5573d2c7543
-  firebase_storage: 7add9d0db23f17b7fd798416e6bdb34bbe17658e
+  firebase_analytics: 861726ff5e64222acf2055fe110b8b35ba2233f7
+  firebase_app_check: a168b09d0ac9c8bf5d49c31b4aff5cd6875ce66d
+  firebase_auth: 856913d71e83ff18f4b1595a0ecff6d6a0d18be9
+  firebase_core: 8501b87f46892251f54966b06c7a26e512ddfc2e
+  firebase_crashlytics: 2c0bae0abce40116a92f6cca62b1b0c5ea711a74
+  firebase_database: 884bca9dfdbbcd1fd5a8f8b0bf3ffbf08bcc6942
+  firebase_messaging: 3336c2f1f3423910bd2232450393641e40841323
+  firebase_storage: a7e5323ba146e1eb38feb0f3eb996c5200573746
   FirebaseAnalytics: 8d0ff929c63b7f72260f332b86ccf569776b75d3
   FirebaseAppCheck: 8e85fc837a3f006b7c4ef3f50c0a3474395e76f7
   FirebaseAppCheckInterop: 0dd062c9926a76332ca5711dbed6f1a9ac540b54
@@ -450,29 +441,27 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: 48076404e6e52372290d15a07d2ed1d2f1754023
   FirebaseStorage: bc7bddc743548a89cfb896843a77cf4bdde2c231
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   GoogleAppMeasurement: ccefe3eac9b0aa27f96066809fb1a7fe4b462626
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
-  image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
-  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   leveldb-library: e8eadf9008a61f9e1dde3978c086d2b6d9b9dc28
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
-  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
+  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  Sentry: cd86fc55628f5b7c572cabe66cc8f95a9d2f165a
-  sentry_flutter: 0cf2507eb90ff7a6aa3304e900dd7f08edbbefdf
-  share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
+  Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
+  sentry_flutter: 0eb93e5279eb41e2392212afe1ccd2fecb4f8cbe
+  share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: b1dd7781647a52ecf2d27fc241ae4b4d31338420
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
