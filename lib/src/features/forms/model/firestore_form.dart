@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
@@ -30,6 +31,9 @@ class FirestoreForm {
             toFirestore: (form, _) => form.toJson(),
           );
 
+  @JsonKey(fromJson: _imageRefFromJson, toJson: _imageRefToJson)
+  final Reference? imageRef;
+
   // ignore: sort_constructors_first
   const FirestoreForm({
     required this.createdTime,
@@ -39,6 +43,7 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
+    this.imageRef,
   });
 
   // Create fromJson method.
@@ -48,6 +53,11 @@ class FirestoreForm {
 
   // Create toJson method.
   Map<String, dynamic> toJson() => _$FirestoreFormToJson(this);
+  static Reference? _imageRefFromJson(String? url) =>
+      url != null ? FirebaseStorage.instance.refFromURL(url) : null;
+
+  static String? _imageRefToJson(Reference? ref) => ref?.fullPath;
+
   static List<Map<String, dynamic>> _questionsToJson(
     List<FirestoreFormQuestion> questions,
   ) =>

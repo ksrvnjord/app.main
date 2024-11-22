@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:universal_html/html.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({super.key});
@@ -22,8 +26,12 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _description = TextEditingController();
   final _formName = TextEditingController();
 
+  final _picker = ImagePicker();
+
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
+
+  File? _galleryFile;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
     for (FirestoreFormQuestion question in _questions) {
@@ -38,6 +46,61 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   bool get _formsHasNoQuestions => _questions.isEmpty;
+
+  Future<void> _showPicker({required BuildContext prevContext}) {
+    return showModalBottomSheet(
+      context: prevContext,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Fotogallerij'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.gallery, context).then((_) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.camera, context).then((_) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future _getImage(ImageSource img, BuildContext context) async {
+    final pickedFile = await _picker.pickImage(source: img);
+    if (!mounted) return;
+    setState(() {
+      if (pickedFile == null) {
+        // ignore: avoid-ignoring-return-values
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nothing is selected')),
+        );
+      } else {
+        _galleryFile = File(pickedFile.path);
+      }
+    });
+  }
 
   // ignore: avoid-long-functions
   Future<void> _handleSubmitForm(BuildContext context, WidgetRef ref) async {
@@ -167,39 +230,64 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               onDateTimeChanged: (DateTime dateTime) =>
                   setState(() => _openUntil = dateTime),
             ),
-            ..._questions.asMap().entries.map((questionEntry) {
-              return CreateFormQuestion(
-                index: questionEntry.key,
-                question: questionEntry.value,
-                onChanged: () => setState(() => {}),
-                deleteQuestion: (int index) =>
-                    // ignore: avoid-collection-mutating-methods
-                    setState(() => _questions.removeAt(index)),
-              );
-            }),
-            const SizedBox(height: sizedBoxHeight),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                SizedBox(
-                  width: sizedBoxWidthButton,
-                  child: ElevatedButton(
-                    onPressed: () => setState(
+            if (_galleryFile == null) ...[
+              TextButton(
+                onPressed: () => unawaited(_showPicker(prevContext: context)),
+                child: const Text("Afbeelding toevoegen"),
+              ),
+            ] else ...[
+              Image(
+                image: Image.file(
+                  // Can't be null because of null check above.
+                  // ignore: avoid-non-null-assertion
+                  _galleryFile!,
+                  semanticLabel: "Geselecteerde Afbeelding",
+                ).image,
+                semanticLabel: "Geselecteerde afbeelding",
+              ),
+              TextButton(
+                // ignore: prefer-extracting-callbacks
+                onPressed: () {
+                  setState(() {
+                    _galleryFile = null;
+                  });
+                },
+                child: const Text("Afbeelding verwijderen"),
+              ),
+              ..._questions.asMap().entries.map((questionEntry) {
+                return CreateFormQuestion(
+                  index: questionEntry.key,
+                  question: questionEntry.value,
+                  onChanged: () => setState(() => {}),
+                  deleteQuestion: (int index) =>
                       // ignore: avoid-collection-mutating-methods
-                      () => _questions.add(FirestoreFormQuestion(
-                        title: '',
-                        type: FormQuestionType.singleChoice,
-                        isRequired: false,
-                        options: [],
-                      )), // Add an empty label for the new TextFormField.
+                      setState(() => _questions.removeAt(index)),
+                );
+              }),
+              const SizedBox(height: sizedBoxHeight),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    width: sizedBoxWidthButton,
+                    child: ElevatedButton(
+                      onPressed: () => setState(
+                        // ignore: avoid-collection-mutating-methods
+                        () => _questions.add(FirestoreFormQuestion(
+                          title: '',
+                          type: FormQuestionType.singleChoice,
+                          isRequired: false,
+                          options: [],
+                        )), // Add an empty label for the new TextFormField.
+                      ),
+                      child: const Text('Voeg vraag toe aan form'),
                     ),
-                    child: const Text('Voeg vraag toe aan form'),
                   ),
-                ),
-                const Spacer(),
-              ],
-            ),
+                  const Spacer(),
+                ],
+              ),
+            ],
           ],
         ),
       ),

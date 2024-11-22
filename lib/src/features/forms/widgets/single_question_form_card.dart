@@ -11,6 +11,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/polls/api/form_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -77,6 +79,7 @@ class _SingleQuestionFormCardState
     final doc = formsCollection.doc(widget.formDoc.id);
     final formData = widget.formDoc.data();
 
+    final imagePath = formData.imagePath;
     final openUntil = formData.openUntil.toDate();
 
     final formIsOpen = DateTime.now().isBefore(openUntil);
@@ -88,7 +91,7 @@ class _SingleQuestionFormCardState
 
     final textTheme = Theme.of(context).textTheme;
 
-    const maxHeight = 240;
+    const maxHeight = 240.0;
 
     const hPadding = 8.0;
 
@@ -129,14 +132,32 @@ class _SingleQuestionFormCardState
           ),
         ],
       ),
-      // ignore: avoid-non-null-assertion
       initiallyExpanded: formIsOpen,
       expandedCrossAxisAlignment: CrossAxisAlignment.center,
       shape: const RoundedRectangleBorder(
         side: BorderSide(color: Colors.transparent, width: 0),
       ),
       children: [
+        if (imagePath != null)
+          ref.watch(formImageProvider(imagePath)).when(
+                data: (data) => data != null
+                    ? ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width,
+                          maxHeight: maxHeight,
+                        ),
+                        child:
+                            Image(image: MemoryImage(data), fit: BoxFit.cover),
+                      )
+                    : const SizedBox.shrink(),
+                error: (error, stackTrace) => const ErrorCardWidget(
+                  errorMessage:
+                      "Het is niet gelukt om de afbeelding te downloaden",
+                ),
+                loading: () => const CircularProgressIndicator.adaptive(),
+              ),
         if (formData.description != null)
+          // ignore: avoid-non-null-assertion
           Text(formData.description!, style: textTheme.bodyMedium)
               .padding(horizontal: descriptionHPadding.toDouble()),
         Form(
