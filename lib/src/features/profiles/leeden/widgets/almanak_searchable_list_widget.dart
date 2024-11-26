@@ -31,7 +31,7 @@ class _AlmanakSearchableListWidgetState
     return <Widget>[
       ValueListenableBuilder<String>(
         valueListenable: _searchText,
-        builder: (context, value, child) {        
+        builder: (context, value, child) {
           return TextFormField(
             controller: _search,
             decoration: InputDecoration(
@@ -41,11 +41,12 @@ class _AlmanakSearchableListWidgetState
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40)),
               ),
-              suffixIcon: value.isNotEmpty ? IconButton(
-                onPressed: _search.clear,
-                icon: Icon(Icons.clear),
-              )
-              : null,
+              suffixIcon: value.isNotEmpty
+                  ? IconButton(
+                      onPressed: _search.clear,
+                      icon: Icon(Icons.clear),
+                    )
+                  : null,
             ),
             autocorrect: false,
             enableSuggestions: false,

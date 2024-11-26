@@ -88,8 +88,6 @@ class _SingleQuestionFormCardState
 
     final textTheme = Theme.of(context).textTheme;
 
-    const maxHeight = 240;
-
     const hPadding = 8.0;
 
     const widthDeleteButton = 400.0;

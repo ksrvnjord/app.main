@@ -179,8 +179,8 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin =
-            Routes._moreRoutes.any((route) => '${route.path}/admin' == currentPath);
+        final bool currentRouteRequiresAdmin = Routes._moreRoutes
+            .any((route) => '${route.path}/admin' == currentPath);
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
@@ -763,7 +763,6 @@ abstract final // ignore: prefer-single-declaration-per-file
       ],
     ),
   ];
-
 
   static final _unauthenticated = [
     GoRoute(
