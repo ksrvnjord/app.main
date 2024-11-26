@@ -1,6 +1,5 @@
 // ignore_for_file: prefer-single-declaration-per-file
 
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 

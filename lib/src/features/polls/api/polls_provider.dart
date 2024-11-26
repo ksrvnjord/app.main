@@ -11,28 +11,6 @@ final CollectionReference<Poll> pollsCollection =
         );
 
 // ignore: prefer-static-class
-final openPollsProvider =
-    StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? pollsCollection
-          .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-          .orderBy(
-            'openUntil',
-            descending: false,
-          ) // Show the poll with closest deadline first.
-          .limit(3)
-          .snapshots()
-      : const Stream.empty();
-});
-
-// ignore: prefer-static-class
-final allPollsProvider = StreamProvider.autoDispose<QuerySnapshot<Poll>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value != null
-      ? pollsCollection.orderBy('openUntil', descending: true).snapshots()
-      : const Stream.empty();
-});
-
-// ignore: prefer-static-class
 final pollProvider = StreamProvider.autoDispose
     .family<DocumentSnapshot<Poll>, String>((ref, pollId) {
   return ref.watch(firebaseAuthUserProvider).value != null

@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_info.dart';
 
@@ -23,8 +21,6 @@ class CommissieInfo extends GroupInfo {
       email: map['email'] != null ? map['email'] as String : null,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

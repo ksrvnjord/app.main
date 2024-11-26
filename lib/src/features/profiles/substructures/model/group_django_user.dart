@@ -23,5 +23,4 @@ class GroupDjangoUser {
     required this.identifier,
     required this.id,
   });
-  Map<String, dynamic> toJson() => _$GroupDjangoUserToJson(this);
 }

@@ -30,5 +30,4 @@ class Address {
     this.country,
     this.visible,
   });
-  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
