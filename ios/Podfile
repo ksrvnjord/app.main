@@ -46,6 +46,7 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
     
     # Fix for latest Cocoapods bug. https://github.com/CocoaPods/CocoaPods/issues/12012#issuecomment-1659803356
     xcconfig_path = config.base_configuration_reference.real_path
