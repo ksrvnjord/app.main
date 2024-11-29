@@ -6,9 +6,17 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FileButton extends ConsumerWidget {
-  const FileButton({super.key, required this.item});
+  const FileButton({
+    super.key,
+    required this.index,
+    required this.item,
+    required this.items,
+  });
 
+  final int index;
   final Reference item;
+  final List<Reference> items;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = getThumbnailReference(item, Thumbnail.x400)
@@ -30,7 +38,10 @@ class FileButton extends ConsumerWidget {
               )
             : const Icon(Icons.image, size: iconSize),
       ).borderRadius(all: padding),
-      onTap: () => navigator.pushNamed("_file/${item.fullPath}").ignore(),
+      onTap: () => navigator.pushNamed(
+        "_file/${item.fullPath}",
+        arguments: {'initialIndex': index, 'paths': items},
+      ).ignore(),
       splashColor: Colors.blue,
     );
   }
