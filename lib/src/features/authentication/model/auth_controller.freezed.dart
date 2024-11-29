@@ -21,7 +21,9 @@ mixin _$Auth {
   String get error => throw _privateConstructorUsedError;
   bool get authenticated => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Auth
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthCopyWith<Auth> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -47,6 +49,8 @@ class _$AuthCopyWithImpl<$Res, $Val extends Auth>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Auth
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -97,6 +101,8 @@ class __$$AuthImplCopyWithImpl<$Res>
   __$$AuthImplCopyWithImpl(_$AuthImpl _value, $Res Function(_$AuthImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Auth
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -179,7 +185,9 @@ class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
   int get hashCode =>
       Object.hash(runtimeType, accessToken, expiration, error, authenticated);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Auth
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthImplCopyWith<_$AuthImpl> get copyWith =>
@@ -201,8 +209,11 @@ abstract class _Auth implements Auth {
   String get error;
   @override
   bool get authenticated;
+
+  /// Create a copy of Auth
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthImplCopyWith<_$AuthImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

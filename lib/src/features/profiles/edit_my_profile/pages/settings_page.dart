@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
-import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -30,9 +29,8 @@ class SettingsPage extends ConsumerWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => context.goNamed(
-                  'Edit My Visibility',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                onTap: () => context.goNamed('Edit My Visibility'),
+                // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
               ),
             ]),
             // ignore: avoid-non-ascii-symbols

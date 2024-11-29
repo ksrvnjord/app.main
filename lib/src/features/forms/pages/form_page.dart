@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-extracting-function-callbacks
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,7 +42,8 @@ class _FormPageState extends ConsumerState<FormPage> {
       // ignore: avoid-unsafe-collection-methods
       final answerPath = answer.docs.first.reference.path;
 
-      // ignore: use_build_context_synchronously
+      if (!context.mounted) return;
+
       return showDialog(
         context: context,
         builder: (innerContext) => AlertDialog(
@@ -121,7 +124,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                   return;
                 }
                 final currentPath =
-                    imperativeMatches.elementAtOrNull(0)['location'] as String;
+                    imperativeMatches.firstOrNull['location'] as String;
 
                 const prefixPath = RoutingConstants.appBaseUrl;
                 final url = "$prefixPath$currentPath";
@@ -260,10 +263,10 @@ class _FormPageState extends ConsumerState<FormPage> {
                             }
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               colorScheme.errorContainer,
                             ),
-                            foregroundColor: MaterialStateProperty.all(
+                            foregroundColor: WidgetStateProperty.all(
                               colorScheme.onErrorContainer,
                             ),
                           ),

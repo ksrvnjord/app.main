@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-extracting-function-callbacks
+
 import 'package:action_sheet/action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
@@ -41,6 +43,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
     final userGroups = ref.watch(groupsForUserProvider(identifier));
 
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    Info userInfo;
 
     return ListView(
       children: [
@@ -50,22 +55,21 @@ class AlmanakUserProfileView extends ConsumerWidget {
         profile.when(
           // ignore: avoid-long-functions
           data: (u) {
+            userInfo = u.info;
+
             return Column(
               children: [
                 Text(
                   '${u.firstName} ${u.lastName}',
                   style: textTheme.headlineSmall,
                 ).center(),
-                if (u.info.studie != null)
-                  Text(
-                    u.info.studie ?? "",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ).alignment(Alignment.center),
+                Text(userInfo.studie ?? "", style: textTheme.bodyLarge)
+                    .alignment(Alignment.center),
                 if (u.bestuursFunctie != null)
                   // Make list tile with lightblue background and white text.
                   Center(
                     child: Card(
-                      color: Theme.of(context).colorScheme.primaryContainer,
+                      color: colorScheme.primaryContainer,
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -100,18 +104,19 @@ class AlmanakUserProfileView extends ConsumerWidget {
                         (u.phonePrimary as String).isNotEmpty &&
                         u.contact.phoneVisible)
                       ElevatedButton(
+                        // ignore: avoid-async-call-in-sync-function
                         onPressed: () => showBottomActionSheet(
                           context: context,
-                          children: const [
-                            Icon(Icons.phone, color: Colors.black),
+                          children: [
+                            Icon(Icons.phone, color: colorScheme.onSurface),
                             FaIcon(
                               FontAwesomeIcons.whatsapp,
-                              color: Colors.black,
+                              color: colorScheme.onSurface,
                             ),
                           ],
                           actions: [
                             () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
-                            () => launchUrl(Uri.parse(
+                            () async => await launchUrl(Uri.parse(
                                   "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
                                 )),
                           ],
@@ -145,15 +150,15 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     name: "Voorkeurs boord",
                     value: u.board as String,
                   ),
-                if (u.info.blikken != 0)
+                if (userInfo.blikken != 0)
                   DataTextListTile(
                     name: "Aantal blikken",
-                    value: u.info.blikken.toString(),
+                    value: userInfo.blikken.toString(),
                   ),
-                if (u.info.taarten != 0)
+                if (userInfo.taarten != 0)
                   DataTextListTile(
                     name: "Aantal blikken",
-                    value: u.info.taarten.toString(),
+                    value: userInfo.taarten.toString(),
                   ),
                 if (u.substructures != null &&
                     (u.substructures as List<String>).isNotEmpty)

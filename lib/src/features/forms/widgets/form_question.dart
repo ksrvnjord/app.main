@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-extracting-function-callbacks
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +18,7 @@ class FormQuestion extends ConsumerStatefulWidget {
     required this.form,
     required this.docRef,
     required this.formIsOpen,
+    this.withoutBorder = false,
   });
 
   final FirestoreFormQuestion formQuestion;
@@ -25,6 +28,8 @@ class FormQuestion extends ConsumerStatefulWidget {
   final DocumentReference<FirestoreForm> docRef;
 
   final bool formIsOpen;
+
+  final bool withoutBorder;
 
   @override
   createState() => _FormQuestionState();
@@ -170,7 +175,9 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: colorScheme.primary),
+        border: widget.withoutBorder
+            ? null // No border if withoutBorder is true.
+            : Border.all(color: colorScheme.primary),
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
       child: questionWidgets.toColumn(

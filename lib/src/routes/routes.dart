@@ -94,6 +94,7 @@ abstract final // ignore: prefer-single-declaration-per-file
     class Routes {
   static const initialPath = '/'; // Default path is '/' for the home page.
 
+  // ignore: avoid-long-functions
   static final routerProvider = Provider((ref) {
     final authNotifier = ValueNotifier<AsyncValue<Auth?>>(
       const AsyncLoading(),
@@ -127,7 +128,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           ),
         ),
         ...Routes._unauthenticated,
-        ...Routes._adminRoutes,
+        // ...Routes._adminRoutes,
         _route(
           name: "Unknown Route",
           path: '/404',
@@ -174,8 +175,12 @@ abstract final // ignore: prefer-single-declaration-per-file
           return state.uri.queryParameters['from'] ?? initialLocation;
         }
 
-        final bool currentRouteRequiresAdmin =
-            Routes._adminRoutes.any((route) => route.path == currentPath);
+        // final bool currentRouteRequiresAdmin =
+        //     Routes._adminRoutes.any((route) => route.path == currentPath);
+        // ^ This is commented out because of the change in admin routing.
+
+        final bool currentRouteRequiresAdmin = Routes._moreRoutes
+            .any((route) => '${route.path}/admin' == currentPath);
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
@@ -671,92 +676,89 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "Blikkenlijst",
           child: const BlikkenLijstPage(),
         ),
-      ],
-    ),
-  ];
-
-  static final _adminRoutes = [
-    _route(
-      path: "/admin",
-      name: "Admin",
-      child: const AdminPage(),
-      routes: [
-        // Route for manage vaarverbod page.
         _route(
-          path: "vaarverbod",
-          name: "Manage Vaarverbod",
-          pageBuilder: (context, state) => _getPage(
-            child: const ManageVaarverbodPage(),
-            name: "Manage Vaarverbod",
-          ),
-        ),
-
-        _route(
-          path: 'forms',
-          name: "Manage Forms",
-          child: const ManageFormsPage(),
+          path: "admin",
+          name: "Admin",
+          child: const AdminPage(),
           routes: [
+            // Route for manage vaarverbod page.
             _route(
-              path: 'nieuw',
-              name: "Admin -> Create Form",
-              child: const CreateFormPage(),
+              path: "vaarverbod",
+              name: "Manage Vaarverbod",
+              pageBuilder: (context, state) => _getPage(
+                child: const ManageVaarverbodPage(),
+                name: "Manage Vaarverbod",
+              ),
             ),
+
             _route(
-              path: ':formId',
-              name: "View Form",
+              path: 'forms',
+              name: "Manage Forms",
+              child: const ManageFormsPage(),
               routes: [
                 _route(
-                  path: 'resultaten',
-                  name: "Form Results",
+                  path: 'nieuw',
+                  name: "Admin -> Create Form",
+                  child: const CreateFormPage(),
+                ),
+                _route(
+                  path: ':formId',
+                  name: "View Form",
+                  routes: [
+                    _route(
+                      path: 'resultaten',
+                      name: "Form Results",
+                      pageBuilder: (context, state) => _getPage(
+                        child: FormResultsPage(
+                          formId: state.pathParameters['formId']!,
+                        ),
+                        name: "Form Results",
+                      ),
+                    ),
+                  ],
                   pageBuilder: (context, state) => _getPage(
-                    child: FormResultsPage(
+                    child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
                     ),
-                    name: "Form Results",
+                    name: "View Form",
+                  ),
+                ),
+              ],
+            ),
+            _route(
+              path: "maak-push-notificatie",
+              name: "Create Push Notification",
+              pageBuilder: (context, state) => _getPage(
+                child: const CreatePushNotificationPage(),
+                name: "Create Push Notification",
+              ),
+            ),
+            _route(
+              path: "beheer-groepen",
+              name: "Manage Groups",
+              routes: [
+                _route(
+                  path: "groep/:id",
+                  name: "Edit Group",
+                  pageBuilder: (context, state) => _getPage(
+                    child: EditGroupPage(
+                      groupId: int.parse(state.pathParameters['id']!),
+                    ),
+                    name: "Edit Group",
                   ),
                 ),
               ],
               pageBuilder: (context, state) => _getPage(
-                child: ManageFormPage(
-                  formId: state.pathParameters['formId']!,
+                child: ManageGroupsPage(
+                  year: state.uri.queryParameters['year'] != null
+                      ? int.parse(state.uri.queryParameters['year']!)
+                      : getNjordYear(),
+                  type: state.uri.queryParameters['type'],
                 ),
-                name: "View Form",
+                name: "Manage Groups",
               ),
             ),
           ],
-        ),
-        _route(
-          path: "maak-push-notificatie",
-          name: "Create Push Notification",
-          pageBuilder: (context, state) => _getPage(
-            child: const CreatePushNotificationPage(),
-            name: "Create Push Notification",
-          ),
-        ),
-        _route(
-          path: "beheer-groepen",
-          name: "Manage Groups",
-          routes: [
-            _route(
-              path: "groep/:id",
-              name: "Edit Group",
-              pageBuilder: (context, state) => _getPage(
-                child: EditGroupPage(
-                  groupId: int.parse(state.pathParameters['id']!),
-                ),
-                name: "Edit Group",
-              ),
-            ),
-          ],
-          pageBuilder: (context, state) => _getPage(
-            child: ManageGroupsPage(
-              year: state.uri.queryParameters['year'] != null
-                  ? int.parse(state.uri.queryParameters['year']!)
-                  : getNjordYear(),
-              type: state.uri.queryParameters['type'],
-            ),
-            name: "Manage Groups",
-          ),
         ),
       ],
     ),

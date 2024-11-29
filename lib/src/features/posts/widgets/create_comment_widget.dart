@@ -41,7 +41,7 @@ class CreateCommentWidgetState extends ConsumerState<CreateCommentWidget> {
             hintText: 'Schrijf een reactie...',
             contentPadding: const EdgeInsets.all(8.0),
             filled: true,
-            fillColor: colorScheme.surfaceVariant,
+            fillColor: colorScheme.surfaceContainerHighest,
             border: InputBorder.none,
           ),
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -56,7 +56,7 @@ class CreateCommentWidgetState extends ConsumerState<CreateCommentWidget> {
           child: const Icon(Icons.send).padding(all: sendIconPadding),
           onTap: currentUser == null ? null : () => submitForm(currentUser),
         ), // Expand in the cross axis.
-      ].toRow().backgroundColor(colorScheme.surfaceVariant),
+      ].toRow().backgroundColor(colorScheme.surfaceContainerHighest),
     );
   }
 

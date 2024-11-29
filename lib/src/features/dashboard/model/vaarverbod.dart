@@ -18,10 +18,4 @@ class Vaarverbod {
     required this.status,
     required this.message,
   });
-  Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'message': message,
-    };
-  }
 }

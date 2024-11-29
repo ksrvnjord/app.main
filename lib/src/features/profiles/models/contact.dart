@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'contact.g.dart';
 
-@immutable
 @JsonSerializable()
 class Contact {
   String email;
@@ -15,6 +13,10 @@ class Contact {
   String? phoneSecondary;
   @JsonKey(name: 'phone_visible')
   bool phoneVisible;
+  // ignore: sort_constructors_first
+  factory Contact.fromJson(Map<String, dynamic> json) =>
+      _$ContactFromJson(json);
+  // ignore: sort_constructors_first
   Contact({
     required this.email,
     required this.emailVisible,
@@ -22,8 +24,4 @@ class Contact {
     this.phoneSecondary,
     required this.phoneVisible,
   });
-
-  factory Contact.fromJson(Map<String, dynamic> json) =>
-      _$ContactFromJson(json);
-  Map<String, dynamic> toJson() => _$ContactToJson(this);
 }

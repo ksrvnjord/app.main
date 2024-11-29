@@ -1,6 +1,7 @@
-import 'dart:io';
+// ignore_for_file: prefer-single-declaration-per-file
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: prefer-static-class
 final profileEditFormNotifierProvider =
@@ -31,7 +32,7 @@ class ProfileEditFormNotifier extends StateNotifier<ProfileForm> {
     state = state.copyWith(huis: huis == "Geen" ? null : huis);
   }
 
-  void setProfilePicture(File? profilePicture) {
+  void setProfilePicture(XFile? profilePicture) {
     state = state.copyWith(profilePicture: profilePicture);
   }
 }
@@ -44,10 +45,9 @@ class ProfileForm {
   final String? otherAssociation;
   final List<String>? substructures;
   final String? huis;
-  final File? profilePicture;
-
-  const // ignore: sort_constructors_first
-  ProfileForm({
+  final XFile? profilePicture;
+  // ignore: sort_constructors_first
+  const ProfileForm({
     this.study,
     this.board,
     this.ploeg,
@@ -57,6 +57,7 @@ class ProfileForm {
     this.huis,
     this.profilePicture,
   });
+
   ProfileForm copyWith({
     String? study,
     String? board,
@@ -65,7 +66,7 @@ class ProfileForm {
     String? otherAssociation,
     List<String>? substructures,
     String? huis,
-    File? profilePicture,
+    XFile? profilePicture,
   }) {
     return ProfileForm(
       study: study ?? this.study,

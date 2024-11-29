@@ -11,7 +11,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets/form_section.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
-import 'dart:io';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
@@ -193,7 +192,7 @@ class _EditAlmanakProfilePageState
                   // ignore: no-equal-arguments
                   buttonText: const Text('Substructuren'),
                   selectedColor: colorScheme.primaryContainer,
-                  backgroundColor: colorScheme.background,
+                  backgroundColor: colorScheme.surface,
                   checkColor: colorScheme.onPrimaryContainer,
                   onSaved: (substructures) => ref
                       .read(profileEditFormNotifierProvider.notifier)
@@ -324,24 +323,26 @@ class _EditAlmanakProfilePageState
 
     ref.invalidate(firestoreUserStreamProvider); // Invalidate cache.
 
-    final File? newprofilePicture = form.profilePicture;
+    final newprofilePicture = form.profilePicture;
     if (newprofilePicture != null) {
       try {
-        // ignore: avoid-ignoring-return-values
-        CachedProfilePicture.uploadMyProfilePicture(newprofilePicture);
-        // ignore: avoid-ignoring-return-values
+        // Use XFile directly.
+        final imageData = await newprofilePicture.readAsBytes();
+
+        // Upload the picture (assuming CachedProfilePicture.uploadMyProfilePicture can work with Uint8List or XFile).
+        CachedProfilePicture.uploadMyProfilePicture(imageData);
         final currentUser = ref.watch(currentFirestoreUserProvider);
-        // ignore: avoid-ignoring-return-values
-        profilePictureProvider(currentUser?.identifier ?? "")
-            .overrideWith((ref) => Image.file(newprofilePicture).image);
+        profilePictureProvider(currentUser?.identifier ?? "").overrideWith(
+          (ref) => Image.memory(imageData).image,
+        );
       } on FirebaseException catch (_) {
         success = false;
       }
     }
 
     // SHOW CONFIRMATION TO USER.
-    if (context.mounted) {
-      if (success) {
+    if (success) {
+      if (mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -349,7 +350,9 @@ class _EditAlmanakProfilePageState
             backgroundColor: Colors.green,
           ),
         );
-      } else {
+      }
+    } else {
+      if (mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

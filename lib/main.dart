@@ -155,14 +155,13 @@ class Application extends ConsumerWidget {
       theme: ThemeData(
         pageTransitionsTheme: pageTransitionsTheme,
         useMaterial3: true,
-        brightness: Brightness.light,
         colorScheme: lightColorScheme,
+        brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
         pageTransitionsTheme: pageTransitionsTheme,
         useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: darkColorScheme,
+        colorScheme: darkColorScheme, brightness: Brightness.dark,
         // We don't set the textTheme here, because we want to use the default textTheme as this provides the correct textTheme for the dark theme.
       ),
       themeMode: themeMode.when(

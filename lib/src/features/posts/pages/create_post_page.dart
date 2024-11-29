@@ -1,3 +1,5 @@
+// ignore_for_file: prefer-single-declaration-per-file, prefer-extracting-function-callbacks
+
 import 'dart:async';
 import 'dart:io';
 
@@ -48,12 +50,15 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
+                title: const Text('Fotogallerij'),
                 // ignore: prefer-extracting-callbacks
                 onTap: () {
                   // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                  _getImage(ImageSource.gallery, context)
-                      .then((value) => Navigator.of(context).pop());
+                  _getImage(ImageSource.gallery, context).then((_) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
                 },
               ),
               ListTile(
@@ -62,8 +67,11 @@ class CreatePostPageState extends ConsumerState<CreatePostPage> {
                 // ignore: prefer-extracting-callbacks
                 onTap: () {
                   // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                  _getImage(ImageSource.camera, context)
-                      .then((value) => Navigator.of(context).pop());
+                  _getImage(ImageSource.camera, context).then((_) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  });
                 },
               ),
             ],

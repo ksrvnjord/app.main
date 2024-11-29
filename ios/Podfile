@@ -31,9 +31,9 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
   # Override Firebase SDK Version
-  $FirebaseSDKVersion = '10.22.0'
+  $FirebaseSDKVersion = '10.25.0'
 
-  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '10.22.0'
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '10.25.0'
   pod 'FirebaseAppCheck'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
@@ -46,6 +46,7 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
     
     # Fix for latest Cocoapods bug. https://github.com/CocoaPods/CocoaPods/issues/12012#issuecomment-1659803356
     xcconfig_path = config.base_configuration_reference.real_path

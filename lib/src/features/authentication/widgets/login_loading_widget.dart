@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -11,13 +13,23 @@ class LoginLoadingWidget extends StatelessWidget {
     const double cardElevation = 8;
     const double cardPadding = 16;
 
+    final loadingMessages = [
+      'Zwanen aan het voeren...',
+      'Watts aan het farmen...',
+      'Veldfles legen...',
+      'Boot schoon spuiten...',
+      'Koffie aan het zetten...',
+      'Harco zoeken...',
+    ];
+
     return <Widget>[
       <Widget>[
         const CircularProgressIndicator.adaptive(
           semanticsLabel: 'Trying to log in',
         ),
       ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-      const Text('Zwanen aan het voeren...').padding(top: textPadding),
+      Text(loadingMessages[Random().nextInt(loadingMessages.length)])
+          .padding(top: textPadding),
     ]
         .toColumn(mainAxisSize: MainAxisSize.min)
         .padding(all: columnPadding)

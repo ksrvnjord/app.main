@@ -380,7 +380,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         Positioned.fill(
           child: Container(
             // ignore: no-magic-number
-            color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

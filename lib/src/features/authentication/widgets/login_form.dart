@@ -113,15 +113,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       ),
       <Widget>[
         RoundedElevatedButton(
+          onPressed: () => context.goNamed('Forgot Password'),
+          child: const Text("Vergeten"),
+        ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
+        RoundedElevatedButton(
           onPressed: () => ref
               .read(authControllerProvider.notifier)
               .login(_email.text, _password.text)
               .ignore(),
           child: const Text("Inloggen"),
-        ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
-        RoundedElevatedButton(
-          onPressed: () => context.goNamed('Forgot Password'),
-          child: const Text("Vergeten"),
         ).height(buttonHeight).padding(all: buttonPaddding).expanded(),
       ].toRow(),
     ]

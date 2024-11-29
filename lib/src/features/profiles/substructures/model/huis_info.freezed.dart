@@ -30,8 +30,12 @@ mixin _$HuisInfo {
   int get numberOfHousemates => throw _privateConstructorUsedError;
   int get yearOfFoundation => throw _privateConstructorUsedError;
 
+  /// Serializes this HuisInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HuisInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $HuisInfoCopyWith<HuisInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -63,6 +67,8 @@ class _$HuisInfoCopyWithImpl<$Res, $Val extends HuisInfo>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of HuisInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -145,6 +151,8 @@ class __$$HuisInfoImplCopyWithImpl<$Res>
       _$HuisInfoImpl _value, $Res Function(_$HuisInfoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HuisInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -280,7 +288,7 @@ class _$HuisInfoImpl with DiagnosticableTreeMixin implements _HuisInfo {
                 other.yearOfFoundation == yearOfFoundation));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -294,7 +302,9 @@ class _$HuisInfoImpl with DiagnosticableTreeMixin implements _HuisInfo {
       numberOfHousemates,
       yearOfFoundation);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HuisInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HuisInfoImplCopyWith<_$HuisInfoImpl> get copyWith =>
@@ -341,8 +351,11 @@ abstract class _HuisInfo implements HuisInfo {
   int get numberOfHousemates;
   @override
   int get yearOfFoundation;
+
+  /// Create a copy of HuisInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HuisInfoImplCopyWith<_$HuisInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

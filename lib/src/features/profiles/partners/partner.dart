@@ -1,3 +1,5 @@
+// ignore_for_file: sort_constructors_first
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'partner.g.dart';
@@ -9,8 +11,9 @@ class Partner {
   final String? websiteUrl;
   final String? description;
   final String? type;
-
-  // ignore: sort_constructors_first
+  // ignore: unused-code, sort_constructors_first
+  factory Partner.fromJson(Map<String, dynamic> json) =>
+      _$PartnerFromJson(json);
   const Partner({
     required this.name,
     required this.logoUrl,
@@ -18,10 +21,6 @@ class Partner {
     this.description,
     this.type,
   });
-
-  // ignore: unused-code, sort_constructors_first
-  factory Partner.fromJson(Map<String, dynamic> json) =>
-      _$PartnerFromJson(json);
 
   // ToJson method.
   Map<String, dynamic> toJson() => _$PartnerToJson(this);
