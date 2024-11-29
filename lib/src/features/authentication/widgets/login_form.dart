@@ -83,7 +83,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             controller: _email,
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
-              labelText: 'Email',
+              labelText: 'E-mail',
               hintText: "praeses@njord.nl",
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
