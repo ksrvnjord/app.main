@@ -7,11 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/utils/download_mobile.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/utils/download_web.dart'
-    if (dart.library.io) 'package:ksrvnjord_main_app/src/features/gallery/utils/download_mobile.dart';
 
 class GalleryFilePageView extends ConsumerStatefulWidget {
   const GalleryFilePageView({
@@ -104,29 +100,6 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
               }
             },
             icon: const Icon(Icons.share),
-          ),
-          IconButton(
-            onPressed: () {
-              final path = widget.paths.elementAtOrNull(_currentPage);
-              if (path != null) {
-                final imageVal = ref.watch(galleryImageProvider(path.fullPath));
-
-                imageVal.when(
-                  data: (image) async {
-                    if (kIsWeb) {
-                      // Web-specific download logic.
-                      downloadImageForWeb(image.bytes, _currentPage);
-                    } else {
-                      // Mobile-specific download logic.
-                      downloadImageForMobile(image.bytes, _currentPage);
-                    }
-                  },
-                  error: (err, _) {},
-                  loading: () {},
-                );
-              }
-            },
-            icon: const Icon(Icons.download),
           ),
         ],
       ),
