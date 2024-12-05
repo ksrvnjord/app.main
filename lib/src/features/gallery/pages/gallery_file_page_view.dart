@@ -7,9 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/utils/download_mobile.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:html' as html;
+import 'package:ksrvnjord_main_app/src/features/gallery/utils/download_web.dart'
+    if (dart.library.io) 'package:ksrvnjord_main_app/src/features/gallery/utils/download_mobile.dart';
 
 class GalleryFilePageView extends ConsumerStatefulWidget {
   const GalleryFilePageView({
@@ -113,27 +115,10 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                   data: (image) async {
                     if (kIsWeb) {
                       // Web-specific download logic.
-                      final blob = html.Blob([image.bytes]);
-                      final url = html.Url.createObjectUrlFromBlob(blob);
-                      final anchor = html.AnchorElement(href: url)
-                        ..target = 'blank'
-                        ..download = 'foto_$_currentPage.jpg';
-                      anchor.click();
-                      html.Url.revokeObjectUrl(url);
+                      downloadImageForWeb(image.bytes, _currentPage);
                     } else {
-                      // Mobile or Desktop-specific download logic using XFile.
-                      final directory =
-                          await getApplicationDocumentsDirectory();
-                      final filePath =
-                          '${directory.path}/foto_$_currentPage.jpg';
-                      final xFile =
-                          XFile.fromData(image.bytes, mimeType: 'image/jpeg');
-                      await xFile.saveTo(filePath);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Image downloaded to $filePath'),
-                        ),
-                      );
+                      // Mobile-specific download logic.
+                      downloadImageForMobile(image.bytes, _currentPage);
                     }
                   },
                   error: (err, _) {},
