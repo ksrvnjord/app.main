@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class GalleryFilePageView extends ConsumerStatefulWidget {
@@ -15,6 +16,7 @@ class GalleryFilePageView extends ConsumerStatefulWidget {
     required this.initialIndex,
     required this.paths,
   });
+
   final int initialIndex;
   final List<Reference> paths;
 
@@ -31,22 +33,24 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
     super.initState();
     _currentPage = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
+    _preloadImages(ref, _currentPage);
   }
 
-  void _preloadImages(int index) {
-    // Preload 5 images before and after the current page index.
+  void _preloadImages(WidgetRef ref, int index) {
     for (int i = index - 5; i <= index + 5; i += 1) {
       if (i >= 0 && i < widget.paths.length) {
         final path = widget.paths[i];
-        final imageVal = ref.watch(galleryImageProvider(path.fullPath));
-        imageVal.when(
-          data: (image) {
-            // Preload the image using Image.memory.
-            precacheImage(MemoryImage(image.bytes), context);
-          },
-          error: (err, _) {},
-          loading: () {},
-        );
+
+        // Read from the provider and cache it if needed.
+        final memoryImageFuture =
+            ref.read(galleryImageProvider(path.fullPath).future);
+
+        memoryImageFuture.then((image) {
+          // Precache the image only if it's not in the cache already.
+          if (!imageCache.containsKey(MemoryImage(image.bytes))) {
+            precacheImage(image, context).ignore();
+          }
+        });
       }
     }
   }
@@ -54,8 +58,7 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Preload images around the current page once dependencies are resolved.
-    _preloadImages(_currentPage);
+    _preloadImages(ref, _currentPage);
   }
 
   @override
@@ -70,7 +73,6 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
       appBar: AppBar(
         title: const Text("Gallery"),
         actions: [
-          // Share Button.
           IconButton(
             onPressed: () {
               final path = widget.paths.elementAtOrNull(_currentPage);
@@ -79,20 +81,17 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
 
                 imageVal.when(
                   data: (image) {
-                    if (kIsWeb) {
-                      // Handle sharing on web or other platforms if needed.
-                    } else {
-                      Share.shareXFiles(
-                        [
-                          XFile.fromData(
-                            image.bytes,
-                            mimeType: "image/jpeg",
-                            name: "${path.fullPath}.jpg",
-                          ),
-                        ],
-                        subject: "Foto",
-                      ).ignore();
-                    }
+                    // Handle sharing functionality here.
+                    Share.shareXFiles(
+                      [
+                        XFile.fromData(
+                          image.bytes,
+                          mimeType: "image/jpeg",
+                          name: "$path.jpg",
+                        ),
+                      ],
+                      subject: "Foto",
+                    ).ignore();
                   },
                   error: (err, _) {},
                   loading: () {},
@@ -109,24 +108,41 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
           onPageChanged: (index) {
             setState(() {
               _currentPage = index;
-              _preloadImages(index);
+              _preloadImages(ref, index);
             });
           },
           itemBuilder: (context, index) {
             final path = widget.paths[index];
-            final imageVal = ref.watch(galleryImageProvider(path.fullPath));
 
-            return imageVal.when(
-              data: (image) => Image.memory(image.bytes),
-              error: (err, _) => Center(child: Text('Error: $err')),
-              loading: () => const Center(child: CircularProgressIndicator()),
-            );
+            // Access the manual cache.
+            final cache = ref.read(galleryImageCacheProvider);
+
+            // Check if the image is in the cache.
+            final image = cache[path];
+
+            if (image == null) {
+              // Fallback: Use galleryImageProvider to load and cache the image.
+              final imageVal = ref.watch(galleryImageProvider(path.fullPath));
+
+              return imageVal.when(
+                data: (loadedImage) {
+                  // Add the newly loaded image to the cache.
+                  cache[path.fullPath] = loadedImage;
+
+                  return Image.memory(loadedImage.bytes);
+                },
+                error: (err, _) => Center(child: Text('Error: $err')),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            // Render the cached image.
+            return Image.memory(image.bytes);
           },
           itemCount: widget.paths.length,
         ),
         onHorizontalDragUpdate: (details) {
           if (details.primaryDelta! > 0) {
-            // Swiping in right direction.
             if (_currentPage > 0) {
               _pageController.previousPage(
                 duration: const Duration(milliseconds: 300),
@@ -134,7 +150,6 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
               );
             }
           } else if (details.primaryDelta! < 0) {
-            // Swiping in left direction.
             if (_currentPage < widget.paths.length - 1) {
               _pageController.nextPage(
                 duration: const Duration(milliseconds: 300),
