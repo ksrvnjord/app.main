@@ -55,8 +55,6 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
       if (!imageCache.containsKey(MemoryImage(image.bytes))) {
         precacheImage(image, context).ignore();
       }
-
-      print("Precached image at index $index");
     });
   }
 
