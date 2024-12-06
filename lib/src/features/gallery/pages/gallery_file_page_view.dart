@@ -33,33 +33,39 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
     super.initState();
     _currentPage = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
-    _preloadImages(ref, _currentPage);
-  }
-
-  void _preloadImages(WidgetRef ref, int index) {
-    for (int i = index - 5; i <= index + 5; i += 1) {
-      if (i >= 0 && i < widget.paths.length) {
-        final path = widget.paths[i];
-
-        // Read from the provider and cache it if needed.
-        final memoryImageFuture =
-            ref.read(galleryImageProvider(path.fullPath).future);
-
-        memoryImageFuture.then((image) {
-          // Precache the image only if it's not in the cache already.
-          if (!imageCache.containsKey(MemoryImage(image.bytes))) {
-            precacheImage(image, context).ignore();
-          }
-        });
-      }
+    _preloadImage(ref, _currentPage);
+    for (int i = 1; i < 3; i += 1) {
+      _preloadImage(ref, _currentPage + i);
+      _preloadImage(ref, _currentPage - i);
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _preloadImages(ref, _currentPage);
+  void _preloadImage(WidgetRef ref, int index) {
+    if (index < 0 || index >= widget.paths.length) {
+      return;
+    }
+    final path = widget.paths[index];
+
+    // Read from the provider and cache it if needed.
+    final memoryImageFuture =
+        ref.read(galleryImageProvider(path.fullPath).future);
+
+    memoryImageFuture.then((image) {
+      // Precache the image only if it's not in the cache already.
+      if (!imageCache.containsKey(MemoryImage(image.bytes))) {
+        precacheImage(image, context).ignore();
+      }
+
+      print("Precached image at index $index");
+    });
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _preloadImage(ref, _currentPage + 2);
+  //   _preloadImage(ref, _currentPage - 2);
+  // }
 
   @override
   void dispose() {
@@ -107,8 +113,9 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {
+              bool isForward = _currentPage < index;
               _currentPage = index;
-              _preloadImages(ref, index);
+              _preloadImage(ref, isForward ? index + 2 : index - 2);
             });
           },
           itemBuilder: (context, index) {
