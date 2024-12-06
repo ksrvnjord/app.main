@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:easy_image_viewer/easy_image_viewer.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';

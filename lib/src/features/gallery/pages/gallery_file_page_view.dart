@@ -19,10 +19,10 @@ class GalleryFilePageView extends ConsumerStatefulWidget {
   final List<Reference> paths;
 
   @override
-  _GalleryFilePageViewState createState() => _GalleryFilePageViewState();
+  GalleryFilePageViewState createState() => GalleryFilePageViewState();
 }
 
-class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
+class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
   int _currentPage = 0;
   PageController _pageController = PageController();
 

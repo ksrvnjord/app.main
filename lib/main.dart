@@ -1,6 +1,5 @@
 // ignore_for_file: prefer-static-class, avoid-redundant-async, no-empty-block
 
-import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +14,6 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -85,9 +83,7 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(AuthConstants());
 
   runApp(const ProviderScope(
-    child: BetterFeedback(
-      child: Application(),
-    ),
+    child: Application(),
   ));
 }
 
@@ -111,20 +107,7 @@ Future<void> main() async {
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
 
   // Note: "kReleaseMode" is true if the app is not being debugged.
-  if (kReleaseMode) {
-    // Run it inside of SentryFlutter, but log / except to the debug-app.
-    const double sampleRate = 1;
-    SentryFlutter.init(
-      (options) {
-        options.dsn =
-            'https://d45c56c8f63a498188d63af3c1cf585d@sentry.ksrv.nl/3';
-        options.tracesSampleRate = sampleRate;
-      },
-      appRunner: appRunner,
-    );
-  } else {
-    appRunner();
-  }
+  appRunner();
 }
 
 // Main is not a nice class name, but it is the main class of the app.

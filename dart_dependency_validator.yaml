@@ -1,6 +1,0 @@
-# https://pub.dev/packages/dependency_validator
-
-ignore:
-  - dart_code_metrics_presets # DEV-dependency
-  - sliver_tools
-  - riverpod_lint

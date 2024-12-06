@@ -1,5 +1,3 @@
-import 'package:feedback_sentry/feedback_sentry.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,16 +51,6 @@ class MorePage extends ConsumerWidget {
               MoreListTile(label: entry.key, routeName: entry.value),
               const Divider(height: 0, thickness: dividerThickness),
             ].toColumn(),
-          ),
-          ListTile(
-            title: Text(
-              "Geef Feedback over de App",
-              style: textTheme.titleMedium,
-            ),
-            trailing: const Icon(Icons.feedback_outlined),
-            onTap: () => BetterFeedback.of(context).showAndUploadToSentry(
-              name: FirebaseAuth.instance.currentUser?.uid ?? "Anoniem",
-            ),
           ),
           const Divider(height: 0, thickness: dividerThickness),
           const MoreLinkTile(
