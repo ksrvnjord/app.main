@@ -83,9 +83,7 @@ Future<void> appRunner() async {
   GetIt.I.registerSingleton(AuthConstants());
 
   runApp(const ProviderScope(
-    child: BetterFeedback(
-      child: Application(),
-    ),
+    child: Application(),
   ));
 }
 
