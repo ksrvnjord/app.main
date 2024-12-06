@@ -16,11 +16,6 @@ env:
   dcm_version: "1.22.0"
 
 jobs:
-  check-unused:
-    name: Check unused code / files
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
   analyze:
     name: Flutter analyze / Dart Code Metrics Analyze
     runs-on: ubuntu-latest
