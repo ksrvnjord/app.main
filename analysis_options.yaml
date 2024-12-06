@@ -31,6 +31,11 @@ linter:
 
 analyzer:
   exclude:
-    - lib/firebase_options.dart # exclude generated files
+    # exclude generated files
+    - lib/firebase_options.dart
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - '**.gr.dart'
+    - '**/generated_plugin_registrant.dart'
   plugins:
     - custom_lint
