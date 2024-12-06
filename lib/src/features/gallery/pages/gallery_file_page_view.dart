@@ -34,7 +34,7 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
     _currentPage = widget.initialIndex;
     _pageController = PageController(initialPage: widget.initialIndex);
     _preloadImage(ref, _currentPage);
-    for (int i = 1; i < 3; i += 1) {
+    for (int i = 1; i < 4; i += 1) {
       _preloadImage(ref, _currentPage + i);
       _preloadImage(ref, _currentPage - i);
     }
@@ -106,7 +106,7 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
             setState(() {
               bool isForward = _currentPage < index;
               _currentPage = index;
-              _preloadImage(ref, isForward ? index + 2 : index - 2);
+              _preloadImage(ref, isForward ? index + 3 : index - 3);
             });
           },
           itemBuilder: (context, index) {
