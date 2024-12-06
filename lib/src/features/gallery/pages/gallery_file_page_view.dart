@@ -58,13 +58,6 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
     });
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   _preloadImage(ref, _currentPage + 2);
-  //   _preloadImage(ref, _currentPage - 2);
-  // }
-
   @override
   void dispose() {
     _pageController.dispose();
