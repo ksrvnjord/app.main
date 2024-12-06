@@ -93,7 +93,8 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
             return imageVal.when(
               data: (image) => Image.memory(image.bytes),
               error: (err, _) => Center(child: Text('Error: $err')),
-              loading: () => const Center(child: CircularProgressIndicator().adaptive()),
+              loading: () =>
+                  Center(child: CircularProgressIndicator.adaptive()),
             );
           },
           itemCount: widget.paths.length,
