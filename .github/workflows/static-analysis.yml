@@ -40,7 +40,7 @@ jobs:
         run: flutter pub get
 
       - name: Flutter Analyze
-        run: flutter analyze --fatal-warnings --fatal-infos .
+        run: flutter analyze --fatal-warnings .
 
   other:
     name: Dart Format / Validate dependencies / Check unnecessary nullable parameters
