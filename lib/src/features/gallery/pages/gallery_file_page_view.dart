@@ -130,7 +130,8 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                   return Image.memory(loadedImage.bytes);
                 },
                 error: (err, _) => Center(child: Text('Error: $err')),
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () =>
+                    const Center(child: CircularProgressIndicator.adaptive()),
               );
             }
 
