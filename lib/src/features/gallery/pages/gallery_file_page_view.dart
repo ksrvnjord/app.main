@@ -3,10 +3,8 @@
 import 'dart:async';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -21,10 +19,10 @@ class GalleryFilePageView extends ConsumerStatefulWidget {
   final List<Reference> paths;
 
   @override
-  _GalleryFilePageViewState createState() => _GalleryFilePageViewState();
+  GalleryFilePageViewState createState() => GalleryFilePageViewState();
 }
 
-class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
+class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
   int _currentPage = 0;
   PageController _pageController = PageController();
 
@@ -53,7 +51,9 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
     memoryImageFuture.then((image) {
       // Precache the image only if it's not in the cache already.
       if (!imageCache.containsKey(MemoryImage(image.bytes))) {
-        precacheImage(image, context).ignore();
+        if (mounted) {
+          precacheImage(image, context).ignore();
+        }
       }
     });
   }
@@ -110,13 +110,13 @@ class _GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
             });
           },
           itemBuilder: (context, index) {
-            final path = widget.paths[index];
+            final Reference path = widget.paths[index];
 
             // Access the manual cache.
             final cache = ref.read(galleryImageCacheProvider);
 
             // Check if the image is in the cache.
-            final image = cache[path];
+            final image = cache[path.fullPath];
 
             if (image == null) {
               // Fallback: Use galleryImageProvider to load and cache the image.
