@@ -8,7 +8,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/init_messaging_info.dart';
 import 'package:ksrvnjord_main_app/src/features/messaging/request_messaging_permission.dart';
@@ -24,14 +23,14 @@ part 'auth_controller.freezed.dart';
 class AuthController extends _$AuthController {
   final _storage = const FlutterSecureStorage();
 
-  final _authConstants = GetIt.I.get<AuthConstants>();
-
   @override
   Future<Auth> build() async {
+    final constants = AuthConstants();
+
     // Get stored credentials.
     String? exp = await _storage.read(key: "access_exp");
     if (exp == null) {
-      return Auth(authenticated: false);
+      return Auth(authenticated: false, constants: constants);
     }
 
     final expiration =
@@ -41,16 +40,16 @@ class AuthController extends _$AuthController {
       // Token is expired, delete it.
       await _storage.delete(key: 'access_token');
 
-      return Auth(authenticated: false);
+      return Auth(authenticated: false, constants: constants);
     }
 
     // Change the environment based on the token endpoint.
-    _authConstants.environment =
+    constants.environment =
         await _storage.read(key: 'environment') == "${Environment.demo}"
             ? Environment.demo
             : Environment.production;
     final accessToken = await _storage.read(key: 'access_token') ?? '';
-    await _firebaseLogin();
+    await _firebaseLogin(constants);
 
     return Auth(
       accessToken: accessToken,
@@ -61,24 +60,25 @@ class AuthController extends _$AuthController {
 
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
-    _authConstants.environment =
+    final constants = AuthConstants();
+    constants.environment =
         email == "demo" ? Environment.demo : Environment.production;
-    await _storage.write(
-      key: 'environment',
-      value: "${_authConstants.environment}",
-    );
-    final (loggedIn, _) = await _heimdallLogin(email, password);
+
+    await _storage.write(key: 'environment', value: "${constants.environment}");
+
+    final (loggedIn, _) = await _heimdallLogin(email, password, constants);
 
     if (!loggedIn) {
-      state = AsyncValue.data(Auth(authenticated: false));
+      state = AsyncValue.data(Auth(authenticated: false, constants: constants));
 
       return;
     }
-    if (_authConstants.environment == Environment.demo) {
+
+    if (constants.environment == Environment.demo) {
       state = AsyncValue.data(Auth(
-        accessToken: await _storage.read(key: 'access_token') ?? '',
-        authenticated: true,
-      ));
+          accessToken: await _storage.read(key: 'access_token') ?? '',
+          authenticated: true,
+          constants: constants));
 
       return;
     }
@@ -98,10 +98,11 @@ class AuthController extends _$AuthController {
     } catch (error) {
       FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
     }
-    await _firebaseLogin();
+    await _firebaseLogin(constants);
     state = AsyncValue.data(Auth(
       accessToken: await _storage.read(key: 'access_token') ?? '',
       authenticated: true,
+      constants: constants,
     ));
   }
 
@@ -147,18 +148,18 @@ class AuthController extends _$AuthController {
   }
 
   // Tries to login into Heimdall and Firebase.
-  Future<(bool, String?)> _heimdallLogin(String email, String password) async {
+  Future<(bool, String?)> _heimdallLogin(
+      String email, String password, AuthConstants constants) async {
     if (email.isEmpty || password.isEmpty) {
       return (false, 'Both email and password fields are required.');
     }
 
     try {
-      final result = await Dio().post(_authConstants.oauthEndpoint, data: {
+      final result = await Dio().post(constants.oauthEndpoint, data: {
         'password': password,
-        if (_authConstants.environment == Environment.demo)
+        if (constants.environment == Environment.demo)
           'username': email, // Only send username in demo mode.
-        if (_authConstants.environment == Environment.production)
-          'email': email,
+        if (constants.environment == Environment.production) 'email': email,
       });
       // Write the credentials to the secure storage.
       final String token = result.data['access'];
@@ -180,8 +181,8 @@ class AuthController extends _$AuthController {
 
   // Login to Firebase with the stored credentials.
   // NOTE: The function will not do anything if the environment is set to demo.
-  Future<void> _firebaseLogin() async {
-    if (_authConstants.environment == Environment.demo) {
+  Future<void> _firebaseLogin(AuthConstants constants) async {
+    if (constants.environment == Environment.demo) {
       // Don't login to Firebase in demo mode.
       return;
     }
@@ -194,7 +195,7 @@ class AuthController extends _$AuthController {
 
     // Get the token for the configured (constant) endpoint JWT.
     final response = await Dio().get(
-      _authConstants.jwtEndpoint().toString(),
+      constants.jwtEndpoint().toString(),
       options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
 
@@ -232,5 +233,6 @@ class Auth with _$Auth {
     DateTime? expiration,
     @Default('') String error,
     required bool authenticated,
+    AuthConstants? constants,
   }) = _Auth;
 }

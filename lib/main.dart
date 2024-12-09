@@ -10,10 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -78,9 +76,6 @@ Future<void> appRunner() async {
   ); // Don't collect analytics in debug mode.
 
   // ----------------- FIREBASE / END -----------------. //
-
-  // ignore: avoid-ignoring-return-values
-  GetIt.I.registerSingleton(AuthConstants());
 
   runApp(const ProviderScope(
     child: Application(),

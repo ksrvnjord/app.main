@@ -20,6 +20,7 @@ mixin _$Auth {
   DateTime? get expiration => throw _privateConstructorUsedError;
   String get error => throw _privateConstructorUsedError;
   bool get authenticated => throw _privateConstructorUsedError;
+  AuthConstants? get constants => throw _privateConstructorUsedError;
 
   /// Create a copy of Auth
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +37,8 @@ abstract class $AuthCopyWith<$Res> {
       {String? accessToken,
       DateTime? expiration,
       String error,
-      bool authenticated});
+      bool authenticated,
+      AuthConstants? constants});
 }
 
 /// @nodoc
@@ -58,6 +60,7 @@ class _$AuthCopyWithImpl<$Res, $Val extends Auth>
     Object? expiration = freezed,
     Object? error = null,
     Object? authenticated = null,
+    Object? constants = freezed,
   }) {
     return _then(_value.copyWith(
       accessToken: freezed == accessToken
@@ -76,6 +79,10 @@ class _$AuthCopyWithImpl<$Res, $Val extends Auth>
           ? _value.authenticated
           : authenticated // ignore: cast_nullable_to_non_nullable
               as bool,
+      constants: freezed == constants
+          ? _value.constants
+          : constants // ignore: cast_nullable_to_non_nullable
+              as AuthConstants?,
     ) as $Val);
   }
 }
@@ -91,7 +98,8 @@ abstract class _$$AuthImplCopyWith<$Res> implements $AuthCopyWith<$Res> {
       {String? accessToken,
       DateTime? expiration,
       String error,
-      bool authenticated});
+      bool authenticated,
+      AuthConstants? constants});
 }
 
 /// @nodoc
@@ -110,6 +118,7 @@ class __$$AuthImplCopyWithImpl<$Res>
     Object? expiration = freezed,
     Object? error = null,
     Object? authenticated = null,
+    Object? constants = freezed,
   }) {
     return _then(_$AuthImpl(
       accessToken: freezed == accessToken
@@ -128,6 +137,10 @@ class __$$AuthImplCopyWithImpl<$Res>
           ? _value.authenticated
           : authenticated // ignore: cast_nullable_to_non_nullable
               as bool,
+      constants: freezed == constants
+          ? _value.constants
+          : constants // ignore: cast_nullable_to_non_nullable
+              as AuthConstants?,
     ));
   }
 }
@@ -139,7 +152,8 @@ class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
       {this.accessToken,
       this.expiration,
       this.error = '',
-      required this.authenticated});
+      required this.authenticated,
+      this.constants});
 
   @override
   final String? accessToken;
@@ -150,10 +164,12 @@ class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
   final String error;
   @override
   final bool authenticated;
+  @override
+  final AuthConstants? constants;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Auth(accessToken: $accessToken, expiration: $expiration, error: $error, authenticated: $authenticated)';
+    return 'Auth(accessToken: $accessToken, expiration: $expiration, error: $error, authenticated: $authenticated, constants: $constants)';
   }
 
   @override
@@ -164,7 +180,8 @@ class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
       ..add(DiagnosticsProperty('accessToken', accessToken))
       ..add(DiagnosticsProperty('expiration', expiration))
       ..add(DiagnosticsProperty('error', error))
-      ..add(DiagnosticsProperty('authenticated', authenticated));
+      ..add(DiagnosticsProperty('authenticated', authenticated))
+      ..add(DiagnosticsProperty('constants', constants));
   }
 
   @override
@@ -178,12 +195,14 @@ class _$AuthImpl with DiagnosticableTreeMixin implements _Auth {
                 other.expiration == expiration) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.authenticated, authenticated) ||
-                other.authenticated == authenticated));
+                other.authenticated == authenticated) &&
+            (identical(other.constants, constants) ||
+                other.constants == constants));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, accessToken, expiration, error, authenticated);
+  int get hashCode => Object.hash(
+      runtimeType, accessToken, expiration, error, authenticated, constants);
 
   /// Create a copy of Auth
   /// with the given fields replaced by the non-null parameter values.
@@ -199,7 +218,8 @@ abstract class _Auth implements Auth {
       {final String? accessToken,
       final DateTime? expiration,
       final String error,
-      required final bool authenticated}) = _$AuthImpl;
+      required final bool authenticated,
+      final AuthConstants? constants}) = _$AuthImpl;
 
   @override
   String? get accessToken;
@@ -209,6 +229,8 @@ abstract class _Auth implements Auth {
   String get error;
   @override
   bool get authenticated;
+  @override
+  AuthConstants? get constants;
 
   /// Create a copy of Auth
   /// with the given fields replaced by the non-null parameter values.
