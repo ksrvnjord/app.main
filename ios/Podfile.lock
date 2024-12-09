@@ -3,7 +3,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.13)
     - GoogleUtilities/UserDefaults (~> 7.13)
     - PromisesObjC (~> 2.3)
-  - autologin_darwin (0.0.5):
+  - autologin_darwin (1.0.1):
     - Flutter
     - FlutterMacOS
   - cloud_firestore (4.17.5):
@@ -272,11 +272,6 @@ PODS:
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
   - RecaptchaInterop (100.0.0)
-  - Sentry/HybridSDK (8.36.0)
-  - sentry_flutter (8.9.0):
-    - Flutter
-    - FlutterMacOS
-    - Sentry/HybridSDK (= 8.36.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -307,7 +302,6 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -349,7 +343,6 @@ SPEC REPOS:
     - PromisesObjC
     - PromisesSwift
     - RecaptchaInterop
-    - Sentry
 
 EXTERNAL SOURCES:
   autologin_darwin:
@@ -393,8 +386,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  sentry_flutter:
-    :path: ".symlinks/plugins/sentry_flutter/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -409,7 +400,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AppCheckCore: 9feb4300caa596a36416cde10674dc5bec1e022e
-  autologin_darwin: 1240202b2da93971e3bb0a89a561cc651af664e7
+  autologin_darwin: c67b2c7e42b1f716a877a173e45d448e3c995934
   cloud_firestore: 003d53b6b8b392600b7769acf9421cc4f23e5911
   cloud_functions: 1a28a0b6ec4caf864692e54e1f5c1934431510c8
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
@@ -458,13 +449,11 @@ SPEC CHECKSUMS:
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   leveldb-library: cc8b8f8e013647a295ad3f8cd2ddf49a6f19be19
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
-  sentry_flutter: 0eb93e5279eb41e2392212afe1ccd2fecb4f8cbe
   share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe

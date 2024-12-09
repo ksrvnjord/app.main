@@ -31,58 +31,11 @@ linter:
 
 analyzer:
   exclude:
-    - lib/**.graphql.dart # exclude generated files
-    - lib/firebase_options.dart # exclude generated files
+    # exclude generated files
+    - lib/firebase_options.dart
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - '**.gr.dart'
+    - '**/generated_plugin_registrant.dart'
   plugins:
     - custom_lint
-
-# DART CODE METRICS - The code metrics you don't want but need
-# Documentation at https://dcm.dev/
-# Below are the metrics listed that are currently being used
-# The goal is to have them all enabled at some point
-# To run the metrics:
-# $ flutter pub run dart_code_metrics:metrics analyze lib
-dart_code_metrics:
-  extends:
-    - package:dart_code_metrics_presets/all.yaml
-  metrics:
-    cyclomatic-complexity: 28
-    halstead-volume: 7000
-    lines-of-code: 250
-    maintainability-index: 20
-    maximum-nesting-level: 7
-    number-of-methods: 15
-    number-of-parameters: 4
-    source-lines-of-code: 200
-    technical-debt:
-      threshold: 1000
-      todo-cost: 50
-      ignore-cost: 5
-      ignore-for-file-cost: 20
-      as-dynamic-cost: 100
-      deprecated-annotations-cost: 50
-      file-nullsafety-migration-cost: 200
-      unit-type: "EUR"
-  metrics-exclude:
-    - test/** # we don't have any tests yet
-    - lib/**.graphql.dart # exclude generated files
-  rules:
-    # ------ UNAVOIDABLE RULES -----------------
-    - avoid-nested-conditional-expressions: false # we want to have conditions within the nesting of a widget
-    - prefer-correct-identifier-length: # i used in for-loops
-        exceptions: ["i"]
-    - prefer-commenting-analyzer-ignores: false # we are too lazy to comment the ignore comments and it are too many
-    - prefer-typedefs-for-callbacks: false
-    - parameters-ordering: false
-    - avoid-missing-image-alt: false # Users can all see properly
-    - prefer-correct-handler-name:
-        name-pattern: ^(handle[A-Z]|unawaited|setState)+ # Handler may be wrapped in unawaited if the handler is not awaited
-    - prefer-define-hero-tag: false
-
-        # ignore-functions: true
-        # ignore-public: true
-
-  rules-exclude:
-    - test/** # exclude test files because we don't have any tests
-    - lib/**.graphql.dart # exclude generated files
-
