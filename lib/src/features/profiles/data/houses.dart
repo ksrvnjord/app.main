@@ -38,4 +38,3 @@ const kHouseNames = [
   'Villa Phoenix',
   'Ygglo',
 ];
-

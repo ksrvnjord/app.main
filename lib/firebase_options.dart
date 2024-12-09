@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macOS - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -66,19 +69,6 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAmj4F9jJP22w0XpmBNoWsPurnrbN1KMWY',
-    appId: '1:755032766973:ios:c70e32ff733792ca4e0194',
-    messagingSenderId: '755032766973',
-    projectId: 'ksrv-njord',
-    databaseURL:
-        'https://ksrv-njord-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'ksrv-njord.appspot.com',
-    iosClientId:
-        '755032766973-kso20cqedhltbrii1o22jod6i7lpptc7.apps.googleusercontent.com',
-    iosBundleId: 'com.ksrvnjord.app',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAmj4F9jJP22w0XpmBNoWsPurnrbN1KMWY',
     appId: '1:755032766973:ios:c70e32ff733792ca4e0194',
     messagingSenderId: '755032766973',
