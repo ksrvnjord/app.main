@@ -21,4 +21,6 @@ class PermissionEntry {
 
   factory PermissionEntry.fromJson(Map<String, dynamic> json) =>
       _$PermissionEntryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PermissionEntryToJson(this);
 }
