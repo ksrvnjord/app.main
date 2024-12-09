@@ -5,21 +5,21 @@ part 'address.g.dart';
 @JsonSerializable()
 class Address {
   String? street;
+
   @JsonKey(name: 'housenumber')
   String? houseNumber;
   @JsonKey(name: 'housenumber_addition')
   String? houseNumberAddition;
+
   @JsonKey(name: 'address_two')
   String? addressTwo;
   @JsonKey(name: 'zipcode')
   String? postalCode;
+
   String? city;
   final String? country;
+
   bool? visible;
-  // ignore: sort_constructors_first
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
-  // ignore: sort_constructors_first
   Address({
     this.street,
     this.houseNumber,
@@ -30,4 +30,9 @@ class Address {
     this.country,
     this.visible,
   });
+
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

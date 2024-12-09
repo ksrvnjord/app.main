@@ -1,5 +1,7 @@
 // ignore_for_file: avoid-ignoring-return-values, no-magic-string
 
+import 'dart:js_interop';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -123,7 +125,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: currentUser.when(
-          // ignore: avoid-long-functions
+          // ignore: avoid-long-functions, prefer-extracting-function-callbacks
           data: (user) {
             _initializeControllersWithUserData(user);
 
