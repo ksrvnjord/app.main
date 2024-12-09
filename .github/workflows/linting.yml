@@ -1,0 +1,25 @@
+name: Flutter Linting
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "!dependabot/**" # Ignore automatic PRs from dependabot
+    paths:
+      - "lib/**"
+jobs:
+  lint:
+    name: Flutter Lints
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4 # Checkout the code in the main repo
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.12.0
+        with:
+          channel: "stable"
+          flutter-version-file: pubspec.yaml
+          cache: true
+      - name: Dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze --fatal-warnings .
