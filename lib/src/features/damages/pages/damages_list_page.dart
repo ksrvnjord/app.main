@@ -26,8 +26,7 @@ class DamagesListPage extends ConsumerWidget {
               fromFirestore: (snapshot, _) =>
                   Damage.fromJson(snapshot.data() ?? {}),
               toFirestore: (reservation, _) => reservation.toJson(),
-            )
-            .orderBy('createdTime', descending: true),
+            ).orderBy('critical', descending: true).orderBy('createdTime', descending: true),
         itemBuilder: (context, snap, index) {
           final pollSnapshot = snap as QueryDocumentSnapshot<Damage>;
 
