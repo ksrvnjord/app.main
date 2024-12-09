@@ -123,7 +123,7 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: currentUser.when(
-          // ignore: avoid-long-functions
+          // ignore: avoid-long-functions, prefer-extracting-function-callbacks
           data: (user) {
             _initializeControllersWithUserData(user);
 

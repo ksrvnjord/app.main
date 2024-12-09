@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:collection/collection.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/utils/gallery_view_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/file_button.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_button.dart';
@@ -46,7 +47,10 @@ class _FolderListState extends ConsumerState<FolderList> {
       childAspectRatio: childAspect,
       children: [
         ...prefixes.map((e) => FolderButton(item: e)),
-        ...items.map((e) => FileButton(item: e)),
+        // ignore: avoid-slow-collection-methods
+        ...items.mapIndexed(
+          (index, item) => FileButton(index: index, item: item, items: items),
+        ),
       ],
     );
   }

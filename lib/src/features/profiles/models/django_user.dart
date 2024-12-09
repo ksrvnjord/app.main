@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/contact.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/permission_entry.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 part 'django_user.g.dart';
@@ -88,7 +87,7 @@ class DjangoUser {
   Map<String, dynamic> toJson() => _$DjangoUserToJson(this);
 
   static Future<DjangoUser> getByIdentifier(
-    StreamProviderRef<User> ref,
+    Ref ref,
     String lidnummer,
   ) async {
     final dio = ref.watch(dioProvider);
@@ -101,7 +100,7 @@ class DjangoUser {
 
   static Future<DjangoUser> getById(
     String id,
-    StreamProviderRef<User> ref,
+    Ref ref,
   ) async {
     final dio = ref.watch(dioProvider);
 
