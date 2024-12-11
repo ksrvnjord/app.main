@@ -126,11 +126,22 @@ class DjangoUser {
       'knrb',
       'permissions',
       'groups',
-      'birth_date'
+      'birth_date',
+      'info.blikken',
+      'info.taarten',
+      'info.honorary',
     ];
     final dio = ref.watch(dioProvider);
-    final jsonUser = updatedUser.toJson();
-    unchangedAbleFields.forEach(jsonUser.remove);
+    var jsonUser = updatedUser.toJson();
+    jsonUser['info'] = updatedUser.info.toJson();
+    for (var elementToRemove in unchangedAbleFields) {
+      final keys = elementToRemove.split('.');
+      if (keys.length == 1) {
+        jsonUser.remove(elementToRemove);
+      } else if (keys.length == 2) {
+        jsonUser[keys[0]].remove(keys[1]);
+      }
+    }
 
     try {
       final res = await dio.patch(
