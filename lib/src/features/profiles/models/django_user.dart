@@ -115,12 +115,38 @@ class DjangoUser {
     WidgetRef ref,
     DjangoUser updatedUser,
   ) async {
+    final List<String> unchangedAbleFields = [
+      'id',
+      'iid',
+      'is_admin',
+      'is_staff',
+      'is_active',
+      'is_superuser',
+      'username',
+      'knrb',
+      'permissions',
+      'groups',
+      'birth_date',
+      'info.blikken',
+      'info.taarten',
+      'info.honorary',
+    ];
     final dio = ref.watch(dioProvider);
+    var jsonUser = updatedUser.toJson();
+    jsonUser['info'] = updatedUser.info.toJson();
+    for (var elementToRemove in unchangedAbleFields) {
+      final keys = elementToRemove.split('.');
+      if (keys.length == 1) {
+        jsonUser.remove(elementToRemove);
+      } else if (keys.length == 2) {
+        jsonUser[keys[0]].remove(keys[1]);
+      }
+    }
 
     try {
       final res = await dio.patch(
         "/api/v2/users/${updatedUser.identifier}/",
-        data: jsonEncode(updatedUser.toJson()),
+        data: jsonEncode(jsonUser),
       );
 
       // ignore: no-magic-number
