@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/login_page.dart';
@@ -258,16 +257,16 @@ abstract final // ignore: prefer-single-declaration-per-file
           child: const EventsPage(),
         ),
         // Dynamic route for viewing one announcement.
-        _route(
-          path: 'aankondigingen/:id',
-          name: "Announcement",
-          pageBuilder: (context, state) => _getPage(
-            child: AnnouncementPage(
-              announcementId: state.pathParameters['id']!,
-            ),
-            name: "Announcement",
-          ),
-        ),
+        // _route(
+        //   path: 'aankondigingen/:id',
+        //   name: "Announcement",
+        //   pageBuilder: (context, state) => _getPage(
+        //     child: AnnouncementPage(
+        //       announcementId: state.pathParameters['id']!,
+        //     ),
+        //     name: "Announcement",
+        //   ),
+        //),
         _route(
           path: 'mijn-profiel',
           name: "Edit Profile",

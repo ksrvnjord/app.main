@@ -2,7 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/announcements.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
@@ -14,84 +14,49 @@ class AnnouncementsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final announcementsVal = ref.watch(Announcements.firstTenProvider);
-    const double minLeadingWidth = 8;
-    const double shimmerContainerHeight = 320;
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
+    final announcements = ref.watch(announcementProvider);
+    final announcementNotifier = ref.read(announcementProvider.notifier);
 
     return [
       const WidgetHeader(
         title: "Aankondigingen",
         titleIcon: Icons.campaign,
       ),
-      announcementsVal.when(
-        data: (snapshot) => snapshot.size == 0
-            ? const Text("Geen aankondigingen gevonden")
-            : snapshot.docs
-                .map(
-                  (doc) {
-                    final announcement = doc.data();
-
-                    return ListTile(
-                      title: Text(
-                        announcement.title,
-                      ),
-                      subtitle: Text.rich(TextSpan(children: [
-                        TextSpan(
-                          text: "${announcement.author} ",
-                          style: textTheme.labelMedium,
-                        ).textColor(colorScheme.primary),
-                        TextSpan(
-                          text: timeago.format(
-                            announcement.createdAt.toDate(),
-                            locale: 'nl',
-                          ),
-                          style: textTheme.labelMedium?.copyWith(
-                            color: colorScheme.outline,
-                          ),
-                        ),
-                      ])),
-                      trailing: [
-                        const Icon(Icons.chevron_right),
-                      ].toColumn(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                      // ignore: prefer-extracting-callbacks
-                      onTap: () {
-                        FirebaseAnalytics.instance.logEvent(
-                          name: 'announcement_opened',
-                          parameters: {
-                            'announcement_id': doc.id,
-                            'announcement_title': announcement.title,
-                          },
-                        );
-                        // ignore: avoid-ignoring-return-values
-                        context.goNamed(
-                          'Announcement',
-                          pathParameters: {'id': doc.id},
-                        );
-                      },
-                      minLeadingWidth: minLeadingWidth,
-                    );
-                  },
-                )
-                .toList()
-                .toColumn(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                ),
-        error: (error, stackTrace) =>
-            ErrorCardWidget(errorMessage: error.toString()),
-        loading: () => ShimmerWidget(
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            height: shimmerContainerHeight,
+      if (announcements.isEmpty)
+        const SizedBox(
+          height: 320,
+          child: Center(child: CircularProgressIndicator()),
+        )
+      else
+        SizedBox(
+          height: 320,
+          child: PageView.builder(
+            itemCount: announcements.length,
+            itemBuilder: (context, index) {
+              final announcement = announcements[index];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Image.network(
+                      'https://firebasestorage.googleapis.com/v0/b/your_project_id/o/announcements_v2%2F${announcement.id}.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.image_not_supported),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      announcement.author,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
-      ),
     ].toColumn();
   }
 }
