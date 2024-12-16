@@ -21,7 +21,8 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       trailing: Icon(
-        (user.birthDate.substring(5) != dateToday)
+        // ignore: no-magic-number
+        (user.birthDate.characters.getRange(5).toString() != dateToday)
             ? Icons.arrow_forward_ios
             : Icons.cake,
         color: Theme.of(context).colorScheme.primary,

@@ -31,9 +31,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
     const formFieldPadding = 8.0;
     const actionButtonSize = 96.0;
     final yearOfArrival = identifier.characters.getRange(
-      0,
-      2,
-    ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
+        0, 2); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
     final profile = ref.watch(userProvider(identifier));
 
@@ -86,6 +84,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     if (u.email.isNotEmpty && u.contact.emailVisible)
                       ElevatedButton(
                         onPressed: () =>
+                            // ignore: avoid-async-call-in-sync-function
                             launchUrl(Uri.parse("mailto:${u.email}")),
                         child: const SizedBox(
                           width: actionButtonSize,
@@ -113,8 +112,10 @@ class AlmanakUserProfileView extends ConsumerWidget {
                             ),
                           ],
                           actions: [
+                            // ignore: avoid-async-call-in-sync-function
                             () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
                             () async => await launchUrl(Uri.parse(
+                                  // ignore: avoid-nullable-interpolation
                                   "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
                                 )),
                           ],
@@ -141,8 +142,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   name: "Aankomstjaar",
                   value: "20$yearOfArrival",
                 ),
-                // Text(userInfo.studie ?? "", style: textTheme.bodyLarge)
-                // if userInfo.studie != null
                 if (userInfo.studie != null &&
                     (userInfo.studie as String).isNotEmpty)
                   DataTextListTile(
