@@ -30,9 +30,10 @@ class AlmanakUserProfileView extends ConsumerWidget {
     const elementPadding = 8.0;
     const formFieldPadding = 8.0;
     const actionButtonSize = 96.0;
-    // Final birthday = DateTime.parse(user.birthDate);.
     final yearOfArrival = identifier.characters.getRange(
-        0, 2); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
+      0,
+      2,
+    ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
     final profile = ref.watch(userProvider(identifier));
 
@@ -59,8 +60,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   '${u.firstName} ${u.lastName}',
                   style: textTheme.headlineSmall,
                 ).center(),
-                // Text(userInfo.studie ?? "", style: textTheme.bodyLarge)
-                //     .alignment(Alignment.center),
                 Text(
                   DateFormat("d MMMM y", "nl")
                       .format(DateTime.parse(u.birthDate)),
@@ -138,11 +137,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                   ],
                 ),
-                // DataTextListTile(
-                //   name: "Verjaardag",
-                //   value: DateFormat("d MMMM y", "nl")
-                //       .format(DateTime.parse(u.birthDate)),
-                // ),
                 DataTextListTile(
                   name: "Aankomstjaar",
                   value: "20$yearOfArrival",
