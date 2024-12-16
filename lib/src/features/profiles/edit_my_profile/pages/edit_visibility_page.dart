@@ -101,7 +101,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
               child: Column(
                 children: [
                   SensitiveDataBoolFormfield(
-                    title: 'Email zichtbaar in almanak',
+                    title: 'E-mail zichtbaar in almanak',
                     valueNotifier: _notifiers['email']!,
                     isEditable: true,
                   ),
