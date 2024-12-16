@@ -4,6 +4,7 @@ import 'package:action_sheet/action_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
@@ -19,24 +20,18 @@ import '../../../training/widgets/calendar/widgets/chip_widget.dart';
 import 'user_groups_list_widget.dart';
 
 class AlmanakUserProfileView extends ConsumerWidget {
-  const AlmanakUserProfileView({
-    super.key,
-    required this.identifier,
-  });
+  const AlmanakUserProfileView({super.key, required this.identifier});
 
   final String identifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double profilePictureSize = 96;
-    const double elementPadding = 8;
-    const double formFieldPadding = 8;
-    const double actionButtonSize = 96;
-
-    final Characters yearOfArrival = identifier.characters.getRange(
-      0,
-      2,
-    ); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
+    const profilePictureSize = 96.0;
+    const elementPadding = 8.0;
+    const formFieldPadding = 8.0;
+    const actionButtonSize = 96.0;
+    final yearOfArrival = identifier.characters.getRange(
+        0, 2); // Aankomstjaar is de eerste 2 cijfers van het lidnummer.
 
     final profile = ref.watch(userProvider(identifier));
 
@@ -63,8 +58,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   '${u.firstName} ${u.lastName}',
                   style: textTheme.headlineSmall,
                 ).center(),
-                Text(userInfo.studie ?? "", style: textTheme.bodyLarge)
-                    .alignment(Alignment.center),
+                Text(
+                  DateFormat("d MMMM y", "nl")
+                      .format(DateTime.parse(u.birthDate)),
+                  style: textTheme.bodyLarge,
+                ).alignment(Alignment.center),
                 if (u.bestuursFunctie != null)
                   // Make list tile with lightblue background and white text.
                   Center(
@@ -86,15 +84,14 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     if (u.email.isNotEmpty && u.contact.emailVisible)
                       ElevatedButton(
                         onPressed: () =>
+                            // ignore: avoid-async-call-in-sync-function
                             launchUrl(Uri.parse("mailto:${u.email}")),
                         child: const SizedBox(
                           width: actionButtonSize,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(
-                                Icons.mail_outline_outlined,
-                              ),
+                              Icon(Icons.mail_outline_outlined),
                               Text("Mail"),
                             ],
                           ),
@@ -115,8 +112,10 @@ class AlmanakUserProfileView extends ConsumerWidget {
                             ),
                           ],
                           actions: [
+                            // ignore: avoid-async-call-in-sync-function
                             () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
                             () async => await launchUrl(Uri.parse(
+                                  // ignore: avoid-nullable-interpolation
                                   "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
                                 )),
                           ],
@@ -139,12 +138,16 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                   ],
                 ),
-                if (u.address.visible ?? false)
-                  UserAddressWidget(address: u.address),
                 DataTextListTile(
                   name: "Aankomstjaar",
                   value: "20$yearOfArrival",
                 ),
+                if (userInfo.studie != null &&
+                    (userInfo.studie as String).isNotEmpty)
+                  DataTextListTile(
+                    name: "Studie",
+                    value: userInfo.studie as String,
+                  ),
                 if (u.board != null && (u.board as String).isNotEmpty)
                   DataTextListTile(
                     name: "Voorkeurs boord",
@@ -168,6 +171,8 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   ),
                 if (u.huis != null)
                   DataTextListTile(name: "Huis", value: u.huis as String),
+                if (u.address.visible ?? false)
+                  UserAddressWidget(address: u.address),
                 if (u.dubbellid != null && u.dubbellid as bool)
                   // Only show if true.
                   DataTextListTile(
