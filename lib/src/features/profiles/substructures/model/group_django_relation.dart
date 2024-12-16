@@ -29,8 +29,6 @@ class GroupDjangoRelation {
   factory GroupDjangoRelation.fromJson(Map<String, dynamic> json) =>
       _$GroupDjangoRelationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GroupDjangoRelationToJson(this);
-
   static String? _roleToJson(String? role) => role?.toLowerCase();
 
   /// Convert first letter of role to uppercase.

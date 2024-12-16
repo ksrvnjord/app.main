@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page_view.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_folder_page.dart';
 
 class GalleryMainPage extends StatefulWidget {
@@ -31,10 +31,14 @@ class _GalleryMainPageState extends State<GalleryMainPage> {
 
   Route onGenerateRoute(RouteSettings settings) {
     if ((settings.name ?? '').startsWith('_file/')) {
-      final name = (settings.name ?? '').replaceFirst('_file/', '');
+      // ignore: avoid-type-casts
+      final arguments = settings.arguments as Map<String, dynamic>;
 
       return MaterialPageRoute(
-        builder: (_) => GalleryFilePage(path: name),
+        builder: (_) => GalleryFilePageView(
+          initialIndex: arguments['initialIndex'],
+          paths: arguments['paths'],
+        ),
         settings: settings,
       );
     }

@@ -40,6 +40,7 @@ class SingleChoiceWidget extends StatelessWidget {
             errorMessage: 'Er zijn geen opties voor deze vraag',
           )
         : Column(
+            // ignore: prefer-for-loop-in-children
             children: options
                 .map((choice) => RadioListTile<String>(
                       value: choice,

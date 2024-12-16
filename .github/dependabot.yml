@@ -8,7 +8,8 @@ updates:
   - package-ecosystem: "pub" # Ecosystem of Dart packages
     directory: "/" # Location of package manifests
     assignees:
-      - "alexanderserraris"
+      - "maxboone"
+      - "VincentvanRie"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 3
@@ -17,7 +18,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     assignees:
-      - "alexanderserraris"
+      - "maxboone"
+      - "VincentvanRie"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 1
@@ -26,7 +28,8 @@ updates:
   - package-ecosystem: "gradle" # TODO: check if dependabot opens PRs for gradle
     directory: "/android"
     assignees:
-      - "alexanderserraris"
+      - "maxboone"
+      - "VincentvanRie"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 2

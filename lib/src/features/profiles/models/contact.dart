@@ -24,5 +24,6 @@ class Contact {
     this.phoneSecondary,
     required this.phoneVisible,
   });
+
   Map<String, dynamic> toJson() => _$ContactToJson(this);
 }

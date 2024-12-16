@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-// Import 'package:image_picker_widget/image_picker_widget.dart';.
 import 'package:ksrvnjord_main_app/src/features/damages/model/damage_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/custom_image_picker_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -54,9 +51,10 @@ class DamageFormWidget extends ConsumerWidget {
           formData.image = e;
         },
         shape: CustomImagePickerWidgetShape.square,
-        icon_size_ratio: 1,
+        iconSizeRatio: 1,
         initialImageXFile:
             formData.image, // Pass the initial image here if available.
+        pickImageIconShouldRemainVisibleOnSelect: false,
       ),
     ].toColumn(
       separator: const SizedBox(height: padding),

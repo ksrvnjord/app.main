@@ -88,7 +88,7 @@ class AdminPage extends StatelessWidget {
           FormSection(title: 'Beheer forms / polls', children: [
             Text(
               // ignore: avoid-non-ascii-symbols
-              "Forms bestaan uit één of meerdere vragen, een poll heeft altijd één vraag.",
+              "De knop voor een nieuwe form staat bij de algemene form pagina.",
               // ignore: prefer-moving-to-variable
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: Colors.grey,
@@ -99,15 +99,6 @@ class AdminPage extends StatelessWidget {
               title: const Text('Beheer Forms'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => context.goNamed('Manage Forms'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.question_mark),
-              title: const Text("Beheer Polls"),
-              trailing: const Text("Heimdall"),
-              visualDensity: VisualDensity.standard,
-              onTap: () => unawaited(launchUrl(Uri.parse(
-                "https://heimdall.njord.nl/admin/polls",
-              ))),
             ),
           ]).paddingDirectional(vertical: sectionVPadding),
           FormSection(

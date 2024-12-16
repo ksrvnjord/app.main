@@ -13,7 +13,7 @@ class FireBaseAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
   }
 }
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate, MessagingDelegate  {
   override func application(
     _ application: UIApplication,

@@ -38,8 +38,15 @@ class FirestoreUser {
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
   final bool? isAdmin; // Used for admin capabilties in-app.
 
-  bool get isAppCo => ['21203', '18031', '18257', '20198', '22195','23292']
-      .contains(identifier); // Used for testing purposes and AppCo rights.
+  bool get isAppCo => [
+        '21203',
+        '18031',
+        '18257',
+        '20198',
+        '22195',
+        '23292',
+        '23207'
+      ].contains(identifier); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
@@ -65,8 +72,6 @@ class FirestoreUser {
 
   factory FirestoreUser.fromJson(Map<String, dynamic> json) =>
       _$FirestoreUserFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FirestoreUserToJson(this);
 
   // ToJson.
   Map<String, dynamic> toFirestore() {

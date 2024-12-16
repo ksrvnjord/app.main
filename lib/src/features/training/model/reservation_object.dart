@@ -34,18 +34,4 @@ class ReservationObject {
         year = json['year'] as int?,
         brand = json['brand'] as String?,
         critical = (json['critical'] as bool?) ?? false;
-  Map<String, Object?> toJson() {
-    return {
-      'reference': reference,
-      'name': name,
-      'permissions': permissions,
-      'type': type,
-      'available': available,
-      'comment': comment,
-      'kind': kind,
-      'year': year,
-      'brand': brand,
-      'critical': critical,
-    };
-  }
 }
