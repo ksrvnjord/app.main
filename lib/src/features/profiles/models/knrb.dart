@@ -23,4 +23,6 @@ class KNRB {
   });
 
   factory KNRB.fromJson(Map<String, dynamic> json) => _$KNRBFromJson(json);
+
+  Map<String, dynamic> toJson() => _$KNRBToJson(this);
 }

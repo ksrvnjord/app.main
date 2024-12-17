@@ -1,5 +1,6 @@
 // ignore: prefer-static-class
-const List<String> kHouseNames = [
+const kHouseNames = [
+  'Maliebaan',
   't Zwanennest',
   'De Ballenbak',
   'De Glitterkade',
@@ -11,6 +12,7 @@ const List<String> kHouseNames = [
   'Huize De Dikke Kater',
   'Huize de Kolf',
   'Huize Hoarding',
+  'Huize Hooigrot',
   'Huize in de Bocht',
   'Huize Kasual',
   'Huize Knoist',
@@ -25,7 +27,6 @@ const List<String> kHouseNames = [
   'Huize Xinix',
   'Jajakommaardoor',
   'Jan Michielshof 12',
-  'Maliebaan',
   'Moppie Hotel',
   'New Rhine Sixty-Nine',
   'Njordeinde',
