@@ -64,6 +64,7 @@ dependencies:
   flutter_pdfview: ^1.3.1
   go_router: ^14.2.9
   package_info_plus: ^4.1.0
+  smooth_page_indicator: ^1.2.0
   flutter_web_plugins:
     sdk: flutter
   firebase_pagination: # Forked to add capability to refresh widget on Firebase Query change.

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
 
 class AnnouncementNotifier extends Notifier<List<Announcement>> {
@@ -37,19 +38,50 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
     }
   }
 
-  /// Create a new announcement (without a link)
-  Future<void> createAnnouncement(String author) async {
+  Future<Uint8List?> getImage(String id) async {
     try {
-      final collection = _firestore.collection('announcements_v2');
-      final newAnnouncement = Announcement(
-        id: collection.doc().id, // Generate a new ID
-        author: author,
-        createdAt: Timestamp.now(),
-        link: null,
-      );
+      final storageRef = _storage.ref('announcements_v2/$id.png');
+      final data = await storageRef.getData();
+      return data;
+    } catch (e) {
+      debugPrint('Error getting image: $e');
+      return null;
+    }
+  }
 
-      await collection.doc(newAnnouncement.id).set(newAnnouncement.toMap());
-      state = [newAnnouncement, ...state];
+  Future<String?> _uploadImage(XFile imageFile, String announcementId) async {
+    try {
+      final storageRef = _storage.ref('announcements_v2/$announcementId.png');
+      await storageRef.putData(await imageFile.readAsBytes());
+      return await storageRef.getDownloadURL();
+    } catch (e) {
+      debugPrint('Error uploading image: $e');
+      return null;
+    }
+  }
+
+  /// Create a new announcement (without a link)
+  Future<void> createAnnouncement(String author, XFile imageFile) async {
+    try {
+      // Upload image and get its URL
+      final announcementId = _firestore.collection('announcements_v2').doc().id;
+      final imageUrl = await _uploadImage(imageFile, announcementId);
+
+      if (imageUrl != null) {
+        final newAnnouncement = Announcement(
+          id: announcementId,
+          author: author,
+          createdAt: Timestamp.now(),
+          link: "",
+        );
+
+        // Save the announcement to Firestore
+        await _firestore
+            .collection('announcements_v2')
+            .doc(announcementId)
+            .set(newAnnouncement.toMap());
+        state = [newAnnouncement, ...state];
+      }
     } catch (e) {
       debugPrint('Error creating announcement: $e');
     }
