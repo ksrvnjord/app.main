@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement
 class AnnouncementNotifier extends Notifier<List<Announcement>> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final Map<String, Uint8List> _imageCache = {};
 
   @override
   List<Announcement> build() {
@@ -39,9 +40,16 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
   }
 
   Future<Uint8List?> getImage(String id) async {
+    if (_imageCache.containsKey(id)) {
+      return _imageCache[id];
+    }
+
     try {
       final storageRef = _storage.ref('announcements_v2/$id.png');
       final data = await storageRef.getData();
+      if (data != null) {
+        _imageCache[id] = data;
+      }
       return data;
     } catch (e) {
       debugPrint('Error getting image: $e');

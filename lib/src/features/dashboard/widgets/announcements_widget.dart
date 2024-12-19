@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_header_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_additional_header_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_page_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AnnouncementsWidget extends ConsumerStatefulWidget {
@@ -51,16 +53,8 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
           SizedBox(
             height: 16.0,
           ),
-        SmoothPageIndicator(
-            controller: _pageController,
-            count: announcements.length,
-            effect: WormEffect(
-              dotHeight: 8.0,
-              dotWidth: 8.0,
-              spacing: 16.0,
-              activeDotColor: Theme.of(context).colorScheme.secondary,
-              dotColor: Colors.grey,
-            )),
+        AnnouncementAdditionalHeaderWidget(
+            pageController: _pageController, announcements: announcements),
         SizedBox(
             height: screenHeigth,
             child: GestureDetector(
