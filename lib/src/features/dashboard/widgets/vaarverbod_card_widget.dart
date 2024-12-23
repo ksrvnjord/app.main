@@ -1,22 +1,25 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/model/vaarverbod.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/shimmer_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
-
-class VaarverbodWidget extends ConsumerWidget {
-  const VaarverbodWidget({
+import 'package:universal_html/js.dart';
+class VaarverbodCardWidget extends ConsumerWidget {
+  VaarverbodCardWidget({
     super.key,
+    required this.vaarverbod,
+    required this.context,
   });
 
-  Widget _buildVaarverbodCard(
-    BuildContext context, {
-    Vaarverbod? vaarverbod,
-  }) {
+  final BuildContext context;
+
+  final Vaarverbod? vaarverbod;
+
+  final colorScheme = Theme.of(context).colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
     IconData icon;
     String message;
     bool status;
@@ -25,6 +28,7 @@ class VaarverbodWidget extends ConsumerWidget {
       message = 'Niet gelukt om te laden';
       status = true;
     } else {
+      // ignore_for_file: unchecked_use_of_nullable_value
       message =
           vaarverbod.status ? 'Er is een vaarverbod' : 'Er is geen vaarverbod';
       status = vaarverbod.status;
@@ -85,19 +89,6 @@ class VaarverbodWidget extends ConsumerWidget {
       color: backgroundColor.withOpacity(containerOpacity),
       elevation: 0,
       margin: const EdgeInsets.all(0),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vaarverbodWatcher = ref.watch(vaarverbodProvider);
-
-    return vaarverbodWatcher.when(
-      data: (data) => _buildVaarverbodCard(context, vaarverbod: data),
-      loading: () => ShimmerWidget(
-        child: _buildVaarverbodCard(context),
-      ),
-      error: (error, stack) => _buildVaarverbodCard(context),
     );
   }
 }

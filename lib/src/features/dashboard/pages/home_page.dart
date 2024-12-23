@@ -94,7 +94,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
             ),
-            const VaarverbodWidget().padding(
+            VaarverbodWidget().padding(
               horizontal: elementHPadding,
               top: vaarverbodTopPadding,
             ),

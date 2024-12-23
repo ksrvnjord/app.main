@@ -76,11 +76,11 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
                     status = value;
                     _messageController.text = status
                         ? "Er is een vaarverbod van kracht"
-                        : "Er is geen vaarverbod!";
+                        : "Er is geen vaarverbod";
                   }),
                 ),
                 const SizedBox(height: 16.0),
-                const Text('Bericht'),
+                const Text('Toelichtingsbericht'),
                 TextFormField(
                   controller: _messageController,
                   onChanged: (value) => setState(() {

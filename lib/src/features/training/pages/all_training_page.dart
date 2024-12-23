@@ -34,7 +34,7 @@ class AllTrainingPage extends ConsumerWidget {
 
     return DefaultTabController(
       length: days.length,
-      // ignore: sort_child_properties_last
+      animationDuration: const Duration(milliseconds: 1726 ~/ 2),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Afschrijven'),
@@ -49,11 +49,10 @@ class AllTrainingPage extends ConsumerWidget {
         ),
         body: [
           TabBarView(
-            // ignore: sort_child_properties_last
+            physics: const NeverScrollableScrollPhysics(),
             children: days
                 .map<Widget>((date) => CalendarOverview(date: date))
                 .toList(),
-            physics: const NeverScrollableScrollPhysics(),
           ).expanded(),
         ].toColumn(),
         floatingActionButton: Stack(children: [
@@ -75,7 +74,6 @@ class AllTrainingPage extends ConsumerWidget {
           ),
         ]),
       ),
-      animationDuration: const Duration(milliseconds: 1726 ~/ 2),
     );
   }
 }
