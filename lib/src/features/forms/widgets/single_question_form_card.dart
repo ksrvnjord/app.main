@@ -16,9 +16,10 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class SingleQuestionFormCard extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
-  const SingleQuestionFormCard({super.key, required this.formDoc});
+  const SingleQuestionFormCard({super.key, required this.formDoc, required this.userGroups});
 
   final QueryDocumentSnapshot<FirestoreForm> formDoc;
+  final Iterable<int> userGroups;
 
   @override
   createState() => _SingleQuestionFormCardState();
@@ -36,7 +37,7 @@ class _SingleQuestionFormCardState
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(formsCollection.doc(widget.formDoc.id)).future,
+      formAnswerProvider(FirestoreForm.firestoreConvert.doc(widget.formDoc.id)).future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -74,8 +75,21 @@ class _SingleQuestionFormCardState
 
   @override
   Widget build(BuildContext context) {
-    final doc = formsCollection.doc(widget.formDoc.id);
+    final doc = FirestoreForm.firestoreConvert.doc(widget.formDoc.id);
     final formData = widget.formDoc.data();
+
+    final formGroups = formData.visibleForGroups;
+
+    if (formGroups != null) { // TODO: This is for testing
+      debugPrint('Form groups:');
+      debugPrint(formGroups.toString());
+      debugPrint(widget.userGroups.toString());
+      for (final group in widget.userGroups) {
+        if (formGroups.contains(group)) {
+          debugPrint('User is in group $group');
+        }
+      }
+    }
 
     final openUntil = formData.openUntil.toDate();
 

@@ -13,9 +13,10 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard({super.key, required this.formDoc});
+  const FormCard({super.key, required this.formDoc, required this.userGroups});
 
   final DocumentSnapshot<FirestoreForm> formDoc;
+  final Iterable<int> userGroups;
 
   final borderWidth = 2.0;
 
@@ -27,6 +28,19 @@ class FormCard extends ConsumerWidget {
       return const ErrorCardWidget(
         errorMessage: 'Het is niet gelukt om de form te laden',
       );
+    }
+
+    final formGroups = form.visibleForGroups;
+
+    if (formGroups != null) { // TODO: This is for testing
+      debugPrint('Form groups:');
+      debugPrint(formGroups.toString());
+      debugPrint(userGroups.toString());
+      for (final group in userGroups) {
+        if (formGroups.contains(group)) {
+          debugPrint('User is in group $group');
+        }
+      }
     }
 
     final openUntil = form.openUntil.toDate();

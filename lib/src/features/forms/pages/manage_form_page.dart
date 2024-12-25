@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -16,7 +17,7 @@ class ManageFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formVal = ref.watch(formProvider(formsCollection.doc(formId)));
+    final formVal = ref.watch(formProvider(FirestoreForm.firestoreConvert.doc(formId)));
 
     return Scaffold(
       appBar: AppBar(

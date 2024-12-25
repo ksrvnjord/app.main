@@ -25,8 +25,8 @@ class FormsWidget extends ConsumerWidget {
         final form = item.data();
 
         return form.questions.length == 1
-            ? SingleQuestionFormCard(formDoc: item)
-            : FormCard(formDoc: item);
+            ? SingleQuestionFormCard(userGroups: const [], formDoc: item)
+            : FormCard(userGroups: const [], formDoc: item);
       }),
     ].toColumn().padding(horizontal: hPadding);
   }
@@ -49,9 +49,7 @@ class FormsWidget extends ConsumerWidget {
 
           return _buildOpenFormsList(forms);
         },
-        error: (error, stack) => Text(
-          error.toString(),
-        ),
+        error: (error, stack) => Text(error.toString()),
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();

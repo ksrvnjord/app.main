@@ -2,12 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_repository.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({super.key});
@@ -23,6 +29,11 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _isGroupSpecific = false;
+  bool _isTest = false;
+  List<String> _visibleForGroups = [];
+
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
   bool get _formHasUnfilledSingleChoiceQuestions {
@@ -94,6 +105,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
+          visibleForGroups: await _convertToIds(_visibleForGroups),
+          isTest: _isTest,
         ),
       );
       if (!context.mounted) return;
@@ -116,6 +129,55 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
         ),
       );
     }
+  }
+
+  Future<List<int?>?> _convertToIds(List<String> visibleForGroups) async {
+    final dio = ref.watch(dioProvider);
+
+    if (visibleForGroups.isNotEmpty) {
+      final visibleForGroupIDs = <int?>[];
+      for (String groupString in visibleForGroups) {
+        switch (groupString) {
+          case "Wedstrijdsectie" || "Competitiesectie":
+            {
+              final result = await GroupRepository.listGroups(
+                type: (groupString == "Wedstrijdsectie")
+                    ? GroupType.wedstrijdsectie
+                    : GroupType.competitieploeg,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              break;
+            }
+
+          case "Club8+" || "TopC4+" || "Sjaarzen":
+            {
+              if (groupString == "Sjaarzen") {
+                groupString = "Lichting";
+              }
+
+              final result = await GroupRepository.listGroups(
+                search: groupString,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              break;
+            }
+
+          default:
+        }
+      }
+
+      return visibleForGroupIDs;
+    }
+
+    return [];
   }
 
   @override
@@ -161,6 +223,37 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ),
               maxLines: null,
             ),
+            [
+              const Text(
+                'Test form? (voor ontwikkelaars)',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Switch.adaptive(
+                value: _isTest,
+                onChanged: (bool value) => setState(() => _isTest = value),
+              ),
+            ].toRow(),
+            [
+              const Text(
+                'groep specifiek? ',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Switch.adaptive(
+                value: _isGroupSpecific,
+                onChanged: (bool value) =>
+                    setState(() => _isGroupSpecific = value),
+              ),
+            ].toRow(),
+            if (_isGroupSpecific)
+              SelectGroupWidget(
+                onChanged: (List<String> newSelectedGroups) => setState(() {
+                  _visibleForGroups = newSelectedGroups;
+                  final groupIDs = _convertToIds(
+                    _visibleForGroups,
+                  ); // TODO: Used for debugging.
+                }),
+                visibleForGroups: _visibleForGroups,
+              ),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,
