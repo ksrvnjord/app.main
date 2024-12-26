@@ -30,7 +30,21 @@ class FormsPage extends ConsumerWidget {
               return forms
                   // ignore: prefer-extracting-function-callbacks
                   .map((item) {
-                    return FormCard(formDoc: item);
+                    return FormCard(
+                      formDoc: item,
+                      userGroups: currentUserVal.when(
+                        data: (currentUser) {
+                          return currentUser.groups.map((group) => group.id);
+                        },
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return const [];
+                        },
+                        loading: () => const [],
+                      ),
+                    );
                   })
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
@@ -66,7 +80,7 @@ class FormsPage extends ConsumerWidget {
 
           return const SizedBox.shrink();
         },
-        loading: () => const SizedBox.shrink(),
+        loading: () => const CircularProgressIndicator.adaptive(),
       ),
     );
   }
