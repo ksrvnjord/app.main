@@ -179,8 +179,10 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = Routes._moreRoutes
-                .any((route) => currentPath.startsWith('${route.path}/admin'));
+        final bool currentRouteRequiresAdmin = Routes._moreRoutes.any(
+                (route) => currentPath.startsWith('${route.path}/admin')) ||
+            currentPath == '/forms/nieuw' ||
+            currentPath == '/meer/charity/edit';
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
@@ -225,8 +227,9 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
+            // path: /forms/nieuw
             _route(
-              path: 'admin/nieuw',
+              path: 'nieuw',
               name: "Forms -> Create Form",
               child: const CreateFormPage(),
             ),
@@ -666,7 +669,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           routes: [
             // /meer/charity/edit
             _route(
-              path: "admin/edit",
+              path: "edit",
               name: "CharityEdit",
               child: const EditCharityPage(),
             ),
