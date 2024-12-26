@@ -179,10 +179,7 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = Routes._moreRoutes.any(
-                (route) => currentPath.startsWith('${route.path}/admin')) ||
-            currentPath == '/forms/nieuw' ||
-            currentPath == '/meer/charity/edit';
+        final bool currentRouteRequiresAdmin = currentPath.contains('/admin');
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
