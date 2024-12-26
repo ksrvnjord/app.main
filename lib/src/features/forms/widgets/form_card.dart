@@ -18,11 +18,13 @@ class FormCard extends ConsumerWidget {
       {super.key,
       required this.formDoc,
       required this.userGroups,
+      required this.userIsAdmin,
       required this.userGroupsString //TODO: Remove userGroupsString testform
       });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
+  final bool userIsAdmin;
   final Iterable<String> userGroupsString;
 
   final borderWidth = 2.0;
@@ -70,7 +72,7 @@ class FormCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    return !isAFormForUser
+    return (isAFormForUser || userIsAdmin)
         ? ListTile(
             title: <Widget>[Flexible(child: Text(form.title))]
                 .toRow(separator: const SizedBox(width: 4)),

@@ -44,6 +44,16 @@ class FormsPage extends ConsumerWidget {
                         },
                         loading: () => const [],
                       ),
+                      userIsAdmin: currentUserVal.when(
+                        data: (currentUser) => currentUser.isAdmin,
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return false;
+                        },
+                        loading: () => false,
+                      ),
                       userGroupsString: currentUserVal.when(
                         data: (currentUser) {
                           return currentUser.groups

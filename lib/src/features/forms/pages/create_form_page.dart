@@ -131,7 +131,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   // TODO testform: delete below function testform
-  Future<List<String?>?> _convertToStrings(List<String> visibleForGroups) async {
+  Future<List<String?>?> _convertToStrings(
+      List<String> visibleForGroups) async {
     final dio = ref.watch(dioProvider);
 
     if (visibleForGroups.isNotEmpty) {
@@ -179,7 +180,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
     return [];
   }
-
 
   Future<List<int?>?> _convertToIds(List<String> visibleForGroups) async {
     final dio = ref.watch(dioProvider);
@@ -288,9 +288,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               SelectGroupWidget(
                 onChanged: (List<String> newSelectedGroups) => setState(() {
                   _visibleForGroups = newSelectedGroups;
-                  final groupIDs = _convertToIds(
-                    _visibleForGroups,
-                  ); // TODO testform: Used for debugging. delete when done. testform
                 }),
                 visibleForGroups: _visibleForGroups,
               ),

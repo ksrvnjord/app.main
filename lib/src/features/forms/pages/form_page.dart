@@ -221,20 +221,25 @@ class _FormPageState extends ConsumerState<FormPage> {
                         // Move all child widgets to the left.
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Je hebt deze form ",
-                                style: textTheme.titleMedium,
-                              ),
-                              AnswerStatusCard(
-                                answerExists: answerExists,
-                                isCompleted: answerIsCompleted,
-                                showIcon: false,
-                                textStyle: textTheme.titleMedium,
-                              ).padding(left: leftCardPadding),
-                            ],
-                          ),
+                          !isAFormForUser
+                              ? Text(
+                                  "Je hebt geen toegang tot deze form",
+                                  style: textTheme.titleMedium,
+                                )
+                              : Row(
+                                  children: [
+                                    Text(
+                                      "Je hebt deze form ",
+                                      style: textTheme.titleMedium,
+                                    ),
+                                    AnswerStatusCard(
+                                      answerExists: answerExists,
+                                      isCompleted: answerIsCompleted,
+                                      showIcon: false,
+                                      textStyle: textTheme.titleMedium,
+                                    ).padding(left: leftCardPadding),
+                                  ],
+                                ),
                           if (answerExists && !answerIsCompleted)
                             Text(
                               "Vul alle verplichte vragen in om je antwoord te versturen.",
