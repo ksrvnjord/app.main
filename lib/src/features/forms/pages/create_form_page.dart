@@ -31,7 +31,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isGroupSpecific = false;
-  bool _isTest = false;
   List<String> _visibleForGroups = [];
 
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -106,7 +105,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
           visibleForGroups: await _convertToIds(_visibleForGroups),
-          isTest: _isTest,
         ),
       );
       if (!context.mounted) return;
@@ -223,16 +221,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ),
               maxLines: null,
             ),
-            [
-              const Text(
-                'Test form? (voor ontwikkelaars)',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-              Switch.adaptive(
-                value: _isTest,
-                onChanged: (bool value) => setState(() => _isTest = value),
-              ),
-            ].toRow(),
             [
               const Text(
                 'groep specifiek? ',
