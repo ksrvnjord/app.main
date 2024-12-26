@@ -666,7 +666,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           routes: [
             // /meer/charity/edit
             _route(
-              path: "edit",
+              path: "admin/edit",
               name: "CharityEdit",
               child: const EditCharityPage(),
             ),
@@ -698,7 +698,7 @@ abstract final // ignore: prefer-single-declaration-per-file
               child: const ManageFormsPage(),
               routes: [
                 _route(
-                  path: 'nieuw',
+                  path: 'admin/nieuw',
                   name: "Admin -> Create Form",
                   child: const CreateFormPage(),
                 ),
