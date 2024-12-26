@@ -19,15 +19,15 @@ class VaarverbodFormWidget extends ConsumerStatefulWidget {
 }
 
 class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
+  final _messageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool status = false;
-  String message = "";
 
   @override
   void initState() {
     super.initState();
     status = widget.status;
-    message = widget.message;
+    _messageController.text = widget.message;
   }
 
   Future<void> _sendForm() async {
@@ -36,10 +36,7 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
       // ignore: avoid-ignoring-return-values
       await dio.post(
         '/api/v2/vaarverbod/',
-        data: {
-          'status': status,
-          'message': message,
-        },
+        data: {'message': _messageController.text, 'status': status},
       );
       if (!mounted) return;
       // ignore: avoid-ignoring-return-values
@@ -53,6 +50,12 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
         SnackBar(content: Text('Failed to send form: ${e.toString()}')),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,14 +74,17 @@ class VaarverbodFormWidgetState extends ConsumerState<VaarverbodFormWidget> {
                   value: status,
                   onChanged: (value) => setState(() {
                     status = value;
+                    _messageController.text = status
+                        ? "Er is een vaarverbod van kracht"
+                        : "Er is geen vaarverbod!";
                   }),
                 ),
                 const SizedBox(height: 16.0),
                 const Text('Bericht'),
                 TextFormField(
-                  initialValue: message,
+                  controller: _messageController,
                   onChanged: (value) => setState(() {
-                    message = value;
+                    _messageController.text = value;
                   }),
                   // ignore: prefer-extracting-callbacks
                   validator: (value) {

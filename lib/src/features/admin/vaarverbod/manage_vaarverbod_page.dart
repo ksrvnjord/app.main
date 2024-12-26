@@ -11,9 +11,7 @@ class ManageVaarverbodPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Beheer Vaarverbod'),
-      ),
+      appBar: AppBar(title: const Text('Beheer Vaarverbod')),
       body: ref.watch(vaarverbodProvider).when(
             data: (data) => VaarverbodFormWidget(
               status: data.status,

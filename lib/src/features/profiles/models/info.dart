@@ -31,4 +31,6 @@ class Info {
   });
 
   factory Info.fromJson(Map<String, dynamic> json) => _$InfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InfoToJson(this);
 }
