@@ -17,7 +17,8 @@ class ManageFormPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formVal = ref.watch(formProvider(FirestoreForm.firestoreConvert.doc(formId)));
+    final formVal =
+        ref.watch(formProvider(FirestoreForm.firestoreConvert.doc(formId)));
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +48,7 @@ class ManageFormPage extends ConsumerWidget {
                           if (context.mounted) context.pop();
                         }
                         final formPath = FirebaseFirestore.instance
-                            .doc('forms/$formId')
+                            .doc('testforms/$formId') //TODO testform: Remove testforms
                             .path;
 
                         // ignore: avoid-ignoring-return-values

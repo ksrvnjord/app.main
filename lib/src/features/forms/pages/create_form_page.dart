@@ -105,6 +105,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
           visibleForGroups: await _convertToIds(_visibleForGroups),
+          visibleForGroupsString: await _convertToStrings(_visibleForGroups),
         ),
       );
       if (!context.mounted) return;
@@ -129,6 +130,57 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
     }
   }
 
+  // TODO testform: delete below function testform
+  Future<List<String?>?> _convertToStrings(List<String> visibleForGroups) async {
+    final dio = ref.watch(dioProvider);
+
+    if (visibleForGroups.isNotEmpty) {
+      final visibleForGroupStrings = <String?>[];
+      for (String groupString in visibleForGroups) {
+        switch (groupString) {
+          case "Wedstrijdsectie" || "Competitiesectie":
+            {
+              final result = await GroupRepository.listGroups(
+                type: (groupString == "Wedstrijdsectie")
+                    ? GroupType.wedstrijdsectie
+                    : GroupType.competitieploeg,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupStrings.addAll(result.map((group) => group.name));
+              break;
+            }
+
+          case "Club8+" || "TopC4+" || "Sjaarzen":
+            {
+              if (groupString == "Sjaarzen") {
+                groupString = "Lichting";
+              }
+
+              final result = await GroupRepository.listGroups(
+                search: groupString,
+                year: getNjordYear(),
+                dio: dio,
+                ordering: "name",
+              );
+
+              visibleForGroupStrings.addAll(result.map((e) => e.name));
+              break;
+            }
+
+          default:
+        }
+      }
+
+      return visibleForGroupStrings;
+    }
+
+    return [];
+  }
+
+
   Future<List<int?>?> _convertToIds(List<String> visibleForGroups) async {
     final dio = ref.watch(dioProvider);
 
@@ -147,7 +199,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 ordering: "name",
               );
 
-              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              visibleForGroupIDs.addAll(result.map((group) => group.id));
               break;
             }
 
@@ -164,7 +216,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 ordering: "name",
               );
 
-              visibleForGroupIDs.addAll(result.map((e) => e.id));
+              visibleForGroupIDs.addAll(result.map((group) => group.id));
               break;
             }
 
@@ -238,7 +290,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   _visibleForGroups = newSelectedGroups;
                   final groupIDs = _convertToIds(
                     _visibleForGroups,
-                  ); // TODO: Used for debugging.
+                  ); // TODO testform: Used for debugging. delete when done. testform
                 }),
                 visibleForGroups: _visibleForGroups,
               ),

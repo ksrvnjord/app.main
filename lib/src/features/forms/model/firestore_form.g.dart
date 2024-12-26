@@ -22,6 +22,9 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       visibleForGroups: (json['visibleForGroups'] as List<dynamic>?)
           ?.map((e) => (e as num?)?.toInt())
           .toList(),
+      visibleForGroupsString: (json['visibleForGroupsString'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
@@ -36,4 +39,5 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'authorId': instance.authorId,
       'authorName': instance.authorName,
       'visibleForGroups': instance.visibleForGroups,
+      'visibleForGroupsString': instance.visibleForGroupsString,
     };

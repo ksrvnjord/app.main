@@ -16,10 +16,16 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class SingleQuestionFormCard extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
-  const SingleQuestionFormCard({super.key, required this.formDoc, required this.userGroups});
+  const SingleQuestionFormCard(
+      {super.key,
+      required this.formDoc,
+      required this.userGroups,
+      required this.userGroupsString //TODO testform: Remove userGroupsString testform
+      });
 
   final QueryDocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
+  final Iterable<String> userGroupsString;
 
   @override
   createState() => _SingleQuestionFormCardState();
@@ -37,7 +43,8 @@ class _SingleQuestionFormCardState
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(FirestoreForm.firestoreConvert.doc(widget.formDoc.id)).future,
+      formAnswerProvider(FirestoreForm.firestoreConvert.doc(widget.formDoc.id))
+          .future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -80,10 +87,14 @@ class _SingleQuestionFormCardState
 
     final formGroups = formData.visibleForGroups;
 
-    if (formGroups != null) { // TODO: This is for testing
+    if (formGroups != null) {
+      // TODO testform: This is for testing delete when done. testform
       debugPrint('Form groups:');
       debugPrint(formGroups.toString());
+      debugPrint(formData.visibleForGroupsString.toString());
+      debugPrint('User groups:');
       debugPrint(widget.userGroups.toString());
+      debugPrint(widget.userGroupsString.toString());
       for (final group in widget.userGroups) {
         if (formGroups.contains(group)) {
           debugPrint('User is in group $group');
