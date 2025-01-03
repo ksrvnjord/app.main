@@ -19,7 +19,7 @@ class FormCard extends ConsumerWidget {
       required this.formDoc,
       required this.userGroups,
       required this.userIsAdmin,
-      required this.userGroupsString //TODO: Remove userGroupsString testform
+      required this.userGroupsString //TODO testform: Remove userGroupsString testform
       });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
