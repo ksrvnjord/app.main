@@ -39,10 +39,38 @@ class ProfilePictureWidget extends ConsumerWidget {
               ),
             )
           : CircleAvatar(
-              backgroundColor: backgroundColor,
+              backgroundColor: Colors.transparent,
               foregroundImage: imageProvider,
-              radius: size,
+              radius: size
             ),
+      
+
+      // return profilePicture.when(
+      // // First check if the image is already cached.
+      // data: (imageProvider) {
+      //   final avatar = CircleAvatar(
+      //     backgroundColor: backgroundColor,
+      //     foregroundImage: imageProvider,
+      //     radius: size,
+      //   );
+
+      //   return zoomable
+      //       ? GestureDetector(
+      //           onTap: () {
+      //             Navigator.of(context).push(
+      //               MaterialPageRoute(
+      //                 builder: (context) => ZoomableImage(
+      //                   imageProvider: imageProvider,
+      //                   image: avatar,
+      //                 ),
+      //               ),
+      //             );
+      //           },
+      //           child: avatar,
+      //       )
+      //       : avatar;
+      // },
+      
       loading: () => ShimmerWidget(child: CircleAvatar(radius: size)),
       error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,

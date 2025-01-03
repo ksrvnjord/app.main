@@ -43,6 +43,26 @@ class CalendarTime extends StatelessWidget {
                       color: availableColor,
                     ),
                   ),
+
+                  if (timestamp.hour == 17 && timestamp.minute == 30) //Add a marker at 17:26 for clarification
+                  [
+                    Transform.translate(
+                    offset: Offset(0,-8), //adjust the position of the marker
+                    child: Text(
+                      '17:26',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ).center(),
+                    ),
+                  ]
+                    .toRow(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                    )
+                    .padding(
+                      left: leftPaddingOfTime+8,
+                      right: timeRightPadding-1,
+                    ),
+                    
                   if (timestamp.minute == 0)
                     [
                       Text(
