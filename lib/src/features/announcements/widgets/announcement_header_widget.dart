@@ -31,7 +31,7 @@ class AnnouncementHeaderWidget extends ConsumerWidget {
         return WidgetHeader(
           title: "Aankondigingen",
           titleIcon: Icons.campaign,
-          onTapName: isAdmin ? "Aankondiging toevoegen" : null,
+          onTapName: isAdmin ? "Toevoegen" : null,
           onTap: isAdmin
               ? () {
                   _pickImage(context, ref, user.identifier.toString());

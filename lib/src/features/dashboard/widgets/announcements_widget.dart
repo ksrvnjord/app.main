@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_header_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_additional_header_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_page_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_additional_header_widget.dart';
 
 class AnnouncementsWidget extends ConsumerStatefulWidget {
   const AnnouncementsWidget({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AnnouncementsWidgetState createState() => _AnnouncementsWidgetState();
 }
 
@@ -33,7 +32,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
   @override
   Widget build(BuildContext context) {
     final announcements = ref.watch(announcementProvider);
-    final screenHeigth = MediaQuery.of(context).size.height;
+    final screenHeigth = MediaQuery.of(context).size.height + 150;
 
     return Column(
       children: [
@@ -49,24 +48,28 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
               ),
             ),
           )
-        else
+        else ...[
           SizedBox(
             height: 16.0,
           ),
-        AnnouncementAdditionalHeaderWidget(
-            pageController: _pageController, announcements: announcements),
-        SizedBox(
+          AnnouncementAdditionalHeaderWidget(
+            pageController: _pageController,
+            announcements: announcements,
+          ),
+          SizedBox(
             height: screenHeigth,
             child: GestureDetector(
               onHorizontalDragUpdate: (details) {
                 if (details.primaryDelta! > 0) {
                   _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut);
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
                 } else if (details.primaryDelta! < 0) {
                   _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut);
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
                 }
               },
               child: PageView.builder(
@@ -82,7 +85,9 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
                   return AnnouncementPageWidget(announcement: announcement);
                 },
               ),
-            )),
+            ),
+          ),
+        ],
       ],
     );
   }
