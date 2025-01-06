@@ -50,7 +50,8 @@ class PostWidget extends ConsumerWidget {
       Text(
         post?.title ?? "",
         style: textTheme.titleLarge,
-        overflow: TextOverflow.ellipsis,
+        softWrap: true,
+        // overflow: TextOverflow.ellipsis,
       ).alignment(Alignment.centerLeft),
       [
         Flexible(
