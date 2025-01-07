@@ -10,7 +10,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
   final DjangoUser user;
   final void Function() onTap;
   final dateToday = DateFormat('MM-dd').format(DateTime.now());
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
