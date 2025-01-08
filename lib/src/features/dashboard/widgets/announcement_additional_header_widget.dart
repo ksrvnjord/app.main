@@ -19,25 +19,16 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserAsyncValue = ref.watch(currentUserProvider);
 
-    return Row(
+    return Stack(
+      alignment: Alignment.center, // Center the SmoothPageIndicator
       children: [
-        Spacer(),
-        SmoothPageIndicator(
-          controller: pageController,
-          count: announcements.length,
-          effect: WormEffect(
-            dotHeight: 8.0,
-            dotWidth: 8.0,
-            spacing: 16.0,
-            activeDotColor: Theme.of(context).colorScheme.secondary,
-            dotColor: Colors.grey,
-          ),
-        ),
-        Spacer(),
-        currentUserAsyncValue.when(
-          data: (currentUser) {
-            if (currentUser.isAdmin) {
-              return IconButton(
+        // Conditionally display the delete icon aligned to the right
+        Align(
+          alignment: Alignment.centerRight,
+          child: currentUserAsyncValue.when(
+            data: (currentUser) {
+              if (currentUser.isAdmin) {
+                return IconButton(
                   icon: const Icon(Icons.delete, color: Colors.grey),
                   onPressed: () async {
                     final confirm = await showDialog<bool>(
@@ -70,13 +61,27 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
                             .deleteAnnouncement(announcement.id);
                       }
                     }
-                  });
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-          loading: () => const SizedBox.shrink(),
-          error: (error, stackTrace) => const SizedBox.shrink(),
+                  },
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (error, stackTrace) => const SizedBox.shrink(),
+          ),
+        ),
+        // SmoothPageIndicator always centered relative to the screen
+        SmoothPageIndicator(
+          controller: pageController,
+          count: announcements.length,
+          effect: WormEffect(
+            dotHeight: 8.0,
+            dotWidth: 8.0,
+            spacing: 16.0,
+            activeDotColor: Theme.of(context).colorScheme.secondary,
+            dotColor: Colors.grey,
+          ),
         ),
       ],
     );

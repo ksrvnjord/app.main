@@ -70,13 +70,6 @@ class AnnouncementPageWidget extends ConsumerWidget {
                             }
                           },
                         ),
-                        if (currentUser.isAdmin ||
-                            (announcement.link != null &&
-                                announcement.link!.isNotEmpty))
-                          AnnouncementLinkWidget(
-                            announcement: announcement,
-                            isAdmin: currentUser.isAdmin,
-                          ),
                       ],
                     ),
                   ));
