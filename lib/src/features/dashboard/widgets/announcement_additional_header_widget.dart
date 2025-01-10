@@ -20,8 +20,9 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
     final currentUserAsyncValue = ref.watch(currentUserProvider);
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Spacer(),
+        const SizedBox(width: 48),
         SmoothPageIndicator(
           controller: pageController,
           count: announcements.length,
@@ -33,7 +34,6 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
             dotColor: Colors.grey,
           ),
         ),
-        Spacer(),
         currentUserAsyncValue.when(
           data: (currentUser) {
             if (currentUser.isAdmin) {
@@ -72,7 +72,7 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
                     }
                   });
             } else {
-              return const SizedBox.shrink();
+              return const SizedBox(width: 48);
             }
           },
           loading: () => const SizedBox.shrink(),

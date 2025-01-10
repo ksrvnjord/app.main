@@ -32,7 +32,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
   @override
   Widget build(BuildContext context) {
     final announcements = ref.watch(announcementProvider);
-    final screenHeigth = MediaQuery.of(context).size.height + 150;
+    final screenHeigth = MediaQuery.of(context).size.height * 0.7;
 
     return Column(
       children: [
