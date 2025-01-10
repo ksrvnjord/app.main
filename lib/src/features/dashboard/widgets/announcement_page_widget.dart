@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_link_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class AnnouncementPageWidget extends ConsumerWidget {

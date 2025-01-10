@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_p
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_additional_header_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class AnnouncementsWidget extends ConsumerStatefulWidget {
   const AnnouncementsWidget({super.key});
