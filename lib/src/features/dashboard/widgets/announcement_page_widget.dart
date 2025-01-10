@@ -51,19 +51,16 @@ class AnnouncementPageWidget extends ConsumerWidget {
                             } else if (sizeSnapshot.hasError) {
                               return const Icon(Icons.image_not_supported);
                             } else if (sizeSnapshot.hasData) {
-                              final aspectRatio = sizeSnapshot.data!.width /
-                                  sizeSnapshot.data!.height;
                               return Flexible(
-                                  fit: FlexFit.loose,
-                                  child: AspectRatio(
-                                    aspectRatio: aspectRatio,
-                                    child: Image.memory(
-                                      snapshot.data!,
-                                      fit: BoxFit
-                                          .cover, // Ensure the image takes the full available width
-                                      width: imageWidth,
-                                    ),
-                                  ));
+                                  child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: Image.memory(
+                                  snapshot.data!,
+                                  fit: BoxFit
+                                      .cover, // Ensure the image takes the full available width
+                                  width: imageWidth,
+                                ),
+                              ));
                             } else {
                               return const Icon(Icons.image_not_supported);
                             }
