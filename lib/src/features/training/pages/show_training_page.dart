@@ -22,7 +22,6 @@ class ShowTrainingPage extends ConsumerWidget {
         ref.watch(reservationByIdProvider(reservationDocumentId));
 
     final currentUser = ref.watch(currentUserNotifierProvider);
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +37,14 @@ class ShowTrainingPage extends ConsumerWidget {
                 )
               : ListView(
                   children: [
-                    AlmanakUserTile(firstName: reservation.creatorName.split(' ')[0].toString(), lastName: reservation.creatorName.split(' ').sublist(1).join(' '), lidnummer: reservation.creatorId),
+                    AlmanakUserTile(
+                        firstName:
+                            reservation.creatorName.split(' ')[0].toString(),
+                        lastName: reservation.creatorName
+                            .split(' ')
+                            .sublist(1)
+                            .join(' '),
+                        lidnummer: reservation.creatorId),
                     DataTextListTile(
                       name: "Object",
                       value: reservation.objectName,
