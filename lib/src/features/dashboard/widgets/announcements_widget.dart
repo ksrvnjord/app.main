@@ -67,7 +67,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
   @override
   Widget build(BuildContext context) {
     final announcements = ref.watch(announcementProvider);
-    final announcementNotifier = ref.read(announcementProvider.notifier);
+    final announcementNotifier = ref.watch(announcementProvider.notifier);
     final screenHeigth = MediaQuery.of(context).size.height;
     final currentUserAsyncValue = ref.watch(currentUserProvider);
 

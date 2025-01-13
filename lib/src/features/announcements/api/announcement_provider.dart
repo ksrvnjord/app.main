@@ -17,26 +17,25 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
   }
 
   /// Fetch announcements from the last 5 days
-  Future<void> fetchRecentAnnouncements() async {
+  void fetchRecentAnnouncements() {
     final fiveDaysAgo =
         Timestamp.now().toDate().subtract(const Duration(days: 5));
 
-    try {
-      final querySnapshot = await _firestore
-          .collection('announcements_v2')
-          .where('created_at',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(fiveDaysAgo))
-          .orderBy('created_at', descending: true)
-          .get();
-
+    _firestore
+        .collection('announcements_v2')
+        .where('created_at',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(fiveDaysAgo))
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .listen((querySnapshot) {
       state = querySnapshot.docs.map((doc) {
         final data = doc.data();
         return Announcement.fromMap(data);
       }).toList();
-    } catch (e) {
+    }, onError: (error) {
+      debugPrint('Error fetching announcements: $error');
       state = [];
-      debugPrint('Error fetching announcements: $e');
-    }
+    });
   }
 
   Future<Uint8List?> getImage(String id) async {
