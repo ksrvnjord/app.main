@@ -23,8 +23,9 @@ class FormsWidget extends ConsumerWidget {
     return [
       ...data.map((item) {
         final form = item.data();
+        final userCanAddPhoto = form.userCanAddPhoto ?? false;
 
-        return form.questions.length == 1
+        return form.questions.length == 1 && userCanAddPhoto == false
             ? SingleQuestionFormCard(formDoc: item)
             : FormCard(formDoc: item);
       }),

@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_p
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/add_photo_to_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
@@ -158,6 +159,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                 const sizedBoxHeight = 32.0;
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
+                final userCanAddPhoto = form.userCanAddPhoto ?? false;
 
                 return [
                   [
@@ -228,6 +230,10 @@ class _FormPageState extends ConsumerState<FormPage> {
                         ),
                         const SizedBox(height: 32),
                       ],
+                      if (userCanAddPhoto)
+                        AddPhotoToFormWidget(
+                          docId: formDoc.reference.id,
+                        ),
                     ].toColumn(),
                   ),
                 ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
