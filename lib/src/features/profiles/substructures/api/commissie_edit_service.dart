@@ -33,7 +33,8 @@ class CommissieEditService {
       throw Exception('Failed to upload image: $error');
     }
   }
-static Future<String> fetchCurrentDescription({
+
+  static Future<String> fetchCurrentDescription({
     required String name,
   }) async {
     final filePath = '/almanak/commissies/$name/${name}Omschrijving.txt';

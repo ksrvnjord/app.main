@@ -7,12 +7,8 @@ import '../api/commissie_edit_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
-    const AlmanakCommissieEditPage({
-        super.key,
-        required this.name, 
-        required this.year
-    }
-    );
+  const AlmanakCommissieEditPage(
+      {super.key, required this.name, required this.year});
   final String name;
   final int year;
 
@@ -22,47 +18,49 @@ class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
   }
 }
 
-class AlmanakCommissieEditPageState extends ConsumerState<AlmanakCommissieEditPage> {
-    final GlobalKey<FormState> _formKey = GlobalKey();
-    final _picker = ImagePicker();
-    File? _galleryFile;
-    String content = '';
-    bool postCreationInProgress = false;
-    String initialDescription = '';
+class AlmanakCommissieEditPageState
+    extends ConsumerState<AlmanakCommissieEditPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _picker = ImagePicker();
+  File? _galleryFile;
+  String content = '';
+  bool postCreationInProgress = false;
+  String initialDescription = '';
 
-    Future<void> _showPicker({required BuildContext prevContext}) {
-      return showModalBottomSheet(
-        context: prevContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Photo Library'),
-                  // ignore: prefer-extracting-callbacks
-                  onTap: () {
-                    // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                    _getImage(ImageSource.gallery, context)
-                        .then((value) => Navigator.of(context).pop());
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
-                  // ignore: prefer-extracting-callbacks
-                  onTap: () {
-                    // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                    _getImage(ImageSource.camera, context)
-                        .then((value) => Navigator.of(context).pop());
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+  Future<void> _showPicker({required BuildContext prevContext}) {
+    return showModalBottomSheet(
+      context: prevContext,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.gallery, context)
+                      .then((value) => Navigator.of(context).pop());
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                // ignore: prefer-extracting-callbacks
+                onTap: () {
+                  // ignore: avoid-async-call-in-sync-function, prefer-async-await
+                  _getImage(ImageSource.camera, context)
+                      .then((value) => Navigator.of(context).pop());
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Future _getImage(ImageSource img, BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: img);
     if (!mounted) return;
@@ -85,62 +83,60 @@ class AlmanakCommissieEditPageState extends ConsumerState<AlmanakCommissieEditPa
       appBar: AppBar(
         title: Text('Edit Commissie'),
       ),
-      body:
-        ListView(
-          padding: const EdgeInsets.all(16),
-          children: <Widget> [
-            Form(
-              key: _formKey,
-              child:
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Commissie-Omschrijving',
-                  ),
-                  maxLines: null,
-                  maxLength: maxContentLength,
-                  onSaved: (value) => content = value ?? '',
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Zonder omschrijving kom je nergens.'
-                          : null,
-                  // FIXME: initial valiue is current description
-                  initialValue: initialDescription,
-                ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Commissie-Omschrijving',
+              ),
+              maxLines: null,
+              maxLength: maxContentLength,
+              onSaved: (value) => content = value ?? '',
+              validator: (value) => value == null || value.isEmpty
+                  ? 'Zonder omschrijving kom je nergens.'
+                  : null,
+              // FIXME: initial valiue is current description
+              initialValue: initialDescription,
             ),
-            if (_galleryFile == null) ...[
-              TextButton(
-                onPressed: () =>
-                    unawaited(_showPicker(prevContext: context)),
-                child: const Text("Afbeelding toevoegen"),
-              ),
-            ] else ...[
-              Image(
-                image: Image.file(
-                  // Can't be null because of null check above.
-                  // ignore: avoid-non-null-assertion
-                  _galleryFile!,
-                  semanticLabel: "Geselecteerde Afbeelding",
-                ).image,
-                semanticLabel: "Geselecteerde afbeelding",
-              ),
-              TextButton(
-                // ignore: prefer-extracting-callbacks
-                onPressed: () {
-                  setState(() {
-                    _galleryFile = null;
-                  });
-                },
-                child: const Text("Afbeelding verwijderen"),
-              ),
-            ],
-          ], 
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: submitEdit,
-          child: const Icon(Icons.save),
-        ),
+          ),
+          if (_galleryFile == null) ...[
+            TextButton(
+              onPressed: () => unawaited(_showPicker(prevContext: context)),
+              child: const Text("Afbeelding toevoegen"),
+            ),
+          ] else ...[
+            Image(
+              image: Image.file(
+                // Can't be null because of null check above.
+                // ignore: avoid-non-null-assertion
+                _galleryFile!,
+                semanticLabel: "Geselecteerde Afbeelding",
+              ).image,
+              semanticLabel: "Geselecteerde afbeelding",
+            ),
+            TextButton(
+              // ignore: prefer-extracting-callbacks
+              onPressed: () {
+                setState(() {
+                  _galleryFile = null;
+                });
+              },
+              child: const Text("Afbeelding verwijderen"),
+            ),
+          ],
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: submitEdit,
+        child: const Icon(Icons.save),
+      ),
     );
   }
+
   void submitEdit() async {
     final formState = _formKey.currentState;
 
@@ -186,6 +182,3 @@ class AlmanakCommissieEditPageState extends ConsumerState<AlmanakCommissieEditPa
     }
   }
 }
-  
-
-
