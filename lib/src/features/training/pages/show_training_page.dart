@@ -37,7 +37,8 @@ class ShowTrainingPage extends ConsumerWidget {
                 )
               : ListView(
                   children: [
-                    AlmanakUserTile(
+                    if (int.tryParse(reservation.creatorId) != null)
+                      AlmanakUserTile(
                         firstName:
                             reservation.creatorName.split(' ')[0].toString(),
                         lastName: reservation.creatorName
