@@ -66,11 +66,20 @@ class AlmanakPage extends ConsumerWidget {
                   width: choiceWidgetPadding,
                 ),
               ),
-              const FirebaseWidget(
-                onAuthenticated: AlmanakStructureChoiceWidget(
-                  pushRoute: 'Partners',
-                  title: "Partners & Sponsors",
+              [
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "Partners",
+                  title: "Njord-Partners",
                   imagePath: 'assets/images/partners.jpeg',
+                ).expanded(),
+                const AlmanakStructureChoiceWidget(
+                  pushRoute: "Charity",
+                  title: "Goede Doel",
+                  imagePath: 'assets/images/partners.jpeg',
+                ).expanded(),
+              ].toRow(
+                separator: const SizedBox(
+                  width: choiceWidgetPadding,
                 ),
               ),
             ].toColumn(
