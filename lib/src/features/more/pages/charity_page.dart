@@ -22,8 +22,6 @@ class CharityPage extends ConsumerWidget {
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    const logoSize = 32.0;
-
     double imageWidth = 300;
     double imageHeight = 200;
 
@@ -32,22 +30,7 @@ class CharityPage extends ConsumerWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/leontienhuis.png',
-              semanticLabel: 'Leontienhuis logo',
-              width: logoSize,
-              // ignore: no-equal-arguments
-              height: logoSize,
-            ),
-            const SizedBox(width: 8),
-            const Text('Lustrumgoededoel'),
-            const SizedBox(width: 8),
-            Image.asset(
-              'assets/images/leontienhuis-mirrored.png',
-              width: logoSize,
-              // ignore: no-equal-arguments
-              height: logoSize,
-            ),
+            const Text('Goede Doel (ntb)'),
             const SizedBox(width: 20),
           ],
         ),
