@@ -45,7 +45,13 @@ class ShowTrainingPage extends ConsumerWidget {
                             .split(' ')
                             .sublist(1)
                             .join(' '),
-                        lidnummer: reservation.creatorId),
+                        lidnummer: reservation.creatorId
+                      )
+                      else 
+                        DataTextListTile(
+                          name: "Afschrijver",
+                          value: reservation.creatorName,
+                        ),
                     DataTextListTile(
                       name: "Object",
                       value: reservation.objectName,
