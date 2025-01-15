@@ -60,6 +60,11 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     required WidgetRef ref,
     required BuildContext context,
   }) async {
+    final currentState = _formKey.currentState;
+    if (currentState?.validate() == false) {
+      return;
+    }
+
     try {
       await FormRepository.upsertFormAnswer(
         question: question,
@@ -140,14 +145,6 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.save();
-                          _handleChangeOfFormAnswer(
-                            question: widget.formQuestion.title,
-                            newValue: answer.text,
-                            f: widget.form,
-                            d: widget.docRef,
-                            ref: ref,
-                            context: context,
-                          );
                         },
                         child: const Text("Opslaan"),
                       ),
