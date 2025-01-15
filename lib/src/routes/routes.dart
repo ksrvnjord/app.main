@@ -607,6 +607,19 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+          path: "charity",
+          name: "Charity",
+          child: const CharityPage(),
+          routes: [
+            // /meer/charity/admin/edit
+            _route(
+              path: "admin/edit",
+              name: "CharityEdit",
+              child: const EditCharityPage(),
+            ),
+          ],
+        ),
       ],
     ),
     _route(
@@ -658,19 +671,6 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'zwanehalzen',
           name: 'Zwanehalzen',
           child: const DocumentsMainPage(),
-        ),
-        _route(
-          path: "charity",
-          name: "Charity",
-          child: const CharityPage(),
-          routes: [
-            // /meer/charity/edit
-            _route(
-              path: "admin/edit",
-              name: "CharityEdit",
-              child: const EditCharityPage(),
-            ),
-          ],
         ),
         _route(
           path: "blikkenlijst",

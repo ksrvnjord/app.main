@@ -24,7 +24,6 @@ class MorePage extends ConsumerWidget {
       "Contacteer het Bestuur / Commissies": "Contact",
       // The order isn't alphabetical, but the order in which the options are displayed.
       if (firebaseAuthUser != null) "Bekijk de Zwanehalzen": "Zwanehalzen",
-      if (firebaseAuthUser != null) "Bekijk het Goede Doel": "Charity",
       if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
       if (firebaseAuthUser != null)
