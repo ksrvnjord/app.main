@@ -25,7 +25,7 @@ class FirestoreForm {
   final bool? userCanAddPhoto;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
-      FirebaseFirestore.instance.collection('forms').withConverter(
+      FirebaseFirestore.instance.collection('testforms').withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),
