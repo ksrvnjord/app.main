@@ -1,65 +1,82 @@
+// ignore_for_file: unused_result
+
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
+final storage = FirebaseStorage.instance;
+
+// Class for holding parameters
 class FormAnswerImageParams {
   FormAnswerImageParams({required this.docId, required this.userId});
+
   final String docId;
   final String userId;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is FormAnswerImageParams &&
+        other.docId == docId &&
+        other.userId == userId;
+  }
+
+  @override
+  int get hashCode => docId.hashCode ^ userId.hashCode;
 }
 
-final formAnswerImageProvider =
-    FutureProvider.family<String?, FormAnswerImageParams>((ref, params) async {
-  final String docId = params.docId;
-  final String userId = params.userId;
+// Fetch image function
+Future<String> fetchImage(String docRef, String userId) async {
+  return await storage
+      .ref('testforms/$docRef/$userId/image.png')
+      .getDownloadURL();
+}
 
+Future<bool> addImage(Uint8List image, String docRef, WidgetRef ref) async {
   try {
-    final storageRef = FirebaseStorage.instance
-        .ref()
-        .child('forms/$docId/$userId/thumbnails/image_200x200.png');
-
-    final url = await storageRef.getDownloadURL().timeout(Duration(seconds: 5));
-    return url;
-  } on FirebaseException catch (e) {
-    if (e.code == 'object-not-found') {
-      // File does not exist, return null
-      return null;
-    } else {
-      // Re-throw any other Firebase exceptions
-      rethrow;
-    }
+    final user = await ref.watch(currentUserProvider.future);
+    await storage
+        .ref('testforms/$docRef/${user.identifierString}/image.png')
+        .putData(image);
+    ref.refresh(myFormAnswerImageProvider(docRef));
+    return true;
   } catch (e) {
-    // Handle any non-Firebase exceptions
-    return null;
+    return false;
   }
+}
+
+Future<bool> changeImage(Uint8List image, String docRef, WidgetRef ref) async {
+  return await addImage(image, docRef, ref);
+}
+
+Future<bool> deleteImage(String docRef, WidgetRef ref) async {
+  try {
+    final user = await ref.watch(currentUserProvider.future);
+    await storage
+        .ref('testforms/$docRef/${user.identifierString}/image.png')
+        .delete();
+    ref.refresh(myFormAnswerImageProvider(docRef));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Provider for form anser of current user
+final myFormAnswerImageProvider =
+    FutureProvider.family<String, String>((ref, docId) async {
+  final user = await ref.watch(currentUserProvider.future);
+  final params =
+      FormAnswerImageParams(docId: docId, userId: user.identifierString);
+  return fetchImage(params.docId, params.userId);
 });
 
-class FormAnswerImageNotifier extends StateNotifier<AsyncValue<String?>> {
-  FormAnswerImageNotifier() : super(const AsyncValue.loading());
-
-  Future<void> addImage(
-      String docId, String userId, Uint8List imageData) async {
-    try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('forms/$docId/thumbnails/${userId}_200x200.png');
-      await ref.putData(imageData);
-      final url = await ref.getDownloadURL();
-      state = AsyncValue.data(url);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
-      return;
-    }
-  }
-
-  Future<void> changeImage(
-      String docId, String userId, Uint8List imageData) async {
-    await addImage(docId, userId, imageData);
-  }
-}
-
-final formAnswerImageNotifierProvider =
-    StateNotifierProvider<FormAnswerImageNotifier, AsyncValue<String?>>((ref) {
-  return FormAnswerImageNotifier();
+// Provider for form anser of other user
+final formAnswerImageProvider =
+    FutureProvider.family<String, FormAnswerImageParams>((ref, params) async {
+  return fetchImage(params.docId, params.userId);
 });

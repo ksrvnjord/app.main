@@ -10,11 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answers_export_options.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/all_forms_listtile_image_leading_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -342,6 +345,15 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                       final userId = answer.userId;
 
                       return ListTile(
+                        leading: formVal.maybeWhen(
+                            orElse: () => SizedBox.shrink(),
+                            data: (form) {
+                              if (form.data()?.userCanAddPhoto ?? false) {
+                                return AllFormsListTileImageLeadingWidget(
+                                    formId: form.id, userId: userId);
+                              }
+                              return const SizedBox.shrink();
+                            }),
                         title: Text(userId),
                         subtitle: Text(
                           "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
