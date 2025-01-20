@@ -19,7 +19,7 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
   /// Fetch announcements from the last 5 days
   void fetchRecentAnnouncements() {
     final fiveDaysAgo =
-        Timestamp.now().toDate().subtract(const Duration(days: 5));
+        Timestamp.now().toDate().subtract(const Duration(days: 2));
 
     _firestore
         .collection('announcements_v2')
