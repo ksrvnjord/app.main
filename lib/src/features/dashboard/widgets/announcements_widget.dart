@@ -45,7 +45,8 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
           title: const Text('Link aanpassen'),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(labelText: 'Link'),
+            decoration: const InputDecoration(
+                labelText: 'Volledige link (https://...)'),
           ),
           actions: [
             TextButton(
@@ -67,7 +68,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
   @override
   Widget build(BuildContext context) {
     final announcements = ref.watch(announcementProvider);
-    final announcementNotifier = ref.read(announcementProvider.notifier);
+    final announcementNotifier = ref.watch(announcementProvider.notifier);
     final screenHeigth = MediaQuery.of(context).size.height;
     final currentUserAsyncValue = ref.watch(currentUserProvider);
 
