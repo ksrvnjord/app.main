@@ -21,8 +21,10 @@ class CalendarOverview extends ConsumerStatefulWidget {
 }
 
 class _CalendarOverview extends ConsumerState<CalendarOverview> {
-  final ScrollController boatsController = ScrollController(initialScrollOffset: CalendarMeasurement.initialPagePosition());
-  final ScrollController timesController = ScrollController(initialScrollOffset: CalendarMeasurement.initialPagePosition());
+  final ScrollController boatsController = ScrollController(
+      initialScrollOffset: CalendarMeasurement.initialPagePosition());
+  final ScrollController timesController = ScrollController(
+      initialScrollOffset: CalendarMeasurement.initialPagePosition());
 
   @override
   void initState() {
