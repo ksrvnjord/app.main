@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/time_scrollview.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/vertical_reservation_scrollview_with_header.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/calendar_measurement.dart';
 
 // Shows all available objects for a given day and filters.
 class CalendarOverview extends ConsumerStatefulWidget {
@@ -20,8 +21,8 @@ class CalendarOverview extends ConsumerStatefulWidget {
 }
 
 class _CalendarOverview extends ConsumerState<CalendarOverview> {
-  final ScrollController boatsController = ScrollController();
-  final ScrollController timesController = ScrollController();
+  final ScrollController boatsController = ScrollController(initialScrollOffset: CalendarMeasurement.initialPagePosition());
+  final ScrollController timesController = ScrollController(initialScrollOffset: CalendarMeasurement.initialPagePosition());
 
   @override
   void initState() {
