@@ -34,7 +34,7 @@ class User {
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
-  bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
+  bool get isAdmin => _django.isStaff;
   String get birthDate => _django.birthDate;
   String get initials => _django.initials;
   String get iban => _django.iban;
