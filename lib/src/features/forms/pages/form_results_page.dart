@@ -195,7 +195,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           'E-mail': (String userId) async =>
               (await ref.read(userProvider(userId).future)).email,
           'mobiel nummer': (String userId) async =>
-              (await ref.read(userProvider(userId).future)).phonePrimary ?? ' ',
+              (await ref.read(userProvider(userId).future)).phonePrimary ?? '',
         });
 
         LinkedHashMap<String, ExportOptionFunction> options =
