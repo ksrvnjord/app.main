@@ -45,6 +45,8 @@ class FormRepository {
           )
         : FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
             userId: user.identifier.toString(),
+            email: user.email,
+            fullName: user.fullName,
             answers: [formQuestionAnswer],
             answeredAt: Timestamp.now(),
             isCompleted: checkIfFormIsCompleted(

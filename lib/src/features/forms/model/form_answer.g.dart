@@ -8,6 +8,8 @@ part of 'form_answer.dart';
 
 FormAnswer _$FormAnswerFromJson(Map<String, dynamic> json) => FormAnswer(
       userId: json['userId'] as String,
+      email: json['email'] as String?,
+      fullName: json['fullName'] as String?,
       answers: (json['answers'] as List<dynamic>)
           .map((e) => FormQuestionAnswer.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -22,6 +24,8 @@ FormAnswer _$FormAnswerFromJson(Map<String, dynamic> json) => FormAnswer(
 Map<String, dynamic> _$FormAnswerToJson(FormAnswer instance) =>
     <String, dynamic>{
       'userId': instance.userId,
+      'email': instance.email,
+      'fullName': instance.fullName,
       'answers': FormAnswer._answersToJson(instance.answers),
       'answeredAt':
           const TimestampDateTimeConverter().toJson(instance.answeredAt),

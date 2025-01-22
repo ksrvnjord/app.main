@@ -12,6 +12,8 @@ class FormAnswer {
   static const isCompletedJSONKey = "isCompleted";
 
   final String userId;
+  final String? email;
+  final String? fullName;
 
   @JsonKey(toJson: _answersToJson)
   final List<FormQuestionAnswer> answers; // User can choose to not answer.
@@ -26,6 +28,8 @@ class FormAnswer {
   // ignore: sort_constructors_first
   const FormAnswer({
     required this.userId,
+    this.email,
+    this.fullName,
     required this.answers,
     required this.answeredAt,
     required this.isCompleted,
