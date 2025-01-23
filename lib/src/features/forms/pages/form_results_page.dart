@@ -126,6 +126,10 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       final rows = <List<String>>[
         // HEADER ROW.
         [
+          'sep=${exportOptions.delimiter}',
+        ],
+        // HEADER TABLE.
+        [
           'Lidnummer',
           ...exportOptions
               .extraFields.keys, // Include the export options as headers.
