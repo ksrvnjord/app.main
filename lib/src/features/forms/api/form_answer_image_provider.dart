@@ -2,8 +2,11 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:archive/archive.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 final storage = FirebaseStorage.instance;
@@ -95,6 +98,51 @@ Future<bool> deleteAllImages(String docRef, WidgetRef ref) async {
     return true;
   } catch (e) {
     return false;
+  }
+}
+
+Future<void> downloadAllFormImageAnswers(String docRef) async {
+  final storage = FirebaseStorage.instance;
+
+  // Get the root directory for 'testforms/$docRef'
+  final listResult = await storage.ref('testforms/$docRef').listAll();
+
+  // Initialize an in-memory zip archive
+  final archive = Archive();
+
+  for (var folder in listResult.prefixes) {
+    final userId = folder.name;
+
+    // Skip folders named 'thumbnails'
+    if (userId == 'thumbnails') continue;
+
+    // List files in the userId folder
+    final userFolderResult = await folder.listAll();
+    for (var fileRef in userFolderResult.items) {
+      // Skip any thumbnails folder in the second layer
+      if (fileRef.fullPath.contains('/thumbnails/')) continue;
+
+      // Download file as bytes
+      final Uint8List? fileData = await fileRef.getData();
+      if (fileData == null) continue;
+
+      // Rename and add the file to the archive
+      final fileName = '${userId}_${fileRef.name}';
+      archive.addFile(ArchiveFile(fileName, fileData.length, fileData));
+    }
+  }
+
+  // Encode the archive to a zip file
+  final zipData = ZipEncoder().encode(archive);
+
+  if (zipData != null) {
+    // Create a Blob and trigger a download
+    final blob = html.Blob([zipData]);
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.AnchorElement(href: url)
+      ..download = 'images.zip'
+      ..click();
+    html.Url.revokeObjectUrl(url);
   }
 }
 
