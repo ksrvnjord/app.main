@@ -139,6 +139,10 @@ Future<void> downloadAllFormImageAnswers(String docRef) async {
     // Create a Blob and trigger a download
     final blob = html.Blob([zipData]);
     final url = html.Url.createObjectUrlFromBlob(blob);
+    // ignore: unused_local_variable
+    final anchor = html.AnchorElement(href: url)
+      ..download = '$docRef.zip'
+      ..click();
     html.Url.revokeObjectUrl(url);
   }
 }
