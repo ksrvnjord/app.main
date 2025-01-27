@@ -8,10 +8,12 @@ class AllFormsListTileImageLeadingWidget extends ConsumerWidget {
     super.key,
     required this.formId,
     required this.userId,
+    required this.questionName,
   });
 
   final String formId;
   final String userId;
+  final String questionName;
 
   void _downloadImage(String url) {
     launchUrl(Uri.parse(url));
@@ -20,7 +22,8 @@ class AllFormsListTileImageLeadingWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formAnswerImageFuture = ref.watch(formAnswerImageProvider(
-      FormAnswerImageParams(docId: formId, userId: userId),
+      FormAnswerImageParams(
+          docId: formId, userId: userId, questionName: questionName),
     ).future);
 
     return FutureBuilder<String>(

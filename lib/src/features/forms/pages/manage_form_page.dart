@@ -91,12 +91,6 @@ class ManageFormPage extends ConsumerWidget {
                       name: 'Gecreerd op',
                       value: formatter.format(formData.createdTime.toDate()),
                     ),
-                    DataTextListTile(
-                      name: 'Bijvoegen foto',
-                      value: formData.userCanAddPhoto == true
-                          ? 'Mogelijk'
-                          : 'Niet mogelijk',
-                    ),
                   ],
                 );
         },

@@ -21,7 +21,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
-  bool _allowPhoto = false;
+  final bool _allowPhoto = false;
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -95,7 +95,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
-          userCanAddPhoto: _allowPhoto,
         ),
       );
       if (!context.mounted) return;
@@ -170,19 +169,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   setState(() => _openUntil = dateTime),
             ),
             const SizedBox(height: sizedBoxHeight),
-            Row(
-              children: [
-                Checkbox(
-                  value: _allowPhoto,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _allowPhoto = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Mogelijkheid om foto toe te voegen'),
-              ],
-            ),
             ..._questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(
                 index: questionEntry.key,
@@ -206,7 +192,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                       () => _questions.add(FirestoreFormQuestion(
                         title: '',
                         type: FormQuestionType.singleChoice,
-                        isRequired: false,
+                        isRequired: true,
                         options: [],
                       )), // Add an empty label for the new TextFormField.
                     ),

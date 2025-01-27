@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -155,6 +156,22 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 context: context,
               ),
               formIsOpen: widget.formIsOpen,
+            ));
+            break;
+
+          case FormQuestionType.image:
+            questionWidgets.add(FormImageWidget(
+              docId: widget.docRef.id,
+              questionName: widget.formQuestion.title,
+              formIsOpen: widget.formIsOpen,
+              onChanged: (String? value) => _handleChangeOfFormAnswer(
+                question: widget.formQuestion.title,
+                newValue: value,
+                f: widget.form,
+                d: widget.docRef,
+                ref: ref,
+                context: context,
+              ),
             ));
             break;
 

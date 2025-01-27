@@ -28,4 +28,5 @@ Map<String, dynamic> _$FirestoreFormQuestionToJson(
 const _$FormQuestionTypeEnumMap = {
   FormQuestionType.singleChoice: 'singleChoice',
   FormQuestionType.text: 'text',
+  FormQuestionType.image: 'image',
 };

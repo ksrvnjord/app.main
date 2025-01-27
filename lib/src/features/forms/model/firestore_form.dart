@@ -22,7 +22,6 @@ class FirestoreForm {
   final String? description;
   final String authorId;
   final String authorName;
-  final bool? userCanAddPhoto;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance.collection('testforms').withConverter(
@@ -40,7 +39,6 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
-    this.userCanAddPhoto,
   });
 
   // Create fromJson method.

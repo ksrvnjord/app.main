@@ -345,15 +345,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                       final userId = answer.userId;
 
                       return ListTile(
-                        leading: formVal.maybeWhen(
-                            orElse: () => SizedBox.shrink(),
-                            data: (form) {
-                              if (form.data()?.userCanAddPhoto ?? false) {
-                                return AllFormsListTileImageLeadingWidget(
-                                    formId: form.id, userId: userId);
-                              }
-                              return const SizedBox.shrink();
-                            }),
                         title: Text(userId),
                         subtitle: Text(
                           "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
