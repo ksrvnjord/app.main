@@ -21,7 +21,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
-  final bool _allowPhoto = false;
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));

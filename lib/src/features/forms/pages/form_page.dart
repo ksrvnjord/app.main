@@ -9,7 +9,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_prov
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
