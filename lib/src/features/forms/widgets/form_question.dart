@@ -19,6 +19,7 @@ class FormQuestion extends ConsumerStatefulWidget {
     required this.docRef,
     required this.formIsOpen,
     this.withoutBorder = false,
+    this.showAdditionalSaveButton = false, // New parameter
   });
 
   final FirestoreFormQuestion formQuestion;
@@ -30,6 +31,8 @@ class FormQuestion extends ConsumerStatefulWidget {
   final bool formIsOpen;
 
   final bool withoutBorder;
+
+  final bool showAdditionalSaveButton; // New parameter
 
   @override
   createState() => _FormQuestionState();
@@ -49,17 +52,20 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     });
   }
 
-  // ignore: avoid-long-parameter-list
   Future<void> _handleChangeOfFormAnswer({
     required String question,
-    required String? newValue, // Given answer.
+    required String? newValue,
     required FirestoreForm f,
     required DocumentReference<FirestoreForm> d,
     required WidgetRef ref,
     required BuildContext context,
   }) async {
+    final currentState = _formKey.currentState;
+    if (currentState?.validate() == false) {
+      return;
+    }
+
     try {
-      // ignore: avoid-ignoring-return-values
       await FormRepository.upsertFormAnswer(
         question: question,
         newValue: newValue,
@@ -69,7 +75,6 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
       );
     } on Exception catch (error) {
       if (!context.mounted) return;
-      // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error.toString())),
       );
@@ -96,13 +101,10 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
     final answerStream = ref.watch(formAnswerProvider(widget.docRef));
 
-    // ignore: avoid-ignoring-return-values
     answerStream.when(
-      // ignore: avoid-long-functions
       data: (data) {
         String? answerValue;
         if (data.docs.isNotEmpty) {
-          // ignore: avoid-unsafe-collection-methods
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
             if (entry.questionTitle == widget.formQuestion.title) {
@@ -118,24 +120,35 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             questionWidgets.add(
               Form(
                 key: _formKey,
-                child: TextFormField(
-                  controller: answer,
-                  focusNode:
-                      _focusNode, // The focus node controls when to save.
-                  maxLines: null,
-                  // ignore: avoid-async-call-in-sync-function
-                  onSaved: (String? value) => _handleChangeOfFormAnswer(
-                    question: widget.formQuestion.title,
-                    newValue: value,
-                    f: widget.form,
-                    d: widget.docRef,
-                    ref: ref,
-                    context: context,
-                  ),
-                  validator: ((value) => (value == null || value.isEmpty)
-                      ? 'Antwoord kan niet leeg zijn.'
-                      : null),
-                  enabled: widget.formIsOpen,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: answer,
+                        focusNode: _focusNode,
+                        maxLines: null,
+                        onSaved: (String? value) => _handleChangeOfFormAnswer(
+                          question: widget.formQuestion.title,
+                          newValue: value,
+                          f: widget.form,
+                          d: widget.docRef,
+                          ref: ref,
+                          context: context,
+                        ),
+                        validator: (value) => (value == null || value.isEmpty)
+                            ? 'Antwoord kan niet leeg zijn.'
+                            : null,
+                        enabled: widget.formIsOpen,
+                      ),
+                    ),
+                    if (widget.showAdditionalSaveButton)
+                      TextButton(
+                        onPressed: () {
+                          _formKey.currentState?.save();
+                        },
+                        child: const Text("Opslaan"),
+                      ),
+                  ],
                 ),
               ),
             );
@@ -145,7 +158,6 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             questionWidgets.add(SingleChoiceWidget(
               initialValue: answerValue,
               formQuestion: widget.formQuestion,
-              // ignore: avoid-async-call-in-sync-function
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 newValue: answerValue == value ? null : value,
@@ -176,7 +188,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: widget.withoutBorder
-            ? null // No border if withoutBorder is true.
+            ? null
             : Border.all(color: colorScheme.primary),
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
       ),
