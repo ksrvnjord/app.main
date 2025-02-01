@@ -89,7 +89,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     final currentUser = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Zichtbaarheid Almanak Aanpassen')),
+      appBar: AppBar(title: const Text('Zichtbaarheid aanpassen')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: currentUser.when(
@@ -101,7 +101,7 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
               child: Column(
                 children: [
                   SensitiveDataBoolFormfield(
-                    title: 'Email zichtbaar in almanak',
+                    title: 'E-mail zichtbaar in almanak',
                     valueNotifier: _notifiers['email']!,
                     isEditable: true,
                   ),

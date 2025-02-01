@@ -32,7 +32,6 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
-import 'package:ksrvnjord_main_app/src/features/more/pages/advanced_settings_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
@@ -298,28 +297,33 @@ abstract final // ignore: prefer-single-declaration-per-file
               path: 'personal',
               name: "Sensitive Data",
               child: const SensitiveDataPage(),
-              routes: [
-                _route(
-                  path: 'visibility',
-                  name: "Edit My Visibility",
-                  child: const EditVisibilityPage(),
-                ),
-              ],
             ),
             _route(
               path: 'instellingen',
               name: "Settings",
               child: const SettingsPage(),
               routes: [
+                // Route for privacy policy page.
                 _route(
-                  path: 'geavanceerd',
-                  name: "Advanced Settings",
-                  child: const AdvancedSettingsPage(),
+                  path: 'privacy-beleid',
+                  name: "Settings -> Privacy Beleid",
+                  child: const PrivacyPolicyPage(),
+                ),
+                // Route for about page.
+                _route(
+                  path: "about",
+                  name: "About this app",
+                  child: const AboutThisAppPage(),
                 ),
                 _route(
                   path: 'notificatie-voorkeuren',
                   name: "Notification Preferences",
                   child: const NotificationsPage(),
+                ),
+                _route(
+                  path: 'visibility',
+                  name: "Edit My Visibility",
+                  child: const EditVisibilityPage(),
                 ),
               ],
             ),
@@ -625,12 +629,6 @@ abstract final // ignore: prefer-single-declaration-per-file
       name: "More",
       child: const MorePage(),
       routes: [
-        // Route for about page.
-        _route(
-          path: "about",
-          name: "About this app",
-          child: const AboutThisAppPage(),
-        ),
         // Route for GalleryPage.
         _route(
           path: "gallerij",
@@ -648,11 +646,6 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: "contact",
           name: "Contact",
           child: const ContactPage(),
-        ),
-        _route(
-          path: 'privacy-beleid',
-          name: "More -> Privacy Beleid",
-          child: const PrivacyPolicyPage(),
         ),
         _route(
           path: 'zwanehalzen',

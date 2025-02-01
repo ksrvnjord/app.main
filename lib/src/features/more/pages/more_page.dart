@@ -2,7 +2,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
@@ -18,9 +17,6 @@ class MorePage extends ConsumerWidget {
     final currentUserVal = ref.watch(currentUserProvider);
 
     final optionRouteMap = {
-      "Over deze App": "About this app",
-      // ignore: map-keys-ordering
-      "Bekijk het Privacy Beleid": "More -> Privacy Beleid",
       "Contacteer het Bestuur / Commissies": "Contact",
       // The order isn't alphabetical, but the order in which the options are displayed.
       if (firebaseAuthUser != null) "Bekijk de Zwanehalzen": "Zwanehalzen",
@@ -75,13 +71,6 @@ class MorePage extends ConsumerWidget {
             url: 'https://linktr.ee/ksrvnjord_intern',
           ),
           const Divider(height: 0, thickness: dividerThickness),
-          ListTile(
-            title: Text('Uitloggen', style: textTheme.titleMedium)
-                .textColor(colorScheme.error),
-            trailing: Icon(Icons.logout, color: colorScheme.error),
-            visualDensity: VisualDensity.standard,
-            onTap: () => ref.read(authControllerProvider.notifier).logout(),
-          ),
         ],
       ),
       // Floatingaction button to navigate to admin page.
