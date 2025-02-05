@@ -17,4 +17,29 @@ class CalendarMeasurement {
 
     return amountOfSlots * slotHeight + topOffsetFirstSlot;
   }
+
+  static double amountOfPixelsTillCurrentTimeFromTop() {
+    final DateTime date = DateTime.now();
+    final int minutes =
+        ((startHour * 60) - (date.hour * 60 + date.minute)).abs();
+    final double amountOfSlots = minutes / minutesInSlot;
+
+    return amountOfSlots * slotHeight + topOffsetFirstSlot;
+  }
+
+  static double initialPagePosition() {
+    final DateTime date = DateTime.now();
+    final int minutes =
+        ((startHour * 60) - (date.hour * 60 + date.minute)).abs();
+    final double amountOfSlots = minutes / minutesInSlot;
+    final double pixelsTillNow =
+        (amountOfSlots - 3) * slotHeight + topOffsetFirstSlot;
+
+    if (pixelsTillNow > 1200) {
+      // 1180 is the maximum scroll offset
+      return 1200;
+    } else {
+      return pixelsTillNow;
+    }
+  }
 }

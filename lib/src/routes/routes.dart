@@ -178,8 +178,7 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = Routes._moreRoutes
-            .any((route) => '${route.path}/admin' == currentPath);
+        final bool currentRouteRequiresAdmin = currentPath.contains('/admin');
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
@@ -224,8 +223,9 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
+            // path: /forms/nieuw
             _route(
-              path: 'nieuw',
+              path: 'admin/nieuw',
               name: "Forms -> Create Form",
               child: const CreateFormPage(),
             ),
@@ -606,6 +606,19 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+          path: "charity",
+          name: "Charity",
+          child: const CharityPage(),
+          routes: [
+            // /meer/charity/admin/edit
+            _route(
+              path: "admin/edit",
+              name: "CharityEdit",
+              child: const EditCharityPage(),
+            ),
+          ],
+        ),
       ],
     ),
     _route(
@@ -657,18 +670,6 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'zwanehalzen',
           name: 'Zwanehalzen',
           child: const DocumentsMainPage(),
-        ),
-        _route(
-          path: "charity",
-          name: "Charity",
-          child: const CharityPage(),
-          routes: [
-            _route(
-              path: "edit",
-              name: "CharityEdit",
-              child: const EditCharityPage(),
-            ),
-          ],
         ),
         _route(
           path: "blikkenlijst",

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_by_id_provider.dart';
@@ -36,10 +37,20 @@ class ShowTrainingPage extends ConsumerWidget {
                 )
               : ListView(
                   children: [
-                    DataTextListTile(
-                      name: "Afschrijver",
-                      value: reservation.creatorName,
-                    ),
+                    if (int.tryParse(reservation.creatorId) != null)
+                      AlmanakUserTile(
+                          firstName:
+                              reservation.creatorName.split(' ')[0].toString(),
+                          lastName: reservation.creatorName
+                              .split(' ')
+                              .sublist(1)
+                              .join(' '),
+                          lidnummer: reservation.creatorId)
+                    else
+                      DataTextListTile(
+                        name: "Afschrijver",
+                        value: reservation.creatorName,
+                      ),
                     DataTextListTile(
                       name: "Object",
                       value: reservation.objectName,

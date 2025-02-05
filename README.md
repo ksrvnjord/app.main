@@ -93,6 +93,55 @@ You can run the formatter locally with:
 $ dart format .
 ```
 
+## Setting up build in CodeMagic
+
+### In Teams go to your team page
+
+Go to team integrations and connect to Apple Developer Portal. Details are explained in [here (Signing iOS apps with code signing identities and codemagic.yaml)](https://www.youtube.com/watch?v=idRJZxVafY0). After this scroll down to Code signing identities and upload certificate under iOS certificates via the instructions in video mentioned above.
+
+### In the Apps menu
+
+- Click on Add application to connect to a new gitrepo
+- Click on Finish build setup to go into build settings or press the gear
+- In the top right under "Workflow settings" change workflow name to something adequate
+- Under Build for platforms check the desired platforms (Android, iOS, Web)
+- In Build triggers enable Trigger on push and Cancel outdated webhooks builds. Under branch patterns include source: main. And under tag patterns include: *.*.*
+- In Pre-test script include ```
+{
+#!/bin/sh
+
+commit_msg=$(git log -1 --pretty=format:"%b")
+
+### Write latest commit message to release notes
+echo "[{\"language\": \"nl-NL\", \"text\": \"$commit_msg\"}]" > release_notes.json
+
+}
+```
+- In Tests enable to stop build when tests fails
+- Scroll down to Build and change Android build format to android app bundle and APK
+- - Switch Mode to Release
+- In Post-build script include ```
+{
+# Deploy only if we built for web
+# Directory to check
+DIRECTORY="build/web"
+
+# Check if the directory exists
+if [ -d "$DIRECTORY" ]; then
+    firebase deploy --only hosting --token $FIREBASE_TOKEN
+fi
+}
+```
+- Scroll to Distribution
+- - Enable Android code signing, ask either Vincent or Alex for credentials
+- - Enable Google Play publishing
+- -
+- - In iOS code signing set code signing method to automatic
+- - - Choose your own API key (First set this up in Team -> "your team" -> Team integrations -> Developer Portal
+- - - Set provisioning profile type to Ad hoc and bundle identifier to that of the app
+- - Finally in App Store Connect enable it and choose your API
+
+
 
 ## Acknowledgments
 

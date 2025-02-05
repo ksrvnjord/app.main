@@ -126,6 +126,10 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       final rows = <List<String>>[
         // HEADER ROW.
         [
+          'sep=${exportOptions.delimiter}',
+        ],
+        // HEADER TABLE.
+        [
           'Lidnummer',
           ...exportOptions
               .extraFields.keys, // Include the export options as headers.
@@ -192,6 +196,10 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
               (await ref.read(userProvider(userId).future))
                   .allergies
                   .join(', '),
+          'E-mail': (String userId) async =>
+              (await ref.read(userProvider(userId).future)).email,
+          'mobiel nummer': (String userId) async =>
+              (await ref.read(userProvider(userId).future)).phonePrimary ?? '',
         });
 
         LinkedHashMap<String, ExportOptionFunction> options =
