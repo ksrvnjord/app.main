@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/get_image.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
@@ -12,18 +12,6 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
     required this.pageController,
     required this.announcements,
   });
-
-  Future<void> _pickImage(
-      BuildContext context, WidgetRef ref, String author) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      // Handle the selected image
-      final announcementNotifier = ref.watch(announcementProvider.notifier);
-      announcementNotifier.createAnnouncement(author, image);
-    }
-  }
 
   final PageController pageController;
   final List<Announcement> announcements;
@@ -41,7 +29,7 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
               return IconButton(
                   icon: const Icon(Icons.add, color: Colors.grey),
                   onPressed: () {
-                    _pickImage(context, ref, currentUser.identifier.toString());
+                    pickImage(context, ref, currentUser.identifier.toString());
                   });
             } else {
               return const SizedBox(width: 48);

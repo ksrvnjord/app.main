@@ -16,15 +16,32 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
     return [];
   }
 
-  /// Fetch announcements from the last 5 days
+  /// Fetch announcements from the last 2 days
   void fetchRecentAnnouncements() {
-    final fiveDaysAgo =
+    final twoDaysAgo =
         Timestamp.now().toDate().subtract(const Duration(days: 2));
 
     _firestore
         .collection('announcements_v2')
         .where('created_at',
-            isGreaterThanOrEqualTo: Timestamp.fromDate(fiveDaysAgo))
+            isGreaterThanOrEqualTo: Timestamp.fromDate(twoDaysAgo))
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .listen((querySnapshot) {
+      state = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return Announcement.fromMap(data);
+      }).toList();
+    }, onError: (error) {
+      debugPrint('Error fetching announcements: $error');
+      state = [];
+    });
+  }
+
+  /// Fetch all announcements
+  void fetchAllAnnouncements() {
+    _firestore
+        .collection('announcements_v2')
         .orderBy('created_at', descending: true)
         .snapshots()
         .listen((querySnapshot) {

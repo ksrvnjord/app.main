@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+/// A Page that displays a single image from the gallery.
+
 class GalleryFilePageView extends ConsumerStatefulWidget {
   const GalleryFilePageView({
     super.key,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/api/get_image.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_header_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_page_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcement_additional_header_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_page_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_additional_header_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,7 +70,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
   Widget build(BuildContext context) {
     final announcements = ref.watch(announcementProvider);
     final announcementNotifier = ref.watch(announcementProvider.notifier);
-    final screenHeigth = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
     final currentUserAsyncValue = ref.watch(currentUserProvider);
 
     return currentUserAsyncValue.when(
@@ -78,15 +79,28 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
           children: [
             AnnouncementHeaderWidget(),
             if (announcements.isEmpty)
-              const SizedBox(
-                height: 320,
-                child: Center(
-                  child: Text(
-                    "Er zijn geen recente aankondigingen",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                    textAlign: TextAlign.center,
+              Column(
+                children: [
+                  if (currentUser.isAdmin)
+                    IconButton(
+                        icon: const Icon(Icons.add, color: Colors.grey),
+                        onPressed: () {
+                          pickImage(
+                              context, ref, currentUser.identifier.toString());
+                        })
+                  else
+                    const SizedBox.shrink(),
+                  const SizedBox(
+                    height: 320,
+                    child: Center(
+                      child: Text(
+                        "Er zijn geen recente aankondigingen",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               )
             else ...[
               SizedBox(
@@ -97,7 +111,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
                 announcements: announcements,
               ),
               SizedBox(
-                height: screenHeigth,
+                height: screenHeight,
                 child: GestureDetector(
                   onTap: () {
                     final url = announcements[_currentPage].link;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/vaarverbod_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/announcements_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcements_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
