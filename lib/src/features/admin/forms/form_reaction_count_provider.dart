@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final formPartialReactionCountProvider = FutureProvider.family<int, String>(
   (ref, docId) async {
     final snapshot = await FirebaseFirestore.instance
-        .collection('testforms')
+        .collection('forms')
         .doc(docId)
         .collection('answers')
         .count()
