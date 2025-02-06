@@ -17,7 +17,7 @@ class AnnouncementHeaderWidget extends ConsumerWidget {
           title: "Aankondigingen",
           titleIcon: Icons.campaign,
           onTapName: "Alle aankondigingen",
-          onTap: () => context.pushNamed("More"),
+          onTap: () => context.pushNamed("All Announcements"),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),

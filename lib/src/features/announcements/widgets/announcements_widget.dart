@@ -87,9 +87,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
                         onPressed: () {
                           pickImage(
                               context, ref, currentUser.identifier.toString());
-                        })
-                  else
-                    const SizedBox.shrink(),
+                        }),
                   const SizedBox(
                     height: 320,
                     child: Center(

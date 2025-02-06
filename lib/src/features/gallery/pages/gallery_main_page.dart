@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/pages/all_announcements_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page_view.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_folder_page.dart';
 
 class GalleryMainPage extends StatefulWidget {
-  const GalleryMainPage({super.key});
+  const GalleryMainPage({super.key, this.goToAnnouncementPage = false});
+  final bool goToAnnouncementPage;
 
   @override
   State<GalleryMainPage> createState() => _GalleryMainPageState();
@@ -44,7 +46,9 @@ class _GalleryMainPageState extends State<GalleryMainPage> {
     }
 
     return MaterialPageRoute(
-      builder: (_) => GalleryFolderPage(path: settings.name ?? ''),
+      builder: (_) => widget.goToAnnouncementPage
+          ? AllAnnouncementsPage(path: settings.name ?? '')
+          : GalleryFolderPage(path: settings.name ?? ''),
       settings: settings,
     );
   }

@@ -70,13 +70,15 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gallery"),
+        title: const Text("Galerij"),
         actions: [
           IconButton(
             onPressed: () {
               final path = widget.paths.elementAtOrNull(_currentPage);
               if (path != null) {
                 final imageVal = ref.watch(galleryImageProvider(path.fullPath));
+
+                debugPrint("Sharing image: $path");
 
                 imageVal.when(
                   data: (image) {

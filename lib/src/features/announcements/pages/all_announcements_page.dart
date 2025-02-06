@@ -1,19 +1,29 @@
+import 'dart:async';
+
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/documents/widgets/folder_list.dart';
+import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/utils/gallery_view_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/gallery/widgets/folder_list.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:styled_widget/styled_widget.dart';
 
-class GalleryFolderPage extends ConsumerWidget {
-  const GalleryFolderPage({super.key, required this.path});
+class AllAnnouncementsPage extends ConsumerWidget {
+  const AllAnnouncementsPage({
+    super.key,
+    required this.path,
+  });
 
   final String path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rootFolder = ref.watch(galleryFolderRef("galerij/$path"));
+    final rootFolder = ref.watch(galleryFolderRef("announcements_v2/$path"));
 
     final gridOrList = ref.watch(gridOrListViewProvider);
 
@@ -25,7 +35,7 @@ class GalleryFolderPage extends ConsumerWidget {
                 icon: const Icon(Icons.arrow_back),
               )
             : null,
-        title: Text(path == '/' ? "Galerij" : path.replaceAll('-', ' ')),
+        title: Text("Alle aankondigingen"),
         actions: [
           IconButton(
             onPressed: () =>
