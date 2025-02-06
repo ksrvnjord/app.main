@@ -106,7 +106,9 @@ class ManageFormPage extends ConsumerWidget {
         heroTag: 'form_results',
         onPressed: () => context.pushNamed(
           'Form Results',
-          pathParameters: {'formId': formId},
+          pathParameters: {
+            'formId': formId,
+          },
         ).ignore(),
         icon: const Icon(Icons.list),
         label: const Text('Bekijk (volledig ingevulde) reacties'),
