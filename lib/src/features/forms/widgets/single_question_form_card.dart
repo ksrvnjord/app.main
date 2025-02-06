@@ -147,6 +147,7 @@ class _SingleQuestionFormCardState
                 docRef: widget.formDoc.reference,
                 formIsOpen: formIsOpen,
                 withoutBorder: true,
+                showAdditionalSaveButton: true,
               ).padding(horizontal: hPadding),
               const SizedBox(height: 2),
             ],

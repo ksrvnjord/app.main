@@ -37,14 +37,20 @@ class ShowTrainingPage extends ConsumerWidget {
                 )
               : ListView(
                   children: [
-                    AlmanakUserTile(
-                        firstName:
-                            reservation.creatorName.split(' ')[0].toString(),
-                        lastName: reservation.creatorName
-                            .split(' ')
-                            .sublist(1)
-                            .join(' '),
-                        lidnummer: reservation.creatorId),
+                    if (int.tryParse(reservation.creatorId) != null)
+                      AlmanakUserTile(
+                          firstName:
+                              reservation.creatorName.split(' ')[0].toString(),
+                          lastName: reservation.creatorName
+                              .split(' ')
+                              .sublist(1)
+                              .join(' '),
+                          lidnummer: reservation.creatorId)
+                    else
+                      DataTextListTile(
+                        name: "Afschrijver",
+                        value: reservation.creatorName,
+                      ),
                     DataTextListTile(
                       name: "Object",
                       value: reservation.objectName,

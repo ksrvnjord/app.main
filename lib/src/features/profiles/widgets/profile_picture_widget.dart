@@ -39,10 +39,9 @@ class ProfilePictureWidget extends ConsumerWidget {
               ),
             )
           : CircleAvatar(
-              backgroundColor: backgroundColor,
+              backgroundColor: Colors.transparent,
               foregroundImage: imageProvider,
-              radius: size,
-            ),
+              radius: size),
       loading: () => ShimmerWidget(child: CircleAvatar(radius: size)),
       error: (obj, stk) => CircleAvatar(
         foregroundColor: Colors.red,

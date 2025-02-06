@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,21 +32,13 @@ abstract final class CachedProfilePicture {
       "$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
   // 21203/thumbnails/profile_picture_200x200.png.
 
-  static UploadTask uploadMyProfilePicture(dynamic file) {
+  static UploadTask uploadMyProfilePicture(Uint8List imageData) {
     final uid = FirebaseAuth.instance.currentUser?.uid ?? "";
     String originalPath = CachedProfilePicture.path(uid);
     HiveCache.delete(originalPath); // Invalidate cache for my profile picture.
     String thumbnailPath = CachedProfilePicture.thumbnailPath(uid);
     HiveCache.delete(thumbnailPath); // Invalidate cache for the thumbnail.
 
-    if (kIsWeb) {
-      // For web, we assume file is Uint8List.
-      final Uint8List imageData = file;
-
-      return FirebaseStorage.instance.ref(originalPath).putData(imageData);
-    } // For mobile, we assume file is a File object.
-    final File imageFile = file;
-
-    return FirebaseStorage.instance.ref(originalPath).putFile(imageFile);
+    return FirebaseStorage.instance.ref(originalPath).putData(imageData);
   }
 }
