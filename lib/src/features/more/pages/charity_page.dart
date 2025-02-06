@@ -56,6 +56,23 @@ class CharityPage extends ConsumerWidget {
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionText(
+                text: 'Je recept in het Njordkookboek?',
+                fontSize: 16,
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    final url = Uri.parse(
+                      'https://forms.gle/R2tkzUf8nQZuzcuN7',
+                    );
+                    launchUrl(url);
+                  },
+                  child: const Text('Naar het kookboek!'),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(height: sizedBoxHeight),
+              const CharitySectionText(
                 text:
                     'Wil je zelf een bijdrage leveren aan de Dirk Kuyt Foundation?'
                     ' Doneer dan via onderstaande link!',
