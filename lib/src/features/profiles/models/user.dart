@@ -30,6 +30,8 @@ class User {
   String? get huis => _firestore?.huis;
   bool? get dubbellid => _firestore?.dubbellid;
   String? get otherAssociation => _firestore?.otherAssociation;
+  bool? get canBookTrainingFarInAdvance =>
+      _firestore?.canBookTrainingFarInAdvance;
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
@@ -56,6 +58,12 @@ class User {
       DateTime.now()
           .subtract(Duration(days: 243))
           .year); // 243 days = 8 months we work from september.
+
+  bool get isAppCo =>
+      ['21203', '18031', '18257', '20198', '22195', '23292', '23207'].contains(
+          identifier.toString()); // Used for testing purposes and AppCo rights.
+  bool get isBestuur =>
+      bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
