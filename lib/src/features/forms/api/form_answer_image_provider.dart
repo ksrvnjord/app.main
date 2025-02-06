@@ -2,12 +2,13 @@
 
 import 'dart:typed_data';
 
-import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:archive/archive.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+
+import 'package:universal_html/html.dart' as html;
 
 final storage = FirebaseStorage.instance;
 
