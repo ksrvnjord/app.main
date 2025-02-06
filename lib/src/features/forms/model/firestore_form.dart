@@ -24,7 +24,7 @@ class FirestoreForm {
   final String authorName;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
-      FirebaseFirestore.instance.collection('testforms').withConverter(
+      FirebaseFirestore.instance.collection('forms').withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),

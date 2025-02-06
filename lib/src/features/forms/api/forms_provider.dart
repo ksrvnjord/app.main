@@ -6,13 +6,12 @@ import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/f
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 
 // ignore: prefer-static-class
-final formsCollection = FirebaseFirestore.instance
-    .collection('testforms')
-    .withConverter<FirestoreForm>(
-      fromFirestore: (snapshot, _) =>
-          FirestoreForm.fromJson(snapshot.data() ?? {}),
-      toFirestore: (form, _) => form.toJson(),
-    );
+final formsCollection =
+    FirebaseFirestore.instance.collection('forms').withConverter<FirestoreForm>(
+          fromFirestore: (snapshot, _) =>
+              FirestoreForm.fromJson(snapshot.data() ?? {}),
+          toFirestore: (form, _) => form.toJson(),
+        );
 
 // ignore: prefer-static-class
 final openFormsProvider =

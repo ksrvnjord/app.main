@@ -41,7 +41,7 @@ class FormAnswerImageParams {
 Future<String> fetchImage(
     String docRef, String userId, String questionName) async {
   return await storage
-      .ref('testforms/$docRef/$userId/$questionName.png')
+      .ref('forms/$docRef/$userId/$questionName.png')
       .getDownloadURL();
 }
 
@@ -50,7 +50,7 @@ Future<bool> addImage(
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('testforms/$docRef/${user.identifierString}/$questionName.png')
+        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
         .putData(image);
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
         docId: docRef,
@@ -72,7 +72,7 @@ Future<bool> deleteImage(
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('testforms/$docRef/${user.identifierString}/$questionName.png')
+        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
         .delete();
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
         docId: docRef,
@@ -87,9 +87,8 @@ Future<bool> deleteImage(
 Future<bool> deleteAllImages(String docRef, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
-    final listResult = await storage
-        .ref('testforms/$docRef/${user.identifierString}')
-        .listAll();
+    final listResult =
+        await storage.ref('forms/$docRef/${user.identifierString}').listAll();
 
     for (var item in listResult.items) {
       await item.delete();
@@ -105,8 +104,8 @@ Future<bool> deleteAllImages(String docRef, WidgetRef ref) async {
 Future<void> downloadAllFormImageAnswers(String docRef) async {
   final storage = FirebaseStorage.instance;
 
-  // Get the root directory for 'testforms/$docRef'
-  final listResult = await storage.ref('testforms/$docRef').listAll();
+  // Get the root directory for 'forms/$docRef'
+  final listResult = await storage.ref('forms/$docRef').listAll();
 
   // Initialize an in-memory zip archive
   final archive = Archive();

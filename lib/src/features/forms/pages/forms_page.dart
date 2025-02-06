@@ -18,7 +18,7 @@ class FormsPage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('testforms')),
+      appBar: AppBar(title: const Text('forms')),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [

@@ -6,7 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 final allCompletedAnswersProvider = StreamProvider.autoDispose
     .family<QuerySnapshot<FormAnswer>, String>((ref, String docId) {
   return FirebaseFirestore.instance
-      .collection('testforms')
+      .collection('forms')
       .doc(docId)
       .collection('answers')
       .where(FormAnswer.isCompletedJSONKey, isEqualTo: true)
