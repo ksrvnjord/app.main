@@ -106,7 +106,7 @@ class FormImageWidget extends ConsumerWidget {
                 ],
               );
             },
-            loading: () => const CircularProgressIndicator(),
+            loading: () => const CircularProgressIndicator.adaptive(),
             error: (error, stackTrace) {
               if (error is FirebaseException &&
                   error.code == 'object-not-found') {
@@ -138,7 +138,7 @@ class FormImageWidget extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CircularProgressIndicator.adaptive(),
       error: (error, stackTrace) => Text('Error loading user: $error'),
     );
   }
