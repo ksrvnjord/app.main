@@ -24,7 +24,6 @@ class User {
       int.parse(_firestore?.identifier ?? _django.identifier.toString());
 
   // FIRESTORE SPECIFIC FIELDS.
-  String? get bestuursFunctie => _firestore?.bestuursFunctie;
   String? get board => _firestore?.board;
   List<String>? get substructures => _firestore?.substructures;
   List<String> get allergies => _firestore?.allergies ?? [];
@@ -52,6 +51,11 @@ class User {
   String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
   String get identifierString => identifier.toString();
+  String? get bestuursFunctie => getBestuursFunctie(
+      groups,
+      DateTime.now()
+          .subtract(Duration(days: 243))
+          .year); // 243 days = 8 months we work from september.
 
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
@@ -60,4 +64,12 @@ class User {
   const User({FirestoreUser? firestore, required DjangoUser django})
       : _django = django,
         _firestore = firestore;
+}
+
+String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
+  return entries
+      .where((entry) =>
+          entry.group.type == "Bestuur" && entry.group.year == currentYear)
+      .map((entry) => entry.role)
+      .firstWhere((role) => role != null, orElse: () => null);
 }
