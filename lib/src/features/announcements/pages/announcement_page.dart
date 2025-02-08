@@ -153,7 +153,7 @@ class AnnouncementPageState extends ConsumerState<AnnouncementPage> {
                         ref
                             .read(announcementProvider.notifier)
                             .deleteAnnouncement(announcement.id);
-                        
+
                         navigator.pop();
                       }
                     });
