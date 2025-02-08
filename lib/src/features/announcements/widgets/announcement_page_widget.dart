@@ -25,7 +25,6 @@ class AnnouncementPageWidget extends ConsumerWidget {
         return FutureBuilder<Uint8List?>(
           future: imageFuture,
           builder: (context, snapshot) {
-            debugPrint('snapshot: $snapshot');
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {

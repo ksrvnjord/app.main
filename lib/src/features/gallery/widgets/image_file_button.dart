@@ -6,8 +6,10 @@ import 'package:ksrvnjord_main_app/src/features/gallery/utils/get_thumbnail_refe
 import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FileButton extends ConsumerWidget {
-  const FileButton({
+/// This widget displays an image.
+
+class ImageFileButton extends ConsumerWidget {
+  const ImageFileButton({
     super.key,
     required this.index,
     required this.item,

@@ -1,14 +1,14 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/documents/widgets/file_button.dart';
-import 'package:ksrvnjord_main_app/src/features/documents/widgets/folder_button.dart';
+import 'package:ksrvnjord_main_app/src/features/documents/widgets/document_file_button.dart';
+import 'package:ksrvnjord_main_app/src/features/documents/widgets/document_folder_button.dart';
 
 // De announcement laden niet juist in krijg een png icon te zien en kan er niet op klikken.
 // Misschien alles naar .jpg veranderen?
 
-class FolderList extends ConsumerWidget {
-  const FolderList({
+class DocumentFolderList extends ConsumerWidget {
+  const DocumentFolderList({
     super.key,
     required this.listResult,
   });
@@ -44,8 +44,8 @@ class FolderList extends ConsumerWidget {
       mainAxisSpacing: mainAxisSpacing,
       childAspectRatio: gridAspectRatio,
       children: [
-        ...prefixes.map((e) => FolderButton(item: e)),
-        ...items.map((e) => FileButton(item: e)),
+        ...prefixes.map((e) => DocumentFolderButton(item: e)),
+        ...items.map((e) => DocumentFileButton(item: e)),
       ],
     );
   }

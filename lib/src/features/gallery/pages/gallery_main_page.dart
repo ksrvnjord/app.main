@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/pages/all_announcements_page.dart';
+import 'package:ksrvnjord_main_app/src/features/announcements/pages/announcement_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_file_page_view.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_folder_page.dart';
 
@@ -37,10 +38,15 @@ class _GalleryMainPageState extends State<GalleryMainPage> {
       final arguments = settings.arguments as Map<String, dynamic>;
 
       return MaterialPageRoute(
-        builder: (_) => GalleryFilePageView(
-          initialIndex: arguments['initialIndex'],
-          paths: arguments['paths'],
-        ),
+        builder: (_) => widget.goToAnnouncementPage
+            ? AnnouncementPage(
+                initialIndex: arguments['initialIndex'],
+                paths: arguments['paths'],
+              )
+            : GalleryFilePageView(
+                initialIndex: arguments['initialIndex'],
+                paths: arguments['paths'],
+              ),
         settings: settings,
       );
     }

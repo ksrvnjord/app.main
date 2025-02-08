@@ -9,6 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provid
 import 'package:share_plus/share_plus.dart';
 
 /// A Page that displays a single image from the gallery.
+/// This closely resembles [AnnouncementPage] from the announcements feature.
+/// Any changes made here should be reflected there as well.
 
 class GalleryFilePageView extends ConsumerStatefulWidget {
   const GalleryFilePageView({
@@ -77,8 +79,6 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
               final path = widget.paths.elementAtOrNull(_currentPage);
               if (path != null) {
                 final imageVal = ref.watch(galleryImageProvider(path.fullPath));
-
-                debugPrint("Sharing image: $path");
 
                 imageVal.when(
                   data: (image) {

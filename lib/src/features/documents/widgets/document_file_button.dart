@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/api/file_metadata_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FileButton extends ConsumerWidget {
-  const FileButton({
+class DocumentFileButton extends ConsumerWidget {
+  const DocumentFileButton({
     super.key,
     required this.item,
   });
