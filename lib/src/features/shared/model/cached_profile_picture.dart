@@ -39,6 +39,10 @@ abstract final class CachedProfilePicture {
     String thumbnailPath = CachedProfilePicture.thumbnailPath(uid);
     HiveCache.delete(thumbnailPath); // Invalidate cache for the thumbnail.
 
-    return FirebaseStorage.instance.ref(originalPath).putData(imageData);
+    final metadata = SettableMetadata(contentType: 'image/jpeg');
+
+    return FirebaseStorage.instance
+        .ref(originalPath)
+        .putData(imageData, metadata);
   }
 }

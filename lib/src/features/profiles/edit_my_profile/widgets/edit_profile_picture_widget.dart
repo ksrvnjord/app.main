@@ -32,15 +32,9 @@ class _EditProfilePictureWidgetState
         isEditable: true,
         shouldCrop: true,
         onChange: (XFile? xfile) {
-          if (xfile == null) {
-            ref
-                .read(profileEditFormNotifierProvider.notifier)
-                .setProfilePicture(null);
-          } else {
-            ref
-                .read(profileEditFormNotifierProvider.notifier)
-                .setProfilePicture(xfile);
-          }
+          ref
+              .read(profileEditFormNotifierProvider.notifier)
+              .setProfilePicture(xfile);
         },
         shape: CustomImagePickerWidgetShape.circle,
         iconSizeRatio: 0.2,
@@ -51,15 +45,9 @@ class _EditProfilePictureWidgetState
         isEditable: true,
         shouldCrop: true,
         onChange: (XFile? xfile) {
-          if (xfile == null) {
-            ref
-                .read(profileEditFormNotifierProvider.notifier)
-                .setProfilePicture(null);
-          } else {
-            ref
-                .read(profileEditFormNotifierProvider.notifier)
-                .setProfilePicture(xfile);
-          }
+          ref
+              .read(profileEditFormNotifierProvider.notifier)
+              .setProfilePicture(xfile);
         },
         shape: CustomImagePickerWidgetShape.circle,
         iconSizeRatio: 0.2,
