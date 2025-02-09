@@ -14,12 +14,9 @@ class EventsWidget extends StatelessWidget {
 
     const double bodyMonthHeaderHeight = 56;
 
-    final events = snapshot.docs
-        .map(
-          // Set color for every event to the primary color.
-          (snap) => snap.data().copyWith(color: colorScheme.primaryContainer),
-        )
-        .toList();
+    final events = snapshot.docs.map(
+        // Set color for every event to the primary color.
+        (snap) => snap.data()).toList();
 
     final textTheme = Theme.of(context).textTheme;
 
