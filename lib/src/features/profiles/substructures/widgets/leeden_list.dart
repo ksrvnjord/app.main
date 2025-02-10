@@ -28,6 +28,9 @@ class LeedenList extends StatelessWidget {
         almanakProfileSnapshot.docs;
     if (compare != null) {
       docs.sort(compare); // For ordering based on functions of the members.
+    } else {
+      docs.sort((a, b) => b.data().identifier.compareTo(
+          a.data().identifier)); // Sort by identifier in descending order
     }
 
     const double notFoundPadding = 16;
