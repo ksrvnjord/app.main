@@ -56,14 +56,14 @@ class CharityPage extends ConsumerWidget {
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionText(
-                text: 'Je recept in het Njordkookboek?',
+                text: 'Het Njordkookboek bestellen?',
                 fontSize: 16,
               ),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     final url = Uri.parse(
-                      'https://forms.gle/R2tkzUf8nQZuzcuN7',
+                      'https://forms.gle/ZeK7V8GToJgMCpSX8',
                     );
                     launchUrl(url);
                   },
