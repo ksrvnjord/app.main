@@ -63,7 +63,8 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
   Future<String?> _uploadImage(XFile imageFile, String announcementId) async {
     try {
       final storageRef = _storage.ref('announcements_v2/$announcementId.png');
-      await storageRef.putData(await imageFile.readAsBytes());
+      final metadata = SettableMetadata(contentType: 'image/png');
+      await storageRef.putData(await imageFile.readAsBytes(), metadata);
       return await storageRef.getDownloadURL();
     } catch (e) {
       debugPrint('Error uploading image: $e');
