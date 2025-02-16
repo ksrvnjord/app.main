@@ -124,4 +124,10 @@ metrics/
 # We need to add the baseline for cross compatibility between Windows and Linux/MacOS
 dcm_baseline.json
 
+# Someone's using CodeGPT, don't commit it to the repo
 .codegpt
+
+# Ditch windows, linux and macos stuff from the tree, fix your local installs.
+linux/**
+macos/**
+windows/**
