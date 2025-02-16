@@ -11,10 +11,8 @@ import 'package:ksrvnjord_main_app/src/features/gallery/widgets/image_folder_but
 /// Because that file closely resembles this one. Apart from minor changes.
 
 class ImageFolderList extends ConsumerStatefulWidget {
-  const ImageFolderList(
-      {super.key, required this.listResult, this.isAnnouncement = false});
+  const ImageFolderList({super.key, required this.listResult});
   final ListResult listResult;
-  final bool isAnnouncement;
 
   @override
   createState() => _FolderListState();
@@ -41,42 +39,8 @@ class _FolderListState extends ConsumerState<ImageFolderList> {
     }
 
     // Sort everything name (currently prefixed by date) descending.
-    if (!widget.isAnnouncement) {
-      prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
-      items.sort((a, b) => -1 * a.name.compareTo(b.name));
-    } else {
-      // Sorteer aankondigingen op datum.
-      return FutureBuilder(
-        future: sortItemsByDate(items),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final sortedItems = snapshot.data!;
-
-            return GridView.count(
-              padding: const EdgeInsets.all(8),
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: itemSpacing,
-              // ignore: no-equal-arguments
-              crossAxisSpacing: itemSpacing,
-              childAspectRatio: childAspect,
-              children: [
-                // ignore: avoid-slow-collection-methods
-                ...sortedItems.mapIndexed(
-                  (index, item) => ImageFileButton(
-                      index: index, item: item, items: sortedItems),
-                ),
-              ],
-            );
-          } else {
-            return const Center(child: Text('Geen aankondigingen gevonden.'));
-          }
-        },
-      );
-    }
+    prefixes.sort((a, b) => -1 * a.name.compareTo(b.name));
+    items.sort((a, b) => -1 * a.name.compareTo(b.name));
 
     return GridView.count(
       padding: const EdgeInsets.all(8),
