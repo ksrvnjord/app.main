@@ -91,7 +91,7 @@ class AnnouncementNotifier extends Notifier<List<Announcement>> {
             .collection('announcements_v2')
             .doc(announcementId)
             .set(newAnnouncement.toMap());
-        state = [newAnnouncement, ...state];
+        //state = [newAnnouncement, ...state];
       }
     } catch (e) {
       debugPrint('Error creating announcement: $e');
