@@ -1,4 +1,4 @@
-name: Dart Formatting 
+name: Dart Formatting
 on:
   pull_request:
     branches:
@@ -13,9 +13,13 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4 # Checkout the code in the main repo
-      - name: Install Stable Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Flutter action
+        uses: subosito/flutter-action@v2
         with:
-          sdk: "stable"
+          channel: stable
+          flutter-version: 3.24.x
+          cache: true
+      - name: Dependencies # Required to prepare dart format
+        run: flutter pub get
       - name: Format files
         run: dart format --set-exit-if-changed .
