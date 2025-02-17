@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/documents/api/storage_path_children_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FolderButton extends ConsumerWidget {
-  const FolderButton({
+class DocumentFolderButton extends ConsumerWidget {
+  const DocumentFolderButton({
     super.key,
     required this.item,
   });
