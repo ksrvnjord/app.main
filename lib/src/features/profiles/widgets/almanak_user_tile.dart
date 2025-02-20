@@ -33,7 +33,7 @@ class AlmanakUserTile extends ConsumerWidget {
         data: (u) {
           return ListTile(
             leading: ProfilePictureListTileWidget(profileId: lidnummer),
-            title: Text("$firstName $lastName"),
+            title: Text("${u.firstName} ${u.lastName}"),
             subtitle: subtitle != null ? Text(subtitle as String) : null,
             trailing: Icon(
               Icons.arrow_forward_ios,
