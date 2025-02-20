@@ -78,8 +78,6 @@ dependencies:
   riverpod_annotation: ^2.3.5
   freezed_annotation: any
   autologin: ^1.0.0
-  sentry: ^7.14.0
-  sentry_flutter: ^7.14.0
 
   collection: any
 dependency_overrides:
