@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
@@ -141,98 +142,115 @@ class _FormPageState extends ConsumerState<FormPage> {
               const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
           children: [
             formVal.when(
-              // ignore: avoid-long-functions
               data: (formDoc) {
                 if (!formDoc.exists) {
                   return const ErrorCardWidget(
                     errorMessage: 'Deze form bestaat niet (meer)',
                   );
                 }
-                // Since the form exists, we can safely assume that the data is not null.
-                // ignore: avoid-non-null-assertion
+
                 final form = formDoc.data()!;
                 final openUntil = form.openUntil.toDate();
                 final formIsOpen = DateTime.now().isBefore(openUntil);
-                const descriptionVPadding = 16.0;
                 final description = form.description;
                 final questions = form.questions;
                 final textTheme = Theme.of(context).textTheme;
-                const sizedBoxHeight = 32.0;
+
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
+                final answerCountVal =
+                    ref.watch(formAnswerCountProvider(formDoc.reference));
 
-                return [
-                  [
-                    Flexible(
-                      child: Text(form.title, style: textTheme.titleLarge),
-                    ),
-                  ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                  Text(
-                    '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
-                    style: textTheme.bodySmall?.copyWith(
-                      color: formIsOpen
-                          ? colorScheme.secondary
-                          : colorScheme.outline,
-                    ),
-                  ),
-                  if (description != null)
-                    Text(description, style: textTheme.bodyMedium)
-                        .padding(vertical: descriptionVPadding),
-                  answerVal.when(
-                    data: (answer) {
-                      final answerExists = answer.docs.isNotEmpty;
-                      final answerIsCompleted = answerExists &&
-                          // ignore: avoid-unsafe-collection-methods
-                          answer.docs.first.data().isCompleted;
-
-                      const leftCardPadding = 8.0;
-
-                      return Column(
-                        // Move all child widgets to the left.
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Je hebt deze form ",
-                                style: textTheme.titleMedium,
-                              ),
-                              AnswerStatusCard(
-                                answerExists: answerExists,
-                                isCompleted: answerIsCompleted,
-                                showIcon: false,
-                                textStyle: textTheme.titleMedium,
-                              ).padding(left: leftCardPadding),
-                            ],
-                          ),
-                          if (answerExists && !answerIsCompleted)
-                            Text(
-                              "Vul alle verplichte vragen in om je antwoord te versturen.",
-                              style: TextStyle(color: colorScheme.error),
-                            ),
-                        ],
-                      );
-                    },
-                    error: (error, stack) =>
-                        ErrorCardWidget(errorMessage: error.toString()),
-                    loading: () => const SizedBox.shrink(),
-                  ),
-                  const SizedBox(height: sizedBoxHeight),
-                  Form(
-                    key: _formKey,
-                    child: [
-                      for (final question in questions) ...[
-                        FormQuestion(
-                          formQuestion: question,
-                          form: form,
-                          docRef: formDoc.reference,
-                          formIsOpen: formIsOpen,
+                return answerCountVal.when(
+                  data: (answerCount) {
+                    final isSoldOut = form.hasMaximumNumberOfAnswers == true &&
+                        answerCount >=
+                            (form.maximumNumberOfAnswers ??
+                                10000); // very high number to represent infinity
+                    return [
+                      [
+                        Flexible(
+                          child: Text(form.title, style: textTheme.titleLarge),
                         ),
-                        const SizedBox(height: 32),
-                      ],
-                    ].toColumn(),
-                  ),
-                ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
+                      ].toRow(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                      Text(
+                        '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
+                        style: textTheme.bodySmall?.copyWith(
+                          color: formIsOpen
+                              ? colorScheme.secondary
+                              : colorScheme.outline,
+                        ),
+                      ).alignment(Alignment.centerLeft),
+                      if (isSoldOut)
+                        Text(
+                          "Dit form heeft het maximale aantal antwoorden bereikt",
+                          style: TextStyle(color: colorScheme.error),
+                        ).alignment(Alignment.centerLeft),
+                      if (description != null)
+                        Text(description, style: textTheme.bodyMedium)
+                            .padding(vertical: 16.0)
+                            .alignment(Alignment.centerLeft),
+                      answerVal.when(
+                        data: (answer) {
+                          final answerExists = answer.docs.isNotEmpty;
+                          final answerIsCompleted = answerExists &&
+                              answer.docs.first.data().isCompleted;
+
+                          // Move isAllowedToEdit calculation here
+                          final isAllowedToEdit =
+                              formIsOpen && (!isSoldOut || answerIsCompleted);
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Je hebt deze form ",
+                                      style: textTheme.titleMedium),
+                                  AnswerStatusCard(
+                                    answerExists: answerExists,
+                                    isCompleted: answerIsCompleted,
+                                    showIcon: false,
+                                    textStyle: textTheme.titleMedium,
+                                  ).padding(left: 8.0),
+                                ],
+                              ),
+                              if (answerExists && !answerIsCompleted)
+                                Text(
+                                  "Vul alle verplichte vragen in om je antwoord te versturen.",
+                                  style: TextStyle(color: colorScheme.error),
+                                ),
+                              const SizedBox(height: 32),
+                              Form(
+                                key: _formKey,
+                                child: [
+                                  for (final question in questions) ...[
+                                    FormQuestion(
+                                      formQuestion: question,
+                                      form: form,
+                                      docRef: formDoc.reference,
+                                      formIsOpen:
+                                          isAllowedToEdit, // Use it here
+                                    ),
+                                    const SizedBox(height: 32),
+                                  ],
+                                ].toColumn(),
+                              ),
+                            ],
+                          );
+                        },
+                        error: (error, stack) =>
+                            ErrorCardWidget(errorMessage: error.toString()),
+                        loading: () => const SizedBox.shrink(),
+                      ),
+                    ].toColumn();
+                  },
+                  error: (error, stack) =>
+                      ErrorCardWidget(errorMessage: error.toString()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
+                );
               },
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),

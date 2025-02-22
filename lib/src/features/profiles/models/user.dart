@@ -65,6 +65,9 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
+  bool get canCreateForms =>
+      django.isStaff; // || more logic for when people can add forms.
+
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;

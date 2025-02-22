@@ -45,7 +45,7 @@ class FormsPage extends ConsumerWidget {
       floatingActionButton: currentUserVal.when(
         // ignore: prefer-extracting-function-callbacks
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
+          final canAccesAdminPanel = currentUser.canCreateForms;
 
           return canAccesAdminPanel
               ? FloatingActionButton.extended(

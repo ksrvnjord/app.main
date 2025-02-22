@@ -19,6 +19,10 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       authorId: json['authorId'] as String,
       authorName: json['authorName'] as String,
+      isDraft: json['isDraft'] as bool?,
+      hasMaximumNumberOfAnswers: json['hasMaximumNumberOfAnswers'] as bool?,
+      maximumNumberOfAnswers: (json['maximumNumberOfAnswers'] as num?)?.toInt(),
+      maximumNumberIsVisible: json['maximumNumberIsVisible'] as bool?,
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
@@ -32,4 +36,8 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'description': instance.description,
       'authorId': instance.authorId,
       'authorName': instance.authorName,
+      'isDraft': instance.isDraft,
+      'hasMaximumNumberOfAnswers': instance.hasMaximumNumberOfAnswers,
+      'maximumNumberOfAnswers': instance.maximumNumberOfAnswers,
+      'maximumNumberIsVisible': instance.maximumNumberIsVisible,
     };

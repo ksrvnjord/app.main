@@ -1,21 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 
-// ignore: prefer-static-class
-final allCompletedAnswersProvider = StreamProvider.autoDispose
-    .family<QuerySnapshot<FormAnswer>, String>((ref, String docId) {
+final formAnswerCountProvider =
+    StreamProvider.family<int, DocumentReference<FirestoreForm>>((ref, docRef) {
   return FirebaseFirestore.instance
-      .collection('testforms')
-      .doc(docId)
-      .collection('answers')
-      .where(FormAnswer.isCompletedJSONKey, isEqualTo: true)
+      .collection('${docRef.path}/answers')
       .withConverter<FormAnswer>(
         fromFirestore: (snapshot, _) =>
             FormAnswer.fromJson(snapshot.data() ?? {}),
         toFirestore: (answer, _) => answer.toJson(),
       )
-      .orderBy('answeredAt', descending: true)
-      // Relevant for admin view of form answers.
-      .snapshots();
+      .snapshots()
+      .map((snapshot) => snapshot.size); // Get live count of documents
 });

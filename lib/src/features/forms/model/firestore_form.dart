@@ -23,6 +23,12 @@ class FirestoreForm {
   final String authorId;
   final String authorName;
 
+  final bool? isDraft;
+
+  final bool? hasMaximumNumberOfAnswers;
+  final int? maximumNumberOfAnswers;
+  final bool? maximumNumberIsVisible;
+
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance.collection('forms').withConverter(
             fromFirestore: (snapshot, _) =>
@@ -39,6 +45,10 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
+    this.isDraft,
+    this.hasMaximumNumberOfAnswers,
+    this.maximumNumberOfAnswers,
+    this.maximumNumberIsVisible,
   });
 
   // Create fromJson method.

@@ -25,6 +25,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
+  bool _hasMaximumNumberOfAnswers = false;
+  int? _maximumNumberOfAnswers;
+  bool? _maximumNumberOfAnswersIsVisible;
+
   bool get _formHasUnfilledSingleChoiceQuestions {
     for (FirestoreFormQuestion question in _questions) {
       final questionOptions = question.options;
@@ -94,6 +98,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.fullName,
+          hasMaximumNumberOfAnswers: _hasMaximumNumberOfAnswers,
+          maximumNumberOfAnswers: _maximumNumberOfAnswers,
+          maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible,
+          isDraft: true,
         ),
       );
       if (!context.mounted) return;
@@ -166,6 +174,51 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               initialDate: _openUntil,
               onDateTimeChanged: (DateTime dateTime) =>
                   setState(() => _openUntil = dateTime),
+            ),
+            Row(
+              children: [
+                Checkbox(
+                  value: _hasMaximumNumberOfAnswers,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _hasMaximumNumberOfAnswers = value ?? false;
+                    });
+                  },
+                ),
+                const Text('Maximum aantal antwoorden toestaan'),
+              ],
+            ),
+            if (_hasMaximumNumberOfAnswers)
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Maximum aantal antwoorden',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    _maximumNumberOfAnswers = int.tryParse(value);
+                  });
+                },
+                validator: (value) {
+                  if (_hasMaximumNumberOfAnswers &&
+                      (value == null || value.isEmpty)) {
+                    return 'Vul het maximum aantal antwoorden in.';
+                  }
+                  return null;
+                },
+              ),
+            Row(
+              children: [
+                Checkbox(
+                  value: _maximumNumberOfAnswersIsVisible ?? false,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _maximumNumberOfAnswersIsVisible = value;
+                    });
+                  },
+                ),
+                const Text('Maximum aantal antwoorden zichtbaar in app'),
+              ],
             ),
             const SizedBox(height: sizedBoxHeight),
             ..._questions.asMap().entries.map((questionEntry) {
