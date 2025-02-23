@@ -99,7 +99,7 @@ class _FormPageState extends ConsumerState<FormPage> {
 
     final Iterable<int> userGroups = currentUserVal.when(
       data: (currentUser) {
-        return currentUser.groups.map((group) => group.id);
+        return currentUser.groups.map((group) => group.group.id!).toList();
       },
       error: (e, s) {
         // ignore: avoid-async-call-in-sync-function
@@ -179,8 +179,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
 
-                // TODO: van this not be a var?
-                var isAFormForUser = true;
+                // TODO: van this not be a var? 
+                bool isAFormForUser = true;
                 if (formGroups != null) {
                   isAFormForUser = false;
                   for (final group in userGroups) {
@@ -189,7 +189,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                       break;
                     }
                   }
-                }
+                } 
 
                 return [
                   [

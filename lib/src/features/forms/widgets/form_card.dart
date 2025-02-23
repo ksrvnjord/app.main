@@ -19,13 +19,11 @@ class FormCard extends ConsumerWidget {
       required this.formDoc,
       required this.userGroups,
       required this.userIsAdmin,
-      required this.userGroupsString //TODO testform: Remove userGroupsString testform
       });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
   final bool userIsAdmin;
-  final Iterable<String> userGroupsString;
 
   final borderWidth = 2.0;
 
@@ -43,19 +41,10 @@ class FormCard extends ConsumerWidget {
     final formGroups = form.visibleForGroups;
 
     if (formGroups != null) {
-      // TODO testform: This is for testing delete when done. testform
-      debugPrint('Form groups:');
-      debugPrint(formGroups.toString());
-      debugPrint(form.visibleForGroupsString.toString());
-      debugPrint('User groups:');
-      debugPrint(userGroups.toString());
-      debugPrint(userGroupsString.toString());
 
       isAFormForUser = false;
       for (final group in userGroups) {
         if (formGroups.contains(group)) {
-          debugPrint(
-              'User is in group $group'); //TODO testform: Remove when done
           isAFormForUser = true;
           break;
         }
@@ -72,7 +61,7 @@ class FormCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    return (isAFormForUser || userIsAdmin)
+    return (isAFormForUser || userIsAdmin) 
         ? ListTile(
             title: <Widget>[Flexible(child: Text(form.title))]
                 .toRow(separator: const SizedBox(width: 4)),

@@ -42,7 +42,7 @@ class FormsWidget extends ConsumerWidget {
                   ? SingleQuestionFormCard(
                       userGroups: currentUserVal.when(
                         data: (currentUser) {
-                          return currentUser.groups.map((group) => group.id);
+                          return currentUser.groups.map((group) => group.group.id!).toList();
                         },
                         error: (e, s) {
                           // ignore: avoid-async-call-in-sync-function
@@ -61,25 +61,12 @@ class FormsWidget extends ConsumerWidget {
                           return false;
                         },
                         loading: () => false,
-                      ),
-                      userGroupsString: currentUserVal.when(
-                        data: (currentUser) {
-                          return currentUser.groups
-                              .map((group) => group.group.name);
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
-
-                          return const [];
-                        },
-                        loading: () => const [],
                       ),
                       formDoc: item)
                   : FormCard(
                       userGroups: currentUserVal.when(
                         data: (currentUser) {
-                          return currentUser.groups.map((group) => group.id);
+                          return currentUser.groups.map((group) => group.group.id!).toList();
                         },
                         error: (e, s) {
                           // ignore: avoid-async-call-in-sync-function
@@ -98,19 +85,6 @@ class FormsWidget extends ConsumerWidget {
                           return false;
                         },
                         loading: () => false,
-                      ),
-                      userGroupsString: currentUserVal.when(
-                        data: (currentUser) {
-                          return currentUser.groups
-                              .map((group) => group.group.name);
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
-
-                          return const [];
-                        },
-                        loading: () => const [],
                       ),
                       formDoc: item);
             }),

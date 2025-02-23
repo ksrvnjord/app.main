@@ -54,19 +54,6 @@ class FormsPage extends ConsumerWidget {
                         },
                         loading: () => false,
                       ),
-                      userGroupsString: currentUserVal.when(
-                        data: (currentUser) {
-                          return currentUser.groups
-                              .map((group) => group.group.name);
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
-
-                          return const [];
-                        },
-                        loading: () => const [],
-                      ),
                     );
                   })
                   .toList()

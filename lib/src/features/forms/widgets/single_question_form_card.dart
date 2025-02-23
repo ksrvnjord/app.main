@@ -20,13 +20,11 @@ class SingleQuestionFormCard extends ConsumerStatefulWidget {
       required this.formDoc,
       required this.userGroups,
       required this.userIsAdmin,
-      required this.userGroupsString //TODO testform: Remove userGroupsString testform
       });
 
   final QueryDocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
   final bool userIsAdmin;
-  final Iterable<String> userGroupsString;
 
   @override
   createState() => _SingleQuestionFormCardState();
@@ -88,21 +86,11 @@ class _SingleQuestionFormCardState
 
     var isAFormForUser = true;
     final formGroups = formData.visibleForGroups;
-
+  
     if (formGroups != null) {
-      // TODO testform: This is for testing delete when done. testform
-      debugPrint('Form groups:');
-      debugPrint(formGroups.toString());
-      debugPrint(formData.visibleForGroupsString.toString());
-      debugPrint('User groups:');
-      debugPrint(widget.userGroups.toString());
-      debugPrint(widget.userGroupsString.toString());
-
       isAFormForUser = false;
       for (final group in widget.userGroups) {
         if (formGroups.contains(group)) {
-          debugPrint(
-              'User is in group $group'); //TODO testform: Remove when done
           isAFormForUser = true;
           break;
         }
@@ -126,7 +114,6 @@ class _SingleQuestionFormCardState
 
     final descriptionHPadding = 16;
 
-    // ignore: arguments-ordering
     return (isAFormForUser || widget.userIsAdmin)
         ? ExpansionTile(
             collapsedIconColor: colorScheme.primary,
