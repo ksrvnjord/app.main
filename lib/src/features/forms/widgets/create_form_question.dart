@@ -95,8 +95,9 @@ class CreateFormQuestion extends ConsumerWidget {
       child: Column(children: [
         [
           DropdownButton<FormQuestionType>(
-            items:
-                FormQuestionType.values.map<DropdownMenuItem<FormQuestionType>>(
+            items: FormQuestionType.values
+                .where((type) => type != FormQuestionType.unsupported)
+                .map<DropdownMenuItem<FormQuestionType>>(
               (FormQuestionType value) {
                 return DropdownMenuItem<FormQuestionType>(
                   value: value,

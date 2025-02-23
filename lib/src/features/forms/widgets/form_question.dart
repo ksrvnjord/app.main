@@ -93,6 +93,10 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
+    const horizontalPaddingCard = 8.0;
+
+    const verticalPaddingCard = 2.0;
+
     final type = widget.formQuestion.type;
 
     final questionWidgets = <Widget>[
@@ -186,6 +190,19 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               ),
             ));
             break;
+
+          case FormQuestionType.unsupported:
+            questionWidgets.add(Card(
+              color: colorScheme.errorContainer,
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              child: Text(
+                      "Jouw versie ondersteunt niet dit vraagtype. Update de app.")
+                  .padding(
+                horizontal: horizontalPaddingCard,
+                vertical: verticalPaddingCard,
+              ),
+            ));
 
           default:
             return const ErrorCardWidget(
