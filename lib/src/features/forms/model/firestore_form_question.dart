@@ -29,6 +29,7 @@ class FirestoreFormQuestion {
 enum FormQuestionType {
   singleChoice,
   text,
+  image,
   unsupported, // Add an error type for unknown values
 }
 
@@ -43,6 +44,8 @@ class FormQuestionTypeConverter
         return FormQuestionType.singleChoice;
       case 'text':
         return FormQuestionType.text;
+      case 'image':
+        return FormQuestionType.image;
       default:
         // Handle undefined FormQuestionType
         return FormQuestionType.unsupported; // Default value for unknown types

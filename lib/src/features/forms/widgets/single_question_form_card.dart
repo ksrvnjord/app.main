@@ -15,12 +15,12 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class SingleQuestionFormCard extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
-  const SingleQuestionFormCard(
-      {super.key,
-      required this.formDoc,
-      required this.userGroups,
-      required this.userIsAdmin,
-      });
+  const SingleQuestionFormCard({
+    super.key,
+    required this.formDoc,
+    required this.userGroups,
+    required this.userIsAdmin,
+  });
 
   final QueryDocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
@@ -86,7 +86,7 @@ class _SingleQuestionFormCardState
 
     var isAFormForUser = true;
     final formGroups = formData.visibleForGroups;
-  
+
     if (formGroups != null) {
       isAFormForUser = false;
       for (final group in widget.userGroups) {
@@ -168,6 +168,7 @@ class _SingleQuestionFormCardState
                       docRef: widget.formDoc.reference,
                       formIsOpen: formIsOpen && isAFormForUser,
                       withoutBorder: true,
+                      showAdditionalSaveButton: true,
                     ).padding(horizontal: hPadding),
                     const SizedBox(height: 2),
                   ],

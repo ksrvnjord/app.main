@@ -51,7 +51,6 @@ class AlmanakUserProfileView extends ConsumerWidget {
           // ignore: avoid-long-functions
           data: (u) {
             userInfo = u.info;
-
             return Column(
               children: [
                 Text(

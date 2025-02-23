@@ -126,7 +126,10 @@ class CreateFormQuestion extends ConsumerWidget {
         ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         TextFormField(
           controller: questionController,
-          decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
+          // add text if type is image
+          decoration: InputDecoration(
+              labelText:
+                  'Vraag ${index + 1}${question.type == FormQuestionType.image ? ' (gebruik unieke titels voor afbeeldingsvragen)' : ''}'),
           onChanged: (String value) => {question.title = value},
           validator: (value) => (value == null || value.isEmpty)
               ? 'Geef een naam op voor de vraag.'

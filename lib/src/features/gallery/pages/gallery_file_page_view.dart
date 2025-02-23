@@ -8,6 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+/// A Page that displays a single image from the gallery.
+/// This closely resembles [AnnouncementPage] from the announcements feature.
+/// Any changes made here should be reflected there as well.
+
 class GalleryFilePageView extends ConsumerStatefulWidget {
   const GalleryFilePageView({
     super.key,
@@ -68,7 +72,7 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gallery"),
+        title: const Text("Galerij"),
         actions: [
           IconButton(
             onPressed: () {

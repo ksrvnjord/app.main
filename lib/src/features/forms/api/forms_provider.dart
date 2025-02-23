@@ -13,7 +13,6 @@ final openFormsProvider =
       : FirestoreForm.firestoreConvert
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .orderBy('openUntil', descending: false)
-          .limit(3)
           .snapshots();
 });
 

@@ -3,36 +3,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Announcement {
+  final String id;
   final String author;
-  final String contents;
+  final String? link;
   final Timestamp createdAt;
-  final String title;
-  final Timestamp updatedAt;
 
   @override
   int get hashCode {
-    return author.hashCode ^
-        contents.hashCode ^
-        createdAt.hashCode ^
-        title.hashCode ^
-        updatedAt.hashCode;
+    return author.hashCode ^ link.hashCode ^ createdAt.hashCode ^ id.hashCode;
   }
 
   Announcement({
+    required this.id,
     required this.author,
-    required this.contents,
+    this.link,
     required this.createdAt,
-    required this.title,
-    required this.updatedAt,
   });
 
   factory Announcement.fromMap(Map<String, dynamic> map) {
     return Announcement(
+      id: map['id'] as String,
       author: map['author'] as String,
-      contents: map['contents'] as String,
       createdAt: map['created_at'] as Timestamp,
-      title: map['title'] as String,
-      updatedAt: map['updated_at'] as Timestamp,
+      link: map['link'] as String?,
     );
   }
 
@@ -41,24 +34,36 @@ class Announcement {
     if (identical(this, other)) return true;
 
     return other.author == author &&
-        other.contents == contents &&
+        other.link == link &&
         other.createdAt == createdAt &&
-        other.title == title &&
-        other.updatedAt == updatedAt;
+        other.id == id;
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'author': author,
-      'contents': contents,
+      'link': link,
       'created_at': createdAt,
-      'title': title,
-      'updated_at': updatedAt,
+      'id': id,
     };
+  }
+
+  Announcement copyWith({
+    String? id,
+    String? author,
+    String? link,
+    Timestamp? createdAt,
+  }) {
+    return Announcement(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      link: link ?? this.link,
+      createdAt: createdAt ?? this.createdAt,
+    );
   }
 
   @override
   String toString() {
-    return 'Announcement(author: $author, contents: $contents, createdAt: $createdAt, title: $title, updatedAt: $updatedAt)';
+    return 'Announcement(id: $id, author: $author, createdAt: $createdAt, link: $link)';
   }
 }

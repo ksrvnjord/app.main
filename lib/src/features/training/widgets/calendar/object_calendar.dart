@@ -196,6 +196,24 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
                 ),
             ]),
           ),
+          Positioned(
+              left: 0,
+              top: CalendarMeasurement.amountOfPixelsTillCurrentTimeFromTop() -
+                  1,
+              child: Row(children: [
+                for (int i = 0;
+                    i <
+                        CalendarMeasurement.slotWidth ~/
+                            CalendarMeasurement.stripeWidth1726;
+                    i++)
+                  Container(
+                    color: i.isEven
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.transparent,
+                    width: CalendarMeasurement.stripeWidth1726,
+                    height: height1726,
+                  ),
+              ]))
         ],
       ),
     );

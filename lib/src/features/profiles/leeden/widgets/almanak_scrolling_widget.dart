@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart'
+    as njord_user;
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_button_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 
@@ -68,7 +70,7 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate(
           itemBuilder: (context, item, index) => AlmanakUserButtonWidget(
-            item,
+            njord_user.User(django: item),
             onTap: () => onTap != null
                 ? onTap(int.parse(item.identifier.toString()))
                 // ignore: avoid-async-call-in-sync-function

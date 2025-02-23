@@ -192,17 +192,48 @@ class EditGroupPage extends ConsumerWidget {
                           ),
                           subtitle: role == null ? null : Text(role),
                           trailing: IconButton(
-                            onPressed: () => removeUserFromGroup(
-                              user['identifier'],
-                              ref,
-                              context,
-                            ),
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Lid verwijderen?'),
+                                    content: Text(
+                                        'Weet je zeker dat je ${user['first_name'] + ' ' + user['last_name']} wil verwijderen?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: const Text('Nee'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(true),
+                                        child: const Text('Ja'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (confirm == true) {
+                                if (!context.mounted) return;
+                                removeUserFromGroup(
+                                  user['identifier'],
+                                  ref,
+                                  context,
+                                );
+                              }
+                            },
                             icon: const Icon(Icons.delete),
                           ),
                         );
                       },
                       itemCount: users.length,
                     ),
+              SliverPadding(
+                padding: const EdgeInsets.only(bottom: 72.0),
+              ),
             ],
           );
         },
