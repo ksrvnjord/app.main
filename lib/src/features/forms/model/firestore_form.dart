@@ -6,6 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 
 part 'firestore_form.g.dart';
 
+// If you're testing set this to 'testforms', for production use 'forms'
+const String firestoreFormCollectionName = 'testforms';
+
 @immutable
 @JsonSerializable()
 class FirestoreForm {
@@ -26,8 +29,9 @@ class FirestoreForm {
   final List<String?>? visibleForGroupsString;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
-      FirebaseFirestore.instance.collection('testforms').withConverter(
-            // TODO testform: "testforms"this is used for debugging original is "forms".
+      FirebaseFirestore.instance
+          .collection(firestoreFormCollectionName)
+          .withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),
