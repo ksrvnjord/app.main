@@ -163,7 +163,6 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 dio: dio,
                 ordering: "name",
               );
-
               visibleForGroupIDs.addAll(result.map((group) => group.id));
               break;
             }
@@ -175,7 +174,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       return visibleForGroupIDs;
     }
 
-    return [];
+    return null; //TODO testform: check why it was [] initially?
   }
 
   @override

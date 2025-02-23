@@ -38,9 +38,7 @@ class FormCard extends ConsumerWidget {
 
     var isAFormForUser = true;
     final formGroups = form.visibleForGroups;
-
     if (formGroups != null) {
-
       isAFormForUser = false;
       for (final group in userGroups) {
         if (formGroups.contains(group)) {

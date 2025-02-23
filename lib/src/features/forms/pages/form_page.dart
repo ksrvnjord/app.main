@@ -191,7 +191,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                       break;
                     }
                   }
-                } 
+                }
 
                 return [
                   [
@@ -218,7 +218,6 @@ class _FormPageState extends ConsumerState<FormPage> {
                           answer.docs.first.data().isCompleted;
 
                       const leftCardPadding = 8.0;
-
                       return Column(
                         // Move all child widgets to the left.
                         crossAxisAlignment: CrossAxisAlignment.start,
