@@ -159,7 +159,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   ),
                 if (userInfo.taarten != 0)
                   DataTextListTile(
-                    name: "Aantal blikken",
+                    name: "Aantal taarten",
                     value: userInfo.taarten.toString(),
                   ),
                 if (u.substructures != null &&
