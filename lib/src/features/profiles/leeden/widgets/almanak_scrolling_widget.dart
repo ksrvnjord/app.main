@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/almanak.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/birthday.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_button_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
@@ -35,9 +37,12 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
     int pageKey,
   ) async {
     const amountOfResults = 100;
+    final birthdayResult = await almanakBirthdayUsers(pageKey, widget.search, ref);        
     final result = await almanakUsers(pageKey, widget.search, ref);
 
-    final users = result['items'] as List;
+    final birthdayUsers = birthdayResult['items'] as List;    
+    final nonBirthdayUsers = result['items'] as List;
+    final users = birthdayUsers + nonBirthdayUsers; //list the users with the birthday people first 
 
     List<DjangoUser>? page = users
         .map((user) => DjangoUser.fromJson(user as Map<String, dynamic>))
