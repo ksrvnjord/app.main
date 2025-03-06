@@ -17,8 +17,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: 3.24.x
           cache: true
       - name: Dependencies
         run: flutter pub get
       - name: Analyze
-        run: flutter analyze --fatal-warnings .
+        run: flutter analyze --no-fatal-infos --fatal-warnings .

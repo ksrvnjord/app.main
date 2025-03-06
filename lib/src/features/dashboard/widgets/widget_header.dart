@@ -47,21 +47,22 @@ class WidgetHeader extends StatelessWidget {
       if (onTap != null)
         GestureDetector(
           // ignore: sort_child_properties_last
-          child: [
-            if (onTapName != null)
-              Text(
-                onTapName ?? "",
-                style: labelStyle?.copyWith(
-                  color: colorScheme.secondary,
-                ),
-              ),
-            Icon(
-              Icons.arrow_forward_ios,
-              // ignore: no-magic-number
-              size: labelStyle?.fontSize,
-              color: colorScheme.secondary,
-            ),
-          ].toRow(mainAxisAlignment: MainAxisAlignment.end),
+          child: onTapName == null
+              ? const SizedBox.shrink()
+              : [
+                  Text(
+                    onTapName ?? "",
+                    style: labelStyle?.copyWith(
+                      color: colorScheme.secondary,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    // ignore: no-magic-number
+                    size: labelStyle?.fontSize,
+                    color: colorScheme.secondary,
+                  ),
+                ].toRow(mainAxisAlignment: MainAxisAlignment.end),
           onTap: onTap,
         ).alignment(Alignment.centerRight),
     ]

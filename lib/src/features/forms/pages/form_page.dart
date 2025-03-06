@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
@@ -60,6 +61,7 @@ class _FormPageState extends ConsumerState<FormPage> {
               // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
               onPressed: () async {
                 await FormRepository.deleteMyFormAnswer(answerPath);
+                await deleteAllImages(widget.formId, ref);
                 // ignore: use_build_context_synchronously
                 if (innerContext.mounted) Navigator.of(innerContext).pop(true);
               },

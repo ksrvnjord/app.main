@@ -167,6 +167,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               onDateTimeChanged: (DateTime dateTime) =>
                   setState(() => _openUntil = dateTime),
             ),
+            const SizedBox(height: sizedBoxHeight),
             ..._questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(
                 index: questionEntry.key,
@@ -190,7 +191,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                       () => _questions.add(FirestoreFormQuestion(
                         title: '',
                         type: FormQuestionType.singleChoice,
-                        isRequired: false,
+                        isRequired: true,
                         options: [],
                       )), // Add an empty label for the new TextFormField.
                     ),

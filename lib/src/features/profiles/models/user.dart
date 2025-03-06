@@ -24,17 +24,18 @@ class User {
       int.parse(_firestore?.identifier ?? _django.identifier.toString());
 
   // FIRESTORE SPECIFIC FIELDS.
-  String? get bestuursFunctie => _firestore?.bestuursFunctie;
   String? get board => _firestore?.board;
   List<String>? get substructures => _firestore?.substructures;
   List<String> get allergies => _firestore?.allergies ?? [];
   String? get huis => _firestore?.huis;
   bool? get dubbellid => _firestore?.dubbellid;
   String? get otherAssociation => _firestore?.otherAssociation;
+  bool? get canBookTrainingFarInAdvance =>
+      _firestore?.canBookTrainingFarInAdvance;
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
-  bool get isAdmin => _firestore?.isAdmin ?? _django.isStaff;
+  bool get isAdmin => _django.isStaff;
   String get birthDate => _django.birthDate;
   String get initials => _django.initials;
   String get iban => _django.iban;
@@ -52,6 +53,17 @@ class User {
   String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
   String get identifierString => identifier.toString();
+  String? get bestuursFunctie => getBestuursFunctie(
+      groups,
+      DateTime.now()
+          .subtract(Duration(days: 243))
+          .year); // 243 days = 8 months we work from september.
+
+  bool get isAppCo =>
+      ['21203', '18031', '18257', '20198', '22195', '23292', '23207'].contains(
+          identifier.toString()); // Used for testing purposes and AppCo rights.
+  bool get isBestuur =>
+      bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
@@ -60,4 +72,12 @@ class User {
   const User({FirestoreUser? firestore, required DjangoUser django})
       : _django = django,
         _firestore = firestore;
+}
+
+String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
+  return entries
+      .where((entry) =>
+          entry.group.type == "Bestuur" && entry.group.year == currentYear)
+      .map((entry) => entry.role)
+      .firstWhere((role) => role != null, orElse: () => null);
 }
