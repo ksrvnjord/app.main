@@ -20,7 +20,7 @@ class AnnouncementHeaderWidget extends ConsumerWidget {
           onTap: () => context.pushNamed("All Announcements"),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
       error: (err, stack) => Text("Error: $err"),
     );
   }
