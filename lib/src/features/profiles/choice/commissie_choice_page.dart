@@ -59,7 +59,6 @@ class CommissieChoicePage extends ConsumerWidget {
                   imageProvider: ref.watch(commissieThumbnailProvider(
                     Tuple2(
                       choices[index].name,
-                      // ignore: no-magic-number
                       year,
                     ),
                   )),
