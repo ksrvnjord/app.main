@@ -60,8 +60,8 @@ class CommissieChoicePage extends ConsumerWidget {
                     Tuple2(
                       choices[index].name,
                       // ignore: no-magic-number
-                      2022,
-                    ), // # FIXME: hardcoded year, we keep this until commissies can edit their own info.
+                      year,
+                    ),
                   )),
                   onTap: () => context.goNamed(
                     "Commissie",
