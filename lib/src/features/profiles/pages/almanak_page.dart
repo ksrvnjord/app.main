@@ -23,7 +23,7 @@ class AlmanakPage extends ConsumerWidget {
               pushRoute: "Bestuur",
               title: "Bestuur",
               imagePath:
-                  'assets/images/deadswan.png', // This imagePath is not given, because we get it from the cloud
+                  'assets/images/bestuur.jpg', // This is a saveguard, because we get it from the cloud
             ),
           ),
           [
