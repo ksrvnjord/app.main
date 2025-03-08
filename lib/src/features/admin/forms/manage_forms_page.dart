@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/form_reaction_count_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -53,11 +54,53 @@ class ManageFormsPage extends ConsumerWidget {
                           Text(
                             "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}",
                           ),
-                          Text(partialReactionVal.maybeWhen(
-                            data: (count) =>
-                                "Volledig + onvolledig ingevulde reacties: $count",
-                            orElse: () => "",
-                          )),
+                          if (form.isDraft ?? false)
+                            user.isAdmin
+                                ? ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Draftstatus opheffen'),
+                                            content: const Text(
+                                                'Weet je zeker dat je de draftstatus wilt opheffen? Dit maakt de form zichtbaar voor iedereen.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('Annuleren'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('Bevestigen'),
+                                                onPressed: () {
+                                                  FormRepository
+                                                      .removeDraftStatus(
+                                                          doc.reference);
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Hef drafstatus op',
+                                    ),
+                                  )
+                                : const Text(
+                                    'Draft',
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                          else
+                            Text(partialReactionVal.maybeWhen(
+                              data: (count) =>
+                                  "Volledig + onvolledig ingevulde reacties: $count",
+                              orElse: () => "",
+                            )),
                         ].toColumn(
                             crossAxisAlignment: CrossAxisAlignment.start),
                         trailing: const Icon(Icons.arrow_forward_ios),

@@ -26,6 +26,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
+  bool _isDraft = true;
+
   bool _hasMaximumNumberOfAnswers = false;
   int? _maximumNumberOfAnswers;
   bool? _maximumNumberOfAnswersIsVisible;
@@ -260,6 +262,27 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 const Text('Maximum aantal antwoorden zichtbaar in app'),
               ],
             ),
+            currentUserAsync.when(data: (user) {
+              return Row(
+                children: [
+                  AbsorbPointer(
+                      absorbing: !user.isAdmin,
+                      child: Checkbox(
+                        value: _isDraft,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isDraft = value ?? false;
+                          });
+                        },
+                      )),
+                  const Text('Form is een concept'),
+                ],
+              );
+            }, loading: () {
+              return const CircularProgressIndicator();
+            }, error: (error, stack) {
+              return Text('Error: $error');
+            }),
             const SizedBox(height: sizedBoxHeight),
             ..._questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(

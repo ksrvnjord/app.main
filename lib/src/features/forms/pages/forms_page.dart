@@ -13,7 +13,7 @@ class FormsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allForms = ref.watch(allFormsProvider);
+    final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -35,9 +35,9 @@ class FormsPage extends ConsumerWidget {
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
             },
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
-            ),
+            error: (error, stack) {
+              return ErrorCardWidget(errorMessage: error.toString());
+            },
             loading: () => const CircularProgressIndicator.adaptive(),
           ),
         ],

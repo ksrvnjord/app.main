@@ -7,6 +7,7 @@ final formAnswerCountProvider =
     StreamProvider.family<int, DocumentReference<FirestoreForm>>((ref, docRef) {
   return FirebaseFirestore.instance
       .collection('${docRef.path}/answers')
+      .where('isCompleted', isEqualTo: true)
       .withConverter<FormAnswer>(
         fromFirestore: (snapshot, _) =>
             FormAnswer.fromJson(snapshot.data() ?? {}),

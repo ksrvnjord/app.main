@@ -22,8 +22,19 @@ final openFormsProvider =
       ? const Stream.empty()
       : formsCollection
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+          .where('isDraft', isNotEqualTo: true)
           .orderBy('openUntil', descending: false)
           .limit(3)
+          .snapshots();
+});
+
+final allNonDraftFormsProvider =
+    StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
+  return ref.watch(firebaseAuthUserProvider).value == null
+      ? const Stream.empty()
+      : formsCollection
+          .where('isDraft', isNotEqualTo: true)
+          .orderBy('openUntil', descending: true)
           .snapshots();
 });
 

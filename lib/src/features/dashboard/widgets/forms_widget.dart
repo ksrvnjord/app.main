@@ -49,9 +49,10 @@ class FormsWidget extends ConsumerWidget {
 
           return _buildOpenFormsList(forms);
         },
-        error: (error, stack) => Text(
-          error.toString(),
-        ),
+        error: (error, stack) {
+          print(error);
+          return Text(error.toString());
+        },
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();

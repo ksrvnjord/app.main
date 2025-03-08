@@ -126,4 +126,9 @@ class FormRepository {
 
     return doc.reference;
   }
+
+  static Future<void> removeDraftStatus(
+      DocumentReference<FirestoreForm> docRef) async {
+    await docRef.update({'isDraft': false});
+  }
 }
