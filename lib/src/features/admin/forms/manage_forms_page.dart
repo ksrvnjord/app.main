@@ -13,50 +13,68 @@ class ManageFormsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formsVal = ref.watch(allFormsOnCreationProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Beheer Forms')),
-      body: formsVal.when(
-        data: (snapshot) => snapshot.docs.isEmpty
-            ? const Center(child: Text('Geen forms gevonden'))
-            : ListView.builder(
-                padding: const EdgeInsets.only(bottom: 80),
-                itemBuilder: (innerContext, index) {
-                  // ignore: avoid-unsafe-collection-methods
-                  final doc = snapshot.docs[index];
-                  final form = doc.data();
+      body: currentUserVal.when(
+        data: (user) {
+          final creatorNamesProvider =
+              FutureProvider<List<String>>((ref) async {
+            return user.canCreateFormsFor.map((e) => e.values.first).toList();
+          });
 
-                  final formIsOpen =
-                      form.openUntil.toDate().isAfter(DateTime.now());
+          final formsVal = ref.watch(
+            user.isAdmin
+                ? allFormsOnCreationProvider
+                : creatorNamesFormsOnCreationProvider,
+          );
+          return formsVal.when(
+            data: (snapshot) => snapshot.docs.isEmpty
+                ? const Center(child: Text('Geen forms gevonden'))
+                : ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    itemBuilder: (innerContext, index) {
+                      // ignore: avoid-unsafe-collection-methods
+                      final doc = snapshot.docs[index];
+                      final form = doc.data();
 
-                  final partialReactionVal = ref.watch(
-                    formPartialReactionCountProvider(doc.id),
-                  );
+                      final formIsOpen =
+                          form.openUntil.toDate().isAfter(DateTime.now());
 
-                  return ListTile(
-                    title: Text(form.title),
-                    subtitle: [
-                      Text(
-                        "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}",
-                      ),
-                      Text(partialReactionVal.maybeWhen(
-                        data: (count) =>
-                            "Volledig + onvolledig ingevulde reacties: $count",
-                        orElse: () => "",
-                      )),
-                    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => innerContext.goNamed(
-                      'View Form',
-                      pathParameters: {'formId': doc.id},
-                    ),
-                  );
-                },
-                itemCount: snapshot.size,
-              ),
+                      final partialReactionVal = ref.watch(
+                        formPartialReactionCountProvider(doc.id),
+                      );
+
+                      return ListTile(
+                        title: Text(form.title),
+                        subtitle: [
+                          Text(
+                            "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil.toDate())}",
+                          ),
+                          Text(partialReactionVal.maybeWhen(
+                            data: (count) =>
+                                "Volledig + onvolledig ingevulde reacties: $count",
+                            orElse: () => "",
+                          )),
+                        ].toColumn(
+                            crossAxisAlignment: CrossAxisAlignment.start),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => innerContext.go(
+                            '${GoRouterState.of(innerContext).uri}/${doc.id}'),
+                      );
+                    },
+                    itemCount: snapshot.size,
+                  ),
+            error: (error, stack) {
+              Center(child: Text('Error: $error'));
+              return null;
+            },
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
+          );
+        },
         error: (error, stack) => Center(child: Text('Error: $error')),
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),

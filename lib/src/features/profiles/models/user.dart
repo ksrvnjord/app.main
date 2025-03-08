@@ -35,7 +35,7 @@ class User {
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
-  bool get isAdmin => _django.isStaff;
+  bool get isAdmin => !_django.isStaff;
   String get birthDate => _django.birthDate;
   String get initials => _django.initials;
   String get iban => _django.iban;
@@ -65,8 +65,9 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
-  bool get canCreateForms =>
-      django.isStaff; // || more logic for when people can add forms.
+  List<Map<int, String>> get canCreateFormsFor => getCanMakeFormsFor(groups);
+
+  bool get canCreateForms => django.isStaff || canCreateFormsFor.isNotEmpty;
 
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
@@ -83,4 +84,14 @@ String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
           entry.group.type == "Bestuur" && entry.group.year == currentYear)
       .map((entry) => entry.role)
       .firstWhere((role) => role != null, orElse: () => null);
+}
+
+List<Map<int, String>> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
+  final currentYear = DateTime.now().subtract(Duration(days: 243)).year;
+  return entries
+      .where((entry) =>
+          entry.permissions.contains('admin') &&
+          entry.group.year == currentYear)
+      .map((entry) => {entry.group.id!: entry.group.name})
+      .toList();
 }

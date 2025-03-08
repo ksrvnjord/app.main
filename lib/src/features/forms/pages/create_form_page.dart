@@ -21,6 +21,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   final _description = TextEditingController();
   final _formName = TextEditingController();
+  final _author = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
@@ -97,7 +98,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           openUntil: Timestamp.fromDate(_openUntil),
           description: _description.text,
           authorId: currentUser.identifier.toString(),
-          authorName: currentUser.fullName,
+          authorName: _author.text,
           hasMaximumNumberOfAnswers: _hasMaximumNumberOfAnswers,
           maximumNumberOfAnswers: _maximumNumberOfAnswers,
           maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible,
@@ -139,6 +140,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
     const sizedBoxHeight = 16.0;
     const sizedBoxWidthButton = 256.0;
 
+    final currentUserAsync = ref.watch(currentUserProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Maak een form aan')),
       body: Form(
@@ -151,6 +154,43 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               'Let op: Forms kunnen niet worden aangepast na het maken.',
               style: TextStyle(color: colorScheme.outline),
             ),
+            currentUserAsync.when(data: (user) {
+              if (user.isAdmin) {
+                _author.text = user.fullName;
+                return TextFormField(
+                  controller: _author,
+                  decoration: const InputDecoration(labelText: 'Auteur'),
+                  maxLines: null,
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Auteur kan niet leeg zijn.'
+                      : null,
+                );
+              } else {
+                _author.text = user.canCreateFormsFor.first.values.first;
+                return DropdownButtonFormField<String>(
+                  value: _author.text,
+                  decoration: const InputDecoration(labelText: 'Auteur'),
+                  items: user.canCreateFormsFor
+                      .map((form) => DropdownMenuItem(
+                            value: form.values.first,
+                            child: Text(form.values.first),
+                          ))
+                      .toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _author.text = newValue ?? '';
+                    });
+                  },
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Auteur kan niet leeg zijn.'
+                      : null,
+                );
+              }
+            }, loading: () {
+              return const CircularProgressIndicator();
+            }, error: (error, stack) {
+              return Text('Error: $error');
+            }),
             TextFormField(
               // Kies form naam.
               controller: _formName,
