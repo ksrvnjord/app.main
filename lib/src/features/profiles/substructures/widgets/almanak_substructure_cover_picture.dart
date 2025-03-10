@@ -10,34 +10,39 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
     // ignore: no-magic-number
     this.imageAspectRatio = 9 / 16,
     required this.imageProvider,
+    this.isBestuurPage = false,
   });
 
   final double imageAspectRatio;
   final AsyncValue<ImageProvider<Object>> imageProvider;
+  final bool isBestuurPage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double width = MediaQuery.of(context).size.width;
     final double height = width * imageAspectRatio;
+    final String placeHolder = isBestuurPage
+        ? Images.placeholderBestuur
+        : Images.placeholderProfilePicture;
 
     return ZoomableImage(
       imageProvider: imageProvider.when(
         data: (data) => data,
-        error: (err, stk) => Image.asset(Images.placeholderBestuur).image,
-        loading: () => Image.asset(Images.placeholderBestuur).image,
+        error: (err, stk) => Image.asset(placeHolder).image,
+        loading: () => Image.asset(placeHolder).image,
       ),
       image: imageProvider.when(
         data: (data) => FadeInImage(
-          placeholder: Image.asset(Images.placeholderBestuur).image,
+          placeholder: Image.asset(placeHolder).image,
           image: data,
           width: width,
           height: height,
           fit: BoxFit.cover,
         ),
-        error: (err, stk) => Image.asset(Images.placeholderBestuur),
+        error: (err, stk) => Image.asset(placeHolder),
         // Loading show shimmer widget here.
         loading: () => Image.asset(
-          Images.placeholderBestuur,
+          placeHolder,
           width: width,
           height: height,
           fit: BoxFit.cover,
