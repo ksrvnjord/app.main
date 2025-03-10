@@ -189,7 +189,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 );
               }
             }, loading: () {
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator.adaptive();
             }, error: (error, stack) {
               return Text('Error: $error');
             }),
@@ -279,7 +279,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 ],
               );
             }, loading: () {
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator.adaptive();
             }, error: (error, stack) {
               return Text('Error: $error');
             }),

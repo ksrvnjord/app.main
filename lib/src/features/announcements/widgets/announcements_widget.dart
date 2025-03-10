@@ -166,7 +166,7 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
         );
       },
       loading: () => const Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator.adaptive(),
       ),
       error: (error, stackTrace) => ErrorWidget(error),
     );

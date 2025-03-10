@@ -26,7 +26,7 @@ class AnnouncementPageWidget extends ConsumerWidget {
           future: imageFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator.adaptive());
             } else if (snapshot.hasError) {
               return const Icon(Icons.image_not_supported);
             } else if (snapshot.hasData) {
@@ -47,7 +47,7 @@ class AnnouncementPageWidget extends ConsumerWidget {
                             if (sizeSnapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                  child: CircularProgressIndicator.adaptive());
                             } else if (sizeSnapshot.hasError) {
                               return const Icon(Icons.image_not_supported);
                             } else if (sizeSnapshot.hasData) {
@@ -75,7 +75,7 @@ class AnnouncementPageWidget extends ConsumerWidget {
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
       error: (error, stackTrace) => const Icon(Icons.error),
     );
   }
