@@ -23,22 +23,21 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
     return ZoomableImage(
       imageProvider: imageProvider.when(
         data: (data) => data,
-        error: (err, stk) =>
-            Image.asset(Images.placeholderProfilePicture).image,
-        loading: () => Image.asset(Images.placeholderProfilePicture).image,
+        error: (err, stk) => Image.asset(Images.placeholderBestuur).image,
+        loading: () => Image.asset(Images.placeholderBestuur).image,
       ),
       image: imageProvider.when(
         data: (data) => FadeInImage(
-          placeholder: Image.asset(Images.placeholderProfilePicture).image,
+          placeholder: Image.asset(Images.placeholderBestuur).image,
           image: data,
           width: width,
           height: height,
           fit: BoxFit.cover,
         ),
-        error: (err, stk) => Image.asset(Images.placeholderProfilePicture),
+        error: (err, stk) => Image.asset(Images.placeholderBestuur),
         // Loading show shimmer widget here.
         loading: () => Image.asset(
-          Images.placeholderProfilePicture,
+          Images.placeholderBestuur,
           width: width,
           height: height,
           fit: BoxFit.cover,
