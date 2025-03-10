@@ -238,7 +238,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            // path: /forms/nieuw
+            // path: /forms/admin/nieuw
             _route(
               path: 'admin/nieuw',
               name: "Forms -> Create Form",
