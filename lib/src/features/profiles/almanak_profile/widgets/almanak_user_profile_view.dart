@@ -116,7 +116,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                             () => launchUrl(Uri.parse("tel:${u.phonePrimary}")),
                             () async => await launchUrl(Uri.parse(
                                   // ignore: avoid-nullable-interpolation
-                                  "https://wa.me/31${u.phonePrimary?.characters.getRange(1)}",
+                                  "https://wa.me/31${u.phonePrimary!.replaceAll('-', '').characters.getRange(1)}",
                                 )),
                           ],
                           descriptions: [
