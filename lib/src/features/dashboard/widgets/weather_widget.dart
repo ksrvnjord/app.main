@@ -64,6 +64,8 @@ class WeatherWidget extends ConsumerWidget {
         final now = DateTime.now();
         final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
 
+        final uvIndex = data['hourly']['uv_index'][now.hour];
+
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
@@ -71,6 +73,8 @@ class WeatherWidget extends ConsumerWidget {
           const Text("K.S.R.V. Njord").fontSize(16).fontWeight(FontWeight.bold),
           // ignore: avoid-non-ascii-symbols
           Text("${currentTemperature.toString()}°").fontSize(32),
+          [Icon(Icons.sunny), Text(uvIndex.toString()).fontSize(28)]
+              .toRow(mainAxisAlignment: MainAxisAlignment.center),
           Wrap(children: [
             WeatherMetricWidget(
               icon: WeatherIcons.strong_wind,
