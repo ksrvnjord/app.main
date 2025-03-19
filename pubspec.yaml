@@ -79,6 +79,8 @@ dependencies:
   freezed_annotation: any
   autologin: ^1.0.0
 
+  open_meteo: ^2.0.3
+
   collection: any
 dependency_overrides:
   package_info_plus: any

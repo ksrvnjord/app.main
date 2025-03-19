@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
+import 'package:open_meteo/open_meteo.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -46,36 +47,61 @@ class WeatherWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final weather = ref.watch(weatherProvider);
+    // final weather = ref.watch(weatherProvider);
+    final weather2 = ref.watch(weatherProvider2);
 
-    return weather.when(
+    return weather2.when(
       data: (data) {
-        final currentWeather = data['current_weather'];
-        final int currentTemperature =
-            (currentWeather['temperature'] as double).floor();
-        final windspeed = currentWeather['windspeed'] as double;
-        final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
-        final sunset = DateTime.parse(data['daily']['sunset'][0]);
-        final winddirection = (currentWeather['winddirection'] + 180) %
+        debugPrint("Got here");
+        // final currentWeather = data['current_weather'];
+        final currentWeather2 = data.currentData;
+
+        final int currentTemperature2 =
+            currentWeather2[WeatherCurrent.temperature_2m]!.value.floor();
+        // final int currentTemperature =
+        //     (currentWeather['temperature'] as double).floor();
+
+        // final windspeed = currentWeather['windspeed'] as double;
+        final windspeed2 =
+            currentWeather2[WeatherCurrent.wind_speed_10m]!.value;
+
+        // final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
+        final sunrise2 = data.dailyData[WeatherDaily.sunrise]!.values;
+        debugPrint(sunrise2.toString());
+
+        // final sunset = DateTime.parse(data['daily']['sunset'][0]);
+        final sunset2 = data.dailyData[WeatherDaily.sunset]!.values;
+
+        // final winddirection = (currentWeather['winddirection'] + 180) %
+        //     360; // Winddirection should indicate where the wind is going to.
+        final winddirection2 = (currentWeather2[
+                        WeatherCurrent.wind_direction_10m]!
+                    .value +
+                180) %
             360; // Winddirection should indicate where the wind is going to.
 
-        final fetchTime = DateTime.parse(currentWeather['time']);
-        // Determine if it is night or day based on sunrise and sunset.
-        final now = DateTime.now();
-        final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
+        // final fetchTime = DateTime.parse(currentWeather['time']);
+        // // Determine if it is night or day based on sunrise and sunset.
+        // final now = DateTime.now();
+        // final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
+
+        final day = currentWeather2[WeatherCurrent.is_day]!.value;
+        debugPrint(day.toString());
 
         final String windspeedCss =
-            "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
+            "wi-wind-beaufort-${windspeedToBeaufort(windspeed2)}";
+
+        final sunsetIsFirst = true;
 
         return [
           const Text("K.S.R.V. Njord").fontSize(16).fontWeight(FontWeight.bold),
           // ignore: avoid-non-ascii-symbols
-          Text("${currentTemperature.toString()}°").fontSize(32),
+          Text("${currentTemperature2.toString()}°").fontSize(32),
           Wrap(children: [
             WeatherMetricWidget(
               icon: WeatherIcons.strong_wind,
               title: "Wind",
-              mainText: "$windspeed km/u",
+              mainText: "$windspeed2 km/u",
               main: [
                 BoxedIcon(
                   WeatherIcons.fromString(
@@ -85,7 +111,7 @@ class WeatherWidget extends ConsumerWidget {
                   size: 32,
                 ),
                 WindIcon(
-                  degree: winddirection,
+                  degree: winddirection2,
                   size: 32,
                 ),
               ].toRow(
@@ -93,22 +119,22 @@ class WeatherWidget extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
               ),
             ),
-            WeatherMetricWidget(
-              icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
-              title: sunsetIsFirst ? "Zonsondergang" : "Zonsopgang",
-              mainText:
-                  DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise),
-              bottomText:
-                  "${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}",
-            ),
+            // WeatherMetricWidget(
+            //   icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
+            //   title: sunsetIsFirst ? "Zonsondergang" : "Zonsopgang",
+            //   mainText:
+            //       DateFormat('HH:mm').format(sunsetIsFirst ? sunset2 : sunrise2),
+            //   bottomText:
+            //       "${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}",
+            // ),
           ]),
 
-          Text(
-            "Laatste update om ${DateFormat(
-              'HH:mm',
-            ).format(fetchTime)}",
-            style: Theme.of(context).textTheme.labelMedium,
-          ).alignment(Alignment.centerRight),
+          // Text(
+          //   "Laatste update om ${DateFormat(
+          //     'HH:mm',
+          //   ).format(fetchTime)}",
+          //   style: Theme.of(context).textTheme.labelMedium,
+          // ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8).card(
               color: Theme.of(context)
                   .colorScheme
