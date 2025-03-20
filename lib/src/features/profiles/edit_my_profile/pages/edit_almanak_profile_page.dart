@@ -45,15 +45,7 @@ class _EditAlmanakProfilePageState
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Mijn profiel en instellingen"),
-        actions: [
-          IconButton(
-            onPressed: () => context.goNamed('Settings'),
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text("Mijn profiel")),
       body: userVal.when(
         data: (user) => buildForm(
           user,
@@ -116,7 +108,7 @@ class _EditAlmanakProfilePageState
                 )
                 .center(),
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "Profielinstellingen", children: [
+            FormSection(title: "  Profielinstellingen", children: [
               DropdownButtonFormField<String?>(
                 items: ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
                     .map((board) => DropdownMenuItem<String>(
@@ -161,6 +153,7 @@ class _EditAlmanakProfilePageState
                 selectedColor: colorScheme.primaryContainer,
                 backgroundColor: colorScheme.surface,
                 checkColor: colorScheme.onPrimaryContainer,
+                itemsTextStyle: TextStyle(color: colorScheme.onSurface),
                 onSaved: (substructures) => ref
                     .read(profileEditFormNotifierProvider.notifier)
                     .setSubstructuren(substructures),
@@ -253,7 +246,7 @@ class _EditAlmanakProfilePageState
                 ),
               ),
             ]),
-            FormSection(title: "Persoonsgegevens", children: [
+            FormSection(title: "  Persoonsgegevens", children: [
               ListTile(
                 title: const Text('Bekijk mijn persoonsgegevens'),
                 trailing: const Icon(
@@ -262,6 +255,13 @@ class _EditAlmanakProfilePageState
                 onTap: () => context.goNamed(
                   "Sensitive Data",
                 ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+              ),
+              ListTile(
+                title: const Text('Wijzig mijn zichtbaarheid in de app'),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap: () => context.goNamed('Edit My Visibility'),
               ),
             ]),
             // Add a TextFormField for the team the user is in.

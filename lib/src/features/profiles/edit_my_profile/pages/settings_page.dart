@@ -42,15 +42,7 @@ class SettingsPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 80),
         children: [
-          [
-            FormSection(title: "Instellingen", children: [
-              ListTile(
-                title: const Text('Wijzig mijn zichtbaarheid in de app'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => context.goNamed('Edit My Visibility'),
-              ),
+          [FormSection(title: "Instellingen", children: [
               ListTile(
                 title: const Text('Stel mijn notificatievoorkeuren in'),
                 trailing: const Icon(

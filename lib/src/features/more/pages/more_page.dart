@@ -20,14 +20,12 @@ class MorePage extends ConsumerWidget {
       "Contacteer het Bestuur / Commissies": "Contact",
       // The order isn't alphabetical, but the order in which the options are displayed.
       if (firebaseAuthUser != null) "Bekijk de Zwanehalzen": "Zwanehalzen",
-      if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
       if (firebaseAuthUser != null)
         'Bekijk de Eeuwige Blikkenlijst': "Blikkenlijst",
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
     };
 
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     const dividerThickness = 0.5;
@@ -35,7 +33,15 @@ class MorePage extends ConsumerWidget {
     const bottomPagePadding = 80.0;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Meer')),
+      appBar: AppBar(
+        title: const Text('Meer'),
+        actions: [
+          IconButton(
+            onPressed: () => context.goNamed('Settings'),
+            icon: const Icon(Icons.settings),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: bottomPagePadding),
         children: [

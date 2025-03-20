@@ -95,7 +95,6 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
         child: currentUser.when(
           data: (user) {
             _initializeNotifiersWithData(user);
-
             return Form(
               key: _formKey,
               child: Column(
@@ -132,7 +131,6 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
           error: (e, s) {
             // ignore: avoid-async-call-in-sync-function
             FirebaseCrashlytics.instance.recordError(e, s);
-
             return const SizedBox.shrink();
           },
           loading: () => const LoadingWidget(),

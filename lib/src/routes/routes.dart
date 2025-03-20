@@ -299,33 +299,9 @@ abstract final // ignore: prefer-single-declaration-per-file
               child: const SensitiveDataPage(),
             ),
             _route(
-              path: 'instellingen',
-              name: "Settings",
-              child: const SettingsPage(),
-              routes: [
-                // Route for privacy policy page.
-                _route(
-                  path: 'privacy-beleid',
-                  name: "Settings -> Privacy Beleid",
-                  child: const PrivacyPolicyPage(),
-                ),
-                // Route for about page.
-                _route(
-                  path: "about",
-                  name: "About this app",
-                  child: const AboutThisAppPage(),
-                ),
-                _route(
-                  path: 'notificatie-voorkeuren',
-                  name: "Notification Preferences",
-                  child: const NotificationsPage(),
-                ),
-                _route(
-                  path: 'visibility',
-                  name: "Edit My Visibility",
-                  child: const EditVisibilityPage(),
-                ),
-              ],
+              path: 'visibility',
+              name: "Edit My Visibility",
+              child: const EditVisibilityPage(),
             ),
           ],
         ),
@@ -642,6 +618,31 @@ abstract final // ignore: prefer-single-declaration-per-file
       name: "More",
       child: const MorePage(),
       routes: [
+        // Route for settings page.
+        _route(
+          path: 'instellingen',
+          name: "Settings",
+          child: const SettingsPage(),
+          routes: [
+            // Route for privacy policy page.
+            _route(
+              path: 'privacy-beleid',
+              name: "Settings -> Privacy Beleid",
+              child: const PrivacyPolicyPage(),
+            ),
+            // Route for about page.
+            _route(
+              path: "about",
+              name: "About this app",
+              child: const AboutThisAppPage(),
+            ),
+            _route(
+              path: 'notificatie-voorkeuren',
+              name: "Notification Preferences",
+              child: const NotificationsPage(),
+            ),
+          ],
+        ),
         // Route for GalleryPage.
         _route(
           path: "gallerij",
