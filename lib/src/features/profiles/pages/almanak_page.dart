@@ -22,7 +22,8 @@ class AlmanakPage extends ConsumerWidget {
             onAuthenticated: AlmanakStructureChoiceWidget(
               pushRoute: "Bestuur",
               title: "Bestuur",
-              imagePath: 'assets/images/bestuur.jpg',
+              imagePath:
+                  'assets/images/bestuur.jpg', // This is a saveguard, because we get it from the cloud
             ),
           ),
           [
@@ -74,8 +75,8 @@ class AlmanakPage extends ConsumerWidget {
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "Charity",
-                  title: "Goede Doel",
-                  imagePath: 'assets/images/partners.jpeg',
+                  title: "",
+                  imagePath: 'assets/images/dirk_kuyt_foundation_zwart.png',
                 ).expanded(),
               ].toRow(
                 separator: const SizedBox(

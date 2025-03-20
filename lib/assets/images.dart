@@ -4,6 +4,7 @@ class Images {
   static const deadSwan = "assets/images/deadswan.png";
   static const placeholderProfilePicture =
       "assets/images/placeholder_profile_picture.png";
+  static const placeholderBestuur = "assets/images/bestuur.jpg";
 
   static const unknownRoute404 = "assets/images/404.png";
 

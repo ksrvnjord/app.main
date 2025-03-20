@@ -15,7 +15,7 @@ final huisPictureProvider = FutureProvider.autoDispose
     return CachedImage.get(
       firebaseStoragePath: "almanak/huizen/$huis/$year/picture.jpg",
       placeholderImagePath: Images.placeholderProfilePicture,
-      maxAge: const Duration(days: 14),
+      maxAge: const Duration(minutes: 5),
     );
   },
 );
@@ -31,7 +31,7 @@ final huisThumbnailProvider = FutureProvider.autoDispose
       firebaseStoragePath:
           "almanak/huizen/$huis/$year/thumbnails/picture${Thumbnail.x200}.jpg",
       placeholderImagePath: Images.placeholderProfilePicture,
-      maxAge: const Duration(days: 14),
+      maxAge: const Duration(minutes: 5),
     );
   },
 );

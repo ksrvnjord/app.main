@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 @immutable
 abstract final class CachedProfilePicture {
   static const String placeholderImagePath = Images.placeholderProfilePicture;
-  static const Duration maxAge = Duration(days: 7); // 1 week.
+  static const Duration maxAge = Duration(minutes: 5); // 5 days.
 
   static Future<ImageProvider<Object>> get(String lidnummer) => CachedImage.get(
         placeholderImagePath: placeholderImagePath,
@@ -39,6 +39,10 @@ abstract final class CachedProfilePicture {
     String thumbnailPath = CachedProfilePicture.thumbnailPath(uid);
     HiveCache.delete(thumbnailPath); // Invalidate cache for the thumbnail.
 
-    return FirebaseStorage.instance.ref(originalPath).putData(imageData);
+    final metadata = SettableMetadata(contentType: 'image/jpeg');
+
+    return FirebaseStorage.instance
+        .ref(originalPath)
+        .putData(imageData, metadata);
   }
 }

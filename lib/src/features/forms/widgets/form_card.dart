@@ -39,6 +39,26 @@ class FormCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
+    var roundedRectangleBorder = RoundedRectangleBorder(
+      side: !formIsOpen
+          ? BorderSide(
+              color: Colors.grey,
+            )
+          : userAnswerProvider.when(
+              data: (snapshot) => snapshot.docs.isNotEmpty &&
+                      // ignore: avoid-unsafe-collection-methods
+                      !snapshot.docs.first.data().isCompleted
+                  ? BorderSide(
+                      color: colorScheme.errorContainer,
+                      width: borderWidth,
+                    )
+                  : BorderSide(color: colorScheme.primary),
+              error: (err, stack) => BorderSide(color: colorScheme.primary),
+              loading: () => BorderSide(color: colorScheme.primary),
+            ),
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
+    );
+
     return ListTile(
       title: <Widget>[Flexible(child: Text(form.title))]
           .toRow(separator: const SizedBox(width: 4)),
@@ -81,21 +101,7 @@ class FormCard extends ConsumerWidget {
       // Transparant color.
       color: Colors.transparent,
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: userAnswerProvider.when(
-          data: (snapshot) => snapshot.docs.isNotEmpty &&
-                  // ignore: avoid-unsafe-collection-methods
-                  !snapshot.docs.first.data().isCompleted
-              ? BorderSide(
-                  color: colorScheme.errorContainer,
-                  width: borderWidth,
-                )
-              : BorderSide(color: colorScheme.primary),
-          error: (err, stack) => BorderSide(color: colorScheme.primary),
-          loading: () => BorderSide(color: colorScheme.primary),
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
+      shape: roundedRectangleBorder,
       margin: const EdgeInsets.symmetric(vertical: 4),
     );
   }

@@ -13,8 +13,8 @@ final bestuurPictureProvider =
 
     return CachedImage.get(
       firebaseStoragePath: "almanak/bestuur/$year/picture.jpg",
-      placeholderImagePath: Images.placeholderProfilePicture,
-      maxAge: const Duration(days: 14),
+      placeholderImagePath: Images.placeholderBestuur,
+      maxAge: const Duration(minutes: 5),
     );
   },
 );

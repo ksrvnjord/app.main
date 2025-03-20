@@ -34,6 +34,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
               imageProvider: ref.watch(bestuurPictureProvider(year)),
+              isBestuurPage: true,
             ),
           ).padding(horizontal: pageHPadding),
           [

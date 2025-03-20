@@ -12,7 +12,6 @@ part 'firestore_user.g.dart';
 class FirestoreUser {
   @JsonKey(name: 'first_name')
   final String firstName;
-
   @JsonKey(name: 'last_name')
   final String lastName;
 

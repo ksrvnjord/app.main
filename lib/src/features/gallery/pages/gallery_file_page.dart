@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.da
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+/// A page that displays all images from a folder in the gallery.
 class GalleryFilePage extends ConsumerWidget {
   const GalleryFilePage({
     super.key,

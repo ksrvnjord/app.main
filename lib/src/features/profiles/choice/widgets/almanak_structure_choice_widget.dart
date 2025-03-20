@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakStructureChoiceWidget extends StatelessWidget {
+class AlmanakStructureChoiceWidget extends ConsumerWidget {
   const AlmanakStructureChoiceWidget({
     super.key,
     required this.pushRoute,
@@ -15,8 +18,11 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
   final String imagePath;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenSize = MediaQuery.of(context).size;
+
+    final year = getNjordYear();
+    final bestuurPictureVal = ref.watch(bestuurPictureProvider(year));
 
     final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 7.3;
 
@@ -31,7 +37,16 @@ class AlmanakStructureChoiceWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               child: Image(
-                image: AssetImage(imagePath),
+                image: pushRoute == "Bestuur" // Grab bestuurfoto from the cloud
+                    ? bestuurPictureVal.when(
+                        data: (data) => data,
+                        error: (err, __) {
+                          debugPrint(err.toString());
+                          return AssetImage(imagePath);
+                        },
+                        loading: () => AssetImage(imagePath),
+                      )
+                    : AssetImage(imagePath),
                 width: double.infinity,
                 height: imageHeight,
                 fit: BoxFit.cover,

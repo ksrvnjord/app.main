@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/amount_of_likes_fo
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/clickable_profile_picture_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_bottom_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/comment_card.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CommentWidget extends ConsumerWidget {
@@ -40,7 +41,7 @@ class CommentWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final comment = snapshot.data();
-    final postAuthor = ref.watch(firestoreUserProvider(comment.authorId));
+    final postAuthor = ref.watch(userProvider(comment.authorId));
 
     const double cardPadding = 8;
     const double profilePictureSize = 20;
@@ -86,7 +87,19 @@ class CommentWidget extends ConsumerWidget {
               ],
               child: SingleChildScrollView(
                 // We need to wrap the comment card in a scroll view because of a small issue with the ContextMenu: https://github.com/flutter/flutter/issues/58880#issuecomment-886175435.
-                child: CommentCard(postAuthor: postAuthor, comment: comment),
+                child: CommentCard(
+                    postAuthor: postAuthor.when(
+                      data: (user) => user,
+                      loading: () => null,
+                      error: (error, _) {
+                        FirebaseCrashlytics.instance.recordError(
+                          error,
+                          StackTrace.current,
+                        );
+                        return null;
+                      },
+                    ),
+                    comment: comment),
               ),
             ),
             // Create positioned red circle.

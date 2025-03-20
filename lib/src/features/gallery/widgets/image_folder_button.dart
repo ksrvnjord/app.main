@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class FolderButton extends ConsumerWidget {
-  const FolderButton({
+class ImageFolderButton extends ConsumerWidget {
+  const ImageFolderButton({
     super.key,
     required this.item,
   });

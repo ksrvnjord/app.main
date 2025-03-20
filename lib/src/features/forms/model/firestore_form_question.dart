@@ -28,4 +28,5 @@ class FirestoreFormQuestion {
 enum FormQuestionType {
   singleChoice,
   text,
+  image,
 }

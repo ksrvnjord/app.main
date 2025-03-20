@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/all_form_answers_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
@@ -325,65 +326,96 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
 
     return [
       Scaffold(
-        appBar: AppBar(
-          title: Text('Volledige Reacties (${completedAnswersVal.maybeWhen(
-            data: (answers) => "${answers.size}",
-            orElse: () => "",
-          )})'),
-        ),
-        body: completedAnswersVal.when(
-          data: (answers) {
-            return answers.size == 0
-                ? const Center(
-                    child: Text(
-                      'Er zijn nog geen (volledige ingevulde) reacties op deze form',
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    itemBuilder: (innerContext, index) {
-                      // ignore: avoid-unsafe-collection-methods
-                      final answer = answers.docs[index].data();
-
-                      final dateFormat = DateFormat('dd-MM-yyyy HH:mm');
-
-                      final userId = answer.userId;
-
-                      return ListTile(
-                        title: Text(userId),
-                        subtitle: Text(
-                          "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
-                        ),
-                      );
-                    },
-                    itemCount: answers.docs.length,
-                  );
-          },
-          error: (error, stackTrace) {
-            return Center(child: Text('Error: $error'));
-          },
-          loading: () =>
-              const Center(child: CircularProgressIndicator.adaptive()),
-        ),
-        floatingActionButton: formVal.maybeWhen(
-          data: (formSnapshot) => completedAnswersVal.maybeWhen(
-            data: (answersSnapshot) => FloatingActionButton.extended(
-              tooltip: 'Exporteer antwoorden naar CSV',
-              heroTag: 'downloadCSV',
-              onPressed: () => _handleDownloadButtonTap(
-                context: context,
-                ref: ref,
-                answersSnapshot: answersSnapshot,
-                formSnapshot: formSnapshot,
-              ),
-              icon: const Icon(Icons.download),
-              label: const Text('Exporteer antwoorden naar CSV'),
-            ),
-            orElse: () => null,
+          appBar: AppBar(
+            title: Text('Volledige Reacties (${completedAnswersVal.maybeWhen(
+              data: (answers) => "${answers.size}",
+              orElse: () => "",
+            )})'),
           ),
-          orElse: () => null,
-        ),
-      ),
+          body: completedAnswersVal.when(
+            data: (answers) {
+              return answers.size == 0
+                  ? const Center(
+                      child: Text(
+                        'Er zijn nog geen (volledige ingevulde) reacties op deze form',
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      itemBuilder: (innerContext, index) {
+                        // ignore: avoid-unsafe-collection-methods
+                        final answer = answers.docs[index].data();
+
+                        final dateFormat = DateFormat('dd-MM-yyyy HH:mm');
+
+                        final userId = answer.userId;
+
+                        return ListTile(
+                          title: Text(userId),
+                          subtitle: Text(
+                            "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
+                          ),
+                        );
+                      },
+                      itemCount: answers.docs.length,
+                    );
+            },
+            error: (error, stackTrace) {
+              return Center(child: Text('Error: $error'));
+            },
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
+          ),
+          floatingActionButton: formVal.maybeWhen(
+            data: (formSnapshot) {
+              final hasImageQuestions = formSnapshot
+                  .data()!
+                  .questions
+                  .any((question) => question.type == FormQuestionType.image);
+              return completedAnswersVal.maybeWhen(
+                data: (answersSnapshot) =>
+                    Column(mainAxisSize: MainAxisSize.min, children: [
+                  FloatingActionButton.extended(
+                    tooltip: 'Exporteer antwoorden naar CSV',
+                    heroTag: 'downloadCSV',
+                    onPressed: () => _handleDownloadButtonTap(
+                      context: context,
+                      ref: ref,
+                      answersSnapshot: answersSnapshot,
+                      formSnapshot: formSnapshot,
+                    ),
+                    icon: const Icon(Icons.download),
+                    label: const Text('Exporteer antwoorden naar CSV'),
+                  ),
+                  if (hasImageQuestions) ...[
+                    const SizedBox(
+                        height: 16), // Add some spacing between the buttons
+                    FloatingActionButton.extended(
+                      tooltip: 'Download Bijbehorende Foto\'s',
+                      heroTag: 'downloadImages',
+                      onPressed: () {
+                        if (kIsWeb) {
+                          downloadAllFormImageAnswers(widget.formId);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Deze functie is alleen beschikbaar op de webversie van de app.',
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.image),
+                      label: const Text('Download Bijbehorende Foto\'s'),
+                    ),
+                  ],
+                ]),
+                orElse: () => null,
+              );
+            },
+            orElse: () => null,
+          )),
       if (_isLoading) // Show a loading indicator when the user is exporting the CSV.
         Positioned.fill(
           child: Container(

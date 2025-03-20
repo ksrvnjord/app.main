@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AuthorWidget extends StatelessWidget {
@@ -12,7 +12,7 @@ class AuthorWidget extends StatelessWidget {
   });
 
   final String authorName;
-  final FirestoreUser? postAuthor;
+  final User? postAuthor;
   final double fontSize;
 
   @override
