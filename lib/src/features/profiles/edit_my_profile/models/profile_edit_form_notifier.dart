@@ -87,7 +87,7 @@ class ProfileForm {
       if (board != null) 'board': board,
       if (ploeg != null) 'ploeg': ploeg,
       if (dubbellid != null) 'dubbellid': dubbellid,
-      if (otherAssociation != null) 'otherAssociation': otherAssociation,
+      if (otherAssociation != null) 'other_association': otherAssociation,
       if (substructures != null) 'substructures': substructures,
       if (huis != null) 'huis': huis,
     };
