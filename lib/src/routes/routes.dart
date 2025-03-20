@@ -179,8 +179,7 @@ abstract final // ignore: prefer-single-declaration-per-file
         // ^ This is commented out because of the change in admin routing.
 
         final bool currentRouteRequiresFormAdmin =
-            currentPath.contains('/forms/admin') ||
-                currentPath.contains('/admin/forms');
+            currentPath.contains('/forms/editor');
         final bool currentRouteRequiresAdmin =
             currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
@@ -240,12 +239,12 @@ abstract final // ignore: prefer-single-declaration-per-file
           routes: [
             // path: /forms/nieuw
             _route(
-              path: 'admin/nieuw',
+              path: 'editor/nieuw',
               name: "Forms -> Create Form",
               child: const CreateFormPage(),
             ),
             _route(
-              path: 'admin/manage',
+              path: 'editor/manage',
               name: "Forms -> Manage Forms",
               child: const ManageFormsPage(),
               routes: [
