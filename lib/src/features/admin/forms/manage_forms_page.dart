@@ -83,7 +83,7 @@ class ManageFormsPage extends ConsumerWidget {
                                       );
                                     },
                                     child: const Text(
-                                      'Hef drafstatus op',
+                                      'Hef draftstatus op',
                                     ),
                                   )
                                 : const Text(
