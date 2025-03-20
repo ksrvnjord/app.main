@@ -21,11 +21,6 @@ class ManageFormsPage extends ConsumerWidget {
       appBar: AppBar(title: const Text('Beheer Forms')),
       body: currentUserVal.when(
         data: (user) {
-          final creatorNamesProvider =
-              FutureProvider<List<String>>((ref) async {
-            return user.canCreateFormsFor.map((e) => e.values.first).toList();
-          });
-
           final formsVal = ref.watch(
             user.isAdmin
                 ? allFormsOnCreationProvider
