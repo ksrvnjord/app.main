@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
@@ -239,6 +240,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   labelText: 'Maximum aantal antwoorden',
                 ),
                 keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onChanged: (value) {
                   setState(() {
                     _maximumNumberOfAnswers = int.tryParse(value);
@@ -277,6 +279,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                             _isDraft = value ?? false;
                           });
                         },
+                        activeColor: user.isAdmin ? null : Colors.grey,
                       )),
                   const Text('Form is een concept'),
                 ],
