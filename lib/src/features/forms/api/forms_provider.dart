@@ -81,5 +81,5 @@ final creatorNamesProvider = FutureProvider<List<String>>((ref) async {
   final user = ref.watch(currentUserNotifierProvider);
   if (user == null) return [];
 
-  return user.canCreateFormsFor.map((e) => e.values.first).toList();
+  return user.canCreateFormsFor.values.toList();
 });

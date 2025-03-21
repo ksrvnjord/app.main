@@ -100,11 +100,14 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
           openUntil: Timestamp.fromDate(_openUntil),
           description: _description.text,
           authorId: currentUser.identifier.toString(),
-          authorName: _author.text,
+          authorName: currentUser.isAdmin
+              ? _author.text
+              : currentUser.canCreateFormsFor[_author.text]!,
+          groupId: currentUser.isAdmin ? null : _author.text,
           hasMaximumNumberOfAnswers: _hasMaximumNumberOfAnswers,
           maximumNumberOfAnswers: _maximumNumberOfAnswers,
           maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible,
-          isDraft: true,
+          isDraft: _isDraft,
         ),
       );
       if (!context.mounted) return;
@@ -168,14 +171,14 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                       : null,
                 );
               } else {
-                _author.text = user.canCreateFormsFor.first.values.first;
+                _author.text = user.canCreateFormsFor.keys.first;
                 return DropdownButtonFormField<String>(
                   value: _author.text,
                   decoration: const InputDecoration(labelText: 'Auteur'),
-                  items: user.canCreateFormsFor
-                      .map((form) => DropdownMenuItem(
-                            value: form.values.first,
-                            child: Text(form.values.first),
+                  items: user.canCreateFormsFor.entries
+                      .map((entry) => DropdownMenuItem(
+                            value: entry.key,
+                            child: Text(entry.value),
                           ))
                       .toList(),
                   onChanged: (String? newValue) {
@@ -248,7 +251,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   }
                   return null;
                 },
-              ),
+              ), //TODO disable feature later
             Row(
               children: [
                 Checkbox(

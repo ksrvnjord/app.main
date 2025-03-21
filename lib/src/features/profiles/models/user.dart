@@ -65,9 +65,9 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
-  List<Map<int, String>> get canCreateFormsFor => getCanMakeFormsFor(groups);
+  Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
 
-  bool get canCreateForms => django.isStaff || !canCreateFormsFor.isNotEmpty;
+  bool get canCreateForms => django.isStaff || canCreateFormsFor.isNotEmpty;
 
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
@@ -86,12 +86,14 @@ String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
       .firstWhere((role) => role != null, orElse: () => null);
 }
 
-List<Map<int, String>> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
+Map<String, String> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
   final currentYear = DateTime.now().subtract(Duration(days: 243)).year;
   return entries
       .where((entry) =>
           entry.permissions.contains('admin') &&
           entry.group.year == currentYear)
-      .map((entry) => {entry.group.id!: entry.group.name})
-      .toList();
+      .fold({}, (acc, entry) {
+    acc[entry.group.id!.toString()] = entry.group.name;
+    return acc;
+  });
 }

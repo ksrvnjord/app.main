@@ -22,6 +22,7 @@ class FirestoreForm {
   final String? description;
   final String authorId;
   final String authorName;
+  final String? groupId;
 
   final bool? isDraft;
 
@@ -45,6 +46,7 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
+    this.groupId,
     this.isDraft,
     this.hasMaximumNumberOfAnswers,
     this.maximumNumberOfAnswers,
