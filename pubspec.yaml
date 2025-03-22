@@ -28,6 +28,7 @@ dependencies:
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
   firebase_auth: ^4.20.0
+  firebase_remote_config: ^4.4.0 # TODO upgrade version
   time_range_picker: ^2.2.0
   firebase_core: any
   shared_preferences: ^2.0.15
