@@ -185,25 +185,6 @@ class _EditAlmanakProfilePageState
                     .read(profileEditFormNotifierProvider.notifier)
                     .setOtherAssociation(value),
               ),
-              Card(
-                color: colorScheme.errorContainer,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                margin: const EdgeInsets.all(0.0),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(children: [
-                    Icon(Icons.warning_amber),
-                    SizedBox(width: 8.0),
-                    Expanded(
-                      child: Text(
-                        "De KoCo kan niet garanderen dat er geen sporen van allergenen aanwezig zijn in het eten.",
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
               ListTile(
                 // ignore: avoid-non-ascii-symbols
                 title: const Text('Geef mijn allergiëen & dieetwensen door'),
@@ -254,7 +235,7 @@ class _EditAlmanakProfilePageState
                 ),
                 onTap: () => context.goNamed(
                   "Sensitive Data",
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
+                ), 
               ),
               ListTile(
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),

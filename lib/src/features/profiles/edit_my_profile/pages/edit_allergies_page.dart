@@ -23,6 +23,24 @@ class EditAllergiesPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
         children: [
+          Card(
+                //color: colorScheme.errorContainer,
+                shape: const ContinuousRectangleBorder(
+                ),
+                margin: const EdgeInsets.all(0.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(children: [
+                    Icon(Icons.warning_amber),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      child: Text(
+                        "De KoCo kan niet garanderen dat er geen sporen van allergenen aanwezig zijn in het eten.",
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
           currentUserStream.when(
             data: (snapshot) => buildAllergiesForm(snapshot, context),
             error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
