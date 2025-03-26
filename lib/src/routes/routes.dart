@@ -213,6 +213,7 @@ abstract final // ignore: prefer-single-declaration-per-file
         upgrader: Upgrader(
           countryCode: 'nl',
           languageCode: 'nl',
+          durationUntilAlertAgain: const Duration(seconds: 1),
           minAppVersion:
               MellotippetFirebaseRemoteConfig().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
