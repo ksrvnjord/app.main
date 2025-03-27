@@ -13,7 +13,8 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:ksrvnjord_main_app/src/features/remote_config/api/mellotippet_firebase_remote_config.dart';
+import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
+import 'package:ksrvnjord_main_app/src/features/remote_config/model/mellotippet_package_info.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:timeago/timeago.dart' as timeago;
@@ -81,7 +82,8 @@ Future<void> appRunner() async {
   if (!kIsWeb) {
     // Setting up remote config
     // For using forced updates
-    await MellotippetFirebaseRemoteConfig.initialize();
+    await RemoteConfigImplementation.initialize();
+    await GetIt.I.get<MellotippetPackageInfo>().initialize();
   }
 
   // ----------------- FIREBASE / END -----------------. //
