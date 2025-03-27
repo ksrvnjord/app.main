@@ -11,6 +11,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
 /// Sources: [FirestoreUser] and [DjangoUser].
 @immutable
 class User {
+  const User({FirestoreUser? firestore, required DjangoUser django})
+      : _django = django,
+        _firestore = firestore;
   final FirestoreUser? _firestore;
   final DjangoUser _django;
 
@@ -72,10 +75,6 @@ class User {
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;
-  // ignore: sort_constructors_first
-  const User({FirestoreUser? firestore, required DjangoUser django})
-      : _django = django,
-        _firestore = firestore;
 }
 
 String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {

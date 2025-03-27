@@ -238,6 +238,11 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                     initialValue: user.info.blikken.toString(),
                   ),
                   SensitiveDataTextFormField(
+                    title: 'Stuurblikken',
+                    isEditable: false,
+                    initialValue: user.info.blikken.toString(),
+                  ),
+                  SensitiveDataTextFormField(
                     title: 'Taarten',
                     isEditable: false,
                     initialValue: user.info.taarten.toString(),

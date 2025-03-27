@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -16,9 +17,11 @@ class FormsPage extends ConsumerWidget {
     final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
+        firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('forms')),
+      appBar: AppBar(title: Text(formsLocation)),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
@@ -30,7 +33,31 @@ class FormsPage extends ConsumerWidget {
               return forms
                   // ignore: prefer-extracting-function-callbacks
                   .map((item) {
-                    return FormCard(formDoc: item);
+                    return FormCard(
+                      formDoc: item,
+                      userGroups: currentUserVal.when(
+                        data: (currentUser) {
+                          return currentUser.groups.map((group) => group.id);
+                        },
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return const [];
+                        },
+                        loading: () => const [],
+                      ),
+                      userIsAdmin: currentUserVal.when(
+                        data: (currentUser) => currentUser.isAdmin,
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return false;
+                        },
+                        loading: () => false,
+                      ),
+                    );
                   })
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
@@ -82,7 +109,7 @@ class FormsPage extends ConsumerWidget {
 
           return const SizedBox.shrink();
         },
-        loading: () => const SizedBox.shrink(),
+        loading: () => const CircularProgressIndicator.adaptive(),
       ),
     );
   }

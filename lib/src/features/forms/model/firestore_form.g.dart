@@ -19,6 +19,12 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       authorId: json['authorId'] as String,
       authorName: json['authorName'] as String,
+      visibleForGroups: (json['visibleForGroups'] as List<dynamic>?)
+          ?.map((e) => (e as num?)?.toInt())
+          .toList(),
+      visibleForGroupsString: (json['visibleForGroupsString'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
       groupId: json['groupId'] as String?,
       isDraft: json['isDraft'] as bool?,
       hasMaximumNumberOfAnswers: json['hasMaximumNumberOfAnswers'] as bool?,
@@ -37,6 +43,8 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'description': instance.description,
       'authorId': instance.authorId,
       'authorName': instance.authorName,
+      'visibleForGroups': instance.visibleForGroups,
+      'visibleForGroupsString': instance.visibleForGroupsString,
       'groupId': instance.groupId,
       'isDraft': instance.isDraft,
       'hasMaximumNumberOfAnswers': instance.hasMaximumNumberOfAnswers,

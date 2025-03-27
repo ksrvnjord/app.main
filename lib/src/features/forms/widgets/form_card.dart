@@ -14,9 +14,16 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard({super.key, required this.formDoc});
+  const FormCard({
+    super.key,
+    required this.formDoc,
+    required this.userGroups,
+    required this.userIsAdmin,
+  });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
+  final Iterable<int> userGroups;
+  final bool userIsAdmin;
 
   final borderWidth = 2.0;
 
@@ -28,6 +35,18 @@ class FormCard extends ConsumerWidget {
       return const ErrorCardWidget(
         errorMessage: 'Het is niet gelukt om de form te laden',
       );
+    }
+
+    var isAFormForUser = true;
+    final formGroups = form.visibleForGroups;
+    if (formGroups != null) {
+      isAFormForUser = false;
+      for (final group in userGroups) {
+        if (formGroups.contains(group)) {
+          isAFormForUser = true;
+          break;
+        }
+      }
     }
 
     final openUntil = form.openUntil.toDate();
@@ -43,74 +62,83 @@ class FormCard extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
 
-    return ListTile(
-      title: <Widget>[Flexible(child: Text(form.title))]
-          .toRow(separator: const SizedBox(width: 4)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            formIsOpen
-                ? "Sluit ${timeago.format(
-                    openUntil,
-                    locale: 'nl',
-                    allowFromNow: true,
-                  )}"
-                : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
-            style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
-          ),
-          if (form.maximumNumberIsVisible == true)
-            countAnswerProvider.when(
-              data: (count) => Text(
-                "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
-                style:
-                    textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
-              ),
-              error: (err, stack) => Text('Error: $err'),
-              loading: () => const SizedBox.shrink(),
+    var roundedRectangleBorder = RoundedRectangleBorder(
+      side: !formIsOpen
+          ? BorderSide(
+              color: Colors.grey,
+            )
+          : userAnswerProvider.when(
+              data: (snapshot) => snapshot.docs.isNotEmpty &&
+                      // ignore: avoid-unsafe-collection-methods
+                      !snapshot.docs.first.data().isCompleted
+                  ? BorderSide(
+                      color: colorScheme.errorContainer,
+                      width: borderWidth,
+                    )
+                  : BorderSide(color: colorScheme.primary),
+              error: (err, stack) => BorderSide(color: colorScheme.primary),
+              loading: () => BorderSide(color: colorScheme.primary),
             ),
-          userAnswerProvider.when(
-            data: (snapshot) => snapshot.docs.isEmpty
-                ? const SizedBox.shrink()
-                : AnswerStatusCard(
-                    answerExists: snapshot.docs.isNotEmpty,
-                    isCompleted: snapshot.docs.isNotEmpty &&
-                        // ignore: avoid-unsafe-collection-methods
-                        snapshot.docs.first.data().isCompleted,
-                    showIcon: true,
-                    textStyle: textTheme.labelLarge,
-                  ),
-            error: (err, stack) => Text('Error: $err'),
-            loading: () => const SizedBox.shrink(),
-          ),
-        ],
-      ),
-      trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
-      onTap: () => unawaited(context.pushNamed(
-        "Form",
-        pathParameters: {"formId": formDoc.reference.id},
-        queryParameters: {"v": "2"},
-      )),
-    ).card(
-      // Transparant color.
-      color: Colors.transparent,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: userAnswerProvider.when(
-          data: (snapshot) => snapshot.docs.isNotEmpty &&
-                  // ignore: avoid-unsafe-collection-methods
-                  !snapshot.docs.first.data().isCompleted
-              ? BorderSide(
-                  color: colorScheme.errorContainer,
-                  width: borderWidth,
-                )
-              : BorderSide(color: colorScheme.primary),
-          error: (err, stack) => BorderSide(color: colorScheme.primary),
-          loading: () => BorderSide(color: colorScheme.primary),
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 4),
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
     );
+
+    return (isAFormForUser || userIsAdmin)
+        ? ListTile(
+            title: <Widget>[Flexible(child: Text(form.title))]
+                .toRow(separator: const SizedBox(width: 4)),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  formIsOpen
+                      ? "Sluit ${timeago.format(
+                          openUntil,
+                          locale: 'nl',
+                          allowFromNow: true,
+                        )}"
+                      : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
+                  style: textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.outline),
+                ),
+                if (form.maximumNumberIsVisible == true)
+                  countAnswerProvider.when(
+                    data: (count) => Text(
+                      "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
+                      style: textTheme.bodyMedium
+                          ?.copyWith(color: colorScheme.outline),
+                    ),
+                    error: (err, stack) => Text('Error: $err'),
+                    loading: () => const SizedBox.shrink(),
+                  ),
+                userAnswerProvider.when(
+                  data: (snapshot) => snapshot.docs.isEmpty
+                      ? const SizedBox.shrink()
+                      : AnswerStatusCard(
+                          answerExists: snapshot.docs.isNotEmpty,
+                          isCompleted: snapshot.docs.isNotEmpty &&
+                              // ignore: avoid-unsafe-collection-methods
+                              snapshot.docs.first.data().isCompleted,
+                          showIcon: true,
+                          textStyle: textTheme.labelLarge,
+                        ),
+                  error: (err, stack) => Text('Error: $err'),
+                  loading: () => const SizedBox.shrink(),
+                ),
+              ],
+            ),
+            trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
+            onTap: () => unawaited(context.pushNamed(
+              "Form",
+              pathParameters: {"formId": formDoc.reference.id},
+              queryParameters: {"v": "2"},
+            )),
+          ).card(
+            // Transparant color.
+            color: Colors.transparent,
+            elevation: 0,
+            shape: roundedRectangleBorder,
+            margin: const EdgeInsets.symmetric(vertical: 4),
+          )
+        : const SizedBox.shrink();
   }
 }

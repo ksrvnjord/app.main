@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 
 // ignore: prefer-static-class
 final formsCollection = FirebaseFirestore.instance
-    .collection('testforms')
+    .collection(firestoreFormCollectionName)
     .withConverter<FirestoreForm>(
       fromFirestore: (snapshot, _) =>
           FirestoreForm.fromJson(snapshot.data() ?? {}),
@@ -20,7 +20,7 @@ final openFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : formsCollection
+      : FirestoreForm.firestoreConvert
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .where('isDraft', isNotEqualTo: true)
           .orderBy('openUntil', descending: false)
@@ -43,7 +43,9 @@ final allFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : formsCollection.orderBy('openUntil', descending: true).snapshots();
+      : FirestoreForm.firestoreConvert
+          .orderBy('openUntil', descending: true)
+          .snapshots();
 });
 
 // ignore: prefer-static-class
@@ -51,7 +53,9 @@ final allFormsOnCreationProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : formsCollection.orderBy('createdTime', descending: true).snapshots();
+      : FirestoreForm.firestoreConvert
+          .orderBy('createdTime', descending: true)
+          .snapshots();
 });
 
 // ignore: prefer-static-class

@@ -322,7 +322,8 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   Widget build(BuildContext context) {
     final completedAnswersVal =
         ref.watch(allCompletedAnswersProvider(widget.formId));
-    final formVal = ref.watch(formProvider(formsCollection.doc(widget.formId)));
+    final formVal = ref
+        .watch(formProvider(FirestoreForm.firestoreConvert.doc(widget.formId)));
 
     return [
       Scaffold(
