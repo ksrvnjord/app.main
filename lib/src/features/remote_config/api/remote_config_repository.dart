@@ -1,8 +1,11 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/widgets.dart';
 
-class MellotippetFirebaseRemoteConfig {
-  final remoteConfig = FirebaseRemoteConfig.instance;
+abstract class RemoteConfigRepository {
+  String getRequiredMinimumVersion();
+}
+
+class RemoteConfigImplementation implements RemoteConfigRepository {
+  final _remoteConfig = FirebaseRemoteConfig.instance;
 
   static Future<void> initialize() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
@@ -17,7 +20,7 @@ class MellotippetFirebaseRemoteConfig {
 
     // These will be used before the values are fetched from Firebase Remote Config.
     await remoteConfig.setDefaults(const {
-      'requiredMinimumVersion': '2.0.6',
+      'requiredMinimumVersion': '2.0.9',
     });
 
     // Fetch the values from Firebase Remote Config
@@ -30,14 +33,14 @@ class MellotippetFirebaseRemoteConfig {
   }
 
   // Helper methods to simplify using the values in other parts of the code
-  String? getRequiredMinimumVersion() {
-    final requiredVersion = remoteConfig.getString('requiredMinimumVersion');
+  @override
+  String getRequiredMinimumVersion() {
+    final requiredVersion = _remoteConfig.getString('requiredMinimumVersion');
 
     if (requiredVersion.isEmpty) {
-      return null;
+      return '2.0.9';
     }
 
-    debugPrint("retrieved required version: $requiredVersion");
     return requiredVersion;
   }
 }
