@@ -48,8 +48,7 @@ class ManageFormPage extends ConsumerWidget {
                           if (context.mounted) context.pop();
                         }
                         final formPath = FirebaseFirestore.instance
-                            .doc(
-                                '$firestoreFormCollectionName/$formId')
+                            .doc('$firestoreFormCollectionName/$formId')
                             .path;
 
                         // ignore: avoid-ignoring-return-values
