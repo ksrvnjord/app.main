@@ -1,18 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 
 final formAnswerCountProvider =
     StreamProvider.family<int, DocumentReference<FirestoreForm>>((ref, docRef) {
   return FirebaseFirestore.instance
-      .collection('${docRef.path}/answers')
-      .where('isCompleted', isEqualTo: true)
-      .withConverter<FormAnswer>(
-        fromFirestore: (snapshot, _) =>
-            FormAnswer.fromJson(snapshot.data() ?? {}),
-        toFirestore: (answer, _) => answer.toJson(),
-      )
+      .collection('testforms_statistics')
+      .doc(docRef.id) // Use docRef.id to match the stats document
       .snapshots()
-      .map((snapshot) => snapshot.size); // Get live count of documents
+      .map((snapshot) => snapshot.data()?['count'] as int? ?? 0);
 });
