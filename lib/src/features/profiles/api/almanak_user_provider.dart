@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 // ignore: prefer-static-class
-Future<Map<String, dynamic>> almanakUsers(
+Future<Map<String, dynamic>> almanakUsersProvider(
   int page,
   String search,
   WidgetRef ref,

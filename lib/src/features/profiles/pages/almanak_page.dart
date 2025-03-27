@@ -22,7 +22,8 @@ class AlmanakPage extends ConsumerWidget {
             onAuthenticated: AlmanakStructureChoiceWidget(
               pushRoute: "Bestuur",
               title: "Bestuur",
-              imagePath: 'assets/images/bestuur.jpg',
+              imagePath:
+                  'assets/images/bestuur.jpg', // This is a saveguard, because we get it from the cloud
             ),
           ),
           [

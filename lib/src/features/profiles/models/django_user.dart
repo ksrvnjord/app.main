@@ -128,6 +128,7 @@ class DjangoUser {
       'groups',
       'birth_date',
       'info.blikken',
+      'info.stuurblikken',
       'info.taarten',
       'info.honorary',
     ];

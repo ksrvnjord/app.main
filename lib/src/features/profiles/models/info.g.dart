@@ -8,6 +8,7 @@ part of 'info.dart';
 
 Info _$InfoFromJson(Map<String, dynamic> json) => Info(
       blikken: (json['blikken'] as num).toInt(),
+      stuurblikken: (json['stuurblikken'] as num).toInt(),
       taarten: (json['taarten'] as num).toInt(),
       dubbellid: json['dubbellid'] as bool,
       studie: json['studie'] as String?,
@@ -24,6 +25,7 @@ Info _$InfoFromJson(Map<String, dynamic> json) => Info(
 
 Map<String, dynamic> _$InfoToJson(Info instance) => <String, dynamic>{
       'blikken': instance.blikken,
+      'stuurblikken': instance.stuurblikken,
       'taarten': instance.taarten,
       'dubbellid': instance.dubbellid,
       'studie': instance.studie,
