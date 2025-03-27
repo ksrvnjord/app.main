@@ -14,7 +14,7 @@ class FormsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allForms = ref.watch(allFormsProvider);
+    final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
@@ -62,9 +62,9 @@ class FormsPage extends ConsumerWidget {
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
             },
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
-            ),
+            error: (error, stack) {
+              return ErrorCardWidget(errorMessage: error.toString());
+            },
             loading: () => const CircularProgressIndicator.adaptive(),
           ),
         ],
@@ -72,17 +72,33 @@ class FormsPage extends ConsumerWidget {
       floatingActionButton: currentUserVal.when(
         // ignore: prefer-extracting-function-callbacks
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
+          final canCreateForms = currentUser.canCreateForms;
 
-          return canAccesAdminPanel
-              ? FloatingActionButton.extended(
-                  tooltip: 'Maak een nieuwe form aan',
-                  foregroundColor: colorScheme.onTertiaryContainer,
-                  backgroundColor: colorScheme.tertiaryContainer,
-                  heroTag: "Create Form",
-                  onPressed: () => context.goNamed('Forms -> Create Form'),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Maak een nieuwe form'),
+          return canCreateForms
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    FloatingActionButton.extended(
+                      tooltip: 'Maak een nieuwe form aan',
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      heroTag: "Create Form",
+                      onPressed: () => context.goNamed('Forms -> Create Form'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Maak een nieuwe form'),
+                    ),
+                    const SizedBox(height: 8),
+                    FloatingActionButton.extended(
+                      tooltip: 'Beheer forms',
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      heroTag: "Manage Forms",
+                      onPressed: () => context.goNamed('Forms -> Manage Forms'),
+                      icon: const Icon(Icons.find_in_page),
+                      label: const Text('Beheer forms'),
+                    ),
+                  ],
                 )
               : null;
         },

@@ -27,6 +27,13 @@ class FirestoreForm {
   final String authorName;
   final List<int?>? visibleForGroups;
   final List<String?>? visibleForGroupsString;
+  final String? groupId;
+
+  final bool? isDraft;
+
+  final bool? hasMaximumNumberOfAnswers;
+  final int? maximumNumberOfAnswers;
+  final bool? maximumNumberIsVisible;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance
@@ -48,6 +55,11 @@ class FirestoreForm {
     required this.authorName,
     this.visibleForGroups,
     this.visibleForGroupsString,
+    this.groupId,
+    this.isDraft,
+    this.hasMaximumNumberOfAnswers,
+    this.maximumNumberOfAnswers,
+    this.maximumNumberIsVisible,
   });
 
   // Create fromJson method.

@@ -179,12 +179,26 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = currentPath.contains('/admin');
+        final bool currentRouteRequiresFormAdmin =
+            currentPath.contains('/forms/editor');
+        final bool currentRouteRequiresAdmin =
+            currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
             ) ??
             false; // Watch for changes in the user's admin status.
+
+        final bool canAccesFormAdminRoutes = ref.read(
+              currentUserNotifierProvider.select(
+                (value) => value?.canCreateForms,
+              ),
+            ) ??
+            false; // Watch for changes in the user's form admin status.
+
+        if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
+          return '/401';
+        }
 
         if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
           return '/401';
@@ -228,12 +242,42 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            // path: /forms/nieuw
+            // path: /forms/editor/nieuw
             _route(
-              path: 'admin/nieuw',
+              path: 'editor/nieuw',
               name: "Forms -> Create Form",
               child: const CreateFormPage(),
             ),
+            _route(
+              path: 'editor/manage',
+              name: "Forms -> Manage Forms",
+              child: const ManageFormsPage(),
+              routes: [
+                _route(
+                  path: ':formId',
+                  name: "Forms -> View Form",
+                  routes: [
+                    _route(
+                      path: 'resultaten',
+                      name: "Forms -> Form Results",
+                      pageBuilder: (context, state) => _getPage(
+                        child: FormResultsPage(
+                          formId: state.pathParameters['formId']!,
+                        ),
+                        name: "Forms -> Form Results",
+                      ),
+                    ),
+                  ],
+                  pageBuilder: (context, state) => _getPage(
+                    child: ManageFormPage(
+                      formId: state.pathParameters['formId']!,
+                    ),
+                    name: "Forms -> View Form",
+                  ),
+                ),
+              ],
+            ),
+
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(

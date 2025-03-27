@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -76,25 +77,49 @@ class ManageFormPage extends ConsumerWidget {
               : ListView(
                   padding: const EdgeInsets.only(bottom: 104),
                   children: [
-                    DataTextListTile(name: "Form naam", value: formData.title),
-                    DataTextListTile(
-                      name: 'Open tot',
-                      value: formatter.format(formData.openUntil.toDate()),
-                    ),
-                    DataTextListTile(
-                      name: 'Beschrijving',
-                      value: formData.description ?? 'N/A',
-                    ),
-                    DataTextListTile(
-                      name: 'Formauteur',
-                      value: formData.authorId,
-                    ),
-                    DataTextListTile(
-                      name: 'Gecreerd op',
-                      value: formatter.format(formData.createdTime.toDate()),
-                    ),
-                  ],
-                );
+                      DataTextListTile(
+                          name: "Form naam", value: formData.title),
+                      DataTextListTile(
+                        name: 'Open tot',
+                        value: formatter.format(formData.openUntil.toDate()),
+                      ),
+                      DataTextListTile(
+                        name: 'Beschrijving',
+                        value: formData.description ?? 'N/A',
+                      ),
+                      DataTextListTile(
+                        name: 'Formauteur',
+                        value: formData.authorId,
+                      ),
+                      DataTextListTile(
+                        name: 'Gecreerd op',
+                        value: formatter.format(formData.createdTime.toDate()),
+                      ),
+                      const Divider(),
+                      const SizedBox(height: 32),
+                      const Center(
+                        child: Text(
+                          'Vragen',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      for (final question in formData.questions) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: FormQuestion(
+                            formQuestion: question,
+                            form: formData,
+                            docRef: formVal.value!.reference,
+                            formIsOpen: false, // Use it here
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ]);
         },
         error: (error, stack) {
           return Center(child: Text('Error: $error'));

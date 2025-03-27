@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -54,6 +55,9 @@ class FormCard extends ConsumerWidget {
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
+    final countAnswerProvider =
+        ref.watch(formAnswerCountProvider(formDoc.reference));
+
     final colorScheme = Theme.of(context).colorScheme;
 
     final textTheme = Theme.of(context).textTheme;
@@ -96,6 +100,16 @@ class FormCard extends ConsumerWidget {
                   style: textTheme.bodyMedium
                       ?.copyWith(color: colorScheme.outline),
                 ),
+                if (form.maximumNumberIsVisible == true)
+                  countAnswerProvider.when(
+                    data: (count) => Text(
+                      "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
+                      style: textTheme.bodyMedium
+                          ?.copyWith(color: colorScheme.outline),
+                    ),
+                    error: (err, stack) => Text('Error: $err'),
+                    loading: () => const SizedBox.shrink(),
+                  ),
                 userAnswerProvider.when(
                   data: (snapshot) => snapshot.docs.isEmpty
                       ? const SizedBox.shrink()

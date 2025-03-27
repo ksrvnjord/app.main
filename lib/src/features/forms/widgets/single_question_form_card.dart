@@ -96,8 +96,6 @@ class _SingleQuestionFormCardState
         }
       }
     }
-    // debugPrint('formGroups: $formGroups');
-    // debugPrint('isAFormForUser: $isAFormForUser'); //TODO testform: remove these debugPrints
 
     final openUntil = formData.openUntil.toDate();
 
