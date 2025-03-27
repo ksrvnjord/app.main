@@ -45,9 +45,9 @@ class FormsPage extends ConsumerWidget {
       floatingActionButton: currentUserVal.when(
         // ignore: prefer-extracting-function-callbacks
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.canCreateForms;
+          final canCreateForms = currentUser.canCreateForms;
 
-          return canAccesAdminPanel
+          return canCreateForms
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
