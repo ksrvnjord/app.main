@@ -13,7 +13,7 @@ class GroupRepository {
     final typeValue = type?.value;
 
     final res = await dio.get(
-      "/api/users/groups/", //TODO testform: Dit moet een api v2 zijn ?
+      "/api/users/groups/", //TODO: Dit moet een api v2 zijn ?
       queryParameters: {
         "ordering": ordering,
         "search": search,

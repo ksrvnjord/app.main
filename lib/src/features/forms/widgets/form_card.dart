@@ -13,12 +13,12 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard(
-      {super.key,
-      required this.formDoc,
-      required this.userGroups,
-      required this.userIsAdmin,
-      });
+  const FormCard({
+    super.key,
+    required this.formDoc,
+    required this.userGroups,
+    required this.userIsAdmin,
+  });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
@@ -78,7 +78,7 @@ class FormCard extends ConsumerWidget {
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     );
 
-    return (isAFormForUser || userIsAdmin) 
+    return (isAFormForUser || userIsAdmin)
         ? ListTile(
             title: <Widget>[Flexible(child: Text(form.title))]
                 .toRow(separator: const SizedBox(width: 4)),

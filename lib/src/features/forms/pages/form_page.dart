@@ -181,7 +181,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
 
-                // TODO: van this not be a var? 
+                // TODO: van this not be a var?
                 bool isAFormForUser = true;
                 if (formGroups != null) {
                   isAFormForUser = false;
