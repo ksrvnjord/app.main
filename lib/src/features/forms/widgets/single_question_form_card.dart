@@ -150,8 +150,6 @@ class _SingleQuestionFormCardState
                 ),
               ],
             ),
-            // ignore: avoid-non-null-assertion
-            initiallyExpanded: formIsOpen,
             expandedCrossAxisAlignment: CrossAxisAlignment.center,
             shape: const RoundedRectangleBorder(
               side: BorderSide(color: Colors.transparent, width: 0),
