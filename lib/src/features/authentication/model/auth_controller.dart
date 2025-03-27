@@ -29,34 +29,50 @@ class AuthController extends _$AuthController {
   @override
   Future<Auth> build() async {
     // Get stored credentials.
-    String? exp = await _storage.read(key: "access_exp");
-    if (exp == null) {
+    try {
+      // Get stored credentials.
+      String? exp = await _storage.read(key: "access_exp");
+
+      if (exp == null) {
+        return Auth(authenticated: false);
+      }
+
+      final expiration =
+          DateTime.fromMillisecondsSinceEpoch(int.parse(exp) * 1000);
+
+      if (expiration.isBefore(DateTime.now())) {
+        // Token is expired, delete it.
+        await _storage.delete(key: 'access_token');
+
+        return Auth(authenticated: false);
+      }
+
+      // Change the environment based on the token endpoint.
+      _authConstants.environment =
+          await _storage.read(key: 'environment') == "${Environment.demo}"
+              ? Environment.demo
+              : Environment.production;
+
+      final accessToken = await _storage.read(key: 'access_token') ?? '';
+
+      await _firebaseLogin();
+
+      return Auth(
+        accessToken: accessToken,
+        expiration: expiration,
+        authenticated: true,
+      );
+    } on PlatformException catch (e) {
+      //this happens when phone is set back to factory settings
+      FirebaseCrashlytics.instance
+          .recordError(e, StackTrace.current, reason: "SECURE STORAGE ERROR");
+
+      await _storage.deleteAll(); // Reset storage to prevent future errors
+      return Auth(authenticated: false);
+    } catch (e) {
+      FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
       return Auth(authenticated: false);
     }
-
-    final expiration =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(exp) * 1000);
-
-    if (expiration.isBefore(DateTime.now())) {
-      // Token is expired, delete it.
-      await _storage.delete(key: 'access_token');
-
-      return Auth(authenticated: false);
-    }
-
-    // Change the environment based on the token endpoint.
-    _authConstants.environment =
-        await _storage.read(key: 'environment') == "${Environment.demo}"
-            ? Environment.demo
-            : Environment.production;
-    final accessToken = await _storage.read(key: 'access_token') ?? '';
-    await _firebaseLogin();
-
-    return Auth(
-      accessToken: accessToken,
-      expiration: expiration,
-      authenticated: true,
-    );
   }
 
   Future<void> login(String email, String password) async {
