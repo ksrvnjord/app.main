@@ -1,5 +1,6 @@
 // ignore_for_file: prefer-extracting-function-callbacks
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,8 +10,10 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_prov
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:share_plus/share_plus.dart';
@@ -37,7 +40,8 @@ class _FormPageState extends ConsumerState<FormPage> {
     BuildContext context,
   ) async {
     final answer = await ref.watch(
-      formAnswerProvider(formsCollection.doc(widget.formId)).future,
+      formAnswerProvider(FirestoreForm.firestoreConvert.doc(widget.formId))
+          .future,
     );
     if (answer.docs.isNotEmpty) {
       // ignore: avoid-unsafe-collection-methods
@@ -88,10 +92,25 @@ class _FormPageState extends ConsumerState<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final doc = formsCollection.doc(widget.formId);
+    final doc = FirestoreForm.firestoreConvert.doc(widget.formId);
     final colorScheme = Theme.of(context).colorScheme;
 
     final formVal = ref.watch(formProvider(doc));
+
+    final currentUserVal = ref.watch(currentUserProvider);
+
+    final Iterable<int> userGroups = currentUserVal.when(
+      data: (currentUser) {
+        return currentUser.groups.map((group) => group.group.id!).toList();
+      },
+      error: (e, s) {
+        // ignore: avoid-async-call-in-sync-function
+        FirebaseCrashlytics.instance.recordError(e, s);
+
+        return const [];
+      },
+      loading: () => const [],
+    );
 
     // ignore: arguments-ordering
     return GestureDetector(
@@ -156,10 +175,23 @@ class _FormPageState extends ConsumerState<FormPage> {
                 const descriptionVPadding = 16.0;
                 final description = form.description;
                 final questions = form.questions;
+                final formGroups = form.visibleForGroups;
                 final textTheme = Theme.of(context).textTheme;
                 const sizedBoxHeight = 32.0;
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
+
+                // TODO: van this not be a var?
+                bool isAFormForUser = true;
+                if (formGroups != null) {
+                  isAFormForUser = false;
+                  for (final group in userGroups) {
+                    if (formGroups.contains(group)) {
+                      isAFormForUser = true;
+                      break;
+                    }
+                  }
+                }
 
                 return [
                   [
@@ -186,25 +218,29 @@ class _FormPageState extends ConsumerState<FormPage> {
                           answer.docs.first.data().isCompleted;
 
                       const leftCardPadding = 8.0;
-
                       return Column(
                         // Move all child widgets to the left.
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Je hebt deze form ",
-                                style: textTheme.titleMedium,
-                              ),
-                              AnswerStatusCard(
-                                answerExists: answerExists,
-                                isCompleted: answerIsCompleted,
-                                showIcon: false,
-                                textStyle: textTheme.titleMedium,
-                              ).padding(left: leftCardPadding),
-                            ],
-                          ),
+                          !isAFormForUser
+                              ? Text(
+                                  "Je hebt geen toegang tot deze form",
+                                  style: textTheme.titleMedium,
+                                )
+                              : Row(
+                                  children: [
+                                    Text(
+                                      "Je hebt deze form ",
+                                      style: textTheme.titleMedium,
+                                    ),
+                                    AnswerStatusCard(
+                                      answerExists: answerExists,
+                                      isCompleted: answerIsCompleted,
+                                      showIcon: false,
+                                      textStyle: textTheme.titleMedium,
+                                    ).padding(left: leftCardPadding),
+                                  ],
+                                ),
                           if (answerExists && !answerIsCompleted)
                             Text(
                               "Vul alle verplichte vragen in om je antwoord te versturen.",
@@ -226,7 +262,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                           formQuestion: question,
                           form: form,
                           docRef: formDoc.reference,
-                          formIsOpen: formIsOpen,
+                          formIsOpen: formIsOpen && isAFormForUser,
                         ),
                         const SizedBox(height: 32),
                       ],

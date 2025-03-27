@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -17,6 +18,8 @@ class FormsWidget extends ConsumerWidget {
 
   Widget _buildOpenFormsList(
     List<QueryDocumentSnapshot<FirestoreForm>> data,
+    List<int> userGroups,
+    bool userIsAdmin,
   ) {
     const hPadding = 8.0;
 
@@ -25,8 +28,12 @@ class FormsWidget extends ConsumerWidget {
         final form = item.data();
 
         return form.questions.length == 1
-            ? SingleQuestionFormCard(formDoc: item)
-            : FormCard(formDoc: item);
+            ? SingleQuestionFormCard(
+                userGroups: userGroups, userIsAdmin: userIsAdmin, formDoc: item)
+            : FormCard(
+                userGroups: userGroups,
+                userIsAdmin: userIsAdmin,
+                formDoc: item);
       }),
     ].toColumn().padding(horizontal: hPadding);
   }
@@ -34,6 +41,7 @@ class FormsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openForms = ref.watch(openFormsProvider);
+    final currentUserVal = ref.watch(currentUserProvider);
 
     return [
       WidgetHeader(
@@ -46,12 +54,19 @@ class FormsWidget extends ConsumerWidget {
         // ignore: prefer-extracting-function-callbacks
         data: (querySnapshot) {
           final forms = querySnapshot.docs;
+          return currentUserVal.when(
+            data: (currentUser) {
+              final userIsAdmin = currentUser.isAdmin;
+              final userGroups =
+                  currentUser.groups.map((group) => group.group.id!).toList();
 
-          return _buildOpenFormsList(forms);
+              return _buildOpenFormsList(forms, userGroups, userIsAdmin);
+            },
+            error: (error, stack) => Text(error.toString()),
+            loading: () => const CircularProgressIndicator.adaptive(),
+          );
         },
-        error: (error, stack) => Text(
-          error.toString(),
-        ),
+        error: (error, stack) => Text(error.toString()),
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();
