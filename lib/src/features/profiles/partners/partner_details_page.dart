@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PartnerDetailsPage extends ConsumerWidget {
@@ -46,7 +47,7 @@ class PartnerDetailsPage extends ConsumerWidget {
                   ],
                 );
         },
-        error: (err, stk) => Text(err.toString()),
+        error: (err, stk) => ErrorTextWidget(errorMessage: err.toString()),
         loading: () => const CircularProgressIndicator.adaptive().center(),
       ),
     );

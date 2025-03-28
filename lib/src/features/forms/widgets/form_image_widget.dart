@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class FormImageWidget extends ConsumerWidget {
   const FormImageWidget({
@@ -132,14 +133,16 @@ class FormImageWidget extends ConsumerWidget {
                   ],
                 );
               } else {
-                return Text('Error loading image: $error');
+                return ErrorTextWidget(
+                    errorMessage: 'Error loading image: ${error.toString()}');
               }
             },
           ),
         );
       },
       loading: () => const CircularProgressIndicator.adaptive(),
-      error: (error, stackTrace) => Text('Error loading user: $error'),
+      error: (error, stackTrace) => ErrorTextWidget(
+          errorMessage: 'Error Loading user:${error.toString()}'),
     );
   }
 }

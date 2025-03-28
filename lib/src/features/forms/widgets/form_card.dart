@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_prov
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -107,7 +108,8 @@ class FormCard extends ConsumerWidget {
                       style: textTheme.bodyMedium
                           ?.copyWith(color: colorScheme.outline),
                     ),
-                    error: (err, stack) => Text('Error: $err'),
+                    error: (err, stack) =>
+                        ErrorTextWidget(errorMessage: err.toString()),
                     loading: () => const SizedBox.shrink(),
                   ),
                 userAnswerProvider.when(
@@ -121,7 +123,8 @@ class FormCard extends ConsumerWidget {
                           showIcon: true,
                           textStyle: textTheme.labelLarge,
                         ),
-                  error: (err, stack) => Text('Error: $err'),
+                  error: (err, stack) =>
+                      ErrorCardWidget(errorMessage: err.toString()),
                   loading: () => const SizedBox.shrink(),
                 ),
               ],

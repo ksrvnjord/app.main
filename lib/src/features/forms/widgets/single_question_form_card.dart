@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -143,7 +144,8 @@ class _SingleQuestionFormCardState
                           showIcon: true,
                           textStyle: textTheme.labelLarge,
                         ),
-                  error: (err, stack) => Text('Error: $err'),
+                  error: (err, stack) =>
+                      ErrorTextWidget(errorMessage: err.toString()),
                   loading: () => const SizedBox.shrink(),
                 ),
               ],

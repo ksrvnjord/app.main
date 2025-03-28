@@ -14,6 +14,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widge
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
@@ -219,43 +221,46 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               'Let op: Forms kunnen niet worden aangepast na het maken.',
               style: TextStyle(color: colorScheme.outline),
             ),
-            currentUserAsync.when(data: (user) {
-              if (user.isAdmin) {
-                _author.text = user.fullName;
-                return TextFormField(
-                  controller: _author,
-                  decoration: const InputDecoration(labelText: 'Auteur'),
-                  maxLines: null,
-                  validator: (value) => (value == null || value.isEmpty)
-                      ? 'Auteur kan niet leeg zijn.'
-                      : null,
-                );
-              } else {
-                _author.text = user.canCreateFormsFor.keys.first;
-                return DropdownButtonFormField<String>(
-                  value: _author.text,
-                  decoration: const InputDecoration(labelText: 'Auteur'),
-                  items: user.canCreateFormsFor.entries
-                      .map((entry) => DropdownMenuItem(
-                            value: entry.key,
-                            child: Text(entry.value),
-                          ))
-                      .toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _author.text = newValue ?? '';
-                    });
-                  },
-                  validator: (value) => (value == null || value.isEmpty)
-                      ? 'Auteur kan niet leeg zijn.'
-                      : null,
-                );
-              }
-            }, loading: () {
-              return const CircularProgressIndicator.adaptive();
-            }, error: (error, stack) {
-              return Text('Error: $error');
-            }),
+            currentUserAsync.when(
+              data: (user) {
+                if (user.isAdmin) {
+                  _author.text = user.fullName;
+                  return TextFormField(
+                    controller: _author,
+                    decoration: const InputDecoration(labelText: 'Auteur'),
+                    maxLines: null,
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'Auteur kan niet leeg zijn.'
+                        : null,
+                  );
+                } else {
+                  _author.text = user.canCreateFormsFor.keys.first;
+                  return DropdownButtonFormField<String>(
+                    value: _author.text,
+                    decoration: const InputDecoration(labelText: 'Auteur'),
+                    items: user.canCreateFormsFor.entries
+                        .map((entry) => DropdownMenuItem(
+                              value: entry.key,
+                              child: Text(entry.value),
+                            ))
+                        .toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _author.text = newValue ?? '';
+                      });
+                    },
+                    validator: (value) => (value == null || value.isEmpty)
+                        ? 'Auteur kan niet leeg zijn.'
+                        : null,
+                  );
+                }
+              },
+              loading: () {
+                return const CircularProgressIndicator.adaptive();
+              },
+              error: (error, stack) =>
+                  ErrorTextWidget(errorMessage: error.toString()),
+            ),
             TextFormField(
               // Kies form naam.
               controller: _formName,
@@ -344,28 +349,31 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 const Text('Maximum aantal antwoorden zichtbaar in app'),
               ],
             ),
-            currentUserAsync.when(data: (user) {
-              return Row(
-                children: [
-                  AbsorbPointer(
-                      absorbing: !user.isAdmin,
-                      child: Checkbox(
-                        value: _isDraft,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isDraft = value ?? false;
-                          });
-                        },
-                        activeColor: user.isAdmin ? null : Colors.grey,
-                      )),
-                  const Text('Form is een concept'),
-                ],
-              );
-            }, loading: () {
-              return const CircularProgressIndicator.adaptive();
-            }, error: (error, stack) {
-              return Text('Error: $error');
-            }),
+            currentUserAsync.when(
+              data: (user) {
+                return Row(
+                  children: [
+                    AbsorbPointer(
+                        absorbing: !user.isAdmin,
+                        child: Checkbox(
+                          value: _isDraft,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isDraft = value ?? false;
+                            });
+                          },
+                          activeColor: user.isAdmin ? null : Colors.grey,
+                        )),
+                    const Text('Form is een concept'),
+                  ],
+                );
+              },
+              loading: () {
+                return const CircularProgressIndicator.adaptive();
+              },
+              error: (error, stack) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
+            ),
             const SizedBox(height: sizedBoxHeight),
             ..._questions.asMap().entries.map((questionEntry) {
               return CreateFormQuestion(

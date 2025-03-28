@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/blikkenlijst_controller.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class BlikkenLijstTabContent extends ConsumerWidget {
   const BlikkenLijstTabContent({super.key, required this.blikType});
@@ -57,7 +58,8 @@ class BlikkenLijstTabContent extends ConsumerWidget {
                 ),
               ),
             ),
-      error: (error, _) => Center(child: Text('Error: $error')),
+      error: (error, _) =>
+          Center(child: ErrorTextWidget(errorMessage: error.toString())),
       loading: () => const Center(child: CircularProgressIndicator.adaptive()),
     );
   }

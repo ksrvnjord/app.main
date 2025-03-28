@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/polls/api/poll_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/polls/api/upsert_poll_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/polls/model/poll.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PollCard extends ConsumerWidget {
@@ -67,9 +68,8 @@ class PollCard extends ConsumerWidget {
                   )
                 : const SizedBox.shrink();
           },
-          error: (error, stackTrace) => const ErrorCardWidget(
-            errorMessage: 'Het is mislukt om het aantal antwoorden te laden',
-          ),
+          error: (error, stackTrace) => ErrorTextWidget(
+              errorMessage: "Antwoorden ophalen mislukt: ${error.toString()}"),
           loading: () => const CircularProgressIndicator.adaptive(),
         ),
       ].toColumn(crossAxisAlignment: CrossAxisAlignment.start),
@@ -92,10 +92,9 @@ class PollCard extends ConsumerWidget {
                             Image(image: MemoryImage(data), fit: BoxFit.cover),
                       )
                     : const SizedBox.shrink(),
-                error: (error, stackTrace) => const ErrorCardWidget(
-                  errorMessage:
-                      "Het is niet gelukt om de afbeelding te downloaden",
-                ),
+                error: (error, stackTrace) => ErrorCardWidget(
+                    errorMessage:
+                        "Afbeelding downloaden mislukt ${error.toString()}"),
                 loading: () => const CircularProgressIndicator.adaptive(),
               ),
         if (description != null)
@@ -126,9 +125,8 @@ class PollCard extends ConsumerWidget {
                   )),
             ].toColumn();
           },
-          error: (error, stackTrace) => const ErrorCardWidget(
-            errorMessage: 'Het is mislukt om je antwoord te laden',
-          ),
+          error: (error, stackTrace) => ErrorCardWidget(
+              errorMessage: "Antwoord laden mislukt: ${error.toString()}"),
           loading: () => const CircularProgressIndicator.adaptive(),
         ),
       ],

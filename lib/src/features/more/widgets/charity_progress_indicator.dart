@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/api/charity_get_leontien_huis.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class CharityProgressIndicator extends ConsumerWidget {
   const CharityProgressIndicator({super.key});
@@ -74,7 +75,7 @@ class CharityProgressIndicator extends ConsumerWidget {
           },
         );
       },
-      error: (err, stack) => Text('Error: $err'),
+      error: (err, stack) => ErrorTextWidget(errorMessage: err.toString()),
       loading: () => const CircularProgressIndicator.adaptive(),
     );
   }

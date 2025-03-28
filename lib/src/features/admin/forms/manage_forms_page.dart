@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/forms/form_reaction_count_
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ManageFormsPage extends ConsumerWidget {
@@ -105,15 +106,18 @@ class ManageFormsPage extends ConsumerWidget {
                     },
                     itemCount: snapshot.size,
                   ),
-            error: (error, stack) {
-              Center(child: Text('Error: $error'));
-              return null;
-            },
+            error: (error, stack) => Center(
+              child: ErrorTextWidget(
+                errorMessage: error.toString(),
+              ),
+            ),
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
           );
         },
-        error: (error, stack) => Center(child: Text('Error: $error')),
+        error: (error, stack) => ErrorTextWidget(
+          errorMessage: error.toString(),
+        ),
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),
       ),
