@@ -106,8 +106,10 @@ class ManageFormsPage extends ConsumerWidget {
                     },
                     itemCount: snapshot.size,
                   ),
-            error: (error, stack) => ErrorTextWidget(
-              errorMessage: error.toString(),
+            error: (error, stack) => Center(
+              child: ErrorTextWidget(
+                errorMessage: error.toString(),
+              ),
             ),
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
