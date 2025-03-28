@@ -22,7 +22,7 @@ final openFormsProvider =
       ? const Stream.empty()
       : FirestoreForm.firestoreConvert
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-          .where('isDraft', isNotEqualTo: true)
+          .where('isDraft', isEqualTo: false)
           .orderBy('openUntil', descending: false)
           .limit(3)
           .snapshots();
@@ -33,7 +33,7 @@ final allNonDraftFormsProvider =
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
       : formsCollection
-          .where('isDraft', isNotEqualTo: true)
+          .where('isDraft', isEqualTo: false)
           .orderBy('openUntil', descending: true)
           .snapshots();
 });
