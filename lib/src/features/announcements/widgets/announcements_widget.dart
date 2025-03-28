@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announceme
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_page_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_additional_header_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementsWidget extends ConsumerStatefulWidget {
@@ -168,7 +169,9 @@ class _AnnouncementsWidgetState extends ConsumerState<AnnouncementsWidget> {
       loading: () => const Center(
         child: CircularProgressIndicator.adaptive(),
       ),
-      error: (error, stackTrace) => ErrorWidget(error),
+      error: (error, stackTrace) => ErrorCardWidget(
+        errorMessage: error.toString(),
+      ),
     );
   }
 }

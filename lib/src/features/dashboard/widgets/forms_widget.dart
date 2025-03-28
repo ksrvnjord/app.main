@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -62,11 +63,13 @@ class FormsWidget extends ConsumerWidget {
 
               return _buildOpenFormsList(forms, userGroups, userIsAdmin);
             },
-            error: (error, stack) => Text(error.toString()),
+            error: (error, stack) =>
+                ErrorTextWidget(errorMessage: error.toString()),
             loading: () => const CircularProgressIndicator.adaptive(),
           );
         },
-        error: (error, stack) => Text(error.toString()),
+        error: (error, stack) =>
+            ErrorTextWidget(errorMessage: error.toString()),
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/widget_header.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class AnnouncementHeaderWidget extends ConsumerWidget {
   const AnnouncementHeaderWidget({super.key});
@@ -21,7 +22,9 @@ class AnnouncementHeaderWidget extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator.adaptive()),
-      error: (err, stack) => Text("Error: $err"),
+      error: (err, stack) => ErrorTextWidget(
+        errorMessage: err.toString(),
+      ),
     );
   }
 }

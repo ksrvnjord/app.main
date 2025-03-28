@@ -17,6 +17,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_quest
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answers_export_options.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:universal_html/html.dart' as html;
@@ -362,7 +363,9 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                     );
             },
             error: (error, stackTrace) {
-              return Center(child: Text('Error: $error'));
+              return Center(
+                child: ErrorTextWidget(errorMessage: error.toString()),
+              );
             },
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),

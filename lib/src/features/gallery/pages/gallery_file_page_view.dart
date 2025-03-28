@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// A Page that displays a single image from the gallery.
@@ -133,7 +134,9 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
 
                   return Image.memory(loadedImage.bytes);
                 },
-                error: (err, _) => Center(child: Text('Error: $err')),
+                error: (err, _) => Center(
+                  child: ErrorTextWidget(errorMessage: err.toString()),
+                ),
                 loading: () =>
                     const Center(child: CircularProgressIndicator.adaptive()),
               );

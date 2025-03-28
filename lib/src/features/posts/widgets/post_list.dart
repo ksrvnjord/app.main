@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class PostList extends ConsumerWidget {
@@ -40,7 +41,8 @@ class PostList extends ConsumerWidget {
                 ],
               );
       },
-      error: (error, _) => Center(child: Text('Error: $error')),
+      error: (error, _) =>
+          Center(child: ErrorTextWidget(errorMessage: error.toString())),
       loading: () => const Center(child: CircularProgressIndicator.adaptive()),
     );
   }

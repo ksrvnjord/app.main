@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class ManageFormPage extends ConsumerWidget {
@@ -122,7 +123,9 @@ class ManageFormPage extends ConsumerWidget {
                     ]);
         },
         error: (error, stack) {
-          return Center(child: Text('Error: $error'));
+          return Center(
+            child: ErrorTextWidget(errorMessage: error.toString()),
+          );
         },
         loading: () {
           return const Center(child: CircularProgressIndicator.adaptive());

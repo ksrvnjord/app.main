@@ -17,6 +17,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -335,7 +336,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  error: (err, stk) => const SizedBox.shrink(),
+                  error: (err, stk) =>
+                      ErrorTextWidget(errorMessage: err.toString()),
                   loading: () => const SizedBox.shrink(),
                 ),
           ],

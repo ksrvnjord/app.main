@@ -211,7 +211,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
         }
       },
       error: (error, stackTrace) {
-        return const ErrorCardWidget(errorMessage: 'Er is iets misgegaan');
+        return ErrorCardWidget(errorMessage: error.toString());
       },
       loading: () {
         return const CircularProgressIndicator.adaptive();
