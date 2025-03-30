@@ -102,6 +102,33 @@ class EditGroupPage extends ConsumerWidget {
     };
   }
 
+  void giveUserPermission(int userId, WidgetRef ref, BuildContext ctx) async {
+    final dio = ref.read(dioProvider);
+    try {
+      // ignore: avoid-ignoring-return-values
+      await dio.post(
+        "/api/users/groups/$groupId/permissions/",
+        data: {"user": userId},
+      );
+      if (!ctx.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text("Gebruiker heeft nu toestemming."),
+        ),
+      );
+    } catch (error) {
+      if (!ctx.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content:
+              Text("Het is niet gelukt om de gebruiker toestemming te geven."),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupVal = ref.watch(groupByIdProvider(groupId));
@@ -185,55 +212,55 @@ class EditGroupPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final Map<String, dynamic> user = users[index]['user'];
                         final String? role = users[index]['role'];
+                        bool isChecked = false;
 
-                        return ListTile(
-                          title: Text(
-                            user['first_name'] + ' ' + user['last_name'],
-                          ),
-                          subtitle: role == null ? null : Text(role),
-                          trailing: IconButton(
-                            onPressed: () async {
-                              final confirm = await showDialog<bool>(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Lid verwijderen?'),
-                                    content: Text(
-                                        'Weet je zeker dat je ${user['first_name'] + ' ' + user['last_name']} wil verwijderen?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(false),
-                                        child: const Text('Nee'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(true),
-                                        child: const Text('Ja'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return ListTile(
+                              title: Text(
+                                user['first_name'] + ' ' + user['last_name'],
+                              ),
+                              subtitle: role == null ? null : Text(role),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) =>
+                                              DeleteUserAlertDialogue(
+                                                  user: user));
 
-                              if (confirm == true) {
-                                if (!context.mounted) return;
-                                removeUserFromGroup(
-                                  user['identifier'],
-                                  ref,
-                                  context,
-                                );
-                              }
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
+                                      if (confirm == true) {
+                                        if (!context.mounted) return;
+                                        removeUserFromGroup(
+                                          user['identifier'],
+                                          ref,
+                                          context,
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                  Checkbox(
+                                    value: isChecked,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        isChecked = value ?? false;
+                                      });
+                                      giveUserPermission(
+                                          user['identifier'], ref, context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         );
                       },
                       itemCount: users.length,
                     ),
-              SliverPadding(
-                padding: const EdgeInsets.only(bottom: 72.0),
-              ),
             ],
           );
         },
@@ -258,5 +285,32 @@ class EditGroupPage extends ConsumerWidget {
         label: const Text('Voeg lid toe'),
       ),
     );
+  }
+}
+
+class DeleteUserAlertDialogue extends StatelessWidget {
+  const DeleteUserAlertDialogue({
+    super.key,
+    required this.user,
+  });
+
+  final Map<String, dynamic> user;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        title: const Text("Lid verwijderen?"),
+        content: Text(
+            "Weet je zeker dat je ${user['first_name']} + ' ' + ${user['last_name']} wil verwijderen?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Nee'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Ja'),
+          ),
+        ]);
   }
 }
