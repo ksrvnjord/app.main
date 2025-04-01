@@ -88,7 +88,7 @@ class ManageFormsPage extends ConsumerWidget {
                                     ),
                                   )
                                 : const Text(
-                                    'Draft',
+                                    'Vraag bestuur om goed te keuren',
                                     style: TextStyle(color: Colors.red),
                                   )
                           else
@@ -131,7 +131,7 @@ class ManageFormsPage extends ConsumerWidget {
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
                   heroTag: "Create Form",
-                  onPressed: () => context.goNamed('Admin -> Create Form'),
+                  onPressed: () => context.goNamed('Forms -> Create Form'),
                   icon: const Icon(Icons.add),
                   label: const Text('Maak een nieuwe form'),
                 )
