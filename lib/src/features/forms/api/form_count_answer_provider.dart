@@ -8,5 +8,5 @@ final formAnswerCountProvider =
       .collection('${firestoreFormCollectionName}_statistics')
       .doc(docRef.id) // Use docRef.id to match the stats document
       .snapshots()
-      .map((snapshot) => snapshot.data()?['count'] as int? ?? 0);
+      .map((snapshot) => snapshot.data()?['answerCount'] as int? ?? 0);
 });
