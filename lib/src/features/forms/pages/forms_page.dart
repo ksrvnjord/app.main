@@ -75,30 +75,14 @@ class FormsPage extends ConsumerWidget {
           final canCreateForms = currentUser.canCreateForms;
 
           return canCreateForms
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    FloatingActionButton.extended(
-                      tooltip: 'Maak een nieuwe form aan',
-                      foregroundColor: colorScheme.onTertiaryContainer,
-                      backgroundColor: colorScheme.tertiaryContainer,
-                      heroTag: "Create Form",
-                      onPressed: () => context.goNamed('Forms -> Create Form'),
-                      icon: const Icon(Icons.add),
-                      label: const Text('Maak een nieuwe form'),
-                    ),
-                    const SizedBox(height: 8),
-                    FloatingActionButton.extended(
-                      tooltip: 'Beheer forms',
-                      foregroundColor: colorScheme.onTertiaryContainer,
-                      backgroundColor: colorScheme.tertiaryContainer,
-                      heroTag: "Manage Forms",
-                      onPressed: () => context.goNamed('Forms -> Manage Forms'),
-                      icon: const Icon(Icons.find_in_page),
-                      label: const Text('Beheer forms'),
-                    ),
-                  ],
+              ? FloatingActionButton.extended(
+                  tooltip: 'Beheer forms',
+                  foregroundColor: colorScheme.onTertiaryContainer,
+                  backgroundColor: colorScheme.tertiaryContainer,
+                  heroTag: "Manage Forms",
+                  onPressed: () => context.goNamed('Forms -> Manage Forms'),
+                  icon: const Icon(Icons.find_in_page),
+                  label: const Text('Beheer forms'),
                 )
               : null;
         },

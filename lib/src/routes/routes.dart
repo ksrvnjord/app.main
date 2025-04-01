@@ -242,17 +242,17 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            // path: /forms/editor/nieuw
-            _route(
-              path: 'editor/nieuw',
-              name: "Forms -> Create Form",
-              child: const CreateFormPage(),
-            ),
             _route(
               path: 'editor/manage',
               name: "Forms -> Manage Forms",
               child: const ManageFormsPage(),
               routes: [
+                // path: /forms/editor/manage/nieuw
+                _route(
+                  path: 'nieuw',
+                  name: "Forms -> Create Form",
+                  child: const CreateFormPage(),
+                ),
                 _route(
                   path: ':formId',
                   name: "Forms -> View Form",
