@@ -102,19 +102,22 @@ class EditGroupPage extends ConsumerWidget {
     };
   }
 
-  void giveUserPermission(int userId, WidgetRef ref, BuildContext ctx) async {
+  void giveUserPermission(
+      int userId, bool add, WidgetRef ref, BuildContext ctx) async {
     final dio = ref.read(dioProvider);
     try {
       // ignore: avoid-ignoring-return-values
-      await dio.post(
-        "/api/users/groups/$groupId/permissions/",
-        data: {"user": userId},
+      await dio.patch(
+        "/api/v2/groups/$groupId/$userId/",
+        data: {
+          "permissions": add ? ["forms:*"] : [],
+        },
       );
       if (!ctx.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(
-          content: Text("Gebruiker heeft nu toestemming."),
+        SnackBar(
+          content: Text("Gebruiker heeft nu ${add ? '' : 'geen '}toestemming."),
         ),
       );
     } catch (error) {
@@ -212,13 +215,17 @@ class EditGroupPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final Map<String, dynamic> user = users[index]['user'];
                         final String? role = users[index]['role'];
-                        bool isChecked = false;
+                        bool isChecked = (users[index]['permissions']
+                                as List<dynamic>)
+                            .map((e) => e as String)
+                            .contains(
+                                "forms:*"); // TODO: should be forms:* or forms:create
 
                         return StatefulBuilder(
                           builder: (context, setState) {
                             return ListTile(
                               title: Text(
-                                user['first_name'] + ' ' + user['last_name'],
+                                '${user['first_name']}${user['infix'] != '' ? " ${user['infix']}" : ''} ${user['last_name']}',
                               ),
                               subtitle: role == null ? null : Text(role),
                               trailing: Row(
@@ -235,7 +242,7 @@ class EditGroupPage extends ConsumerWidget {
                                       if (confirm == true) {
                                         if (!context.mounted) return;
                                         removeUserFromGroup(
-                                          user['identifier'],
+                                          user['iid'],
                                           ref,
                                           context,
                                         );
@@ -249,8 +256,8 @@ class EditGroupPage extends ConsumerWidget {
                                       setState(() {
                                         isChecked = value ?? false;
                                       });
-                                      giveUserPermission(
-                                          user['identifier'], ref, context);
+                                      giveUserPermission(user['iid'],
+                                          value ?? false, ref, context);
                                     },
                                   ),
                                 ],

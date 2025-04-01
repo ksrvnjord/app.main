@@ -89,7 +89,8 @@ Map<String, String> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
   final currentYear = DateTime.now().subtract(Duration(days: 243)).year;
   return entries
       .where((entry) =>
-          entry.permissions.contains('admin') &&
+          entry.permissions.contains(
+              'forms:*') && // TODO: needs to match on forms:* or forms:create
           entry.group.year == currentYear)
       .fold({}, (acc, entry) {
     acc[entry.group.id!.toString()] = entry.group.name;

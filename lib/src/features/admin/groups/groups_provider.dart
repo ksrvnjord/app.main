@@ -25,7 +25,7 @@ final groupsProvider = FutureProvider.autoDispose
 final groupByIdProvider = FutureProvider.autoDispose
     .family<Map<String, dynamic>, int>((ref, id) async {
   final dio = ref.watch(dioProvider);
-  final res = await dio.get("/api/users/groups/$id/");
+  final res = await dio.get("/api/v2/groups/$id/");
 
   return res.data;
 });
