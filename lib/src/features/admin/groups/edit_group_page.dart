@@ -125,8 +125,8 @@ class EditGroupPage extends ConsumerWidget {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(ctx).showSnackBar(
         const SnackBar(
-          content:
-              Text("Het is niet gelukt om de gebruiker toestemming te geven."),
+          content: Text(
+              "Het is niet gelukt om de gebruiker's toestemming te veranderen."),
         ),
       );
     }
