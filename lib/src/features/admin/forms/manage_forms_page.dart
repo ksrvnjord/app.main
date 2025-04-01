@@ -123,9 +123,9 @@ class ManageFormsPage extends ConsumerWidget {
       ),
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
+          final canCreateForms = currentUser.canCreateForms;
 
-          return canAccesAdminPanel
+          return canCreateForms
               ? FloatingActionButton.extended(
                   tooltip: 'Maak een nieuwe form aan',
                   foregroundColor: colorScheme.onTertiaryContainer,
