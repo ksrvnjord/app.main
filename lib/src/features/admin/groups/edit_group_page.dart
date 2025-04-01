@@ -116,8 +116,8 @@ class EditGroupPage extends ConsumerWidget {
       if (!ctx.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(
-          content: Text("Gebruiker heeft nu toestemming."),
+        SnackBar(
+          content: Text("Gebruiker heeft nu ${add ? '' : 'geen '}toestemming."),
         ),
       );
     } catch (error) {
@@ -215,7 +215,11 @@ class EditGroupPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final Map<String, dynamic> user = users[index]['user'];
                         final String? role = users[index]['role'];
-                        bool isChecked = false;
+                        bool isChecked = (users[index]['permissions']
+                                as List<dynamic>)
+                            .map((e) => e as String)
+                            .contains(
+                                "forms:*"); // TODO: should be forms:* or forms:create
 
                         return StatefulBuilder(
                           builder: (context, setState) {
