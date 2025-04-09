@@ -18,7 +18,7 @@ class EditAllergiesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         // ignore: avoid-non-ascii-symbols
-        title: const Text('Mijn allergiëen & dieetwensen'),
+        title: const Text('Mijn allergieën/aversies'),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
@@ -43,7 +43,7 @@ class EditAllergiesPage extends ConsumerWidget {
     final myAllergies = currentUser.allergies;
 
     final List<String> allergies = [
-      'Vegetarisch',
+      'Vlees',
       'Gluten',
       'Lactose',
       'Noten',
@@ -52,9 +52,10 @@ class EditAllergiesPage extends ConsumerWidget {
       'Selderij',
       'Sesam',
       'Soja',
-      'Sulfiet',
       'Vis',
       'Weekdieren',
+      'Koemelk',
+      'Peulvruchten',
     ]..sort();
 
     final String customAllergy =
