@@ -220,7 +220,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                       ).alignment(Alignment.centerLeft),
                       if (isSoldOut)
                         Text(
-                          "Dit form heeft het maximale aantal antwoorden bereikt",
+                          "Deze form heeft het maximale aantal antwoorden bereikt",
                           style: TextStyle(color: colorScheme.error),
                         ).alignment(Alignment.centerLeft),
                       if (description != null)

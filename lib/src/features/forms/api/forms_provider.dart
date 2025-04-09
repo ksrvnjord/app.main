@@ -20,7 +20,7 @@ final openFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : FirestoreForm.firestoreConvert
+      : formsCollection
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .where('isDraft', isEqualTo: false)
           .orderBy('openUntil', descending: false)
@@ -43,9 +43,7 @@ final allFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : FirestoreForm.firestoreConvert
-          .orderBy('openUntil', descending: true)
-          .snapshots();
+      : formsCollection.orderBy('openUntil', descending: true).snapshots();
 });
 
 // ignore: prefer-static-class
@@ -53,9 +51,7 @@ final allFormsOnCreationProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
   return ref.watch(firebaseAuthUserProvider).value == null
       ? const Stream.empty()
-      : FirestoreForm.firestoreConvert
-          .orderBy('createdTime', descending: true)
-          .snapshots();
+      : formsCollection.orderBy('createdTime', descending: true).snapshots();
 });
 
 // ignore: prefer-static-class
