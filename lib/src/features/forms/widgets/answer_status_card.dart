@@ -35,7 +35,7 @@ class AnswerStatusCard extends StatelessWidget {
                 elevation: 0,
                 margin: EdgeInsets.zero,
                 child: Text(
-                  isCompleted ? "Ingevuld" : "Niet Verzonden",
+                  isCompleted ? "Verzonden" : "Niet Verzonden",
                   style: textStyle,
                 ).padding(
                   horizontal: horizontalPadding,
