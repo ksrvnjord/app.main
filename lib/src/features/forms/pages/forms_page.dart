@@ -37,7 +37,11 @@ class FormsPage extends ConsumerWidget {
                       formDoc: item,
                       userGroups: currentUserVal.when(
                         data: (currentUser) {
-                          return currentUser.groups.map((group) => group.id);
+                          final userGroups = currentUser.groups
+                              .where((group) => group.group.id != null)
+                              .map((group) => group.group.id!);
+
+                          return userGroups;
                         },
                         error: (e, s) {
                           // ignore: avoid-async-call-in-sync-function
