@@ -79,7 +79,6 @@ class CharityPage extends ConsumerWidget {
                 text: 'Check de website van de Dirk Kuyt Foundation:',
                 fontSize: 16,
               ),
-              
               Center(
                 child: InkWell(
                   child: const Text(
@@ -101,11 +100,10 @@ class CharityPage extends ConsumerWidget {
               const Text(
                 '"Iedere stap die we samen zetten, maakt een wereld van verschil!" - Dirk Kuyt',
                 style: TextStyle(
-                  fontSize: 18,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
-                ),
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               Image.asset(
