@@ -13,9 +13,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget
 import 'package:styled_widget/styled_widget.dart';
 
 class ManageFormPage extends ConsumerWidget {
-  const ManageFormPage({super.key, required this.formId});
+  const ManageFormPage({
+    super.key,
+    required this.formId,
+    required this.isInAdminPanel,
+  });
 
   final String formId;
+  final bool isInAdminPanel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -135,7 +140,7 @@ class ManageFormPage extends ConsumerWidget {
         tooltip: 'Bekijk (volledige ingevulde) reacties',
         heroTag: 'form_results',
         onPressed: () => context.pushNamed(
-          'Form Results',
+          isInAdminPanel ? 'Admin -> Form Results' : 'Forms -> Form Results',
           pathParameters: {
             'formId': formId,
           },

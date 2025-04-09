@@ -271,6 +271,7 @@ abstract final // ignore: prefer-single-declaration-per-file
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isInAdminPanel: false,
                     ),
                     name: "Forms -> View Form",
                   ),
@@ -746,24 +747,25 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 _route(
                   path: ':formId',
-                  name: "View Form",
+                  name: "Admin -> View Form",
                   routes: [
                     _route(
                       path: 'resultaten',
-                      name: "Form Results",
+                      name: "Admin -> Form Results",
                       pageBuilder: (context, state) => _getPage(
                         child: FormResultsPage(
                           formId: state.pathParameters['formId']!,
                         ),
-                        name: "Form Results",
+                        name: "Admin -> Form Results",
                       ),
                     ),
                   ],
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isInAdminPanel: true,
                     ),
-                    name: "View Form",
+                    name: "Admin -> View Form",
                   ),
                 ),
               ],

@@ -116,7 +116,7 @@ class _EditAlmanakProfilePageState
                 )
                 .center(),
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "👤 Over mij", children: [
+            FormSection(title: "👤 Over Mij", children: [
               DropdownButtonFormField<String?>(
                 items: ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
                     .map((board) => DropdownMenuItem<String>(
@@ -147,7 +147,7 @@ class _EditAlmanakProfilePageState
             ]),
             FormSection(
               // ignore: avoid-non-ascii-symbols
-              title: "👥 Mijn groepen",
+              title: "👥 Mijn Groepen",
               children: [
                 Card(
                   color: colorScheme.tertiaryContainer,
@@ -233,7 +233,7 @@ class _EditAlmanakProfilePageState
             ),
 
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "🍽️ Mijn Allergiëen & Dieetwensen", children: [
+            FormSection(title: "🍽️ Mijn Allergieën/Aversies", children: [
               Card(
                 color: colorScheme.errorContainer,
                 shape: const RoundedRectangleBorder(
@@ -255,7 +255,7 @@ class _EditAlmanakProfilePageState
               ),
               ListTile(
                 // ignore: avoid-non-ascii-symbols
-                title: const Text('Geef mijn allergiëen & dieetwensen door'),
+                title: const Text('Geef mijn allergieën/aversies door'),
                 subtitle: const Text(
                   "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
                 ),
@@ -268,7 +268,7 @@ class _EditAlmanakProfilePageState
               ),
             ]),
             // ignore: avoid-non-ascii-symbols
-            FormSection(title: "🔰 Mijn afschrijfpermissies", children: [
+            FormSection(title: "🔰 Mijn Afschrijfpermissies", children: [
               ListTile(
                 title: const Text('Bekijk mijn permissies'),
                 trailing: const Icon(

@@ -211,62 +211,66 @@ class EditGroupPage extends ConsumerWidget {
                         child: Text('Er zijn geen leden in deze groep.'),
                       ),
                     )
-                  : SliverList.builder(
-                      itemBuilder: (context, index) {
-                        final Map<String, dynamic> user = users[index]['user'];
-                        final String? role = users[index]['role'];
-                        bool isChecked = (users[index]['permissions']
-                                as List<dynamic>)
-                            .map((e) => e as String)
-                            .contains(
-                                "forms:*"); // TODO: should be forms:* or forms:create
+                  : SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 96.0),
+                      sliver: SliverList.builder(
+                        itemBuilder: (context, index) {
+                          final Map<String, dynamic> user =
+                              users[index]['user'];
+                          final String? role = users[index]['role'];
+                          bool isChecked = (users[index]['permissions']
+                                  as List<dynamic>)
+                              .map((e) => e as String)
+                              .contains(
+                                  "forms:*"); // TODO: should be forms:* or forms:create
 
-                        return StatefulBuilder(
-                          builder: (context, setState) {
-                            return ListTile(
-                              title: Text(
-                                '${user['first_name']}${user['infix'] != '' ? " ${user['infix']}" : ''} ${user['last_name']}',
-                              ),
-                              subtitle: role == null ? null : Text(role),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () async {
-                                      final confirm = await showDialog<bool>(
-                                          context: context,
-                                          builder: (context) =>
-                                              DeleteUserAlertDialogue(
-                                                  user: user));
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              return ListTile(
+                                title: Text(
+                                  '${user['first_name']}${user['infix'] != '' ? " ${user['infix']}" : ''} ${user['last_name']}',
+                                ),
+                                subtitle: role == null ? null : Text(role),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        final confirm = await showDialog<bool>(
+                                            context: context,
+                                            builder: (context) =>
+                                                DeleteUserAlertDialogue(
+                                                    user: user));
 
-                                      if (confirm == true) {
-                                        if (!context.mounted) return;
-                                        removeUserFromGroup(
-                                          user['iid'],
-                                          ref,
-                                          context,
-                                        );
-                                      }
-                                    },
-                                    icon: const Icon(Icons.delete),
-                                  ),
-                                  Checkbox(
-                                    value: isChecked,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        isChecked = value ?? false;
-                                      });
-                                      giveUserPermission(user['iid'],
-                                          value ?? false, ref, context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      itemCount: users.length,
+                                        if (confirm == true) {
+                                          if (!context.mounted) return;
+                                          removeUserFromGroup(
+                                            user['iid'],
+                                            ref,
+                                            context,
+                                          );
+                                        }
+                                      },
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                    Checkbox(
+                                      value: isChecked,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          isChecked = value ?? false;
+                                        });
+                                        giveUserPermission(user['iid'],
+                                            value ?? false, ref, context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        itemCount: users.length,
+                      ),
                     ),
             ],
           );
