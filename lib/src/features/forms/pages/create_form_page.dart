@@ -234,7 +234,9 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                         : null,
                   );
                 } else {
-                  _author.text = user.canCreateFormsFor.keys.first;
+                  if (_author.text.isEmpty) {
+                    _author.text = user.canCreateFormsFor.keys.first;
+                  }
                   return DropdownButtonFormField<String>(
                     value: _author.text,
                     decoration: const InputDecoration(labelText: 'Auteur'),

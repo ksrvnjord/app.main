@@ -174,6 +174,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 const descriptionVPadding = 16.0;
                 final description = form.description;
+                final bool isKoco = form.authorName == "Kookcommissie";
+
                 final questions = form.questions;
                 final formGroups = form.visibleForGroups;
                 final textTheme = Theme.of(context).textTheme;
@@ -199,6 +201,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                         answerCount >=
                             (form.maximumNumberOfAnswers ??
                                 10000); // very high number to represent infinity
+                    final iconSize = 16.0;
+
                     return [
                       [
                         Flexible(
@@ -223,6 +227,41 @@ class _FormPageState extends ConsumerState<FormPage> {
                         Text(description, style: textTheme.bodyMedium)
                             .padding(vertical: descriptionVPadding)
                             .alignment(Alignment.centerLeft),
+                      if (isKoco)
+                        Card(
+                          color: colorScheme.errorContainer,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(children: [
+                              Icon(
+                                Icons.warning_amber,
+                                size: iconSize,
+                              ),
+                              SizedBox(width: 8.0),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width -
+                                    80, // Adjust width as needed
+                                child: ListTile(
+                                  title: Text(
+                                      "Allergieën? Help de KoCo door ze hier aan te geven.",
+                                      style: textTheme.bodyMedium),
+                                  trailing: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: iconSize,
+                                  ),
+                                  onTap: () => context.goNamed(
+                                    'My Allergies',
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ).padding(bottom: descriptionVPadding),
                       answerVal.when(
                         data: (answer) {
                           final answerExists = answer.docs.isNotEmpty;

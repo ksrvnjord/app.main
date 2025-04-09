@@ -312,7 +312,7 @@ class DeleteUserAlertDialogue extends StatelessWidget {
     return AlertDialog(
         title: const Text("Lid verwijderen?"),
         content: Text(
-            "Weet je zeker dat je ${user['first_name']} + ' ' + ${user['last_name']} wil verwijderen?"),
+            "Weet je zeker dat je ${user['first_name']} ${user['last_name']} wil verwijderen?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
