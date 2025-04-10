@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
+
 class WeatherWidget extends ConsumerWidget {
   const WeatherWidget({
     super.key,
