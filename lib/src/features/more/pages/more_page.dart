@@ -2,7 +2,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_link_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/more_list_tile.dart';
@@ -18,20 +17,15 @@ class MorePage extends ConsumerWidget {
     final currentUserVal = ref.watch(currentUserProvider);
 
     final optionRouteMap = {
-      "Over deze App": "About this app",
-      // ignore: map-keys-ordering
-      "Bekijk het Privacy Beleid": "More -> Privacy Beleid",
       "Contacteer het Bestuur / Commissies": "Contact",
       // The order isn't alphabetical, but the order in which the options are displayed.
       if (firebaseAuthUser != null) "Bekijk de Zwanehalzen": "Zwanehalzen",
-      if (firebaseAuthUser != null) "Bekijk de Agenda": "Events",
       if (firebaseAuthUser != null) 'Bekijk de Fotogalerij': 'Gallery',
       if (firebaseAuthUser != null)
         'Bekijk de Eeuwige Blikkenlijst': "Blikkenlijst",
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
     };
 
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
     const dividerThickness = 0.5;
@@ -39,7 +33,15 @@ class MorePage extends ConsumerWidget {
     const bottomPagePadding = 80.0;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Meer')),
+      appBar: AppBar(
+        title: const Text('Meer'),
+        actions: [
+          IconButton(
+            onPressed: () => context.goNamed('Settings'),
+            icon: const Icon(Icons.settings),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: bottomPagePadding),
         children: [
@@ -74,13 +76,6 @@ class MorePage extends ConsumerWidget {
             url: 'https://linktr.ee/ksrvnjord_intern',
           ),
           const Divider(height: 0, thickness: dividerThickness),
-          ListTile(
-            title: Text('Uitloggen', style: textTheme.titleMedium)
-                .textColor(colorScheme.error),
-            trailing: Icon(Icons.logout, color: colorScheme.error),
-            visualDensity: VisualDensity.standard,
-            onTap: () => ref.read(authControllerProvider.notifier).logout(),
-          ),
         ],
       ),
       // Floatingaction button to navigate to admin page.

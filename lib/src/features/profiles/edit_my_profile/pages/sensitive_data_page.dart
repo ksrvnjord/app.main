@@ -26,7 +26,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   final _controllers = {
     'birthDate': TextEditingController(),
     'city': TextEditingController(),
-    'dubbellid': TextEditingController(),
     'email': TextEditingController(),
     'houseNumber': TextEditingController(),
     'houseNumberAddition': TextEditingController(),
@@ -36,8 +35,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
     'street': TextEditingController(),
     'studie': TextEditingController(),
   };
-
-  final _dubbellidNotifier = ValueNotifier<bool>(false);
 
   void _initializeControllersWithUserData(User user) {
     _controllers['city']!.text = user.address.city ?? '';
@@ -50,7 +47,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
     _controllers['postalCode']!.text = user.address.postalCode ?? '';
     _controllers['street']!.text = user.address.street ?? '';
     _controllers['studie']!.text = user.info.studie ?? '';
-    _dubbellidNotifier.value = user.info.dubbellid;
   }
 
   void _handleSubmitForm(User user) async {
@@ -65,7 +61,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
     // Collect all form data.
     final formData = {
       'city': _controllers['city']?.text ?? '',
-      'dubbellid': _dubbellidNotifier.value,
       'email': _controllers['email']?.text ?? '',
       'houseNumber': _controllers['houseNumber']?.text ?? '',
       'houseNumberAddition': _controllers['houseNumberAddition']?.text ?? '',
@@ -110,7 +105,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
   void dispose() {
     // Dispose all controllers when the widget is disposed.
     _controllers.forEach((key, controller) => controller.dispose());
-    _dubbellidNotifier.dispose();
     super.dispose();
   }
 
@@ -227,11 +221,6 @@ class _SensitiveDataPageState extends ConsumerState<SensitiveDataPage> {
                   ),
                   const Divider(),
                   const SensitiveDataSubsection('Overig'),
-                  SensitiveDataBoolFormfield(
-                    title: 'Dubbellid',
-                    valueNotifier: _dubbellidNotifier,
-                    isEditable: true,
-                  ),
                   SensitiveDataTextFormField(
                     title: 'Blikken',
                     isEditable: false,

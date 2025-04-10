@@ -89,13 +89,12 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
     final currentUser = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Zichtbaarheid Almanak Aanpassen')),
+      appBar: AppBar(title: const Text('Zichtbaarheid aanpassen')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: currentUser.when(
           data: (user) {
             _initializeNotifiersWithData(user);
-
             return Form(
               key: _formKey,
               child: Column(
@@ -132,7 +131,6 @@ class _EditVisibilityPageState extends ConsumerState<EditVisibilityPage> {
           error: (e, s) {
             // ignore: avoid-async-call-in-sync-function
             FirebaseCrashlytics.instance.recordError(e, s);
-
             return const SizedBox.shrink();
           },
           loading: () => const LoadingWidget(),

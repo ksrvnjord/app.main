@@ -37,6 +37,19 @@ class FirestoreUser {
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
   final bool? isAdmin; // Used for admin capabilties in-app.
 
+  bool get isAppCo => [
+        '21203',
+        '18031',
+        '18257',
+        '20198',
+        '22195',
+        '23292',
+        '23207',
+        '23226',
+      ].contains(identifier); // Used for testing purposes and AppCo rights.
+  bool get isBestuur =>
+      bestuursFunctie != null; // Used to give bestuur more rights in-app.
+
   const FirestoreUser({
     required this.firstName,
     required this.lastName,
