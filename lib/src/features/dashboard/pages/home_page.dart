@@ -8,6 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/forms_widget.d
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/widgets/notification_home_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -50,6 +51,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     const double logoHeight = 56;
     const double myProfileSize = 26;
+    const double notificationIconSize = 30;
 
     double screenTopPadding = MediaQuery.of(context).padding.top;
 
@@ -81,10 +83,20 @@ class _HomePageState extends ConsumerState<HomePage> {
                 left: logoLeftPadding,
               ), // To align logo with the ProfileIcon.
               FirebaseWidget(
-                onAuthenticated: IconButton(
-                  iconSize: myProfileSize,
-                  onPressed: () => context.goNamed("Edit Profile"),
-                  icon: const MyProfilePicture(profileIconSize: myProfileSize),
+                onAuthenticated: Row(
+                  children: [
+                    IconButton(
+                      iconSize: notificationIconSize,
+                      onPressed: () => context.goNamed("Notifications"),
+                      icon: const NotificationHomePageWidget(),
+                    ),
+                    IconButton(
+                      iconSize: myProfileSize,
+                      onPressed: () => context.goNamed("Edit Profile"),
+                      icon: const MyProfilePicture(
+                          profileIconSize: myProfileSize),
+                    ),
+                  ],
                 ),
               ),
             ].toRow(

@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
-import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
@@ -22,6 +22,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.d
 import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/list_notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -301,6 +302,10 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "All Announcements",
           child: const GalleryMainPage(goToAnnouncementPage: true),
         ),
+        _route(
+            path: 'notifications',
+            name: "Notifications",
+            child: const ListNotificationsPage()),
         _route(
           path: 'mijn-profiel',
           name: "Edit Profile",
