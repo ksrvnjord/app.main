@@ -15,17 +15,44 @@ final formsCollection = FirebaseFirestore.instance
       toFirestore: (form, _) => form.toJson(),
     );
 
-// ignore: prefer-static-class
+// // ignore: prefer-static-class
+// final openFormsProvider =
+//     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
+//   return ref.watch(firebaseAuthUserProvider).value == null
+//       ? const Stream.empty()
+//       : formsCollection
+//           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+//           .where('isDraft', isEqualTo: false)
+//           .orderBy('openUntil', descending: false)
+//           .limit(3)
+//           .snapshots();
+// });
+
 final openFormsProvider =
     StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
-  return ref.watch(firebaseAuthUserProvider).value == null
-      ? const Stream.empty()
-      : formsCollection
-          .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
-          .where('isDraft', isEqualTo: false)
-          .orderBy('openUntil', descending: false)
-          .limit(3)
-          .snapshots();
+  final currentUserVal = ref.watch(currentUserProvider).value;
+
+  if (currentUserVal == null) {
+    return const Stream.empty();
+  } else if (!currentUserVal.isAdmin) {
+    return formsCollection
+        .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+        .where('isDraft', isEqualTo: false)
+        .orderBy('openUntil', descending: false)
+        .limit(3)
+        .snapshots();
+  } else {
+    return formsCollection
+        .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
+        .where('isDraft', isEqualTo: false)
+        .orderBy('openUntil', descending: false)
+        .where('visibleForGroups', isNull: true)
+        .where('visibleForGroups',
+            arrayContainsAny:
+                currentUserVal.groups.map((group) => group.group.id).toList())
+        .limit(3)
+        .snapshots();
+  }
 });
 
 final allNonDraftFormsProvider =
