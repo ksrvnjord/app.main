@@ -20,7 +20,7 @@ class FormQuestion extends ConsumerStatefulWidget {
     required this.docRef,
     required this.formIsOpen,
     this.withoutBorder = false,
-    this.showAdditionalSaveButton = false, // New parameter
+    this.showAdditionalSaveButton = true, // TODO: This should be false/removed
   });
 
   final FirestoreFormQuestion formQuestion;
