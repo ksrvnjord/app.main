@@ -3,11 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
@@ -101,6 +103,7 @@ class _SingleQuestionFormCardState
     final openUntil = formData.openUntil.toDate();
 
     final formIsOpen = DateTime.now().isBefore(openUntil);
+    final bool isKoco = formData.authorName == "Kookcommissie";
 
     final userAnswerProvider =
         ref.watch(formAnswerProvider(widget.formDoc.reference));
@@ -158,6 +161,15 @@ class _SingleQuestionFormCardState
               if (formData.description != null)
                 Text(formData.description!, style: textTheme.bodyMedium)
                     .padding(horizontal: descriptionHPadding.toDouble()),
+              if (isKoco)
+                GestureDetector(
+                  onTap: () => context.pushNamed(
+                    'My Allergies',
+                  ),
+                  child: AllergyWarningCard(
+                    sidePadding: hPadding,
+                  ),
+                ),
               Form(
                 key: _formKey,
                 child: [
