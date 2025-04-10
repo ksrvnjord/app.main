@@ -18,13 +18,14 @@ class FormsWidget extends ConsumerWidget {
   const FormsWidget({super.key});
 
   Widget _buildOpenFormsList(
+    BuildContext context,
     List<QueryDocumentSnapshot<FirestoreForm>> data,
     List<int> userGroups,
     bool userIsAdmin,
   ) {
     const hPadding = 8.0;
 
-    return [
+    final openFormsList = [
       ...data.map((item) {
         final form = item.data();
 
@@ -36,7 +37,28 @@ class FormsWidget extends ConsumerWidget {
                 userIsAdmin: userIsAdmin,
                 formDoc: item);
       }),
-    ].toColumn().padding(horizontal: hPadding);
+    ];
+
+    openFormsList.removeWhere((widget) => widget is SizedBox);
+
+    if (openFormsList.length > 3) {
+      return [
+        ...openFormsList.take(3),
+        GestureDetector(
+          onTap: () => context.goNamed(RouteName.forms),
+          child: Icon(
+            Icons.more_horiz,
+            size: 32,
+          ),
+        ),
+      ].toColumn().padding(horizontal: hPadding);
+    } else {
+      return openFormsList
+          .take(3)
+          .toList()
+          .toColumn()
+          .padding(horizontal: hPadding);
+    }
   }
 
   @override
@@ -61,7 +83,8 @@ class FormsWidget extends ConsumerWidget {
               final userGroups =
                   currentUser.groups.map((group) => group.group.id!).toList();
 
-              return _buildOpenFormsList(forms, userGroups, userIsAdmin);
+              return _buildOpenFormsList(
+                  context, forms, userGroups, userIsAdmin);
             },
             error: (error, stack) =>
                 ErrorTextWidget(errorMessage: error.toString()),
