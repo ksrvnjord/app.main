@@ -100,8 +100,10 @@ class ManageFormsPage extends ConsumerWidget {
                         ].toColumn(
                             crossAxisAlignment: CrossAxisAlignment.start),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => innerContext.go(
-                            '${GoRouterState.of(innerContext).uri}/${doc.id}'),
+                        onTap: () => innerContext.goNamed(
+                          "Forms -> View Form",
+                          pathParameters: {"formId": doc.id},
+                        ),
                       );
                     },
                     itemCount: snapshot.size,

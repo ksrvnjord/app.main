@@ -23,7 +23,6 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.da
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/list_notifications_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -283,22 +282,13 @@ abstract final // ignore: prefer-single-declaration-per-file
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
-              path: ':formId',
-              // Forms/fgdgdf789dfg7df9dg789.
-              name: "Form",
-              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
-                          null &&
-                      state.uri.queryParameters['v'] ==
-                          '2' // TODO: Remove this after migration.
-                  ? _getPage(
+                path: ':formId',
+                // Forms/fgdgdf789dfg7df9dg789.
+                name: "Form",
+                pageBuilder: (context, state) => _getPage(
                       child: FormPage(formId: state.pathParameters['formId']!),
                       name: "Form",
-                    )
-                  : _getPage(
-                      child: PollPage(pollId: state.pathParameters['formId']!),
-                      name: "Poll",
-                    ),
-            ),
+                    )),
           ],
         ),
         // Route for viewing all events.

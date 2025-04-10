@@ -12,6 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_prov
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -201,7 +202,6 @@ class _FormPageState extends ConsumerState<FormPage> {
                         answerCount >=
                             (form.maximumNumberOfAnswers ??
                                 10000); // very high number to represent infinity
-                    final iconSize = 16.0;
 
                     return [
                       [
@@ -228,40 +228,12 @@ class _FormPageState extends ConsumerState<FormPage> {
                             .padding(vertical: descriptionVPadding)
                             .alignment(Alignment.centerLeft),
                       if (isKoco)
-                        Card(
-                          color: colorScheme.errorContainer,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
+                        GestureDetector(
+                          onTap: () => context.pushNamed(
+                            'My Allergies',
                           ),
-                          margin: const EdgeInsets.all(0.0),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Row(children: [
-                              Icon(
-                                Icons.warning_amber,
-                                size: iconSize,
-                              ),
-                              SizedBox(width: 8.0),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width -
-                                    80, // Adjust width as needed
-                                child: ListTile(
-                                  title: Text(
-                                      "Allergieën? Help de KoCo door ze hier aan te geven.",
-                                      style: textTheme.bodyMedium),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: iconSize,
-                                  ),
-                                  onTap: () => context.goNamed(
-                                    'My Allergies',
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ).padding(bottom: descriptionVPadding),
+                          child: AllergyWarningCard(),
+                        ),
                       answerVal.when(
                         data: (answer) {
                           final answerExists = answer.docs.isNotEmpty;
@@ -293,6 +265,11 @@ class _FormPageState extends ConsumerState<FormPage> {
                                   ).padding(left: leftCardPadding),
                                 ],
                               ),
+                              if (answerIsCompleted)
+                                Text(
+                                  "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
+                                  style: textTheme.bodyMedium,
+                                ),
                               if (answerExists && !answerIsCompleted)
                                 Text(
                                   "Vul alle verplichte vragen in om je antwoord te versturen.",
