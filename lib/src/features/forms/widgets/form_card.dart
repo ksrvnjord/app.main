@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -130,11 +128,10 @@ class FormCard extends ConsumerWidget {
               ],
             ),
             trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
-            onTap: () => unawaited(context.pushNamed(
+            onTap: () => context.goNamed(
               "Form",
               pathParameters: {"formId": formDoc.reference.id},
-              queryParameters: {"v": "2"},
-            )),
+            ),
           ).card(
             // Transparant color.
             color: Colors.transparent,
