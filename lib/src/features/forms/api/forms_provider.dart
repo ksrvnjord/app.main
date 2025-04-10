@@ -24,7 +24,6 @@ final openFormsProvider =
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .where('isDraft', isEqualTo: false)
           .orderBy('openUntil', descending: false)
-          .limit(3)
           .snapshots();
 });
 
