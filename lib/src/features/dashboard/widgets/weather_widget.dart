@@ -8,6 +8,12 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
+enum KledingRecommendation {
+  langlang,
+  langkort,
+  kortkort,
+}
+
 class WeatherWidget extends ConsumerWidget {
   const WeatherWidget({
     super.key,
@@ -44,6 +50,16 @@ class WeatherWidget extends ConsumerWidget {
     }
   }
 
+  _determineKleding(final int temperature) {
+    if (temperature < 10) {
+      return KledingRecommendation.langlang;
+    } else if (temperature < 18) {
+      return KledingRecommendation.langkort;
+    } else {
+      return KledingRecommendation.kortkort;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weather = ref.watch(weatherProvider);
@@ -67,11 +83,25 @@ class WeatherWidget extends ConsumerWidget {
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
+        // Determine clothing recommendation
+        final KledingRecommendation clothingRecommendation =
+            _determineKleding(currentTemperature);
+
+        // Map Kleding to image paths
+        final clothingImageMap = {
+          KledingRecommendation.langlang: 'assets/images/weather_lang_lang.png',
+          KledingRecommendation.langkort: 'assets/images/weather_lang_kort.png',
+          KledingRecommendation.kortkort: 'assets/images/weather_kort_kort.png',
+        };
+
+        // Get the image path for the current clothing recommendation
+        final clothingImagePath = clothingImageMap[clothingRecommendation];
+
         return [
           const Text("K.S.R.V. Njord").fontSize(16).fontWeight(FontWeight.bold),
           // ignore: avoid-non-ascii-symbols
           Text("${currentTemperature.toString()}°").fontSize(32),
-          Wrap(children: [
+          Row(children: [
             WeatherMetricWidget(
               icon: WeatherIcons.strong_wind,
               title: "Wind",
@@ -92,6 +122,10 @@ class WeatherWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
               ),
+            ),
+            Image.asset(
+              clothingImagePath!,
+              height: 100,
             ),
             WeatherMetricWidget(
               icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
