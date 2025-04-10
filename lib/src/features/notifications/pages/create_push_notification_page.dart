@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/model/push_notification.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 class CreatePushNotificationPage extends ConsumerStatefulWidget {
@@ -49,13 +50,15 @@ class CreatePushNotificationPageState
 
                 // Create an entry in Firestore
                 final firestore = FirebaseFirestore.instance;
-                await firestore.collection('notifications').add({
-                  "title": _title,
-                  "body": _message,
-                  "topic": _topic,
-                  "createdAt": Timestamp.now(),
-                  "readBy": [],
-                });
+                await firestore.collection('notifications').add(
+                      PushNotification(
+                        title: _title,
+                        body: _message,
+                        topic: _topic,
+                        createdAt: Timestamp.now(),
+                        readBy: [],
+                      ).toJson(),
+                    );
 
                 // Show confirmation message
                 ScaffoldMessenger.of(context).showSnackBar(

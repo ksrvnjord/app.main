@@ -32,8 +32,10 @@ class NotificationHomePageWidget extends ConsumerWidget {
         return Stack(
           alignment: Alignment.center,
           children: [
-            const Icon(
-              Icons.notifications_active, // Bell icon
+            Icon(
+              count > 0
+                  ? Icons.notifications_active
+                  : Icons.notifications, // Active or normal bell icon
               size: 26, // Adjust the size as per your needs
             ),
             if (count > 0)

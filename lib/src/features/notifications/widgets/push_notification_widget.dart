@@ -10,51 +10,59 @@ class PushNotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        side: BorderSide(color: Colors.grey.shade300, width: 1),
-      ),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: Colors.lightBlue.shade100,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Title and "Nieuw" tag in a row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Title
-                Text(
-                  notification.title,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Flexible(
+                  child: Text(
+                    notification.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-                // "Nieuw" text in line with the title
                 if (uid != null && !notification.readBy.contains(uid!))
                   Text(
                     'Nieuw',
                     style: const TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 4.0),
 
-            // Body of the notification
-            Text(notification.body,
-                style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 12.0),
-
-            // Date formatted properly
+            // Message body
             Text(
-                'Date: ${DateFormat.yMMMd().format(notification.createdAt.toDate())}',
-                style: Theme.of(context).textTheme.bodyMedium),
+              notification.body,
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
+            ),
+            const SizedBox(height: 6.0),
+
+            // Timestamp
+            Text(
+              DateFormat.yMMMd().format(notification.createdAt.toDate()),
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
