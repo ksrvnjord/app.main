@@ -265,6 +265,11 @@ class _FormPageState extends ConsumerState<FormPage> {
                                   ).padding(left: leftCardPadding),
                                 ],
                               ),
+                              if (answerIsCompleted)
+                                Text(
+                                  "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
+                                  style: textTheme.bodyMedium,
+                                ),
                               if (answerExists && !answerIsCompleted)
                                 Text(
                                   "Vul alle verplichte vragen in om je antwoord te versturen.",
