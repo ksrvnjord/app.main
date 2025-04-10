@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
@@ -32,10 +33,11 @@ class CreatePushNotificationPageState
             ),
             ElevatedButton(
               // ignore: prefer-extracting-callbacks
-              onPressed: () {
+              onPressed: () async {
                 final dio = ref.watch(dioProvider);
-                // ignore: avoid-ignoring-return-values
-                dio.post(
+
+                // Send push notification
+                await dio.post(
                   "/api/social/notification/",
                   data: {
                     "title": _title,
@@ -45,10 +47,21 @@ class CreatePushNotificationPageState
                   },
                 );
 
-                // ignore: avoid-ignoring-return-values
+                // Create an entry in Firestore
+                final firestore = FirebaseFirestore.instance;
+                await firestore.collection('notifications').add({
+                  "title": _title,
+                  "body": _message,
+                  "topic": _topic,
+                  "createdAt": Timestamp.now(),
+                  "readBy": [],
+                });
+
+                // Show confirmation message
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("Push notificatie is verstuurd."),
+                    content:
+                        Text("Push notificatie is verstuurd en opgeslagen."),
                   ),
                 );
 
