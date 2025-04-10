@@ -11,6 +11,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
 /// Sources: [FirestoreUser] and [DjangoUser].
 @immutable
 class User {
+  const User({FirestoreUser? firestore, required DjangoUser django})
+      : _django = django,
+        _firestore = firestore;
   final FirestoreUser? _firestore;
   final DjangoUser _django;
 
@@ -65,13 +68,13 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
+  Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
+
+  bool get canCreateForms => django.isStaff || canCreateFormsFor.isNotEmpty;
+
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;
-  // ignore: sort_constructors_first
-  const User({FirestoreUser? firestore, required DjangoUser django})
-      : _django = django,
-        _firestore = firestore;
 }
 
 String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
@@ -80,4 +83,17 @@ String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
           entry.group.type == "Bestuur" && entry.group.year == currentYear)
       .map((entry) => entry.role)
       .firstWhere((role) => role != null, orElse: () => null);
+}
+
+Map<String, String> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
+  final currentYear = DateTime.now().subtract(Duration(days: 243)).year;
+  return entries
+      .where((entry) =>
+          entry.permissions.contains(
+              'forms:*') && // TODO: needs to match on forms:* or forms:create
+          entry.group.year == currentYear)
+      .fold({}, (acc, entry) {
+    acc[entry.group.id!.toString()] = entry.group.name;
+    return acc;
+  });
 }

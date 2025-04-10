@@ -9,6 +9,7 @@ class GroupDjangoEntry {
   // ignore: prefer-correct-identifier-length
   final int id;
   final DjangoGroup group;
+  final List<String> permissions;
 
   @JsonKey(fromJson: _roleFromJson)
   final String? role;
@@ -18,6 +19,7 @@ class GroupDjangoEntry {
     required this.id,
     required this.group,
     required this.role,
+    required this.permissions,
   });
   // ignore: sort_constructors_first
   factory GroupDjangoEntry.fromJson(Map<String, dynamic> json) =>

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 
 // ignore: prefer-static-class
 final allCompletedAnswersProvider = StreamProvider.autoDispose
     .family<QuerySnapshot<FormAnswer>, String>((ref, String docId) {
   return FirebaseFirestore.instance
-      .collection('forms')
+      .collection(firestoreFormCollectionName)
       .doc(docId)
       .collection('answers')
       .where(FormAnswer.isCompletedJSONKey, isEqualTo: true)

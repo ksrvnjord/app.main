@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
-import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
@@ -22,7 +22,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.d
 import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/list_notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -60,6 +60,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
@@ -177,12 +178,26 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = currentPath.contains('/admin');
+        final bool currentRouteRequiresFormAdmin =
+            currentPath.contains('/forms/editor');
+        final bool currentRouteRequiresAdmin =
+            currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
         final bool canAccesAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
             ) ??
             false; // Watch for changes in the user's admin status.
+
+        final bool canAccesFormAdminRoutes = ref.read(
+              currentUserNotifierProvider.select(
+                (value) => value?.canCreateForms,
+              ),
+            ) ??
+            false; // Watch for changes in the user's form admin status.
+
+        if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
+          return '/401';
+        }
 
         if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
           return '/401';
@@ -211,8 +226,12 @@ abstract final // ignore: prefer-single-declaration-per-file
         upgrader: Upgrader(
           countryCode: 'nl',
           languageCode: 'nl',
+          minAppVersion:
+              RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
         ),
+        showIgnore: false,
+        showLater: false,
         child: const HomePage(),
       ),
       routes: [
@@ -222,31 +241,53 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            // path: /forms/nieuw
             _route(
-              path: 'admin/nieuw',
-              name: "Forms -> Create Form",
-              child: const CreateFormPage(),
+              path: 'editor/manage',
+              name: "Forms -> Manage Forms",
+              child: const ManageFormsPage(),
+              routes: [
+                // path: /forms/editor/manage/nieuw
+                _route(
+                  path: 'nieuw',
+                  name: "Forms -> Create Form",
+                  child: const CreateFormPage(),
+                ),
+                _route(
+                  path: ':formId',
+                  name: "Forms -> View Form",
+                  routes: [
+                    _route(
+                      path: 'resultaten',
+                      name: "Forms -> Form Results",
+                      pageBuilder: (context, state) => _getPage(
+                        child: FormResultsPage(
+                          formId: state.pathParameters['formId']!,
+                        ),
+                        name: "Forms -> Form Results",
+                      ),
+                    ),
+                  ],
+                  pageBuilder: (context, state) => _getPage(
+                    child: ManageFormPage(
+                      formId: state.pathParameters['formId']!,
+                      isInAdminPanel: false,
+                    ),
+                    name: "Forms -> View Form",
+                  ),
+                ),
+              ],
             ),
+
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
-              path: ':formId',
-              // Forms/fgdgdf789dfg7df9dg789.
-              name: "Form",
-              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
-                          null &&
-                      state.uri.queryParameters['v'] ==
-                          '2' // TODO: Remove this after migration.
-                  ? _getPage(
+                path: ':formId',
+                // Forms/fgdgdf789dfg7df9dg789.
+                name: "Form",
+                pageBuilder: (context, state) => _getPage(
                       child: FormPage(formId: state.pathParameters['formId']!),
                       name: "Form",
-                    )
-                  : _getPage(
-                      child: PollPage(pollId: state.pathParameters['formId']!),
-                      name: "Poll",
-                    ),
-            ),
+                    )),
           ],
         ),
         // Route for viewing all events.
@@ -260,6 +301,10 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "All Announcements",
           child: const GalleryMainPage(goToAnnouncementPage: true),
         ),
+        _route(
+            path: 'notifications',
+            name: "Notifications",
+            child: const ListNotificationsPage()),
         _route(
           path: 'mijn-profiel',
           name: "Edit Profile",
@@ -691,24 +736,25 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 _route(
                   path: ':formId',
-                  name: "View Form",
+                  name: "Admin -> View Form",
                   routes: [
                     _route(
                       path: 'resultaten',
-                      name: "Form Results",
+                      name: "Admin -> Form Results",
                       pageBuilder: (context, state) => _getPage(
                         child: FormResultsPage(
                           formId: state.pathParameters['formId']!,
                         ),
-                        name: "Form Results",
+                        name: "Admin -> Form Results",
                       ),
                     ),
                   ],
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isInAdminPanel: true,
                     ),
-                    name: "View Form",
+                    name: "Admin -> View Form",
                   ),
                 ),
               ],

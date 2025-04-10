@@ -157,6 +157,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                     name: "Aantal blikken",
                     value: userInfo.blikken.toString(),
                   ),
+                if (userInfo.stuurblikken != 0)
+                  DataTextListTile(
+                    name: "Aantal stuurblikken",
+                    value: userInfo.stuurblikken.toString(),
+                  ),
                 if (userInfo.taarten != 0)
                   DataTextListTile(
                     name: "Aantal taarten",

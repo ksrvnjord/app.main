@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/api/damage_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/widgets/damage_edit_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class DamagesEditPage extends ConsumerWidget {
@@ -33,7 +34,7 @@ class DamagesEditPage extends ConsumerWidget {
       ),
       error: (e, s) => Scaffold(
         body: Center(
-          child: Text(e.toString()),
+          child: ErrorTextWidget(errorMessage: e.toString()),
         ),
       ),
     );

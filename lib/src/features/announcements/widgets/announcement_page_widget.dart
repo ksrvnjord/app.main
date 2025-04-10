@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class AnnouncementPageWidget extends ConsumerWidget {
   const AnnouncementPageWidget({
@@ -76,7 +77,9 @@ class AnnouncementPageWidget extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator.adaptive()),
-      error: (error, stackTrace) => const Icon(Icons.error),
+      error: (error, stackTrace) => ErrorTextWidget(
+        errorMessage: error.toString(),
+      ),
     );
   }
 

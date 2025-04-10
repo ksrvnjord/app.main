@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/more/providers/package_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class AboutThisAppPage extends ConsumerWidget {
@@ -29,7 +30,8 @@ class AboutThisAppPage extends ConsumerWidget {
                     value: data.buildNumber,
                   ),
                 ].toColumn(),
-                error: (error, stackTrace) => Text(error.toString()),
+                error: (error, stackTrace) =>
+                    ErrorTextWidget(errorMessage: error.toString()),
                 loading: () => const CircularProgressIndicator.adaptive(),
               ),
           const DataTextListTile(

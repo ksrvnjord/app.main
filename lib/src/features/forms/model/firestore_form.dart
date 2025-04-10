@@ -6,6 +6,9 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 
 part 'firestore_form.g.dart';
 
+// If you're testing set this to 'testforms', for production use 'forms'
+const String firestoreFormCollectionName = 'forms';
+
 @immutable
 @JsonSerializable()
 class FirestoreForm {
@@ -22,9 +25,20 @@ class FirestoreForm {
   final String? description;
   final String authorId;
   final String authorName;
+  final List<int?>? visibleForGroups;
+  final List<String?>? visibleForGroupsString;
+  final String? groupId;
+
+  final bool? isDraft;
+
+  final bool? hasMaximumNumberOfAnswers;
+  final int? maximumNumberOfAnswers;
+  final bool? maximumNumberIsVisible;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
-      FirebaseFirestore.instance.collection('forms').withConverter(
+      FirebaseFirestore.instance
+          .collection(firestoreFormCollectionName)
+          .withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),
@@ -39,6 +53,13 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
+    this.visibleForGroups,
+    this.visibleForGroupsString,
+    this.groupId,
+    this.isDraft,
+    this.hasMaximumNumberOfAnswers,
+    this.maximumNumberOfAnswers,
+    this.maximumNumberIsVisible,
   });
 
   // Create fromJson method.

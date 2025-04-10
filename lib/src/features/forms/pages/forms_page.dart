@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -13,12 +14,14 @@ class FormsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allForms = ref.watch(allFormsProvider);
+    final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
+        firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('forms')),
+      appBar: AppBar(title: Text(formsLocation)),
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
@@ -30,14 +33,42 @@ class FormsPage extends ConsumerWidget {
               return forms
                   // ignore: prefer-extracting-function-callbacks
                   .map((item) {
-                    return FormCard(formDoc: item);
+                    return FormCard(
+                      formDoc: item,
+                      userGroups: currentUserVal.when(
+                        data: (currentUser) {
+                          final userGroups = currentUser.groups
+                              .where((group) => group.group.id != null)
+                              .map((group) => group.group.id!);
+
+                          return userGroups;
+                        },
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return const [];
+                        },
+                        loading: () => const [],
+                      ),
+                      userIsAdmin: currentUserVal.when(
+                        data: (currentUser) => currentUser.isAdmin,
+                        error: (e, s) {
+                          // ignore: avoid-async-call-in-sync-function
+                          FirebaseCrashlytics.instance.recordError(e, s);
+
+                          return false;
+                        },
+                        loading: () => false,
+                      ),
+                    );
                   })
                   .toList()
                   .toColumn(separator: const SizedBox(height: 4));
             },
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
-            ),
+            error: (error, stack) {
+              return ErrorCardWidget(errorMessage: error.toString());
+            },
             loading: () => const CircularProgressIndicator.adaptive(),
           ),
         ],
@@ -45,17 +76,17 @@ class FormsPage extends ConsumerWidget {
       floatingActionButton: currentUserVal.when(
         // ignore: prefer-extracting-function-callbacks
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
+          final canCreateForms = currentUser.canCreateForms;
 
-          return canAccesAdminPanel
+          return canCreateForms
               ? FloatingActionButton.extended(
-                  tooltip: 'Maak een nieuwe form aan',
+                  tooltip: 'Beheer forms',
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
-                  heroTag: "Create Form",
-                  onPressed: () => context.goNamed('Forms -> Create Form'),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Maak een nieuwe form'),
+                  heroTag: "Manage Forms",
+                  onPressed: () => context.goNamed('Forms -> Manage Forms'),
+                  icon: const Icon(Icons.find_in_page),
+                  label: const Text('Beheer forms'),
                 )
               : null;
         },
@@ -66,7 +97,7 @@ class FormsPage extends ConsumerWidget {
 
           return const SizedBox.shrink();
         },
-        loading: () => const SizedBox.shrink(),
+        loading: () => const CircularProgressIndicator.adaptive(),
       ),
     );
   }

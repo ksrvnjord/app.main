@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/liked_by_users_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class LikedByPage extends ConsumerWidget {
   const LikedByPage({super.key, required this.snapshotId});
@@ -29,7 +30,9 @@ class LikedByPage extends ConsumerWidget {
                 );
         },
         error: (error, stackTrace) {
-          return Center(child: Text("Error: $error"));
+          return Center(
+            child: ErrorTextWidget(errorMessage: error.toString()),
+          );
         },
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),

@@ -2,7 +2,7 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.9+16
+version: 2.0.10+16
 
 environment:
   sdk: "^3.5.0" # Dart SDK version, TODO: update when codemagic updated: https://dart.dev/get-dart/archive
@@ -28,6 +28,7 @@ dependencies:
   lucide_icons: ^0.257.0
   sticky_headers: ^0.3.0+2
   firebase_auth: ^4.20.0
+  firebase_remote_config: ^4.4.7
   time_range_picker: ^2.2.0
   firebase_core: any
   shared_preferences: ^2.0.15
@@ -58,7 +59,7 @@ dependencies:
   weather_icons: ^3.0.0
   csv: any
   stack_trace: ^1.11.0
-  firebase_analytics: any
+  firebase_analytics: ^10.10.7
   firebase_crashlytics: any
   upgrader: any
   sliver_tools: ^0.2.12

@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:archive/archive.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 import 'package:universal_html/html.dart' as html;
@@ -41,7 +42,7 @@ class FormAnswerImageParams {
 Future<String> fetchImage(
     String docRef, String userId, String questionName) async {
   return await storage
-      .ref('forms/$docRef/$userId/$questionName.png')
+      .ref('$firestoreFormCollectionName/$docRef/$userId/$questionName.png')
       .getDownloadURL();
 }
 
@@ -50,7 +51,8 @@ Future<bool> addImage(
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
+        .ref(
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionName.png')
         .putData(image);
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
         docId: docRef,
@@ -72,7 +74,8 @@ Future<bool> deleteImage(
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
+        .ref(
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionName.png')
         .delete();
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
         docId: docRef,
@@ -87,8 +90,9 @@ Future<bool> deleteImage(
 Future<bool> deleteAllImages(String docRef, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
-    final listResult =
-        await storage.ref('forms/$docRef/${user.identifierString}').listAll();
+    final listResult = await storage
+        .ref('$firestoreFormCollectionName/$docRef/${user.identifierString}')
+        .listAll();
 
     for (var item in listResult.items) {
       await item.delete();
@@ -105,7 +109,8 @@ Future<void> downloadAllFormImageAnswers(String docRef) async {
   final storage = FirebaseStorage.instance;
 
   // Get the root directory for 'forms/$docRef'
-  final listResult = await storage.ref('forms/$docRef').listAll();
+  final listResult =
+      await storage.ref('$firestoreFormCollectionName/$docRef').listAll();
 
   // Initialize an in-memory zip archive
   final archive = Archive();
