@@ -100,7 +100,7 @@ class EditAllergiesPage extends ConsumerWidget {
       [
         // Add textfield for adding custom allergies.
         // ignore: avoid-non-ascii-symbols
-        const Text('Andere allergieën & dieetwensen:')
+        const Text('Andere allergieën/aversies:')
             .fontSize(otherAllergiesFontSize),
         TextField(
           controller: TextEditingController()..text = customAllergy,
