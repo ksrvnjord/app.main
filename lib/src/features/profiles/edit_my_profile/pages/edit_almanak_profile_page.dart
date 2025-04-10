@@ -235,7 +235,7 @@ class _EditAlmanakProfilePageState
                 ),
                 onTap: () => context.goNamed(
                   "Sensitive Data",
-                ), 
+                ),
               ),
               ListTile(
                 title: const Text('Wijzig mijn zichtbaarheid in de app'),
