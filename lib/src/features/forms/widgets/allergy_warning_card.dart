@@ -12,6 +12,8 @@ class AllergyWarningCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final iconSize = 16.0;
     final bottomPadding = 16.0;
+    final hPadding = 16.0;
+    final vPadding = 8.0;
 
     return Card(
       color: colorScheme.errorContainer,
@@ -20,16 +22,19 @@ class AllergyWarningCard extends StatelessWidget {
       ),
       margin: const EdgeInsets.all(0.0),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
         child: Row(children: [
           Icon(
             Icons.warning_amber,
             size: iconSize,
           ),
-          const SizedBox(width: 8.0),
-          Text("Allergieën? Help de KoCo door ze hier aan te geven.",
-              style: textTheme.bodyMedium),
-          const Spacer(),
+          SizedBox(width: hPadding),
+          Expanded(
+            child: Text(
+              "Allergieën? Help de KoCo door ze hier aan te geven.",
+              style: textTheme.bodyMedium,
+            ),
+          ),
           Icon(
             Icons.arrow_forward_ios,
             size: iconSize,
