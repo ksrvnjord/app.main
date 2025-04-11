@@ -169,7 +169,7 @@ class _SingleQuestionFormCardState
                   child: AllergyWarningCard(
                     sidePadding: hPadding,
                   ),
-                ),
+                ).padding(top: 16.0),
               Form(
                 key: _formKey,
                 child: [
