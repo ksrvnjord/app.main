@@ -130,7 +130,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                     'Er is iets misgegaan bij het delen van de form',
                   ),
                 );
-                final routeInformation =
+                final RouteInformation routeInformation =
                     GoRouter.of(context).routeInformationProvider.value;
 
                 final state = routeInformation.state as Map<Object?, Object?>?;
@@ -140,15 +140,7 @@ class _FormPageState extends ConsumerState<FormPage> {
 
                   return;
                 }
-                final imperativeMatches = state['imperativeMatches'] as List?;
-                if (imperativeMatches == null || imperativeMatches.isEmpty) {
-                  // ignore: avoid-ignoring-return-values
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
-
-                  return;
-                }
-                final currentPath =
-                    imperativeMatches.firstOrNull['location'] as String;
+                final currentPath = state['location'] as String;
 
                 const prefixPath = RoutingConstants.appBaseUrl;
                 final url = "$prefixPath$currentPath";
