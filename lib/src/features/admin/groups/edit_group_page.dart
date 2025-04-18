@@ -226,9 +226,15 @@ class EditGroupPage extends ConsumerWidget {
 
                           return StatefulBuilder(
                             builder: (context, setState) {
+                              final userLastName = user['infix'].isEmpty
+                                  ? user['last_name']
+                                  : '${user['infix'].toString().toLowerCase()} ${user['last_name']}';
+                              final userFullName =
+                                  "${user['first_name']} $userLastName";
+
                               return ListTile(
                                 title: Text(
-                                  '${user['first_name']}${user['infix'] != '' ? " ${user['infix']}" : ''} ${user['last_name']}',
+                                  userFullName,
                                 ),
                                 subtitle: role == null ? null : Text(role),
                                 trailing: Row(
@@ -309,10 +315,14 @@ class DeleteUserAlertDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userLastName = user['infix'].isEmpty
+        ? user['last_name']
+        : '${user['infix'].toString().toLowerCase()} ${user['last_name']}';
+    final userFullName = "${user['first_name']} $userLastName";
+
     return AlertDialog(
         title: const Text("Lid verwijderen?"),
-        content: Text(
-            "Weet je zeker dat je ${user['first_name']} ${user['last_name']} wil verwijderen?"),
+        content: Text("Weet je zeker dat je $userFullName wil verwijderen?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
