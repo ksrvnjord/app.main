@@ -27,9 +27,11 @@ abstract final class CachedProfilePicture {
 
   // Path is the path to the image in firebase storage.
   static String path(String userId) => "$userId/profile_picture.png";
+  // static String path(String userId) => "people/$userId/profile_picture.png";
 
   static String thumbnailPath(String userId) =>
       "$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
+      // "people/$userId/thumbnails/profile_picture${Thumbnail.x200}.png";
   // 21203/thumbnails/profile_picture_200x200.png.
 
   static UploadTask uploadMyProfilePicture(Uint8List imageData) {

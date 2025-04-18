@@ -70,6 +70,8 @@ class Damage {
     if (damage.data()?.image != null) {
       final String path =
           '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
+          //TODO: Damages in firestore are still saved on the above logic.
+          // '/people/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
       await FirebaseStorage.instance.ref(path).delete();
     }
 
@@ -111,6 +113,7 @@ class Damage {
     if (image != null) {
       final String path =
           '/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
+          // '/people/$uid/public/objects/$reservationObjectId/damages/$id.jpg';
       // ignore: avoid-ignoring-return-values
       FirebaseStorage.instance.ref(path).putFile(File(image.path));
 
@@ -163,6 +166,7 @@ class Damage {
     if (image != null) {
       final String path =
           '/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
+          // '/people/$uid/public/objects/${object.id}/damages/${addedDamage.id}.jpg';
       // ignore: avoid-ignoring-return-values
       // Read image data as bytes.
       final imageData = await image.readAsBytes();
