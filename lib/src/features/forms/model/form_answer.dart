@@ -21,7 +21,6 @@ class FormAnswer {
 
   @JsonKey(name: isCompletedJSONKey)
   final bool isCompleted;
-  final List<String>? allergies;
 
   // ignore: sort_constructors_first
   const FormAnswer({
@@ -29,7 +28,6 @@ class FormAnswer {
     required this.answers,
     required this.answeredAt,
     required this.isCompleted,
-    this.allergies,
   });
 
   // Create fromJson method.
