@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/home_users.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/huis_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/leeden_list.dart';
@@ -51,7 +50,10 @@ class AlmanakHuisPage extends ConsumerWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: AlmanakSubstructureCoverPicture(
                     imageProvider: ref.watch(huisPictureProvider(
-                      Tuple2<String, int>(houseName, getNjordYear()),
+                      Tuple2<String, int>(
+                        houseName,
+                        2022, // TODO: hardcoded year, we keep this until huizen can edit their own info.
+                      ),
                     )),
                   ),
                 ).padding(horizontal: pageHPadding),
