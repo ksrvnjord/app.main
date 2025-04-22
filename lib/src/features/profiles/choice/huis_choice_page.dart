@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/huis_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/substructure_choice_list_tile.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -31,8 +32,8 @@ class HuisChoicePage extends ConsumerWidget {
               Tuple2(
                 choices[index],
                 // ignore: no-magic-number
-                2022,
-              ), // TODO: hardcoded year, we keep this until huizen can edit their own info.
+                getNjordYear(),
+              ),
             )),
             onTap: () => context
                 .goNamed("Huis", pathParameters: {"name": choices[index]}),
