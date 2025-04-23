@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GroupChoices {
-  static const competitie = "Competitiesectie (enkel sjaarzenploegen)";
+  static const competitie = "Competitiesectie (sjaarzenploegen & Club8+)";
   static const wedstrijd = "Wedstrijdsectie";
   static const club8Plus = "Club8+";
   static const topC4Plus = "TopC4+";
