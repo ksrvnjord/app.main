@@ -94,11 +94,15 @@ class ManageFormPage extends ConsumerWidget {
                         value: formData.description ?? 'N/A',
                       ),
                       DataTextListTile(
-                        name: 'Formauteur',
+                        name: 'Formauteur id',
                         value: formData.authorId,
                       ),
                       DataTextListTile(
-                        name: 'Gecreerd op',
+                        name: 'Aangemaakt door:',
+                        value: formData.authorName,
+                      ),
+                      DataTextListTile(
+                        name: 'Gecreëerd op:',
                         value: formatter.format(formData.createdTime.toDate()),
                       ),
                       const Divider(),
