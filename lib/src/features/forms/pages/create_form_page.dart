@@ -153,10 +153,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       final visibleForGroupIDs = <int?>[];
       for (String groupString in visibleForGroups) {
         switch (groupString) {
-          case "Wedstrijdsectie" || "Competitiesectie":
+          case GroupChoices.wedstrijd || GroupChoices.competitie:
             {
               final result = await GroupRepository.listGroups(
-                type: (groupString == "Wedstrijdsectie")
+                type: (groupString == GroupChoices.wedstrijd)
                     ? GroupType.wedstrijdsectie
                     : GroupType.competitieploeg,
                 year: getNjordYear(),
@@ -168,9 +168,11 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               break;
             }
 
-          case "Club8+" || "TopC4+" || "Sjaarzen":
+          case GroupChoices.club8Plus ||
+                GroupChoices.topC4Plus ||
+                GroupChoices.sjaarzen:
             {
-              if (groupString == "Sjaarzen") {
+              if (groupString == GroupChoices.sjaarzen) {
                 groupString = "Lichting";
               }
 
