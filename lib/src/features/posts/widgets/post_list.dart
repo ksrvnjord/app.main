@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provide
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostList extends ConsumerWidget {
   const PostList({super.key});
@@ -31,9 +32,13 @@ class PostList extends ConsumerWidget {
                             color: Theme.of(context).colorScheme.outline,
                           ),
                     ),
-                    Image.asset(
-                      'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
-                      height: sponsorImageHeight,
+                    GestureDetector(
+                      onTap: () =>
+                          launchUrl(Uri.parse("https://bohemianbirds.com/")),
+                      child: Image.asset(
+                        'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
+                        height: sponsorImageHeight,
+                      ),
                     ),
                   ].toColumn(),
                   const Divider(),

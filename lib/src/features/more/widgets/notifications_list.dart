@@ -70,13 +70,25 @@ class _NotificationsListState extends State<NotificationsList> {
         visualDensity: VisualDensity.standard,
       ),
       const Divider(height: 0),
-      ...topics.map((e) => SwitchListTile(
-            value: widget.topics.get(e['topic']!) ?? false,
-            onChanged: (value) =>
-                toggleTopic(e['topic']!, value, messenger, e['title']!),
-            title: Text(e['title']!),
-            visualDensity: VisualDensity.standard,
-          )),
+      ...topics.map((e) {
+        // Retrieve the current state from the Hive box
+        bool isChecked = widget.topics.get(e['topic']!) ?? false;
+
+        return SwitchListTile(
+          value: isChecked,
+          onChanged: (value) {
+            setState(() {
+              // Update the state in the Hive box
+              widget.topics.put(e['topic']!, value);
+            });
+
+            // Optionally call toggleTopic to handle additional logic
+            toggleTopic(e['topic']!, value, messenger, e['title']!);
+          },
+          title: Text(e['title']!),
+          visualDensity: VisualDensity.standard,
+        );
+      }),
     ]);
   }
 }

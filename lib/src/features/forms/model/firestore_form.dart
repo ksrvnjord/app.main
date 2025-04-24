@@ -26,7 +26,6 @@ class FirestoreForm {
   final String authorId;
   final String authorName;
   final List<int?>? visibleForGroups;
-  final List<String?>? visibleForGroupsString;
   final String? groupId;
 
   final bool? isDraft;
@@ -54,7 +53,6 @@ class FirestoreForm {
     required this.authorId,
     required this.authorName,
     this.visibleForGroups,
-    this.visibleForGroupsString,
     this.groupId,
     this.isDraft,
     this.hasMaximumNumberOfAnswers,
