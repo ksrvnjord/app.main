@@ -47,58 +47,38 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   /// If the user has not answered the question, it returns an empty string.
   /// If the user has explicitly answered with nothing, it also returns an empty string.
   /// If an error occurs while searching for the answer, it returns an empty string.
-  String _getAnswerForQuestion(
-    FirestoreFormQuestion formQuestion,
-    FormAnswer formAnswer,
-  ) {
-    try {
-      // ignore: avoid-unsafe-collection-methods
-      final usersAnswerToAQuestion = formAnswer.answers.firstWhere(
-        (formQuestionAnswer) =>
-            formQuestionAnswer.questionTitle == formQuestion.title,
-      );
-
-      return usersAnswerToAQuestion.answer ??
-          ""; // If user explicitly answered with nothing, return that.
-    } catch (_) {
-      // Error can occur when firstWhere if no element satisfies the condition.
-      // This is fine, because it means the user didn't answer this question at all.
-
-      return "";
-    }
-  }
 
   // Utility method to increment the progress counter and return the user ID.
   // This is used to keep track of the progress of the CSV generation.
   // Dart doesn't let us modify the progress counter inside the main loop of the CSV generation.
   // It's a bit of a hack, but it works.
-  Future<String> _incrementProgressCounterAndReturnUserId(
-    String userId,
-    int answersLength,
-  ) async {
-    setState(() {
-      _progressCounter += 1;
-    });
+  // Future<String> _incrementProgressCounterAndReturnUserId(
+  //   String userId,
+  //   int answersLength,
+  // ) async {
+  //   setState(() {
+  //     _progressCounter += 1;
+  //   });
 
-    // This is a intentional delay to prevent our bare-bones Google Cloud SQL server from getting overwhelmed.
-    // The delay is exponential, so the first few answers are generated quickly, but the last few slow.
-    const growthRate = 0.1874;
-    const maximum = 1726 * 4;
-    final randomMax = maximum /
-        (1 + math.exp(-growthRate * (_progressCounter - answersLength)));
+  //   // This is a intentional delay to prevent our bare-bones Google Cloud SQL server from getting overwhelmed.
+  //   // The delay is exponential, so the first few answers are generated quickly, but the last few slow.
+  //   const growthRate = 0.1874;
+  //   const maximum = 1726 * 4;
+  //   final randomMax = maximum /
+  //       (1 + math.exp(-growthRate * (_progressCounter - answersLength)));
 
-    // ignore: avoid-ignoring-return-values
-    await Future.delayed(
-      Duration(
-        milliseconds: math.Random().nextInt(1 + randomMax.ceil()) +
-            // ignore: no-magic-number
-            1726 ~/ 8 +
-            (randomMax.ceil() ~/ answersLength),
-      ),
-    );
+  //   // ignore: avoid-ignoring-return-values
+  //   await Future.delayed(
+  //     Duration(
+  //       milliseconds: math.Random().nextInt(1 + randomMax.ceil()) +
+  //           // ignore: no-magic-number
+  //           1726 ~/ 8 +
+  //           (randomMax.ceil() ~/ answersLength),
+  //     ),
+  //   );
 
-    return userId;
-  }
+  //   return userId;
+  // }
 
   void _handleDownloadButtonTap({
     required BuildContext context,
@@ -107,10 +87,8 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     required DocumentSnapshot<FirestoreForm> formSnapshot,
   }) async {
     final exportOptions = await _showExportOptionsDialog(context, ref);
-    if (exportOptions == null) {
-      // User cancelled the dialog.
-      return;
-    }
+    if (exportOptions == null) return;
+
     try {
       if (mounted) {
         setState(() {
@@ -119,41 +97,53 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       }
 
       final answerDocs = answersSnapshot.docs;
-
-      // Form is guaranteed to exist if user can access this page.
-      // ignore: avoid-non-null-assertion
       final form = formSnapshot.data()!;
-
       final answers = answerDocs.map((doc) => doc.data()).toList();
+
+      final headerRow = [
+        'Lidnummer',
+        ...exportOptions.extraFields.keys,
+        ...form.questions.map((q) => q.title),
+        'Invultijdstip',
+      ];
+
+      final dataRows = await Future.wait(
+        answers.map((answer) async {
+          final userId = answer.userId;
+
+          // Build a map of questionTitle → answer for fast lookup
+          final answerMap = {
+            for (var a in answer.answers) a.questionTitle: a.answer,
+          };
+
+          final extraFieldValues = await Future.wait(
+            exportOptions.extraFields.values.map((func) => func(userId)),
+          );
+
+          final questionAnswers =
+              form.questions.map((q) => answerMap[q.title] ?? "").toList();
+
+          final timestamp = DateFormat('dd-MM-yyyy HH:mm:ss')
+              .format(answer.answeredAt.toDate());
+
+          if (mounted) {
+            setState(() {
+              _progressCounter = ++_progressCounter;
+            });
+          }
+          return [
+            userId,
+            ...extraFieldValues,
+            ...questionAnswers,
+            timestamp,
+          ];
+        }),
+      );
+
       final rows = <List<String>>[
-        // HEADER ROW.
-        [
-          'sep=${exportOptions.delimiter}',
-        ],
-        // HEADER TABLE.
-        [
-          'Lidnummer',
-          ...exportOptions
-              .extraFields.keys, // Include the export options as headers.
-          ...form.questions.map((formQuestion) => formQuestion.title),
-          'Invultijdstip',
-        ],
-        // DATA ROWS.
-        // This lets us to asynchronously generate a CSV row for each form answer.
-        for (final answer in answers)
-          // This List represents a single DATA row in the CSV.
-          [
-            await _incrementProgressCounterAndReturnUserId(
-              answer.userId,
-              answers.length,
-            ),
-            for (final function in exportOptions.extraFields.values)
-              await function(answer.userId),
-            for (final formQuestion in form.questions)
-              _getAnswerForQuestion(formQuestion, answer),
-            DateFormat('dd-MM-yyyy HH:mm:ss')
-                .format(answer.answeredAt.toDate()),
-          ],
+        ['sep=${exportOptions.delimiter}'],
+        headerRow,
+        ...dataRows,
       ];
 
       final csvString = ListToCsvConverter(
@@ -216,73 +206,82 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
             const sheetPadding = 16.0;
             const sheetBottomPadding = 32.0;
 
-            return [
-              Text(
-                'Exporteer naar CSV',
-                style: Theme.of(context).textTheme.titleLarge,
-              ).alignment(Alignment.centerLeft),
-              const SizedBox(height: 8), // ignore: avoid-magic-numbers
-              Text("Extra gegevens exporteren", style: textTheme.titleMedium)
-                  .alignment(Alignment.centerLeft),
-              Text(
-                'Let op: Exporteer alleen extra gegevens die je écht nodig hebt, zo ben je in overeenstemming met de AVG.',
-                style: textTheme.labelMedium?.copyWith(
-                  color: Theme.of(outerContext).colorScheme.error,
-                ),
-              ),
-              for (final MapEntry(key: fieldName, value: callBack)
-                  in availableOptions.entries)
-                CheckboxListTile(
-                  value: options.containsKey(fieldName),
-                  onChanged: (bool? selected) => setState(() {
-                    if (selected == true) {
-                      options[fieldName] = callBack;
-                    } else {
-                      // ignore: avoid-ignoring-return-values
-                      options.remove(fieldName);
-                    }
-                  }),
-                  title: Text(fieldName),
-                ),
-              // Dropdown to select delimiter of the CSV file.
-              const SizedBox(height: 16), // ignore: avoid-magic-numbers
-              Text("CSV opties", style: textTheme.titleMedium)
-                  .alignment(Alignment.centerLeft),
-              ListTile(
-                title: const Text('Kies een scheidingsteken'),
-                subtitle: Text(
-                  'Voor de meeste programma\'s is een komma (,) het standaard scheidingsteken. Als je problemen hebt met het importeren van het CSV bestand, probeer dan een puntkomma (;).',
-                  style: textTheme.labelMedium,
-                ),
-                trailing: DropdownButton<String>(
-                  items: const [
-                    DropdownMenuItem<String>(
-                      value: ',',
-                      child: Text('Komma (,)'),
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(sheetPadding)
+                    .copyWith(bottom: sheetBottomPadding),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Exporteer naar CSV',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ).alignment(Alignment.centerLeft),
+                    const SizedBox(height: 8), // ignore: avoid-magic-numbers
+                    Text("Extra gegevens exporteren",
+                            style: textTheme.titleMedium)
+                        .alignment(Alignment.centerLeft),
+                    Text(
+                      'Let op: Exporteer alleen extra gegevens die je écht nodig hebt, zo ben je in overeenstemming met de AVG.',
+                      style: textTheme.labelMedium?.copyWith(
+                        color: Theme.of(outerContext).colorScheme.error,
+                      ),
                     ),
-                    DropdownMenuItem<String>(
-                      value: ';',
-                      child: Text('Puntkomma (;)'),
+                    for (final MapEntry(key: fieldName, value: callBack)
+                        in availableOptions.entries)
+                      CheckboxListTile(
+                        value: options.containsKey(fieldName),
+                        onChanged: (bool? selected) => setState(() {
+                          if (selected == true) {
+                            options[fieldName] = callBack;
+                          } else {
+                            // ignore: avoid-ignoring-return-values
+                            options.remove(fieldName);
+                          }
+                        }),
+                        title: Text(fieldName),
+                      ),
+                    // Dropdown to select delimiter of the CSV file.
+                    const SizedBox(height: 16), // ignore: avoid-magic-numbers
+                    Text("CSV opties", style: textTheme.titleMedium)
+                        .alignment(Alignment.centerLeft),
+                    ListTile(
+                      title: const Text('Kies een scheidingsteken'),
+                      subtitle: Text(
+                        'Voor de meeste programma\'s is een komma (,) het standaard scheidingsteken. Als je problemen hebt met het importeren van het CSV bestand, probeer dan een puntkomma (;).',
+                        style: textTheme.labelMedium,
+                      ),
+                      trailing: DropdownButton<String>(
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: ',',
+                            child: Text('Komma (,)'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: ';',
+                            child: Text('Puntkomma (;)'),
+                          ),
+                        ],
+                        value: delimiter,
+                        onChanged: (String? value) => setState(() {
+                          delimiter = value ?? ',';
+                        }),
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.of(innerContext).pop(
+                        FormAnswersExportOptions(
+                          extraFields: options,
+                          delimiter: delimiter,
+                        ),
+                      ),
+                      child: const Text('Start export'),
                     ),
                   ],
-                  value: delimiter,
-                  onChanged: (String? value) => setState(() {
-                    delimiter = value ?? ',';
-                  }),
                 ),
               ),
-              FilledButton(
-                onPressed: () => Navigator.of(innerContext).pop(
-                  FormAnswersExportOptions(
-                    extraFields: options,
-                    delimiter: delimiter,
-                  ),
-                ),
-                child: const Text('Start export'),
-              ),
-            ]
-                .toColumn(mainAxisSize: MainAxisSize.min)
-                .padding(all: sheetPadding, bottom: sheetBottomPadding);
+            );
           },
         );
       },
@@ -434,7 +433,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                   alignment: Alignment.center,
                   width: double.infinity,
                   child: Text(
-                    "Bezig met exporteren... ($_progressCounter /  ${completedAnswersVal.value?.size ?? "??"})",
+                    "Bezig met exporteren van ($_progressCounter/${completedAnswersVal.value?.size ?? "0"}) antwoorden",
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
