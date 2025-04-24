@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:collection';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/assets/asset_data.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/commissie_info.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/yaml_map_provider.dart';
 import 'package:yaml/yaml.dart';
+import 'package:tuple/tuple.dart';
 
 /// A provider that fetches the substructure info for a given substructure name.
 /// We don't use Firestore, as this content is mostly static and Firestore Console doesn't support multiline strings.
@@ -55,10 +58,24 @@ final commissiesInfoProvider =
     ..sort((a, b) => a.name.compareTo(b.name));
 });
 
-// ignore: prefer-static-class
-final commissieDescriptionProvider =
-    FutureProvider.autoDispose.family<String?, String>((ref, name) async {
-  final info = await ref.watch(commissieInfoProvider(name).future);
+/// A provider that fetches the substructure info for a given substructure name from firebase
+Future<String?> fetchDescription(String name, int year) async {
+  final filePath = '/almanak/commissies/$name/$year/${name}Omschrijving.txt';
+  final storageRef = FirebaseStorage.instance.ref(filePath);
+  try {
+    final data = await storageRef.getData();
+    if (data != null) {
+      return utf8.decode(data);
+    } else {
+      throw Exception("Geen omschrijving gevonden.");
+    }
+  } catch (error) {
+    return null;
+  }
+}
 
-  return info?.description;
+// ignore: prefer-static-class
+final commissieDescriptionProvider = FutureProvider.autoDispose
+    .family<String?, Tuple2<String, int>>((ref, params) async {
+  return await fetchDescription(params.item1, params.item2);
 });
