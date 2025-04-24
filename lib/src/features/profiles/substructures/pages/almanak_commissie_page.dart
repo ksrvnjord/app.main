@@ -67,7 +67,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           ).padding(horizontal: pageHPadding),
           SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(
-              commissieDescriptionProvider(widget.name),
+              commissieDescriptionProvider(commissieAndYear),
             ),
           ).padding(all: descriptionHPadding),
           [

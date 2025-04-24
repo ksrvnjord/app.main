@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+class GroupChoices {
+  static const competitie = "Competitiesectie (sjaarzenploegen & Club8+)";
+  static const wedstrijd = "Wedstrijdsectie";
+  static const club8Plus = "Club8+";
+  static const topC4Plus = "TopC4+";
+  static const sjaarzen = "Sjaarzen (werkt niet)";
+
+  static const List<String> all = [
+    competitie,
+    wedstrijd,
+    club8Plus,
+    topC4Plus,
+    sjaarzen,
+  ];
+}
+
 class SelectGroupWidget extends StatelessWidget {
   const SelectGroupWidget({
     required this.onChanged,
@@ -12,13 +28,8 @@ class SelectGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupChoices = [
-      "Competitiesectie",
-      "Wedstrijdsectie",
-      "Club8+",
-      "TopC4+",
-      "Sjaarzen",
-    ]; // TODO: This list should include all groups available.
+    final groupChoices = GroupChoices
+        .all; // TODO: This list should include all groups available.
     final newGroups = visibleForGroups;
 
     return Column(
