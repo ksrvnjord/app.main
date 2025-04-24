@@ -92,6 +92,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   dependency_validator: ^4.1.1
   json_serializable: ^6.7.1
+  flutter_launcher_icons: ^0.13.1
   custom_lint: any
   riverpod_generator: any
   riverpod_lint: any
@@ -105,3 +106,8 @@ flutter:
     - assets/images/sponsors/
     - assets/data/
     - assets/images/sponsors/
+
+flutter_launcher_icons:
+    android: true
+    ios: true
+    image_path: "assets/icons/app_icon.png"
