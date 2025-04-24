@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import '../api/commissie_edit_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +29,20 @@ class AlmanakCommissieEditPageState
   String content = '';
   bool postCreationInProgress = false;
   String initialDescription = '';
+
+  Future<void> _fetchInitialDescription() async {
+    try {
+      final initDesc = await CommissieEditService.fetchCurrentDescription(name: widget.name);
+      setState(() {
+        initialDescription = initDesc;
+      });
+    }
+    catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to fetch description: $e')),
+    );
+    }
+  }
 
   Future<void> _showPicker({required BuildContext prevContext}) {
     return showModalBottomSheet(
@@ -102,7 +117,7 @@ class AlmanakCommissieEditPageState
                   ? 'Zonder omschrijving kom je nergens.'
                   : null,
               // FIXME: initial valiue is current description
-              initialValue: initialDescription,
+              initialValue: initialDescription.isEmpty ? null : initialDescription,
             ),
           ),
           if (_galleryFile == null) ...[

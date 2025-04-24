@@ -13,6 +13,8 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class AlmanakCommissiePage extends ConsumerStatefulWidget {
   const AlmanakCommissiePage({
@@ -45,6 +47,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     final commissieLeeden = ref.watch(
       commissieLeedenProvider(commissieAndYear),
     );
+
+    final currentUserVal = ref.watch(currentUserProvider);
+    final colorScheme = Theme.of(context).colorScheme;
 
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
@@ -104,6 +109,36 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: currentUserVal.when(
+        data: (currentUser) {
+          final canAccesAdminPanel = currentUser.isAdmin;
+          return canAccesAdminPanel
+              ? FloatingActionButton.extended(
+                  foregroundColor: colorScheme.onTertiaryContainer,
+                  backgroundColor: colorScheme.tertiaryContainer,
+                  onPressed: () {
+                    context.goNamed(
+                      "Commissie -> Edit",
+                      pathParameters: {
+                        "name": widget.name, 
+                      },
+                      queryParameters: {
+                        "year": widget.year.toString(), 
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.edit_outlined),
+                  label: const Text('Edit'),
+                )
+              : null;
+        },
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+
+          return const SizedBox.shrink();
+        },
+        loading: () => const SizedBox.shrink(),
       ),
     );
   }

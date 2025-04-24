@@ -57,6 +57,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_detail
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
@@ -548,6 +549,21 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 name: "Commissie",
               ),
+              routes: [
+                _route(
+                  path: "edit",
+                  name: "Commissie -> Edit",
+                  pageBuilder: (context, state) => _getPage(
+                    child: AlmanakCommissieEditPage(
+                      name: state.pathParameters['name']!,
+                      year: state.uri.queryParameters['year'] != null
+                          ? int.parse(state.uri.queryParameters['year']!)
+                          : getNjordYear(),
+                    ),
+                    name: "Commissie -> Edit",
+                  ),
+                ),  
+              ],
             ),
           ],
         ),
