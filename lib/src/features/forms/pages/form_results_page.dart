@@ -21,7 +21,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:universal_html/html.dart' as html;
-import 'dart:math' as math;
 
 // This is used for the export options, the key is the name of the option, the value is a function that returns the value of the option, this makes it possible to asynchronously look up the user's name and allergies if necessary.
 typedef ExportOptionFunction = Future<String> Function(String userId);
