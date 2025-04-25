@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/almanak_birthday_message_button.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
@@ -137,9 +138,22 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                   ],
                 ),
-                DataTextListTile(
-                  name: "Aankomstjaar",
-                  value: "20$yearOfArrival",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200, // or whatever fixed width you want
+                      child: DataTextListTile(
+                        name: "Aankomstjaar",
+                        value: "20$yearOfArrival",
+                      ),
+                    ),
+                    if (u.isBirthday)
+                      AlmanakBirthdayButton(
+                          receiverId: u.identifierString,
+                          receiverFullName: u.fullName)
+                  ],
                 ),
                 if (userInfo.studie != null &&
                     (userInfo.studie as String).isNotEmpty)
