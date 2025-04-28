@@ -125,19 +125,25 @@ class AlmanakBirthdayButton extends ConsumerWidget {
 
     try {
       await FirebaseAuth.instance.currentUser?.getIdToken(true);
-      final callable = FirebaseFunctions.instanceFor(region: 'europe-west1')
-          .httpsCallable('personalBirthdayMessage');
-      final result = await callable.call({
+      // print(FirebaseAuth.instance.currentUser?.uid);
+      final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
+          .httpsCallable('personalBirthdayMessage')
+          .call({
         'receiverId': receiverId,
         'receiverFullName': receiverFullName,
         'senderId': senderId,
         'senderFullName': senderFullName,
         'message': message,
       });
-      print(result.data);
-      if (context.mounted) {
+      if (context.mounted && result.data.success == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Bericht succesvol verstuurd!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+                  'Er is iets  misgegaan bij het versturen. Probeer het later opnieuw.')),
         );
       }
     } catch (e) {
