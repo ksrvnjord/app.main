@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/widgets/role_dialog.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -108,8 +107,8 @@ class EditGroupPage extends ConsumerWidget {
     final dio = ref.read(dioProvider);
     try {
       final response = await dio.get("/api/v2/groups/$groupId/$userId/");
-      final groupUser = GroupDjangoUser.fromJson(response.data);
-      final permissions = groupUser.permissions.toSet();
+      final permissions =
+          (response.data["permissions"] as List<dynamic>).toSet();
 
       if (add) {
         permissions.add("forms:*");
