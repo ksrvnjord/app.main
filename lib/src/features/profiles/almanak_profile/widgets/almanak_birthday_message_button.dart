@@ -75,7 +75,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                   hintText: 'Typ hier je bericht (max. 50 tekens)',
                 ),
                 maxLines: null,
-                maxLength: 50, // Limit the input to 140 characters
+                maxLength: 100, // Limit the input to 140 characters
               ),
             ],
           ),
@@ -88,21 +88,28 @@ class AlmanakBirthdayButton extends ConsumerWidget {
               child: const Text('Annuleren'),
             ),
             TextButton(
-              onPressed: () {
-                // Logic for sending the message can be added here
+              onPressed: () async {
                 final message = messageController.text.trim();
                 final user = FirebaseAuth.instance.currentUser;
+
                 if (user != null) {
-                  _sendBirthdayMessage(
-                      context, message, senderId, senderFullName, user);
+                  await _sendBirthdayMessage(
+                    context,
+                    message,
+                    senderId,
+                    senderFullName,
+                    user,
+                  );
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(); // only after message sent
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text(
-                            'Je moet ingelogd zijn om een bericht te versturen.')),
+                      content: Text(
+                          'Je moet ingelogd zijn om een bericht te versturen.'),
+                    ),
                   );
                 }
-                Navigator.of(context).pop();
               },
               child: const Text('Versturen'),
             ),
@@ -125,7 +132,6 @@ class AlmanakBirthdayButton extends ConsumerWidget {
 
     try {
       await FirebaseAuth.instance.currentUser?.getIdToken(true);
-      // print(FirebaseAuth.instance.currentUser?.uid);
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessage')
           .call({
@@ -135,11 +141,12 @@ class AlmanakBirthdayButton extends ConsumerWidget {
         'senderFullName': senderFullName,
         'message': message,
       });
-      if (context.mounted && result.data.success == true) {
+
+      if (result.data['success'] == true && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Bericht succesvol verstuurd!')),
         );
-      } else {
+      } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text(
