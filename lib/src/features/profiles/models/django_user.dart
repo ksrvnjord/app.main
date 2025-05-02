@@ -86,6 +86,13 @@ class DjangoUser {
 
   Map<String, dynamic> toJson() => _$DjangoUserToJson(this);
 
+  bool get isBirthday {
+    final currentDate = DateTime.now();
+    final birthDateTime = DateTime.parse(birthDate);
+    return currentDate.month == birthDateTime.month &&
+        currentDate.day == birthDateTime.day;
+  }
+
   static Future<DjangoUser> getByIdentifier(
     Ref ref,
     String lidnummer,
