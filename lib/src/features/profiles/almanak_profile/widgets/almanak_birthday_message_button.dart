@@ -44,10 +44,12 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                 color: Colors.white,
               ),
               const SizedBox(width: 8), // Add spacing between icon and text
-              const Text(
-                "Verstuur Felicitatie",
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
+              hasCongratulated
+                  ? Text('Al Gefeliciteerd')
+                  : Text(
+                      "Verstuur Felicitatie",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
             ],
           ),
         ),
@@ -64,7 +66,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Felicitatie versturen'),
+          title: Text('Felicitatie versturen'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

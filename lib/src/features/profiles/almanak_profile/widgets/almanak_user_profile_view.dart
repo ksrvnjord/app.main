@@ -78,6 +78,13 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                     ),
                   ),
+                SizedBox(
+                  height: elementPadding,
+                ),
+                if (u.isBirthday)
+                  AlmanakBirthdayButton(
+                      receiverId: u.identifierString,
+                      receiverFullName: u.fullName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -138,22 +145,9 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 200, // or whatever fixed width you want
-                      child: DataTextListTile(
-                        name: "Aankomstjaar",
-                        value: "20$yearOfArrival",
-                      ),
-                    ),
-                    if (u.isBirthday)
-                      AlmanakBirthdayButton(
-                          receiverId: u.identifierString,
-                          receiverFullName: u.fullName)
-                  ],
+                DataTextListTile(
+                  name: "Aankomstjaar",
+                  value: "20$yearOfArrival",
                 ),
                 if (userInfo.studie != null &&
                     (userInfo.studie as String).isNotEmpty)
