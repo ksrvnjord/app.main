@@ -44,10 +44,12 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                 color: Colors.white,
               ),
               const SizedBox(width: 8), // Add spacing between icon and text
-              const Text(
-                "Verstuur Felicitatie",
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
+              hasCongratulated
+                  ? Text('Al Gefeliciteerd')
+                  : Text(
+                      "Verstuur Felicitatie",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
             ],
           ),
         ),
@@ -60,60 +62,95 @@ class AlmanakBirthdayButton extends ConsumerWidget {
   void _showBirthdayMessageDialog(
       BuildContext context, String senderId, String senderFullName) async {
     final TextEditingController messageController = TextEditingController();
+    bool isLoading = false;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Felicitatie versturen'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Inhoud bericht:'),
-              TextField(
-                controller: messageController,
-                decoration: const InputDecoration(
-                  hintText: 'Typ hier je bericht (max. 50 tekens)',
-                ),
-                maxLines: null,
-                maxLength: 100, // Limit the input to 140 characters
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Call the cloud function personalBirthdayMessage
-                Navigator.of(context).pop();
-              },
-              child: const Text('Annuleren'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final message = messageController.text.trim();
-                final user = FirebaseAuth.instance.currentUser;
-
-                if (user != null) {
-                  await _sendBirthdayMessage(
-                    context,
-                    message,
-                    senderId,
-                    senderFullName,
-                    user,
-                  );
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop(); // only after message sent
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'Je moet ingelogd zijn om een bericht te versturen.'),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('Felicitatie versturen'),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Titel bericht:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16, // Make the text a bit larger
                     ),
-                  );
-                }
-              },
-              child: const Text('Versturen'),
-            ),
-          ],
+                  ),
+                  Text(
+                    'Felicitatie van $senderFullName',
+                    style: TextStyle(
+                      fontSize: 16, // Make the text a bit larger
+                    ),
+                  ),
+                  const Text(
+                    'Inhoud bericht:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16, // Make the text a bit larger
+                    ),
+                  ),
+                  TextField(
+                    controller: messageController,
+                    decoration: const InputDecoration(
+                      hintText: 'Typ hier je bericht (max. 50 tekens)',
+                    ),
+                    maxLines: null,
+                    maxLength: 100, // Limit the input to 140 characters
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Annuleren'),
+                ),
+                isLoading
+                    ? const CircularProgressIndicator()
+                    : TextButton(
+                        onPressed: () async {
+                          final message = messageController.text.trim();
+                          final user = FirebaseAuth.instance.currentUser;
+
+                          if (user != null) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await _sendBirthdayMessage(
+                              context,
+                              message,
+                              senderId,
+                              senderFullName,
+                              user,
+                            );
+                            if (context.mounted) {
+                              Navigator.of(context)
+                                  .pop(); // only after message sent
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Je moet ingelogd zijn om een bericht te versturen.'),
+                              ),
+                            );
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: const Text('Versturen'),
+                      ),
+              ],
+            );
+          },
         );
       },
     );
@@ -131,7 +168,6 @@ class AlmanakBirthdayButton extends ConsumerWidget {
     }
 
     try {
-      await FirebaseAuth.instance.currentUser?.getIdToken(true);
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessage')
           .call({
@@ -155,6 +191,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
       }
     } catch (e) {
       if (context.mounted) {
+        print(e);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Fout bij versturen: $e')),
         );
