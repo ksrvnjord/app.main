@@ -68,9 +68,29 @@ class AlmanakBirthdayButton extends ConsumerWidget {
         return AlertDialog(
           title: Text('Felicitatie versturen'),
           content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Inhoud bericht:'),
+              const Text(
+                'Titel bericht:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16, // Make the text a bit larger
+                ),
+              ),
+              Text(
+                'Felicitatie van $senderFullName',
+                style: TextStyle(
+                  fontSize: 16, // Make the text a bit larger
+                ),
+              ),
+              const Text(
+                'Inhoud bericht:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16, // Make the text a bit larger
+                ),
+              ),
               TextField(
                 controller: messageController,
                 decoration: const InputDecoration(
