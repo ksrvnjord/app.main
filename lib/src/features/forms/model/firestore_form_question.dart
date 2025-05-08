@@ -4,32 +4,35 @@ part 'firestore_form_question.g.dart';
 
 @JsonSerializable()
 class FirestoreFormQuestion {
-  String title;
-  @FormQuestionTypeConverter()
-  FormQuestionType type;
-  List<String>? options;
-  bool isRequired;
-
-  // Create fromJson method.
-  // ignore: sort_constructors_first
-  factory FirestoreFormQuestion.fromJson(Map<String, dynamic> json) =>
-      _$FirestoreFormQuestionFromJson(json);
-
-  // ignore: sort_constructors_first
   FirestoreFormQuestion({
     required this.title,
     required this.type,
     required this.isRequired,
     this.options,
+    this.startDate,
+    this.endDate,
   });
+  String title;
+  @FormQuestionTypeConverter()
+  FormQuestionType type;
+  List<String>? options;
+  bool isRequired;
+  DateTime? startDate;
+  DateTime? endDate;
+
+  // Create fromJson method.
+  // ignore: sort_constructors_first
+  factory FirestoreFormQuestion.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreFormQuestionFromJson(json);
   // Create toJson method.
   Map<String, dynamic> toJson() => _$FirestoreFormQuestionToJson(this);
 }
 
 enum FormQuestionType {
-  singleChoice,
   text,
+  singleChoice,
   image,
+  date,
   unsupported, // Add an error type for unknown values
 }
 
@@ -40,12 +43,14 @@ class FormQuestionTypeConverter
   @override
   FormQuestionType fromJson(String json) {
     switch (json) {
-      case 'singleChoice':
-        return FormQuestionType.singleChoice;
       case 'text':
         return FormQuestionType.text;
+      case 'singleChoice':
+        return FormQuestionType.singleChoice;
       case 'image':
         return FormQuestionType.image;
+      case 'date':
+        return FormQuestionType.date;
       default:
         // Handle undefined FormQuestionType
         return FormQuestionType.unsupported; // Default value for unknown types

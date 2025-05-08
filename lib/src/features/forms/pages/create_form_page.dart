@@ -401,7 +401,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                       // ignore: avoid-collection-mutating-methods
                       () => _questions.add(FirestoreFormQuestion(
                         title: '',
-                        type: FormQuestionType.singleChoice,
+                        type: FormQuestionType.text,
                         isRequired: true,
                         options: [],
                       )), // Add an empty label for the new TextFormField.

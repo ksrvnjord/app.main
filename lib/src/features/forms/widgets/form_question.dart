@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/date_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -113,6 +114,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
             if (entry.questionTitle == widget.formQuestion.title) {
+              //TODO questionMigration: match op id
               answerValue = entry.answer;
             }
           }
@@ -190,6 +192,30 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               ),
             ));
             break;
+
+          case FormQuestionType.date:
+            DateTime? answerValueDateTime;
+            try {
+              answerValueDateTime = DateTime.parse(answerValue!).toLocal();
+            } catch (e) {
+              answerValueDateTime = null;
+            }
+
+            questionWidgets.add(
+              DateChoiceWidget(
+                initialValue: answerValueDateTime,
+                question: widget.formQuestion,
+                formIsOpen: widget.formIsOpen,
+                onChanged: (String? value) => _handleChangeOfFormAnswer(
+                  question: widget.formQuestion.title,
+                  newValue: value,
+                  f: widget.form,
+                  d: widget.docRef,
+                  ref: ref,
+                  context: context,
+                ),
+              ),
+            );
 
           case FormQuestionType.unsupported:
             questionWidgets.add(Card(
