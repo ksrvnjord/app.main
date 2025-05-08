@@ -75,7 +75,7 @@ Future<String?> fetchDescription(String name, int year) async {
 }
 
 // ignore: prefer-static-class
-final commissieDescriptionProvider =
-    FutureProvider.autoDispose.family<String?, Tuple2<String, int>>((ref, params) async {
+final commissieDescriptionProvider = FutureProvider.autoDispose
+    .family<String?, Tuple2<String, int>>((ref, params) async {
   return await fetchDescription(params.item1, params.item2);
 });
