@@ -7,7 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
+// import 'package:styled_widget/styled_widget.dart';
 
 class FormsPage extends ConsumerWidget {
   const FormsPage({super.key});
@@ -30,41 +30,94 @@ class FormsPage extends ConsumerWidget {
             data: (querySnapshot) {
               final forms = querySnapshot.docs;
 
-              return forms
-                  // ignore: prefer-extracting-function-callbacks
-                  .map((item) {
-                    return FormCard(
-                      formDoc: item,
-                      userGroups: currentUserVal.when(
-                        data: (currentUser) {
-                          final userGroups = currentUser.groups
-                              .where((group) => group.group.id != null)
-                              .map((group) => group.group.id!);
+              final openForms = forms.where((form) {
+                final formData = form.data();
+                final openUntil = formData.openUntil.toDate();
+                final formIsOpen = DateTime.now().isBefore(openUntil);
+                return formIsOpen;
+              }).toList();
 
-                          return userGroups;
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
+              final closedForms = forms.where((form) {
+                final formData = form.data();
+                final openUntil = formData.openUntil.toDate();
+                final formIsOpen = DateTime.now().isBefore(openUntil);
+                return !formIsOpen;
+              }).toList();
+                                        
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...openForms.map((item) => FormCard(
+                        formDoc: item,
+                        userGroups: currentUserVal.when(
+                          data: (currentUser) {
+                            final userGroups = currentUser.groups
+                                .where((group) => group.group.id != null)
+                                .map((group) => group.group.id!);
 
-                          return const [];
-                        },
-                        loading: () => const [],
-                      ),
-                      userIsAdmin: currentUserVal.when(
-                        data: (currentUser) => currentUser.isAdmin,
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
+                            return userGroups;
+                          },
+                          error: (e, s) {
+                            // ignore: avoid-async-call-in-sync-function
+                            FirebaseCrashlytics.instance.recordError(e, s);
 
-                          return false;
-                        },
-                        loading: () => false,
-                      ),
-                    );
-                  })
-                  .toList()
-                  .toColumn(separator: const SizedBox(height: 4));
+                            return const [];
+                          },
+                          loading: () => const [],
+                        ),
+                        userIsAdmin: currentUserVal.when(
+                          data: (currentUser) => currentUser.isAdmin,
+                          error: (e, s) {
+                            // ignore: avoid-async-call-in-sync-function
+                            FirebaseCrashlytics.instance.recordError(e, s);
+
+                            return false;
+                          },
+                          loading: () => false,
+                        ),
+                      )),
+                  if (closedForms.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(),
+                    ),
+                    const Text(
+                      'Gesloten Forms',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    ...closedForms.map((item) => FormCard(
+                          formDoc: item,
+                          userGroups: currentUserVal.when(
+                            data: (currentUser) {
+                              final userGroups = currentUser.groups
+                                  .where((group) => group.group.id != null)
+                                  .map((group) => group.group.id!);
+
+                              return userGroups;
+                            },
+                            error: (e, s) {
+                              // ignore: avoid-async-call-in-sync-function
+                              FirebaseCrashlytics.instance.recordError(e, s);
+
+                              return const [];
+                            },
+                            loading: () => const [],
+                          ),
+                          userIsAdmin: currentUserVal.when(
+                            data: (currentUser) => currentUser.isAdmin,
+                            error: (e, s) {
+                              // ignore: avoid-async-call-in-sync-function
+                              FirebaseCrashlytics.instance.recordError(e, s);
+
+                              return false;
+                            },
+                            loading: () => false,
+                          ),
+                        )),
+                    ],
+                  ],
+                );
             },
             error: (error, stack) {
               return ErrorCardWidget(errorMessage: error.toString());
