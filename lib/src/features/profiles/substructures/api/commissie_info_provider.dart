@@ -58,7 +58,7 @@ final commissiesInfoProvider =
     ..sort((a, b) => a.name.compareTo(b.name));
 });
 
-/// A provider that fetches the substructure info for a given substructure name from firebase
+// A provider that fetches the substructure info for a given substructure name from firebase
 Future<String?> fetchDescription(String name, int year) async {
   final filePath = '/almanak/commissies/$name/$year/${name}Omschrijving.txt';
   final storageRef = FirebaseStorage.instance.ref(filePath);

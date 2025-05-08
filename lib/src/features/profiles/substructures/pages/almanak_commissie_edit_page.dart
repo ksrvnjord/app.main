@@ -1,17 +1,20 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_edit_service.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
-import '../api/commissie_edit_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
-  const AlmanakCommissieEditPage(
-      {super.key, required this.name, required this.year});
+  const AlmanakCommissieEditPage({
+    super.key,
+    required this.name,
+    required this.year,
+  });
+
   final String name;
   final int year;
 
@@ -21,6 +24,7 @@ class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
   }
 }
 
+
 class AlmanakCommissieEditPageState
     extends ConsumerState<AlmanakCommissieEditPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -28,21 +32,8 @@ class AlmanakCommissieEditPageState
   File? _galleryFile;
   String content = '';
   bool postCreationInProgress = false;
-  String initialDescription = '';
+  String? initialDescription = '';
 
-  Future<void> _fetchInitialDescription() async {
-    try {
-      final initDesc = await CommissieEditService.fetchCurrentDescription(name: widget.name);
-      setState(() {
-        initialDescription = initDesc;
-      });
-    }
-    catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to fetch description: $e')),
-    );
-    }
-  }
 
   Future<void> _showPicker({required BuildContext prevContext}) {
     return showModalBottomSheet(
@@ -96,56 +87,63 @@ class AlmanakCommissieEditPageState
   @override
   Widget build(BuildContext context) {
     const int maxContentLength = 1726;
+
+    final descriptionAsyncValue = ref.watch(
+      commissieDescriptionProvider(Tuple2(widget.name, widget.year)),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Commissie'),
+        title: Text('Bewerk Commissie'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Commissie-Omschrijving',
+      body: descriptionAsyncValue.when(
+        data: (description) {
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: <Widget>[
+              if (_galleryFile == null) ...[
+                TextButton(
+                  onPressed: () => unawaited(_showPicker(prevContext: context)),
+                  child: const Text("Afbeelding toevoegen"),
+                ),
+              ] else ...[
+                Image(
+                  image: Image.file(
+                    _galleryFile!,
+                    semanticLabel: "Geselecteerde Afbeelding",
+                  ).image,
+                  semanticLabel: "Geselecteerde afbeelding",
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _galleryFile = null;
+                    });
+                  },
+                  child: const Text("Afbeelding verwijderen"),
+                ),
+              ],
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Commissie-Omschrijving',
+                  ),
+                  maxLines: null,
+                  maxLength: maxContentLength,
+                  onSaved: (value) => content = value ?? '',
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Zonder omschrijving kom je nergens.'
+                      : null,
+                  initialValue: description, // Set the initial value
+                ),
               ),
-              maxLines: null,
-              maxLength: maxContentLength,
-              onSaved: (value) => content = value ?? '',
-              validator: (value) => value == null || value.isEmpty
-                  ? 'Zonder omschrijving kom je nergens.'
-                  : null,
-              // FIXME: initial valiue is current description
-              initialValue: initialDescription.isEmpty ? null : initialDescription,
-            ),
-          ),
-          if (_galleryFile == null) ...[
-            TextButton(
-              onPressed: () => unawaited(_showPicker(prevContext: context)),
-              child: const Text("Afbeelding toevoegen"),
-            ),
-          ] else ...[
-            Image(
-              image: Image.file(
-                // Can't be null because of null check above.
-                // ignore: avoid-non-null-assertion
-                _galleryFile!,
-                semanticLabel: "Geselecteerde Afbeelding",
-              ).image,
-              semanticLabel: "Geselecteerde afbeelding",
-            ),
-            TextButton(
-              // ignore: prefer-extracting-callbacks
-              onPressed: () {
-                setState(() {
-                  _galleryFile = null;
-                });
-              },
-              child: const Text("Afbeelding verwijderen"),
-            ),
-          ],
-        ],
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => const SizedBox.shrink(), // Display nothing on error
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: submitEdit,
@@ -161,13 +159,14 @@ class AlmanakCommissieEditPageState
       return;
     }
 
-    formState.save(); // Save form state (populates `content`).
+    formState.save(); // Save form state populates content
 
     try {
       // Update the commissie description
       await CommissieEditService.updateCommissieDescription(
         name: widget.name,
         content: content,
+        year: widget.year,
       );
 
       // Optional: Upload image if provided
