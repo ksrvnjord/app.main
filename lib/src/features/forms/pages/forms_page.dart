@@ -43,7 +43,7 @@ class FormsPage extends ConsumerWidget {
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 return !formIsOpen;
               }).toList();
-                                        
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,9 +81,12 @@ class FormsPage extends ConsumerWidget {
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Divider(),
                     ),
-                    const Text(
-                      'Gesloten Forms',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    const Center(
+                      child: Text(
+                        'Gesloten Forms',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     ...closedForms.map((item) => FormCard(
@@ -115,9 +118,9 @@ class FormsPage extends ConsumerWidget {
                             loading: () => false,
                           ),
                         )),
-                    ],
                   ],
-                );
+                ],
+              );
             },
             error: (error, stack) {
               return ErrorCardWidget(errorMessage: error.toString());
