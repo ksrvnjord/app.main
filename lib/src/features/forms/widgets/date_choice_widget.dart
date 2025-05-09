@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 
 class DateChoiceWidget extends StatelessWidget {
   const DateChoiceWidget({
     super.key,
-    required this.initialValue,
+    required this.answerValueDateTime,
     required this.question,
     required this.formIsOpen,
     required this.onChanged,
   });
 
-  final DateTime? initialValue;
+  final DateTime? answerValueDateTime;
   final FirestoreFormQuestion question;
   final bool formIsOpen;
   final void Function(String?) onChanged;
@@ -20,8 +19,12 @@ class DateChoiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final minDate = DateTime(1874);
-    final maxDate = DateTime(getNjordYear() + 100);
+    final startDate = question.startDate!;
+    final endDate = question.endDate!;
+    final initialDate =
+        DateTime.now().isAfter(startDate) && DateTime.now().isBefore(endDate)
+            ? DateTime.now()
+            : (DateTime.now().isBefore(startDate) ? startDate : endDate);
 
     return Container(
       width: double.infinity,
@@ -31,9 +34,9 @@ class DateChoiceWidget extends StatelessWidget {
             ? () async {
                 final selectedDate = await showDatePicker(
                   context: context,
-                  initialDate: initialValue ?? DateTime.now(),
-                  firstDate: question.startDate ?? minDate,
-                  lastDate: question.endDate ?? maxDate,
+                  initialDate: answerValueDateTime ?? initialDate,
+                  firstDate: startDate,
+                  lastDate: endDate,
                 );
                 if (selectedDate != null) {
                   onChanged(selectedDate.toIso8601String());
@@ -50,8 +53,8 @@ class DateChoiceWidget extends StatelessWidget {
               ),
               const SizedBox(width: 8.0),
               Text(
-                initialValue != null
-                    ? initialValue.toString().split(' ')[0]
+                answerValueDateTime != null
+                    ? answerValueDateTime.toString().split(' ')[0]
                     : 'Selecteer een datum',
                 style: textTheme.bodyLarge?.copyWith(
                   decoration: TextDecoration.underline,

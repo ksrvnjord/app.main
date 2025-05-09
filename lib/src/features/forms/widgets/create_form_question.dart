@@ -22,7 +22,7 @@ class CreateFormQuestion extends ConsumerWidget {
   Widget _datePicker({
     required BuildContext context,
     required FirestoreFormQuestion question,
-    required DateTime? initialDate,
+    required DateTime? pickedDate,
     required bool isStartDate,
     // required DateTime? selectedDate,
     required ColorScheme colorScheme,
@@ -31,23 +31,25 @@ class CreateFormQuestion extends ConsumerWidget {
     final minDate = DateTime(1874);
     final maxDate = DateTime(getNjordYear() + 100);
 
-    final displayedDate = initialDate != null
-        ? initialDate.toString().split(' ')[0]
-        : isStartDate
-            ? minDate.toString().split(' ')[0]
-            : maxDate.toString().split(' ')[0];
+    if (pickedDate == null) {
+      pickedDate = isStartDate ? minDate : maxDate;
+      isStartDate
+          ? question.startDate = pickedDate
+          : question.endDate = pickedDate;
+    }
+
+    final initialDateString = pickedDate.toString().split(' ')[0];
 
     return Column(
       children: [
         Text(
-          '${isStartDate ? 'start' : 'eind'}datum:',
+          '${isStartDate ? 'minimale' : 'maximale'} datum:',
           style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         GestureDetector(
           onTap: () async {
             final selectedDate = await showDatePicker(
               context: context,
-              initialDate: initialDate ?? DateTime.now(),
               firstDate: minDate,
               lastDate: maxDate,
             );
@@ -60,23 +62,10 @@ class CreateFormQuestion extends ConsumerWidget {
               onChanged();
             }
           },
-          child: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.calendar_month_outlined,
-                  color: colorScheme.primary,
-                ),
-                const SizedBox(width: 8.0),
-                Text(
-                  displayedDate,
-                  style: textTheme.bodyLarge?.copyWith(
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ],
+          child: Text(
+            initialDateString,
+            style: textTheme.bodyLarge?.copyWith(
+              decoration: TextDecoration.underline,
             ),
           ),
         ),
@@ -143,11 +132,12 @@ class CreateFormQuestion extends ConsumerWidget {
 
       case FormQuestionType.date:
         return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _datePicker(
               context: context,
               question: q,
-              initialDate: q.startDate,
+              pickedDate: q.startDate,
               isStartDate: true,
               colorScheme: Theme.of(context).colorScheme,
               textTheme: Theme.of(context).textTheme,
@@ -156,7 +146,7 @@ class CreateFormQuestion extends ConsumerWidget {
             _datePicker(
               context: context,
               question: q,
-              initialDate: q.endDate,
+              pickedDate: q.endDate,
               isStartDate: false,
               colorScheme: Theme.of(context).colorScheme,
               textTheme: Theme.of(context).textTheme,

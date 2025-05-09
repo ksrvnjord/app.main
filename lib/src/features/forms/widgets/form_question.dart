@@ -203,7 +203,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
             questionWidgets.add(
               DateChoiceWidget(
-                initialValue: answerValueDateTime,
+                answerValueDateTime: answerValueDateTime,
                 question: widget.formQuestion,
                 formIsOpen: widget.formIsOpen,
                 onChanged: (String? value) => _handleChangeOfFormAnswer(
