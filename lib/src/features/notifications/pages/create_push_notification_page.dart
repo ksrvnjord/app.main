@@ -61,14 +61,16 @@ class CreatePushNotificationPageState
                     );
 
                 // Show confirmation message
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content:
-                        Text("Push notificatie is verstuurd en opgeslagen."),
-                  ),
-                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text("Push notificatie is verstuurd en opgeslagen."),
+                    ),
+                  );
 
-                Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text('Verstuur'),
             ),

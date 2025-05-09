@@ -103,8 +103,8 @@ class FormCard extends ConsumerWidget {
                 ),
                 if (form.maximumNumberIsVisible == true)
                   countAnswerProvider.when(
-                    data: (count) => Text(
-                      "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
+                    data: (answerCount) => Text(
+                      "Aantal antwoorden: $answerCount / ${form.maximumNumberOfAnswers ?? '∞'}",
                       style: textTheme.bodyMedium
                           ?.copyWith(color: colorScheme.outline),
                     ),
