@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
@@ -102,7 +103,19 @@ class _SingleQuestionFormCardState
 
     final openUntil = formData.openUntil.toDate();
 
+    final answerCount =
+        ref.watch(formAnswerCountProvider(widget.formDoc.reference)).maybeWhen(
+              data: (c) => c,
+              orElse: () => null,
+            );
+
+    final bool? isSoldOut = answerCount == null
+        ? null
+        : (formData.hasMaximumNumberOfAnswers == true &&
+            answerCount >= (formData.maximumNumberOfAnswers ?? 10000));
+
     final formIsOpen = DateTime.now().isBefore(openUntil);
+    final bool isClosed = !formIsOpen || isSoldOut != false;
     final bool isKoco = formData.authorName == "Kookcommissie";
 
     final userAnswerProvider =
@@ -125,17 +138,24 @@ class _SingleQuestionFormCardState
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  formIsOpen
-                      ? "Sluit ${timeago.format(
-                          openUntil,
-                          locale: 'nl',
-                          allowFromNow: true,
-                        )}"
-                      : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
-                  style: textTheme.bodyMedium
-                      ?.copyWith(color: colorScheme.outline),
-                ),
+                if (isSoldOut == true)
+                  Text(
+                    "Uitverkocht/Volgeboekt",
+                    style: textTheme.bodyMedium
+                        ?.copyWith(color: colorScheme.error),
+                  )
+                else
+                  Text(
+                    formIsOpen
+                        ? "Sluit ${timeago.format(
+                            openUntil,
+                            locale: 'nl',
+                            allowFromNow: true,
+                          )}"
+                        : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
+                    style: textTheme.bodyMedium
+                        ?.copyWith(color: colorScheme.outline),
+                  ),
                 userAnswerProvider.when(
                   data: (snapshot) => snapshot.docs.isEmpty
                       ? const SizedBox.shrink()
@@ -178,7 +198,7 @@ class _SingleQuestionFormCardState
                       formQuestion: question,
                       form: formData,
                       docRef: widget.formDoc.reference,
-                      formIsOpen: formIsOpen && isAFormForUser,
+                      formIsOpen: !isClosed && isAFormForUser,
                       withoutBorder: true,
                       showAdditionalSaveButton: true,
                     ).padding(horizontal: hPadding),
