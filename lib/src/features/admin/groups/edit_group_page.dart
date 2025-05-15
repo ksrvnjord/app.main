@@ -266,7 +266,7 @@ class EditGroupPage extends ConsumerWidget {
                                       },
                                       icon: const Icon(Icons.delete),
                                     ),
-                                    Checkbox(
+                                    Checkbox.adaptive(
                                       value: isChecked,
                                       onChanged: (bool? value) {
                                         setState(() {
