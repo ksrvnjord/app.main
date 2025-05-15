@@ -83,10 +83,8 @@ class FormCard extends ConsumerWidget {
 
     return (isAFormForUser || userIsAdmin)
         ? ListTile(
-            title: <Widget>[
-              Icon(Icons.restaurant),
-              Flexible(child: Text(form.title))
-            ].toRow(separator: const SizedBox(width: 4)),
+            title: <Widget>[Flexible(child: Text(form.title))]
+                .toRow(separator: const SizedBox(width: 4)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
