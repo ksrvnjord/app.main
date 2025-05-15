@@ -35,7 +35,9 @@ class FormsWidget extends ConsumerWidget {
             : FormCard(
                 userGroups: userGroups,
                 userIsAdmin: userIsAdmin,
-                formDoc: item);
+                formDoc: item,
+                pushContext: true,
+              );
       }),
     ];
 

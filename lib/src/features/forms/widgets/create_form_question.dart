@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormQuestion extends ConsumerWidget {
@@ -18,9 +19,64 @@ class CreateFormQuestion extends ConsumerWidget {
   // ignore: prefer-correct-callback-field-name, prefer-explicit-parameter-names
   final Function(int) deleteQuestion;
 
+  Widget _datePicker({
+    required BuildContext context,
+    required FirestoreFormQuestion question,
+    required DateTime? pickedDate,
+    required bool isStartDate,
+    // required DateTime? selectedDate,
+    required ColorScheme colorScheme,
+    required TextTheme textTheme,
+  }) {
+    final minDate = DateTime(1874);
+    final maxDate = DateTime(getNjordYear() + 100);
+
+    if (pickedDate == null) {
+      pickedDate = isStartDate ? minDate : maxDate;
+      isStartDate
+          ? question.startDate = pickedDate
+          : question.endDate = pickedDate;
+    }
+
+    final initialDateString = pickedDate.toString().split(' ')[0];
+
+    return Column(
+      children: [
+        Text(
+          '${isStartDate ? 'minimale' : 'maximale'} datum:',
+          style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        GestureDetector(
+          onTap: () async {
+            final selectedDate = await showDatePicker(
+              context: context,
+              firstDate: minDate,
+              lastDate: maxDate,
+            );
+            if (selectedDate != null) {
+              if (isStartDate) {
+                question.startDate = selectedDate;
+              } else {
+                question.endDate = selectedDate;
+              }
+              onChanged();
+            }
+          },
+          child: Text(
+            initialDateString,
+            style: textTheme.bodyLarge?.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildQuestionExtras(
     FirestoreFormQuestion q,
     VoidCallback onChange,
+    BuildContext context,
     // ignore: avoid-long-functions
   ) {
     switch (q.type) {
@@ -74,7 +130,32 @@ class CreateFormQuestion extends ConsumerWidget {
           ),
         ].toColumn();
 
+      case FormQuestionType.date:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _datePicker(
+              context: context,
+              question: q,
+              pickedDate: q.startDate,
+              isStartDate: true,
+              colorScheme: Theme.of(context).colorScheme,
+              textTheme: Theme.of(context).textTheme,
+            ),
+            const SizedBox(width: 16),
+            _datePicker(
+              context: context,
+              question: q,
+              pickedDate: q.endDate,
+              isStartDate: false,
+              colorScheme: Theme.of(context).colorScheme,
+              textTheme: Theme.of(context).textTheme,
+            ),
+          ],
+        ).padding(top: 8.0);
+
       case FormQuestionType.text:
+      case FormQuestionType.image:
       default:
         return const SizedBox.shrink();
     }
@@ -128,15 +209,14 @@ class CreateFormQuestion extends ConsumerWidget {
           controller: questionController,
           // add text if type is image
           decoration: InputDecoration(
-              labelText:
-                  'Vraag ${index + 1}${question.type == FormQuestionType.image ? ' (gebruik unieke titels voor afbeeldingsvragen)' : ''}'),
+              labelText: 'Vraag ${index + 1} (gebruik unieke vragen)'),
           onChanged: (String value) => {question.title = value},
           validator: (value) => (value == null || value.isEmpty)
               ? 'Geef een naam op voor de vraag.'
               : null,
         ),
         // ignore: avoid-returning-widgets
-        _buildQuestionExtras(question, onChanged),
+        _buildQuestionExtras(question, onChanged, context),
         Align(
           alignment: Alignment.centerRight,
           child: Container(

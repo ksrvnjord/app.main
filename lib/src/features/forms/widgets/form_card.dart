@@ -18,11 +18,13 @@ class FormCard extends ConsumerWidget {
     required this.formDoc,
     required this.userGroups,
     required this.userIsAdmin,
+    this.pushContext = false,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final Iterable<int> userGroups;
   final bool userIsAdmin;
+  final bool pushContext;
 
   final borderWidth = 2.0;
 
@@ -101,8 +103,8 @@ class FormCard extends ConsumerWidget {
                 ),
                 if (form.maximumNumberIsVisible == true)
                   countAnswerProvider.when(
-                    data: (count) => Text(
-                      "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
+                    data: (answerCount) => Text(
+                      "Aantal antwoorden: $answerCount / ${form.maximumNumberOfAnswers ?? '∞'}",
                       style: textTheme.bodyMedium
                           ?.copyWith(color: colorScheme.outline),
                     ),
@@ -128,10 +130,19 @@ class FormCard extends ConsumerWidget {
               ],
             ),
             trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
-            onTap: () => context.goNamed(
-              "Form",
-              pathParameters: {"formId": formDoc.reference.id},
-            ),
+            onTap: () {
+              if (pushContext) {
+                context.pushNamed(
+                  "Form",
+                  pathParameters: {"formId": formDoc.reference.id},
+                );
+              } else {
+                context.goNamed(
+                  "Form",
+                  pathParameters: {"formId": formDoc.reference.id},
+                );
+              }
+            },
           ).card(
             // Transparant color.
             color: Colors.transparent,

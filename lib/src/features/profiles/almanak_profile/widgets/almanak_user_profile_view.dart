@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/almanak_birthday_message_button.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/groups_for_user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/widgets/user_address_widget.dart';
@@ -77,6 +78,13 @@ class AlmanakUserProfileView extends ConsumerWidget {
                       ).padding(all: formFieldPadding),
                     ),
                   ),
+                SizedBox(
+                  height: elementPadding,
+                ),
+                if (u.isBirthday)
+                  AlmanakBirthdayButton(
+                      receiverId: u.identifierString,
+                      receiverFullName: u.fullName),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

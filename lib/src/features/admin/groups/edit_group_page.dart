@@ -106,13 +106,20 @@ class EditGroupPage extends ConsumerWidget {
       int userId, bool add, WidgetRef ref, BuildContext ctx) async {
     final dio = ref.read(dioProvider);
     try {
+      final response = await dio.get("/api/v2/groups/$groupId/$userId/");
+      final permissions =
+          (response.data["permissions"] as List<dynamic>).toSet();
+
+      if (add) {
+        permissions.add("forms:*");
+      } else {
+        permissions.remove("forms:*");
+      }
+
       // ignore: avoid-ignoring-return-values
-      await dio.patch(
-        "/api/v2/groups/$groupId/$userId/",
-        data: {
-          "permissions": add ? ["forms:*"] : [],
-        },
-      );
+      await dio.patch("/api/v2/groups/$groupId/$userId/", data: {
+        "permissions": permissions.toList(),
+      });
       if (!ctx.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(ctx).showSnackBar(

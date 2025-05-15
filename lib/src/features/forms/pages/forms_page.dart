@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +7,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormsPage extends ConsumerWidget {
   const FormsPage({super.key});
@@ -26,45 +27,46 @@ class FormsPage extends ConsumerWidget {
         padding: const EdgeInsets.all(8),
         children: [
           allForms.when(
-            // ignore: prefer-extracting-function-callbacks
             data: (querySnapshot) {
               final forms = querySnapshot.docs;
 
-              return forms
-                  // ignore: prefer-extracting-function-callbacks
-                  .map((item) {
-                    return FormCard(
-                      formDoc: item,
-                      userGroups: currentUserVal.when(
-                        data: (currentUser) {
-                          final userGroups = currentUser.groups
-                              .where((group) => group.group.id != null)
-                              .map((group) => group.group.id!);
+              final openForms = forms.where((form) {
+                final formData = form.data();
+                final openUntil = formData.openUntil.toDate();
+                final formIsOpen = DateTime.now().isBefore(openUntil);
+                return formIsOpen;
+              }).toList();
 
-                          return userGroups;
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
+              final closedForms = forms.where((form) {
+                final formData = form.data();
+                final openUntil = formData.openUntil.toDate();
+                final formIsOpen = DateTime.now().isBefore(openUntil);
+                return !formIsOpen;
+              }).toList();
 
-                          return const [];
-                        },
-                        loading: () => const [],
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...openForms
+                      .map((item) => _buildFormCard(item, currentUserVal)),
+                  if (closedForms.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(),
+                    ),
+                    const Center(
+                      child: Text(
+                        'Gesloten Forms',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      userIsAdmin: currentUserVal.when(
-                        data: (currentUser) => currentUser.isAdmin,
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
-
-                          return false;
-                        },
-                        loading: () => false,
-                      ),
-                    );
-                  })
-                  .toList()
-                  .toColumn(separator: const SizedBox(height: 4));
+                    ),
+                    const SizedBox(height: 8),
+                    ...closedForms
+                        .map((item) => _buildFormCard(item, currentUserVal)),
+                  ],
+                ],
+              );
             },
             error: (error, stack) {
               return ErrorCardWidget(errorMessage: error.toString());
@@ -74,7 +76,6 @@ class FormsPage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: currentUserVal.when(
-        // ignore: prefer-extracting-function-callbacks
         data: (currentUser) {
           final canCreateForms = currentUser.canCreateForms;
 
@@ -90,14 +91,42 @@ class FormsPage extends ConsumerWidget {
                 )
               : null;
         },
-        // ignore: prefer-extracting-function-callbacks
         error: (e, s) {
-          // ignore: avoid-async-call-in-sync-function
           FirebaseCrashlytics.instance.recordError(e, s);
-
           return const SizedBox.shrink();
         },
         loading: () => const CircularProgressIndicator.adaptive(),
+      ),
+    );
+  }
+
+  Widget _buildFormCard(
+    QueryDocumentSnapshot<FirestoreForm> item,
+    AsyncValue<User> currentUserVal,
+  ) {
+    return FormCard(
+      formDoc: item,
+      userGroups: currentUserVal.when(
+        data: (currentUser) {
+          final userGroups = currentUser.groups
+              .where((group) => group.group.id != null)
+              .map((group) => group.group.id!);
+
+          return userGroups;
+        },
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+          return const [];
+        },
+        loading: () => const [],
+      ),
+      userIsAdmin: currentUserVal.when(
+        data: (currentUser) => currentUser.isAdmin,
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+          return false;
+        },
+        loading: () => false,
       ),
     );
   }

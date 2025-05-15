@@ -40,6 +40,7 @@ class User {
   String get infix => _django.infix;
   bool get isAdmin => _django.isStaff;
   String get birthDate => _django.birthDate;
+  bool get isBirthday => _django.isBirthday;
   String get initials => _django.initials;
   String get iban => _django.iban;
 

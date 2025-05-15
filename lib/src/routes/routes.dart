@@ -1,6 +1,7 @@
 // ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
@@ -195,12 +196,15 @@ abstract final // ignore: prefer-single-declaration-per-file
             ) ??
             false; // Watch for changes in the user's form admin status.
 
-        if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
-          return '/401';
-        }
+        // ignore unauthorised check in debugmode
+        if (kReleaseMode) {
+          if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
+            return '/401';
+          }
 
-        if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
-          return '/401';
+          if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
+            return '/401';
+          }
         }
 
         // ignore: prefer-returning-conditional-expressions
@@ -229,6 +233,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           minAppVersion:
               RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
+          durationUntilAlertAgain: Duration(minutes: 1),
         ),
         showIgnore: false,
         showLater: false,

@@ -2,7 +2,7 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.11+16
+version: 2.0.13+16
 
 environment:
   sdk: "^3.5.0" # Dart SDK version, TODO: update when codemagic updated: https://dart.dev/get-dart/archive
@@ -92,6 +92,7 @@ dev_dependencies:
   hive_generator: ^2.0.0
   dependency_validator: ^4.1.1
   json_serializable: ^6.7.1
+  flutter_launcher_icons: ^0.13.1
   custom_lint: any
   riverpod_generator: any
   riverpod_lint: any
@@ -105,3 +106,12 @@ flutter:
     - assets/images/sponsors/
     - assets/data/
     - assets/images/sponsors/
+
+flutter_launcher_icons:
+    android: true
+    ios: true
+    remove_alpha_ios: true
+    image_path: "assets/icons/app_icon.png"
+    adaptive_icon_foreground: "assets/icons/app_icon_foreground.png" # Foreground for adaptive icons
+    adaptive_icon_background: "assets/icons/app_icon_background.png" # Background for adaptive icons
+    adaptive_icon_monochrome: "assets/icons/app_icon_monochrome.png" # Monochrome icon for Android 13+
