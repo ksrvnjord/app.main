@@ -54,7 +54,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
           ),
         ),
       ),
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const CircularProgressIndicator.adaptive(),
       error: (error, stack) => Text('Error: $error'),
     );
   }
@@ -113,7 +113,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                   child: const Text('Annuleren'),
                 ),
                 isLoading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator.adaptive()
                     : TextButton(
                         onPressed: () async {
                           final message = messageController.text.trim();
