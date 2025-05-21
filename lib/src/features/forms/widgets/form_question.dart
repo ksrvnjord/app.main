@@ -85,6 +85,9 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
   @override
   void dispose() {
+    if (_focusNode.hasFocus) {
+      _formKey.currentState?.save();
+    }
     _focusNode.dispose();
     super.dispose();
   }
