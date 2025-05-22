@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_pagination/firebase_pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,8 +18,8 @@ class DamagesListPage extends ConsumerWidget {
         automaticallyImplyLeading: true,
         title: const Text('Schademeldingen'),
       ),
-      body: FirestorePagination(
-        query: FirebaseFirestore.instance
+      body: StreamBuilder<QuerySnapshot<Damage>>(
+        stream: FirebaseFirestore.instance
             .collectionGroup("damages")
             .withConverter<Damage>(
               fromFirestore: (snapshot, _) =>
@@ -28,25 +27,44 @@ class DamagesListPage extends ConsumerWidget {
               toFirestore: (reservation, _) => reservation.toJson(),
             )
             .orderBy('critical', descending: true)
-            .orderBy('createdTime', descending: true),
-        itemBuilder: (context, snap, index) {
-          final pollSnapshot = snap as QueryDocumentSnapshot<Damage>;
+            .orderBy('createdTime', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error loading damages'));
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No damages found'));
+          }
 
-          return DamageTileWidget(
-            showDamage: () => context.goNamed('Show Damage', queryParameters: {
-              'id': pollSnapshot.id,
-              'reservationObjectId': pollSnapshot.data().parent.id,
-            }),
-            editDamage: () => context.goNamed('Edit Damage', queryParameters: {
-              'id': pollSnapshot.id,
-              'reservationObjectId': pollSnapshot.data().parent.id,
-            }),
-            damageSnapshot: pollSnapshot,
+          final damages = snapshot.data!.docs;
+
+          return ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: damages.length,
+            itemBuilder: (context, index) {
+              final pollSnapshot = damages[index];
+
+              return DamageTileWidget(
+                showDamage: () =>
+                    context.goNamed('Show Damage', queryParameters: {
+                  'id': pollSnapshot.id,
+                  'reservationObjectId': pollSnapshot.data().parent.id,
+                }),
+                editDamage: () =>
+                    context.goNamed('Edit Damage', queryParameters: {
+                  'id': pollSnapshot.id,
+                  'reservationObjectId': pollSnapshot.data().parent.id,
+                }),
+                damageSnapshot: pollSnapshot,
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: gapY),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(height: gapY),
-        isLive: true,
-        padding: const EdgeInsets.all(8),
       ),
       floatingActionButton: FirebaseAuth.instance.currentUser !=
               null // Only show button if user is logged in.

@@ -309,7 +309,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
             ),
             Row(
               children: [
-                Checkbox(
+                Checkbox.adaptive(
                   value: _hasMaximumNumberOfAnswers,
                   onChanged: (bool? value) {
                     setState(() {
@@ -342,7 +342,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               ), //TODO disable feature later
             Row(
               children: [
-                Checkbox(
+                Checkbox.adaptive(
                   value: _maximumNumberOfAnswersIsVisible ?? false,
                   onChanged: (bool? value) {
                     setState(() {
@@ -359,7 +359,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                   children: [
                     AbsorbPointer(
                         absorbing: !user.isAdmin,
-                        child: Checkbox(
+                        child: Checkbox.adaptive(
                           value: _isDraft,
                           onChanged: (bool? value) {
                             setState(() {
