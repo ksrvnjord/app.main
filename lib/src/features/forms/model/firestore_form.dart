@@ -30,6 +30,9 @@ class FirestoreForm {
 
   final bool? isDraft;
 
+  @JsonKey(defaultValue: false)
+  final bool isClosed;
+
   final bool? hasMaximumNumberOfAnswers;
   final int? maximumNumberOfAnswers;
   final bool? maximumNumberIsVisible;
@@ -55,6 +58,7 @@ class FirestoreForm {
     this.visibleForGroups,
     this.groupId,
     this.isDraft,
+    this.isClosed = false,
     this.hasMaximumNumberOfAnswers,
     this.maximumNumberOfAnswers,
     this.maximumNumberIsVisible,
