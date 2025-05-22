@@ -1,5 +1,3 @@
-// ignore_for_file: no-magic-number
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -20,34 +18,75 @@ class WeatherWidget extends ConsumerWidget {
   });
 
   int windspeedToBeaufort(final double windspeed) {
-    // Windspeed is in km/h.
     if (windspeed < 1) {
       return 0;
-    } else if (windspeed < 6) {
-      return 1;
-    } else if (windspeed < 12) {
-      return 2;
-    } else if (windspeed < 20) {
-      return 3;
-    } else if (windspeed < 29) {
-      return 4;
-    } else if (windspeed < 39) {
-      return 5;
-    } else if (windspeed < 50) {
-      return 6;
-    } else if (windspeed < 62) {
-      return 7;
-    } else if (windspeed < 75) {
-      return 8;
-    } else if (windspeed < 89) {
-      return 9;
-    } else if (windspeed < 103) {
-      return 10;
-    } else if (windspeed < 118) {
-      return 11;
-    } else {
-      return 12;
     }
+    if (windspeed < 6) {
+      return 1;
+    }
+    if (windspeed < 12) {
+      return 2;
+    }
+    if (windspeed < 20) {
+      return 3;
+    }
+    if (windspeed < 29) {
+      return 4;
+    }
+    if (windspeed < 39) {
+      return 5;
+    }
+    if (windspeed < 50) {
+      return 6;
+    }
+    if (windspeed < 62) {
+      return 7;
+    }
+    if (windspeed < 75) {
+      return 8;
+    }
+    if (windspeed < 89) {
+      return 9;
+    }
+    if (windspeed < 103) {
+      return 10;
+    }
+    if (windspeed < 118) {
+      return 11;
+    }
+    return 12;
+  }
+
+  IconData weathercodetoweathertype(final int weathercode) {
+    if (weathercode == 0) {
+      return WeatherIcons.day_sunny;
+    }
+    if (weathercode == 1 || weathercode == 2) {
+      return WeatherIcons.cloudy;
+    }
+    if (weathercode == 3) {
+      return WeatherIcons.cloud;
+    }
+    if (weathercode == 45 || weathercode == 48) {
+      return WeatherIcons.fog;
+    }
+    if (weathercode >= 51 && weathercode <= 57) {
+      return WeatherIcons.showers;
+    }
+    if (weathercode >= 61 && weathercode <= 67) {
+      return WeatherIcons.rain;
+    }
+    if (weathercode >= 71 && weathercode <= 77) {
+      return WeatherIcons.snow;
+    }
+    if (weathercode >= 80 && weathercode <= 82) {
+      return WeatherIcons.rain;
+    }
+    if (weathercode >= 95 && weathercode <= 99) {
+      return WeatherIcons.thunderstorm;
+    }
+
+    return WeatherIcons.na;
   }
 
   _determineKleding(final int temperature) {
@@ -72,70 +111,190 @@ class WeatherWidget extends ConsumerWidget {
         final windspeed = currentWeather['windspeed'] as double;
         final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
         final sunset = DateTime.parse(data['daily']['sunset'][0]);
-        final winddirection = (currentWeather['winddirection'] + 180) %
-            360; // Winddirection should indicate where the wind is going to.
+        final winddirection = (currentWeather['winddirection'] + 180) % 360;
 
         final fetchTime = DateTime.parse(currentWeather['time']);
-        // Determine if it is night or day based on sunrise and sunset.
         final now = DateTime.now();
         final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
 
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
-        // Determine clothing recommendation
         final KledingRecommendation clothingRecommendation =
             _determineKleding(currentTemperature);
 
-        // Map Kleding to image paths
         final clothingImageMap = {
           KledingRecommendation.langlang: 'assets/images/weather_lang_lang.png',
           KledingRecommendation.langkort: 'assets/images/weather_lang_kort.png',
           KledingRecommendation.kortkort: 'assets/images/weather_kort_kort.png',
         };
 
-        // Get the image path for the current clothing recommendation
         final clothingImagePath = clothingImageMap[clothingRecommendation];
 
+        // Extract the next 5 hours of weather data
+        final hourlyWeather = data['hourly'];
+        final List<String> times = List<String>.from(hourlyWeather['time']);
+        final int currentIndex = times.indexWhere((time) {
+          final parsedTime = DateTime.parse(time);
+          return parsedTime.isAfter(now);
+        });
+
+        final List<Map<String, dynamic>> next24Hours =
+            List.generate(24, (index) {
+          final adjustedIndex = currentIndex + index;
+          if (adjustedIndex >= times.length) return null; // Handle edge cases
+          final time = DateTime.parse(hourlyWeather['time'][adjustedIndex]);
+          final temperature = hourlyWeather['temperature_2m'][adjustedIndex];
+          final windspeed = hourlyWeather['windspeed_10m'][adjustedIndex];
+          final weathercode = hourlyWeather['weather_code'][adjustedIndex];
+          return {
+            'time': time,
+            'temperature': temperature,
+            'windspeed': windspeed,
+            'weathercode': weathercode,
+          };
+        }).whereType<Map<String, dynamic>>().toList();
+
         return [
-          const Text("K.S.R.V. Njord").fontSize(16).fontWeight(FontWeight.bold),
-          // ignore: avoid-non-ascii-symbols
-          Text("${currentTemperature.toString()}°").fontSize(32),
           Row(children: [
-            WeatherMetricWidget(
-              icon: WeatherIcons.strong_wind,
-              title: "Wind",
-              mainText: "$windspeed km/u",
-              main: [
-                BoxedIcon(
-                  WeatherIcons.fromString(
-                    windspeedCss,
-                    fallback: WeatherIcons.na,
+            Column(
+              children: [
+                SizedBox(
+                  height: 500,
+                  child: [
+                    BoxedIcon(
+                      weathercodetoweathertype(
+                        currentWeather['weathercode'],
+                      ),
+                      size: 64,
+                    ),
+                    Text("$currentTemperature °C",
+                        style: Theme.of(context).textTheme.headlineLarge),
+                    Icon(
+                      WeatherIcons.fromString(
+                        windspeedCss,
+                        fallback: WeatherIcons.na,
+                      ),
+                      size: 32,
+                    ),
+                    WindIcon(
+                      degree: winddirection,
+                      size: 32,
+                    ),
+                    Icon(
+                        sunsetIsFirst
+                            ? WeatherIcons.sunset
+                            : WeatherIcons.sunrise,
+                        size: 16),
+                    Text(sunsetIsFirst ? "Zonsondergang" : "Zonsopgang"),
+                    Icon(
+                        sunsetIsFirst
+                            ? WeatherIcons.sunrise
+                            : WeatherIcons.sunset,
+                        size: 16),
+                    Text(sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"),
+                  ]
+                      .toColumn(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                      )
+                      .padding(all: 8)
+                      .card(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        elevation: 5,
+                      ),
+                ),
+                WeatherMetricWidget(
+                  icon: weathercodetoweathertype(
+                    currentWeather['weathercode'],
                   ),
-                  size: 32,
+                  title: "Temperatuur",
+                  mainText: "$currentTemperature °C",
                 ),
-                WindIcon(
-                  degree: winddirection,
-                  size: 32,
+                WeatherMetricWidget(
+                  icon: WeatherIcons.thermometer,
+                  title: "Temperatuur",
+                  mainText: "$currentTemperature °C",
                 ),
-              ].toRow(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-              ),
+                WeatherMetricWidget(
+                  icon: WeatherIcons.strong_wind,
+                  title: "Wind",
+                  main: [
+                    BoxedIcon(
+                      WeatherIcons.fromString(
+                        windspeedCss,
+                        fallback: WeatherIcons.na,
+                      ),
+                      size: 32,
+                    ),
+                    WindIcon(
+                      degree: winddirection,
+                      size: 32,
+                    ),
+                  ].toRow(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                  ),
+                ),
+                WeatherMetricWidget(
+                  icon: sunsetIsFirst
+                      ? WeatherIcons.sunset
+                      : WeatherIcons.sunrise,
+                  title: "Zonsverloop",
+                  bottomText:
+                      "${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}\n${sunsetIsFirst ? "Zonsondergang" : "Zonsopkomst"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}",
+                ),
+              ],
             ),
             Image.asset(
               clothingImagePath!,
               height: 100,
-            ),
-            WeatherMetricWidget(
-              icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
-              title: sunsetIsFirst ? "Zonsondergang" : "Zonsopgang",
-              mainText:
-                  DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise),
-              bottomText:
-                  "${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}",
+              width: 45,
             ),
           ]),
+
+          // Add a horizontal ListView for the 24-hour forecast, boxed like the other widgets
+          Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              child: SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: next24Hours.length,
+                  itemBuilder: (context, index) {
+                    final hourData = next24Hours[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            DateFormat('HH:mm').format(hourData['time']),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "${(hourData['temperature'] as num).round()}°C",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          Icon(
+                            weathercodetoweathertype(hourData['weathercode']),
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
 
           Text(
             "Laatste update om ${DateFormat(

@@ -7,29 +7,26 @@ class WeatherMetricWidget extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.mainText,
+    this.mainText,
     this.main,
     this.bottomText,
   });
 
   final IconData icon;
   final String title;
-  final String mainText;
+  final String? mainText;
   final Widget? main;
   final String? bottomText;
 
   @override
   Widget build(BuildContext context) {
-    const double cardHeight = 128;
-
-    const double headerIconSize = 14;
-    const double innerPadding = 10;
+    const double headerIconSize = 16;
+    const double innerPadding = 8;
 
     final textTheme = Theme.of(context).textTheme;
     const double cardElevation = 5;
 
     return SizedBox(
-      height: cardHeight,
       child: [
         [
           [
@@ -45,17 +42,18 @@ class WeatherMetricWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             separator: const SizedBox(width: 4),
           ),
-          Text(
-            mainText,
-            style: textTheme.headlineSmall,
-          ),
+          if (mainText != null)
+            Text(
+              mainText!,
+              style: textTheme.headlineSmall,
+            ),
           main ?? const SizedBox(),
         ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         if (bottomText != null)
           Text(
-            bottomText ?? "",
+            bottomText!,
             style: textTheme.labelMedium,
           ),
       ]
