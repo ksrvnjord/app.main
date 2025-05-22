@@ -215,6 +215,11 @@ class _FormPageState extends ConsumerState<FormPage> {
                           "Deze form heeft het maximale aantal antwoorden bereikt",
                           style: TextStyle(color: colorScheme.error),
                         ).alignment(Alignment.centerLeft),
+                      if (form.isClosed && formIsOpen)
+                        Text(
+                          "Deze form is vroegtijdig gesloten door een admin.",
+                          style: TextStyle(color: colorScheme.error),
+                        ).alignment(Alignment.centerLeft),
                       if (description != null)
                         Text(description, style: textTheme.bodyMedium)
                             .padding(vertical: descriptionVPadding)
@@ -237,7 +242,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                           // Move isAllowedToEdit calculation here
                           final isAllowedToEdit = formIsOpen &&
                               (!isSoldOut || answerIsCompleted) &&
-                              isAFormForUser;
+                              isAFormForUser &&
+                              !form.isClosed;
 
                           return Column(
                             // Move all child widgets to the left.

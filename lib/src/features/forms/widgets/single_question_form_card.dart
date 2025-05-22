@@ -115,7 +115,8 @@ class _SingleQuestionFormCardState
             answerCount >= (formData.maximumNumberOfAnswers ?? 10000));
 
     final formIsOpen = DateTime.now().isBefore(openUntil);
-    final bool isClosed = !formIsOpen || isSoldOut != false;
+    final bool isClosed =
+        !formIsOpen || isSoldOut != false || formData.isClosed;
     final bool isKoco = formData.authorName == "Kookcommissie";
 
     final userAnswerProvider =
@@ -146,13 +147,15 @@ class _SingleQuestionFormCardState
                   )
                 else
                   Text(
-                    formIsOpen
+                    formIsOpen && !formData.isClosed
                         ? "Sluit ${timeago.format(
                             openUntil,
                             locale: 'nl',
                             allowFromNow: true,
                           )}"
-                        : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
+                        : !formIsOpen
+                            ? "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}"
+                            : "Gesloten",
                     style: textTheme.bodyMedium
                         ?.copyWith(color: colorScheme.outline),
                   ),
