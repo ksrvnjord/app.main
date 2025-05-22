@@ -187,14 +187,14 @@ class WeatherWidget extends ConsumerWidget {
                         ),
                     Icon(
                         sunsetIsFirst
-                            ? WeatherIcons.sunset
-                            : WeatherIcons.sunrise,
+                            ? WeatherIcons.sunrise
+                            : WeatherIcons.sunset,
                         size: 16),
                     Text("${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}"),
                     Icon(
                         sunsetIsFirst
-                            ? WeatherIcons.sunrise
-                            : WeatherIcons.sunset,
+                            ? WeatherIcons.sunset
+                            : WeatherIcons.sunrise,
                         size: 16),
                     Text("${sunsetIsFirst ? "Zonsondergang" : "Zonsopkomst"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}"),
                   ]
@@ -239,14 +239,6 @@ class WeatherWidget extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                   ),
-                ),
-                WeatherMetricWidget(
-                  icon: sunsetIsFirst
-                      ? WeatherIcons.sunset
-                      : WeatherIcons.sunrise,
-                  title: "Zonsverloop",
-                  bottomText:
-                      "${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}\n${sunsetIsFirst ? "Zonsondergang" : "Zonsopkomst"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}",
                 ),
               ],
             ),
