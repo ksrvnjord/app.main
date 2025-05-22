@@ -170,7 +170,7 @@ class WeatherWidget extends ConsumerWidget {
                     ),
                     Text("$currentTemperature °C",
                         style: Theme.of(context).textTheme.headlineLarge),
-                    Icon(
+                    [Icon(
                       WeatherIcons.fromString(
                         windspeedCss,
                         fallback: WeatherIcons.na,
@@ -180,19 +180,23 @@ class WeatherWidget extends ConsumerWidget {
                     WindIcon(
                       degree: winddirection,
                       size: 32,
-                    ),
+                    ),]
+                        .toRow(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                        ),
                     Icon(
                         sunsetIsFirst
                             ? WeatherIcons.sunset
                             : WeatherIcons.sunrise,
                         size: 16),
-                    Text(sunsetIsFirst ? "Zonsondergang" : "Zonsopgang"),
+                    Text("${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}"),
                     Icon(
                         sunsetIsFirst
                             ? WeatherIcons.sunrise
                             : WeatherIcons.sunset,
                         size: 16),
-                    Text(sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"),
+                    Text("${sunsetIsFirst ? "Zonsondergang" : "Zonsopkomst"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}"),
                   ]
                       .toColumn(
                         mainAxisAlignment: MainAxisAlignment.center,
