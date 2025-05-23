@@ -8,6 +8,7 @@ part of 'firestore_form.dart';
 
 FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
     FirestoreForm(
+      id: json['id'] as String?,
       createdTime: const TimestampDateTimeConverter()
           .fromJson(json['createdTime'] as Timestamp),
       title: json['title'] as String,
@@ -20,8 +21,9 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       authorId: json['authorId'] as String,
       authorName: json['authorName'] as String,
       visibleForGroups: (json['visibleForGroups'] as List<dynamic>?)
-          ?.map((e) => (e as num?)?.toInt())
-          .toList(),
+              ?.map((e) => (e as num).toInt())
+              .toList() ??
+          [],
       groupId: json['groupId'] as String?,
       isDraft: json['isDraft'] as bool?,
       isClosed: json['isClosed'] as bool? ?? false,
@@ -32,6 +34,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'questions': FirestoreForm._questionsToJson(instance.questions),
       'openUntil':

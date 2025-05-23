@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -19,48 +20,38 @@ class FormsWidget extends ConsumerWidget {
 
   Widget _buildOpenFormsList(
     BuildContext context,
-    List<QueryDocumentSnapshot<FirestoreForm>> data,
-    List<int> userGroups,
-    bool userIsAdmin,
+    List<FirestoreForm> forms,
+    User currentUser,
   ) {
     const hPadding = 8.0;
 
     final openFormsList = [
-      ...data.map((item) {
-        final form = item.data();
-
+      ...forms.where((form) {
+        return form.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+            currentUser.isAdmin;
+      }).map((form) {
         return form.questions.length == 1
-            ? SingleQuestionFormCard(
-                userGroups: userGroups, userIsAdmin: userIsAdmin, formDoc: item)
-            : FormCard(
-                userGroups: userGroups,
-                userIsAdmin: userIsAdmin,
-                formDoc: item,
-                pushContext: true,
-              );
+            ? SingleQuestionFormCard(form: form)
+            : Text('large form');
+        // : FormCard(
+        //     userGroups: userGroups,
+        //     userIsAdmin: userIsAdmin,
+        //     form: form,
+        //     pushContext: true,
+        //   );
       }),
     ];
 
     openFormsList.removeWhere((widget) => widget is SizedBox);
 
-    if (openFormsList.length > 3) {
-      return [
-        ...openFormsList.take(3),
+    return [
+      ...openFormsList.take(3),
+      if (openFormsList.length > 3)
         GestureDetector(
           onTap: () => context.goNamed(RouteName.forms),
-          child: Icon(
-            Icons.more_horiz,
-            size: 32,
-          ),
+          child: Icon(Icons.more_horiz, size: 32),
         ),
-      ].toColumn().padding(horizontal: hPadding);
-    } else {
-      return openFormsList
-          .take(3)
-          .toList()
-          .toColumn()
-          .padding(horizontal: hPadding);
-    }
+    ].toColumn().padding(horizontal: hPadding);
   }
 
   @override
@@ -78,16 +69,10 @@ class FormsWidget extends ConsumerWidget {
       openForms.when(
         // ignore: prefer-extracting-function-callbacks
         data: (querySnapshot) {
-          final forms = querySnapshot.docs;
+          final forms = querySnapshot.docs.map((doc) => doc.data()).toList();
           return currentUserVal.when(
-            data: (currentUser) {
-              final userIsAdmin = currentUser.isAdmin;
-              final userGroups =
-                  currentUser.groups.map((group) => group.group.id!).toList();
-
-              return _buildOpenFormsList(
-                  context, forms, userGroups, userIsAdmin);
-            },
+            data: (currentUser) =>
+                _buildOpenFormsList(context, forms, currentUser),
             error: (error, stack) =>
                 ErrorTextWidget(errorMessage: error.toString()),
             loading: () => const CircularProgressIndicator.adaptive(),

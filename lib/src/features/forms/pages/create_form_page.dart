@@ -146,11 +146,11 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
     }
   }
 
-  Future<List<int?>?> _convertToIds(List<String> visibleForGroups) async {
+  Future<List<int>> _convertToIds(List<String> visibleForGroups) async {
     final dio = ref.watch(dioProvider);
 
     if (visibleForGroups.isNotEmpty) {
-      final visibleForGroupIDs = <int?>[];
+      final visibleForGroupIDs = <int>[];
       for (String groupString in visibleForGroups) {
         switch (groupString) {
           case GroupChoices.wedstrijd || GroupChoices.competitie:
@@ -164,7 +164,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 ordering: "name",
               );
 
-              visibleForGroupIDs.addAll(result.map((group) => group.id));
+              visibleForGroupIDs.addAll(result.map((group) => group.id!));
               break;
             }
 
@@ -182,7 +182,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
                 dio: dio,
                 ordering: "name",
               );
-              visibleForGroupIDs.addAll(result.map((group) => group.id));
+              visibleForGroupIDs.addAll(result.map((group) => group.id!));
               break;
             }
 
@@ -193,7 +193,7 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       return visibleForGroupIDs;
     }
 
-    return null;
+    return [];
   }
 
   @override

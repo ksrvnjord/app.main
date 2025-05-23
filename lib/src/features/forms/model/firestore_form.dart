@@ -12,6 +12,11 @@ const String firestoreFormCollectionName = 'testforms';
 @immutable
 @JsonSerializable()
 class FirestoreForm {
+  // Create fromJson method
+  factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreFormFromJson(json);
+  final String? id; // <-- New: Firestore document ID
+
   final String title;
 
   @JsonKey(toJson: _questionsToJson)
@@ -25,7 +30,8 @@ class FirestoreForm {
   final String? description;
   final String authorId;
   final String authorName;
-  final List<int?>? visibleForGroups;
+  @JsonKey(defaultValue: <int>[])
+  final List<int> visibleForGroups;
   final String? groupId;
 
   final bool? isDraft;
@@ -40,14 +46,16 @@ class FirestoreForm {
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance
           .collection(firestoreFormCollectionName)
-          .withConverter(
+          .withConverter<FirestoreForm>(
             fromFirestore: (snapshot, _) =>
-                FirestoreForm.fromJson(snapshot.data() ?? {}),
+                FirestoreForm.fromJson(snapshot.data() ?? {})
+                    .copyWith(id: snapshot.id),
             toFirestore: (form, _) => form.toJson(),
           );
 
   // ignore: sort_constructors_first
   const FirestoreForm({
+    this.id, // <-- New: Add to constructor
     required this.createdTime,
     required this.title,
     required this.questions,
@@ -55,7 +63,7 @@ class FirestoreForm {
     this.description,
     required this.authorId,
     required this.authorName,
-    this.visibleForGroups,
+    this.visibleForGroups = const <int>[],
     this.groupId,
     this.isDraft,
     this.isClosed = false,
@@ -64,15 +72,41 @@ class FirestoreForm {
     this.maximumNumberIsVisible,
   });
 
-  // Create fromJson method.
-  // ignore: sort_constructors_first
-  factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
-      _$FirestoreFormFromJson(json);
-
-  // Create toJson method.
+  // Create toJson method
   Map<String, dynamic> toJson() => _$FirestoreFormToJson(this);
+
+  // Used for serializing list of questions
   static List<Map<String, dynamic>> _questionsToJson(
     List<FirestoreFormQuestion> questions,
   ) =>
       questions.map((question) => question.toJson()).toList();
+
+  // Returns true if any of the userGroups match visibleForGroups
+  bool userIsInCorrectGroupForForm(List<int> userGroups) {
+    if (visibleForGroups.isEmpty) return true;
+    return userGroups.any(visibleForGroups.contains);
+  }
+
+  // Used to add Firestore ID after deserialization
+  FirestoreForm copyWith({
+    String? id,
+  }) {
+    return FirestoreForm(
+      id: id ?? this.id,
+      createdTime: createdTime,
+      title: title,
+      questions: questions,
+      openUntil: openUntil,
+      description: description,
+      authorId: authorId,
+      authorName: authorName,
+      visibleForGroups: visibleForGroups,
+      groupId: groupId,
+      isDraft: isDraft,
+      isClosed: isClosed,
+      hasMaximumNumberOfAnswers: hasMaximumNumberOfAnswers,
+      maximumNumberOfAnswers: maximumNumberOfAnswers,
+      maximumNumberIsVisible: maximumNumberIsVisible,
+    );
+  }
 }
