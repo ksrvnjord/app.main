@@ -22,8 +22,10 @@ class FirestoreForm {
   @JsonKey(toJson: _questionsToJson)
   final List<FirestoreFormQuestion> questions;
 
+  @JsonKey(name: 'openUntil')
   @TimestampDateTimeConverter()
   final Timestamp openUntilTimeStamp;
+  @JsonKey(name: 'createdTime')
   @TimestampDateTimeConverter()
   final Timestamp createdTimeTimeStamp;
 

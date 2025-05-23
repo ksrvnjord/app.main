@@ -163,7 +163,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                 }
 
                 final form = formDoc.data()!;
-                final openUntil = form.openUntil.toDate();
+                final openUntil = form.openUntil;
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 const descriptionVPadding = 16.0;
                 final description = form.description;
@@ -176,13 +176,11 @@ class _FormPageState extends ConsumerState<FormPage> {
                     ref.watch(formAnswerProvider(formDoc.reference));
                 // TODO: van this not be a var?
                 bool isAFormForUser = true;
-                if (formGroups != null) {
-                  isAFormForUser = false;
-                  for (final group in userGroups) {
-                    if (formGroups.contains(group)) {
-                      isAFormForUser = true;
-                      break;
-                    }
+                isAFormForUser = false;
+                for (final group in userGroups) {
+                  if (formGroups.contains(group)) {
+                    isAFormForUser = true;
+                    break;
                   }
                 }
                 final answerCountVal =

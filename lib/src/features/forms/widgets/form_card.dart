@@ -40,17 +40,15 @@ class FormCard extends ConsumerWidget {
 
     var isAFormForUser = true;
     final formGroups = form.visibleForGroups;
-    if (formGroups != null) {
-      isAFormForUser = false;
-      for (final group in userGroups) {
-        if (formGroups.contains(group)) {
-          isAFormForUser = true;
-          break;
-        }
+    isAFormForUser = false;
+    for (final group in userGroups) {
+      if (formGroups.contains(group)) {
+        isAFormForUser = true;
+        break;
       }
     }
 
-    final openUntil = form.openUntil.toDate();
+    final openUntil = form.openUntil;
 
     final formIsOpen = DateTime.now().isBefore(openUntil);
 

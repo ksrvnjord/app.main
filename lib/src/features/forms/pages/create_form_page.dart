@@ -107,10 +107,10 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
     try {
       final result = await FormRepository.createForm(
         form: FirestoreForm(
-          createdTime: Timestamp.now(),
+          createdTimeTimeStamp: Timestamp.now(),
           title: _formName.text,
           questions: _questions,
-          openUntil: Timestamp.fromDate(_openUntil),
+          openUntilTimeStamp: Timestamp.fromDate(_openUntil),
           description: _description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.isAdmin

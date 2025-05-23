@@ -32,14 +32,14 @@ class FormsPage extends ConsumerWidget {
 
               final openForms = forms.where((form) {
                 final formData = form.data();
-                final openUntil = formData.openUntil.toDate();
+                final openUntil = formData.openUntil;
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 return formIsOpen;
               }).toList();
 
               final closedForms = forms.where((form) {
                 final formData = form.data();
-                final openUntil = formData.openUntil.toDate();
+                final openUntil = formData.openUntil;
                 final formIsOpen = DateTime.now().isBefore(openUntil);
                 return !formIsOpen;
               }).toList();

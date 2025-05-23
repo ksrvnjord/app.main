@@ -42,8 +42,6 @@ class FormsWidget extends ConsumerWidget {
       }),
     ];
 
-    openFormsList.removeWhere((widget) => widget is SizedBox);
-
     return [
       ...openFormsList.take(3),
       if (openFormsList.length > 3)

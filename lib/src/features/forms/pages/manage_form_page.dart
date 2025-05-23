@@ -87,7 +87,7 @@ class ManageFormPage extends ConsumerWidget {
                           name: "Form naam", value: formData.title),
                       DataTextListTile(
                         name: 'Open tot',
-                        value: formatter.format(formData.openUntil.toDate()),
+                        value: formatter.format(formData.openUntil),
                       ),
                       DataTextListTile(
                         name: 'Beschrijving',
@@ -103,7 +103,7 @@ class ManageFormPage extends ConsumerWidget {
                       ),
                       DataTextListTile(
                         name: 'Gecreëerd op:',
-                        value: formatter.format(formData.createdTime.toDate()),
+                        value: formatter.format(formData.createdTime),
                       ),
                       const Divider(),
                       const SizedBox(height: 32),
