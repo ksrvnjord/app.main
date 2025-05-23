@@ -23,9 +23,14 @@ class FirestoreForm {
   final List<FirestoreFormQuestion> questions;
 
   @TimestampDateTimeConverter()
-  final Timestamp openUntil;
+  final Timestamp openUntilTimeStamp;
   @TimestampDateTimeConverter()
-  final Timestamp createdTime;
+  final Timestamp createdTimeTimeStamp;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get openUntil => openUntilTimeStamp.toDate();
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get createdTime => createdTimeTimeStamp.toDate();
 
   final String? description;
   final String authorId;
@@ -56,10 +61,10 @@ class FirestoreForm {
   // ignore: sort_constructors_first
   const FirestoreForm({
     this.id, // <-- New: Add to constructor
-    required this.createdTime,
+    required this.createdTimeTimeStamp,
     required this.title,
     required this.questions,
-    required this.openUntil,
+    required this.openUntilTimeStamp,
     this.description,
     required this.authorId,
     required this.authorName,
@@ -93,10 +98,10 @@ class FirestoreForm {
   }) {
     return FirestoreForm(
       id: id ?? this.id,
-      createdTime: createdTime,
+      createdTimeTimeStamp: createdTimeTimeStamp,
       title: title,
       questions: questions,
-      openUntil: openUntil,
+      openUntilTimeStamp: openUntilTimeStamp,
       description: description,
       authorId: authorId,
       authorName: authorName,

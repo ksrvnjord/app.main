@@ -1,6 +1,5 @@
 // ignore_for_file: prefer-extracting-function-callbacks, no-magic-string
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -81,9 +80,8 @@ class _SingleQuestionFormCardState
 
   @override
   Widget build(BuildContext context) {
-    final doc = FirestoreForm.firestoreConvert.doc(widget.form.id);
-
-    final openUntil = widget.form.openUntil.toDate();
+    final form = widget.form;
+    final doc = FirestoreForm.firestoreConvert.doc(form.id);
 
     final answerCount = ref.watch(formAnswerCountProvider(doc)).maybeWhen(
           data: (c) => c,
@@ -92,13 +90,12 @@ class _SingleQuestionFormCardState
 
     final bool? isSoldOut = answerCount == null
         ? null
-        : (widget.form.hasMaximumNumberOfAnswers == true &&
-            answerCount >= (widget.form.maximumNumberOfAnswers ?? 10000));
+        : (form.hasMaximumNumberOfAnswers == true &&
+            answerCount >= (form.maximumNumberOfAnswers ?? 10000));
 
-    final formIsOpen = DateTime.now().isBefore(openUntil);
-    final bool isClosed =
-        !formIsOpen || isSoldOut != false || widget.form.isClosed;
-    final bool isKoco = widget.form.authorName == "Kookcommissie";
+    final formIsOpen = DateTime.now().isBefore(form.openUntil);
+    final bool isClosed = !formIsOpen || isSoldOut != false || form.isClosed;
+    final bool isKoco = form.authorName == "Kookcommissie";
 
     final userAnswerProvider = ref.watch(formAnswerProvider(doc));
 
@@ -114,7 +111,7 @@ class _SingleQuestionFormCardState
 
     return ExpansionTile(
       collapsedIconColor: colorScheme.primary,
-      title: Text(widget.form.title),
+      title: Text(form.title),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -125,14 +122,14 @@ class _SingleQuestionFormCardState
             )
           else
             Text(
-              formIsOpen && !widget.form.isClosed
+              formIsOpen && !form.isClosed
                   ? "Sluit ${timeago.format(
-                      openUntil,
+                      form.openUntil,
                       locale: 'nl',
                       allowFromNow: true,
                     )}"
                   : !formIsOpen
-                      ? "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}"
+                      ? "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}"
                       : "Gesloten",
               style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
             ),
@@ -158,8 +155,8 @@ class _SingleQuestionFormCardState
         side: BorderSide(color: Colors.transparent, width: 0),
       ),
       children: [
-        if (widget.form.description != null)
-          Text(widget.form.description!, style: textTheme.bodyMedium)
+        if (form.description != null)
+          Text(form.description!, style: textTheme.bodyMedium)
               .padding(horizontal: descriptionHPadding.toDouble()),
         if (isKoco)
           GestureDetector(
@@ -173,10 +170,10 @@ class _SingleQuestionFormCardState
         Form(
           key: _formKey,
           child: [
-            for (final question in widget.form.questions) ...[
+            for (final question in form.questions) ...[
               FormQuestion(
                 formQuestion: question,
-                form: widget.form,
+                form: form,
                 docRef: doc,
                 formIsOpen: !isClosed,
                 withoutBorder: true,
