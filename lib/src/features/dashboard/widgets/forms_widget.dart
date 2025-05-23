@@ -33,13 +33,11 @@ class FormsWidget extends ConsumerWidget {
       }).map((formSnapshot) {
         return formSnapshot.data().questions.length == 1
             ? SingleQuestionFormCard(formSnapshot: formSnapshot)
-            : Text('large form');
-        // : FormCard(
-        //     userGroups: userGroups,
-        //     userIsAdmin: userIsAdmin,
-        //     form: form,
-        //     pushContext: true,
-        //   );
+            : FormCard(
+                formDoc: formSnapshot,
+                currentUser: currentUser,
+                pushContext: true,
+              );
       }),
     ];
 
