@@ -8,7 +8,6 @@ part of 'firestore_form.dart';
 
 FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
     FirestoreForm(
-      id: json['id'] as String?,
       createdTimeTimeStamp: const TimestampDateTimeConverter()
           .fromJson(json['createdTime'] as Timestamp),
       title: json['title'] as String,
@@ -23,18 +22,21 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       visibleForGroups: (json['visibleForGroups'] as List<dynamic>?)
               ?.map((e) => (e as num).toInt())
               .toList() ??
-          [],
+          const <int>[],
       groupId: json['groupId'] as String?,
       isDraft: json['isDraft'] as bool?,
       isClosed: json['isClosed'] as bool? ?? false,
-      hasMaximumNumberOfAnswers: json['hasMaximumNumberOfAnswers'] as bool?,
-      maximumNumberOfAnswers: (json['maximumNumberOfAnswers'] as num?)?.toInt(),
-      maximumNumberIsVisible: json['maximumNumberIsVisible'] as bool?,
+      hasMaximumNumberOfAnswers:
+          json['hasMaximumNumberOfAnswers'] as bool? ?? false,
+      maximumNumberOfAnswers:
+          (json['maximumNumberOfAnswers'] as num?)?.toInt() ?? 100000,
+      currentNumberOfAnswers:
+          (json['currentNumberOfAnswers'] as num?)?.toInt() ?? 0,
+      maximumNumberIsVisible: json['maximumNumberIsVisible'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'title': instance.title,
       'questions': FirestoreForm._questionsToJson(instance.questions),
       'openUntil': const TimestampDateTimeConverter()
@@ -50,5 +52,6 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'isClosed': instance.isClosed,
       'hasMaximumNumberOfAnswers': instance.hasMaximumNumberOfAnswers,
       'maximumNumberOfAnswers': instance.maximumNumberOfAnswers,
+      'currentNumberOfAnswers': instance.currentNumberOfAnswers,
       'maximumNumberIsVisible': instance.maximumNumberIsVisible,
     };

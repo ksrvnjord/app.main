@@ -118,8 +118,9 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               : currentUser.canCreateFormsFor[_author.text]!,
           groupId: currentUser.isAdmin ? null : _author.text,
           hasMaximumNumberOfAnswers: _hasMaximumNumberOfAnswers,
-          maximumNumberOfAnswers: _maximumNumberOfAnswers,
-          maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible,
+          maximumNumberOfAnswers: _maximumNumberOfAnswers ??
+              100000, //Default value mimicing infinity
+          maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible ?? false,
           isDraft: _isDraft,
           visibleForGroups: await _convertToIds(_visibleForGroups),
         ),

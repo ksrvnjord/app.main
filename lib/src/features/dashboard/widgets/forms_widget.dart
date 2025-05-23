@@ -20,18 +20,19 @@ class FormsWidget extends ConsumerWidget {
 
   Widget _buildOpenFormsList(
     BuildContext context,
-    List<FirestoreForm> forms,
+    List<QueryDocumentSnapshot<FirestoreForm>> formReferences,
     User currentUser,
   ) {
     const hPadding = 8.0;
 
     final openFormsList = [
-      ...forms.where((form) {
+      ...formReferences.where((formReference) {
+        final form = formReference.data();
         return form.userIsInCorrectGroupForForm(currentUser.groupIds) ||
             currentUser.isAdmin;
-      }).map((form) {
-        return form.questions.length == 1
-            ? SingleQuestionFormCard(form: form)
+      }).map((formSnapshot) {
+        return formSnapshot.data().questions.length == 1
+            ? SingleQuestionFormCard(formSnapshot: formSnapshot)
             : Text('large form');
         // : FormCard(
         //     userGroups: userGroups,
@@ -67,10 +68,10 @@ class FormsWidget extends ConsumerWidget {
       openForms.when(
         // ignore: prefer-extracting-function-callbacks
         data: (querySnapshot) {
-          final forms = querySnapshot.docs.map((doc) => doc.data()).toList();
+          final formsDocuments = querySnapshot.docs;
           return currentUserVal.when(
             data: (currentUser) =>
-                _buildOpenFormsList(context, forms, currentUser),
+                _buildOpenFormsList(context, formsDocuments, currentUser),
             error: (error, stack) =>
                 ErrorTextWidget(errorMessage: error.toString()),
             loading: () => const CircularProgressIndicator.adaptive(),
