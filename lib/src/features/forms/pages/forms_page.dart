@@ -38,11 +38,17 @@ class FormsPage extends ConsumerWidget {
             final forms = querySnapshot.docs;
 
             final openForms = (forms).where((form) {
-              return form.data().formClosingTimeIsInFuture;
+              final formData = form.data();
+              return formData.userCanEditForm &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
             }).toList();
 
             final closedForms = (forms).where((form) {
-              return !form.data().formClosingTimeIsInFuture;
+              final formData = form.data();
+              return !formData.userCanEditForm &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
             }).toList();
 
             return ListView(
