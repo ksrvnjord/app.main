@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -89,16 +88,6 @@ class WeatherWidget extends ConsumerWidget {
     return WeatherIcons.na;
   }
 
-  _determineKleding(final int temperature) {
-    if (temperature < 10) {
-      return KledingRecommendation.langlang;
-    } else if (temperature < 18) {
-      return KledingRecommendation.langkort;
-    } else {
-      return KledingRecommendation.kortkort;
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weather = ref.watch(weatherProvider);
@@ -120,16 +109,21 @@ class WeatherWidget extends ConsumerWidget {
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
-        final KledingRecommendation clothingRecommendation =
-            _determineKleding(currentTemperature);
+        determineKleding(final int temperature) {
+          if (temperature < 8) {
+            return KledingRecommendation.langlang;
+          } else if (temperature < 15) {
+            return KledingRecommendation.langkort;
+          } else {
+            return KledingRecommendation.kortkort;
+          }
+        }
 
-        final clothingImageMap = {
+        final clothingImagePath = {
           KledingRecommendation.langlang: 'assets/images/weather_lang_lang.png',
           KledingRecommendation.langkort: 'assets/images/weather_lang_kort.png',
           KledingRecommendation.kortkort: 'assets/images/weather_kort_kort.png',
-        };
-
-        final clothingImagePath = clothingImageMap[clothingRecommendation];
+        }[determineKleding(currentTemperature)];
 
         // Extract the next 5 hours of weather data
         final hourlyWeather = data['hourly'];
@@ -156,98 +150,85 @@ class WeatherWidget extends ConsumerWidget {
         }).whereType<Map<String, dynamic>>().toList();
 
         return [
-          Row(children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: 500,
+          Column(
+            children: [
+              SizedBox(
+                  width: 350,
                   child: [
-                    BoxedIcon(
-                      weathercodetoweathertype(
-                        currentWeather['weathercode'],
-                      ),
-                      size: 64,
-                    ),
-                    Text("$currentTemperature °C",
-                        style: Theme.of(context).textTheme.headlineLarge),
-                    [Icon(
-                      WeatherIcons.fromString(
-                        windspeedCss,
-                        fallback: WeatherIcons.na,
-                      ),
-                      size: 32,
-                    ),
-                    WindIcon(
-                      degree: winddirection,
-                      size: 32,
-                    ),]
-                        .toRow(
+                    Text("K.S.R.V. Njord")
+                        .fontSize(16)
+                        .fontWeight(FontWeight.bold),
+                    [
+                      [
+                        [
+                          Icon(
+                            weathercodetoweathertype(
+                              currentWeather['weathercode'],
+                            ),
+                            size: 32,
+                          ),
+                          Padding(padding: const EdgeInsets.only(left: 16.0)),
+                          Text("$currentTemperature°",
+                              style: Theme.of(context).textTheme.headlineLarge),
+                        ].toRow(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
                         ),
-                    Icon(
-                        sunsetIsFirst
-                            ? WeatherIcons.sunrise
-                            : WeatherIcons.sunset,
-                        size: 16),
-                    Text("${sunsetIsFirst ? "Zonsopgang" : "Zonsondergang"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)}"),
-                    Icon(
-                        sunsetIsFirst
-                            ? WeatherIcons.sunset
-                            : WeatherIcons.sunrise,
-                        size: 16),
-                    Text("${sunsetIsFirst ? "Zonsondergang" : "Zonsopkomst"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}"),
-                  ]
-                      .toColumn(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                      )
-                      .padding(all: 8)
-                      .card(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        elevation: 5,
+                        [
+                          Icon(
+                            WeatherIcons.fromString(
+                              windspeedCss,
+                              fallback: WeatherIcons.na,
+                            ),
+                            size: 32,
+                          ),
+                          WindIcon(
+                            degree: winddirection,
+                            size: 32,
+                          ),
+                        ].toRow(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        [
+                          Icon(
+                              sunsetIsFirst
+                                  ? WeatherIcons.sunrise
+                                  : WeatherIcons.sunset,
+                              size: 16),
+                          Padding(padding: const EdgeInsets.only(left: 8.0)),
+                          Text(DateFormat('HH:mm')
+                              .format(sunsetIsFirst ? sunrise : sunset)),
+                        ].toRow(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        [
+                          Icon(
+                              sunsetIsFirst
+                                  ? WeatherIcons.sunset
+                                  : WeatherIcons.sunrise,
+                              size: 16),
+                          Padding(padding: const EdgeInsets.only(left: 8.0)),
+                          Text(DateFormat('HH:mm')
+                              .format(sunsetIsFirst ? sunset : sunrise)),
+                        ].toRow(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                      ].toColumn(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                       ),
-                ),
-                WeatherMetricWidget(
-                  icon: weathercodetoweathertype(
-                    currentWeather['weathercode'],
-                  ),
-                  title: "Temperatuur",
-                  mainText: "$currentTemperature °C",
-                ),
-                WeatherMetricWidget(
-                  icon: WeatherIcons.thermometer,
-                  title: "Temperatuur",
-                  mainText: "$currentTemperature °C",
-                ),
-                WeatherMetricWidget(
-                  icon: WeatherIcons.strong_wind,
-                  title: "Wind",
-                  main: [
-                    BoxedIcon(
-                      WeatherIcons.fromString(
-                        windspeedCss,
-                        fallback: WeatherIcons.na,
+                      Image.asset(
+                        clothingImagePath!,
+                        width: 45,
+                        height: 100,
                       ),
-                      size: 32,
-                    ),
-                    WindIcon(
-                      degree: winddirection,
-                      size: 32,
-                    ),
-                  ].toRow(
+                    ].toRow(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    )
+                  ].toColumn(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                  ),
-                ),
-              ],
-            ),
-            Image.asset(
-              clothingImagePath!,
-              height: 100,
-              width: 45,
-            ),
-          ]),
+                  )),
+            ],
+          ),
 
           // Add a horizontal ListView for the 24-hour forecast, boxed like the other widgets
           Material(
