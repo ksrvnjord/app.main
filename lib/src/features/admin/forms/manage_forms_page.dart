@@ -49,7 +49,7 @@ class ManageFormsPage extends ConsumerWidget {
                           Text(
                             "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
                           ),
-                          if (form.isDraft ?? false)
+                          if (form.isDraft)
                             user.isAdmin
                                 ? ElevatedButton(
                                     onPressed: () {
