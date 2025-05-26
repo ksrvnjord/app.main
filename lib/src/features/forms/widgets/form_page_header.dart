@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
@@ -9,18 +11,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormPageHeader extends StatelessWidget {
-  const FormPageHeader({
-    super.key,
-    required this.form,
-    required this.answerExists,
-    required this.answerIsCompleted,
-    required this.onAllergyTap,
-  });
+  const FormPageHeader({super.key, required this.form, required this.answer});
 
   final FirestoreForm form;
-  final bool answerExists;
-  final bool answerIsCompleted;
-  final VoidCallback onAllergyTap;
+  final QuerySnapshot<FormAnswer> answer;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +24,11 @@ class FormPageHeader extends StatelessWidget {
     final description = form.description;
     const descriptionVPadding = 16.0;
     const leftCardPadding = 8.0;
+
+    final answerExists = answer.docs.isNotEmpty;
+    final answerIsCompleted = answerExists &&
+        // ignore: avoid-unsafe-collection-methods
+        answer.docs.first.data().isCompleted;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +91,7 @@ class FormPageHeader extends StatelessWidget {
 
         if (form.isKoco)
           GestureDetector(
-            onTap: onAllergyTap,
+            onTap: () => context.pushNamed('My Allergies'),
             child: AllergyWarningCard(),
           ),
 
