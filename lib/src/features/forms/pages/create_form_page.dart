@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_repository.dart';
@@ -8,42 +7,43 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_author_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_metadata_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_options_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({super.key});
 
   @override
-  createState() => _CreateFormPageState();
+  createState() => CreateFormPageState();
 }
 
-class _CreateFormPageState extends ConsumerState<CreateFormPage> {
+class CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _questions = <FirestoreFormQuestion>[];
 
-  final _description = TextEditingController();
-  final _formName = TextEditingController();
-  final _author = TextEditingController();
+  final description = TextEditingController();
+  final formName = TextEditingController();
+  final author = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  bool _isGroupSpecific = false;
-  List<String> _visibleForGroups = [];
+  bool isGroupSpecific = false;
+  List<String> visibleForGroups = [];
 
   DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
 
   bool _isDraft = true;
 
-  bool _hasMaximumNumberOfAnswers = false;
-  int? _maximumNumberOfAnswers;
-  bool? _maximumNumberOfAnswersIsVisible;
+  bool hasMaximumNumberOfAnswers = false;
+  int? maximumNumberOfAnswers;
+  bool maximumNumberOfAnswersIsVisible = false;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
     for (FirestoreFormQuestion question in _questions) {
@@ -58,6 +58,47 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   bool get _formsHasNoQuestions => _questions.isEmpty;
+
+  void updateAuthor(String newAuthor) {
+    setState(() {
+      author.text = newAuthor;
+    });
+  }
+
+  void updateMaximumNumberOfAnswers(int? newValue) {
+    setState(() {
+      maximumNumberOfAnswers = newValue;
+    });
+  }
+
+  void updateHasMaximumNumberOfAnswers(bool? newValue) {
+    setState(() {
+      hasMaximumNumberOfAnswers = newValue ?? false;
+    });
+  }
+
+  void updateMaximumNumberOfAnswersIsVisible(bool? newValue) {
+    setState(() {
+      maximumNumberOfAnswersIsVisible = newValue ?? false;
+    });
+  }
+
+  void updateIsGroupSpecific(bool? newIsGroupSpecific) {
+    setState(() {
+      isGroupSpecific = newIsGroupSpecific ?? false;
+      visibleForGroups = [];
+    });
+  }
+
+  void updateGroupSettings(bool isOn, String value) {
+    setState(() {
+      if (isOn && !visibleForGroups.contains(value)) {
+        visibleForGroups.add(value);
+      } else if (visibleForGroups.contains(value)) {
+        visibleForGroups.remove(value);
+      }
+    });
+  }
 
   // ignore: avoid-long-functions
   Future<void> _handleSubmitForm(BuildContext context, WidgetRef ref) async {
@@ -108,21 +149,21 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
       final result = await FormRepository.createForm(
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
-          title: _formName.text,
+          title: formName.text,
           questions: _questions,
           openUntilTimeStamp: Timestamp.fromDate(_openUntil),
-          description: _description.text,
+          description: description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.isAdmin
-              ? _author.text
-              : currentUser.canCreateFormsFor[_author.text]!,
-          groupId: currentUser.isAdmin ? null : _author.text,
-          hasMaximumNumberOfAnswers: _hasMaximumNumberOfAnswers,
-          maximumNumberOfAnswers: _maximumNumberOfAnswers ??
+              ? author.text
+              : currentUser.canCreateFormsFor[author.text]!,
+          groupId: currentUser.isAdmin ? null : author.text,
+          hasMaximumNumberOfAnswers: hasMaximumNumberOfAnswers,
+          maximumNumberOfAnswers: maximumNumberOfAnswers ??
               100000, //Default value mimicing infinity
-          maximumNumberIsVisible: _maximumNumberOfAnswersIsVisible ?? false,
+          maximumNumberIsVisible: maximumNumberOfAnswersIsVisible ?? false,
           isDraft: _isDraft,
-          visibleForGroups: await _convertToIds(_visibleForGroups),
+          visibleForGroups: await _convertToIds(visibleForGroups),
         ),
       );
       if (!context.mounted) return;
@@ -199,8 +240,8 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   @override
   void dispose() {
-    _description.dispose();
-    _formName.dispose();
+    description.dispose();
+    formName.dispose();
     super.dispose();
   }
 
@@ -224,136 +265,15 @@ class _CreateFormPageState extends ConsumerState<CreateFormPage> {
               'Let op: Forms kunnen niet worden aangepast na het maken.',
               style: TextStyle(color: colorScheme.outline),
             ),
-            currentUserAsync.when(
-              data: (user) {
-                if (user.isAdmin) {
-                  _author.text = user.fullName;
-                  return TextFormField(
-                    controller: _author,
-                    decoration: const InputDecoration(labelText: 'Auteur'),
-                    maxLines: null,
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'Auteur kan niet leeg zijn.'
-                        : null,
-                  );
-                } else {
-                  if (_author.text.isEmpty) {
-                    _author.text = user.canCreateFormsFor.keys.first;
-                  }
-                  return DropdownButtonFormField<String>(
-                    value: _author.text,
-                    decoration: const InputDecoration(labelText: 'Auteur'),
-                    items: user.canCreateFormsFor.entries
-                        .map((entry) => DropdownMenuItem(
-                              value: entry.key,
-                              child: Text(entry.value),
-                            ))
-                        .toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _author.text = newValue ?? '';
-                      });
-                    },
-                    validator: (value) => (value == null || value.isEmpty)
-                        ? 'Auteur kan niet leeg zijn.'
-                        : null,
-                  );
-                }
-              },
-              loading: () {
-                return const CircularProgressIndicator.adaptive();
-              },
-              error: (error, stack) =>
-                  ErrorTextWidget(errorMessage: error.toString()),
-            ),
-            TextFormField(
-              // Kies form naam.
-              controller: _formName,
-              decoration: const InputDecoration(labelText: 'Formulier naam'),
-              maxLines: null,
-
-              validator: (value) => (value == null || value.isEmpty)
-                  ? 'Naam van de form kan niet leeg zijn.'
-                  : null,
-            ),
-            TextFormField(
-              // Kies beschrijving form.
-              controller: _description,
-              decoration: const InputDecoration(
-                labelText: 'Beschrijving form',
-              ),
-              maxLines: null,
-            ),
-            [
-              const Text(
-                'groep specifiek? ',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-              Switch.adaptive(
-                value: _isGroupSpecific,
-                onChanged: (bool value) =>
-                    setState(() => _isGroupSpecific = value),
-              ),
-            ].toRow(),
-            if (_isGroupSpecific)
-              SelectGroupWidget(
-                onChanged: (List<String> newSelectedGroups) => setState(() {
-                  _visibleForGroups = newSelectedGroups;
-                }),
-                visibleForGroups: _visibleForGroups,
-              ),
+            CreateFormAuthorWidget(),
+            CreateFormMetadataWidget(),
             const SizedBox(height: sizedBoxHeight),
             CreateFormDateTimePicker(
               initialDate: _openUntil,
               onDateTimeChanged: (DateTime dateTime) =>
                   setState(() => _openUntil = dateTime),
             ),
-            Row(
-              children: [
-                Checkbox.adaptive(
-                  value: _hasMaximumNumberOfAnswers,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hasMaximumNumberOfAnswers = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Maximum aantal antwoorden toestaan'),
-              ],
-            ),
-            if (_hasMaximumNumberOfAnswers)
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Maximum aantal antwoorden',
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                onChanged: (value) {
-                  setState(() {
-                    _maximumNumberOfAnswers = int.tryParse(value);
-                  });
-                },
-                validator: (value) {
-                  if (_hasMaximumNumberOfAnswers &&
-                      (value == null || value.isEmpty)) {
-                    return 'Vul het maximum aantal antwoorden in.';
-                  }
-                  return null;
-                },
-              ), //TODO disable feature later
-            Row(
-              children: [
-                Checkbox.adaptive(
-                  value: _maximumNumberOfAnswersIsVisible ?? false,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _maximumNumberOfAnswersIsVisible = value;
-                    });
-                  },
-                ),
-                const Text('Maximum aantal antwoorden zichtbaar in app'),
-              ],
-            ),
+            CreateFormOptionsWidget(),
             currentUserAsync.when(
               data: (user) {
                 return Row(

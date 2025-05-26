@@ -2,24 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_content.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_delete_button.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_header.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormPage extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.

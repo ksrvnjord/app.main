@@ -6,8 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormPageHeader extends StatelessWidget {
