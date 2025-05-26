@@ -40,37 +40,17 @@ class FormPageHeader extends StatelessWidget {
             Flexible(
               child: Text(form.title, style: textTheme.titleLarge),
             ),
-            IconButton(
-              onPressed: () {
-                const snackbar = SnackBar(
-                  content:
-                      Text('Er is iets misgegaan bij het delen van de form'),
-                );
-                final RouteInformation routeInfo =
-                    GoRouter.of(context).routeInformationProvider.value;
-                final state = routeInfo.state as Map<Object?, Object?>?;
-                if (state == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                  return;
-                }
-                final currentPath = state['location'] as String;
-                final url = "${RoutingConstants.appBaseUrl}$currentPath";
-                Share.share(url).ignore();
-              },
-              icon: const Icon(Icons.share),
-            ),
+            Text(
+              '${form.formClosingTimeIsInFuture ? "Sluit" : "Gesloten"} op '
+              '${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
+              style: textTheme.bodySmall?.copyWith(
+                color: form.userCanEditForm
+                    ? colorScheme.secondary
+                    : colorScheme.outline,
+              ),
+            ).alignment(Alignment.centerLeft),
           ],
         ),
-
-        Text(
-          '${form.formClosingTimeIsInFuture ? "Sluit" : "Gesloten"} op '
-          '${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
-          style: textTheme.bodySmall?.copyWith(
-            color: form.userCanEditForm
-                ? colorScheme.secondary
-                : colorScheme.outline,
-          ),
-        ).alignment(Alignment.centerLeft),
 
         if (form.isSoldOut)
           Text(
@@ -85,7 +65,10 @@ class FormPageHeader extends StatelessWidget {
           ).alignment(Alignment.centerLeft),
 
         if (description != null)
-          Text(description, style: textTheme.bodyMedium)
+          Text(
+            description,
+            style: textTheme.bodyMedium,
+          )
               .padding(vertical: descriptionVPadding)
               .alignment(Alignment.centerLeft),
 
@@ -112,11 +95,13 @@ class FormPageHeader extends StatelessWidget {
             ).padding(left: leftCardPadding),
           ],
         ),
+
         if (answerIsCompleted)
           Text(
             "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
             style: textTheme.bodyMedium,
           ),
+
         if (answerExists && !answerIsCompleted)
           Text(
             "Vul alle verplichte vragen in om je antwoord te versturen.",

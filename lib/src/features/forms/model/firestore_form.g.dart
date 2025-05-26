@@ -24,7 +24,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <int>[],
       groupId: json['groupId'] as String?,
-      isDraft: json['isDraft'] as bool?,
+      isDraft: json['isDraft'] as bool? ?? false,
       isClosed: json['isClosed'] as bool? ?? false,
       hasMaximumNumberOfAnswers:
           json['hasMaximumNumberOfAnswers'] as bool? ?? false,

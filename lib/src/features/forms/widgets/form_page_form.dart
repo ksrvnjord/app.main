@@ -28,12 +28,15 @@ class FormPageForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 16,
+          ),
           for (final question in questions) ...[
             FormQuestion(
               formQuestion: question,
               form: form,
               docRef: formDoc.reference,
-              formIsOpen: !form.isClosed,
+              formIsOpen: form.userCanEditForm,
             ),
             const SizedBox(height: 32),
           ],

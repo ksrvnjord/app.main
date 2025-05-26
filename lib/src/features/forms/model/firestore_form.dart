@@ -22,7 +22,7 @@ class FirestoreForm {
     required this.authorName,
     this.visibleForGroups = const <int>[],
     this.groupId,
-    this.isDraft,
+    this.isDraft = false,
     this.isClosed = false,
     this.hasMaximumNumberOfAnswers = false,
     this.maximumNumberOfAnswers = 100000,
@@ -62,7 +62,7 @@ class FirestoreForm {
   final List<int> visibleForGroups;
 
   final String? groupId;
-  final bool? isDraft;
+  final bool isDraft;
 
   final bool isClosed;
 
@@ -77,7 +77,7 @@ class FirestoreForm {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get userCanEditForm =>
-      formClosingTimeIsInFuture && !isClosed && !isSoldOut;
+      formClosingTimeIsInFuture && !isClosed && !isSoldOut && !isDraft;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance
