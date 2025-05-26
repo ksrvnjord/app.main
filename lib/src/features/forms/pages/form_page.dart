@@ -1,6 +1,4 @@
 // ignore_for_file: prefer-extracting-function-callbacks
-
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,14 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
@@ -100,21 +96,6 @@ class _FormPageState extends ConsumerState<FormPage> {
 
     final formVal = ref.watch(formProvider(doc));
 
-    final currentUserVal = ref.watch(currentUserProvider);
-
-    final Iterable<int> userGroups = currentUserVal.when(
-      data: (currentUser) {
-        return currentUser.groups.map((group) => group.group.id!).toList();
-      },
-      error: (e, s) {
-        // ignore: avoid-async-call-in-sync-function
-        FirebaseCrashlytics.instance.recordError(e, s);
-
-        return const [];
-      },
-      loading: () => const [],
-    );
-
     // ignore: arguments-ordering
     return GestureDetector(
       onTap: _handleTapOutsidePrimaryFocus,
@@ -163,143 +144,110 @@ class _FormPageState extends ConsumerState<FormPage> {
                 }
 
                 final form = formDoc.data()!;
-                final openUntil = form.openUntil;
-                final formIsOpen = DateTime.now().isBefore(openUntil);
                 const descriptionVPadding = 16.0;
                 final description = form.description;
-                final bool isKoco = form.authorName == "Kookcommissie";
 
                 final questions = form.questions;
-                final formGroups = form.visibleForGroups;
                 final textTheme = Theme.of(context).textTheme;
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
-                // TODO: van this not be a var?
-                bool isAFormForUser = true;
-                isAFormForUser = false;
-                for (final group in userGroups) {
-                  if (formGroups.contains(group)) {
-                    isAFormForUser = true;
-                    break;
-                  }
-                }
-                final answerCountVal =
-                    ref.watch(formAnswerCountProvider(formDoc.reference));
 
-                return answerCountVal.when(
-                  data: (answerCount) {
-                    final isSoldOut = form.hasMaximumNumberOfAnswers == true &&
-                        answerCount >=
-                            (form.maximumNumberOfAnswers ??
-                                10000); // very high number to represent infinity
-
-                    return [
-                      [
-                        Flexible(
-                          child: Text(form.title, style: textTheme.titleLarge),
-                        ),
-                      ].toRow(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                      Text(
-                        '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: formIsOpen
-                              ? colorScheme.secondary
-                              : colorScheme.outline,
-                        ),
-                      ).alignment(Alignment.centerLeft),
-                      if (isSoldOut)
-                        Text(
-                          "Deze form heeft het maximale aantal antwoorden bereikt",
-                          style: TextStyle(color: colorScheme.error),
-                        ).alignment(Alignment.centerLeft),
-                      if (form.isClosed && formIsOpen)
-                        Text(
-                          "Deze form is vroegtijdig gesloten door een admin.",
-                          style: TextStyle(color: colorScheme.error),
-                        ).alignment(Alignment.centerLeft),
-                      if (description != null)
-                        Text(description, style: textTheme.bodyMedium)
-                            .padding(vertical: descriptionVPadding)
-                            .alignment(Alignment.centerLeft),
-                      if (isKoco)
-                        GestureDetector(
-                          onTap: () => context.pushNamed(
-                            'My Allergies',
-                          ),
-                          child: AllergyWarningCard(),
-                        ),
-                      answerVal.when(
-                        data: (answer) {
-                          final answerExists = answer.docs.isNotEmpty;
-                          final answerIsCompleted = answerExists &&
-                              // ignore: avoid-unsafe-collection-methods
-                              answer.docs.first.data().isCompleted;
-
-                          const leftCardPadding = 8.0;
-                          // Move isAllowedToEdit calculation here
-                          final isAllowedToEdit = formIsOpen &&
-                              (!isSoldOut || answerIsCompleted) &&
-                              isAFormForUser &&
-                              !form.isClosed;
-
-                          return Column(
-                            // Move all child widgets to the left.
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Je hebt deze form ",
-                                    style: textTheme.titleMedium,
-                                  ),
-                                  AnswerStatusCard(
-                                    answerExists: answerExists,
-                                    isCompleted: answerIsCompleted,
-                                    showIcon: false,
-                                    textStyle: textTheme.titleMedium,
-                                  ).padding(left: leftCardPadding),
-                                ],
-                              ),
-                              if (answerIsCompleted)
-                                Text(
-                                  "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
-                                  style: textTheme.bodyMedium,
-                                ),
-                              if (answerExists && !answerIsCompleted)
-                                Text(
-                                  "Vul alle verplichte vragen in om je antwoord te versturen.",
-                                  style: TextStyle(color: colorScheme.error),
-                                ),
-                              const SizedBox(height: 32.0),
-                              Form(
-                                key: _formKey,
-                                child: [
-                                  for (final question in questions) ...[
-                                    FormQuestion(
-                                      formQuestion: question,
-                                      form: form,
-                                      docRef: formDoc.reference,
-                                      formIsOpen: isAllowedToEdit,
-                                    ),
-                                    const SizedBox(height: 32.0),
-                                  ],
-                                ].toColumn(),
-                              ),
-                            ],
-                          );
-                        },
-                        error: (error, stack) =>
-                            ErrorCardWidget(errorMessage: error.toString()),
-                        loading: () => const SizedBox.shrink(),
+                return [
+                  [
+                    Flexible(
+                      child: Text(form.title, style: textTheme.titleLarge),
+                    ),
+                  ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                  Text(
+                    '${form.formClosingTimeIsInFuture ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
+                    style: textTheme.bodySmall?.copyWith(
+                      color: form.userCanEditForm
+                          ? colorScheme.secondary
+                          : colorScheme.outline,
+                    ),
+                  ).alignment(Alignment.centerLeft),
+                  if (form.isSoldOut)
+                    Text(
+                      "Deze form heeft het maximale aantal antwoorden bereikt",
+                      style: TextStyle(color: colorScheme.error),
+                    ).alignment(Alignment.centerLeft),
+                  if (form.isClosed && form.formClosingTimeIsInFuture)
+                    Text(
+                      "Deze form is vroegtijdig gesloten door een admin.",
+                      style: TextStyle(color: colorScheme.error),
+                    ).alignment(Alignment.centerLeft),
+                  if (description != null)
+                    Text(description, style: textTheme.bodyMedium)
+                        .padding(vertical: descriptionVPadding)
+                        .alignment(Alignment.centerLeft),
+                  if (form.isKoco)
+                    GestureDetector(
+                      onTap: () => context.pushNamed(
+                        'My Allergies',
                       ),
-                    ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
-                  },
-                  error: (error, stack) =>
-                      ErrorCardWidget(errorMessage: error.toString()),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator.adaptive()),
-                );
+                      child: AllergyWarningCard(),
+                    ),
+                  answerVal.when(
+                    data: (answer) {
+                      final answerExists = answer.docs.isNotEmpty;
+                      final answerIsCompleted = answerExists &&
+                          // ignore: avoid-unsafe-collection-methods
+                          answer.docs.first.data().isCompleted;
+
+                      const leftCardPadding = 8.0;
+                      // Move isAllowedToEdit calculation here
+
+                      return Column(
+                        // Move all child widgets to the left.
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Je hebt deze form ",
+                                style: textTheme.titleMedium,
+                              ),
+                              AnswerStatusCard(
+                                answerExists: answerExists,
+                                isCompleted: answerIsCompleted,
+                                showIcon: false,
+                                textStyle: textTheme.titleMedium,
+                              ).padding(left: leftCardPadding),
+                            ],
+                          ),
+                          if (answerIsCompleted)
+                            Text(
+                              "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
+                              style: textTheme.bodyMedium,
+                            ),
+                          if (answerExists && !answerIsCompleted)
+                            Text(
+                              "Vul alle verplichte vragen in om je antwoord te versturen.",
+                              style: TextStyle(color: colorScheme.error),
+                            ),
+                          const SizedBox(height: 32.0),
+                          Form(
+                            key: _formKey,
+                            child: [
+                              for (final question in questions) ...[
+                                FormQuestion(
+                                  formQuestion: question,
+                                  form: form,
+                                  docRef: formDoc.reference,
+                                  formIsOpen: form.userCanEditForm,
+                                ),
+                                const SizedBox(height: 32.0),
+                              ],
+                            ].toColumn(),
+                          ),
+                        ],
+                      );
+                    },
+                    error: (error, stack) =>
+                        ErrorCardWidget(errorMessage: error.toString()),
+                    loading: () => const SizedBox.shrink(),
+                  ),
+                ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
               },
               error: (error, stack) =>
                   ErrorCardWidget(errorMessage: error.toString()),
