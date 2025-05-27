@@ -101,6 +101,52 @@ class ContactPage extends ConsumerWidget {
             ),
           ],
         ),
+        ExpansionTile(
+          title: Text("Vertrouwenscontactpersonen", style: textTheme.titleLarge),
+          children: [
+            vcpInfoVal.when(
+              data: (vertrouwenscontactpersonen) => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Vertrouwenscontactpersoon")),
+                  DataColumn(label: Text("Email")),
+                ],
+                rows: [
+                  ...vertrouwenscontactpersonen.map(
+                    (vertrouwenscontactpersonen) => DataRow(cells: [
+                      DataCell(Text(vertrouwenscontactpersonen.name)),
+                      DataCell(
+                        InkWell(
+                          child: const FaIcon(
+                            FontAwesomeIcons.envelope,
+                          ).padding(all: emailIconPadding),
+                          onTap: () => launchUrl(
+                            Uri.parse('mailto:${commissie.email}'),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ],
+              ),
+              loading: () => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Vertrouwenscontactpersoon")),
+                  DataColumn(label: Text("Email")),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(CircularProgressIndicator.adaptive()),
+                    DataCell(CircularProgressIndicator.adaptive()),
+                  ]),
+                ],
+              ),
+              error: (error, stackTrace) => ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stackTrace,
+              ),
+            ),
+          ],
+        ),
         [
           Text("Volg je ons al op Instagram?", style: textTheme.titleLarge)
               .padding(all: widgetPadding),
