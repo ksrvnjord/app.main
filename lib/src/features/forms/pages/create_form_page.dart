@@ -7,16 +7,13 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_author_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_date_time_picker.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_metadata_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_options_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questions_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
   const CreateFormPage({super.key});
@@ -26,7 +23,7 @@ class CreateFormPage extends ConsumerStatefulWidget {
 }
 
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
-  final _questions = <FirestoreFormQuestion>[];
+  final questions = <FirestoreFormQuestion>[];
 
   final description = TextEditingController();
   final formName = TextEditingController();
@@ -37,16 +34,16 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   bool isGroupSpecific = false;
   List<String> visibleForGroups = [];
 
-  DateTime _openUntil = DateTime.now().add(const Duration(days: 7));
+  DateTime openUntil = DateTime.now().add(const Duration(days: 7));
 
-  bool _isDraft = true;
+  bool isDraft = true;
 
   bool hasMaximumNumberOfAnswers = false;
   int? maximumNumberOfAnswers;
   bool maximumNumberOfAnswersIsVisible = false;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
-    for (FirestoreFormQuestion question in _questions) {
+    for (FirestoreFormQuestion question in questions) {
       final questionOptions = question.options;
       if (question.type == FormQuestionType.singleChoice &&
           (questionOptions == null || questionOptions.isEmpty)) {
@@ -57,7 +54,11 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     return true;
   }
 
-  bool get _formsHasNoQuestions => _questions.isEmpty;
+  bool get _formsHasNoQuestions => questions.isEmpty;
+
+  void updateState() {
+    setState(() {});
+  }
 
   void updateAuthor(String newAuthor) {
     setState(() {
@@ -97,6 +98,30 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       } else if (visibleForGroups.contains(value)) {
         visibleForGroups.remove(value);
       }
+    });
+  }
+
+  void updateIsDraft(bool? newValue) {
+    setState(() {
+      isDraft = newValue ?? true;
+    });
+  }
+
+  void updateOpenUntil(DateTime newDateTime) {
+    setState(() {
+      openUntil = newDateTime;
+    });
+  }
+
+  void removeQuestion(int index) {
+    setState(() {
+      questions.removeAt(index);
+    });
+  }
+
+  void addQuestion(FirestoreFormQuestion question) {
+    setState(() {
+      questions.add(question);
     });
   }
 
@@ -150,8 +175,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
-          questions: _questions,
-          openUntilTimeStamp: Timestamp.fromDate(_openUntil),
+          questions: questions,
+          openUntilTimeStamp: Timestamp.fromDate(openUntil),
           description: description.text,
           authorId: currentUser.identifier.toString(),
           authorName: currentUser.isAdmin
@@ -161,8 +186,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           hasMaximumNumberOfAnswers: hasMaximumNumberOfAnswers,
           maximumNumberOfAnswers: maximumNumberOfAnswers ??
               100000, //Default value mimicing infinity
-          maximumNumberIsVisible: maximumNumberOfAnswersIsVisible ?? false,
-          isDraft: _isDraft,
+          maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
+          isDraft: isDraft,
           visibleForGroups: await _convertToIds(visibleForGroups),
         ),
       );
@@ -248,10 +273,6 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    const sizedBoxHeight = 16.0;
-    const sizedBoxWidthButton = 256.0;
-
-    final currentUserAsync = ref.watch(currentUserProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Maak een form aan')),
@@ -265,75 +286,11 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
               'Let op: Forms kunnen niet worden aangepast na het maken.',
               style: TextStyle(color: colorScheme.outline),
             ),
-            CreateFormAuthorWidget(),
-            CreateFormMetadataWidget(),
-            const SizedBox(height: sizedBoxHeight),
-            CreateFormDateTimePicker(
-              initialDate: _openUntil,
-              onDateTimeChanged: (DateTime dateTime) =>
-                  setState(() => _openUntil = dateTime),
+            const SizedBox(
+              height: 16,
             ),
-            CreateFormOptionsWidget(),
-            currentUserAsync.when(
-              data: (user) {
-                return Row(
-                  children: [
-                    AbsorbPointer(
-                        absorbing: !user.isAdmin,
-                        child: Checkbox.adaptive(
-                          value: _isDraft,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isDraft = value ?? false;
-                            });
-                          },
-                          activeColor: user.isAdmin ? null : Colors.grey,
-                        )),
-                    const Text('Form is een concept'),
-                  ],
-                );
-              },
-              loading: () {
-                return const CircularProgressIndicator.adaptive();
-              },
-              error: (error, stack) =>
-                  ErrorCardWidget(errorMessage: error.toString()),
-            ),
-            const SizedBox(height: sizedBoxHeight),
-            ..._questions.asMap().entries.map((questionEntry) {
-              return CreateFormQuestion(
-                index: questionEntry.key,
-                question: questionEntry.value,
-                onChanged: () => setState(() => {}),
-                deleteQuestion: (int index) =>
-                    // ignore: avoid-collection-mutating-methods
-                    setState(() => _questions.removeAt(index)),
-              );
-            }),
-            const SizedBox(height: sizedBoxHeight),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                SizedBox(
-                  width: sizedBoxWidthButton,
-                  child: ElevatedButton(
-                    onPressed: () => setState(
-                      // ignore: avoid-collection-mutating-methods
-                      () => _questions.add(FirestoreFormQuestion(
-                        title: '',
-                        type: FormQuestionType.text,
-                        isRequired: true,
-                        options: [],
-                      )), // Add an empty label for the new TextFormField.
-                    ),
-                    child: const Text('Voeg vraag toe aan form'),
-                  ),
-                ),
-                const Spacer(),
-              ],
-            ),
-            const SizedBox(height: sizedBoxHeight),
+            CreateFormMetaFieldsWidget(),
+            CreateFormQuestionsWidget(),
           ],
         ),
       ),

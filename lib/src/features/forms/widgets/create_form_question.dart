@@ -198,11 +198,13 @@ class CreateFormQuestion extends ConsumerWidget {
               'Verplicht',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-            Switch.adaptive(
+            Checkbox.adaptive(
               value: question.isRequired,
-              onChanged: (bool value) =>
-                  {question.isRequired = value, onChanged()},
-            ),
+              onChanged: (bool? value) {
+                question.isRequired = value ?? false;
+                onChanged();
+              },
+            )
           ].toRow(),
         ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         TextFormField(

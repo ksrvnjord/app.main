@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class CreateFormOptionsWidget extends ConsumerWidget {
   const CreateFormOptionsWidget({super.key});
@@ -10,6 +12,7 @@ class CreateFormOptionsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = context.findAncestorStateOfType<CreateFormPageState>()!;
+    final currentUserAsync = ref.watch(currentUserProvider);
     // Logic for admin vs regular user can go here
     return Column(children: [
       Row(
@@ -53,6 +56,29 @@ class CreateFormOptionsWidget extends ConsumerWidget {
         ],
       ),
       SelectGroupWidget(),
+      currentUserAsync.when(
+        data: (user) {
+          return Row(
+            children: [
+              AbsorbPointer(
+                  absorbing: !user.isAdmin,
+                  child: Checkbox.adaptive(
+                    value: state.isDraft,
+                    onChanged: (bool? value) {
+                      state.updateIsDraft(value);
+                    },
+                    activeColor: user.isAdmin ? null : Colors.grey,
+                  )),
+              const Text('Form is een concept'),
+            ],
+          );
+        },
+        loading: () {
+          return const CircularProgressIndicator.adaptive();
+        },
+        error: (error, stack) =>
+            ErrorCardWidget(errorMessage: error.toString()),
+      ),
     ]);
   }
 }

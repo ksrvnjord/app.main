@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 
-class CreateFormMetadataWidget extends ConsumerWidget {
-  const CreateFormMetadataWidget({super.key});
+class CreateFormNameAndDescriptionWidget extends ConsumerWidget {
+  const CreateFormNameAndDescriptionWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

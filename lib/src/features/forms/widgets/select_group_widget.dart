@@ -41,13 +41,25 @@ class SelectGroupWidget extends StatelessWidget {
         ],
       ),
       if (state.isGroupSpecific)
-        ...groupChoices.map((group) => CheckboxListTile(
+        ...groupChoices.map(
+          (group) => Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 64.0), // side margins
+            child: CheckboxListTile(
               value: state.visibleForGroups.contains(group),
-              onChanged: ((bool? value) => {
-                    state.updateGroupSettings(value ?? false, group),
-                  }),
-              title: Text(group),
-            ))
+              onChanged: (bool? value) {
+                state.updateGroupSettings(value ?? false, group);
+              },
+              title: Text(
+                group,
+                style: Theme.of(context).textTheme.bodySmall, // smaller text
+              ),
+              dense: true, // reduces vertical height of tile
+              contentPadding:
+                  EdgeInsets.zero, // remove internal padding if needed
+            ),
+          ),
+        )
     ]);
   }
 }
