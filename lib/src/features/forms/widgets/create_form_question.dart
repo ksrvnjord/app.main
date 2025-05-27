@@ -228,7 +228,7 @@ class CreateFormQuestion extends ConsumerWidget {
                   child: Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: ElevatedButton(
-                      onPressed: () => deleteQuestion(index),
+                      onPressed: () => deleteQuestion(question.index!),
                       child: const Text("Verwijder vraag"),
                     ),
                   ),

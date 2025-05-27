@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
@@ -128,7 +129,8 @@ class ManageFormPage extends ConsumerWidget {
                                   docRef: formSnapshot.reference,
                                   formIsOpen: formData.userCanEditForm,
                                 )
-                              : const Text('Fillers nog niet geimplementeerd'),
+                              : FormFiller(
+                                  filler: formData.fillers[contentIndex]!),
                           const SizedBox(height: 32),
                         ]
                       ] else ...[

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 
 class FormPageForm extends StatelessWidget {
@@ -36,7 +37,7 @@ class FormPageForm extends StatelessWidget {
                       docRef: formDoc.reference,
                       formIsOpen: form.userCanEditForm,
                     )
-                  : const Text('Fillers nog niet geimplementeerd'),
+                  : FormFiller(filler: form.fillers[contentIndex]!),
               const SizedBox(height: 32),
             ]
           ] else ...[

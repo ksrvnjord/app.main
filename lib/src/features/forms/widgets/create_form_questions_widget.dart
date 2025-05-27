@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_new_elements_button.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 
 class CreateFormQuestionsWidget extends ConsumerWidget {
@@ -11,7 +12,6 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = context.findAncestorStateOfType<CreateFormPageState>()!;
     const sizedBoxHeight = 16.0;
-    const sizedBoxWidthButton = 256.0;
     // Logic for admin vs regular user can go here
     return Column(children: [
       Center(
@@ -22,36 +22,23 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
       ),
       const SizedBox(height: sizedBoxHeight),
       ...state.formContentObjectIndices.asMap().entries.map((entry) {
-        return CreateFormQuestion(
-          index: entry.key,
-          question: state.questions[entry.value]!,
-          onChanged: () => state.updateState(),
-          deleteQuestion: (int index) => state.removeQuestion(index),
-        );
+        if (state.questions.containsKey(entry.value)) {
+          return CreateFormQuestion(
+            index: entry.key,
+            question: state.questions[entry.value]!,
+            onChanged: () => state.updateState(),
+            deleteQuestion: (int index) => state.removeQuestion(entry.value),
+          );
+        } else {
+          return CreateFormFiller(
+              index: entry.key,
+              filler: state.fillers[entry.value]!,
+              onChanged: () => state.updateState(),
+              deleteFiller: (int index) => state.removeFiller(entry.value));
+        }
       }),
       const SizedBox(height: sizedBoxHeight),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(),
-          SizedBox(
-            width: sizedBoxWidthButton,
-            child: ElevatedButton(
-              onPressed: () => state.addQuestion(FirestoreFormQuestion(
-                  title: '',
-                  type: FormQuestionType.text,
-                  isRequired: true,
-                  options: [],
-                  index: state.formContentObjectIndices
-                          .fold<int>(0, (a, b) => a > b ? a : b) +
-                      1)), // Add an empty label for the new TextFormField.
-
-              child: const Text('Voeg vraag toe aan form'),
-            ),
-          ),
-          const Spacer(),
-        ],
-      ),
+      CreateFormNewElementsButton(),
       const SizedBox(height: sizedBoxHeight),
     ]);
   }
