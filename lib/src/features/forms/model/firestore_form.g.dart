@@ -11,9 +11,26 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       createdTimeTimeStamp: const TimestampDateTimeConverter()
           .fromJson(json['createdTime'] as Timestamp),
       title: json['title'] as String,
-      questions: (json['questions'] as List<dynamic>)
-          .map((e) => FirestoreFormQuestion.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      questions: (json['questions'] as List<dynamic>?)
+              ?.map((e) =>
+                  FirestoreFormQuestion.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      formContentObjectIndices:
+          (json['formContentObjectIndices'] as List<dynamic>?)
+                  ?.map((e) => (e as num).toInt())
+                  .toList() ??
+              const [],
+      questionsV2: (json['questionsV2'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(int.parse(k),
+                FirestoreFormQuestion.fromJson(e as Map<String, dynamic>)),
+          ) ??
+          const {},
+      fillers: (json['fillers'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(int.parse(k),
+                FirestoreFormFiller.fromJson(e as Map<String, dynamic>)),
+          ) ??
+          const {},
       openUntilTimeStamp: const TimestampDateTimeConverter()
           .fromJson(json['openUntil'] as Timestamp),
       description: json['description'] as String?,
@@ -33,12 +50,16 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       currentNumberOfAnswers:
           (json['currentNumberOfAnswers'] as num?)?.toInt() ?? 0,
       maximumNumberIsVisible: json['maximumNumberIsVisible'] as bool? ?? false,
+      isV2: json['isV2'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
     <String, dynamic>{
       'title': instance.title,
       'questions': FirestoreForm._questionsToJson(instance.questions),
+      'formContentObjectIndices': instance.formContentObjectIndices,
+      'questionsV2': FirestoreForm._questionsV2ToJson(instance.questionsV2),
+      'fillers': FirestoreForm._fillersToJson(instance.fillers),
       'openUntil': const TimestampDateTimeConverter()
           .toJson(instance.openUntilTimeStamp),
       'createdTime': const TimestampDateTimeConverter()
@@ -54,4 +75,5 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'maximumNumberOfAnswers': instance.maximumNumberOfAnswers,
       'currentNumberOfAnswers': instance.currentNumberOfAnswers,
       'maximumNumberIsVisible': instance.maximumNumberIsVisible,
+      'isV2': instance.isV2,
     };

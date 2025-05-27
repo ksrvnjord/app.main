@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_reposi
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questions_widget.dart';
@@ -22,7 +23,9 @@ class CreateFormPage extends ConsumerStatefulWidget {
 }
 
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
-  final questions = <FirestoreFormQuestion>[];
+  final questions = <int, FirestoreFormQuestion>{};
+  final fillers = <int, FirestoreFormFiller>{};
+  final formContentObjectIndices = <int>[];
 
   final description = TextEditingController();
   final formName = TextEditingController();
@@ -42,7 +45,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   bool maximumNumberOfAnswersIsVisible = false;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
-    for (FirestoreFormQuestion question in questions) {
+    for (FirestoreFormQuestion question in questions.values) {
       final questionOptions = question.options;
       if (question.type == FormQuestionType.singleChoice &&
           (questionOptions == null || questionOptions.isEmpty)) {
@@ -112,15 +115,31 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
-  void removeQuestion(int index) {
+  void removeQuestion(int contentIndexNumber) {
     setState(() {
-      questions.removeAt(index);
+      formContentObjectIndices.remove(contentIndexNumber);
+      questions.remove(contentIndexNumber);
+    });
+  }
+
+  void removeFiller(int contentIndexNumber) {
+    setState(() {
+      formContentObjectIndices.remove(contentIndexNumber);
+      fillers.remove(contentIndexNumber);
     });
   }
 
   void addQuestion(FirestoreFormQuestion question) {
     setState(() {
-      questions.add(question);
+      formContentObjectIndices.add(question.index!);
+      questions[question.index!] = question;
+    });
+  }
+
+  void addFiller(FirestoreFormFiller filler) {
+    setState(() {
+      formContentObjectIndices.add(filler.index);
+      fillers[filler.index] = filler;
     });
   }
 
@@ -174,7 +193,9 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
-          questions: questions,
+          formContentObjectIndices: formContentObjectIndices,
+          questionsV2: questions,
+          fillers: fillers,
           openUntilTimeStamp: Timestamp.fromDate(openUntil),
           description: description.text,
           authorId: currentUser.identifier.toString(),
@@ -188,6 +209,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
           isDraft: isDraft,
           visibleForGroups: await _convertToIds(visibleForGroups),
+          isV2: true,
         ),
       );
       if (!context.mounted) return;

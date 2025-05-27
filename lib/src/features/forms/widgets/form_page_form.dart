@@ -21,24 +21,37 @@ class FormPageForm extends StatelessWidget {
       return const Text('No valid response found!');
     }
 
-    final questions = form.questions;
+    print(form.isV2);
+    print(form.questionsV2);
 
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 16,
-          ),
-          for (final question in questions) ...[
-            FormQuestion(
-              formQuestion: question,
-              form: form,
-              docRef: formDoc.reference,
-              formIsOpen: form.userCanEditForm,
-            ),
-            const SizedBox(height: 32),
+          const SizedBox(height: 16),
+          if (form.isV2) ...[
+            for (final contentIndex in form.formContentObjectIndices) ...[
+              form.questionsV2.containsKey(contentIndex)
+                  ? FormQuestion(
+                      formQuestion: form.questionsV2[contentIndex]!,
+                      form: form,
+                      docRef: formDoc.reference,
+                      formIsOpen: form.userCanEditForm,
+                    )
+                  : const Text('Fillers nog niet geimplementeerd'),
+              const SizedBox(height: 32),
+            ]
+          ] else ...[
+            for (final question in form.questions) ...[
+              FormQuestion(
+                formQuestion: question,
+                form: form,
+                docRef: formDoc.reference,
+                formIsOpen: form.userCanEditForm,
+              ),
+              const SizedBox(height: 32),
+            ]
           ],
         ],
       ),

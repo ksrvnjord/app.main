@@ -21,10 +21,10 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
         thickness: 6,
       ),
       const SizedBox(height: sizedBoxHeight),
-      ...state.questions.asMap().entries.map((questionEntry) {
+      ...state.formContentObjectIndices.asMap().entries.map((entry) {
         return CreateFormQuestion(
-          index: questionEntry.key,
-          question: questionEntry.value,
+          index: entry.key,
+          question: state.questions[entry.value]!,
           onChanged: () => state.updateState(),
           deleteQuestion: (int index) => state.removeQuestion(index),
         );
@@ -38,11 +38,13 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
             width: sizedBoxWidthButton,
             child: ElevatedButton(
               onPressed: () => state.addQuestion(FirestoreFormQuestion(
-                title: '',
-                type: FormQuestionType.text,
-                isRequired: true,
-                options: [],
-              )), // Add an empty label for the new TextFormField.
+                  title: '',
+                  type: FormQuestionType.text,
+                  isRequired: true,
+                  options: [],
+                  index: state.formContentObjectIndices
+                          .fold<int>(0, (a, b) => a > b ? a : b) +
+                      1)), // Add an empty label for the new TextFormField.
 
               child: const Text('Voeg vraag toe aan form'),
             ),
