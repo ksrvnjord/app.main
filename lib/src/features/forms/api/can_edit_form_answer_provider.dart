@@ -34,8 +34,7 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
 
   return form.when(
     data: (form) {
-      final formIsOpen =
-          form.data()?.openUntil.toDate().isAfter(DateTime.now()) == true;
+      final formIsOpen = form.data()?.openUntil.isAfter(DateTime.now()) == true;
 
       // Add a timer that updates the formIsOpen value when the form is closed.
       if (formIsOpen) {
@@ -43,7 +42,7 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
           // ignore: prefer-async-await
           Future.delayed(
             // ignore: avoid-non-null-assertion
-            form.data()!.openUntil.toDate().difference(DateTime.now()),
+            form.data()!.openUntil.difference(DateTime.now()),
           ).then((_) => ref.invalidateSelf()),
         );
       }

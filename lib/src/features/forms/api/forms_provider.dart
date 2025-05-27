@@ -62,16 +62,19 @@ final formProvider = StreamProvider.family<DocumentSnapshot<FirestoreForm>,
 );
 
 final creatorNamesFormsOnCreationProvider =
-    StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) {
+    StreamProvider.autoDispose<QuerySnapshot<FirestoreForm>>((ref) async* {
   final user = ref.watch(firebaseAuthUserProvider).value;
-  final creatorNames = ref.watch(creatorNamesProvider).asData?.value ?? [];
+  final creatorNames = await ref.watch(creatorNamesProvider.future);
 
-  if (user == null || creatorNames.isEmpty) {
-    return const Stream.empty();
+  if (user == null) {
+    yield* const Stream.empty();
+    return;
   }
 
-  return formsCollection
-      .where('authorName', whereIn: creatorNames)
+  final safeNames = creatorNames.isEmpty ? ['___NO_MATCH___'] : creatorNames;
+
+  yield* formsCollection
+      .where('authorName', whereIn: safeNames)
       .orderBy('createdTime', descending: true)
       .snapshots();
 });
