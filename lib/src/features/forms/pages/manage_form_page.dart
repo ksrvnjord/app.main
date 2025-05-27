@@ -127,7 +127,7 @@ class ManageFormPage extends ConsumerWidget {
                                       formData.questionsV2[contentIndex]!,
                                   form: formData,
                                   docRef: formSnapshot.reference,
-                                  formIsOpen: formData.userCanEditForm,
+                                  formIsOpen: false,
                                 )
                               : FormFiller(
                                   filler: formData.fillers[contentIndex]!),
