@@ -51,33 +51,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   // This is used to keep track of the progress of the CSV generation.
   // Dart doesn't let us modify the progress counter inside the main loop of the CSV generation.
   // It's a bit of a hack, but it works.
-  // Future<String> _incrementProgressCounterAndReturnUserId(
-  //   String userId,
-  //   int answersLength,
-  // ) async {
-  //   setState(() {
-  //     _progressCounter += 1;
-  //   });
-
-  //   // This is a intentional delay to prevent our bare-bones Google Cloud SQL server from getting overwhelmed.
-  //   // The delay is exponential, so the first few answers are generated quickly, but the last few slow.
-  //   const growthRate = 0.1874;
-  //   const maximum = 1726 * 4;
-  //   final randomMax = maximum /
-  //       (1 + math.exp(-growthRate * (_progressCounter - answersLength)));
-
-  //   // ignore: avoid-ignoring-return-values
-  //   await Future.delayed(
-  //     Duration(
-  //       milliseconds: math.Random().nextInt(1 + randomMax.ceil()) +
-  //           // ignore: no-magic-number
-  //           1726 ~/ 8 +
-  //           (randomMax.ceil() ~/ answersLength),
-  //     ),
-  //   );
-
-  //   return userId;
-  // }
 
   void _handleDownloadButtonTap({
     required BuildContext context,
@@ -99,10 +72,14 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       final form = formSnapshot.data()!;
       final answers = answerDocs.map((doc) => doc.data()).toList();
 
+      // Choose question list based on version
+      final questions =
+          form.isV2 ? form.questionsV2.values.toList() : form.questions;
+
       final headerRow = [
         'Lidnummer',
         ...exportOptions.extraFields.keys,
-        ...form.questions.map((q) => q.title),
+        ...questions.map((q) => q.title),
         'Invultijdstip',
       ];
 
@@ -110,7 +87,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         answers.map((answer) async {
           final userId = answer.userId;
 
-          // Build a map of questionTitle → answer for fast lookup
+          // Map questionTitle → answer for lookup
           final answerMap = {
             for (var a in answer.answers) a.questionTitle: a.answer,
           };
@@ -119,15 +96,16 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
             exportOptions.extraFields.values.map((func) => func(userId)),
           );
 
+          // Use the right question list here as well
           final questionAnswers =
-              form.questions.map((q) => answerMap[q.title] ?? "").toList();
+              questions.map((q) => answerMap[q.title] ?? "").toList();
 
           final timestamp = DateFormat('dd-MM-yyyy HH:mm:ss')
               .format(answer.answeredAt.toDate());
 
           if (mounted) {
             setState(() {
-              _progressCounter = ++_progressCounter;
+              _progressCounter++;
             });
           }
           return [
@@ -317,6 +295,19 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     html.Url.revokeObjectUrl(url);
   }
 
+  bool _formContainsImageQuestion(FirestoreForm? form) {
+    if (form == null) {
+      return false;
+    }
+    if (form.isV2) {
+      return form.questionsV2.values
+          .any((question) => question.type == FormQuestionType.image);
+    } else {
+      return form.questions
+          .any((question) => question.type == FormQuestionType.image);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final completedAnswersVal =
@@ -370,10 +361,8 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           ),
           floatingActionButton: formVal.maybeWhen(
             data: (formSnapshot) {
-              final hasImageQuestions = formSnapshot
-                  .data()!
-                  .questions
-                  .any((question) => question.type == FormQuestionType.image);
+              final formData = formSnapshot.data();
+              final hasImageQuestions = _formContainsImageQuestion(formData);
               return completedAnswersVal.maybeWhen(
                 data: (answersSnapshot) =>
                     Column(mainAxisSize: MainAxisSize.min, children: [
