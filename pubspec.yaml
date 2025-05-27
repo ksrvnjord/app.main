@@ -111,7 +111,7 @@ flutter_launcher_icons:
     android: true
     ios: true
     remove_alpha_ios: true
-    image_path: "assets/icons/standard/app_icon.png"
-    adaptive_icon_foreground: "assets/icons/standard/app_icon_foreground.png" # Foreground for adaptive icons
-    adaptive_icon_background: "assets/icons/standard/app_icon_background.png" # Background for adaptive icons
-    adaptive_icon_monochrome: "assets/icons/standard/app_icon_monochrome.png" # Monochrome icon for Android 13+
+    image_path: "assets/icons/pride/app_icon.png"
+    adaptive_icon_foreground: "assets/icons/pride/app_icon_foreground.png" # Foreground for adaptive icons
+    adaptive_icon_background: "assets/icons/pride/app_icon_background.png" # Background for adaptive icons
+    adaptive_icon_monochrome: "assets/icons/pride/app_icon_monochrome.png" # Monochrome icon for Android 13+
