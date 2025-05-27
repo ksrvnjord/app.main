@@ -143,6 +143,16 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
+  void moveQuestionOrFiller(int index, bool directionLeft) {
+    setState(() {
+      final swapIndex = directionLeft ? index - 1 : index + 1;
+
+      final temp = formContentObjectIndices[index];
+      formContentObjectIndices[index] = formContentObjectIndices[swapIndex];
+      formContentObjectIndices[swapIndex] = temp;
+    });
+  }
+
   // ignore: avoid-long-functions
   Future<void> _handleSubmitForm(BuildContext context, WidgetRef ref) async {
     final currentState = _formKey.currentState;

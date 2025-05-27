@@ -21,9 +21,6 @@ class FormPageForm extends StatelessWidget {
       return const Text('No valid response found!');
     }
 
-    print(form.isV2);
-    print(form.questionsV2);
-
     return Form(
       key: formKey,
       child: Column(

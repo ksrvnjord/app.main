@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_move_arrows.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -166,70 +167,79 @@ class CreateFormQuestion extends ConsumerWidget {
     TextEditingController? questionController =
         TextEditingController(text: question.title);
 
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        border: Border.fromBorderSide(BorderSide(color: Colors.grey)),
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      ),
-      margin: const EdgeInsets.all(8.0),
-      child: Column(children: [
-        [
-          DropdownButton<FormQuestionType>(
-            items: FormQuestionType.values
-                .where((type) => type != FormQuestionType.unsupported)
-                .map<DropdownMenuItem<FormQuestionType>>(
-              (FormQuestionType value) {
-                return DropdownMenuItem<FormQuestionType>(
-                  value: value,
-                  child: Text(value.name.toString()),
-                );
-              },
-            ).toList(),
-            value: question.type,
-            // ignore: prefer-extracting-callbacks
-            onChanged: (FormQuestionType? newValue) {
-              question.type = newValue ?? question.type;
-              onChanged();
-            },
-          ),
-          [
-            const Text(
-              'Verplicht',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            Checkbox.adaptive(
-              value: question.isRequired,
-              onChanged: (bool? value) {
-                question.isRequired = value ?? false;
-                onChanged();
-              },
-            )
-          ].toRow(),
-        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-        TextFormField(
-          controller: questionController,
-          // add text if type is image
-          decoration: InputDecoration(
-              labelText: 'Vraag ${index + 1} (gebruik unieke vragen)'),
-          onChanged: (String value) => {question.title = value},
-          validator: (value) => (value == null || value.isEmpty)
-              ? 'Geef een naam op voor de vraag.'
-              : null,
-        ),
-        // ignore: avoid-returning-widgets
-        _buildQuestionExtras(question, onChanged, context),
-        Align(
-          alignment: Alignment.centerRight,
+    return Row(
+      children: [
+        Expanded(
+          // or Flexible
           child: Container(
-            margin: const EdgeInsets.only(top: 16),
-            child: ElevatedButton(
-              onPressed: () => deleteQuestion(index),
-              child: const Text("Verwijder vraag"),
+            padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              border: Border.fromBorderSide(BorderSide(color: Colors.grey)),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            margin: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                [
+                  DropdownButton<FormQuestionType>(
+                    items: FormQuestionType.values
+                        .where((type) => type != FormQuestionType.unsupported)
+                        .map<DropdownMenuItem<FormQuestionType>>(
+                      (FormQuestionType value) {
+                        return DropdownMenuItem<FormQuestionType>(
+                          value: value,
+                          child: Text(value.name.toString()),
+                        );
+                      },
+                    ).toList(),
+                    value: question.type,
+                    onChanged: (FormQuestionType? newValue) {
+                      question.type = newValue ?? question.type;
+                      onChanged();
+                    },
+                  ),
+                  [
+                    const Text(
+                      'Verplicht',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Checkbox.adaptive(
+                      value: question.isRequired,
+                      onChanged: (bool? value) {
+                        question.isRequired = value ?? false;
+                        onChanged();
+                      },
+                    )
+                  ].toRow(),
+                ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                TextFormField(
+                  controller: questionController,
+                  decoration: InputDecoration(
+                      labelText: 'Vraag ${index + 1} (gebruik unieke vragen)'),
+                  onChanged: (String value) => question.title = value,
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Geef een naam op voor de vraag.'
+                      : null,
+                ),
+                _buildQuestionExtras(question, onChanged, context),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    child: ElevatedButton(
+                      onPressed: () => deleteQuestion(index),
+                      child: const Text("Verwijder vraag"),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ]),
+        CreateFormMoveArrows(
+            index: index, contentIndex: question.index!), // This is fine now
+      ],
     );
   }
 }

@@ -117,17 +117,30 @@ class ManageFormPage extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 32),
-                      for (final question in formData.questions) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: FormQuestion(
+                      if (formData.isV2) ...[
+                        for (final contentIndex
+                            in formData.formContentObjectIndices) ...[
+                          formData.questionsV2.containsKey(contentIndex)
+                              ? FormQuestion(
+                                  formQuestion:
+                                      formData.questionsV2[contentIndex]!,
+                                  form: formData,
+                                  docRef: formSnapshot.reference,
+                                  formIsOpen: formData.userCanEditForm,
+                                )
+                              : const Text('Fillers nog niet geimplementeerd'),
+                          const SizedBox(height: 32),
+                        ]
+                      ] else ...[
+                        for (final question in formData.questions) ...[
+                          FormQuestion(
                             formQuestion: question,
                             form: formData,
-                            docRef: formVal.value!.reference,
-                            formIsOpen: false, // Use it here
+                            docRef: formSnapshot.reference,
+                            formIsOpen: formData.userCanEditForm,
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 32),
+                        ]
                       ],
                     ]);
         },
