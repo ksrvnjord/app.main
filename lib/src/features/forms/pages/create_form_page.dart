@@ -8,7 +8,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questions_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
