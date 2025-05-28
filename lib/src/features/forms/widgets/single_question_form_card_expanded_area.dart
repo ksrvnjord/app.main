@@ -40,7 +40,7 @@ class SingleQuestionFormCardExpandedArea extends StatelessWidget {
                         formQuestion: q,
                         form: form,
                         docRef: reference,
-                        formIsOpen: form.userCanEditForm,
+                        userCanEditForm: form.isOpen,
                         withoutBorder: true,
                         showAdditionalSaveButton: true,
                       ).padding(horizontal: hPadding),

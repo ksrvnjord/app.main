@@ -124,7 +124,7 @@ class ManageFormPage extends ConsumerWidget {
                             formQuestion: question,
                             form: formData,
                             docRef: formVal.value!.reference,
-                            formIsOpen: false, // Use it here
+                            userCanEditForm: false, // Use it here
                           ),
                         ),
                         const SizedBox(height: 16),

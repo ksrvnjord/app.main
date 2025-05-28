@@ -19,7 +19,7 @@ class FormQuestion extends ConsumerStatefulWidget {
     required this.formQuestion,
     required this.form,
     required this.docRef,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     this.withoutBorder = false,
     this.showAdditionalSaveButton = true, // TODO: This should be false/removed
   });
@@ -30,7 +30,7 @@ class FormQuestion extends ConsumerStatefulWidget {
 
   final DocumentReference<FirestoreForm> docRef;
 
-  final bool formIsOpen;
+  final bool userCanEditForm;
 
   final bool withoutBorder;
 
@@ -145,7 +145,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         validator: (value) => (value == null || value.isEmpty)
                             ? 'Antwoord kan niet leeg zijn.'
                             : null,
-                        enabled: widget.formIsOpen,
+                        enabled: widget.userCanEditForm,
                       ),
                     ),
                     if (widget.showAdditionalSaveButton)
@@ -173,7 +173,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 ref: ref,
                 context: context,
               ),
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
             ));
             break;
 
@@ -181,7 +181,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             questionWidgets.add(FormImageWidget(
               docId: widget.docRef.id,
               questionName: widget.formQuestion.title,
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 newValue: value,
@@ -205,7 +205,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               DateChoiceWidget(
                 answerValueDateTime: answerValueDateTime,
                 question: widget.formQuestion,
-                formIsOpen: widget.formIsOpen,
+                userCanEditForm: widget.userCanEditForm,
                 onChanged: (String? value) => _handleChangeOfFormAnswer(
                   question: widget.formQuestion.title,
                   newValue: value,

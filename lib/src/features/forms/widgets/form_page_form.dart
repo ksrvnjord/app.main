@@ -8,10 +8,12 @@ class FormPageForm extends StatelessWidget {
     super.key,
     required this.formDoc,
     required this.formKey,
+    required this.isAFormForUser,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final GlobalKey<FormState> formKey;
+  final bool isAFormForUser;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class FormPageForm extends StatelessWidget {
               formQuestion: question,
               form: form,
               docRef: formDoc.reference,
-              formIsOpen: form.userCanEditForm,
+              userCanEditForm: form.isOpen && isAFormForUser,
             ),
             const SizedBox(height: 32),
           ],
