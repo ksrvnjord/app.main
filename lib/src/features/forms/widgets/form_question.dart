@@ -148,7 +148,8 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         enabled: widget.userCanEditForm,
                       ),
                     ),
-                    if (widget.showAdditionalSaveButton)
+                    if (widget.showAdditionalSaveButton &&
+                        widget.userCanEditForm)
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.save();
