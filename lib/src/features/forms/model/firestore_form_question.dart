@@ -33,6 +33,7 @@ class FirestoreFormQuestion {
 enum FormQuestionType {
   text,
   singleChoice,
+  multipleChoice,
   image,
   date,
   unsupported, // Add an error type for unknown values
@@ -49,6 +50,8 @@ class FormQuestionTypeConverter
         return FormQuestionType.text;
       case 'singleChoice':
         return FormQuestionType.singleChoice;
+      case 'multipleChoice':
+        return FormQuestionType.multipleChoice;
       case 'image':
         return FormQuestionType.image;
       case 'date':

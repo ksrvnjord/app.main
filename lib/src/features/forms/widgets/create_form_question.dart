@@ -81,7 +81,7 @@ class CreateFormQuestion extends ConsumerWidget {
     // ignore: avoid-long-functions
   ) {
     switch (q.type) {
-      case FormQuestionType.singleChoice:
+      case FormQuestionType.singleChoice || FormQuestionType.multipleChoice:
         return [
           ...(q.options ?? []).asMap().entries.map((optionEntry) {
             int optionIndex = optionEntry.key;
@@ -102,9 +102,15 @@ class CreateFormQuestion extends ConsumerWidget {
                       onChanged: (String value) =>
                           // ignore: avoid-collection-mutating-methods, avoid-non-null-assertion
                           {q.options![optionIndex] = value},
-                      validator: (value) => (value == null || value.isEmpty)
-                          ? 'Optie kan niet leeg zijn.'
-                          : null,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Optie kan niet leeg zijn.';
+                        }
+                        if (value.contains(r'$')) {
+                          return 'Optie mag geen dollarteken (\$) bevatten.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Align(
@@ -122,7 +128,8 @@ class CreateFormQuestion extends ConsumerWidget {
               ),
             ].toColumn();
           }),
-          if (q.type == FormQuestionType.singleChoice)
+          if (q.type == FormQuestionType.singleChoice ||
+              q.type == FormQuestionType.multipleChoice)
             const SizedBox(height: 16),
           ElevatedButton(
             // ignore: avoid-non-null-assertion, avoid-collection-mutating-methods

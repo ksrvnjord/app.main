@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/date_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -168,6 +169,26 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 newValue: answerValue == value ? null : value,
+                f: widget.form,
+                d: widget.docRef,
+                ref: ref,
+                context: context,
+              ),
+              formIsOpen: widget.formIsOpen,
+            ));
+            break;
+
+          case FormQuestionType.multipleChoice:
+            final values = answerValue == null || answerValue == '[]'
+                ? <String>[]
+                : answerValue.substring(1, answerValue.length - 1).split(r'$');
+
+            questionWidgets.add(MultipleChoiceWidget(
+              initialValues: values,
+              formQuestion: widget.formQuestion,
+              onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
+                question: widget.formQuestion.title,
+                newValue: '[${newValues.join(r'$')}]',
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,

@@ -97,8 +97,16 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           );
 
           // Use the right question list here as well
-          final questionAnswers =
-              questions.map((q) => answerMap[q.title] ?? "").toList();
+          final questionAnswers = questions.map((q) {
+            final raw = answerMap[q.title];
+            if (raw is String && raw.startsWith('[') && raw.endsWith(']')) {
+              // Handle multiple-choice answer formatting
+              final content = raw.substring(1, raw.length - 1);
+              if (content.isEmpty) return '';
+              return content.split(r'$').join(', ');
+            }
+            return raw ?? '';
+          }).toList();
 
           final timestamp = DateFormat('dd-MM-yyyy HH:mm:ss')
               .format(answer.answeredAt.toDate());
