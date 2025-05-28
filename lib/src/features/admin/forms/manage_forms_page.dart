@@ -40,7 +40,7 @@ class ManageFormsPage extends ConsumerWidget {
                       final doc = snapshot.docs[index];
                       final form = doc.data();
 
-                      final formIsOpen = form.openUntil.isAfter(DateTime.now());
+                      final formIsNotExpired = form.formClosingTimeIsInFuture;
 
                       final partialReactionVal = ref.watch(
                         formPartialReactionCountProvider(doc.id),
@@ -50,7 +50,7 @@ class ManageFormsPage extends ConsumerWidget {
                         title: Text(form.title),
                         subtitle: [
                           Text(
-                            "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
+                            "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
                           ),
                           if (form.isDraft)
                             user.isAdmin

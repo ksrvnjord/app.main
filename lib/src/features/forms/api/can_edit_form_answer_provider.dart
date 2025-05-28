@@ -34,10 +34,10 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
 
   return form.when(
     data: (form) {
-      final formIsOpen = form.data()?.openUntil.isAfter(DateTime.now()) == true;
+      final formIsNotExpired = form.data()?.formClosingTimeIsInFuture == true;
 
-      // Add a timer that updates the formIsOpen value when the form is closed.
-      if (formIsOpen) {
+      // Add a timer that updates the formIsNotExpired value when the form is closed.
+      if (formIsNotExpired) {
         unawaited(
           // ignore: prefer-async-await
           Future.delayed(
@@ -47,7 +47,7 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
         );
       }
 
-      return Stream.value(formIsOpen);
+      return Stream.value(formIsNotExpired);
     },
     error: (error, _) => throw error,
     loading: () => Stream.value(false),
