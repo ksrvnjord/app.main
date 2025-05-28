@@ -20,7 +20,7 @@ class FormRepository {
       throw Exception('User is null');
     }
 
-    if (DateTime.now().isAfter(form.openUntil.toDate())) {
+    if (DateTime.now().isAfter(form.openUntil)) {
       throw Exception('Form is closed');
     }
 
