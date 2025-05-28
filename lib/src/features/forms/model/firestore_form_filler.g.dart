@@ -8,7 +8,7 @@ part of 'firestore_form_filler.dart';
 
 FirestoreFormFiller _$FirestoreFormFillerFromJson(Map<String, dynamic> json) =>
     FirestoreFormFiller(
-      index: (json['index'] as num).toInt(),
+      id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       body: json['body'] as String,
       hasImage: json['hasImage'] as bool,
@@ -17,7 +17,7 @@ FirestoreFormFiller _$FirestoreFormFillerFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$FirestoreFormFillerToJson(
         FirestoreFormFiller instance) =>
     <String, dynamic>{
-      'index': instance.index,
+      'id': instance.id,
       'title': instance.title,
       'body': instance.body,
       'hasImage': instance.hasImage,

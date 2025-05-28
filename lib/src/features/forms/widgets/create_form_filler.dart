@@ -110,8 +110,7 @@ class _CreateFormFillerState extends ConsumerState<CreateFormFiller> {
                     Container(
                       margin: const EdgeInsets.only(top: 16),
                       child: ElevatedButton(
-                        onPressed: () =>
-                            widget.deleteFiller(widget.filler.index),
+                        onPressed: () => widget.deleteFiller(widget.filler.id),
                         child: const Text("Verwijder Info-blok"),
                       ),
                     ),
@@ -144,7 +143,7 @@ class _CreateFormFillerState extends ConsumerState<CreateFormFiller> {
           ),
           CreateFormMoveArrows(
             index: widget.index,
-            contentIndex: widget.filler.index,
+            contentIndex: widget.filler.id,
           ),
         ],
       ),

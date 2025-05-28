@@ -72,7 +72,7 @@ class FormRepository {
           final fileBytes = await filler.image!.readAsBytes();
 
           final storageRef = storage.ref().child(
-              '$firestoreFormCollectionName/$formId/fillers/${filler.index}');
+              '$firestoreFormCollectionName/$formId/fillers/${filler.id}');
 
           await storageRef.putData(
             fileBytes,

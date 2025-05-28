@@ -228,7 +228,7 @@ class CreateFormQuestion extends ConsumerWidget {
                   child: Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: ElevatedButton(
-                      onPressed: () => deleteQuestion(question.index!),
+                      onPressed: () => deleteQuestion(question.id!),
                       child: const Text("Verwijder vraag"),
                     ),
                   ),
@@ -238,7 +238,7 @@ class CreateFormQuestion extends ConsumerWidget {
           ),
         ),
         CreateFormMoveArrows(
-            index: index, contentIndex: question.index!), // This is fine now
+            index: index, contentIndex: question.id!), // This is fine now
       ],
     );
   }

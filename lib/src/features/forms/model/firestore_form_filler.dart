@@ -6,13 +6,13 @@ part 'firestore_form_filler.g.dart';
 @JsonSerializable()
 class FirestoreFormFiller {
   FirestoreFormFiller({
-    required this.index,
+    required this.id,
     required this.title,
     required this.body,
     required this.hasImage,
     this.image,
   });
-  int index;
+  int id;
   String title;
   String body;
   bool hasImage;

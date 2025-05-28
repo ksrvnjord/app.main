@@ -17,7 +17,7 @@ class FirestoreForm {
     required this.createdTimeTimeStamp,
     required this.title,
     this.questions = const [],
-    this.formContentObjectIndices = const [],
+    this.formContentObjectIds = const [],
     this.questionsV2 = const {},
     this.fillers = const {},
     required this.openUntilTimeStamp,
@@ -42,7 +42,7 @@ class FirestoreForm {
   @JsonKey(toJson: _questionsToJson)
   final List<FirestoreFormQuestion> questions;
 
-  final List<int> formContentObjectIndices;
+  final List<int> formContentObjectIds;
 
   @JsonKey(toJson: _questionsV2ToJson)
   final Map<int, FirestoreFormQuestion> questionsV2;

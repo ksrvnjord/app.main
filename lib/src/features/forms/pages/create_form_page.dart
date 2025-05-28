@@ -25,7 +25,7 @@ class CreateFormPage extends ConsumerStatefulWidget {
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
   final questions = <int, FirestoreFormQuestion>{};
   final fillers = <int, FirestoreFormFiller>{};
-  final formContentObjectIndices = <int>[];
+  final formContentObjectIds = <int>[];
 
   final description = TextEditingController();
   final formName = TextEditingController();
@@ -115,41 +115,41 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
-  void removeQuestion(int contentIndexNumber) {
+  void removeQuestion(int contentIDNumber) {
     setState(() {
-      formContentObjectIndices.remove(contentIndexNumber);
-      questions.remove(contentIndexNumber);
+      formContentObjectIds.remove(contentIDNumber);
+      questions.remove(contentIDNumber);
     });
   }
 
-  void removeFiller(int contentIndexNumber) {
+  void removeFiller(int contentIDNumber) {
     setState(() {
-      formContentObjectIndices.remove(contentIndexNumber);
-      fillers.remove(contentIndexNumber);
+      formContentObjectIds.remove(contentIDNumber);
+      fillers.remove(contentIDNumber);
     });
   }
 
   void addQuestion(FirestoreFormQuestion question) {
     setState(() {
-      formContentObjectIndices.add(question.index!);
-      questions[question.index!] = question;
+      formContentObjectIds.add(question.id!);
+      questions[question.id!] = question;
     });
   }
 
   void addFiller(FirestoreFormFiller filler) {
     setState(() {
-      formContentObjectIndices.add(filler.index);
-      fillers[filler.index] = filler;
+      formContentObjectIds.add(filler.id);
+      fillers[filler.id] = filler;
     });
   }
 
-  void moveQuestionOrFiller(int index, bool directionLeft) {
+  void moveQuestionOrFiller(int id, bool directionLeft) {
     setState(() {
-      final swapIndex = directionLeft ? index - 1 : index + 1;
+      final swapIndex = directionLeft ? id - 1 : id + 1;
 
-      final temp = formContentObjectIndices[index];
-      formContentObjectIndices[index] = formContentObjectIndices[swapIndex];
-      formContentObjectIndices[swapIndex] = temp;
+      final temp = formContentObjectIds[id];
+      formContentObjectIds[id] = formContentObjectIds[swapIndex];
+      formContentObjectIds[swapIndex] = temp;
     });
   }
 
@@ -203,7 +203,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
-          formContentObjectIndices: formContentObjectIndices,
+          formContentObjectIds: formContentObjectIds,
           questionsV2: questions,
           fillers: fillers,
           openUntilTimeStamp: Timestamp.fromDate(openUntil),
@@ -223,7 +223,6 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         ),
       );
 
-      print('ready to call');
       await FormRepository.createFormImages(
           formId: result.id, fillers: fillers);
       if (!context.mounted) return;

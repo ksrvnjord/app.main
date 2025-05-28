@@ -120,7 +120,7 @@ class ManageFormPage extends ConsumerWidget {
                       const SizedBox(height: 32),
                       if (formData.isV2) ...[
                         for (final contentIndex
-                            in formData.formContentObjectIndices) ...[
+                            in formData.formContentObjectIds) ...[
                           formData.questionsV2.containsKey(contentIndex)
                               ? FormQuestion(
                                   formQuestion:

@@ -21,7 +21,7 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
         thickness: 6,
       ),
       const SizedBox(height: sizedBoxHeight),
-      ...state.formContentObjectIndices.asMap().entries.map((entry) {
+      ...state.formContentObjectIds.asMap().entries.map((entry) {
         if (state.questions.containsKey(entry.value)) {
           return CreateFormQuestion(
             index: entry.key,

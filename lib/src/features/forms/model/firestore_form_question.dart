@@ -8,7 +8,7 @@ class FirestoreFormQuestion {
     required this.title,
     required this.type,
     required this.isRequired,
-    this.index,
+    this.id,
     this.options,
     this.startDate,
     this.endDate,
@@ -20,7 +20,7 @@ class FirestoreFormQuestion {
   bool isRequired;
   DateTime? startDate;
   DateTime? endDate;
-  int? index;
+  int? id;
 
   // Create fromJson method.
   // ignore: sort_constructors_first

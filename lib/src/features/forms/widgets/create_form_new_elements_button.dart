@@ -31,7 +31,7 @@ class CreateFormNewElementsButton extends ConsumerWidget {
                 type: FormQuestionType.text,
                 isRequired: true,
                 options: [],
-                index: state.formContentObjectIndices
+                id: state.formContentObjectIds
                         .fold<int>(0, (a, b) => a > b ? a : b) +
                     1,
               ),
@@ -52,7 +52,7 @@ class CreateFormNewElementsButton extends ConsumerWidget {
                 title: '',
                 body: '',
                 hasImage: false,
-                index: state.formContentObjectIndices
+                id: state.formContentObjectIds
                         .fold<int>(0, (a, b) => a > b ? a : b) +
                     1,
               ),

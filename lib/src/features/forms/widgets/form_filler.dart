@@ -16,13 +16,13 @@ class FormFiller extends StatelessWidget {
   Future<String?> _getImageUrl() async {
     final storage = FirebaseStorage.instance;
     final ref = storage.ref().child(
-          '$firestoreFormCollectionName/$formId/fillers/${filler.index}',
+          '$firestoreFormCollectionName/$formId/fillers/${filler.id}',
         );
 
     try {
       return await ref.getDownloadURL();
     } catch (e) {
-      debugPrint('Could not fetch image for filler ${filler.index}: $e');
+      debugPrint('Could not fetch image for filler ${filler.id}: $e');
       return null;
     }
   }

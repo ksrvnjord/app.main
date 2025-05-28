@@ -16,7 +16,7 @@ class CreateFormMoveArrows extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = context.findAncestorStateOfType<CreateFormPageState>()!;
     final isFirst = index == 0;
-    final isLast = index == state.formContentObjectIndices.length - 1;
+    final isLast = index == state.formContentObjectIds.length - 1;
     final double arrowDistanceHeigth = 64;
 
     return Column(
