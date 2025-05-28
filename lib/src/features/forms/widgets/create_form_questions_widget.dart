@@ -31,10 +31,11 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
           );
         } else {
           return CreateFormFiller(
-              index: entry.key,
-              filler: state.fillers[entry.value]!,
-              onChanged: () => state.updateState(),
-              deleteFiller: (int index) => state.removeFiller(entry.value));
+            index: entry.key,
+            filler: state.fillers[entry.value]!,
+            onChanged: () => state.updateState(),
+            deleteFiller: (int index) => state.removeFiller(entry.value),
+          );
         }
       }),
       const SizedBox(height: sizedBoxHeight),

@@ -105,6 +105,10 @@ class FormPageHeader extends StatelessWidget {
             "Vul alle verplichte vragen in om je antwoord te versturen.",
             style: TextStyle(color: colorScheme.error),
           ),
+        const SizedBox(
+          height: 16,
+        ),
+        const Divider(),
       ],
     );
   }

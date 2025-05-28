@@ -222,6 +222,10 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           isV2: true,
         ),
       );
+
+      print('ready to call');
+      await FormRepository.createFormImages(
+          formId: result.id, fillers: fillers);
       if (!context.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

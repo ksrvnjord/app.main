@@ -12,7 +12,7 @@ class CreateFormNewElementsButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = context.findAncestorStateOfType<CreateFormPageState>()!;
-    const sizedBoxWidthButton = 256.0;
+    const sizedBoxWidthButton = 180.0;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,7 +36,7 @@ class CreateFormNewElementsButton extends ConsumerWidget {
                     1,
               ),
             ),
-            child: const Text('Voeg vraag toe aan form'),
+            child: const Text('Voeg vraag toe'),
           ),
         ),
         Container(
