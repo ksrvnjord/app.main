@@ -148,10 +148,6 @@ class _CreateFormFillerState extends ConsumerState<CreateFormFiller> {
           ),
         ],
       ),
-      const Divider(),
-      const SizedBox(
-        height: 16,
-      ),
     ]);
   }
 }
