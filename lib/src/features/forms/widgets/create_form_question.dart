@@ -182,7 +182,13 @@ class CreateFormQuestion extends ConsumerWidget {
               (FormQuestionType value) {
                 return DropdownMenuItem<FormQuestionType>(
                   value: value,
-                  child: Text(value.name.toString()),
+                  child: Row(
+                    children: [
+                      Icon(value.icon, size: 20),
+                      const SizedBox(width: 8),
+                      Text(value.label),
+                    ],
+                  ),
                 );
               },
             ).toList(),
