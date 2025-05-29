@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
+import 'package:flutter/material.dart';
 part 'firestore_form_question.g.dart';
 
 @JsonSerializable()
@@ -34,6 +34,44 @@ enum FormQuestionType {
   image,
   date,
   unsupported, // Add an error type for unknown values
+}
+
+extension FormQuestionTypeLabel on FormQuestionType {
+  String get label {
+    switch (this) {
+      case FormQuestionType.text:
+        return 'Tekstveld';
+      case FormQuestionType.singleChoice:
+        return 'Enkele keuze';
+      //case FormQuestionType.multipleChoice:
+        //return 'Meerdere keuzes';
+      case FormQuestionType.image:
+        return 'Afbeelding';
+      case FormQuestionType.date:
+        return 'Datum';
+      case FormQuestionType.unsupported:
+        return 'Onbekend type';
+    }
+  }
+}
+
+extension FormQuestionTypeIcon on FormQuestionType {
+  IconData get icon {
+    switch (this) {
+      case FormQuestionType.text:
+        return Icons.text_fields;
+      case FormQuestionType.singleChoice:
+        return Icons.radio_button_checked;
+      //case FormQuestionType.multipleChoice:
+        //return Icons.check_box;
+      case FormQuestionType.image:
+        return Icons.image;
+      case FormQuestionType.date:
+        return Icons.calendar_month;
+      case FormQuestionType.unsupported:
+        return Icons.help_outline;
+    }
+  }
 }
 
 class FormQuestionTypeConverter
