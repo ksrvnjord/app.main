@@ -15,13 +15,13 @@ class FormImageWidget extends ConsumerWidget {
     super.key,
     required this.docId,
     required this.questionName,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     required this.onChanged,
   });
 
   final String docId;
   final String questionName;
-  final bool formIsOpen;
+  final bool userCanEditForm;
   final void Function(String?) onChanged;
 
   showSnackBar(BuildContext context, bool succes, String message) {
@@ -71,39 +71,41 @@ class FormImageWidget extends ConsumerWidget {
                     child: Image.network(url),
                   ),
                   const Spacer(), // Pushes the buttons to the end
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 25),
-                    onPressed: () async {
-                      final imageBytes = await getImageFromUser();
-                      if (imageBytes != null) {
-                        bool success = await changeImage(
-                            imageBytes, docId, questionName, ref);
+                  if (userCanEditForm) ...[
+                    IconButton(
+                      icon: const Icon(Icons.edit, size: 25),
+                      onPressed: () async {
+                        final imageBytes = await getImageFromUser();
+                        if (imageBytes != null) {
+                          bool success = await changeImage(
+                              imageBytes, docId, questionName, ref);
+                          if (success) {
+                            onChanged(imageBytes.hashCode.toString());
+                            showSnackBar(
+                                context, success, 'Veranderen succesvol!');
+                          } else {
+                            showSnackBar(context, success,
+                                'Veranderen mislukt, probeer het later opnieuw!');
+                          }
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete, size: 25),
+                      onPressed: () async {
+                        bool success =
+                            await deleteImage(docId, questionName, ref);
                         if (success) {
-                          onChanged(imageBytes.hashCode.toString());
+                          onChanged(null);
                           showSnackBar(
-                              context, success, 'Veranderen succesvol!');
+                              context, success, 'Verwijderen succesvol!');
                         } else {
                           showSnackBar(context, success,
-                              'Veranderen mislukt, probeer het later opnieuw!');
+                              'Verwijderen mislukt, probeer het later opnieuw!');
                         }
-                      }
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 25),
-                    onPressed: () async {
-                      bool success =
-                          await deleteImage(docId, questionName, ref);
-                      if (success) {
-                        onChanged(null);
-                        showSnackBar(
-                            context, success, 'Verwijderen succesvol!');
-                      } else {
-                        showSnackBar(context, success,
-                            'Verwijderen mislukt, probeer het later opnieuw!');
-                      }
-                    },
-                  ),
+                      },
+                    ),
+                  ],
                 ],
               );
             },
@@ -115,20 +117,23 @@ class FormImageWidget extends ConsumerWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.add_a_photo, size: 40),
-                      onPressed: () async {
-                        final imageBytes = await getImageFromUser();
-                        if (imageBytes != null) {
-                          bool success = await addImage(
-                              imageBytes, docId, questionName, ref);
-                          if (success) {
-                            onChanged(imageBytes.hashCode.toString());
-                            showSnackBar(context, success, 'Upload succesvol!');
-                          } else {
-                            showSnackBar(context, success,
-                                'Upload mislukt, probeer het later opnieuw!');
-                          }
-                        }
-                      },
+                      onPressed: userCanEditForm
+                          ? () async {
+                              final imageBytes = await getImageFromUser();
+                              if (imageBytes != null) {
+                                bool success = await addImage(
+                                    imageBytes, docId, questionName, ref);
+                                if (success) {
+                                  onChanged(imageBytes.hashCode.toString());
+                                  showSnackBar(
+                                      context, success, 'Upload succesvol!');
+                                } else {
+                                  showSnackBar(context, success,
+                                      'Upload mislukt, probeer het later opnieuw!');
+                                }
+                              }
+                            }
+                          : null,
                     ),
                   ],
                 );

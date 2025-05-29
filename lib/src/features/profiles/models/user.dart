@@ -50,6 +50,8 @@ class User {
   KNRB? get knrb => _django.knrb;
 
   List<GroupDjangoEntry> get groups => _django.groups;
+  List<int> get groupIds =>
+      _django.groups.map((entry) => entry.group.id!).toList();
   // TODO: fix below.
   //List<PermissionEntry> get permissions => _django.permissions;
 

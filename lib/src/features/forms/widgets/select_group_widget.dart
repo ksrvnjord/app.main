@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
 
 class GroupChoices {
   static const competitie = "Competitiesectie (sjaarzenploegen & Club8+)";
@@ -18,33 +19,47 @@ class GroupChoices {
 
 class SelectGroupWidget extends StatelessWidget {
   const SelectGroupWidget({
-    required this.onChanged,
-    this.visibleForGroups = const [],
     super.key,
   });
 
-  final void Function(List<String>) onChanged;
-  final List<String> visibleForGroups;
-
   @override
   Widget build(BuildContext context) {
+    final state = context.findAncestorStateOfType<CreateFormPageState>()!;
     final groupChoices = GroupChoices
         .all; // TODO: This list should include all groups available.
-    final newGroups = visibleForGroups;
 
-    return Column(
-      children: groupChoices
-          .map((group) => CheckboxListTile(
-                value: newGroups.contains(group),
-                onChanged: ((bool? value) => {
-                      if (value ?? false) {newGroups.add(group)},
-                      if (!(value ?? true) && newGroups.contains(group))
-                        {newGroups.remove(group)},
-                      onChanged(newGroups),
-                    }),
-                title: Text(group),
-              ))
-          .toList(),
-    );
+    return Column(children: [
+      Row(
+        children: [
+          Checkbox.adaptive(
+            value: state.isGroupSpecific,
+            onChanged: (bool? value) {
+              state.updateIsGroupSpecific(value ?? false);
+            },
+          ),
+          const Text('Formulier specifiek maken voor bepaalde groep'),
+        ],
+      ),
+      if (state.isGroupSpecific)
+        ...groupChoices.map(
+          (group) => Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 64.0), // side margins
+            child: CheckboxListTile(
+              value: state.visibleForGroups.contains(group),
+              onChanged: (bool? value) {
+                state.updateGroupSettings(value ?? false, group);
+              },
+              title: Text(
+                group,
+                style: Theme.of(context).textTheme.bodySmall, // smaller text
+              ),
+              dense: true, // reduces vertical height of tile
+              contentPadding:
+                  EdgeInsets.zero, // remove internal padding if needed
+            ),
+          ),
+        )
+    ]);
   }
 }
