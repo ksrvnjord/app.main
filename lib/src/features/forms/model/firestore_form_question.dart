@@ -44,7 +44,7 @@ extension FormQuestionTypeLabel on FormQuestionType {
       case FormQuestionType.singleChoice:
         return 'Enkele keuze';
       //case FormQuestionType.multipleChoice:
-        //return 'Meerdere keuzes';
+      //return 'Meerdere keuzes';
       case FormQuestionType.image:
         return 'Afbeelding';
       case FormQuestionType.date:
@@ -63,7 +63,7 @@ extension FormQuestionTypeIcon on FormQuestionType {
       case FormQuestionType.singleChoice:
         return Icons.radio_button_checked;
       //case FormQuestionType.multipleChoice:
-        //return Icons.check_box;
+      //return Icons.check_box;
       case FormQuestionType.image:
         return Icons.image;
       case FormQuestionType.date:
