@@ -24,7 +24,6 @@ class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
   }
 }
 
-
 class AlmanakCommissieEditPageState
     extends ConsumerState<AlmanakCommissieEditPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -33,7 +32,6 @@ class AlmanakCommissieEditPageState
   String content = '';
   bool postCreationInProgress = false;
   String? initialDescription = '';
-
 
   Future<void> _showPicker({required BuildContext prevContext}) {
     return showModalBottomSheet(
@@ -143,7 +141,8 @@ class AlmanakCommissieEditPageState
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => const SizedBox.shrink(), // Display nothing on error
+        error: (error, stackTrace) =>
+            const SizedBox.shrink(), // Display nothing on error
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: submitEdit,

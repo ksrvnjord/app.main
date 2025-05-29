@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
@@ -8,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commi
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/user_permission_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
@@ -103,7 +105,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           commissieLeeden.when(
             data: (snapshot) => buildCommissieList(snapshot),
             error: (error, stk) =>
-                ErrorCardWidget(errorMessage: error.toString()),
+              ErrorCardWidget(errorMessage: error.toString()),
             loading: () => const Center(
               child: CircularProgressIndicator.adaptive(),
             ),
@@ -112,31 +114,74 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       ),
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
-          return canAccesAdminPanel
-              ? FloatingActionButton.extended(
-                  foregroundColor: colorScheme.onTertiaryContainer,
-                  backgroundColor: colorScheme.tertiaryContainer,
-                  onPressed: () {
-                    context.goNamed(
-                      "Commissie -> Edit",
-                      pathParameters: {
-                        "name": widget.name, 
-                      },
-                      queryParameters: {
-                        "year": widget.year.toString(), 
-                      },
+          final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
+          return groupIdAsync.when(
+            data: (groupId) {
+              final userId = currentUser.identifier;
+              /*WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('isAdmin: ${currentUser.isAdmin}\n GroupID: $groupId\n userID: $userId\n'),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              });*/
+              if (groupId == null) return const SizedBox.shrink();
+              final permissionsAsync = ref.watch(permissionsProvider(Tuple2(groupId, userId)));
+              debugPrint('provider provided');
+              return permissionsAsync.when(
+                data: (permissions) {
+                  debugPrint('listening to provider');
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('permissions ${permissions.first}'),
+                        duration: const Duration(seconds: 2),
+                      ),
                     );
-                  },
-                  icon: const Icon(Icons.edit_outlined),
-                  label: const Text('Edit'),
-                )
-              : null;
+                  }); 
+                  final canAccessAdminPanel = /*currentUser.isAdmin ||*/ permissions.contains("forms:*");
+                  return canAccessAdminPanel
+                    ? FloatingActionButton.extended(
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      onPressed: () {
+                        context.goNamed(
+                          "Commissie -> Edit",
+                          pathParameters: {
+                            "name": widget.name,
+                          },
+                          queryParameters: {
+                            "year": widget.year.toString(),
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.edit_outlined),
+                      label: const Text('Edit'),
+                    )
+                  : null;
+                }, 
+                loading: () => null,
+                error: (e, s) => const SizedBox.shrink(), 
+              );
+            },
+            error: (error, stack) {
+              FirebaseCrashlytics.instance.recordError(error, stack);
+              return const SizedBox.shrink();
+            },
+            loading: () => null,
+          );
         },
         error: (e, s) {
-          FirebaseCrashlytics.instance.recordError(e, s);
-
-          return const SizedBox.shrink();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Permissions error: $e'),
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          });
+          return null;
         },
         loading: () => const SizedBox.shrink(),
       ),

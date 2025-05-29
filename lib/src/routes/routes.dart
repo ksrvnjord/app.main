@@ -562,7 +562,7 @@ abstract final // ignore: prefer-single-declaration-per-file
                     ),
                     name: "Commissie -> Edit",
                   ),
-                ),  
+                ),
               ],
             ),
           ],
