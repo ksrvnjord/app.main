@@ -30,9 +30,9 @@ class FormPageForm extends StatelessWidget {
           const SizedBox(height: 16),
           if (form.isV2) ...[
             for (final contentIndex in form.formContentObjectIds) ...[
-              form.questionsV2.containsKey(contentIndex)
+              form.questionsMap.containsKey(contentIndex)
                   ? FormQuestion(
-                      formQuestion: form.questionsV2[contentIndex]!,
+                      formQuestion: form.questionsMap[contentIndex]!,
                       form: form,
                       docRef: formDoc.reference,
                       formIsOpen: form.userCanEditForm,

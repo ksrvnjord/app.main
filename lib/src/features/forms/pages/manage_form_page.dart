@@ -121,10 +121,10 @@ class ManageFormPage extends ConsumerWidget {
                       if (formData.isV2) ...[
                         for (final contentIndex
                             in formData.formContentObjectIds) ...[
-                          formData.questionsV2.containsKey(contentIndex)
+                          formData.questionsMap.containsKey(contentIndex)
                               ? FormQuestion(
                                   formQuestion:
-                                      formData.questionsV2[contentIndex]!,
+                                      formData.questionsMap[contentIndex]!,
                                   form: formData,
                                   docRef: formSnapshot.reference,
                                   formIsOpen: false,

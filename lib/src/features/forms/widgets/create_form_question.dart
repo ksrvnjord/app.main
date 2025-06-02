@@ -106,8 +106,8 @@ class CreateFormQuestion extends ConsumerWidget {
                         if (value == null || value.isEmpty) {
                           return 'Optie kan niet leeg zijn.';
                         }
-                        if (value.contains(r'$')) {
-                          return 'Optie mag geen dollarteken (\$) bevatten.';
+                        if (value.contains(r'%2C')) {
+                          return 'Optie mag niet combinatie (%2C) bevatten.';
                         }
                         return null;
                       },

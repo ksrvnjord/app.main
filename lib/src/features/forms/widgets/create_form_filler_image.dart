@@ -1,13 +1,16 @@
 import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateFormFillerImage extends StatefulWidget {
   const CreateFormFillerImage({
     super.key,
+    required this.initialImage,
     required this.onChanged,
   });
 
+  final XFile? initialImage;
   final void Function(XFile?) onChanged;
 
   @override
@@ -17,6 +20,12 @@ class CreateFormFillerImage extends StatefulWidget {
 class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
   final ImagePicker _picker = ImagePicker();
   XFile? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    imageFile = widget.initialImage;
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);

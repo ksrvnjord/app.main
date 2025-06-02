@@ -74,7 +74,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
 
       // Choose question list based on version
       final questions =
-          form.isV2 ? form.questionsV2.values.toList() : form.questions;
+          form.isV2 ? form.questionsMap.values.toList() : form.questions;
 
       final headerRow = [
         'Lidnummer',
@@ -103,7 +103,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
               // Handle multiple-choice answer formatting
               final content = raw.substring(1, raw.length - 1);
               if (content.isEmpty) return '';
-              return content.split(r'$').join(', ');
+              return content.split(r'%2C').join(';');
             }
             return raw ?? '';
           }).toList();
@@ -308,7 +308,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       return false;
     }
     if (form.isV2) {
-      return form.questionsV2.values
+      return form.questionsMap.values
           .any((question) => question.type == FormQuestionType.image);
     } else {
       return form.questions

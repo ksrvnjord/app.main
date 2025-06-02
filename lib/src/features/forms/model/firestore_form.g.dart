@@ -20,7 +20,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
               ?.map((e) => (e as num).toInt())
               .toList() ??
           const [],
-      questionsV2: (json['questionsV2'] as Map<String, dynamic>?)?.map(
+      questionsMap: (json['questionsMap'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(int.parse(k),
                 FirestoreFormQuestion.fromJson(e as Map<String, dynamic>)),
           ) ??
@@ -57,7 +57,7 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'title': instance.title,
       'questions': FirestoreForm._questionsToJson(instance.questions),
       'formContentObjectIds': instance.formContentObjectIds,
-      'questionsV2': FirestoreForm._questionsV2ToJson(instance.questionsV2),
+      'questionsMap': FirestoreForm._questionsMapToJson(instance.questionsMap),
       'fillers': FirestoreForm._fillersToJson(instance.fillers),
       'openUntil': const TimestampDateTimeConverter()
           .toJson(instance.openUntilTimeStamp),

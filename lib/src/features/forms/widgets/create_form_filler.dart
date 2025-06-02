@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_body.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_image.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_title.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_move_arrows.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -82,71 +84,54 @@ class _CreateFormFillerState extends ConsumerState<CreateFormFiller> {
       const SizedBox(
         height: 16,
       ),
-      Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                // Title
-                Row(
+      Row(children: [
+        Expanded(
+            child: Column(children: [
+          // Title
+          Row(
+            children: [
+              Expanded(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TextFormField(
-                        validator: (value) => (value == null || value.isEmpty)
-                            ? 'Titelveld kan niet leeg zijn!'
-                            : null,
-                        controller: fillerTitleController,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                    // Title
+                    Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CreateFormFillerTitle(
+                              controller: fillerTitleController),
                         ),
-                        decoration: const InputDecoration(
-                          hintText: 'Kies een titel voor info-blok.',
-                          border: InputBorder.none,
+                        Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                widget.deleteFiller(widget.filler.id),
+                            child: const Text("Verwijder Info-blok"),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 16),
-                      child: ElevatedButton(
-                        onPressed: () => widget.deleteFiller(widget.filler.id),
-                        child: const Text("Verwijder Info-blok"),
-                      ),
+                    const SizedBox(height: 16),
+
+                    // Body
+                    CreateFormFillerBody(controller: fillerBodyController),
+
+                    const SizedBox(height: 16),
+                    CreateFormFillerImage(
+                      initialImage: widget.filler.image,
+                      onChanged: updateFillerImageProperties,
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-
-                // Body
-                TextFormField(
-                  validator: (value) => (value == null || value.isEmpty)
-                      ? 'Contentveld kan niet leeg zijn!'
-                      : null,
-                  controller: fillerBodyController,
-                  textAlign: TextAlign.left,
-                  maxLines: null,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: 'Ruimte voor uitleg, prijzen, disclaimers etc...',
-                    border: InputBorder.none,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                CreateFormFillerImage(onChanged: updateFillerImageProperties)
-              ],
-            ),
+              ),
+              CreateFormMoveArrows(
+                index: widget.index,
+                contentIndex: widget.filler.id,
+              ),
+            ],
           ),
-          CreateFormMoveArrows(
-            index: widget.index,
-            contentIndex: widget.filler.id,
-          ),
-        ],
-      ),
+        ]))
+      ])
     ]);
   }
 }

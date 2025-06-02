@@ -18,7 +18,7 @@ class FirestoreForm {
     required this.title,
     this.questions = const [],
     this.formContentObjectIds = const [],
-    this.questionsV2 = const {},
+    this.questionsMap = const {},
     this.fillers = const {},
     required this.openUntilTimeStamp,
     this.description,
@@ -44,8 +44,8 @@ class FirestoreForm {
 
   final List<int> formContentObjectIds;
 
-  @JsonKey(toJson: _questionsV2ToJson)
-  final Map<int, FirestoreFormQuestion> questionsV2;
+  @JsonKey(toJson: _questionsMapToJson)
+  final Map<int, FirestoreFormQuestion> questionsMap;
 
   @JsonKey(toJson: _fillersToJson)
   final Map<int, FirestoreFormFiller> fillers;
@@ -109,10 +109,10 @@ class FirestoreForm {
   ) =>
       questions.map((question) => question.toJson()).toList();
 
-  static Map<String, dynamic> _questionsV2ToJson(
-    Map<int, FirestoreFormQuestion> fillers,
+  static Map<String, dynamic> _questionsMapToJson(
+    Map<int, FirestoreFormQuestion> questions,
   ) =>
-      fillers.map((key, value) => MapEntry(key.toString(), value.toJson()));
+      questions.map((key, value) => MapEntry(key.toString(), value.toJson()));
 
   static Map<String, dynamic> _fillersToJson(
     Map<int, FirestoreFormFiller> fillers,

@@ -181,14 +181,16 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
           case FormQuestionType.multipleChoice:
             final values = answerValue == null || answerValue == '[]'
                 ? <String>[]
-                : answerValue.substring(1, answerValue.length - 1).split(r'$');
+                : answerValue
+                    .substring(1, answerValue.length - 1)
+                    .split(r'%2C');
 
             questionWidgets.add(MultipleChoiceWidget(
               initialValues: values,
               formQuestion: widget.formQuestion,
               onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
-                newValue: '[${newValues.join(r'$')}]',
+                newValue: '[${newValues.join(r'%2C')}]',
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,

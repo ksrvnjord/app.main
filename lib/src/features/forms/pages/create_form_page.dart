@@ -204,7 +204,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
           formContentObjectIds: formContentObjectIds,
-          questionsV2: questions,
+          questionsMap: questions,
           fillers: fillers,
           openUntilTimeStamp: Timestamp.fromDate(openUntil),
           description: description.text,
