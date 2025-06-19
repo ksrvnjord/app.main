@@ -66,7 +66,7 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
       error: (e, _) => Center(child: Text('Error: $e')),
     );
   }

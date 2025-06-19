@@ -97,7 +97,8 @@ class _FormPageState extends ConsumerState<FormPage> {
                   ],
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
               error: (err, stack) => ErrorCardWidget(
                 errorMessage: 'Fout bij het laden van het formulier',
               ),
