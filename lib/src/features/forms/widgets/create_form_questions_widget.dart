@@ -32,8 +32,8 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
         } else {
           return CreateFormFiller(
             index: entry.key,
-            filler: state.fillers[entry.value]!,
-            onChanged: () => state.updateState(),
+            fillerNotifier:
+                state.fillers[entry.value]!, // FirestoreFormFillerNotifier
             deleteFiller: (int index) => state.removeFiller(entry.value),
           );
         }

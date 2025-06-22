@@ -25,11 +25,10 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
                 FirestoreFormQuestion.fromJson(e as Map<String, dynamic>)),
           ) ??
           const {},
-      fillers: (json['fillers'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(int.parse(k),
-                FirestoreFormFiller.fromJson(e as Map<String, dynamic>)),
-          ) ??
-          const {},
+      fillers: json['fillers'] == null
+          ? const {}
+          : FirestoreForm._fillersFromJson(
+              json['fillers'] as Map<String, dynamic>),
       openUntilTimeStamp: const TimestampDateTimeConverter()
           .fromJson(json['openUntil'] as Timestamp),
       description: json['description'] as String?,

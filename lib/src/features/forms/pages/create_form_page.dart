@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questions_widget.dart';
@@ -23,8 +23,9 @@ class CreateFormPage extends ConsumerStatefulWidget {
 }
 
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
+  bool _isLoading = false;
   final questions = <int, FirestoreFormQuestion>{};
-  final fillers = <int, FirestoreFormFiller>{};
+  final fillers = <int, FirestoreFormFillerNotifier>{};
   final formContentObjectIds = <int>[];
 
   final description = TextEditingController();
@@ -136,7 +137,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
-  void addFiller(FirestoreFormFiller filler) {
+  void addFiller(FirestoreFormFillerNotifier filler) {
     setState(() {
       formContentObjectIds.add(filler.id);
       fillers[filler.id] = filler;
@@ -198,6 +199,10 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
 
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final result = await FormRepository.createForm(
         form: FirestoreForm(
@@ -244,6 +249,12 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           duration: const Duration(seconds: 3),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -332,10 +343,18 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       floatingActionButton: FloatingActionButton.extended(
         tooltip: 'Maak nieuwe form',
         heroTag: 'submitForm',
-        // ignore: avoid-async-call-in-sync-function
-        onPressed: () => _handleSubmitForm(context, ref),
-        icon: const Icon(Icons.send),
-        label: const Text('Maak nieuwe form'),
+        onPressed: _isLoading ? null : () => _handleSubmitForm(context, ref),
+        icon: _isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : const Icon(Icons.send),
+        label: Text(_isLoading ? 'Bezig...' : 'Maak nieuwe form'),
       ),
     );
   }

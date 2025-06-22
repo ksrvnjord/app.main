@@ -1,136 +1,132 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_body.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_image.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_filler_title.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_move_arrows.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreateFormFiller extends ConsumerStatefulWidget {
+class CreateFormFiller extends StatefulWidget {
   const CreateFormFiller({
     super.key,
     required this.index,
-    required this.filler,
-    required this.onChanged,
+    required this.fillerNotifier,
     required this.deleteFiller,
   });
 
   final int index;
-  final FirestoreFormFiller filler;
-  final VoidCallback onChanged;
+  final FirestoreFormFillerNotifier fillerNotifier;
   final Function(int) deleteFiller;
 
   @override
-  ConsumerState<CreateFormFiller> createState() => _CreateFormFillerState();
+  State<CreateFormFiller> createState() => _CreateFormFillerState();
 }
 
-class _CreateFormFillerState extends ConsumerState<CreateFormFiller> {
+class _CreateFormFillerState extends State<CreateFormFiller> {
   late TextEditingController fillerTitleController;
   late TextEditingController fillerBodyController;
-  XFile? imageFile;
+
+  FirestoreFormFillerNotifier get fillerNotifier => widget.fillerNotifier;
 
   @override
   void initState() {
     super.initState();
-    fillerTitleController = TextEditingController(text: widget.filler.title);
-    fillerBodyController = TextEditingController(text: widget.filler.body);
+
+    fillerTitleController = TextEditingController(text: fillerNotifier.title);
+    fillerBodyController = TextEditingController(text: fillerNotifier.body);
 
     fillerTitleController.addListener(() {
-      if (widget.filler.title != fillerTitleController.text) {
-        widget.filler.title = fillerTitleController.text;
-        widget.onChanged();
+      if (fillerNotifier.title != fillerTitleController.text) {
+        fillerNotifier.title = fillerTitleController.text;
       }
     });
 
     fillerBodyController.addListener(() {
-      if (widget.filler.body != fillerBodyController.text) {
-        widget.filler.body = fillerBodyController.text;
-        widget.onChanged();
+      if (fillerNotifier.body != fillerBodyController.text) {
+        fillerNotifier.body = fillerBodyController.text;
       }
+    });
+
+    fillerNotifier.addListener(_onFillerChanged);
+  }
+
+  void _onFillerChanged() {
+    setState(() {
+      // Trigger rebuild when this specific filler changes
     });
   }
 
   @override
   void didUpdateWidget(CreateFormFiller oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.filler.title != widget.filler.title) {
-      fillerTitleController.text = widget.filler.title;
-    }
-    if (oldWidget.filler.body != widget.filler.body) {
-      fillerBodyController.text = widget.filler.body;
+    if (oldWidget.fillerNotifier != fillerNotifier) {
+      oldWidget.fillerNotifier.removeListener(_onFillerChanged);
+      fillerNotifier.addListener(_onFillerChanged);
     }
   }
 
   @override
   void dispose() {
+    fillerNotifier.removeListener(_onFillerChanged);
     fillerTitleController.dispose();
     fillerBodyController.dispose();
     super.dispose();
   }
 
   void updateFillerImageProperties(XFile? image) {
-    image == null
-        ? widget.filler.hasImage = false
-        : widget.filler.hasImage = true;
-    widget.filler.image = image;
-    widget.onChanged();
+    fillerNotifier.updateImage(image);
   }
 
   @override
   Widget build(BuildContext context) {
+    final filler = fillerNotifier.value;
+
     return Column(children: [
       const Divider(),
-      const SizedBox(
-        height: 16,
-      ),
+      const SizedBox(height: 16),
       Row(children: [
         Expanded(
-            child: Column(children: [
-          // Title
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    // Title
-                    Row(
-                      children: [
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: CreateFormFillerTitle(
-                              controller: fillerTitleController),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 16),
-                          child: ElevatedButton(
-                            onPressed: () =>
-                                widget.deleteFiller(widget.filler.id),
-                            child: const Text("Verwijder Info-blok"),
+          child: Column(children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: CreateFormFillerTitle(
+                              controller: fillerTitleController,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Body
-                    CreateFormFillerBody(controller: fillerBodyController),
-
-                    const SizedBox(height: 16),
-                    CreateFormFillerImage(
-                      initialImage: widget.filler.image,
-                      onChanged: updateFillerImageProperties,
-                    ),
-                  ],
+                          Container(
+                            margin: const EdgeInsets.only(top: 16),
+                            child: ElevatedButton(
+                              onPressed: () => widget.deleteFiller(filler.id),
+                              child: const Text("Verwijder Info-blok"),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      CreateFormFillerBody(controller: fillerBodyController),
+                      const SizedBox(height: 16),
+                      CreateFormFillerImage(
+                        initialImage: filler.image,
+                        onChanged: updateFillerImageProperties,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              CreateFormMoveArrows(
-                index: widget.index,
-                contentIndex: widget.filler.id,
-              ),
-            ],
-          ),
-        ]))
+                CreateFormMoveArrows(
+                  index: widget.index,
+                  contentIndex: filler.id,
+                ),
+              ],
+            ),
+          ]),
+        ),
       ])
     ]);
   }

@@ -130,7 +130,7 @@ class ManageFormPage extends ConsumerWidget {
                                   formIsOpen: false,
                                 )
                               : FormFiller(
-                                  filler: formData.fillers[contentIndex]!,
+                                  filler: formData.fillers[contentIndex]!.value,
                                   formId: formSnapshot.id,
                                 ),
                           const SizedBox(height: 32),

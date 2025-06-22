@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/pages/create_form_page.dart';
@@ -48,13 +49,15 @@ class CreateFormNewElementsButton extends ConsumerWidget {
           ),
           child: ElevatedButton(
             onPressed: () => state.addFiller(
-              FirestoreFormFiller(
-                title: '',
-                body: '',
-                hasImage: false,
-                id: state.formContentObjectIds
-                        .fold<int>(0, (a, b) => a > b ? a : b) +
-                    1,
+              FirestoreFormFillerNotifier(
+                FirestoreFormFiller(
+                  title: '',
+                  body: '',
+                  hasImage: false,
+                  id: state.formContentObjectIds
+                          .fold<int>(0, (a, b) => a > b ? a : b) +
+                      1,
+                ),
               ),
             ),
             child: const Text('Voeg info-blok toe'),

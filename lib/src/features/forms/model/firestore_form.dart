@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
@@ -47,8 +48,8 @@ class FirestoreForm {
   @JsonKey(toJson: _questionsMapToJson)
   final Map<int, FirestoreFormQuestion> questionsMap;
 
-  @JsonKey(toJson: _fillersToJson)
-  final Map<int, FirestoreFormFiller> fillers;
+  @JsonKey(toJson: _fillersToJson, fromJson: _fillersFromJson)
+  final Map<int, FirestoreFormFillerNotifier> fillers;
 
   @JsonKey(name: 'openUntil')
   @TimestampDateTimeConverter()
@@ -114,10 +115,19 @@ class FirestoreForm {
   ) =>
       questions.map((key, value) => MapEntry(key.toString(), value.toJson()));
 
+  static Map<int, FirestoreFormFillerNotifier> _fillersFromJson(
+    Map<String, dynamic> json,
+  ) {
+    return json.map((key, value) =>
+        MapEntry(int.parse(key), FirestoreFormFillerNotifier.fromJson(value)));
+  }
+
   static Map<String, dynamic> _fillersToJson(
-    Map<int, FirestoreFormFiller> fillers,
-  ) =>
-      fillers.map((key, value) => MapEntry(key.toString(), value.toJson()));
+    Map<int, FirestoreFormFillerNotifier> fillers,
+  ) {
+    return fillers
+        .map((key, notifier) => MapEntry(key.toString(), notifier.toJson()));
+  }
 
   bool userIsInCorrectGroupForForm(List<int> userGroups) {
     if (visibleForGroups.isEmpty) return true;

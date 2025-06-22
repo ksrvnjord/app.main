@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
@@ -62,22 +63,23 @@ class FormRepository {
     return await FirestoreForm.firestoreConvert.add(form);
   }
 
-  static Future<bool> createFormImages(
-      {required String formId,
-      required Map<int, FirestoreFormFiller> fillers}) async {
+  static Future<bool> createFormImages({
+    required String formId,
+    required Map<int, FirestoreFormFillerNotifier> fillers,
+  }) async {
     final storage = FirebaseStorage.instance;
+
     try {
-      for (final filler in fillers.values) {
+      for (final fillerNotifier in fillers.values) {
+        final filler = fillerNotifier.value;
+
         if (filler.hasImage && filler.image != null) {
           final fileBytes = await filler.image!.readAsBytes();
 
           final storageRef = storage.ref().child(
               '$firestoreFormCollectionName/$formId/fillers/${filler.id}');
 
-          await storageRef.putData(
-            fileBytes,
-          );
-          // ignore: empty_catches
+          await storageRef.putData(fileBytes);
         }
       }
       return true;

@@ -38,7 +38,7 @@ class FormPageForm extends StatelessWidget {
                       formIsOpen: form.userCanEditForm,
                     )
                   : FormFiller(
-                      filler: form.fillers[contentIndex]!,
+                      filler: form.fillers[contentIndex]!.value,
                       formId: formDoc.id,
                     ),
               const SizedBox(height: 32),
