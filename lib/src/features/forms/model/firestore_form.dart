@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 
 part 'firestore_form.g.dart';
 
 // If you're testing set this to 'testforms', for production use 'forms'
-const String firestoreFormCollectionName = 'testforms';
+const String firestoreFormCollectionName = 'forms';
 
 @immutable
 @JsonSerializable()
