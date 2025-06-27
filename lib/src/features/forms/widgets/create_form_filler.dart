@@ -81,50 +81,56 @@ class _CreateFormFillerState extends State<CreateFormFiller> {
   Widget build(BuildContext context) {
     final filler = fillerNotifier.value;
 
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        border: Border.fromBorderSide(BorderSide(color: Colors.grey)),
-        borderRadius: BorderRadius.all(Radius.circular(2.0)),
-      ),
-      margin: const EdgeInsets.all(8.0),
-      child: Row(children: [
+    return Row(
+      children: [
         Expanded(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: CreateFormFillerTitle(
-                      controller: fillerTitleController,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              border: Border.fromBorderSide(BorderSide(color: Colors.grey)),
+              borderRadius: BorderRadius.all(Radius.circular(2.0)),
+            ),
+            margin: const EdgeInsets.all(8.0),
+            child: Row(children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: CreateFormFillerTitle(
+                            controller: fillerTitleController,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          child: ElevatedButton(
+                            onPressed: () => widget.deleteFiller(filler.id),
+                            child: const Text("Verwijder Info-blok"),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    child: ElevatedButton(
-                      onPressed: () => widget.deleteFiller(filler.id),
-                      child: const Text("Verwijder Info-blok"),
+                    const SizedBox(height: 16),
+                    CreateFormFillerBody(controller: fillerBodyController),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    CreateFormFillerImage(
+                      initialImage: filler.image,
+                      onChanged: updateFillerImageProperties,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              CreateFormFillerBody(controller: fillerBodyController),
-              const SizedBox(height: 16),
-              const Divider(),
-              CreateFormFillerImage(
-                initialImage: filler.image,
-                onChanged: updateFillerImageProperties,
-              ),
-            ],
+            ]),
           ),
         ),
         CreateFormMoveArrows(
           index: widget.index,
           contentIndex: filler.id,
         ),
-      ]),
+      ],
     );
   }
 }
