@@ -33,10 +33,8 @@ class CreateFormQuestion extends ConsumerWidget {
     final maxDate = DateTime(getNjordYear() + 100);
 
     if (pickedDate == null) {
+      isStartDate ? question.startDate = minDate : question.endDate = maxDate;
       pickedDate = isStartDate ? minDate : maxDate;
-      isStartDate
-          ? question.startDate = pickedDate
-          : question.endDate = pickedDate;
     }
 
     final initialDateString = pickedDate.toString().split(' ')[0];
@@ -139,6 +137,14 @@ class CreateFormQuestion extends ConsumerWidget {
         ].toColumn();
 
       case FormQuestionType.date:
+        // Condition check
+        if (q.startDate != null && q.endDate != null) {
+          q.startDate =
+              q.startDate!.isBefore(q.endDate!) ? q.startDate : q.endDate;
+          q.endDate =
+              q.endDate!.isAfter(q.startDate!) ? q.endDate : q.startDate;
+        }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
