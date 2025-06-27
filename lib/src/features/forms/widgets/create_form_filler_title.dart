@@ -17,9 +17,8 @@ class CreateFormFillerTitle extends StatelessWidget {
         fontWeight: FontWeight.bold,
         fontSize: 20,
       ),
-      decoration: const InputDecoration(
-        hintText: 'Kies een titel voor info-blok.',
-        border: InputBorder.none,
+      decoration: InputDecoration(
+        labelText: 'Kies een titel voor info-blok.',
       ),
     );
   }

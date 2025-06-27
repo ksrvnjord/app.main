@@ -40,7 +40,7 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
       }),
       const SizedBox(height: sizedBoxHeight),
       CreateFormNewElementsButton(),
-      const SizedBox(height: sizedBoxHeight),
+      const SizedBox(height: 3 * sizedBoxHeight),
     ]);
   }
 }

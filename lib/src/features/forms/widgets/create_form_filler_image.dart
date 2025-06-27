@@ -51,7 +51,7 @@ class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
         child: TextButton.icon(
           onPressed: _pickImage,
           icon: const Icon(Icons.image),
-          label: const Text("Afbeelding toevoegen"),
+          label: const Text("Voeg eventueel afbeelding toe"),
         ),
       );
     }
@@ -75,10 +75,9 @@ class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
                 ),
               ),
               Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width - 150,
-                  ),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.shortestSide - 150,
+                  height: MediaQuery.of(context).size.shortestSide - 150,
                   child: Image.memory(snapshot.data!),
                 ),
               ),
@@ -88,7 +87,17 @@ class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
         } else if (snapshot.hasError) {
           return const Text('Fout bij het laden van de afbeelding.');
         } else {
-          return const CircularProgressIndicator.adaptive();
+          return SizedBox(
+            height: MediaQuery.of(context).size.shortestSide - 150,
+            width: MediaQuery.of(context).size.shortestSide - 150,
+            child: const Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
+          );
         }
       },
     );
