@@ -88,7 +88,7 @@ class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
         } else if (snapshot.hasError) {
           return const Text('Fout bij het laden van de afbeelding.');
         } else {
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator.adaptive();
         }
       },
     );

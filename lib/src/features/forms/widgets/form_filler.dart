@@ -66,7 +66,8 @@ class FormFiller extends StatelessWidget {
             future: _getImageUrl(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
               } else if (snapshot.hasError || snapshot.data == null) {
                 return const Center(child: Text('Afbeelding niet beschikbaar'));
               } else {
