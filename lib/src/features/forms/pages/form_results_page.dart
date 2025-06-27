@@ -103,7 +103,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
               // Handle multiple-choice answer formatting
               final content = raw.substring(1, raw.length - 1);
               if (content.isEmpty) return '';
-              return content.split(r'%2C').join(';');
+              return content;
             }
             return raw ?? '';
           }).toList();

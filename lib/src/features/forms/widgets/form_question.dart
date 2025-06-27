@@ -183,14 +183,16 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 ? <String>[]
                 : answerValue
                     .substring(1, answerValue.length - 1)
-                    .split(r'%2C');
+                    .split(r';')
+                    .map(Uri.decodeComponent)
+                    .toList();
 
             questionWidgets.add(MultipleChoiceWidget(
               initialValues: values,
               formQuestion: widget.formQuestion,
               onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
-                newValue: '[${newValues.join(r'%2C')}]',
+                newValue: '[${newValues.map(Uri.encodeComponent).join(r';')}]',
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,

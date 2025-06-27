@@ -104,8 +104,10 @@ class CreateFormQuestion extends ConsumerWidget {
                         if (value == null || value.isEmpty) {
                           return 'Optie kan niet leeg zijn.';
                         }
-                        if (value.contains(r'%2C')) {
-                          return 'Optie mag niet combinatie (%2C) bevatten.';
+                        if (q.options != null &&
+                            q.options!.where((opt) => opt == value).length >
+                                1) {
+                          return 'Opties moeten uniek zijn.';
                         }
                         return null;
                       },
