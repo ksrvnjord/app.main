@@ -105,6 +105,7 @@ class WeatherWidget extends ConsumerWidget {
         final fetchTime = DateTime.parse(currentWeather['time']);
         final now = DateTime.now();
         final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
+        final uvIndex = (data['hourly']['uv_index'][now.hour] as num).round();
 
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
@@ -170,6 +171,10 @@ class WeatherWidget extends ConsumerWidget {
                           Padding(padding: const EdgeInsets.only(left: 16.0)),
                           Text("$currentTemperature°",
                               style: Theme.of(context).textTheme.headlineLarge),
+                          [
+                            Icon(Icons.sunny),
+                            Text(uvIndex.toString()).fontSize(28)
+                          ].toRow(mainAxisAlignment: MainAxisAlignment.center),
                         ].toRow(
                           mainAxisAlignment: MainAxisAlignment.center,
                         ),
