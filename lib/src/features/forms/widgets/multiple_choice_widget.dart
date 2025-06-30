@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 
-class MultipleChoiceWidget extends StatefulWidget {
+class MultipleChoiceWidget extends StatelessWidget {
   const MultipleChoiceWidget({
     required this.formQuestion,
     required this.onChanged,
@@ -15,34 +15,19 @@ class MultipleChoiceWidget extends StatefulWidget {
   final void Function(List<String>) onChanged;
   final bool userCanEditForm;
 
-  @override
-  State<MultipleChoiceWidget> createState() => _MultipleChoiceWidgetState();
-}
-
-class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
-  late Set<String> selectedChoices;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedChoices = widget.initialValues.toSet();
-  }
-
-  void _toggleSelection(String choice) {
-    setState(() {
-      if (selectedChoices.contains(choice)) {
-        selectedChoices.remove(choice);
-      } else {
-        selectedChoices.add(choice);
-      }
-    });
-
-    widget.onChanged(selectedChoices.toList());
+  void _toggleSelection(String choice, Set<String> selectedChoices) {
+    if (selectedChoices.contains(choice)) {
+      selectedChoices.remove(choice);
+    } else {
+      selectedChoices.add(choice);
+    }
+    onChanged(selectedChoices.toList());
   }
 
   @override
   Widget build(BuildContext context) {
-    final options = widget.formQuestion.options;
+    final options = formQuestion.options;
+    Set<String> selectedChoices = initialValues.toSet();
 
     if (options == null) {
       return const Text('Er zijn geen opties voor deze vraag');
@@ -53,7 +38,9 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
         return CheckboxListTile(
           title: Text(choice),
           value: selectedChoices.contains(choice),
-          onChanged: widget.userCanEditForm ? (_) => _toggleSelection(choice) : null,
+          onChanged: userCanEditForm
+              ? (_) => _toggleSelection(choice, selectedChoices)
+              : null,
         );
       }).toList(),
     );
