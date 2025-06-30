@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
@@ -64,9 +63,6 @@ class FormRepository {
                   ),
           ));
   }
-
-  // single question formcard werkt niet
-  // en de delete knop staat er niet
 
   static Future<DocumentReference<FirestoreForm>> createForm({
     required FirestoreForm form,

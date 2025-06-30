@@ -31,7 +31,8 @@ class FormsWidget extends ConsumerWidget {
         return form.userIsInCorrectGroupForForm(currentUser.groupIds) ||
             currentUser.isAdmin;
       }).map((formSnapshot) {
-        return formSnapshot.data().questions.length == 1
+        final formData = formSnapshot.data();
+        return (formData.questions.length == 1 || formData.formContentObjectIds.length == 1)
             ? SingleQuestionFormCard(formSnapshot: formSnapshot)
             : FormCard(
                 formDoc: formSnapshot,
