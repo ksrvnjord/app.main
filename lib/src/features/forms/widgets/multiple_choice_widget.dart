@@ -5,7 +5,7 @@ class MultipleChoiceWidget extends StatefulWidget {
   const MultipleChoiceWidget({
     required this.formQuestion,
     required this.onChanged,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     required this.initialValues,
     super.key,
   });
@@ -13,7 +13,7 @@ class MultipleChoiceWidget extends StatefulWidget {
   final List<String> initialValues;
   final FirestoreFormQuestion formQuestion;
   final void Function(List<String>) onChanged;
-  final bool formIsOpen;
+  final bool userCanEditForm;
 
   @override
   State<MultipleChoiceWidget> createState() => _MultipleChoiceWidgetState();
@@ -53,7 +53,7 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
         return CheckboxListTile(
           title: Text(choice),
           value: selectedChoices.contains(choice),
-          onChanged: widget.formIsOpen ? (_) => _toggleSelection(choice) : null,
+          onChanged: widget.userCanEditForm ? (_) => _toggleSelection(choice) : null,
         );
       }).toList(),
     );

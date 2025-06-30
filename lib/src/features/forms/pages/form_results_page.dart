@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -349,8 +350,35 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
 
                         final userId = answer.userId;
 
+                        final userVal = ref.watch(userProvider(userId));
+
                         return ListTile(
-                          title: Text(userId),
+                          title: userVal.when(
+                            data: (user) => Text(user.fullName),
+                            error: (error, stack) {
+                              FirebaseCrashlytics.instance
+                                  .recordError(error, stack);
+                              return Center(
+                                child: ErrorTextWidget(
+                                  errorMessage: error.toString(),
+                                ),
+                              );
+                            },
+                            loading: () => Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Text(userId),
+                                  const SizedBox(width: 8),
+                                  const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child:
+                                          CircularProgressIndicator.adaptive()),
+                                ],
+                              ),
+                            ),
+                          ),
                           subtitle: Text(
                             "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
                           ),

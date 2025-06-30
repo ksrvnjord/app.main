@@ -18,20 +18,23 @@ class FormQuestion extends ConsumerStatefulWidget {
   const FormQuestion({
     super.key,
     required this.formQuestion,
+    this.questionId, // TODO questionUpdate: should be required
     required this.form,
     required this.docRef,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     this.withoutBorder = false,
     this.showAdditionalSaveButton = true, // TODO: This should be false/removed
   });
 
   final FirestoreFormQuestion formQuestion;
 
+  final int? questionId;
+
   final FirestoreForm form;
 
   final DocumentReference<FirestoreForm> docRef;
 
-  final bool formIsOpen;
+  final bool userCanEditForm;
 
   final bool withoutBorder;
 
@@ -57,6 +60,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
   Future<void> _handleChangeOfFormAnswer({
     required String question,
+    int? questionId,
     required String? newValue,
     required FirestoreForm f,
     required DocumentReference<FirestoreForm> d,
@@ -71,6 +75,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     try {
       await FormRepository.upsertFormAnswer(
         question: question,
+        questionId: questionId,
         newValue: newValue,
         form: f,
         docRef: d,
@@ -100,6 +105,8 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     const verticalPaddingCard = 2.0;
 
     final type = widget.formQuestion.type;
+
+    final questionId = widget.questionId;
 
     final questionWidgets = <Widget>[
       Text(widget.formQuestion.title, style: textTheme.titleLarge),
@@ -137,6 +144,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         maxLines: null,
                         onSaved: (String? value) => _handleChangeOfFormAnswer(
                           question: widget.formQuestion.title,
+                          questionId: questionId,
                           newValue: value,
                           f: widget.form,
                           d: widget.docRef,
@@ -146,10 +154,11 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         validator: (value) => (value == null || value.isEmpty)
                             ? 'Antwoord kan niet leeg zijn.'
                             : null,
-                        enabled: widget.formIsOpen,
+                        enabled: widget.userCanEditForm,
                       ),
                     ),
-                    if (widget.showAdditionalSaveButton)
+                    if (widget.showAdditionalSaveButton &&
+                        widget.userCanEditForm)
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.save();
@@ -168,13 +177,14 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               formQuestion: widget.formQuestion,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
+                questionId: questionId,
                 newValue: answerValue == value ? null : value,
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,
                 context: context,
               ),
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
             ));
             break;
 
@@ -192,13 +202,14 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               formQuestion: widget.formQuestion,
               onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
+                questionId: questionId,
                 newValue: '[${newValues.map(Uri.encodeComponent).join(r';')}]',
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,
                 context: context,
               ),
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
             ));
             break;
 
@@ -206,9 +217,10 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             questionWidgets.add(FormImageWidget(
               docId: widget.docRef.id,
               questionName: widget.formQuestion.title,
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
+                questionId: questionId,
                 newValue: value,
                 f: widget.form,
                 d: widget.docRef,
@@ -230,9 +242,10 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               DateChoiceWidget(
                 answerValueDateTime: answerValueDateTime,
                 question: widget.formQuestion,
-                formIsOpen: widget.formIsOpen,
+                userCanEditForm: widget.userCanEditForm,
                 onChanged: (String? value) => _handleChangeOfFormAnswer(
                   question: widget.formQuestion.title,
+                  questionId: questionId,
                   newValue: value,
                   f: widget.form,
                   d: widget.docRef,

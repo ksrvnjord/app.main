@@ -6,13 +6,13 @@ class DateChoiceWidget extends StatelessWidget {
     super.key,
     required this.answerValueDateTime,
     required this.question,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     required this.onChanged,
   });
 
   final DateTime? answerValueDateTime;
   final FirestoreFormQuestion question;
-  final bool formIsOpen;
+  final bool userCanEditForm;
   final void Function(String?) onChanged;
 
   @override
@@ -30,7 +30,7 @@ class DateChoiceWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8.0), // Optional padding for better styling
       child: GestureDetector(
-        onTap: formIsOpen
+        onTap: userCanEditForm
             ? () async {
                 final selectedDate = await showDatePicker(
                   context: context,

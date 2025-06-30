@@ -10,15 +10,19 @@ class CreateFormQuestion extends ConsumerWidget {
     super.key,
     required this.index,
     required this.question,
+    required this.questionId,
     required this.onChanged,
     required this.deleteQuestion,
   });
 
+  // The position of the question in the form
   final int index;
   final FirestoreFormQuestion question;
+  // The question id of the question to match answers to
+  final int questionId;
   final VoidCallback onChanged;
   // ignore: prefer-correct-callback-field-name, prefer-explicit-parameter-names
-  final Function(int) deleteQuestion;
+  final Function() deleteQuestion;
 
   Widget _datePicker({
     required BuildContext context,
@@ -203,7 +207,13 @@ class CreateFormQuestion extends ConsumerWidget {
                       (FormQuestionType value) {
                         return DropdownMenuItem<FormQuestionType>(
                           value: value,
-                          child: Text(value.name.toString()),
+                          child: Row(
+                            children: [
+                              Icon(value.icon, size: 20),
+                              const SizedBox(width: 8),
+                              Text(value.label),
+                            ],
+                          ),
                         );
                       },
                     ).toList(),
@@ -243,7 +253,7 @@ class CreateFormQuestion extends ConsumerWidget {
                   child: Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: ElevatedButton(
-                      onPressed: () => deleteQuestion(question.id!),
+                      onPressed: () => deleteQuestion(),
                       child: const Text("Verwijder vraag"),
                     ),
                   ),
@@ -253,7 +263,7 @@ class CreateFormQuestion extends ConsumerWidget {
           ),
         ),
         CreateFormMoveArrows(
-            index: index, contentIndex: question.id!), // This is fine now
+            index: index, contentIndex: questionId), // This is fine now
       ],
     );
   }

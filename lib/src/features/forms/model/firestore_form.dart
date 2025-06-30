@@ -70,13 +70,17 @@ class FirestoreForm {
   final String authorId;
   final String authorName;
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool get isKoco => authorId == 'kookcommissie';
+  bool get isKoco =>
+      authorName.toLowerCase().replaceAll(' ', '') == 'kookcommissie';
 
   final List<int> visibleForGroups;
 
   final String? groupId;
   final bool isDraft;
 
+  /// **Database field**
+  ///
+  /// Use !isOpen in code.
   final bool isClosed;
 
   final bool hasMaximumNumberOfAnswers;
@@ -90,7 +94,7 @@ class FirestoreForm {
       currentNumberOfAnswers >= maximumNumberOfAnswers;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool get userCanEditForm =>
+  bool get isOpen =>
       formClosingTimeIsInFuture && !isClosed && !isSoldOut && !isDraft;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
