@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
@@ -22,7 +23,10 @@ class CreateFormPage extends ConsumerStatefulWidget {
 }
 
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
-  final questions = <FirestoreFormQuestion>[];
+  bool _isLoading = false;
+  final questions = <int, FirestoreFormQuestion>{};
+  final fillers = <int, FirestoreFormFillerNotifier>{};
+  final formContentObjectIds = <int>[];
 
   final description = TextEditingController();
   final formName = TextEditingController();
@@ -42,7 +46,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   bool maximumNumberOfAnswersIsVisible = false;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
-    for (FirestoreFormQuestion question in questions) {
+    for (FirestoreFormQuestion question in questions.values) {
       final questionOptions = question.options;
       if (question.type == FormQuestionType.singleChoice &&
           (questionOptions == null || questionOptions.isEmpty)) {
@@ -112,15 +116,41 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
-  void removeQuestion(int index) {
+  void removeQuestion(int contentIDNumber) {
     setState(() {
-      questions.removeAt(index);
+      formContentObjectIds.remove(contentIDNumber);
+      questions.remove(contentIDNumber);
+    });
+  }
+
+  void removeFiller(int contentIDNumber) {
+    setState(() {
+      formContentObjectIds.remove(contentIDNumber);
+      fillers.remove(contentIDNumber);
     });
   }
 
   void addQuestion(FirestoreFormQuestion question) {
     setState(() {
-      questions.add(question);
+      formContentObjectIds.add(question.id!);
+      questions[question.id!] = question;
+    });
+  }
+
+  void addFiller(FirestoreFormFillerNotifier filler) {
+    setState(() {
+      formContentObjectIds.add(filler.id);
+      fillers[filler.id] = filler;
+    });
+  }
+
+  void moveQuestionOrFiller(int id, bool directionLeft) {
+    setState(() {
+      final swapIndex = directionLeft ? id - 1 : id + 1;
+
+      final temp = formContentObjectIds[id];
+      formContentObjectIds[id] = formContentObjectIds[swapIndex];
+      formContentObjectIds[swapIndex] = temp;
     });
   }
 
@@ -169,12 +199,18 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
 
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
     try {
       final result = await FormRepository.createForm(
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
-          questions: questions,
+          formContentObjectIds: formContentObjectIds,
+          questionsMap: questions,
+          fillers: fillers,
           openUntilTimeStamp: Timestamp.fromDate(openUntil),
           description: description.text,
           authorId: currentUser.identifier.toString(),
@@ -188,8 +224,12 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
           isDraft: isDraft,
           visibleForGroups: await _convertToIds(visibleForGroups),
+          isV2: true,
         ),
       );
+
+      await FormRepository.createFormImages(
+          formId: result.id, fillers: fillers);
       if (!context.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -209,6 +249,12 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           duration: const Duration(seconds: 3),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -297,10 +343,18 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       floatingActionButton: FloatingActionButton.extended(
         tooltip: 'Maak nieuwe form',
         heroTag: 'submitForm',
-        // ignore: avoid-async-call-in-sync-function
-        onPressed: () => _handleSubmitForm(context, ref),
-        icon: const Icon(Icons.send),
-        label: const Text('Maak nieuwe form'),
+        onPressed: _isLoading ? null : () => _handleSubmitForm(context, ref),
+        icon: _isLoading
+            ? const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: 2,
+                ),
+              )
+            : const Icon(Icons.send),
+        label: Text(_isLoading ? 'Bezig...' : 'Maak nieuwe form'),
       ),
     );
   }

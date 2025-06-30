@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
 
 part 'firestore_form.g.dart';
 
 // If you're testing set this to 'testforms', for production use 'forms'
-const String firestoreFormCollectionName = 'forms';
+const String firestoreFormCollectionName = 'testforms';
 
 @immutable
 @JsonSerializable()
@@ -15,7 +16,10 @@ class FirestoreForm {
   const FirestoreForm({
     required this.createdTimeTimeStamp,
     required this.title,
-    required this.questions,
+    this.questions = const [],
+    this.formContentObjectIds = const [],
+    this.questionsMap = const {},
+    this.fillers = const {},
     required this.openUntilTimeStamp,
     this.description,
     required this.authorId,
@@ -28,6 +32,7 @@ class FirestoreForm {
     this.maximumNumberOfAnswers = 100000,
     this.currentNumberOfAnswers = 0,
     this.maximumNumberIsVisible = false,
+    this.isV2 = false,
   });
   factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFormFromJson(json);
@@ -36,6 +41,14 @@ class FirestoreForm {
 
   @JsonKey(toJson: _questionsToJson)
   final List<FirestoreFormQuestion> questions;
+
+  final List<int> formContentObjectIds;
+
+  @JsonKey(toJson: _questionsMapToJson)
+  final Map<int, FirestoreFormQuestion> questionsMap;
+
+  @JsonKey(toJson: _fillersToJson, fromJson: _fillersFromJson)
+  final Map<int, FirestoreFormFillerNotifier> fillers;
 
   @JsonKey(name: 'openUntil')
   @TimestampDateTimeConverter()
@@ -74,6 +87,7 @@ class FirestoreForm {
   final int maximumNumberOfAnswers;
   final int currentNumberOfAnswers;
   final bool maximumNumberIsVisible;
+  final bool isV2;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSoldOut =>
       hasMaximumNumberOfAnswers &&
@@ -98,6 +112,25 @@ class FirestoreForm {
     List<FirestoreFormQuestion> questions,
   ) =>
       questions.map((question) => question.toJson()).toList();
+
+  static Map<String, dynamic> _questionsMapToJson(
+    Map<int, FirestoreFormQuestion> questions,
+  ) =>
+      questions.map((key, value) => MapEntry(key.toString(), value.toJson()));
+
+  static Map<int, FirestoreFormFillerNotifier> _fillersFromJson(
+    Map<String, dynamic> json,
+  ) {
+    return json.map((key, value) =>
+        MapEntry(int.parse(key), FirestoreFormFillerNotifier.fromJson(value)));
+  }
+
+  static Map<String, dynamic> _fillersToJson(
+    Map<int, FirestoreFormFillerNotifier> fillers,
+  ) {
+    return fillers
+        .map((key, notifier) => MapEntry(key.toString(), notifier.toJson()));
+  }
 
   bool userIsInCorrectGroupForForm(List<int> userGroups) {
     if (visibleForGroups.isEmpty) return true;
