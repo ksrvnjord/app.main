@@ -58,6 +58,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_detail
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
@@ -184,12 +185,12 @@ abstract final // ignore: prefer-single-declaration-per-file
         final bool currentRouteRequiresAdmin =
             currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
-        final bool canAccesAdminRoutes = ref.read(
+        final bool canAccessAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
             ) ??
             false; // Watch for changes in the user's admin status.
 
-        final bool canAccesFormAdminRoutes = ref.read(
+        final bool canAccessFormAdminRoutes = ref.read(
               currentUserNotifierProvider.select(
                 (value) => value?.canCreateForms,
               ),
@@ -198,11 +199,11 @@ abstract final // ignore: prefer-single-declaration-per-file
 
         // ignore unauthorised check in debugmode
         if (kReleaseMode) {
-          if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
+          if (currentRouteRequiresFormAdmin && !canAccessFormAdminRoutes) {
             return '/401';
           }
 
-          if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
+          if (currentRouteRequiresAdmin && !canAccessAdminRoutes) {
             return '/401';
           }
         }
@@ -552,6 +553,24 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 name: "Commissie",
               ),
+              routes: [
+                _route(
+                  path: "edit",
+                  name: "Commissie -> Edit",
+                  pageBuilder: (context, state) => _getPage(
+                    child: AlmanakCommissieEditPage(
+                      name: state.pathParameters['name']!,
+                      year: state.uri.queryParameters['year'] != null
+                          ? int.parse(state.uri.queryParameters['year']!)
+                          : getNjordYear(),
+                      groupId: state.uri.queryParameters['groupId'] != null
+                          ? int.parse(state.uri.queryParameters['groupId']!)
+                          : 0,
+                    ),
+                    name: "Commissie -> Edit",
+                  ),
+                ),
+              ],
             ),
           ],
         ),
