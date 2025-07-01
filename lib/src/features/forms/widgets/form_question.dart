@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/date_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -17,6 +18,7 @@ class FormQuestion extends ConsumerStatefulWidget {
   const FormQuestion({
     super.key,
     required this.formQuestion,
+    this.questionId, // TODO questionUpdate: should be required
     required this.form,
     required this.docRef,
     required this.userCanEditForm,
@@ -25,6 +27,8 @@ class FormQuestion extends ConsumerStatefulWidget {
   });
 
   final FirestoreFormQuestion formQuestion;
+
+  final int? questionId;
 
   final FirestoreForm form;
 
@@ -56,6 +60,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
   Future<void> _handleChangeOfFormAnswer({
     required String question,
+    int? questionId,
     required String? newValue,
     required FirestoreForm f,
     required DocumentReference<FirestoreForm> d,
@@ -70,6 +75,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     try {
       await FormRepository.upsertFormAnswer(
         question: question,
+        questionId: questionId,
         newValue: newValue,
         form: f,
         docRef: d,
@@ -99,6 +105,8 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     const verticalPaddingCard = 2.0;
 
     final type = widget.formQuestion.type;
+
+    final questionId = widget.questionId;
 
     final questionWidgets = <Widget>[
       Text(widget.formQuestion.title, style: textTheme.titleLarge),
@@ -136,6 +144,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         maxLines: null,
                         onSaved: (String? value) => _handleChangeOfFormAnswer(
                           question: widget.formQuestion.title,
+                          questionId: questionId,
                           newValue: value,
                           f: widget.form,
                           d: widget.docRef,
@@ -168,7 +177,33 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               formQuestion: widget.formQuestion,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
+                questionId: questionId,
                 newValue: answerValue == value ? null : value,
+                f: widget.form,
+                d: widget.docRef,
+                ref: ref,
+                context: context,
+              ),
+              userCanEditForm: widget.userCanEditForm,
+            ));
+            break;
+
+          case FormQuestionType.multipleChoice:
+            final values = answerValue == null || answerValue == '[]'
+                ? <String>[]
+                : answerValue
+                    .substring(1, answerValue.length - 1)
+                    .split(r';')
+                    .map(Uri.decodeComponent)
+                    .toList();
+
+            questionWidgets.add(MultipleChoiceWidget(
+              initialValues: values,
+              formQuestion: widget.formQuestion,
+              onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
+                question: widget.formQuestion.title,
+                questionId: questionId,
+                newValue: '[${newValues.map(Uri.encodeComponent).join(r';')}]',
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,
@@ -185,6 +220,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               userCanEditForm: widget.userCanEditForm,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
+                questionId: questionId,
                 newValue: value,
                 f: widget.form,
                 d: widget.docRef,
@@ -209,6 +245,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 userCanEditForm: widget.userCanEditForm,
                 onChanged: (String? value) => _handleChangeOfFormAnswer(
                   question: widget.formQuestion.title,
+                  questionId: questionId,
                   newValue: value,
                   f: widget.form,
                   d: widget.docRef,

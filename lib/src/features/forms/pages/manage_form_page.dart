@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/data_text_list_tile.dart';
@@ -117,17 +118,33 @@ class ManageFormPage extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 32),
-                      for (final question in formData.questions) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                          child: FormQuestion(
+                      if (formData.isV2) ...[
+                        for (final contentIndex
+                            in formData.formContentObjectIds) ...[
+                          formData.questionsMap.containsKey(contentIndex)
+                              ? FormQuestion(
+                                  formQuestion:
+                                      formData.questionsMap[contentIndex]!,
+                                  form: formData,
+                                  docRef: formSnapshot.reference,
+                                  userCanEditForm: false,
+                                )
+                              : FormFiller(
+                                  filler: formData.fillers[contentIndex]!.value,
+                                  formId: formSnapshot.id,
+                                ),
+                          const SizedBox(height: 32),
+                        ]
+                      ] else ...[
+                        for (final question in formData.questions) ...[
+                          FormQuestion(
                             formQuestion: question,
                             form: formData,
-                            docRef: formVal.value!.reference,
+                            docRef: formSnapshot.reference,
                             userCanEditForm: false, // Use it here
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 32),
+                        ]
                       ],
                     ]);
         },

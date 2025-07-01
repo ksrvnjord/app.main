@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,33 +52,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   // This is used to keep track of the progress of the CSV generation.
   // Dart doesn't let us modify the progress counter inside the main loop of the CSV generation.
   // It's a bit of a hack, but it works.
-  // Future<String> _incrementProgressCounterAndReturnUserId(
-  //   String userId,
-  //   int answersLength,
-  // ) async {
-  //   setState(() {
-  //     _progressCounter += 1;
-  //   });
-
-  //   // This is a intentional delay to prevent our bare-bones Google Cloud SQL server from getting overwhelmed.
-  //   // The delay is exponential, so the first few answers are generated quickly, but the last few slow.
-  //   const growthRate = 0.1874;
-  //   const maximum = 1726 * 4;
-  //   final randomMax = maximum /
-  //       (1 + math.exp(-growthRate * (_progressCounter - answersLength)));
-
-  //   // ignore: avoid-ignoring-return-values
-  //   await Future.delayed(
-  //     Duration(
-  //       milliseconds: math.Random().nextInt(1 + randomMax.ceil()) +
-  //           // ignore: no-magic-number
-  //           1726 ~/ 8 +
-  //           (randomMax.ceil() ~/ answersLength),
-  //     ),
-  //   );
-
-  //   return userId;
-  // }
 
   void _handleDownloadButtonTap({
     required BuildContext context,
@@ -99,10 +73,14 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       final form = formSnapshot.data()!;
       final answers = answerDocs.map((doc) => doc.data()).toList();
 
+      // Choose question list based on version
+      final questions =
+          form.isV2 ? form.questionsMap.values.toList() : form.questions;
+
       final headerRow = [
         'Lidnummer',
         ...exportOptions.extraFields.keys,
-        ...form.questions.map((q) => q.title),
+        ...questions.map((q) => q.title),
         'Invultijdstip',
       ];
 
@@ -110,7 +88,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         answers.map((answer) async {
           final userId = answer.userId;
 
-          // Build a map of questionTitle → answer for fast lookup
+          // Map questionTitle → answer for lookup
           final answerMap = {
             for (var a in answer.answers) a.questionTitle: a.answer,
           };
@@ -119,15 +97,24 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
             exportOptions.extraFields.values.map((func) => func(userId)),
           );
 
-          final questionAnswers =
-              form.questions.map((q) => answerMap[q.title] ?? "").toList();
+          // Use the right question list here as well
+          final questionAnswers = questions.map((q) {
+            final raw = answerMap[q.title];
+            if (raw is String && raw.startsWith('[') && raw.endsWith(']')) {
+              // Handle multiple-choice answer formatting
+              final content = raw.substring(1, raw.length - 1);
+              if (content.isEmpty) return '';
+              return content;
+            }
+            return raw ?? '';
+          }).toList();
 
           final timestamp = DateFormat('dd-MM-yyyy HH:mm:ss')
               .format(answer.answeredAt.toDate());
 
           if (mounted) {
             setState(() {
-              _progressCounter = ++_progressCounter;
+              _progressCounter++;
             });
           }
           return [
@@ -317,6 +304,19 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     html.Url.revokeObjectUrl(url);
   }
 
+  bool _formContainsImageQuestion(FirestoreForm? form) {
+    if (form == null) {
+      return false;
+    }
+    if (form.isV2) {
+      return form.questionsMap.values
+          .any((question) => question.type == FormQuestionType.image);
+    } else {
+      return form.questions
+          .any((question) => question.type == FormQuestionType.image);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final completedAnswersVal =
@@ -350,8 +350,35 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
 
                         final userId = answer.userId;
 
+                        final userVal = ref.watch(userProvider(userId));
+
                         return ListTile(
-                          title: Text(userId),
+                          title: userVal.when(
+                            data: (user) => Text(user.fullName),
+                            error: (error, stack) {
+                              FirebaseCrashlytics.instance
+                                  .recordError(error, stack);
+                              return Center(
+                                child: ErrorTextWidget(
+                                  errorMessage: error.toString(),
+                                ),
+                              );
+                            },
+                            loading: () => Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Text(userId),
+                                  const SizedBox(width: 8),
+                                  const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child:
+                                          CircularProgressIndicator.adaptive()),
+                                ],
+                              ),
+                            ),
+                          ),
                           subtitle: Text(
                             "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
                           ),
@@ -370,10 +397,8 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           ),
           floatingActionButton: formVal.maybeWhen(
             data: (formSnapshot) {
-              final hasImageQuestions = formSnapshot
-                  .data()!
-                  .questions
-                  .any((question) => question.type == FormQuestionType.image);
+              final formData = formSnapshot.data();
+              final hasImageQuestions = _formContainsImageQuestion(formData);
               return completedAnswersVal.maybeWhen(
                 data: (answersSnapshot) =>
                     Column(mainAxisSize: MainAxisSize.min, children: [

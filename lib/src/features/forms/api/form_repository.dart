@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -9,6 +12,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 class FormRepository {
   static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
     required String question,
+    int? questionId,
     required String? newValue, // Given answer.
     required FirestoreForm form,
     required DocumentReference<FirestoreForm> docRef,
@@ -31,6 +35,7 @@ class FormRepository {
 
     final formQuestionAnswer = FormQuestionAnswer(
       questionTitle: question,
+      questionId: questionId,
       answer: newValue,
     );
 
@@ -47,10 +52,16 @@ class FormRepository {
             userId: user.identifier.toString(),
             answers: [formQuestionAnswer],
             answeredAt: Timestamp.now(),
-            isCompleted: checkIfFormIsCompleted(
-              form: form,
-              formAnswers: [formQuestionAnswer],
-            ),
+            isCompleted: form.isV2
+                ? checkIfFormIsCompleted(
+                    form: form,
+                    formAnswers: [formQuestionAnswer],
+                  )
+                : checkIfFormIsCompletedDeprecated(
+                    //TODO questionUpdate: remove deprecated
+                    form: form,
+                    formAnswers: [formQuestionAnswer],
+                  ),
           ));
   }
 
@@ -58,6 +69,31 @@ class FormRepository {
     required FirestoreForm form,
   }) async {
     return await FirestoreForm.firestoreConvert.add(form);
+  }
+
+  static Future<bool> createFormImages({
+    required String formId,
+    required Map<int, FirestoreFormFillerNotifier> fillers,
+  }) async {
+    final storage = FirebaseStorage.instance;
+
+    try {
+      for (final fillerNotifier in fillers.values) {
+        final filler = fillerNotifier.value;
+
+        if (filler.hasImage && filler.image != null) {
+          final fileBytes = await filler.image!.readAsBytes();
+
+          final storageRef = storage.ref().child(
+              '$firestoreFormCollectionName/$formId/fillers/${filler.id}');
+
+          await storageRef.putData(fileBytes);
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   static deleteForm(String path) async {
@@ -68,7 +104,7 @@ class FormRepository {
     await FirebaseFirestore.instance.doc(path).delete();
   }
 
-  static bool checkIfFormIsCompleted({
+  static bool checkIfFormIsCompletedDeprecated({
     required FirestoreForm form,
     required List<FormQuestionAnswer> formAnswers,
   }) {
@@ -79,9 +115,48 @@ class FormRepository {
           final myAnswer = formAnswers.firstWhere(
             (a) => a.questionTitle == question.title,
           );
-          final filledInRequiredQuestion =
+          var filledInRequiredQuestion =
               // ignore: avoid-non-null-assertion
               myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
+          if (question.type == FormQuestionType.multipleChoice) {
+            filledInRequiredQuestion =
+                // ignore: avoid-non-null-assertion
+                myAnswer.answer != null && !(myAnswer.answer! == "[]");
+          }
+          if (!filledInRequiredQuestion) {
+            return false;
+          }
+        } catch (error, _) {
+          // Answer not found for required question.
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  static bool checkIfFormIsCompleted({
+    required FirestoreForm form,
+    required List<FormQuestionAnswer> formAnswers,
+  }) {
+    for (final entry in form.questionsMap.entries) {
+      final questionId = entry.key;
+      final question = entry.value;
+      if (question.isRequired) {
+        try {
+          // ignore: avoid-unsafe-collection-methods
+          final myAnswer = formAnswers.firstWhere(
+            (a) => a.questionId == questionId,
+          );
+          var filledInRequiredQuestion =
+              // ignore: avoid-non-null-assertion
+              myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
+          if (question.type == FormQuestionType.multipleChoice) {
+            filledInRequiredQuestion =
+                // ignore: avoid-non-null-assertion
+                myAnswer.answer != null && !(myAnswer.answer! == "[]");
+          }
           if (!filledInRequiredQuestion) {
             return false;
           }
