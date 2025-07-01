@@ -14,6 +14,12 @@ FirestoreFormQuestion _$FirestoreFormQuestionFromJson(
       isRequired: json['isRequired'] as bool,
       options:
           (json['options'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      startDate: json['startDate'] == null
+          ? null
+          : DateTime.parse(json['startDate'] as String),
+      endDate: json['endDate'] == null
+          ? null
+          : DateTime.parse(json['endDate'] as String),
     );
 
 Map<String, dynamic> _$FirestoreFormQuestionToJson(
@@ -23,4 +29,6 @@ Map<String, dynamic> _$FirestoreFormQuestionToJson(
       'type': const FormQuestionTypeConverter().toJson(instance.type),
       'options': instance.options,
       'isRequired': instance.isRequired,
+      'startDate': instance.startDate?.toIso8601String(),
+      'endDate': instance.endDate?.toIso8601String(),
     };

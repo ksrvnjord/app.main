@@ -1,6 +1,7 @@
 // ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
@@ -184,24 +185,27 @@ abstract final // ignore: prefer-single-declaration-per-file
         final bool currentRouteRequiresAdmin =
             currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
-        final bool canAccesAdminRoutes = ref.read(
+        final bool canAccessAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
             ) ??
             false; // Watch for changes in the user's admin status.
 
-        final bool canAccesFormAdminRoutes = ref.read(
+        final bool canAccessFormAdminRoutes = ref.read(
               currentUserNotifierProvider.select(
                 (value) => value?.canCreateForms,
               ),
             ) ??
             false; // Watch for changes in the user's form admin status.
 
-        if (currentRouteRequiresFormAdmin && !canAccesFormAdminRoutes) {
-          return '/401';
-        }
+        // ignore unauthorised check in debugmode
+        if (kReleaseMode) {
+          if (currentRouteRequiresFormAdmin && !canAccessFormAdminRoutes) {
+            return '/401';
+          }
 
-        if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
-          return '/401';
+          if (currentRouteRequiresAdmin && !canAccessAdminRoutes) {
+            return '/401';
+          }
         }
 
         // ignore: prefer-returning-conditional-expressions
@@ -230,7 +234,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           minAppVersion:
               RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
-          durationUntilAlertAgain: Duration(minutes: 1),
+          durationUntilAlertAgain: Duration(minutes: 4),
         ),
         showIgnore: false,
         showLater: false,
@@ -559,6 +563,9 @@ abstract final // ignore: prefer-single-declaration-per-file
                       year: state.uri.queryParameters['year'] != null
                           ? int.parse(state.uri.queryParameters['year']!)
                           : getNjordYear(),
+                      groupId: state.uri.queryParameters['groupId'] != null
+                          ? int.parse(state.uri.queryParameters['groupId']!)
+                          : 0,
                     ),
                     name: "Commissie -> Edit",
                   ),

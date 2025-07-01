@@ -7,7 +7,6 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormsPage extends ConsumerWidget {
   const FormsPage({super.key});
@@ -22,82 +21,80 @@ class FormsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(formsLocation)),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          allForms.when(
-            // ignore: prefer-extracting-function-callbacks
-            data: (querySnapshot) {
-              final forms = querySnapshot.docs;
+      body: currentUserVal.when(
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+          return ErrorCardWidget(
+              errorMessage: 'Fout bij het laden van gebruiker.');
+        },
+        data: (currentUser) => allForms.when(
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
+          error: (error, stack) =>
+              ErrorCardWidget(errorMessage: error.toString()),
+          data: (querySnapshot) {
+            final forms = querySnapshot.docs;
 
-              return forms
-                  // ignore: prefer-extracting-function-callbacks
-                  .map((item) {
-                    return FormCard(
-                      formDoc: item,
-                      userGroups: currentUserVal.when(
-                        data: (currentUser) {
-                          final userGroups = currentUser.groups
-                              .where((group) => group.group.id != null)
-                              .map((group) => group.group.id!);
+            final visibleOpenForms = (forms).where((form) {
+              final formData = form.data();
+              return formData.isOpen &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
+            }).toList();
 
-                          return userGroups;
-                        },
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
+            final visibleClosedForms = (forms).where((form) {
+              final formData = form.data();
+              return !formData.isOpen &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
+            }).toList();
 
-                          return const [];
-                        },
-                        loading: () => const [],
-                      ),
-                      userIsAdmin: currentUserVal.when(
-                        data: (currentUser) => currentUser.isAdmin,
-                        error: (e, s) {
-                          // ignore: avoid-async-call-in-sync-function
-                          FirebaseCrashlytics.instance.recordError(e, s);
-
-                          return false;
-                        },
-                        loading: () => false,
-                      ),
-                    );
-                  })
-                  .toList()
-                  .toColumn(separator: const SizedBox(height: 4));
-            },
-            error: (error, stack) {
-              return ErrorCardWidget(errorMessage: error.toString());
-            },
-            loading: () => const CircularProgressIndicator.adaptive(),
-          ),
-        ],
+            return ListView(
+              padding: const EdgeInsets.all(8),
+              children: [
+                ...visibleOpenForms.map((form) => FormCard(
+                      formDoc: form,
+                      currentUser: currentUser,
+                    )),
+                if (visibleClosedForms.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Divider(),
+                  ),
+                  const Center(
+                    child: Text(
+                      'Gesloten Forms',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ...visibleClosedForms.map((form) => FormCard(
+                        formDoc: form,
+                        currentUser: currentUser,
+                      )),
+                ]
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: currentUserVal.when(
-        // ignore: prefer-extracting-function-callbacks
-        data: (currentUser) {
-          final canCreateForms = currentUser.canCreateForms;
-
-          return canCreateForms
-              ? FloatingActionButton.extended(
-                  tooltip: 'Beheer forms',
-                  foregroundColor: colorScheme.onTertiaryContainer,
-                  backgroundColor: colorScheme.tertiaryContainer,
-                  heroTag: "Manage Forms",
-                  onPressed: () => context.goNamed('Forms -> Manage Forms'),
-                  icon: const Icon(Icons.find_in_page),
-                  label: const Text('Beheer forms'),
-                )
-              : null;
-        },
-        // ignore: prefer-extracting-function-callbacks
-        error: (e, s) {
-          // ignore: avoid-async-call-in-sync-function
-          FirebaseCrashlytics.instance.recordError(e, s);
-
-          return const SizedBox.shrink();
-        },
-        loading: () => const CircularProgressIndicator.adaptive(),
+        data: (currentUser) => currentUser.canCreateForms
+            ? FloatingActionButton.extended(
+                tooltip: 'Beheer forms',
+                foregroundColor: colorScheme.onTertiaryContainer,
+                backgroundColor: colorScheme.tertiaryContainer,
+                heroTag: "Manage Forms",
+                onPressed: () => context.goNamed('Forms -> Manage Forms'),
+                icon: const Icon(Icons.find_in_page),
+                label: const Text('Beheer forms'),
+              )
+            : null,
+        loading: () => const SizedBox.shrink(),
+        error: (e, s) => const SizedBox.shrink(),
       ),
     );
   }

@@ -13,10 +13,12 @@ class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
     super.key,
     required this.name,
     required this.year,
+    required this.groupId,
   });
 
   final String name;
   final int year;
+  final int groupId;
 
   @override
   AlmanakCommissieEditPageState createState() {
@@ -87,7 +89,8 @@ class AlmanakCommissieEditPageState
     const int maxContentLength = 1726;
 
     final descriptionAsyncValue = ref.watch(
-      commissieDescriptionProvider(Tuple2(widget.name, widget.year)),
+      commissieDescriptionProvider(
+          Tuple3(widget.name, widget.year, widget.groupId)),
     );
 
     return Scaffold(
@@ -166,6 +169,7 @@ class AlmanakCommissieEditPageState
         name: widget.name,
         content: content,
         year: widget.year,
+        groupId: widget.groupId,
       );
 
       // Optional: Upload image if provided
@@ -174,6 +178,7 @@ class AlmanakCommissieEditPageState
           name: widget.name,
           year: widget.year,
           image: _galleryFile!,
+          groupId: widget.groupId,
         );
       }
 

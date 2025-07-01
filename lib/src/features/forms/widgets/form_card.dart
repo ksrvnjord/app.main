@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -16,14 +17,12 @@ class FormCard extends ConsumerWidget {
   const FormCard({
     super.key,
     required this.formDoc,
-    required this.userGroups,
-    required this.userIsAdmin,
+    required this.currentUser,
     this.pushContext = false,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
-  final Iterable<int> userGroups;
-  final bool userIsAdmin;
+  final User currentUser;
   final bool pushContext;
 
   final borderWidth = 2.0;
@@ -38,22 +37,6 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    var isAFormForUser = true;
-    final formGroups = form.visibleForGroups;
-    if (formGroups != null) {
-      isAFormForUser = false;
-      for (final group in userGroups) {
-        if (formGroups.contains(group)) {
-          isAFormForUser = true;
-          break;
-        }
-      }
-    }
-
-    final openUntil = form.openUntil.toDate();
-
-    final formIsOpen = DateTime.now().isBefore(openUntil);
-
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
     final countAnswerProvider =
@@ -64,7 +47,7 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     var roundedRectangleBorder = RoundedRectangleBorder(
-      side: !formIsOpen
+      side: !form.isOpen
           ? BorderSide(
               color: Colors.grey,
             )
@@ -83,73 +66,70 @@ class FormCard extends ConsumerWidget {
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     );
 
-    return (isAFormForUser || userIsAdmin)
-        ? ListTile(
-            title: <Widget>[Flexible(child: Text(form.title))]
-                .toRow(separator: const SizedBox(width: 4)),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  formIsOpen
-                      ? "Sluit ${timeago.format(
-                          openUntil,
-                          locale: 'nl',
-                          allowFromNow: true,
-                        )}"
-                      : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
-                  style: textTheme.bodyMedium
-                      ?.copyWith(color: colorScheme.outline),
-                ),
-                if (form.maximumNumberIsVisible == true)
-                  countAnswerProvider.when(
-                    data: (count) => Text(
-                      "Aantal antwoorden: $count / ${form.maximumNumberOfAnswers ?? '∞'}",
-                      style: textTheme.bodyMedium
-                          ?.copyWith(color: colorScheme.outline),
-                    ),
-                    error: (err, stack) =>
-                        ErrorTextWidget(errorMessage: err.toString()),
-                    loading: () => const SizedBox.shrink(),
-                  ),
-                userAnswerProvider.when(
-                  data: (snapshot) => snapshot.docs.isEmpty
-                      ? const SizedBox.shrink()
-                      : AnswerStatusCard(
-                          answerExists: snapshot.docs.isNotEmpty,
-                          isCompleted: snapshot.docs.isNotEmpty &&
-                              // ignore: avoid-unsafe-collection-methods
-                              snapshot.docs.first.data().isCompleted,
-                          showIcon: true,
-                          textStyle: textTheme.labelLarge,
-                        ),
-                  error: (err, stack) =>
-                      ErrorCardWidget(errorMessage: err.toString()),
-                  loading: () => const SizedBox.shrink(),
-                ),
-              ],
+    return ListTile(
+      title: <Widget>[Flexible(child: Text(form.title))]
+          .toRow(separator: const SizedBox(width: 4)),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            form.formClosingTimeIsInFuture
+                ? "Sluit ${timeago.format(
+                    form.openUntil,
+                    locale: 'nl',
+                    allowFromNow: true,
+                  )}"
+                : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
+            style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+          ),
+          if (form.maximumNumberIsVisible == true)
+            countAnswerProvider.when(
+              data: (answerCount) => Text(
+                "Aantal antwoorden: $answerCount / ${form.maximumNumberOfAnswers < 2000 ? form.maximumNumberOfAnswers : '∞'}",
+                style:
+                    textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+              ),
+              error: (err, stack) =>
+                  ErrorTextWidget(errorMessage: err.toString()),
+              loading: () => const SizedBox.shrink(),
             ),
-            trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
-            onTap: () {
-              if (pushContext) {
-                context.pushNamed(
-                  "Form",
-                  pathParameters: {"formId": formDoc.reference.id},
-                );
-              } else {
-                context.goNamed(
-                  "Form",
-                  pathParameters: {"formId": formDoc.reference.id},
-                );
-              }
-            },
-          ).card(
-            // Transparant color.
-            color: Colors.transparent,
-            elevation: 0,
-            shape: roundedRectangleBorder,
-            margin: const EdgeInsets.symmetric(vertical: 4),
-          )
-        : const SizedBox.shrink();
+          userAnswerProvider.when(
+            data: (snapshot) => snapshot.docs.isEmpty
+                ? const SizedBox.shrink()
+                : AnswerStatusCard(
+                    answerExists: snapshot.docs.isNotEmpty,
+                    isCompleted: snapshot.docs.isNotEmpty &&
+                        // ignore: avoid-unsafe-collection-methods
+                        snapshot.docs.first.data().isCompleted,
+                    showIcon: true,
+                    textStyle: textTheme.labelLarge,
+                  ),
+            error: (err, stack) =>
+                ErrorCardWidget(errorMessage: err.toString()),
+            loading: () => const SizedBox.shrink(),
+          ),
+        ],
+      ),
+      trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
+      onTap: () {
+        if (pushContext) {
+          context.pushNamed(
+            "Form",
+            pathParameters: {"formId": formDoc.reference.id},
+          );
+        } else {
+          context.goNamed(
+            "Form",
+            pathParameters: {"formId": formDoc.reference.id},
+          );
+        }
+      },
+    ).card(
+      // Transparant color.
+      color: Colors.transparent,
+      elevation: 0,
+      shape: roundedRectangleBorder,
+      margin: const EdgeInsets.symmetric(vertical: 4),
+    );
   }
 }

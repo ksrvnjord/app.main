@@ -12,63 +12,95 @@ const String firestoreFormCollectionName = 'forms';
 @immutable
 @JsonSerializable()
 class FirestoreForm {
+  const FirestoreForm({
+    required this.createdTimeTimeStamp,
+    required this.title,
+    required this.questions,
+    required this.openUntilTimeStamp,
+    this.description,
+    required this.authorId,
+    required this.authorName,
+    this.visibleForGroups = const <int>[],
+    this.groupId,
+    this.isDraft = false,
+    this.isClosed = false,
+    this.hasMaximumNumberOfAnswers = false,
+    this.maximumNumberOfAnswers = 100000,
+    this.currentNumberOfAnswers = 0,
+    this.maximumNumberIsVisible = false,
+  });
+  factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
+      _$FirestoreFormFromJson(json);
+
   final String title;
 
   @JsonKey(toJson: _questionsToJson)
   final List<FirestoreFormQuestion> questions;
 
+  @JsonKey(name: 'openUntil')
   @TimestampDateTimeConverter()
-  final Timestamp openUntil;
+  final Timestamp openUntilTimeStamp;
+
+  @JsonKey(name: 'createdTime')
   @TimestampDateTimeConverter()
-  final Timestamp createdTime;
+  final Timestamp createdTimeTimeStamp;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get openUntil => openUntilTimeStamp.toDate();
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get formClosingTimeIsInFuture => openUntil.isAfter(DateTime.now());
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DateTime get createdTime => createdTimeTimeStamp.toDate();
 
   final String? description;
   final String authorId;
   final String authorName;
-  final List<int?>? visibleForGroups;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isKoco =>
+      authorName.toLowerCase().replaceAll(' ', '') == 'kookcommissie';
+
+  final List<int> visibleForGroups;
+
   final String? groupId;
+  final bool isDraft;
 
-  final bool? isDraft;
+  /// **Database field**
+  ///
+  /// Use !isOpen in code.
+  final bool isClosed;
 
-  final bool? hasMaximumNumberOfAnswers;
-  final int? maximumNumberOfAnswers;
-  final bool? maximumNumberIsVisible;
+  final bool hasMaximumNumberOfAnswers;
+  final int maximumNumberOfAnswers;
+  final int currentNumberOfAnswers;
+  final bool maximumNumberIsVisible;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isSoldOut =>
+      hasMaximumNumberOfAnswers &&
+      currentNumberOfAnswers >= maximumNumberOfAnswers;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool get isOpen =>
+      formClosingTimeIsInFuture && !isClosed && !isSoldOut && !isDraft;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =
       FirebaseFirestore.instance
           .collection(firestoreFormCollectionName)
-          .withConverter(
+          .withConverter<FirestoreForm>(
             fromFirestore: (snapshot, _) =>
                 FirestoreForm.fromJson(snapshot.data() ?? {}),
             toFirestore: (form, _) => form.toJson(),
           );
 
-  // ignore: sort_constructors_first
-  const FirestoreForm({
-    required this.createdTime,
-    required this.title,
-    required this.questions,
-    required this.openUntil,
-    this.description,
-    required this.authorId,
-    required this.authorName,
-    this.visibleForGroups,
-    this.groupId,
-    this.isDraft,
-    this.hasMaximumNumberOfAnswers,
-    this.maximumNumberOfAnswers,
-    this.maximumNumberIsVisible,
-  });
-
-  // Create fromJson method.
-  // ignore: sort_constructors_first
-  factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
-      _$FirestoreFormFromJson(json);
-
-  // Create toJson method.
   Map<String, dynamic> toJson() => _$FirestoreFormToJson(this);
+
   static List<Map<String, dynamic>> _questionsToJson(
     List<FirestoreFormQuestion> questions,
   ) =>
       questions.map((question) => question.toJson()).toList();
+
+  bool userIsInCorrectGroupForForm(List<int> userGroups) {
+    if (visibleForGroups.isEmpty) return true;
+    return userGroups.any(visibleForGroups.contains);
+  }
 }

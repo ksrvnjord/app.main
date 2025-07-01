@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.d
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/date_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -18,7 +19,7 @@ class FormQuestion extends ConsumerStatefulWidget {
     required this.formQuestion,
     required this.form,
     required this.docRef,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     this.withoutBorder = false,
     this.showAdditionalSaveButton = true, // TODO: This should be false/removed
   });
@@ -29,7 +30,7 @@ class FormQuestion extends ConsumerStatefulWidget {
 
   final DocumentReference<FirestoreForm> docRef;
 
-  final bool formIsOpen;
+  final bool userCanEditForm;
 
   final bool withoutBorder;
 
@@ -113,6 +114,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
             if (entry.questionTitle == widget.formQuestion.title) {
+              //TODO questionMigration: match op id
               answerValue = entry.answer;
             }
           }
@@ -143,10 +145,11 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         validator: (value) => (value == null || value.isEmpty)
                             ? 'Antwoord kan niet leeg zijn.'
                             : null,
-                        enabled: widget.formIsOpen,
+                        enabled: widget.userCanEditForm,
                       ),
                     ),
-                    if (widget.showAdditionalSaveButton)
+                    if (widget.showAdditionalSaveButton &&
+                        widget.userCanEditForm)
                       TextButton(
                         onPressed: () {
                           _formKey.currentState?.save();
@@ -171,7 +174,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 ref: ref,
                 context: context,
               ),
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
             ));
             break;
 
@@ -179,7 +182,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             questionWidgets.add(FormImageWidget(
               docId: widget.docRef.id,
               questionName: widget.formQuestion.title,
-              formIsOpen: widget.formIsOpen,
+              userCanEditForm: widget.userCanEditForm,
               onChanged: (String? value) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 newValue: value,
@@ -190,6 +193,30 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               ),
             ));
             break;
+
+          case FormQuestionType.date:
+            DateTime? answerValueDateTime;
+            try {
+              answerValueDateTime = DateTime.parse(answerValue!).toLocal();
+            } catch (e) {
+              answerValueDateTime = null;
+            }
+
+            questionWidgets.add(
+              DateChoiceWidget(
+                answerValueDateTime: answerValueDateTime,
+                question: widget.formQuestion,
+                userCanEditForm: widget.userCanEditForm,
+                onChanged: (String? value) => _handleChangeOfFormAnswer(
+                  question: widget.formQuestion.title,
+                  newValue: value,
+                  f: widget.form,
+                  d: widget.docRef,
+                  ref: ref,
+                  context: context,
+                ),
+              ),
+            );
 
           case FormQuestionType.unsupported:
             questionWidgets.add(Card(

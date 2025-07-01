@@ -71,7 +71,7 @@ class _ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
             },
           );
         },
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Text(
             'Failed to load notifications',

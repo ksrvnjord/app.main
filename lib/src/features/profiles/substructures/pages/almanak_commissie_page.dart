@@ -46,6 +46,8 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
       widget.name,
       widget.year,
     );
+    final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
+
     final commissieLeeden = ref.watch(
       commissieLeedenProvider(commissieAndYear),
     );
@@ -55,136 +57,124 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.name),
-      ),
-      body: ListView(
-        controller:
-            scrollController, // For keeping scroll position when changing year.
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            child: AlmanakSubstructureCoverPicture(
-              imageProvider:
-                  ref.watch(commissiePictureProvider(commissieAndYear)),
-            ),
-          ).padding(horizontal: pageHPadding),
-          SubstructureDescriptionWidget(
-            descriptionAsyncVal: ref.watch(
-              commissieDescriptionProvider(commissieAndYear),
-            ),
-          ).padding(all: descriptionHPadding),
-          [
-            Text(
-              "Leeden",
-              style: Theme.of(context).textTheme.titleLarge,
-            )
-                .alignment(Alignment.centerLeft)
-                .padding(horizontal: titleHPadding),
-            [
-              const Text('Kies een jaar: '),
-              YearSelectorDropdown(
-                onChanged: (y) => context.goNamed(
-                  "Commissie",
-                  pathParameters: {
-                    "name": widget.name,
-                  },
-                  queryParameters: {
-                    "year": y.toString(),
-                  },
-                ),
-                selectedYear: widget.year,
-              ),
-            ].toRow(),
-          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
-                right: yearSelectorPadding,
-              ),
-          commissieLeeden.when(
-            data: (snapshot) => buildCommissieList(snapshot),
-            error: (error, stk) =>
-              ErrorCardWidget(errorMessage: error.toString()),
-            loading: () => const Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
+    return groupIdAsync.when(
+      data: (groupId) {
+        final commissieIdAndName =
+            Tuple3(widget.name, widget.year, groupId ?? 0);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.name),
           ),
-        ],
-      ),
-      floatingActionButton: currentUserVal.when(
-        data: (currentUser) {
-          final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
-          return groupIdAsync.when(
-            data: (groupId) {
-              final userId = currentUser.identifier;
-              /*WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('isAdmin: ${currentUser.isAdmin}\n GroupID: $groupId\n userID: $userId\n'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              });*/
-              if (groupId == null) return const SizedBox.shrink();
-              final permissionsAsync = ref.watch(permissionsProvider(Tuple2(groupId, userId)));
-              debugPrint('provider provided');
-              return permissionsAsync.when(
-                data: (permissions) {
-                  debugPrint('listening to provider');
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('permissions ${permissions.first}'),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  }); 
-                  final canAccessAdminPanel = /*currentUser.isAdmin ||*/ permissions.contains("forms:*");
-                  return canAccessAdminPanel
-                    ? FloatingActionButton.extended(
-                      foregroundColor: colorScheme.onTertiaryContainer,
-                      backgroundColor: colorScheme.tertiaryContainer,
-                      onPressed: () {
-                        context.goNamed(
-                          "Commissie -> Edit",
-                          pathParameters: {
-                            "name": widget.name,
-                          },
-                          queryParameters: {
-                            "year": widget.year.toString(),
-                          },
-                        );
+          body: ListView(
+            controller:
+                scrollController, // For keeping scroll position when changing year.
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                child: AlmanakSubstructureCoverPicture(
+                  imageProvider:
+                      ref.watch(commissiePictureProvider(commissieIdAndName)),
+                ),
+              ).padding(horizontal: pageHPadding),
+              SubstructureDescriptionWidget(
+                descriptionAsyncVal: ref.watch(
+                  commissieDescriptionProvider(commissieIdAndName),
+                ),
+              ).padding(all: descriptionHPadding),
+              [
+                Text(
+                  "Leeden",
+                  style: Theme.of(context).textTheme.titleLarge,
+                )
+                    .alignment(Alignment.centerLeft)
+                    .padding(horizontal: titleHPadding),
+                [
+                  const Text('Kies een jaar: '),
+                  YearSelectorDropdown(
+                    onChanged: (y) => context.goNamed(
+                      "Commissie",
+                      pathParameters: {
+                        "name": widget.name,
                       },
-                      icon: const Icon(Icons.edit_outlined),
-                      label: const Text('Edit'),
-                    )
-                  : null;
-                }, 
+                      queryParameters: {
+                        "year": y.toString(),
+                      },
+                    ),
+                    selectedYear: widget.year,
+                  ),
+                ].toRow(),
+              ]
+                  .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween)
+                  .padding(
+                    right: yearSelectorPadding,
+                  ),
+              commissieLeeden.when(
+                data: (snapshot) => buildCommissieList(snapshot),
+                error: (error, stk) =>
+                    ErrorCardWidget(errorMessage: error.toString()),
+                loading: () => const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: currentUserVal.when(
+            data: (currentUser) {
+              final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
+              return groupIdAsync.when(
+                data: (groupId) {
+                  final userId = currentUser.identifier;
+                  if (groupId == null) return const SizedBox.shrink();
+                  final permissionsAsync =
+                      ref.watch(permissionsProvider(Tuple2(groupId, userId)));
+                  debugPrint('provider provided');
+                  return permissionsAsync.when(
+                    data: (permissions) {
+                      final canAccessEditGroupPage = currentUser.isAdmin ||
+                          permissions.contains("almanak:*");
+                      return canAccessEditGroupPage
+                          ? FloatingActionButton.extended(
+                              foregroundColor: colorScheme.onTertiaryContainer,
+                              backgroundColor: colorScheme.tertiaryContainer,
+                              onPressed: () {
+                                context.goNamed(
+                                  "Commissie -> Edit",
+                                  pathParameters: {
+                                    "name": widget.name,
+                                  },
+                                  queryParameters: {
+                                    "year": widget.year.toString(),
+                                    "groupId": groupId.toString(),
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.edit_outlined),
+                              label: const Text('Edit'),
+                            )
+                          : null;
+                    },
+                    loading: () => null,
+                    error: (e, s) => const SizedBox.shrink(),
+                  );
+                },
+                error: (error, stack) {
+                  FirebaseCrashlytics.instance.recordError(error, stack);
+                  return const SizedBox.shrink();
+                },
                 loading: () => null,
-                error: (e, s) => const SizedBox.shrink(), 
               );
             },
-            error: (error, stack) {
-              FirebaseCrashlytics.instance.recordError(error, stack);
-              return const SizedBox.shrink();
+            error: (e, s) {
+              debugPrint("Error message when retrieving permission: $e");
+              return null;
             },
-            loading: () => null,
-          );
-        },
-        error: (e, s) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Permissions error: $e'),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          });
-          return null;
-        },
-        loading: () => const SizedBox.shrink(),
-      ),
+            loading: () => const SizedBox.shrink(),
+          ),
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (e, s) => const SizedBox.shrink(),
     );
   }
 
