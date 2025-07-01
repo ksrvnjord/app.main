@@ -143,7 +143,7 @@ class AlmanakCommissieEditPageState
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stackTrace) =>
             const SizedBox.shrink(), // Display nothing on error
       ),
