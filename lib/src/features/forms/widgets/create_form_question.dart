@@ -240,8 +240,7 @@ class CreateFormQuestion extends ConsumerWidget {
                 ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
                 TextFormField(
                   controller: questionController,
-                  decoration: InputDecoration(
-                      labelText: 'Vraag ${index + 1} (gebruik unieke vragen)'),
+                  decoration: InputDecoration(labelText: 'Vraag ${index + 1}'),
                   onChanged: (String value) => question.title = value,
                   validator: (value) => (value == null || value.isEmpty)
                       ? 'Geef een naam op voor de vraag.'

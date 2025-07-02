@@ -14,13 +14,13 @@ class FormImageWidget extends ConsumerWidget {
   const FormImageWidget({
     super.key,
     required this.docId,
-    required this.questionName,
+    required this.questionId,
     required this.userCanEditForm,
     required this.onChanged,
   });
 
   final String docId;
-  final String questionName;
+  final int questionId;
   final bool userCanEditForm;
   final void Function(String?) onChanged;
 
@@ -52,7 +52,7 @@ class FormImageWidget extends ConsumerWidget {
             ref.watch(formAnswerImageProvider(FormAnswerImageParams(
           docId: docId,
           userId: user.identifierString,
-          questionName: questionName,
+          questionId: questionId.toString(),
         )));
 
         return Container(
@@ -78,7 +78,7 @@ class FormImageWidget extends ConsumerWidget {
                         final imageBytes = await getImageFromUser();
                         if (imageBytes != null) {
                           bool success = await changeImage(
-                              imageBytes, docId, questionName, ref);
+                              imageBytes, docId, questionId.toString(), ref);
                           if (success) {
                             onChanged(imageBytes.hashCode.toString());
                             showSnackBar(
@@ -93,8 +93,8 @@ class FormImageWidget extends ConsumerWidget {
                     IconButton(
                       icon: const Icon(Icons.delete, size: 25),
                       onPressed: () async {
-                        bool success =
-                            await deleteImage(docId, questionName, ref);
+                        bool success = await deleteImage(
+                            docId, questionId.toString(), ref);
                         if (success) {
                           onChanged(null);
                           showSnackBar(
@@ -121,8 +121,8 @@ class FormImageWidget extends ConsumerWidget {
                           ? () async {
                               final imageBytes = await getImageFromUser();
                               if (imageBytes != null) {
-                                bool success = await addImage(
-                                    imageBytes, docId, questionName, ref);
+                                bool success = await addImage(imageBytes, docId,
+                                    questionId.toString(), ref);
                                 if (success) {
                                   onChanged(imageBytes.hashCode.toString());
                                   showSnackBar(
