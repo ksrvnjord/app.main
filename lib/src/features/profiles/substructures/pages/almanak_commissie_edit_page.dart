@@ -187,7 +187,9 @@ class AlmanakCommissieEditPageState
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Content saved successfully')),
+        const SnackBar(
+            content: Text(
+                'Velden aangepast, afbeelding kan even duren voordat je het ziet.')),
       );
 
       context.goNamed(
