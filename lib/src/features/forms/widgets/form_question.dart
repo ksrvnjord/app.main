@@ -264,7 +264,9 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 questionId: questionId,
-                newValue: newValues,
+                newValue: widget.formQuestion.options!
+                    .where((option) => newValues.contains(option))
+                    .toList(),
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,

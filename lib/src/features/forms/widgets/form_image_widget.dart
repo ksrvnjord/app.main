@@ -48,10 +48,11 @@ class FormImageWidget extends ConsumerWidget {
 
     return currentUserAsyncValue.when(
       data: (user) {
+        final userId = user.identifierString;
         final asyncImageString =
             ref.watch(formAnswerImageProvider(FormAnswerImageParams(
           docId: docId,
-          userId: user.identifierString,
+          userId: userId,
           questionId: questionId.toString(),
         )));
 
@@ -80,7 +81,7 @@ class FormImageWidget extends ConsumerWidget {
                           bool success = await changeImage(
                               imageBytes, docId, questionId.toString(), ref);
                           if (success) {
-                            onChanged(imageBytes.hashCode.toString());
+                            onChanged('${userId}_${questionId.toString()}');
                             showSnackBar(
                                 context, success, 'Veranderen succesvol!');
                           } else {
@@ -124,7 +125,8 @@ class FormImageWidget extends ConsumerWidget {
                                 bool success = await addImage(imageBytes, docId,
                                     questionId.toString(), ref);
                                 if (success) {
-                                  onChanged(imageBytes.hashCode.toString());
+                                  onChanged(
+                                      '${userId}_${questionId.toString()}');
                                   showSnackBar(
                                       context, success, 'Upload succesvol!');
                                 } else {
