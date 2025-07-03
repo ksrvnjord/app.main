@@ -213,6 +213,19 @@ class EditGroupPage extends ConsumerWidget {
                 floating: true,
                 pinned: true,
               ),
+              // Header for the SliverList
+              SliverToBoxAdapter(
+                child: ListTile(
+                  title: const Text("Lid"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      SizedBox(width: 32.0, child: Icon(Icons.edit_document)),
+                      SizedBox(width: 32.0, child: Icon(Icons.book)),
+                    ],
+                  ),
+                ),
+              ),
               users.isEmpty
                   ? const SliverFillRemaining(
                       child: Center(

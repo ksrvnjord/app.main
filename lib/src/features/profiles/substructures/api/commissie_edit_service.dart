@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 
 class CommissieEditService {
   static Future<void> updateCommissieDescription({
@@ -29,7 +28,6 @@ class CommissieEditService {
     required int year,
     required int groupId,
   }) async {
-    debugPrint("$groupId");
     final imagePath = '/almanak/commissies/$name/$year/$groupId/picture.jpg';
     final imageRef = FirebaseStorage.instance.ref(imagePath);
 

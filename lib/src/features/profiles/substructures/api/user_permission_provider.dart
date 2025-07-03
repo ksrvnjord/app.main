@@ -9,19 +9,15 @@ final permissionsProvider =
   final groupId = groupAndUser.item1;
   final userId = groupAndUser.item2;
   final dio = ref.read(dioProvider);
-  // print group and user
-  debugPrint("groupId: $groupId");
-  debugPrint("userId: $userId");
+
   try {
     final response = await dio.get("/api/v2/groups/$groupId/$userId");
     final List<String> permissions =
         (response.data['permissions'] as List<dynamic>)
             .map((e) => e as String)
             .toList();
-    debugPrint(permissions.toString());
     return permissions;
   } catch (e, stack) {
-    debugPrint('User not in group: $e');
     debugPrintStack(stackTrace: stack);
     return [];
   }

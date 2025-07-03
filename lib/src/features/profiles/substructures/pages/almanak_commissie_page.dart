@@ -128,7 +128,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                   if (groupId == null) return const SizedBox.shrink();
                   final permissionsAsync =
                       ref.watch(permissionsProvider(Tuple2(groupId, userId)));
-                  debugPrint('provider provided');
+
                   return permissionsAsync.when(
                     data: (permissions) {
                       final canAccessEditGroupPage = currentUser.isAdmin ||
