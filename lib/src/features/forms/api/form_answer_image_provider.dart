@@ -55,9 +55,7 @@ Future<bool> addImage(
             '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
         .putData(image);
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef,
-        userId: user.identifierString,
-        questionId: questionId)));
+        docId: docRef, userId: user.identifierString, questionId: questionId)));
     return true;
   } catch (e) {
     return false;
@@ -78,9 +76,7 @@ Future<bool> deleteImage(
             '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
         .delete();
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef,
-        userId: user.identifierString,
-        questionId: questionId)));
+        docId: docRef, userId: user.identifierString, questionId: questionId)));
     return true;
   } catch (e) {
     return false;
