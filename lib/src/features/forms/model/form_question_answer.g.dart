@@ -11,6 +11,9 @@ FormQuestionAnswer _$FormQuestionAnswerFromJson(Map<String, dynamic> json) =>
       questionTitle: json['questionTitle'] as String?,
       questionId: (json['questionId'] as num?)?.toInt(),
       answer: json['answer'] as String?,
+      answerList: (json['answerList'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$FormQuestionAnswerToJson(FormQuestionAnswer instance) =>
@@ -18,4 +21,5 @@ Map<String, dynamic> _$FormQuestionAnswerToJson(FormQuestionAnswer instance) =>
       'questionTitle': instance.questionTitle,
       'questionId': instance.questionId,
       'answer': instance.answer,
+      'answerList': instance.answerList,
     };

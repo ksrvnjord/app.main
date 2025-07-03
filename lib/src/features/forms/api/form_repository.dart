@@ -10,7 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class FormRepository {
-  static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
+  static Future<DocumentReference<FormAnswer>> upsertFormAnswerDeprecated({
     required String question,
     int? questionId,
     required String? newValue, // Given answer.
@@ -41,7 +41,7 @@ class FormRepository {
 
     // Document exists, so we update it.
     return docs.isNotEmpty
-        ? _updateExistingFormAnswer(
+        ? _updateExistingFormAnswerDeprecated(
             // ignore: avoid-unsafe-collection-methods
             doc: docs.first,
             question: question,
@@ -52,16 +52,59 @@ class FormRepository {
             userId: user.identifier.toString(),
             answers: [formQuestionAnswer],
             answeredAt: Timestamp.now(),
-            isCompleted: form.isV2
-                ? checkIfFormIsCompleted(
-                    form: form,
-                    formAnswers: [formQuestionAnswer],
-                  )
-                : checkIfFormIsCompletedDeprecated(
-                    //TODO questionUpdate: remove deprecated
-                    form: form,
-                    formAnswers: [formQuestionAnswer],
-                  ),
+            isCompleted: checkIfFormIsCompletedDeprecated(
+              //TODO questionUpdate: remove deprecated
+              form: form,
+              formAnswers: [formQuestionAnswer],
+            ),
+          ));
+  }
+
+  static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
+    required String question,
+    int? questionId,
+    required List<String>? newValue, // Given answer.
+    required FirestoreForm form,
+    required DocumentReference<FirestoreForm> docRef,
+    required WidgetRef ref,
+  }) async {
+    // PRECONDITIONS.
+    final user = ref.read(currentUserNotifierProvider);
+    if (user == null) {
+      throw Exception('User is null');
+    }
+
+    if (DateTime.now().isAfter(form.openUntil)) {
+      throw Exception('Form is closed');
+    }
+
+    // Read latest data from Firestore.
+    final answerSnapshot = await ref.watch(formAnswerProvider(docRef).future);
+
+    final docs = answerSnapshot.docs;
+
+    final formQuestionAnswer = FormQuestionAnswer(
+      questionId: questionId,
+      answerList: newValue,
+    );
+
+    // Document exists, so we update it.
+    return docs.isNotEmpty
+        ? _updateExistingFormAnswer(
+            // ignore: avoid-unsafe-collection-methods
+            doc: docs.first,
+            questionId: questionId,
+            newValue: newValue,
+            form: form,
+          )
+        : FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
+            userId: user.identifier.toString(),
+            answers: [formQuestionAnswer],
+            answeredAt: Timestamp.now(),
+            isCompleted: checkIfFormIsCompleted(
+              form: form,
+              formAnswers: [formQuestionAnswer],
+            ),
           ));
   }
 
@@ -151,12 +194,7 @@ class FormRepository {
           );
           var filledInRequiredQuestion =
               // ignore: avoid-non-null-assertion
-              myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
-          if (question.type == FormQuestionType.multipleChoice) {
-            filledInRequiredQuestion =
-                // ignore: avoid-non-null-assertion
-                myAnswer.answer != null && !(myAnswer.answer! == "[]");
-          }
+              myAnswer.answerList != null && myAnswer.answerList!.isNotEmpty;
           if (!filledInRequiredQuestion) {
             return false;
           }
@@ -170,7 +208,8 @@ class FormRepository {
     return true;
   }
 
-  static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
+  static Future<DocumentReference<FormAnswer>>
+      _updateExistingFormAnswerDeprecated({
     required QueryDocumentSnapshot<FormAnswer> doc,
     required String question,
     required String? newValue,
@@ -185,6 +224,38 @@ class FormRepository {
     );
 
     formQuestionAnswer.answer = newValue;
+
+    if (!formAnswers.contains(formQuestionAnswer)) {
+      formAnswers.add(formQuestionAnswer);
+    }
+
+    final isCompleted =
+        checkIfFormIsCompleted(form: form, formAnswers: formAnswers);
+
+    await doc.reference.update({
+      'answers': formAnswers.map((answer) => answer.toJson()).toList(),
+      'answeredAt': Timestamp.now(),
+      FormAnswer.isCompletedJSONKey: isCompleted,
+    });
+
+    return doc.reference;
+  }
+
+  static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
+    required QueryDocumentSnapshot<FormAnswer> doc,
+    required int? questionId,
+    required List<String>? newValue,
+    required FirestoreForm form,
+  }) async {
+    final formAnswers = doc.data().answers;
+
+    final formQuestionAnswer = formAnswers.firstWhere(
+      (a) => a.questionId == questionId,
+      orElse: () =>
+          FormQuestionAnswer(questionId: questionId, answerList: newValue),
+    );
+
+    formQuestionAnswer.answerList = newValue;
 
     if (!formAnswers.contains(formQuestionAnswer)) {
       formAnswers.add(formQuestionAnswer);

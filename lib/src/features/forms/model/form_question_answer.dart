@@ -13,10 +13,15 @@ class FormQuestionAnswer {
   final int?
       questionId; //TODO questionUpdate: make this required and remove nullable
   String? answer;
+  List<String>? answerList;
 
   // ignore: sort_constructors_first
-  FormQuestionAnswer(
-      {this.questionTitle, this.questionId, required this.answer});
+  FormQuestionAnswer({
+    this.questionTitle,
+    this.questionId,
+    this.answer,
+    this.answerList,
+  });
 
   // Create fromJson method.
   // ignore: sort_constructors_first

@@ -58,10 +58,42 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     });
   }
 
-  Future<void> _handleChangeOfFormAnswer({
+  Future<void> _handleChangeOfFormAnswerDeprecated({
+    //TODO questionUpdate: remove this
     required String question,
     int? questionId,
     required String? newValue,
+    required FirestoreForm f,
+    required DocumentReference<FirestoreForm> d,
+    required WidgetRef ref,
+    required BuildContext context,
+  }) async {
+    final currentState = _formKey.currentState;
+    if (currentState?.validate() == false) {
+      return;
+    }
+
+    try {
+      await FormRepository.upsertFormAnswerDeprecated(
+        question: question,
+        questionId: questionId,
+        newValue: newValue,
+        form: f,
+        docRef: d,
+        ref: ref,
+      );
+    } on Exception catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
+  }
+
+  Future<void> _handleChangeOfFormAnswer({
+    required String question,
+    int? questionId,
+    required List<String>? newValue,
     required FirestoreForm f,
     required DocumentReference<FirestoreForm> d,
     required WidgetRef ref,
@@ -117,20 +149,31 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
     answerStream.when(
       data: (data) {
-        String? answerValue;
+        List<String>? answerValue;
         if (data.docs.isNotEmpty) {
           final formAnswers = data.docs.first.data().answers;
           for (final entry in formAnswers) {
-            if (entry.questionTitle == widget.formQuestion.title) {
-              //TODO questionMigration: match op id
-              answerValue = entry.answer;
+            if (widget.form.isV2) {
+              if (entry.questionId == widget.formQuestion.id) {
+                answerValue = entry.answerList;
+              }
+            } else {
+              if (entry.questionTitle == widget.formQuestion.title) {
+                //TODO questionUpdate: remove this
+                answerValue = [entry.answer ?? ""];
+              }
             }
           }
         }
         switch (type) {
           case FormQuestionType.text:
+            String? initialValue;
+            if (answerValue != null) {
+              initialValue = answerValue[0];
+            }
+
             TextEditingController answer =
-                TextEditingController(text: answerValue);
+                TextEditingController(text: initialValue);
 
             questionWidgets.add(
               Form(
@@ -142,18 +185,25 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                         controller: answer,
                         focusNode: _focusNode,
                         maxLines: null,
-                        onSaved: (String? value) => _handleChangeOfFormAnswer(
-                          question: widget.formQuestion.title,
-                          questionId: questionId,
-                          newValue: value,
-                          f: widget.form,
-                          d: widget.docRef,
-                          ref: ref,
-                          context: context,
-                        ),
-                        validator: (value) => (value == null || value.isEmpty)
-                            ? 'Antwoord kan niet leeg zijn.'
-                            : null,
+                        onSaved: (String? value) => widget.form.isV2
+                            ? _handleChangeOfFormAnswer(
+                                question: widget.formQuestion.title,
+                                questionId: questionId,
+                                newValue: (value != null) ? [value] : null,
+                                f: widget.form,
+                                d: widget.docRef,
+                                ref: ref,
+                                context: context,
+                              )
+                            : _handleChangeOfFormAnswerDeprecated(
+                                question: widget.formQuestion.title,
+                                questionId: questionId,
+                                newValue: value,
+                                f: widget.form,
+                                d: widget.docRef,
+                                ref: ref,
+                                context: context,
+                              ),
                         enabled: widget.userCanEditForm,
                       ),
                     ),
@@ -172,30 +222,41 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
             break;
 
           case FormQuestionType.singleChoice:
+            String? initialValue;
+            if (answerValue != null) {
+              initialValue = answerValue[0];
+            }
+
             questionWidgets.add(SingleChoiceWidget(
-              initialValue: answerValue,
+              initialValue: initialValue,
               formQuestion: widget.formQuestion,
-              onChanged: (String? value) => _handleChangeOfFormAnswer(
-                question: widget.formQuestion.title,
-                questionId: questionId,
-                newValue: answerValue == value ? null : value,
-                f: widget.form,
-                d: widget.docRef,
-                ref: ref,
-                context: context,
-              ),
+              onChanged: (String? value) => widget.form.isV2
+                  ? _handleChangeOfFormAnswer(
+                      question: widget.formQuestion.title,
+                      questionId: questionId,
+                      newValue: (value == null || value == initialValue)
+                          ? null
+                          : [value],
+                      f: widget.form,
+                      d: widget.docRef,
+                      ref: ref,
+                      context: context,
+                    )
+                  : _handleChangeOfFormAnswerDeprecated(
+                      question: widget.formQuestion.title,
+                      questionId: questionId,
+                      newValue: initialValue == value ? null : value,
+                      f: widget.form,
+                      d: widget.docRef,
+                      ref: ref,
+                      context: context,
+                    ),
               userCanEditForm: widget.userCanEditForm,
             ));
             break;
 
           case FormQuestionType.multipleChoice:
-            final values = answerValue == null || answerValue == '[]'
-                ? <String>[]
-                : answerValue
-                    .substring(1, answerValue.length - 1)
-                    .split(r';')
-                    .map(Uri.decodeComponent)
-                    .toList();
+            final values = answerValue ?? <String>[];
 
             questionWidgets.add(MultipleChoiceWidget(
               initialValues: values,
@@ -203,7 +264,9 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
                 question: widget.formQuestion.title,
                 questionId: questionId,
-                newValue: '[${newValues.map(Uri.encodeComponent).join(r';')}]',
+                newValue: widget.formQuestion.options!
+                    .where((option) => newValues.contains(option))
+                    .toList(),
                 f: widget.form,
                 d: widget.docRef,
                 ref: ref,
@@ -216,24 +279,39 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
           case FormQuestionType.image:
             questionWidgets.add(FormImageWidget(
               docId: widget.docRef.id,
-              questionName: widget.formQuestion.title,
+              questionId: widget.formQuestion.id!,
               userCanEditForm: widget.userCanEditForm,
-              onChanged: (String? value) => _handleChangeOfFormAnswer(
-                question: widget.formQuestion.title,
-                questionId: questionId,
-                newValue: value,
-                f: widget.form,
-                d: widget.docRef,
-                ref: ref,
-                context: context,
-              ),
+              onChanged: (String? value) => widget.form.isV2
+                  ? _handleChangeOfFormAnswer(
+                      question: widget.formQuestion.title,
+                      questionId: questionId,
+                      newValue: (value != null) ? [value] : null,
+                      f: widget.form,
+                      d: widget.docRef,
+                      ref: ref,
+                      context: context,
+                    )
+                  : _handleChangeOfFormAnswerDeprecated(
+                      question: widget.formQuestion.title,
+                      questionId: questionId,
+                      newValue: value,
+                      f: widget.form,
+                      d: widget.docRef,
+                      ref: ref,
+                      context: context,
+                    ),
             ));
             break;
 
           case FormQuestionType.date:
+            String? initialValue;
+            if (answerValue != null) {
+              initialValue = answerValue[0];
+            }
+
             DateTime? answerValueDateTime;
             try {
-              answerValueDateTime = DateTime.parse(answerValue!).toLocal();
+              answerValueDateTime = DateTime.parse(initialValue!).toLocal();
             } catch (e) {
               answerValueDateTime = null;
             }
@@ -243,15 +321,25 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                 answerValueDateTime: answerValueDateTime,
                 question: widget.formQuestion,
                 userCanEditForm: widget.userCanEditForm,
-                onChanged: (String? value) => _handleChangeOfFormAnswer(
-                  question: widget.formQuestion.title,
-                  questionId: questionId,
-                  newValue: value,
-                  f: widget.form,
-                  d: widget.docRef,
-                  ref: ref,
-                  context: context,
-                ),
+                onChanged: (String? value) => widget.form.isV2
+                    ? _handleChangeOfFormAnswer(
+                        question: widget.formQuestion.title,
+                        questionId: questionId,
+                        newValue: (value != null) ? [value] : null,
+                        f: widget.form,
+                        d: widget.docRef,
+                        ref: ref,
+                        context: context,
+                      )
+                    : _handleChangeOfFormAnswerDeprecated(
+                        question: widget.formQuestion.title,
+                        questionId: questionId,
+                        newValue: value,
+                        f: widget.form,
+                        d: widget.docRef,
+                        ref: ref,
+                        context: context,
+                      ),
               ),
             );
 
