@@ -133,26 +133,49 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                     data: (permissions) {
                       final canAccessEditGroupPage = currentUser.isAdmin ||
                           permissions.contains("almanak:*");
-                      return canAccessEditGroupPage
-                          ? FloatingActionButton.extended(
-                              foregroundColor: colorScheme.onTertiaryContainer,
-                              backgroundColor: colorScheme.tertiaryContainer,
+                      if (!canAccessEditGroupPage) return null;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FloatingActionButton.extended(
+                            heroTag: "Commissie -> Edit",
+                            foregroundColor: colorScheme.onTertiaryContainer,
+                            backgroundColor: colorScheme.tertiaryContainer,
+                            onPressed: () {
+                              context.goNamed(
+                                "Commissie -> Edit",
+                                pathParameters: {
+                                  "name": widget.name,
+                                },
+                                queryParameters: {
+                                  "year": widget.year.toString(),
+                                  "groupId": groupId.toString(),
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.edit_outlined),
+                            label: const Text('Edit'),
+                          ),
+                          const SizedBox(height: 12),
+                          if (widget.name.toLowerCase() == "almanakcommissie")
+                            FloatingActionButton.extended(
+                              heroTag: 'profielfoto\'s downloaden',
+                              foregroundColor: colorScheme.onPrimaryContainer,
+                              backgroundColor: colorScheme.primaryContainer,
                               onPressed: () {
                                 context.goNamed(
-                                  "Commissie -> Edit",
+                                  "download profile pictures",
                                   pathParameters: {
                                     "name": widget.name,
                                   },
-                                  queryParameters: {
-                                    "year": widget.year.toString(),
-                                    "groupId": groupId.toString(),
-                                  },
                                 );
                               },
-                              icon: const Icon(Icons.edit_outlined),
-                              label: const Text('Edit'),
-                            )
-                          : null;
+                              icon: const Icon(Icons.download),
+                              label: Text("download profile pictures"),
+                            ),
+                        ],
+                      );
                     },
                     loading: () => null,
                     error: (e, s) => const SizedBox.shrink(),
