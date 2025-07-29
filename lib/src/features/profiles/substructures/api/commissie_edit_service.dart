@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CommissieEditService {
@@ -18,7 +20,8 @@ class CommissieEditService {
     try {
       // Upload the updated content as UTF-8 encoded bytes
       await storageRef.putData(utf8.encode(content));
-    } catch (error) {
+    } 
+    catch (error) {
       throw Exception('Failed to update description: $error');
     }
   }
