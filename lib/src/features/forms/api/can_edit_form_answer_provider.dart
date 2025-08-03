@@ -16,8 +16,11 @@ final canRemoveFormAnswerProvider = StreamProvider.autoDispose
     data: (answers) => canEditFormVal.when(
       data: (canEditForm) {
         final hasAnswer = answers.docs.isNotEmpty;
+        final isDefinitive = hasAnswer
+            ? answers.docs.first.data().definitiveAnswerHasBeenGiven
+            : false;
 
-        return Stream.value(hasAnswer && canEditForm);
+        return Stream.value(hasAnswer && canEditForm && !isDefinitive);
       },
       error: (error, _) => throw error,
       loading: () => Stream.value(false),

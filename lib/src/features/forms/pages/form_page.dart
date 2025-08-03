@@ -1,10 +1,14 @@
 // ignore_for_file: prefer-extracting-function-callbacks
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_content.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_definitive_submit_button.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_delete_button.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -85,16 +89,51 @@ class _FormPageState extends ConsumerState<FormPage> {
                     errorMessage: 'Deze form bestaat niet (meer)',
                   );
                 }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FormPageContent(formKey: _formKey, formDoc: formDoc),
-                    FormPageDeleteButton(
-                      doc: doc,
-                      formId: widget.formId,
-                      formKey: _formKey,
-                    ),
-                  ],
+
+                final answerVal =
+                    ref.watch(formAnswerProvider(formDoc.reference));
+
+                return answerVal.when(
+                  data: (answerSnapshot) {
+                    final answerDocRef = answerSnapshot.docs.isNotEmpty
+                        ? answerSnapshot.docs.first.reference
+                        : null;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FormPageContent(
+                          formKey: _formKey,
+                          formDoc: formDoc,
+                          answerSnapshot:
+                              answerSnapshot, // ⬅️ Optionally pass down
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: FormPageDefinitiveSubmitButton(
+                                formKey: _formKey,
+                                answerDocRef: answerDocRef,
+                                formDocRef: formDoc.reference,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: FormPageDeleteButton(
+                                doc: doc,
+                                formId: widget.formId,
+                                formKey: _formKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, _) => ErrorCardWidget(
+                    errorMessage: 'Fout bij het laden van je antwoord: $error',
+                  ),
                 );
               },
               loading: () =>
