@@ -81,7 +81,7 @@ class FormPageHeader extends StatelessWidget {
 
         if (form.formAnswersAreUnretractable)
           Text(
-            "LET OP! Dit formulier is niet meer te wijzigen nadat antwoorden zijn verstuurd. Versturen gebeurd met de knop onderaan het formulier.",
+            "LET OP! Dit formulier is niet meer te wijzigen nadat antwoorden zijn verstuurd. Versturen gebeurt met de knop onderaan het formulier.",
             style: TextStyle(color: colorScheme.error),
           ),
 

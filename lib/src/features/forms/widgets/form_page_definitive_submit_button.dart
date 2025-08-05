@@ -36,7 +36,7 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : const Text(
-                      'Weet je zeker dat je dit formulier wilt inleveren? Dit kan niet meer worden gewijzigd en eventuele kosen zijn ook definitief.'),
+                      'Weet je zeker dat je dit formulier wilt inleveren? Dit kan niet meer worden gewijzigd en eventuele kosten zijn ook definitief.'),
               actions: saving
                   ? []
                   : [
