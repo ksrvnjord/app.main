@@ -1,12 +1,10 @@
 // ignore_for_file: prefer-extracting-function-callbacks
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_content.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_definitive_submit_button.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_delete_button.dart';
