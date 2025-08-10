@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 part 'firestore_form.g.dart';
 
 // If you're testing set this to 'testforms', for production use 'forms'
-const String firestoreFormCollectionName = 'forms';
+const String firestoreFormCollectionName = 'testforms';
 
 @immutable
 @JsonSerializable()
@@ -71,17 +71,13 @@ class FirestoreForm {
   final String authorId;
   final String authorName;
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool get isKoco =>
-      authorName.toLowerCase().replaceAll(' ', '') == 'kookcommissie';
+  bool get isKoco => authorId == 'kookcommissie';
 
   final List<int> visibleForGroups;
 
   final String? groupId;
   final bool isDraft;
 
-  /// **Database field**
-  ///
-  /// Use !isOpen in code.
   final bool isClosed;
 
   final bool hasMaximumNumberOfAnswers;
@@ -96,7 +92,7 @@ class FirestoreForm {
       currentNumberOfAnswers >= maximumNumberOfAnswers;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  bool get isOpen =>
+  bool get userCanEditForm =>
       formClosingTimeIsInFuture && !isClosed && !isSoldOut && !isDraft;
 
   static final CollectionReference<FirestoreForm> firestoreConvert =

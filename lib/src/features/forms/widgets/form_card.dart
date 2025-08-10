@@ -47,7 +47,7 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     var roundedRectangleBorder = RoundedRectangleBorder(
-      side: !form.isOpen
+      side: !form.userCanEditForm
           ? BorderSide(
               color: Colors.grey,
             )

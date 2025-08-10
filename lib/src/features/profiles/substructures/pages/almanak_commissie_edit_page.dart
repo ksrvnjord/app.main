@@ -1,24 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_edit_service.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
+import '../api/commissie_edit_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tuple/tuple.dart';
 
 class AlmanakCommissieEditPage extends ConsumerStatefulWidget {
-  const AlmanakCommissieEditPage({
-    super.key,
-    required this.name,
-    required this.year,
-    required this.groupId,
-  });
-
+  const AlmanakCommissieEditPage(
+      {super.key, required this.name, required this.year});
   final String name;
   final int year;
-  final int groupId;
 
   @override
   AlmanakCommissieEditPageState createState() {
@@ -33,7 +27,7 @@ class AlmanakCommissieEditPageState
   File? _galleryFile;
   String content = '';
   bool postCreationInProgress = false;
-  String? initialDescription = '';
+  String initialDescription = '';
 
   Future<void> _showPicker({required BuildContext prevContext}) {
     return showModalBottomSheet(
@@ -87,69 +81,56 @@ class AlmanakCommissieEditPageState
   @override
   Widget build(BuildContext context) {
     const int maxContentLength = 1726;
-
-    final descriptionAsyncValue = ref.watch(
-      commissieDescriptionProvider(
-          Tuple3(widget.name, widget.year, widget.groupId)),
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bewerk Commissie'),
+        title: Text('Edit Commissie'),
       ),
-      body: descriptionAsyncValue.when(
-        data: (description) {
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: <Widget>[
-              if (_galleryFile == null) ...[
-                TextButton(
-                  onPressed: () => unawaited(_showPicker(prevContext: context)),
-                  child: const Text("Afbeelding toevoegen/aanpassen"),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-              ] else ...[
-                Image(
-                  image: Image.file(
-                    _galleryFile!,
-                    semanticLabel: "Geselecteerde Afbeelding",
-                  ).image,
-                  semanticLabel: "Geselecteerde afbeelding",
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _galleryFile = null;
-                    });
-                  },
-                  child: const Text("Afbeelding verwijderen"),
-                ),
-              ],
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Commissie-Omschrijving',
-                  ),
-                  maxLines: null,
-                  maxLength: maxContentLength,
-                  onSaved: (value) => content = value ?? '',
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Zonder omschrijving kom je nergens.'
-                      : null,
-                  initialValue: description, // Set the initial value
-                ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
+          Form(
+            key: _formKey,
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Commissie-Omschrijving',
               ),
-            ],
-          );
-        },
-        loading: () =>
-            const Center(child: CircularProgressIndicator.adaptive()),
-        error: (error, stackTrace) =>
-            const SizedBox.shrink(), // Display nothing on error
+              maxLines: null,
+              maxLength: maxContentLength,
+              onSaved: (value) => content = value ?? '',
+              validator: (value) => value == null || value.isEmpty
+                  ? 'Zonder omschrijving kom je nergens.'
+                  : null,
+              // FIXME: initial valiue is current description
+              initialValue: initialDescription,
+            ),
+          ),
+          if (_galleryFile == null) ...[
+            TextButton(
+              onPressed: () => unawaited(_showPicker(prevContext: context)),
+              child: const Text("Afbeelding toevoegen"),
+            ),
+          ] else ...[
+            Image(
+              image: Image.file(
+                // Can't be null because of null check above.
+                // ignore: avoid-non-null-assertion
+                _galleryFile!,
+                semanticLabel: "Geselecteerde Afbeelding",
+              ).image,
+              semanticLabel: "Geselecteerde afbeelding",
+            ),
+            TextButton(
+              // ignore: prefer-extracting-callbacks
+              onPressed: () {
+                setState(() {
+                  _galleryFile = null;
+                });
+              },
+              child: const Text("Afbeelding verwijderen"),
+            ),
+          ],
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: submitEdit,
@@ -165,15 +146,13 @@ class AlmanakCommissieEditPageState
       return;
     }
 
-    formState.save(); // Save form state populates content
+    formState.save(); // Save form state (populates `content`).
 
     try {
       // Update the commissie description
       await CommissieEditService.updateCommissieDescription(
         name: widget.name,
         content: content,
-        year: widget.year,
-        groupId: widget.groupId,
       );
 
       // Optional: Upload image if provided
@@ -182,14 +161,11 @@ class AlmanakCommissieEditPageState
           name: widget.name,
           year: widget.year,
           image: _galleryFile!,
-          groupId: widget.groupId,
         );
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Velden aangepast, afbeelding kan even duren voordat je het ziet.')),
+        const SnackBar(content: Text('Content saved successfully')),
       );
 
       context.goNamed(

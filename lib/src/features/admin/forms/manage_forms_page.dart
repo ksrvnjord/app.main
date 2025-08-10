@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/forms/form_reaction_count_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -18,11 +17,9 @@ class ManageFormsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
-    final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
-        firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Beheer $formsLocation')),
+      appBar: AppBar(title: const Text('Beheer Forms')),
       body: currentUserVal.when(
         data: (user) {
           final formsVal = ref.watch(
@@ -40,7 +37,7 @@ class ManageFormsPage extends ConsumerWidget {
                       final doc = snapshot.docs[index];
                       final form = doc.data();
 
-                      final formIsNotExpired = form.formClosingTimeIsInFuture;
+                      final formIsOpen = form.openUntil.isAfter(DateTime.now());
 
                       final partialReactionVal = ref.watch(
                         formPartialReactionCountProvider(doc.id),
@@ -50,7 +47,7 @@ class ManageFormsPage extends ConsumerWidget {
                         title: Text(form.title),
                         subtitle: [
                           Text(
-                            "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
+                            "${formIsOpen ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
                           ),
                           if (form.isDraft)
                             user.isAdmin

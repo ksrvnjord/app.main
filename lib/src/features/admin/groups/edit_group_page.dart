@@ -102,8 +102,8 @@ class EditGroupPage extends ConsumerWidget {
     };
   }
 
-  void giveUserPermission(int userId, String permission, bool add,
-      WidgetRef ref, BuildContext ctx) async {
+  void giveUserPermission(
+      int userId, bool add, WidgetRef ref, BuildContext ctx) async {
     final dio = ref.read(dioProvider);
     try {
       final response = await dio.get("/api/v2/groups/$groupId/$userId/");
@@ -111,9 +111,9 @@ class EditGroupPage extends ConsumerWidget {
           (response.data["permissions"] as List<dynamic>).toSet();
 
       if (add) {
-        permissions.add(permission);
+        permissions.add("forms:*");
       } else {
-        permissions.remove(permission);
+        permissions.remove("forms:*");
       }
 
       // ignore: avoid-ignoring-return-values
@@ -124,8 +124,7 @@ class EditGroupPage extends ConsumerWidget {
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(
-          content: Text(
-              "Gebruiker heeft nu ${add ? '' : 'geen '} $permission permissie."),
+          content: Text("Gebruiker heeft nu ${add ? '' : 'geen '}toestemming."),
         ),
       );
     } catch (error) {
@@ -213,19 +212,6 @@ class EditGroupPage extends ConsumerWidget {
                 floating: true,
                 pinned: true,
               ),
-              // Header for the SliverList
-              SliverToBoxAdapter(
-                child: ListTile(
-                  title: const Text("Lid"),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      SizedBox(width: 32.0, child: Icon(Icons.edit_document)),
-                      SizedBox(width: 32.0, child: Icon(Icons.book)),
-                    ],
-                  ),
-                ),
-              ),
               users.isEmpty
                   ? const SliverFillRemaining(
                       child: Center(
@@ -239,16 +225,11 @@ class EditGroupPage extends ConsumerWidget {
                           final Map<String, dynamic> user =
                               users[index]['user'];
                           final String? role = users[index]['role'];
-                          bool hasFormsPermission = (users[index]['permissions']
+                          bool isChecked = (users[index]['permissions']
                                   as List<dynamic>)
                               .map((e) => e as String)
                               .contains(
                                   "forms:*"); // TODO: should be forms:* or forms:create
-                          bool hasAlmanakPermission = (users[index]
-                                  ['permissions'] as List<dynamic>)
-                              .map((e) => e as String)
-                              .contains(
-                                  "almanak:*"); // TODO: should be alamank:* or almanak:create
 
                           return StatefulBuilder(
                             builder: (context, setState) {
@@ -286,31 +267,13 @@ class EditGroupPage extends ConsumerWidget {
                                       icon: const Icon(Icons.delete),
                                     ),
                                     Checkbox.adaptive(
-                                      value: hasFormsPermission,
+                                      value: isChecked,
                                       onChanged: (bool? value) {
                                         setState(() {
-                                          hasFormsPermission = value ?? false;
+                                          isChecked = value ?? false;
                                         });
-                                        giveUserPermission(
-                                            user['iid'],
-                                            "forms:*",
-                                            value ?? false,
-                                            ref,
-                                            context);
-                                      },
-                                    ),
-                                    Checkbox.adaptive(
-                                      value: hasAlmanakPermission,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          hasAlmanakPermission = value ?? false;
-                                        });
-                                        giveUserPermission(
-                                            user['iid'],
-                                            "almanak:*",
-                                            value ?? false,
-                                            ref,
-                                            context);
+                                        giveUserPermission(user['iid'],
+                                            value ?? false, ref, context);
                                       },
                                     ),
                                   ],

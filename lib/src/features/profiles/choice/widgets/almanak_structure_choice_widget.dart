@@ -22,7 +22,7 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
     final screenSize = MediaQuery.of(context).size;
 
     final year = getNjordYear();
-    final bestuurPictureVal = ref.watch(bestuurThumbnailProvider(year));
+    final bestuurPictureVal = ref.watch(bestuurPictureProvider(year));
 
     final double imageHeight = ((screenSize.height / 7) / 8).ceil() * 7.3;
 

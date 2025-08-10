@@ -74,7 +74,7 @@ final creatorNamesFormsOnCreationProvider =
   final safeNames = creatorNames.isEmpty ? ['___NO_MATCH___'] : creatorNames;
 
   yield* formsCollection
-      .where('groupId', whereIn: safeNames)
+      .where('authorName', whereIn: safeNames)
       .orderBy('createdTime', descending: true)
       .snapshots();
 });
@@ -83,5 +83,5 @@ final creatorNamesProvider = FutureProvider<List<String>>((ref) async {
   final user = ref.watch(currentUserNotifierProvider);
   if (user == null) return [];
 
-  return user.canCreateFormsFor.keys.toList();
+  return user.canCreateFormsFor.values.toList();
 });

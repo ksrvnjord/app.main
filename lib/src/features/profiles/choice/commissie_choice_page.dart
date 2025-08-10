@@ -57,10 +57,9 @@ class CommissieChoicePage extends ConsumerWidget {
                 SubstructureChoiceListTile(
                   name: choices[index].name,
                   imageProvider: ref.watch(commissieThumbnailProvider(
-                    Tuple3(
+                    Tuple2(
                       choices[index].name,
                       year,
-                      choices[index].id!,
                     ),
                   )),
                   onTap: () => context.goNamed(
