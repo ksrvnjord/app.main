@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,7 +53,8 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   // Dart doesn't let us modify the progress counter inside the main loop of the CSV generation.
   // It's a bit of a hack, but it works.
 
-  void _handleDownloadButtonTap({
+  void _handleDownloadButtonTapDeprecated({
+    //TODO questionUpdate: remove this
     required BuildContext context,
     required WidgetRef ref,
     required QuerySnapshot<FormAnswer> answersSnapshot,
@@ -103,8 +105,115 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
               // Handle multiple-choice answer formatting
               final content = raw.substring(1, raw.length - 1);
               if (content.isEmpty) return '';
-              return content.split(r'%2C').join(';');
+              return content;
             }
+            return raw ?? '';
+          }).toList();
+
+          final timestamp = DateFormat('dd-MM-yyyy HH:mm:ss')
+              .format(answer.answeredAt.toDate());
+
+          if (mounted) {
+            setState(() {
+              _progressCounter++;
+            });
+          }
+          return [
+            userId,
+            ...extraFieldValues,
+            ...questionAnswers,
+            timestamp,
+          ];
+        }),
+      );
+
+      final rows = <List<String>>[
+        ['sep=${exportOptions.delimiter}'],
+        headerRow,
+        ...dataRows,
+      ];
+
+      final csvString = ListToCsvConverter(
+        fieldDelimiter: exportOptions.delimiter,
+      ).convert(rows);
+
+      final exportTimeFormatted =
+          DateFormat('yyyy-MM-dd-HHmm').format(DateTime.now());
+      final fileName = "${form.title}_$exportTimeFormatted.csv";
+
+      if (kIsWeb) {
+        _handleDownloadForWeb(csvString, fileName);
+      } else {
+        _handleDownloadForMobile(csvString, fileName);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _progressCounter = 0;
+        });
+      }
+    }
+  }
+
+  void _handleDownloadButtonTap({
+    required BuildContext context,
+    required WidgetRef ref,
+    required QuerySnapshot<FormAnswer> answersSnapshot,
+    required DocumentSnapshot<FirestoreForm> formSnapshot,
+  }) async {
+    final exportOptions = await _showExportOptionsDialog(context, ref);
+    if (exportOptions == null) return;
+
+    try {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+
+      final answerDocs = answersSnapshot.docs;
+      final form = formSnapshot.data()!;
+      final answers = answerDocs.map((doc) => doc.data()).toList();
+
+      // Choose question list based on version
+      final questions = form.questionsMap.values.toList();
+
+      final headerRow = [
+        'Lidnummer',
+        ...exportOptions.extraFields.keys,
+        ...questions.map((q) => q.title),
+        'Invultijdstip',
+      ];
+
+      final dataRows = await Future.wait(
+        answers.map((answer) async {
+          final userId = answer.userId;
+
+          // Map questionTitle → answer for lookup
+          final answerMap = {
+            for (var a in answer.answers) a.questionId.toString(): a.answerList,
+          };
+
+          final extraFieldValues = await Future.wait(
+            exportOptions.extraFields.values.map((func) => func(userId)),
+          );
+
+          // Use the right question list here as well
+          final questionAnswers = questions.map((q) {
+            var rawList = answerMap[q.id.toString()];
+            String? raw;
+            if (q.type == FormQuestionType.text ||
+                q.type == FormQuestionType.singleChoice ||
+                q.type == FormQuestionType.image ||
+                q.type == FormQuestionType.date) {
+              if (rawList != null) {
+                raw = rawList[0];
+              }
+            } else {
+              raw = rawList != null ? rawList.join(',') : '';
+            }
+
             return raw ?? '';
           }).toList();
 
@@ -349,8 +458,35 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
 
                         final userId = answer.userId;
 
+                        final userVal = ref.watch(userProvider(userId));
+
                         return ListTile(
-                          title: Text(userId),
+                          title: userVal.when(
+                            data: (user) => Text(user.fullName),
+                            error: (error, stack) {
+                              FirebaseCrashlytics.instance
+                                  .recordError(error, stack);
+                              return Center(
+                                child: ErrorTextWidget(
+                                  errorMessage: error.toString(),
+                                ),
+                              );
+                            },
+                            loading: () => Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Text(userId),
+                                  const SizedBox(width: 8),
+                                  const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child:
+                                          CircularProgressIndicator.adaptive()),
+                                ],
+                              ),
+                            ),
+                          ),
                           subtitle: Text(
                             "Geantwoord op ${dateFormat.format(answer.answeredAt.toDate())}",
                           ),
@@ -369,7 +505,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           ),
           floatingActionButton: formVal.maybeWhen(
             data: (formSnapshot) {
-              final formData = formSnapshot.data();
+              final formData = formSnapshot.data()!;
               final hasImageQuestions = _formContainsImageQuestion(formData);
               return completedAnswersVal.maybeWhen(
                 data: (answersSnapshot) =>
@@ -377,12 +513,19 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                   FloatingActionButton.extended(
                     tooltip: 'Exporteer antwoorden naar CSV',
                     heroTag: 'downloadCSV',
-                    onPressed: () => _handleDownloadButtonTap(
-                      context: context,
-                      ref: ref,
-                      answersSnapshot: answersSnapshot,
-                      formSnapshot: formSnapshot,
-                    ),
+                    onPressed: () => formData.isV2
+                        ? _handleDownloadButtonTap(
+                            context: context,
+                            ref: ref,
+                            answersSnapshot: answersSnapshot,
+                            formSnapshot: formSnapshot,
+                          )
+                        : _handleDownloadButtonTapDeprecated(
+                            context: context,
+                            ref: ref,
+                            answersSnapshot: answersSnapshot,
+                            formSnapshot: formSnapshot,
+                          ),
                     icon: const Icon(Icons.download),
                     label: const Text('Exporteer antwoorden naar CSV'),
                   ),
