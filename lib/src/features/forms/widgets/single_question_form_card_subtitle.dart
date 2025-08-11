@@ -37,14 +37,27 @@ class SingleQuestionFormCardSubtitle extends ConsumerWidget {
             style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
           ),
         userAnswerProvider.when(
-          data: (snapshot) => snapshot.docs.isEmpty
-              ? const SizedBox.shrink()
-              : AnswerStatusCard(
-                  answerExists: true,
-                  isCompleted: snapshot.docs.first.data().isCompleted,
-                  showIcon: true,
-                  textStyle: textTheme.labelLarge,
-                ),
+          data: (snapshot) {
+            if (snapshot.docs.isEmpty) {
+              return const SizedBox.shrink();
+            } else {
+              final answerExists = snapshot.docs.isNotEmpty;
+              final isCompleted = snapshot.docs.first.data().isCompleted;
+              final isDefinitive =
+                  snapshot.docs.first.data().definitiveAnswerHasBeenGiven;
+              return AnswerStatusCard(
+                answerExists: answerExists,
+                isCompleted: snapshot.docs.isNotEmpty &&
+                    // ignore: avoid-unsafe-collection-methods
+                    snapshot.docs.first.data().isCompleted,
+                showIcon: true,
+                isCompleteUnretractableAndUnSent: isCompleted &&
+                    form.formAnswersAreUnretractable &&
+                    !isDefinitive,
+                textStyle: textTheme.labelLarge,
+              );
+            }
+          },
           error: (err, stack) => ErrorTextWidget(errorMessage: err.toString()),
           loading: () => const SizedBox.shrink(),
         ),

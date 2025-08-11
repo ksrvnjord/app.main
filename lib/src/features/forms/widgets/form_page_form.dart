@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 
@@ -9,16 +10,19 @@ class FormPageForm extends StatelessWidget {
     super.key,
     required this.formDoc,
     required this.formKey,
-    required this.isAFormForUser,
+    required this.answerSnapshot,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final GlobalKey<FormState> formKey;
-  final bool isAFormForUser;
+  final QuerySnapshot<FormAnswer> answerSnapshot;
 
   @override
   Widget build(BuildContext context) {
     final form = formDoc.data();
+    final answerIsDefinitive = answerSnapshot.docs.isEmpty
+        ? false
+        : answerSnapshot.docs.first.data().definitiveAnswerHasBeenGiven;
 
     if (form == null) {
       return const Text('No valid response found!');
@@ -35,11 +39,9 @@ class FormPageForm extends StatelessWidget {
               form.questionsMap.containsKey(contentIndex)
                   ? FormQuestion(
                       formQuestion: form.questionsMap[contentIndex]!,
-                      questionId: contentIndex,
                       form: form,
                       docRef: formDoc.reference,
-                      userCanEditForm: form.isOpen && isAFormForUser,
-                    )
+                      formIsOpen: form.userCanEditForm && !answerIsDefinitive)
                   : FormFiller(
                       filler: form.fillers[contentIndex]!.value,
                       formId: formDoc.id,
@@ -52,7 +54,7 @@ class FormPageForm extends StatelessWidget {
                 formQuestion: question,
                 form: form,
                 docRef: formDoc.reference,
-                userCanEditForm: form.isOpen && isAFormForUser,
+                formIsOpen: form.userCanEditForm && !answerIsDefinitive,
               ),
               const SizedBox(height: 32),
             ]

@@ -47,7 +47,7 @@ class FormCard extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     var roundedRectangleBorder = RoundedRectangleBorder(
-      side: !form.isOpen
+      side: !form.userCanEditForm
           ? BorderSide(
               color: Colors.grey,
             )
@@ -94,16 +94,27 @@ class FormCard extends ConsumerWidget {
               loading: () => const SizedBox.shrink(),
             ),
           userAnswerProvider.when(
-            data: (snapshot) => snapshot.docs.isEmpty
-                ? const SizedBox.shrink()
-                : AnswerStatusCard(
-                    answerExists: snapshot.docs.isNotEmpty,
-                    isCompleted: snapshot.docs.isNotEmpty &&
-                        // ignore: avoid-unsafe-collection-methods
-                        snapshot.docs.first.data().isCompleted,
-                    showIcon: true,
-                    textStyle: textTheme.labelLarge,
-                  ),
+            data: (snapshot) {
+              if (snapshot.docs.isEmpty) {
+                return const SizedBox.shrink();
+              } else {
+                final answerExists = snapshot.docs.isNotEmpty;
+                final isCompleted = snapshot.docs.first.data().isCompleted;
+                final isDefinitive =
+                    snapshot.docs.first.data().definitiveAnswerHasBeenGiven;
+                return AnswerStatusCard(
+                  answerExists: answerExists,
+                  isCompleted: snapshot.docs.isNotEmpty &&
+                      // ignore: avoid-unsafe-collection-methods
+                      snapshot.docs.first.data().isCompleted,
+                  showIcon: true,
+                  isCompleteUnretractableAndUnSent: isCompleted &&
+                      form.formAnswersAreUnretractable &&
+                      !isDefinitive,
+                  textStyle: textTheme.labelLarge,
+                );
+              }
+            },
             error: (err, stack) =>
                 ErrorCardWidget(errorMessage: err.toString()),
             loading: () => const SizedBox.shrink(),

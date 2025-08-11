@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:collection';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/assets/asset_data.dart';
@@ -57,10 +58,9 @@ final commissiesInfoProvider =
     ..sort((a, b) => a.name.compareTo(b.name));
 });
 
-// A provider that fetches the substructure info for a given substructure name from firebase
-Future<String?> fetchDescription(String name, int year, int groupId) async {
-  final filePath =
-      '/almanak/commissies/$name/$year/$groupId/${name}Omschrijving.txt';
+/// A provider that fetches the substructure info for a given substructure name from firebase
+Future<String?> fetchDescription(String name, int year) async {
+  final filePath = '/almanak/commissies/$name/$year/${name}Omschrijving.txt';
   final storageRef = FirebaseStorage.instance.ref(filePath);
   try {
     final data = await storageRef.getData();
@@ -76,6 +76,6 @@ Future<String?> fetchDescription(String name, int year, int groupId) async {
 
 // ignore: prefer-static-class
 final commissieDescriptionProvider = FutureProvider.autoDispose
-    .family<String?, Tuple3<String, int, int>>((ref, params) async {
-  return await fetchDescription(params.item1, params.item2, params.item3);
+    .family<String?, Tuple2<String, int>>((ref, params) async {
+  return await fetchDescription(params.item1, params.item2);
 });

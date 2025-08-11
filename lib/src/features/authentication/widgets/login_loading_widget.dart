@@ -21,7 +21,6 @@ class LoginLoadingWidget extends StatelessWidget {
       'Koffie aan het zetten...',
       'Harco zoeken...',
       'Joris\' bak schoonmaken...',
-      'Uitzweten...',
     ];
 
     return <Widget>[

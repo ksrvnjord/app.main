@@ -127,7 +127,7 @@ class ManageFormPage extends ConsumerWidget {
                                       formData.questionsMap[contentIndex]!,
                                   form: formData,
                                   docRef: formSnapshot.reference,
-                                  userCanEditForm: false,
+                                  formIsOpen: false,
                                 )
                               : FormFiller(
                                   filler: formData.fillers[contentIndex]!.value,
@@ -141,7 +141,7 @@ class ManageFormPage extends ConsumerWidget {
                             formQuestion: question,
                             form: formData,
                             docRef: formSnapshot.reference,
-                            userCanEditForm: false, // Use it here
+                            formIsOpen: formData.userCanEditForm,
                           ),
                           const SizedBox(height: 32),
                         ]

@@ -22,12 +22,15 @@ class FormAnswer {
   @JsonKey(name: isCompletedJSONKey)
   final bool isCompleted;
 
+  final bool definitiveAnswerHasBeenGiven;
+
   // ignore: sort_constructors_first
   const FormAnswer({
     required this.userId,
     required this.answers,
     required this.answeredAt,
     required this.isCompleted,
+    this.definitiveAnswerHasBeenGiven = false,
   });
 
   // Create fromJson method.

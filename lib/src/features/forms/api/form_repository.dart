@@ -4,15 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class FormRepository {
-  static Future<DocumentReference<FormAnswer>> upsertFormAnswerDeprecated({
+  static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
     required String question,
-    int? questionId,
     required String? newValue, // Given answer.
     required FirestoreForm form,
     required DocumentReference<FirestoreForm> docRef,
@@ -35,57 +33,7 @@ class FormRepository {
 
     final formQuestionAnswer = FormQuestionAnswer(
       questionTitle: question,
-      questionId: questionId,
       answer: newValue,
-    );
-
-    // Document exists, so we update it.
-    return docs.isNotEmpty
-        ? _updateExistingFormAnswerDeprecated(
-            // ignore: avoid-unsafe-collection-methods
-            doc: docs.first,
-            question: question,
-            newValue: newValue,
-            form: form,
-          )
-        : FormAnswer.firestoreConvert(docRef.path).add(FormAnswer(
-            userId: user.identifier.toString(),
-            answers: [formQuestionAnswer],
-            answeredAt: Timestamp.now(),
-            isCompleted: checkIfFormIsCompletedDeprecated(
-              //TODO questionUpdate: remove deprecated
-              form: form,
-              formAnswers: [formQuestionAnswer],
-            ),
-          ));
-  }
-
-  static Future<DocumentReference<FormAnswer>> upsertFormAnswer({
-    required String question,
-    int? questionId,
-    required List<String>? newValue, // Given answer.
-    required FirestoreForm form,
-    required DocumentReference<FirestoreForm> docRef,
-    required WidgetRef ref,
-  }) async {
-    // PRECONDITIONS.
-    final user = ref.read(currentUserNotifierProvider);
-    if (user == null) {
-      throw Exception('User is null');
-    }
-
-    if (DateTime.now().isAfter(form.openUntil)) {
-      throw Exception('Form is closed');
-    }
-
-    // Read latest data from Firestore.
-    final answerSnapshot = await ref.watch(formAnswerProvider(docRef).future);
-
-    final docs = answerSnapshot.docs;
-
-    final formQuestionAnswer = FormQuestionAnswer(
-      questionId: questionId,
-      answerList: newValue,
     );
 
     // Document exists, so we update it.
@@ -93,7 +41,7 @@ class FormRepository {
         ? _updateExistingFormAnswer(
             // ignore: avoid-unsafe-collection-methods
             doc: docs.first,
-            questionId: questionId,
+            question: question,
             newValue: newValue,
             form: form,
           )
@@ -147,7 +95,7 @@ class FormRepository {
     await FirebaseFirestore.instance.doc(path).delete();
   }
 
-  static bool checkIfFormIsCompletedDeprecated({
+  static bool checkIfFormIsCompleted({
     required FirestoreForm form,
     required List<FormQuestionAnswer> formAnswers,
   }) {
@@ -158,14 +106,9 @@ class FormRepository {
           final myAnswer = formAnswers.firstWhere(
             (a) => a.questionTitle == question.title,
           );
-          var filledInRequiredQuestion =
+          final filledInRequiredQuestion =
               // ignore: avoid-non-null-assertion
               myAnswer.answer != null && myAnswer.answer!.isNotEmpty;
-          if (question.type == FormQuestionType.multipleChoice) {
-            filledInRequiredQuestion =
-                // ignore: avoid-non-null-assertion
-                myAnswer.answer != null && !(myAnswer.answer! == "[]");
-          }
           if (!filledInRequiredQuestion) {
             return false;
           }
@@ -179,37 +122,7 @@ class FormRepository {
     return true;
   }
 
-  static bool checkIfFormIsCompleted({
-    required FirestoreForm form,
-    required List<FormQuestionAnswer> formAnswers,
-  }) {
-    for (final entry in form.questionsMap.entries) {
-      final questionId = entry.key;
-      final question = entry.value;
-      if (question.isRequired) {
-        try {
-          // ignore: avoid-unsafe-collection-methods
-          final myAnswer = formAnswers.firstWhere(
-            (a) => a.questionId == questionId,
-          );
-          var filledInRequiredQuestion =
-              // ignore: avoid-non-null-assertion
-              myAnswer.answerList != null && myAnswer.answerList!.isNotEmpty;
-          if (!filledInRequiredQuestion) {
-            return false;
-          }
-        } catch (error, _) {
-          // Answer not found for required question.
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  static Future<DocumentReference<FormAnswer>>
-      _updateExistingFormAnswerDeprecated({
+  static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
     required QueryDocumentSnapshot<FormAnswer> doc,
     required String question,
     required String? newValue,
@@ -241,40 +154,20 @@ class FormRepository {
     return doc.reference;
   }
 
-  static Future<DocumentReference<FormAnswer>> _updateExistingFormAnswer({
-    required QueryDocumentSnapshot<FormAnswer> doc,
-    required int? questionId,
-    required List<String>? newValue,
-    required FirestoreForm form,
-  }) async {
-    final formAnswers = doc.data().answers;
-
-    final formQuestionAnswer = formAnswers.firstWhere(
-      (a) => a.questionId == questionId,
-      orElse: () =>
-          FormQuestionAnswer(questionId: questionId, answerList: newValue),
-    );
-
-    formQuestionAnswer.answerList = newValue;
-
-    if (!formAnswers.contains(formQuestionAnswer)) {
-      formAnswers.add(formQuestionAnswer);
-    }
-
-    final isCompleted =
-        checkIfFormIsCompleted(form: form, formAnswers: formAnswers);
-
-    await doc.reference.update({
-      'answers': formAnswers.map((answer) => answer.toJson()).toList(),
-      'answeredAt': Timestamp.now(),
-      FormAnswer.isCompletedJSONKey: isCompleted,
-    });
-
-    return doc.reference;
-  }
-
   static Future<void> removeDraftStatus(
       DocumentReference<FirestoreForm> docRef) async {
     await docRef.update({'isDraft': false});
+  }
+
+  static Future<DocumentReference<FormAnswer>> makeFormAnswerDefinitive({
+    required DocumentReference<FormAnswer> docRef,
+  }) async {
+    await docRef.update(
+      {
+        'definitiveAnswerHasBeenGiven': true,
+      },
+    );
+
+    return docRef;
   }
 }

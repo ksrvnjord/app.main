@@ -24,48 +24,48 @@ class FormPageDeleteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final canRemoveFormAnswerVal = ref.watch(canRemoveFormAnswerProvider(doc));
 
-    return canRemoveFormAnswerVal.when(
-        data: (canRemove) {
-          if (!canRemove) return const SizedBox.shrink();
+    return ref.watch(canRemoveFormAnswerProvider(doc)).when(
+          data: (canRemove) {
+            if (!canRemove) return const SizedBox.shrink();
 
-          return ElevatedButton(
-            // ignore: avoid-passing-async-when-sync-expected
-            onPressed: () async {
-              final res = await _deleteMyFormAnswer(ref, context, formId);
-              if (!context.mounted) return;
+            return ElevatedButton(
+              // ignore: avoid-passing-async-when-sync-expected
+              onPressed: () async {
+                final res = await _deleteMyFormAnswer(ref, context, formId);
+                if (!context.mounted) return;
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    res == true
-                        ? 'Jouw formreactie is verwijderd'
-                        : 'Het is niet gelukt jouw formreactie te verwijderen',
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      res == true
+                          ? 'Jouw formreactie is verwijderd'
+                          : 'Het is niet gelukt jouw formreactie te verwijderen',
+                    ),
                   ),
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(
+                  colorScheme.errorContainer,
                 ),
-              );
-            },
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(
-                colorScheme.errorContainer,
+                foregroundColor: WidgetStateProperty.all(
+                  colorScheme.onErrorContainer,
+                ),
               ),
-              foregroundColor: WidgetStateProperty.all(
-                colorScheme.onErrorContainer,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.delete),
+                  SizedBox(width: 8),
+                  Text("Verwijder mijn formreactie"),
+                ],
               ),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.delete),
-                SizedBox(width: 8),
-                Text("Verwijder mijn formreactie"),
-              ],
-            ),
-          );
-        },
-        error: (err, stk) => ErrorTextWidget(errorMessage: err.toString()),
-        loading: () => const SizedBox.shrink());
+            );
+          },
+          error: (err, stk) => ErrorTextWidget(errorMessage: err.toString()),
+          loading: () => const SizedBox.shrink(),
+        );
   }
 
   // This function can optionally be lifted to a shared service if used elsewhere
@@ -84,6 +84,7 @@ class FormPageDeleteButton extends ConsumerWidget {
     final answerPath = answerSnapshot.docs.first.reference.path;
 
     return showDialog<bool>(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (innerContext) => AlertDialog(
         title: const Text('Verwijderen'),

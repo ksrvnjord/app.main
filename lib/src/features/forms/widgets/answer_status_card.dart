@@ -7,12 +7,14 @@ class AnswerStatusCard extends StatelessWidget {
     required this.answerExists,
     required this.isCompleted,
     required this.showIcon,
+    required this.isCompleteUnretractableAndUnSent,
     this.textStyle,
   });
 
   final bool answerExists;
   final bool isCompleted;
   final bool showIcon;
+  final bool isCompleteUnretractableAndUnSent;
   final TextStyle? textStyle;
 
   @override
@@ -35,7 +37,9 @@ class AnswerStatusCard extends StatelessWidget {
                 elevation: 0,
                 margin: EdgeInsets.zero,
                 child: Text(
-                  isCompleted ? "Verzonden" : "Niet Verzonden",
+                  (isCompleted && !isCompleteUnretractableAndUnSent)
+                      ? "Verzonden"
+                      : "Niet Verzonden",
                   style: textStyle,
                 ).padding(
                   horizontal: horizontalPadding,

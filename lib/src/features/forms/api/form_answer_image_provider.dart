@@ -18,11 +18,11 @@ class FormAnswerImageParams {
   FormAnswerImageParams({
     required this.docId,
     required this.userId,
-    required this.questionId,
+    required this.questionName,
   });
   final String docId;
   final String userId;
-  final String questionId;
+  final String questionName;
 
   @override
   bool operator ==(Object other) {
@@ -31,31 +31,33 @@ class FormAnswerImageParams {
     return other is FormAnswerImageParams &&
         other.docId == docId &&
         other.userId == userId &&
-        other.questionId == questionId;
+        other.questionName == questionName;
   }
 
   @override
-  int get hashCode => docId.hashCode ^ userId.hashCode ^ questionId.hashCode;
+  int get hashCode => docId.hashCode ^ userId.hashCode ^ questionName.hashCode;
 }
 
 // Fetch image function
 Future<String> fetchImage(
-    String docRef, String userId, String questionId) async {
+    String docRef, String userId, String questionName) async {
   return await storage
-      .ref('$firestoreFormCollectionName/$docRef/$userId/$questionId.png')
+      .ref('$firestoreFormCollectionName/$docRef/$userId/$questionName.png')
       .getDownloadURL();
 }
 
 Future<bool> addImage(
-    Uint8List image, String docRef, String questionId, WidgetRef ref) async {
+    Uint8List image, String docRef, String questionName, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
         .ref(
-            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionName.png')
         .putData(image);
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef, userId: user.identifierString, questionId: questionId)));
+        docId: docRef,
+        userId: user.identifierString,
+        questionName: questionName)));
     return true;
   } catch (e) {
     return false;
@@ -63,20 +65,22 @@ Future<bool> addImage(
 }
 
 Future<bool> changeImage(
-    Uint8List image, String docRef, String questionId, WidgetRef ref) async {
-  return await addImage(image, docRef, questionId, ref);
+    Uint8List image, String docRef, String questionName, WidgetRef ref) async {
+  return await addImage(image, docRef, questionName, ref);
 }
 
 Future<bool> deleteImage(
-    String docRef, String questionId, WidgetRef ref) async {
+    String docRef, String questionName, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
         .ref(
-            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionName.png')
         .delete();
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef, userId: user.identifierString, questionId: questionId)));
+        docId: docRef,
+        userId: user.identifierString,
+        questionName: questionName)));
     return true;
   } catch (e) {
     return false;
@@ -151,5 +155,5 @@ Future<void> downloadAllFormImageAnswers(String docRef) async {
 // Provider for form anser of other user
 final formAnswerImageProvider =
     FutureProvider.family<String, FormAnswerImageParams>((ref, params) async {
-  return fetchImage(params.docId, params.userId, params.questionId);
+  return fetchImage(params.docId, params.userId, params.questionName);
 });
