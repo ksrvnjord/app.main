@@ -277,4 +277,16 @@ class FormRepository {
       DocumentReference<FirestoreForm> docRef) async {
     await docRef.update({'isDraft': false});
   }
+
+  static Future<DocumentReference<FormAnswer>> makeFormAnswerDefinitive({
+    required DocumentReference<FormAnswer> docRef,
+  }) async {
+    await docRef.update(
+      {
+        'definitiveAnswerHasBeenGiven': true,
+      },
+    );
+
+    return docRef;
+  }
 }

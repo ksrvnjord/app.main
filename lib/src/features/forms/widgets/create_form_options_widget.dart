@@ -15,6 +15,9 @@ class CreateFormOptionsWidget extends ConsumerWidget {
     final currentUserAsync = ref.watch(currentUserProvider);
     // Logic for admin vs regular user can go here
     return Column(children: [
+      SizedBox(
+        height: 16,
+      ),
       Row(
         children: [
           Checkbox.adaptive(
@@ -56,6 +59,17 @@ class CreateFormOptionsWidget extends ConsumerWidget {
         ],
       ),
       SelectGroupWidget(),
+      Row(
+        children: [
+          Checkbox.adaptive(
+            value: state.formAnswersAreUntretractable,
+            onChanged: (bool? value) {
+              state.updateFormAnswersAreUntretractable(value);
+            },
+          ),
+          const Text('Formulierantwoorden direct definitief maken'),
+        ],
+      ),
       currentUserAsync.when(
         data: (user) {
           return Row(

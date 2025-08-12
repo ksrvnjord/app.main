@@ -44,6 +44,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   bool hasMaximumNumberOfAnswers = false;
   int? maximumNumberOfAnswers;
   bool maximumNumberOfAnswersIsVisible = false;
+  bool formAnswersAreUntretractable = false;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
     for (FirestoreFormQuestion question in questions.values) {
@@ -91,6 +92,18 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     setState(() {
       isGroupSpecific = newIsGroupSpecific ?? false;
       visibleForGroups = [];
+    });
+  }
+
+  void updateFormAnswersAreUntretractable(bool? newValue) {
+    setState(() {
+      formAnswersAreUntretractable = newValue ?? false;
+    });
+  }
+
+  void updateForm(bool? newValue) {
+    setState(() {
+      maximumNumberOfAnswersIsVisible = newValue ?? false;
     });
   }
 
@@ -224,6 +237,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
           isDraft: isDraft,
           visibleForGroups: await _convertToIds(visibleForGroups),
+          formAnswersAreUnretractable: formAnswersAreUntretractable,
           isV2: true,
         ),
       );

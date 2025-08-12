@@ -12,11 +12,11 @@ class FormPageHeader extends StatelessWidget {
   const FormPageHeader(
       {super.key,
       required this.form,
-      required this.answer,
+      required this.answerSnapshot,
       required this.isAFormForUser});
 
   final FirestoreForm form;
-  final QuerySnapshot<FormAnswer> answer;
+  final QuerySnapshot<FormAnswer> answerSnapshot;
   final bool isAFormForUser;
 
   @override
@@ -28,10 +28,12 @@ class FormPageHeader extends StatelessWidget {
     const descriptionVPadding = 16.0;
     const leftCardPadding = 8.0;
 
-    final answerExists = answer.docs.isNotEmpty;
-    final answerIsCompleted = answerExists &&
-        // ignore: avoid-unsafe-collection-methods
-        answer.docs.first.data().isCompleted;
+    final answerExists = answerSnapshot.docs.isNotEmpty;
+    final FormAnswer? answer =
+        answerExists ? answerSnapshot.docs.first.data() : null;
+    final answerIsCompleted = answer?.isCompleted ?? false;
+    final isDefinitive = answer?.definitiveAnswerHasBeenGiven ?? false;
+    final answerIsUnRetractable = form.formAnswersAreUnretractable;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,6 +88,12 @@ class FormPageHeader extends StatelessWidget {
             child: AllergyWarningCard(),
           ),
 
+        if (form.formAnswersAreUnretractable)
+          Text(
+            "LET OP! Dit formulier is niet meer te wijzigen nadat antwoorden zijn verstuurd. Versturen gebeurt met de knop onderaan het formulier.",
+            style: TextStyle(color: colorScheme.error),
+          ),
+
         const SizedBox(height: 16),
 
         // Answer status
@@ -99,12 +107,14 @@ class FormPageHeader extends StatelessWidget {
               answerExists: answerExists,
               isCompleted: answerIsCompleted,
               showIcon: false,
+              isCompleteUnretractableAndUnSent:
+                  answerIsCompleted && answerIsUnRetractable && !isDefinitive,
               textStyle: textTheme.titleMedium,
             ).padding(left: leftCardPadding),
           ],
         ),
 
-        if (answerIsCompleted)
+        if (answerIsCompleted && !form.formAnswersAreUnretractable)
           Text(
             "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
             style: textTheme.bodyMedium,

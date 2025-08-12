@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 
@@ -9,16 +10,21 @@ class FormPageForm extends StatelessWidget {
     super.key,
     required this.formDoc,
     required this.formKey,
+    required this.answerSnapshot,
     required this.isAFormForUser,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final GlobalKey<FormState> formKey;
+  final QuerySnapshot<FormAnswer> answerSnapshot;
   final bool isAFormForUser;
 
   @override
   Widget build(BuildContext context) {
     final form = formDoc.data();
+    final answerIsDefinitive = answerSnapshot.docs.isEmpty
+        ? false
+        : answerSnapshot.docs.first.data().definitiveAnswerHasBeenGiven;
 
     if (form == null) {
       return const Text('No valid response found!');
@@ -38,7 +44,8 @@ class FormPageForm extends StatelessWidget {
                       questionId: contentIndex,
                       form: form,
                       docRef: formDoc.reference,
-                      userCanEditForm: form.isOpen && isAFormForUser,
+                      userCanEditForm:
+                          form.isOpen && isAFormForUser && !answerIsDefinitive,
                     )
                   : FormFiller(
                       filler: form.fillers[contentIndex]!.value,
@@ -52,7 +59,8 @@ class FormPageForm extends StatelessWidget {
                 formQuestion: question,
                 form: form,
                 docRef: formDoc.reference,
-                userCanEditForm: form.isOpen && isAFormForUser,
+                userCanEditForm:
+                    form.isOpen && isAFormForUser && !answerIsDefinitive,
               ),
               const SizedBox(height: 32),
             ]

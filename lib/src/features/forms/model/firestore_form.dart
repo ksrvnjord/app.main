@@ -32,6 +32,7 @@ class FirestoreForm {
     this.maximumNumberOfAnswers = 100000,
     this.currentNumberOfAnswers = 0,
     this.maximumNumberIsVisible = false,
+    this.formAnswersAreUnretractable = false,
     this.isV2 = false,
   });
   factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
@@ -87,6 +88,7 @@ class FirestoreForm {
   final int maximumNumberOfAnswers;
   final int currentNumberOfAnswers;
   final bool maximumNumberIsVisible;
+  final bool formAnswersAreUnretractable;
   final bool isV2;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSoldOut =>

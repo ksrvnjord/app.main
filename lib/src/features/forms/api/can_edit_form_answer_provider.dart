@@ -16,8 +16,11 @@ final canRemoveFormAnswerProvider = StreamProvider.autoDispose
     data: (answers) => canEditFormVal.when(
       data: (canEditForm) {
         final hasAnswer = answers.docs.isNotEmpty;
+        final isDefinitive = hasAnswer
+            ? answers.docs.first.data().definitiveAnswerHasBeenGiven
+            : false;
 
-        return Stream.value(hasAnswer && canEditForm);
+        return Stream.value(hasAnswer && canEditForm && !isDefinitive);
       },
       error: (error, _) => throw error,
       loading: () => Stream.value(false),
@@ -34,10 +37,20 @@ final canEditFormAnswerProvider = StreamProvider.autoDispose
 
   return form.when(
     data: (form) {
-      final formIsNotExpired = form.data()?.formClosingTimeIsInFuture == true;
-      final formIsOpen = form.data()?.isOpen == true;
+      final formIsOpen = form.data()?.openUntil.isAfter(DateTime.now()) == true;
 
-      return Stream.value(formIsNotExpired && formIsOpen);
+      // Add a timer that updates the formIsOpen value when the form is closed.
+      if (formIsOpen) {
+        unawaited(
+          // ignore: prefer-async-await
+          Future.delayed(
+            // ignore: avoid-non-null-assertion
+            form.data()!.openUntil.difference(DateTime.now()),
+          ).then((_) => ref.invalidateSelf()),
+        );
+      }
+
+      return Stream.value(formIsOpen);
     },
     error: (error, _) => throw error,
     loading: () => Stream.value(false),

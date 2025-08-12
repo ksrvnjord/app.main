@@ -84,6 +84,7 @@ class FormPageDeleteButton extends ConsumerWidget {
     final answerPath = answerSnapshot.docs.first.reference.path;
 
     return showDialog<bool>(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (innerContext) => AlertDialog(
         title: const Text('Verwijderen'),
