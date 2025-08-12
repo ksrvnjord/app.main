@@ -37,16 +37,16 @@ class FormsPage extends ConsumerWidget {
           data: (querySnapshot) {
             final forms = querySnapshot.docs;
 
-            final openForms = (forms).where((form) {
+            final visibleOpenForms = (forms).where((form) {
               final formData = form.data();
-              return formData.userCanEditForm &&
+              return formData.isOpen &&
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
                       currentUser.isAdmin);
             }).toList();
 
-            final closedForms = (forms).where((form) {
+            final visibleClosedForms = (forms).where((form) {
               final formData = form.data();
-              return !formData.userCanEditForm &&
+              return !formData.isOpen &&
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
                       currentUser.isAdmin);
             }).toList();
@@ -54,11 +54,11 @@ class FormsPage extends ConsumerWidget {
             return ListView(
               padding: const EdgeInsets.all(8),
               children: [
-                ...openForms.map((form) => FormCard(
+                ...visibleOpenForms.map((form) => FormCard(
                       formDoc: form,
                       currentUser: currentUser,
                     )),
-                if (closedForms.isNotEmpty) ...[
+                if (visibleClosedForms.isNotEmpty) ...[
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Divider(),
@@ -71,7 +71,7 @@ class FormsPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...closedForms.map((form) => FormCard(
+                  ...visibleClosedForms.map((form) => FormCard(
                         formDoc: form,
                         currentUser: currentUser,
                       )),

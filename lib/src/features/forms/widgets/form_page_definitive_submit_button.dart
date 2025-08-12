@@ -33,7 +33,8 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
               content: saving
                   ? const SizedBox(
                       height: 60,
-                      child: Center(child: CircularProgressIndicator()),
+                      child:
+                          Center(child: CircularProgressIndicator.adaptive()),
                     )
                   : const Text(
                       'Weet je zeker dat je dit formulier wilt inleveren? Dit kan niet meer worden gewijzigd en eventuele kosten zijn ook definitief.'),

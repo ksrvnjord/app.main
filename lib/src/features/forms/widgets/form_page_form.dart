@@ -11,11 +11,13 @@ class FormPageForm extends StatelessWidget {
     required this.formDoc,
     required this.formKey,
     required this.answerSnapshot,
+    required this.isAFormForUser,
   });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
   final GlobalKey<FormState> formKey;
   final QuerySnapshot<FormAnswer> answerSnapshot;
+  final bool isAFormForUser;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,12 @@ class FormPageForm extends StatelessWidget {
               form.questionsMap.containsKey(contentIndex)
                   ? FormQuestion(
                       formQuestion: form.questionsMap[contentIndex]!,
+                      questionId: contentIndex,
                       form: form,
                       docRef: formDoc.reference,
-                      formIsOpen: form.userCanEditForm && !answerIsDefinitive)
+                      userCanEditForm:
+                          form.isOpen && isAFormForUser && !answerIsDefinitive,
+                    )
                   : FormFiller(
                       filler: form.fillers[contentIndex]!.value,
                       formId: formDoc.id,
@@ -54,7 +59,8 @@ class FormPageForm extends StatelessWidget {
                 formQuestion: question,
                 form: form,
                 docRef: formDoc.reference,
-                formIsOpen: form.userCanEditForm && !answerIsDefinitive,
+                userCanEditForm:
+                    form.isOpen && isAFormForUser && !answerIsDefinitive,
               ),
               const SizedBox(height: 32),
             ]

@@ -26,8 +26,9 @@ class CreateFormQuestionsWidget extends ConsumerWidget {
           return CreateFormQuestion(
             index: entry.key,
             question: state.questions[entry.value]!,
+            questionId: entry.value,
             onChanged: () => state.updateState(),
-            deleteQuestion: (int index) => state.removeQuestion(entry.value),
+            deleteQuestion: () => state.removeQuestion(entry.value),
           );
         } else {
           return CreateFormFiller(

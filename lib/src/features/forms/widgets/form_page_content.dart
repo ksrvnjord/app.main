@@ -5,6 +5,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_header.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
 class FormPageContent extends ConsumerWidget {
   const FormPageContent(
@@ -19,15 +21,31 @@ class FormPageContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = formDoc.data()!;
+    final currentUserVal = ref.watch(currentUserProvider);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Now you have answer, so you can pass it here
-        FormPageHeader(form: form, answerSnapshot: answerSnapshot),
-        FormPageForm(
-            formDoc: formDoc, formKey: formKey, answerSnapshot: answerSnapshot),
-      ],
+    return currentUserVal.when(
+      data: (currentUser) {
+        final isAFormForUser =
+            form.userIsInCorrectGroupForForm(currentUser.groupIds);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Now you have answer, so you can pass it here
+            FormPageHeader(
+                form: form,
+                answerSnapshot: answerSnapshot,
+                isAFormForUser: isAFormForUser),
+            FormPageForm(
+              formDoc: formDoc,
+              formKey: formKey,
+              answerSnapshot: answerSnapshot,
+              isAFormForUser: isAFormForUser,
+            ),
+          ],
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (err, _) => ErrorCardWidget(errorMessage: err.toString()),
     );
   }
 }

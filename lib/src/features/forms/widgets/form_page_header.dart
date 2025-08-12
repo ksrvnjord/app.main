@@ -10,10 +10,14 @@ import 'package:styled_widget/styled_widget.dart';
 
 class FormPageHeader extends StatelessWidget {
   const FormPageHeader(
-      {super.key, required this.form, required this.answerSnapshot});
+      {super.key,
+      required this.form,
+      required this.answerSnapshot,
+      required this.isAFormForUser});
 
   final FirestoreForm form;
   final QuerySnapshot<FormAnswer> answerSnapshot;
+  final bool isAFormForUser;
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +49,8 @@ class FormPageHeader extends StatelessWidget {
               '${form.formClosingTimeIsInFuture ? "Sluit" : "Gesloten"} op '
               '${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',
               style: textTheme.bodySmall?.copyWith(
-                color: form.userCanEditForm
-                    ? colorScheme.secondary
-                    : colorScheme.outline,
+                color:
+                    form.isOpen ? colorScheme.secondary : colorScheme.outline,
               ),
             ).alignment(Alignment.centerLeft),
           ],
@@ -62,6 +65,12 @@ class FormPageHeader extends StatelessWidget {
         if (form.isClosed && form.formClosingTimeIsInFuture)
           Text(
             "Deze form is vroegtijdig gesloten door een admin.",
+            style: TextStyle(color: colorScheme.error),
+          ).alignment(Alignment.centerLeft),
+
+        if (!isAFormForUser)
+          Text(
+            "Je hebt geen rechten om deze form in te vullen.",
             style: TextStyle(color: colorScheme.error),
           ).alignment(Alignment.centerLeft),
 
