@@ -14,6 +14,8 @@ FormAnswer _$FormAnswerFromJson(Map<String, dynamic> json) => FormAnswer(
       answeredAt: const TimestampDateTimeConverter()
           .fromJson(json['answeredAt'] as Timestamp),
       isCompleted: json['isCompleted'] as bool,
+      definitiveAnswerHasBeenGiven:
+          json['definitiveAnswerHasBeenGiven'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$FormAnswerToJson(FormAnswer instance) =>
@@ -23,4 +25,5 @@ Map<String, dynamic> _$FormAnswerToJson(FormAnswer instance) =>
       'answeredAt':
           const TimestampDateTimeConverter().toJson(instance.answeredAt),
       'isCompleted': instance.isCompleted,
+      'definitiveAnswerHasBeenGiven': instance.definitiveAnswerHasBeenGiven,
     };
