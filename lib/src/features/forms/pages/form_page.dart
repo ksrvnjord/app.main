@@ -128,7 +128,7 @@ class _FormPageState extends ConsumerState<FormPage> {
                     );
                   },
                   loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(child: CircularProgressIndicator.adaptive()),
                   error: (error, _) => ErrorCardWidget(
                     errorMessage: 'Fout bij het laden van je antwoord: $error',
                   ),
