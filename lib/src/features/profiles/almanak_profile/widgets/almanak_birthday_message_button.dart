@@ -98,7 +98,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                   TextField(
                     controller: messageController,
                     decoration: const InputDecoration(
-                      hintText: 'Typ hier je bericht (max. 50 tekens)',
+                      hintText: 'Optioneel bericht',
                     ),
                     maxLines: null,
                     maxLength: 100, // Limit the input to 140 characters
@@ -158,20 +158,11 @@ class AlmanakBirthdayButton extends ConsumerWidget {
 
   Future<void> _sendBirthdayMessage(BuildContext context, String message,
       String senderId, String senderFullName, User senderUser) async {
-    if (message.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content:
-                Text('Geen notificatie gestuurd, bericht mag niet leeg zijn.')),
-      );
-      return;
-    }
-
     try {
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessage')
           .call({
-        'receiverId': receiverId,
+        'receiverId': "20198",
         'receiverFullName': receiverFullName,
         'senderId': senderId,
         'senderFullName': senderFullName,
@@ -191,7 +182,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        print(e);
+        debugPrint(e.toString());
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Fout bij versturen: $e')),
         );
