@@ -41,7 +41,8 @@ class FormPageHeader extends StatelessWidget {
         // Title row
         Column(
           children: [
-            Text(form.title, style: textTheme.titleLarge).alignment(Alignment.centerLeft),
+            Text(form.title, style: textTheme.titleLarge)
+                .alignment(Alignment.centerLeft),
             Text(
               '${form.formClosingTimeIsInFuture ? "Sluit" : "Gesloten"} op '
               '${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}',

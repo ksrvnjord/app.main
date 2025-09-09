@@ -43,7 +43,8 @@ class FormsPage extends ConsumerWidget {
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
                       currentUser.isAdmin);
             }).toList();
-            visibleOpenForms.sort((a, b) => a.data().openUntil.compareTo(b.data().openUntil));
+            visibleOpenForms.sort(
+                (a, b) => a.data().openUntil.compareTo(b.data().openUntil));
 
             final visibleClosedForms = (forms).where((form) {
               final formData = form.data();
@@ -51,7 +52,8 @@ class FormsPage extends ConsumerWidget {
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
                       currentUser.isAdmin);
             }).toList();
-            visibleClosedForms.sort((a, b) => a.data().openUntil.compareTo(b.data().openUntil));
+            visibleClosedForms.sort(
+                (a, b) => a.data().openUntil.compareTo(b.data().openUntil));
 
             return ListView(
               padding: const EdgeInsets.all(8),
