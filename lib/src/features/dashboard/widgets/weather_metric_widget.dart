@@ -48,7 +48,7 @@ class WeatherMetricWidget extends StatelessWidget {
               style: textTheme.headlineSmall,
             ),
           main ?? const SizedBox(),
-        ].toColumn(
+        ].to(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         if (bottomText != null)

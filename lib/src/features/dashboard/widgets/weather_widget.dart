@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -156,70 +157,44 @@ class WeatherWidget extends ConsumerWidget {
               SizedBox(
                   width: 350,
                   child: [
-                    Text("K.S.R.V. Njord")
-                        .fontSize(16)
-                        .fontWeight(FontWeight.bold),
-                    [
-                      [
-                        [
-                          Icon(
-                            weathercodetoweathertype(
-                              currentWeather['weathercode'],
-                            ),
-                            size: 32,
-                          ),
-                          Padding(padding: const EdgeInsets.only(left: 16.0)),
-                          Text("$currentTemperature°",
-                              style: Theme.of(context).textTheme.headlineLarge),
-                          [
-                            Icon(Icons.sunny),
-                            Text(uvIndex.toString()).fontSize(28)
-                          ].toRow(mainAxisAlignment: MainAxisAlignment.center),
-                        ].toRow(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        [
-                          Icon(
-                            WeatherIcons.fromString(
-                              windspeedCss,
-                              fallback: WeatherIcons.na,
-                            ),
-                            size: 32,
-                          ),
-                          WindIcon(
-                            degree: winddirection,
-                            size: 32,
-                          ),
-                        ].toRow(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        [
-                          Icon(
-                              sunsetIsFirst
-                                  ? WeatherIcons.sunrise
-                                  : WeatherIcons.sunset,
-                              size: 16),
-                          Padding(padding: const EdgeInsets.only(left: 8.0)),
-                          Text(DateFormat('HH:mm')
-                              .format(sunsetIsFirst ? sunrise : sunset)),
-                        ].toRow(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                        [
-                          Icon(
-                              sunsetIsFirst
-                                  ? WeatherIcons.sunset
-                                  : WeatherIcons.sunrise,
-                              size: 16),
-                          Padding(padding: const EdgeInsets.only(left: 8.0)),
-                          Text(DateFormat('HH:mm')
-                              .format(sunsetIsFirst ? sunset : sunrise)),
-                        ].toRow(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        ),
-                      ].toColumn(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                      ),
+                    [          Wrap(children: [
+            WeatherMetricWidget(
+              icon: WeatherIcons.strong_wind,
+              title: "Wind",
+              mainText: "$windspeed km/u",
+              main: [
+                BoxedIcon(
+                  WeatherIcons.fromString(
+                    windspeedCss,
+                    fallback: WeatherIcons.na,
+                  ),
+                  size: 32,
+                ),
+                WindIcon(
+                  degree: winddirection,
+                  size: 32,
+                ),
+              ].toRow(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+              ),
+            ),
+            WeatherMetricWidget(
+              icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
+              title: "Zon", 
+              main: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BoxedIcon(
+                    sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
+                    size: 32,
+                  ),
+                ],
+              ),
+              mainText:
+                  "${sunsetIsFirst ? "Op" : "Onder"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)} \n${sunsetIsFirst ? "Onder" : "Zon op"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}",
+            ),
+          ]),
                       Image.asset(
                         clothingImagePath!,
                         width: 45,
