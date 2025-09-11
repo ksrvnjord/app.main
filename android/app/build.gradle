@@ -57,7 +57,7 @@ android {
     defaultConfig {
         applicationId "com.ksrvnjord.app"
         minSdkVersion 30
-        targetSdkVersion 35 //flutter.targetSdkVersion
+        targetSdkVersion 35 //flutter.targetSdkVersion TODO temporary fix
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

@@ -60,7 +60,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
                 ).center(),
                 Text(
                   DateFormat("d MMMM y", "nl")
-                      .format(DateTime.parse(u.birthDate)),
+                      .format(DateTime.parse(u.birthDate ?? '')),
                   style: textTheme.bodyLarge,
                 ).alignment(Alignment.center),
                 if (u.bestuursFunctie != null)
