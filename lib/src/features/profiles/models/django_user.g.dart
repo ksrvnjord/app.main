@@ -15,7 +15,7 @@ DjangoUser _$DjangoUserFromJson(Map<String, dynamic> json) => DjangoUser(
       infix: json['infix'] as String,
       email: json['email'] as String,
       isStaff: json['is_staff'] as bool,
-      birthDate: json['birth_date'] as String,
+      birthDate: json['birth_date'] as String?,
       initials: json['initials'] as String,
       iban: json['iban'] as String,
       address: Address.fromJson(json['address'] as Map<String, dynamic>),
