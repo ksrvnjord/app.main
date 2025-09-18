@@ -177,7 +177,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text(
-                  'Er is iets  misgegaan bij het versturen. Probeer het later opnieuw.')),
+                  'Er is iets misgegaan bij het versturen. Probeer het later opnieuw.')),
         );
       }
     } catch (e) {
