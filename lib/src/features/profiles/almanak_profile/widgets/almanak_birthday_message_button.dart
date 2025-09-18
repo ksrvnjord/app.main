@@ -162,7 +162,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessage')
           .call({
-        'receiverId': "20198",
+        'receiverId': receiverId,
         'receiverFullName': receiverFullName,
         'senderId': senderId,
         'senderFullName': senderFullName,
