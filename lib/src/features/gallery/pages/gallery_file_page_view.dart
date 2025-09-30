@@ -107,7 +107,8 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                   }
                 } else {
                   // Load image from provider if not cached
-                  final imageVal = ref.read(galleryImageProvider(path.fullPath));
+                  final imageVal =
+                      ref.read(galleryImageProvider(path.fullPath));
 
                   await imageVal.when(
                     data: (image) async {
