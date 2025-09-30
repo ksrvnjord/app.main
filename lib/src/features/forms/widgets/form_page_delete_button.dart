@@ -58,7 +58,7 @@ class FormPageDeleteButton extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.delete),
-                SizedBox(width: 8),
+                SizedBox(width: 10),
                 Flexible(
                   child: Text("Verwijder mijn formreactie",
                       textAlign: TextAlign.center),
