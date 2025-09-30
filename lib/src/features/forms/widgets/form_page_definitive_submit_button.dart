@@ -108,7 +108,9 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
             children: [
               Icon(Icons.save),
               SizedBox(width: 8),
-              Text("Definitief Opslaan"),
+              Flexible(
+                  child:
+                      Text("Definitief Opslaan", textAlign: TextAlign.center)),
             ],
           ),
         );
