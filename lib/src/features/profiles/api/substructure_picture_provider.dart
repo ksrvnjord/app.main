@@ -18,7 +18,6 @@ final commissiePictureProvider = FutureProvider.autoDispose
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );
-    //print()
     return currentYearPicture == AssetImage(Images.placeholderProfilePicture)
         ? CachedImage.get(
             firebaseStoragePath:
