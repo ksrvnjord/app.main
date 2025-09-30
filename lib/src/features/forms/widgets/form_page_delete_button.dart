@@ -59,7 +59,10 @@ class FormPageDeleteButton extends ConsumerWidget {
               children: [
                 Icon(Icons.delete),
                 SizedBox(width: 8),
-                Text("Verwijder mijn formreactie"),
+                Flexible(
+                  child: Text("Verwijder mijn formreactie",
+                      textAlign: TextAlign.center),
+                ),
               ],
             ),
           );

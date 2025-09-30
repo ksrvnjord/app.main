@@ -105,25 +105,34 @@ class _FormPageState extends ConsumerState<FormPage> {
                           answerSnapshot:
                               answerSnapshot, // ⬅️ Optionally pass down
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: FormPageDefinitiveSubmitButton(
-                                formKey: _formKey,
-                                answerDocRef: answerDocRef,
-                                formDocRef: formDoc.reference,
+                        formDoc.data()?.formAnswersAreUnretractable == true
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: FormPageDefinitiveSubmitButton(
+                                      formKey: _formKey,
+                                      answerDocRef: answerDocRef,
+                                      formDocRef: formDoc.reference,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: FormPageDeleteButton(
+                                      doc: doc,
+                                      formId: widget.formId,
+                                      formKey: _formKey,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(
+                                width: double.infinity,
+                                child: FormPageDeleteButton(
+                                  doc: doc,
+                                  formId: widget.formId,
+                                  formKey: _formKey,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: FormPageDeleteButton(
-                                doc: doc,
-                                formId: widget.formId,
-                                formKey: _formKey,
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     );
                   },
