@@ -42,6 +42,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/download_profile_pictures_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/upload_aspi_profile_pictures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_visibility_page.dart';
@@ -578,7 +579,13 @@ abstract final // ignore: prefer-single-declaration-per-file
                           name: "download profile pictures",
                           pageBuilder: (context, state) => _getPage(
                               child: DownloadProfilePicturesPage(),
-                              name: "download profile pictures"))
+                              name: "download profile pictures")),
+                      _route(
+                          path: "upload_aspi_profile_pictures",
+                          name: "upload aspi profile pictures",
+                          pageBuilder: (context, state) => _getPage(
+                              child: UploadAspiProfilePictures(),
+                              name: "upload aspi profile pictures"))
                     ]),
               ],
             ),
