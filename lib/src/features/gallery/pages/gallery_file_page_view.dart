@@ -76,28 +76,85 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
         title: const Text("Galerij"),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               final path = widget.paths.elementAtOrNull(_currentPage);
               if (path != null) {
-                final imageVal = ref.watch(galleryImageProvider(path.fullPath));
-
-                imageVal.when(
-                  data: (image) {
-                    // Handle sharing functionality here.
-                    Share.shareXFiles(
+                // Check if image is in cache first
+                final cache = ref.read(galleryImageCacheProvider);
+                final cachedImage = cache[path.fullPath];
+                if (cachedImage != null) {
+                  // Use cached image for sharing
+                  try {
+                    await Share.shareXFiles(
                       [
                         XFile.fromData(
-                          image.bytes,
+                          cachedImage.bytes,
                           mimeType: "image/jpeg",
-                          name: "$path.jpg",
+                          name: "${path.name}.jpg",
                         ),
                       ],
                       subject: "Foto",
-                    ).ignore();
-                  },
-                  error: (err, _) {},
-                  loading: () {},
-                );
+                    );
+                  } catch (error) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Delen mislukt: $error'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
+                } else {
+                  // Load image from provider if not cached
+                  final imageVal =
+                      ref.read(galleryImageProvider(path.fullPath));
+
+                  await imageVal.when(
+                    data: (image) async {
+                      try {
+                        await Share.shareXFiles(
+                          [
+                            XFile.fromData(
+                              image.bytes,
+                              mimeType: "image/jpeg",
+                              name: "${path.name}.jpg",
+                            ),
+                          ],
+                          subject: "Foto",
+                        );
+                      } catch (error) {
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Delen mislukt: $error'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    error: (err, _) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Afbeelding kan niet worden gedeeld'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                    loading: () {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Afbeelding wordt geladen...'),
+                          ),
+                        );
+                      }
+                    },
+                  );
+                }
               }
             },
             icon: const Icon(Icons.share),
