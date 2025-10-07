@@ -18,7 +18,7 @@ class UploadAspiProfilePictures extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3 ,
+        crossAxisCount: 5,
         childAspectRatio: 1,
       ),
       itemCount: 300,
