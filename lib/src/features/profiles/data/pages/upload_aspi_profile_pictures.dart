@@ -1,15 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/get_image.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 
 class UploadAspiProfilePictures extends StatelessWidget {
   const UploadAspiProfilePictures({super.key});
