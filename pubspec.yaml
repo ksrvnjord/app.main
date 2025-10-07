@@ -67,6 +67,8 @@ dependencies:
   go_router: ^14.2.9
   package_info_plus: ^4.1.0
   smooth_page_indicator: ^1.2.0
+  file_picker: ^6.1.1
+  desktop_drop: ^0.4.4
   flutter_web_plugins:
     sdk: flutter
   firebase_pagination: # Forked to add capability to refresh widget on Firebase Query change.
