@@ -32,7 +32,7 @@ final commissiePictureProvider = FutureProvider.autoDispose
         firebaseStoragePath:
             "almanak/commissies/$commissie/${year - 1}/$prevGroupId/picture.jpg",
         placeholderImagePath: Images.placeholderProfilePicture,
-        maxAge: const Duration(seconds: 1),
+        maxAge: const Duration(minutes: 5),
       );
       return prevPicture;
     }

@@ -63,13 +63,6 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
     }
   }
 
-  void _handleDrop(List<Uri> uris) {
-    if (uris.isNotEmpty) {
-      // Handle upload logic here
-      // uploadFile(uris.first.toFilePath());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final lidnummer = widget.lidnummer.toString();
@@ -79,12 +72,7 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
     return DropTarget(
       onDragEntered: (_) => setState(() => _dragging = true),
       onDragExited: (_) => setState(() => _dragging = false),
-      onDragDone: (details) => (details) {
-        for (final file in details.files) {
-          // file is an XFile, use file.path to get the file path
-          // uploadFile(file.path);
-        }
-      },
+      onDragDone: (details) => (details) {},
       child: GestureDetector(
         onTap: () => pickImage(context, ref, lidnummer),
         child: Container(
