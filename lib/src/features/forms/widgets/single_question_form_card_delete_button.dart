@@ -77,6 +77,7 @@ class SingleQuestionFormCardDeleteButton extends ConsumerWidget {
                                 : 'Het is niet gelukt jouw formreactie te verwijderen',
                           ),
                         );
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       style: ButtonStyle(

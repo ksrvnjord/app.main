@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:tuple/tuple.dart';
 
 final commissiePictureProvider = FutureProvider.autoDispose
@@ -18,14 +19,23 @@ final commissiePictureProvider = FutureProvider.autoDispose
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );
-    return currentYearPicture == AssetImage(Images.placeholderProfilePicture)
-        ? CachedImage.get(
-            firebaseStoragePath:
-                "almanak/commissies/$commissie/${year - 1}/$groupId/picture.jpg",
-            placeholderImagePath: Images.placeholderProfilePicture,
-            maxAge: const Duration(minutes: 5),
-          )
-        : currentYearPicture;
+    if (currentYearPicture != AssetImage(Images.placeholderProfilePicture)) {
+      return currentYearPicture;
+    } else {
+      final commissieAndYear = Tuple2(
+        commissie,
+        year - 1,
+      );
+      final prevGroupId =
+          await ref.read(groupIDProvider(commissieAndYear).future);
+      final prevPicture = await CachedImage.get(
+        firebaseStoragePath:
+            "almanak/commissies/$commissie/${year - 1}/$prevGroupId/picture.jpg",
+        placeholderImagePath: Images.placeholderProfilePicture,
+        maxAge: const Duration(minutes: 5),
+      );
+      return prevPicture;
+    }
   },
 );
 
@@ -43,14 +53,23 @@ final commissieThumbnailProvider = FutureProvider.autoDispose
       maxAge: const Duration(minutes: 5),
     );
 
-    return currentYearThumbnail == AssetImage(Images.placeholderProfilePicture)
-        ? CachedImage.get(
-            firebaseStoragePath:
-                "almanak/commissies/$commissie/${year - 1}/$groupId/thumbnails/picture${Thumbnail.x200}.jpg",
-            placeholderImagePath: Images.placeholderProfilePicture,
-            maxAge: const Duration(minutes: 5),
-          )
-        : currentYearThumbnail;
+    if (currentYearThumbnail != AssetImage(Images.placeholderProfilePicture)) {
+      return currentYearThumbnail;
+    } else {
+      final commissieAndYear = Tuple2(
+        commissie,
+        year - 1,
+      );
+      final prevGroupId =
+          await ref.read(groupIDProvider(commissieAndYear).future);
+      final prevThumbnail = await CachedImage.get(
+        firebaseStoragePath:
+            "almanak/commissies/$commissie/${year - 1}/$prevGroupId/thumbnails/picture${Thumbnail.x200}.jpg",
+        placeholderImagePath: Images.placeholderProfilePicture,
+        maxAge: const Duration(minutes: 5),
+      );
+      return prevThumbnail;
+    }
   },
 );
 

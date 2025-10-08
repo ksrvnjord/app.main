@@ -10,10 +10,10 @@ class ListNotificationsPage extends ConsumerStatefulWidget {
   const ListNotificationsPage({super.key});
 
   @override
-  _ListNotificationsPageState createState() => _ListNotificationsPageState();
+  ListNotificationsPageState createState() => ListNotificationsPageState();
 }
 
-class _ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
+class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
   // Function that should be called when the page is exited
 
   Future<void> markNotificationsAsRead() async {

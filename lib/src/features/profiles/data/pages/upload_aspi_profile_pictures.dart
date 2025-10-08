@@ -1,15 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
-import 'package:ksrvnjord_main_app/src/features/announcements/api/get_image.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/models/profile_edit_form_notifier.dart';
 
 class UploadAspiProfilePictures extends StatelessWidget {
   const UploadAspiProfilePictures({super.key});
@@ -68,13 +63,6 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
     }
   }
 
-  void _handleDrop(List<Uri> uris) {
-    if (uris.isNotEmpty) {
-      // Handle upload logic here
-      // uploadFile(uris.first.toFilePath());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final lidnummer = widget.lidnummer.toString();
@@ -84,12 +72,7 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
     return DropTarget(
       onDragEntered: (_) => setState(() => _dragging = true),
       onDragExited: (_) => setState(() => _dragging = false),
-      onDragDone: (details) => (details) {
-        for (final file in details.files) {
-          // file is an XFile, use file.path to get the file path
-          // uploadFile(file.path);
-        }
-      },
+      onDragDone: (details) => (details) {},
       child: GestureDetector(
         onTap: () => pickImage(context, ref, lidnummer),
         child: Container(
