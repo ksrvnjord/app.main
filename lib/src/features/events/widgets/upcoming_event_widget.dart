@@ -17,13 +17,17 @@ class UpcomingEventWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const double topPadding = 4;
 
-    DateFormat monthFormat = DateFormat('MMM EEE', 'nl_NL');
+    DateFormat monthFormat = DateFormat('MMM', 'nl_NL');
+    DateFormat dayFormat = DateFormat('EEE', 'nl_NL');
     DateFormat timeFormat = DateFormat('HH:mm');
     const int maxLines = 2;
 
     final event = doc.data();
     final DateTime start = event.startTime.toDate();
     final DateTime end = event.endTime.toDate();
+
+    debugPrint(monthFormat.format(start));
+    debugPrint(dayFormat.format(start));
 
     final textTheme = Theme.of(context).textTheme;
     const double elementPadding = 4;
@@ -32,6 +36,11 @@ class UpcomingEventWidget extends StatelessWidget {
     const double minWidthDay = 28;
 
     return [
+      Text(
+        dayFormat.format(start),
+        style: textTheme.labelLarge,
+        textAlign: TextAlign.center,
+      ).padding(top: topPadding),
       Text(
         start.day.toString(),
         style: textTheme.headlineSmall,
