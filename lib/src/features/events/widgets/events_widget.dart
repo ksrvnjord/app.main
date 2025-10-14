@@ -41,6 +41,46 @@ class EventsWidget extends StatelessWidget {
       ),
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
+      // Add onTap callback to handle event taps
+      onTap: (CalendarTapDetails details) {
+        if (details.targetElement == CalendarElement.appointment && 
+            details.appointments != null && 
+            details.appointments!.isNotEmpty) {
+          final Event tappedEvent = details.appointments!.first as Event;
+          _showEventDescription(context, tappedEvent);
+        }
+      },
+    );
+  }
+
+  // Function to show event description in a dialog
+  void _showEventDescription(BuildContext context, Event event) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(event.title),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (event.description.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(event.description),
+                  const SizedBox(height: 16),
+                ],
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
