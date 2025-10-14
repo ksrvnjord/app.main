@@ -22,6 +22,7 @@ class UpcomingEventWidget extends StatelessWidget {
 
     final event = doc.data();
     final DateTime start = event.startTime.toDate();
+    final DateTime end = event.endTime.toDate();
 
     final textTheme = Theme.of(context).textTheme;
     const double elementPadding = 4;
@@ -41,10 +42,18 @@ class UpcomingEventWidget extends StatelessWidget {
         monthFormat.format(start),
         style: textTheme.labelLarge,
       ).padding(top: topPadding),
-      Text(
-        timeFormat.format(start),
-        style: textTheme.labelMedium,
-      ).padding(top: topPadding + timeTopPadding),
+      if (start.day != end.day) ...[
+        debugPrint(start.day.toString()), // debugPrint is not a widget, so remove or move outside the widget tree if needed
+        Text(
+          timeFormat.format(start),
+          style: textTheme.labelMedium,
+        ).padding(top: topPadding + timeTopPadding),
+      ] else ...[
+        Text(
+          timeFormat.format(start),
+          style: textTheme.labelMedium,
+        ).padding(top: topPadding + timeTopPadding),
+      ],
       Expanded(
         child: Text(
           event.title,
