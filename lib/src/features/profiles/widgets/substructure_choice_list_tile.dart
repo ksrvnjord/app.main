@@ -29,7 +29,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
       onTap: onTap,
       child: [
         FadeInImage(
-          placeholder: Image.asset(Images.placeholderProfilePicture).image,
+          placeholder: Image.asset(Images.loadingPicture).image,
           image: imageProvider.when(
             data: (data) => data,
             error: (err, stk) =>
