@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:styled_widget/styled_widget.dart';
+// import 'package:universal_html/html.dart';
 
 class UpcomingEventWidget extends StatelessWidget {
   const UpcomingEventWidget({
@@ -27,7 +28,7 @@ class UpcomingEventWidget extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     const double elementPadding = 4;
 
-    const double timeTopPadding = 2;
+    const double timeTopPadding = 0;
     const double minWidthDay = 28;
 
     return [
@@ -38,22 +39,51 @@ class UpcomingEventWidget extends StatelessWidget {
       ).constrained(
         minWidth: minWidthDay,
       ),
+      if (start.day != end.day) ...[
+        Text(
+          '–',
+          style: textTheme.labelLarge,
+        ).padding(top: topPadding + timeTopPadding),
+        Text(
+          end.day.toString(),
+          style: textTheme.headlineSmall,
+          textAlign: TextAlign.left,
+        ).constrained(
+          minWidth: minWidthDay,
+        ),
+      ],
       Text(
         monthFormat.format(start),
         style: textTheme.labelLarge,
+        textAlign: TextAlign.center,
       ).padding(top: topPadding),
-      if (start.day != end.day) ...[
-        debugPrint(start.day.toString()), // debugPrint is not a widget, so remove or move outside the widget tree if needed
+      
+      // Text(
+      //   monthFormat.format(start),
+      //   style: textTheme.labelLarge,
+      // ).padding(top: topPadding),
+      // if (start.day != end.day) ...[
+      //   Text(
+      //     '–',
+      //     style: textTheme.labelLarge,
+      //   ).padding(top: topPadding + timeTopPadding),
+      //   Text(
+      //     end.day.toString(),
+      //     style: textTheme.headlineSmall,
+      //     textAlign: TextAlign.center,
+      //   ).constrained(
+      //     minWidth: minWidthDay,
+      //   ),
+      //   Text(
+      //     monthFormat.format(end),
+      //     style: textTheme.labelLarge,
+      //   ).padding(top: topPadding),
+      // ],
+      if (start.day == end.day)
         Text(
           timeFormat.format(start),
-          style: textTheme.labelMedium,
+          style: textTheme.titleMedium,
         ).padding(top: topPadding + timeTopPadding),
-      ] else ...[
-        Text(
-          timeFormat.format(start),
-          style: textTheme.labelMedium,
-        ).padding(top: topPadding + timeTopPadding),
-      ],
       Expanded(
         child: Text(
           event.title,
