@@ -66,11 +66,29 @@ class _FormPageState extends ConsumerState<FormPage> {
                   ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   return;
                 }
-                final currentPath = state['location'] as String;
 
-                const prefixPath = RoutingConstants.appBaseUrl;
-                final url = "$prefixPath$currentPath";
-                Share.share(url).ignore();
+                try {
+                  String currentPath = "";
+
+                  final imperativeMatches = state['imperativeMatches'] as List?;
+                  if (imperativeMatches == null || imperativeMatches.isEmpty) {
+                    currentPath = state['location'] as String;
+                  } else {
+                    currentPath =
+                        imperativeMatches.firstOrNull['location'] as String;
+                  }
+                  const prefixPath = RoutingConstants.appBaseUrl;
+
+                  final url = "$prefixPath$currentPath";
+
+                  Share.share(url).ignore();
+                } on Exception catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                    e.toString(),
+                  )));
+                  return;
+                }
               },
               icon: const Icon(Icons.share),
             ),
