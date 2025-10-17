@@ -174,22 +174,26 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                               icon: const Icon(Icons.download),
                               label: Text("download profile pictures"),
                             ),
-                          if (widget.name.toLowerCase() == "afroeicommissie")
-                            FloatingActionButton.extended(
-                              heroTag: 'profielfoto\'s uploaden',
-                              foregroundColor: colorScheme.onPrimaryContainer,
-                              backgroundColor: colorScheme.primaryContainer,
-                              onPressed: () {
-                                context.goNamed(
-                                  "upload aspi profile pictures",
-                                  pathParameters: {
-                                    "name": widget.name,
-                                  },
-                                );
-                              },
-                              icon: const Icon(Icons.upload),
-                              label: Text("upload aspi profile pictures"),
-                            ),
+                          //
+                          // USED ONLY IN THE BEGINNING OF THE
+                          // YEAR FOR UPLOADING ASPI PROFILE PICTURES
+                          //
+                          // if (widget.name.toLowerCase() == "afroeicommissie")
+                          //   FloatingActionButton.extended(
+                          //     heroTag: 'profielfoto\'s uploaden',
+                          //     foregroundColor: colorScheme.onPrimaryContainer,
+                          //     backgroundColor: colorScheme.primaryContainer,
+                          //     onPressed: () {
+                          //       context.goNamed(
+                          //         "upload aspi profile pictures",
+                          //         pathParameters: {
+                          //           "name": widget.name,
+                          //         },
+                          //       );
+                          //     },
+                          //     icon: const Icon(Icons.upload),
+                          //     label: Text("upload aspi profile pictures"),
+                          //   ),
                         ],
                       );
                     },
