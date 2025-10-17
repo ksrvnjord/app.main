@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 
+// USED ONLY IN THE BEGINNING OF THE YEAR FOR UPLOADING ASPI PROFILE PICTURES
 class UploadAspiProfilePictures extends StatelessWidget {
   const UploadAspiProfilePictures({super.key});
 
@@ -16,9 +17,9 @@ class UploadAspiProfilePictures extends StatelessWidget {
         crossAxisCount: 5,
         childAspectRatio: 1,
       ),
-      itemCount: 300,
+      itemCount: 319,
       itemBuilder: (context, index) {
-        final number = 25001 + index;
+        final number = 25000 + index;
         return UploadGridCell(lidnummer: number);
       },
     );
