@@ -1,10 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
 
+// USED ONLY IN THE BEGINNING OF THE YEAR FOR UPLOADING ASPI PROFILE PICTURES
 class UploadAspiProfilePictures extends StatelessWidget {
   const UploadAspiProfilePictures({super.key});
 
@@ -15,9 +17,9 @@ class UploadAspiProfilePictures extends StatelessWidget {
         crossAxisCount: 5,
         childAspectRatio: 1,
       ),
-      itemCount: 300,
+      itemCount: 319,
       itemBuilder: (context, index) {
-        final number = 25001 + index;
+        final number = 25000 + index;
         return UploadGridCell(lidnummer: number);
       },
     );
@@ -59,13 +61,6 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
       //     ref.watch(profileEditFormNotifierProvider.notifier);
       // profileEditFormNotifier.setProfilePicture(image);
       // debugPrint("uploaded");
-    }
-  }
-
-  void _handleDrop(List<Uri> uris) {
-    if (uris.isNotEmpty) {
-      // Handle upload logic here
-      // uploadFile(uris.first.toFilePath());
     }
   }
 
