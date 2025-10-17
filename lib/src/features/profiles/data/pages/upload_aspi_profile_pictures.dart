@@ -1,6 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
@@ -35,7 +34,6 @@ class UploadGridCell extends ConsumerStatefulWidget {
 }
 
 class _UploadGridCellState extends ConsumerState<UploadGridCell> {
-  final bool _dragging = false;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<void> pickImage(
@@ -75,9 +73,7 @@ class _UploadGridCellState extends ConsumerState<UploadGridCell> {
       child: Container(
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: _dragging
-              ? colorScheme.onPrimaryContainer
-              : colorScheme.primaryContainer,
+          color: colorScheme.primaryContainer,
           border: Border.all(color: colorScheme.primary),
           borderRadius: BorderRadius.circular(8),
         ),
