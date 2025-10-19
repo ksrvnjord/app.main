@@ -51,6 +51,11 @@ class ManageFormsPage extends ConsumerWidget {
                         subtitle: [
                           Text(
                             "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
+                            style: TextStyle(
+                              color: formIsNotExpired
+                                  ? Colors.green.shade400 // soft green
+                                  : Colors.red.shade400, // soft red
+                            ),
                           ),
                           if (form.isDraft)
                             user.isAdmin
@@ -104,7 +109,10 @@ class ManageFormsPage extends ConsumerWidget {
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => innerContext.goNamed(
                           "Forms -> View Form",
-                          pathParameters: {"formId": doc.id},
+                          pathParameters: {
+                            "formId": doc.id,
+                          },
+                          queryParameters: {'isAdmin': user.isAdmin.toString()},
                         ),
                       );
                     },

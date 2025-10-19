@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/edit_form_datetime_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
@@ -17,10 +18,12 @@ class ManageFormPage extends ConsumerWidget {
   const ManageFormPage({
     super.key,
     required this.formId,
+    required this.isAdmin,
     required this.isInAdminPanel,
   });
 
   final String formId;
+  final bool isAdmin;
   final bool isInAdminPanel;
 
   @override
@@ -86,9 +89,24 @@ class ManageFormPage extends ConsumerWidget {
                   children: [
                       DataTextListTile(
                           name: "Form naam", value: formData.title),
+                      if (isAdmin &&
+                          formData.openUntil.isAfter(
+                              DateTime.now().subtract(const Duration(days: 7))))
+                        EditFormDateTimeWidget(
+                          docRef: formSnapshot.reference,
+                          name: 'Open tot',
+                          initialDate: formData.openUntil,
+                        )
+                      else
+                        DataTextListTile(
+                          name: 'Open tot',
+                          value:
+                              '${MaterialLocalizations.of(context).formatFullDate(formData.openUntil)} '
+                              '${TimeOfDay.fromDateTime(formData.openUntil).format(context)}',
+                        ),
                       DataTextListTile(
-                        name: 'Open tot',
-                        value: formatter.format(formData.openUntil),
+                        name: 'Beschrijving',
+                        value: formData.description ?? 'N/A',
                       ),
                       DataTextListTile(
                         name: 'Beschrijving',
