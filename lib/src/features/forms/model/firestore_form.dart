@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 part 'firestore_form.g.dart';
 
 // If you're testing set this to 'testforms', for production use 'forms'
-const String firestoreFormCollectionName = 'testforms';
+const String firestoreFormCollectionName = 'forms';
 
 @immutable
 @JsonSerializable()
