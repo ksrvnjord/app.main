@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
@@ -8,6 +11,8 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_quest
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FormRepository {
   static Future<DocumentReference<FormAnswer>> upsertFormAnswerDeprecated({
@@ -295,5 +300,33 @@ class FormRepository {
     DateTime newOpenUntil,
   ) async {
     await docRef.update({'openUntil': newOpenUntil});
+  }
+
+  static Future<String?> getFillerImageUrl(String formId, int fillerId) async {
+    final storage = FirebaseStorage.instance;
+    final ref =
+        storage.ref('$firestoreFormCollectionName/$formId/fillers/$fillerId');
+
+    try {
+      return await ref.getDownloadURL();
+    } catch (e) {
+      debugPrint('Could not fetch image for filler $fillerId: $e');
+      return null;
+    }
+  }
+
+  /// Optionally, download the image as an XFile
+  static Future<XFile?> downloadFillerImage(String formId, int fillerId) async {
+    final url = await FormRepository.getFillerImageUrl(formId, fillerId);
+    if (url == null) return null;
+
+    if (kIsWeb) {
+      return XFile(url);
+    } else {
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/filler_$fillerId.jpg');
+      await FirebaseStorage.instance.refFromURL(url).writeToFile(file);
+      return XFile(file.path);
+    }
   }
 }

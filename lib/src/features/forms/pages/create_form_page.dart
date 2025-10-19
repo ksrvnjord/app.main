@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_reposi
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
@@ -16,7 +18,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 class CreateFormPage extends ConsumerStatefulWidget {
-  const CreateFormPage({super.key});
+  const CreateFormPage({super.key, this.existingFormId});
+
+  final String? existingFormId;
 
   @override
   createState() => CreateFormPageState();
@@ -24,6 +28,7 @@ class CreateFormPage extends ConsumerStatefulWidget {
 
 class CreateFormPageState extends ConsumerState<CreateFormPage> {
   bool _isLoading = false;
+  bool _isInitialized = false;
   final questions = <int, FirestoreFormQuestion>{};
   final fillers = <int, FirestoreFormFillerNotifier>{};
   final formContentObjectIds = <int>[];
@@ -59,6 +64,48 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   bool get _formsHasNoQuestions => questions.isEmpty;
+
+  void _populateFromForm(FirestoreForm form) {
+    // Text fields
+    formName.text = form.title;
+    description.text = form.description ?? '';
+    author.text = form.authorName;
+
+    // Form metadata
+    isDraft = form.isDraft;
+    isGroupSpecific = form.visibleForGroups.isNotEmpty;
+    visibleForGroups = List.from(form.visibleForGroups);
+    openUntil = form.openUntil;
+
+    hasMaximumNumberOfAnswers = form.hasMaximumNumberOfAnswers;
+    maximumNumberOfAnswers = form.maximumNumberOfAnswers;
+    maximumNumberOfAnswersIsVisible = form.maximumNumberIsVisible;
+    formAnswersAreUntretractable = form.formAnswersAreUnretractable;
+
+    // Questions
+    questions.addEntries(form.questionsMap.entries);
+
+    fillers.addEntries(form.fillers.entries);
+
+    fillers.forEach((id, fillerNotifier) {
+      if (fillerNotifier.hasImage) {
+        FormRepository.downloadFillerImage(
+                widget.existingFormId!, fillerNotifier.id)
+            .then((xfile) {
+          if (xfile != null) {
+            setState(() {
+              fillerNotifier.updateImage(xfile);
+            });
+          }
+        });
+      }
+    });
+
+    // Other form content IDs
+    formContentObjectIds.addAll(form.formContentObjectIds);
+
+    _isInitialized = true; // mark as initialized to avoid double population
+  }
 
   void updateState() {
     setState(() {});
@@ -168,7 +215,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   }
 
   // ignore: avoid-long-functions
-  Future<void> _handleSubmitForm(BuildContext context, WidgetRef ref) async {
+  Future<void> handleSubmitForm(BuildContext context, WidgetRef ref) async {
     final currentState = _formKey.currentState;
     if (currentState?.validate() == false) {
       return;
@@ -236,7 +283,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
               100000, //Default value mimicing infinity
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
           isDraft: isDraft,
-          visibleForGroups: await _convertToIds(visibleForGroups),
+          visibleForGroups: await convertToIds(visibleForGroups),
           formAnswersAreUnretractable: formAnswersAreUntretractable,
           isV2: true,
         ),
@@ -272,7 +319,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     }
   }
 
-  Future<List<int>> _convertToIds(List<String> visibleForGroups) async {
+  Future<List<int>> convertToIds(List<String> visibleForGroups) async {
     final dio = ref.watch(dioProvider);
 
     if (visibleForGroups.isNotEmpty) {
@@ -333,31 +380,37 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
+    // If editing a draft, watch the form provider
+    Widget body;
+    if (widget.existingFormId != null) {
+      final doc = FirestoreForm.firestoreConvert.doc(widget.existingFormId!);
+      final formVal = ref.watch(formProvider(doc));
+
+      body = formVal.when(
+        data: (form) {
+          // Populate state only once
+          if (!_isInitialized) {
+            _populateFromForm(form.data()!);
+            _isInitialized = true;
+          }
+
+          return buildFormListView(colorScheme);
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, st) => Center(child: Text('Error loading form: $e')),
+      );
+    } else {
+      // Creating a new form
+      body = buildFormListView(colorScheme);
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Maak een form aan')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding:
-              const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
-          children: [
-            Text(
-              'Let op: Forms kunnen niet worden aangepast na het maken.',
-              style: TextStyle(color: colorScheme.outline),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            CreateFormMetaFieldsWidget(),
-            CreateFormQuestionsWidget(),
-          ],
-        ),
-      ),
-      // Floatingactionbutton to submit a form.
+      body: body,
       floatingActionButton: FloatingActionButton.extended(
         tooltip: 'Maak nieuwe form',
         heroTag: 'submitForm',
-        onPressed: _isLoading ? null : () => _handleSubmitForm(context, ref),
+        onPressed: _isLoading ? null : () => handleSubmitForm(context, ref),
         icon: _isLoading
             ? const SizedBox(
                 width: 24,
@@ -369,6 +422,26 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
               )
             : const Icon(Icons.send),
         label: Text(_isLoading ? 'Bezig...' : 'Maak nieuwe form'),
+      ),
+    );
+  }
+
+// Helper to keep your existing ListView clean
+  Widget buildFormListView(ColorScheme colorScheme) {
+    return Form(
+      key: _formKey,
+      child: ListView(
+        padding:
+            const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
+        children: [
+          Text(
+            'Let op: Forms kunnen niet worden aangepast na het maken.',
+            style: TextStyle(color: colorScheme.outline),
+          ),
+          const SizedBox(height: 16),
+          CreateFormMetaFieldsWidget(),
+          CreateFormQuestionsWidget(),
+        ],
       ),
     );
   }
