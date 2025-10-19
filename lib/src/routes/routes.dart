@@ -278,6 +278,7 @@ abstract final // ignore: prefer-single-declaration-per-file
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isAdmin: state.uri.queryParameters['isAdmin']! == 'true',
                       isInAdminPanel: false,
                     ),
                     name: "Forms -> View Form",
@@ -793,6 +794,7 @@ abstract final // ignore: prefer-single-declaration-per-file
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isAdmin: true,
                       isInAdminPanel: true,
                     ),
                     name: "Admin -> View Form",

@@ -289,4 +289,11 @@ class FormRepository {
 
     return docRef;
   }
+
+  static Future<void> updateOpenUntilTime(
+    DocumentReference<FirestoreForm> docRef,
+    DateTime newOpenUntil,
+  ) async {
+    await docRef.update({'openUntil': newOpenUntil});
+  }
 }
