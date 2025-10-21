@@ -45,7 +45,9 @@ class EventsWidget extends StatelessWidget {
       onTap: (CalendarTapDetails details) {
         if (details.targetElement == CalendarElement.appointment && 
             details.appointments != null && 
-            details.appointments!.isNotEmpty) {
+            details.appointments!.isNotEmpty &&
+            (details.appointments!.first as Event).description.isNotEmpty
+          ) { 
           final Event tappedEvent = details.appointments!.first as Event;
           _showEventDescription(context, tappedEvent);
         }

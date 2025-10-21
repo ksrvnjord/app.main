@@ -26,9 +26,6 @@ class UpcomingEventWidget extends StatelessWidget {
     final DateTime start = event.startTime.toDate();
     final DateTime end = event.endTime.toDate();
 
-    debugPrint(monthFormat.format(start));
-    debugPrint(dayFormat.format(start));
-
     final textTheme = Theme.of(context).textTheme;
     const double elementPadding = 4;
 
