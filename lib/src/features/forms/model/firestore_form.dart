@@ -25,6 +25,7 @@ class FirestoreForm {
     required this.authorId,
     required this.authorName,
     this.visibleForGroups = const <int>[],
+    this.visibleForGroupNames = const <String>[],
     this.groupId,
     this.isDraft = false,
     this.isClosed = false,
@@ -75,6 +76,7 @@ class FirestoreForm {
       authorName.toLowerCase().replaceAll(' ', '') == 'kookcommissie';
 
   final List<int> visibleForGroups;
+  final List<String> visibleForGroupNames;
 
   final String? groupId;
   final bool isDraft;

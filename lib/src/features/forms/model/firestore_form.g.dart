@@ -38,6 +38,10 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
               ?.map((e) => (e as num).toInt())
               .toList() ??
           const <int>[],
+      visibleForGroupNames: (json['visibleForGroupNames'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
       groupId: json['groupId'] as String?,
       isDraft: json['isDraft'] as bool? ?? false,
       isClosed: json['isClosed'] as bool? ?? false,
@@ -68,6 +72,7 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'authorId': instance.authorId,
       'authorName': instance.authorName,
       'visibleForGroups': instance.visibleForGroups,
+      'visibleForGroupNames': instance.visibleForGroupNames,
       'groupId': instance.groupId,
       'isDraft': instance.isDraft,
       'isClosed': instance.isClosed,

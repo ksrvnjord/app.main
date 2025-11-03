@@ -113,12 +113,6 @@ class FormRepository {
           ));
   }
 
-  static Future<DocumentReference<FirestoreForm>> createForm({
-    required FirestoreForm form,
-  }) async {
-    return await FirestoreForm.firestoreConvert.add(form);
-  }
-
   static Future<bool> createFormImages({
     required String formId,
     required Map<int, FirestoreFormFillerNotifier> fillers,
@@ -129,7 +123,7 @@ class FormRepository {
       for (final fillerNotifier in fillers.values) {
         final filler = fillerNotifier.value;
 
-        if (filler.hasImage && filler.image != null) {
+        if (filler.hasImage && filler.image != null && filler.imageChanged) {
           final fileBytes = await filler.image!.readAsBytes();
 
           final storageRef = storage.ref().child(
@@ -141,6 +135,19 @@ class FormRepository {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  static Future<DocumentReference<FirestoreForm>> createOrUpdateForm({
+    required String? id,
+    required FirestoreForm form,
+  }) async {
+    if (id != null) {
+      await FirestoreForm.firestoreConvert.doc(id).set(form);
+      // Return the reference so you can still use it
+      return FirestoreForm.firestoreConvert.doc(id);
+    } else {
+      return await FirestoreForm.firestoreConvert.add(form);
     }
   }
 

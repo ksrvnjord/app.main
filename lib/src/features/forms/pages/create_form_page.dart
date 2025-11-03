@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_meta_fields_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/create_form_questions_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/delete_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/select_group_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
@@ -40,7 +40,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool isGroupSpecific = false;
-  List<String> visibleForGroups = [];
+  List<String> visibleForGroupNames = [];
 
   DateTime openUntil = DateTime.now().add(const Duration(days: 7));
 
@@ -74,7 +74,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     // Form metadata
     isDraft = form.isDraft;
     isGroupSpecific = form.visibleForGroups.isNotEmpty;
-    visibleForGroups = List.from(form.visibleForGroups);
+    visibleForGroupNames = List.from(form.visibleForGroupNames);
     openUntil = form.openUntil;
 
     hasMaximumNumberOfAnswers = form.hasMaximumNumberOfAnswers;
@@ -138,7 +138,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   void updateIsGroupSpecific(bool? newIsGroupSpecific) {
     setState(() {
       isGroupSpecific = newIsGroupSpecific ?? false;
-      visibleForGroups = [];
+      visibleForGroupNames = [];
     });
   }
 
@@ -156,10 +156,10 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
 
   void updateGroupSettings(bool isOn, String value) {
     setState(() {
-      if (isOn && !visibleForGroups.contains(value)) {
-        visibleForGroups.add(value);
-      } else if (visibleForGroups.contains(value)) {
-        visibleForGroups.remove(value);
+      if (isOn && !visibleForGroupNames.contains(value)) {
+        visibleForGroupNames.add(value);
+      } else if (visibleForGroupNames.contains(value)) {
+        visibleForGroupNames.remove(value);
       }
     });
   }
@@ -264,7 +264,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       _isLoading = true;
     });
     try {
-      final result = await FormRepository.createForm(
+      final result = await FormRepository.createOrUpdateForm(
+        id: widget.existingFormId,
         form: FirestoreForm(
           createdTimeTimeStamp: Timestamp.now(),
           title: formName.text,
@@ -283,7 +284,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
               100000, //Default value mimicing infinity
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
           isDraft: isDraft,
-          visibleForGroups: await convertToIds(visibleForGroups),
+          visibleForGroupNames: visibleForGroupNames,
+          visibleForGroups: await convertToIds(visibleForGroupNames),
           formAnswersAreUnretractable: formAnswersAreUntretractable,
           isV2: true,
         ),
@@ -294,7 +296,9 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       if (!context.mounted) return;
       // ignore: avoid-ignoring-return-values
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Form gemaakt met id: ${result.id}'),
+        content: Text(widget.existingFormId != null
+            ? 'Form met id ${result.id} aangepast!'
+            : 'Form gemaakt met id: ${result.id}'),
         backgroundColor: Colors.green,
         duration: const Duration(seconds: 3),
       ));
@@ -408,7 +412,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
       appBar: AppBar(title: const Text('Maak een form aan')),
       body: body,
       floatingActionButton: FloatingActionButton.extended(
-        tooltip: 'Maak nieuwe form',
+        tooltip: isDraft ? 'Als Draft Opslaan' : 'Definitief publiceren',
         heroTag: 'submitForm',
         onPressed: _isLoading ? null : () => handleSubmitForm(context, ref),
         icon: _isLoading
@@ -421,7 +425,11 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
                 ),
               )
             : const Icon(Icons.send),
-        label: Text(_isLoading ? 'Bezig...' : 'Maak nieuwe form'),
+        label: Text(_isLoading
+            ? 'Bezig...'
+            : isDraft
+                ? 'Als concept opslaan'
+                : 'Definitief publiceren'),
       ),
     );
   }
@@ -434,10 +442,15 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         padding:
             const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
         children: [
-          Text(
-            'Let op: Forms kunnen niet worden aangepast na het maken.',
-            style: TextStyle(color: colorScheme.outline),
-          ),
+          Row(children: [
+            Text(
+              'Let op: Forms kunnen niet worden aangepast nadat deze definitief zijn gepubliceerd.',
+              style: TextStyle(color: colorScheme.outline),
+            ),
+            const Spacer(),
+            if (widget.existingFormId != null)
+              DeleteFormButton(formId: widget.existingFormId!),
+          ]),
           const SizedBox(height: 16),
           CreateFormMetaFieldsWidget(),
           CreateFormQuestionsWidget(),
