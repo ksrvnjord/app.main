@@ -9,7 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/vertical_members.da
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class AlmanakVerticalenPage extends ConsumerWidget{
+class AlmanakVerticalenPage extends ConsumerWidget {
   const AlmanakVerticalenPage({
     super.key,
     required this.name,
@@ -19,7 +19,6 @@ class AlmanakVerticalenPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
     final verticalLeeden = ref.watch(
@@ -33,19 +32,18 @@ class AlmanakVerticalenPage extends ConsumerWidget{
       body: ListView(
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            child: AlmanakSubstructureCoverPicture(
-              imageProvider: ref.watch(verticalsPictureProvider(name))
-            )
-          ).padding(horizontal: pageHPadding),
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: AlmanakSubstructureCoverPicture(
+                      imageProvider: ref.watch(verticalsPictureProvider(name))))
+              .padding(horizontal: pageHPadding),
           SubstructureDescriptionWidget(
-            descriptionAsyncVal: ref.watch(
-              verticalDescriptionProvider(name),
-            )
-          ).padding(all: descriptionHPadding),
+              descriptionAsyncVal: ref.watch(
+            verticalDescriptionProvider(name),
+          )).padding(all: descriptionHPadding),
           [
-            Text("Leden", style: Theme.of(context).textTheme.titleLarge).alignment(Alignment.centerLeft)
-            .padding(horizontal: titleHPadding),
+            Text("Leden", style: Theme.of(context).textTheme.titleLarge)
+                .alignment(Alignment.centerLeft)
+                .padding(horizontal: titleHPadding),
           ].toColumn(),
           verticalLeeden.when(
             data: (snapshot) => buildVerticalList(snapshot),
@@ -59,11 +57,14 @@ class AlmanakVerticalenPage extends ConsumerWidget{
       ),
     );
   }
+
   Widget buildVerticalList(List<GroupDjangoRelation> entries) {
     const double notFoundPadding = 16;
     return <Widget>[
       if (entries.isEmpty)
-        const Text("Geen leden gevonden voor dit verticaal").center().padding(all: notFoundPadding)
+        const Text("Geen leden gevonden voor dit verticaal")
+            .center()
+            .padding(all: notFoundPadding)
     ].toColumn();
   }
 }
