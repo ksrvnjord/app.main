@@ -258,7 +258,13 @@ abstract final // ignore: prefer-single-declaration-per-file
                 _route(
                   path: 'nieuw',
                   name: "Forms -> Create Form",
-                  child: const CreateFormPage(),
+                  pageBuilder: (context, state) {
+                    final formId = state.uri.queryParameters['formId'];
+                    return _getPage(
+                      child: CreateFormPage(existingFormId: formId),
+                      name: "Forms -> Create Form",
+                    );
+                  },
                 ),
                 _route(
                   path: ':formId',
@@ -774,7 +780,13 @@ abstract final // ignore: prefer-single-declaration-per-file
                 _route(
                   path: 'nieuw',
                   name: "Admin -> Create Form",
-                  child: const CreateFormPage(),
+                  pageBuilder: (context, state) {
+                    final formId = state.uri.queryParameters['formId'];
+                    return _getPage(
+                      child: CreateFormPage(existingFormId: formId),
+                      name: "Admin -> Create Form",
+                    );
+                  },
                 ),
                 _route(
                   path: ':formId',

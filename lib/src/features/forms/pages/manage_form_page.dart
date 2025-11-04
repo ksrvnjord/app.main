@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/delete_form_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/edit_form_datetime_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_filler.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
@@ -35,44 +34,9 @@ class ManageFormPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Beheer Form'),
         actions: [
-          IconButton(
-            // ignore: prefer-extracting-callbacks
-            onPressed: () {
-              // ignore: avoid-ignoring-return-values, avoid-async-call-in-sync-function
-              showDialog(
-                context: context,
-                builder: (innerContext) => AlertDialog(
-                  title: const Text('Verwijderen'),
-                  content: const Text(
-                    'Weet je zeker dat je deze form wilt verwijderen?',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(innerContext).pop(),
-                      child: const Text('Annuleren'),
-                    ),
-                    TextButton(
-                      // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-                      onPressed: () async {
-                        if (innerContext.mounted) {
-                          Navigator.of(innerContext).pop();
-                          if (context.mounted) context.pop();
-                        }
-                        final formPath = FirebaseFirestore.instance
-                            .doc('$firestoreFormCollectionName/$formId')
-                            .path;
-
-                        // ignore: avoid-ignoring-return-values
-                        await FormRepository.deleteForm(formPath);
-                      },
-                      child: const Text('Verwijderen').textColor(Colors.red),
-                    ),
-                  ],
-                ),
-              );
-            },
-            icon: const Icon(Icons.delete),
-          ),
+          DeleteFormButton(
+            formId: formId,
+          )
         ],
       ),
       body: formVal.when(
@@ -104,10 +68,6 @@ class ManageFormPage extends ConsumerWidget {
                               '${MaterialLocalizations.of(context).formatFullDate(formData.openUntil)} '
                               '${TimeOfDay.fromDateTime(formData.openUntil).format(context)}',
                         ),
-                      DataTextListTile(
-                        name: 'Beschrijving',
-                        value: formData.description ?? 'N/A',
-                      ),
                       DataTextListTile(
                         name: 'Beschrijving',
                         value: formData.description ?? 'N/A',
