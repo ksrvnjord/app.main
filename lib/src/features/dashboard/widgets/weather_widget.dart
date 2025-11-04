@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 //weather icons source: https://erikflowers.github.io/weather-icons/
@@ -102,7 +101,6 @@ class WeatherWidget extends ConsumerWidget {
         final windspeed = currentWeather['windspeed'] as double;
         final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
         final sunset = DateTime.parse(data['daily']['sunset'][0]);
-        final winddirection = (currentWeather['winddirection'] + 180) % 360;
 
         final fetchTime = DateTime.parse(currentWeather['time']);
         final now = DateTime.now();
@@ -151,66 +149,188 @@ class WeatherWidget extends ConsumerWidget {
           };
         }).whereType<Map<String, dynamic>>().toList();
 
-        int compensationIndex = 0;
+        // Build a concrete list of widgets so sunrise/sunset markers can be
+        // placed relative to VoTijden (05:26 / 17:26).
+        final List<Widget> hourItems = [];
 
-        return [
-          Column(
+        Widget clothingWidget = Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                  width: 350,
-                  child: [
-                    [
-                      Wrap(children: [
-                        WeatherMetricWidget(
-                            icon: WeatherIcons.day_sunny,
-                            title: "Zon",
-                            main: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    BoxedIcon(
-                                      sunsetIsFirst
-                                          ? WeatherIcons.sunrise
-                                          : WeatherIcons.sunset,
-                                      size: 24,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      DateFormat('HH:mm').format(
-                                          sunsetIsFirst ? sunrise : sunset),
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                    BoxedIcon(
-                                      sunsetIsFirst
-                                          ? WeatherIcons.sunset
-                                          : WeatherIcons.sunrise,
-                                      size: 24,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      DateFormat('HH:mm').format(
-                                          sunsetIsFirst ? sunset : sunrise),
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  ],
-                                ),
-                                Text("Max. UV Index: $maxUvIndex")
-                              ],
-                            )),
-                      ]),
-                    ].toRow(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                    )
-                  ].toColumn(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  )),
+              Image.asset(
+                clothingImagePath!,
+                width: 45,
+                height: 100,
+              ),
+              Container(
+                width: 1,
+                height: 80,
+                margin: const EdgeInsets.only(left: 8.0),
+                color: Theme.of(context).dividerColor,
+              ),
             ],
           ),
+        );
+
+        Widget buildSunMarker(DateTime sunTime, bool isSunrise) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  DateFormat('HH:mm').format(sunTime),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
+                const SizedBox(height: 22),
+                const SizedBox(height: 8),
+                Icon(
+                  isSunrise ? WeatherIcons.sunrise : WeatherIcons.sunset,
+                  size: 24,
+                ),
+                const SizedBox(height: 22),
+              ],
+            ),
+          );
+        }
+
+        Widget buildHourTile(Map<String, dynamic> hourData,
+            {String? overrideDisplayTime}) {
+          DateTime tileTime = hourData['time'];
+          // VoTijden: special displayed minutes
+          // If overrideDisplayTime is provided we respect it (used to force regular 17:00 when needed).
+          String displayTime =
+              overrideDisplayTime ?? DateFormat('HH:mm').format(tileTime);
+          if (overrideDisplayTime == null &&
+              tileTime.hour == 17 &&
+              tileTime.minute == 0) {
+            displayTime = '17:26';
+          }
+
+          final windspeedTile = (hourData['windspeed'] as num).toDouble();
+          final windspeedCssTile =
+              "wi-wind-beaufort-${windspeedToBeaufort(windspeedTile)}";
+
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  displayTime,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "${(hourData['temperature'] as num).round()}°C",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+                Icon(
+                  weathercodetoweathertype(hourData['weathercode']),
+                  size: 24,
+                ),
+                Icon(
+                  WeatherIcons.fromString(
+                    windspeedCssTile,
+                    fallback: WeatherIcons.na,
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+
+        // Collect all sunrise/sunset events that fall within the next48Hours span.
+        final List<String> dailySunriseList =
+            List<String>.from(data['daily']['sunrise']);
+        final List<String> dailySunsetList =
+            List<String>.from(data['daily']['sunset']);
+
+        final DateTime hoursStart = next48Hours.isNotEmpty
+            ? next48Hours.first['time'] as DateTime
+            : now;
+        final DateTime hoursEnd =
+            hoursStart.add(Duration(hours: next48Hours.length));
+
+        final List<Map<String, dynamic>> sunEvents = [];
+
+        for (final s in dailySunriseList) {
+          final dt = DateTime.parse(s);
+          if (!dt.isBefore(hoursStart) && dt.isBefore(hoursEnd)) {
+            sunEvents.add({'time': dt, 'isSunrise': true});
+          }
+        }
+        for (final s in dailySunsetList) {
+          final dt = DateTime.parse(s);
+          if (!dt.isBefore(hoursStart) && dt.isBefore(hoursEnd)) {
+            sunEvents.add({'time': dt, 'isSunrise': false});
+          }
+        }
+        sunEvents.sort(
+            (a, b) => (a['time'] as DateTime).compareTo(b['time'] as DateTime));
+
+        // Start with the clothing image
+        hourItems.add(clothingWidget);
+
+        for (final hourData in next48Hours) {
+          final DateTime tileTime = hourData['time'] as DateTime;
+          final DateTime tileEnd = tileTime.add(const Duration(hours: 1));
+
+          // Find any sun event that occurs within this hour tile.
+          Map<String, dynamic>? ev;
+          for (final e in sunEvents) {
+            final DateTime evTime = e['time'] as DateTime;
+            if (!evTime.isBefore(tileTime) && evTime.isBefore(tileEnd)) {
+              ev = e;
+              break;
+            }
+          }
+
+          // Only treat 17:00 special (displayed as 17:26) for sunset placement.
+          final bool is1726 = tileTime.hour == 17 && tileTime.minute == 0;
+
+          if (ev != null) {
+            final DateTime evTime = ev['time'] as DateTime;
+            final bool isSunrise = ev['isSunrise'] as bool;
+
+            // Special case: sunset exactly at 17:26 -> skip VoTijd display.
+            if (!isSunrise &&
+                is1726 &&
+                evTime.hour == 17 &&
+                evTime.minute == 26) {
+              // Show regular 17:00 tile (override) then the sunset marker.
+              hourItems.add(buildHourTile(hourData,
+                  overrideDisplayTime: DateFormat('HH:mm').format(tileTime)));
+              hourItems.add(buildSunMarker(evTime, false));
+              continue;
+            }
+
+            if (!isSunrise && is1726) {
+              // Sunset in the 17:00 hour: place before/after 17:26 depending on minute
+              if (evTime.minute < 26) {
+                hourItems.add(buildSunMarker(evTime, isSunrise));
+                hourItems.add(buildHourTile(hourData));
+              } else {
+                hourItems.add(buildHourTile(hourData));
+                hourItems.add(buildSunMarker(evTime, isSunrise));
+              }
+              continue;
+            }
+
+            // Normal placement for all other events (including sunrises)
+            hourItems.add(buildSunMarker(evTime, isSunrise));
+            hourItems.add(buildHourTile(hourData));
+            continue;
+          }
+
+          // No sun marker in this hour, just add the tile
+          hourItems.add(buildHourTile(hourData));
+        }
+
+        return [
           Material(
             elevation: 5,
             borderRadius: BorderRadius.circular(12),
@@ -220,100 +340,9 @@ class WeatherWidget extends ConsumerWidget {
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: SizedBox(
                 height: 150,
-                child: ListView.builder(
+                child: ListView(
                   scrollDirection: Axis.horizontal,
-                  itemCount: next48Hours.length + 1, // +1 for clothing image
-                  itemBuilder: (context, index) {
-                    int hourOfItem = now.hour + index - compensationIndex;
-
-                    if (index == 0) {
-                      compensationIndex++;
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              clothingImagePath!,
-                              width: 45,
-                              height: 100,
-                            ),
-                            Container(
-                              width: 1,
-                              height: 80,
-                              margin: const EdgeInsets.only(left: 8.0),
-                              color: Theme.of(context).dividerColor,
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if (sunrise.hour == hourOfItem - 1 ||
-                        sunset.hour == hourOfItem - 1) {
-                      compensationIndex++;
-
-                      final sunTime =
-                          sunrise.hour == hourOfItem ? sunrise : sunset;
-                      final isSunrise = sunrise.hour == hourOfItem;
-
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              DateFormat('HH:mm').format(sunTime),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            const SizedBox(height: 8),
-                            Icon(
-                              isSunrise
-                                  ? WeatherIcons.sunrise
-                                  : WeatherIcons.sunset,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    final hourData = next48Hours[hourOfItem];
-                    String displayTime =
-                        DateFormat('HH:mm').format(hourData['time']);
-                    if (displayTime == '17:00') {
-                      displayTime = '17:26';
-                    } else if (displayTime == '05:00') {
-                      displayTime = '05:26';
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            displayTime,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "${(hourData['temperature'] as num).round()}°C",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          Icon(
-                            weathercodetoweathertype(hourData['weathercode']),
-                            size: 24,
-                          ),
-                          Icon(
-                            WeatherIcons.fromString(
-                              windspeedCss,
-                              fallback: WeatherIcons.na,
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
+                  children: hourItems,
                 ),
               ),
             ),
