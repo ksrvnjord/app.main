@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class SubstructureChoiceListTile extends ConsumerWidget {
-  const SubstructureChoiceListTile({
+class VerticalenChoiceListTile extends ConsumerWidget {
+  const VerticalenChoiceListTile({
     super.key,
     required this.name,
     required this.imageProvider, // The imageProvider for the choice.
@@ -29,7 +29,7 @@ class SubstructureChoiceListTile extends ConsumerWidget {
       onTap: onTap,
       child: [
         FadeInImage(
-          placeholder: Image.asset(Images.loadingPicture).image,
+          placeholder: Image.asset(Images.placeholderProfilePicture).image,
           image: imageProvider.when(
             data: (data) => data,
             error: (err, stk) =>
