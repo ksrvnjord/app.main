@@ -5,6 +5,7 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.d
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
+//weather icons source: https://erikflowers.github.io/weather-icons/
 
 enum KledingRecommendation {
   langlang,
@@ -106,15 +107,15 @@ class WeatherWidget extends ConsumerWidget {
         final fetchTime = DateTime.parse(currentWeather['time']);
         final now = DateTime.now();
         final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
-        final uvIndex = (data['hourly']['uv_index'][now.hour] as num).round();
+        final maxUvIndex = (data['daily']['uv_index_max'][0] as num).round();
 
         final String windspeedCss =
             "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
         determineKleding(final int temperature) {
-          if (temperature < 8) {
+          if (temperature < 9) {
             return KledingRecommendation.langlang;
-          } else if (temperature < 15) {
+          } else if (temperature < 18) {
             return KledingRecommendation.langkort;
           } else {
             return KledingRecommendation.kortkort;
@@ -127,7 +128,6 @@ class WeatherWidget extends ConsumerWidget {
           KledingRecommendation.kortkort: 'assets/images/weather_kort_kort.png',
         }[determineKleding(currentTemperature)];
 
-        // Extract the next 5 hours of weather data
         final hourlyWeather = data['hourly'];
         final List<String> times = List<String>.from(hourlyWeather['time']);
         final int currentIndex = times.indexWhere((time) {
@@ -135,8 +135,8 @@ class WeatherWidget extends ConsumerWidget {
           return parsedTime.isAfter(now);
         });
 
-        final List<Map<String, dynamic>> next24Hours =
-            List.generate(24, (index) {
+        final List<Map<String, dynamic>> next48Hours =
+            List.generate(48, (index) {
           final adjustedIndex = currentIndex + index;
           if (adjustedIndex >= times.length) return null; // Handle edge cases
           final time = DateTime.parse(hourlyWeather['time'][adjustedIndex]);
@@ -151,55 +151,57 @@ class WeatherWidget extends ConsumerWidget {
           };
         }).whereType<Map<String, dynamic>>().toList();
 
+        int compensationIndex = 0;
+
         return [
           Column(
             children: [
               SizedBox(
                   width: 350,
                   child: [
-                    [          Wrap(children: [
-            WeatherMetricWidget(
-              icon: WeatherIcons.strong_wind,
-              title: "Wind",
-              mainText: "$windspeed km/u",
-              main: [
-                BoxedIcon(
-                  WeatherIcons.fromString(
-                    windspeedCss,
-                    fallback: WeatherIcons.na,
-                  ),
-                  size: 32,
-                ),
-                WindIcon(
-                  degree: winddirection,
-                  size: 32,
-                ),
-              ].toRow(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-              ),
-            ),
-            WeatherMetricWidget(
-              icon: sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
-              title: "Zon", 
-              main: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  BoxedIcon(
-                    sunsetIsFirst ? WeatherIcons.sunset : WeatherIcons.sunrise,
-                    size: 32,
-                  ),
-                ],
-              ),
-              mainText:
-                  "${sunsetIsFirst ? "Op" : "Onder"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunrise : sunset)} \n${sunsetIsFirst ? "Onder" : "Zon op"}: ${DateFormat('HH:mm').format(sunsetIsFirst ? sunset : sunrise)}",
-            ),
-          ]),
-                      Image.asset(
-                        clothingImagePath!,
-                        width: 45,
-                        height: 100,
-                      ),
+                    [
+                      Wrap(children: [
+                        WeatherMetricWidget(
+                            icon: WeatherIcons.day_sunny,
+                            title: "Zon",
+                            main: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    BoxedIcon(
+                                      sunsetIsFirst
+                                          ? WeatherIcons.sunrise
+                                          : WeatherIcons.sunset,
+                                      size: 24,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      DateFormat('HH:mm').format(
+                                          sunsetIsFirst ? sunrise : sunset),
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                    BoxedIcon(
+                                      sunsetIsFirst
+                                          ? WeatherIcons.sunset
+                                          : WeatherIcons.sunrise,
+                                      size: 24,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      DateFormat('HH:mm').format(
+                                          sunsetIsFirst ? sunset : sunrise),
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                  ],
+                                ),
+                                Text("Max. UV Index: $maxUvIndex")
+                              ],
+                            )),
+                      ]),
                     ].toRow(
                       mainAxisAlignment: MainAxisAlignment.center,
                     )
@@ -209,8 +211,6 @@ class WeatherWidget extends ConsumerWidget {
                   )),
             ],
           ),
-
-          // Add a horizontal ListView for the 24-hour forecast, boxed like the other widgets
           Material(
             elevation: 5,
             borderRadius: BorderRadius.circular(12),
@@ -219,19 +219,79 @@ class WeatherWidget extends ConsumerWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: SizedBox(
-                height: 100,
+                height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: next24Hours.length,
+                  itemCount: next48Hours.length + 1, // +1 for clothing image
                   itemBuilder: (context, index) {
-                    final hourData = next24Hours[index];
+                    int hourOfItem = now.hour + index - compensationIndex;
+
+                    if (index == 0) {
+                      compensationIndex++;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              clothingImagePath!,
+                              width: 45,
+                              height: 100,
+                            ),
+                            Container(
+                              width: 1,
+                              height: 80,
+                              margin: const EdgeInsets.only(left: 8.0),
+                              color: Theme.of(context).dividerColor,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (sunrise.hour == hourOfItem - 1 ||
+                        sunset.hour == hourOfItem - 1) {
+                      compensationIndex++;
+
+                      final sunTime =
+                          sunrise.hour == hourOfItem ? sunrise : sunset;
+                      final isSunrise = sunrise.hour == hourOfItem;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat('HH:mm').format(sunTime),
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Icon(
+                              isSunrise
+                                  ? WeatherIcons.sunrise
+                                  : WeatherIcons.sunset,
+                              size: 24,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    final hourData = next48Hours[hourOfItem];
+                    String displayTime =
+                        DateFormat('HH:mm').format(hourData['time']);
+                    if (displayTime == '17:00') {
+                      displayTime = '17:26';
+                    } else if (displayTime == '05:00') {
+                      displayTime = '05:26';
+                    }
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            DateFormat('HH:mm').format(hourData['time']),
+                            displayTime,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const SizedBox(height: 8),
@@ -244,6 +304,12 @@ class WeatherWidget extends ConsumerWidget {
                             weathercodetoweathertype(hourData['weathercode']),
                             size: 24,
                           ),
+                          Icon(
+                            WeatherIcons.fromString(
+                              windspeedCss,
+                              fallback: WeatherIcons.na,
+                            ),
+                          )
                         ],
                       ),
                     );
@@ -252,7 +318,6 @@ class WeatherWidget extends ConsumerWidget {
               ),
             ),
           ),
-
           Text(
             "Laatste update om ${DateFormat(
               'HH:mm',

@@ -6,8 +6,13 @@ final weatherProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   const double latitude = 52.1585;
   const double longitude = 4.4729;
 
-  const dailyParams = ['sunrise', 'sunset'];
-  const hourlyParams = ['temperature_2m', 'windspeed_10m', 'weather_code', 'uv_index'];
+  const dailyParams = ['sunrise', 'sunset', 'uv_index_max'];
+  const hourlyParams = [
+    'temperature_2m',
+    'windspeed_10m',
+    'weather_code',
+    'uv_index'
+  ];
 
   final res = await Dio().get(
     'https://api.open-meteo.com/v1/forecast',
@@ -18,7 +23,7 @@ final weatherProvider = FutureProvider<Map<String, dynamic>>((ref) async {
       'current_weather': true,
       'daily': dailyParams,
       'hourly': hourlyParams, // Add hourly parameters
-      'forecast_days': 1,
+      'forecast_days': 2,
     },
   );
 

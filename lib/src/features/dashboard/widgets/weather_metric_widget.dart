@@ -27,6 +27,7 @@ class WeatherMetricWidget extends StatelessWidget {
     const double cardElevation = 5;
 
     return SizedBox(
+      height: 128,
       child: [
         [
           [
@@ -48,7 +49,7 @@ class WeatherMetricWidget extends StatelessWidget {
               style: textTheme.headlineSmall,
             ),
           main ?? const SizedBox(),
-        ].to(
+        ].toColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
         if (bottomText != null)
