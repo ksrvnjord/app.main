@@ -98,17 +98,9 @@ class WeatherWidget extends ConsumerWidget {
         final currentWeather = data['current_weather'];
         final int currentTemperature =
             (currentWeather['temperature'] as double).floor();
-        final windspeed = currentWeather['windspeed'] as double;
-        final sunrise = DateTime.parse(data['daily']['sunrise'][0]);
-        final sunset = DateTime.parse(data['daily']['sunset'][0]);
 
         final fetchTime = DateTime.parse(currentWeather['time']);
         final now = DateTime.now();
-        final bool sunsetIsFirst = now.isBefore(sunset) && now.isAfter(sunrise);
-        final maxUvIndex = (data['daily']['uv_index_max'][0] as num).round();
-
-        final String windspeedCss =
-            "wi-wind-beaufort-${windspeedToBeaufort(windspeed)}";
 
         determineKleding(final int temperature) {
           if (temperature < 9) {
