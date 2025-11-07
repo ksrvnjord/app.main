@@ -71,7 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 key: formKey,
                 child: TextFormField(
                   controller: controller,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Mobiel nummer',
                     hintText: '06-12345678',
