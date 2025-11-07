@@ -74,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Mobiel nummer',
-                    hintText: '06 12345678',
+                    hintText: '06-12345678',
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9+\- ]')),
