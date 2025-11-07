@@ -71,7 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 key: formKey,
                 child: TextFormField(
                   controller: controller,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Mobiel nummer',
                     hintText: '06 12345678',
@@ -83,7 +83,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     if (value == null || value.isEmpty) {
                       return 'Vul mobiel nummer in';
                     }
-                    if (value.length < 10) {
+                    if (value.length < 10 || value.length > 14) {
                       return 'Vul geldig nummer in';
                     }
                     if (!RegExp(r'^[+0-9\- ]+$').hasMatch(value)) {
