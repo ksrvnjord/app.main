@@ -400,7 +400,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
 
           return buildFormListView(colorScheme);
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (e, st) => Center(child: Text('Error loading form: $e')),
       );
     } else {
