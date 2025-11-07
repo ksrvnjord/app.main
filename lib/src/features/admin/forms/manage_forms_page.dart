@@ -47,74 +47,86 @@ class ManageFormsPage extends ConsumerWidget {
                       );
 
                       return ListTile(
-                        title: Text(form.title),
-                        subtitle: [
-                          Text(
-                            "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
-                            style: TextStyle(
-                              color: formIsNotExpired
-                                  ? Colors.green.shade400 // soft green
-                                  : Colors.red.shade400, // soft red
+                          title: Text(form.title),
+                          subtitle: [
+                            Text(
+                              "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
+                              style: TextStyle(
+                                color: formIsNotExpired
+                                    ? Colors.green.shade400 // soft green
+                                    : Colors.red.shade400, // soft red
+                              ),
                             ),
-                          ),
-                          if (form.isDraft)
-                            user.isAdmin
-                                ? ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                                'Draftstatus opheffen'),
-                                            content: const Text(
-                                                'Weet je zeker dat je de draftstatus wilt opheffen? Dit maakt de form zichtbaar voor iedereen.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('Annuleren'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('Bevestigen'),
-                                                onPressed: () {
-                                                  FormRepository
-                                                      .removeDraftStatus(
-                                                          doc.reference);
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Hef draftstatus op',
-                                    ),
-                                  )
-                                : const Text(
-                                    'Vraag bestuur om goed te keuren',
-                                    style: TextStyle(color: Colors.red),
-                                  )
-                          else
-                            Text(partialReactionVal.maybeWhen(
-                              data: (count) =>
-                                  "Volledig + onvolledig ingevulde reacties: $count",
-                              orElse: () => "",
-                            )),
-                        ].toColumn(
-                            crossAxisAlignment: CrossAxisAlignment.start),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => innerContext.goNamed(
-                          "Forms -> View Form",
-                          pathParameters: {
-                            "formId": doc.id,
-                          },
-                          queryParameters: {'isAdmin': user.isAdmin.toString()},
-                        ),
-                      );
+                            if (form.isDraft)
+                              user.isAdmin
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'Draftstatus opheffen'),
+                                              content: const Text(
+                                                  'Weet je zeker dat je de draftstatus wilt opheffen? Dit maakt de form zichtbaar voor iedereen.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child:
+                                                      const Text('Annuleren'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child:
+                                                      const Text('Bevestigen'),
+                                                  onPressed: () {
+                                                    FormRepository
+                                                        .removeDraftStatus(
+                                                            doc.reference);
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Hef draftstatus op',
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Vraag bestuur om goed te keuren',
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                            else
+                              Text(partialReactionVal.maybeWhen(
+                                data: (count) =>
+                                    "Volledig + onvolledig ingevulde reacties: $count",
+                                orElse: () => "",
+                              )),
+                          ].toColumn(
+                              crossAxisAlignment: CrossAxisAlignment.start),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            if (form.isDraft) {
+                              innerContext.goNamed(
+                                "Forms -> Create Form",
+                                queryParameters: {
+                                  'formId': doc.id
+                                }, // or pass the FirestoreForm object
+                              );
+                            } else {
+                              innerContext.goNamed(
+                                "Forms -> View Form",
+                                pathParameters: {"formId": doc.id},
+                                queryParameters: {
+                                  'isAdmin': user.isAdmin.toString()
+                                },
+                              );
+                            }
+                          });
                     },
                     itemCount: snapshot.size,
                   ),
