@@ -31,6 +31,7 @@ class CreateFormOptionsWidget extends ConsumerWidget {
       ),
       if (state.hasMaximumNumberOfAnswers)
         TextFormField(
+          initialValue: state.maximumNumberOfAnswers.toString(),
           decoration: const InputDecoration(
             labelText: 'Maximum aantal antwoorden',
           ),
@@ -46,7 +47,7 @@ class CreateFormOptionsWidget extends ConsumerWidget {
             }
             return null;
           },
-        ), //TODO disable feature later
+        ),
       Row(
         children: [
           Checkbox.adaptive(

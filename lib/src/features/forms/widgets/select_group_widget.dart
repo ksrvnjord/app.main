@@ -46,7 +46,7 @@ class SelectGroupWidget extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 64.0), // side margins
             child: CheckboxListTile(
-              value: state.visibleForGroups.contains(group),
+              value: state.visibleForGroupNames.contains(group),
               onChanged: (bool? value) {
                 state.updateGroupSettings(value ?? false, group);
               },

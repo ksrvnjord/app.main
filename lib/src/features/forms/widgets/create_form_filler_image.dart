@@ -26,6 +26,16 @@ class _CreateFormFillerImageState extends State<CreateFormFillerImage> {
     imageFile = widget.initialImage;
   }
 
+  @override
+  void didUpdateWidget(covariant CreateFormFillerImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialImage != widget.initialImage) {
+      setState(() {
+        imageFile = widget.initialImage;
+      });
+    }
+  }
+
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
