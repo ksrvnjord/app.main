@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/training/widgets/to_coach_or_cox_needed_page_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/training_list.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -18,7 +19,12 @@ class TrainingPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mijn afschrijvingen'),
       ),
-      body: const TrainingList(),
+      body: Column(
+        children: const [
+          ToCoachOrCoxNeededPageWidget(),
+          Expanded(child: TrainingList()),
+        ],
+      ),
       floatingActionButton: FirebaseWidget(
         onAuthenticated: Wrap(
           alignment: WrapAlignment.end,
