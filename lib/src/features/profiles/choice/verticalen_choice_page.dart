@@ -55,7 +55,7 @@ class VerticaalChoicePage extends ConsumerWidget {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) => [
-                VerticalenChoiceListTile(
+                /*VerticalenChoiceListTile(
                   name: genderedChoices[index],
                   imageProvider: ref
                       .watch(verticalsPictureProvider(genderedChoices[index])),
@@ -63,7 +63,7 @@ class VerticaalChoicePage extends ConsumerWidget {
                     "Verticaal",
                     pathParameters: {"name": genderedChoices[index]},
                   ),
-                ),
+                ),*/
                 const Divider(height: 0, thickness: 0.5),
               ].toColumn(),
               itemCount: genderedChoices.length,

@@ -89,6 +89,7 @@ class MorePage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FloatingActionButton.extended(
+                  heroTag: 'meldingButton',
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
                   onPressed: () => context.goNamed('VCPContact'),
@@ -97,6 +98,7 @@ class MorePage extends ConsumerWidget {
                 ),
                 if (canAccessAdminPanel)
                   FloatingActionButton.extended(
+                    heroTag: 'adminButton',
                     foregroundColor: colorScheme.onTertiaryContainer,
                     backgroundColor: colorScheme.tertiaryContainer,
                     onPressed: () => context.goNamed('Admin'),

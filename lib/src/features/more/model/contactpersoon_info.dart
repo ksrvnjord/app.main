@@ -25,3 +25,47 @@ class VertrouwenscontactpersoonInfo extends GroupInfo {
     };
   }
 }
+
+@immutable
+class MeldpersooncontactInfo extends GroupInfo {
+  final String? wie;
+  final String? wanneer;
+  final String? waarvoor;
+  final String? wat;
+  final String? lidnummer;
+  final String? email;
+
+  const MeldpersooncontactInfo({
+    required super.name,
+    this.wie,
+    this.wanneer,
+    this.waarvoor,
+    this.wat,
+    this.lidnummer,
+    this.email,
+  });
+
+  factory MeldpersooncontactInfo.fromMap(Map<String, dynamic> map) {
+    return MeldpersooncontactInfo(
+      name: map['name'] as String,
+      wie: map['Wie'] != null ? map['Wie'] as String : null,
+      wanneer: map['Wanneer'] != null ? map['Wanneer'] as String : null,
+      waarvoor: map['Waarvoor'] != null ? map['Waarvoor'] as String : null,
+      wat: map['Wat'] != null ? map['Wat'] as String : null,
+      lidnummer: map['Lidnummer'] != null ? map['Lidnummer'] as String : null,
+      email: map['Email'] != null ? map['Email'] as String : null,
+    );
+  }
+
+  Map <String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name' : name,
+      'wie' : wie,
+      'wanneer' : wanneer,
+      'waarvoor' : waarvoor,
+      'wat' : wat,
+      'lidnummer' : lidnummer,
+      'email' : email,
+    };
+  }
+}

@@ -53,3 +53,42 @@ final vertrouwenscontactpersonenInfoProvider =
 
   return infos.whereType<VertrouwenscontactpersoonInfo>().toList();
 });
+
+final contactmeldpersoonInfoProvider = FutureProvider.autoDispose.family<MeldpersooncontactInfo?, String>((ref, name) async {
+  final meldpersonencontact = await ref.watch(yamlMapProvider(AssetData.meldpersooncontact).future);
+  if (!meldpersonencontact.containsKey(name)) {
+    return null;
+  }
+  final YamlMap? meldpersooncontact = meldpersonencontact[name];
+  if (meldpersooncontact == null) {
+    return null;
+  }
+  final map = <String, dynamic> {
+    'name' : name,
+  };
+  meldpersooncontact.forEach((key, value) {
+    map[key.toString()] = value;
+  });
+  return MeldpersooncontactInfo.fromMap(map);
+});
+
+final meldpersooncontactNamesProvider =
+    FutureProvider.autoDispose<List<String>>((ref) async {
+  final meldpersooncontactMap = await ref
+      .watch(yamlMapProvider(AssetData.meldpersooncontact).future);
+
+    return meldpersooncontactMap.keys.map((e) => e.toString()).toList();
+});
+
+final meldpersonencontactInfoProvider =
+    FutureProvider.autoDispose<List<MeldpersooncontactInfo>>(
+        (ref) async {
+  final names = await ref.watch(meldpersooncontactNamesProvider.future);
+
+  // Wait for all futures to complete.
+  final infos = await Future.wait(
+    names.map((name) =>
+        ref.watch(contactmeldpersoonInfoProvider(name).future)),
+  );
+  return infos.whereType<MeldpersooncontactInfo>().toList();
+});
