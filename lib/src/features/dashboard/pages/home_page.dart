@@ -74,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Mobiel nummer',
-                    hintText: '06 12345678',
+                    hintText: '06-12345678',
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9+\- ]')),
@@ -83,7 +83,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     if (value == null || value.isEmpty) {
                       return 'Vul mobiel nummer in';
                     }
-                    if (value.length < 10) {
+                    if (value.length < 10 || value.length > 14) {
                       return 'Vul geldig nummer in';
                     }
                     if (!RegExp(r'^[+0-9\- ]+$').hasMatch(value)) {
