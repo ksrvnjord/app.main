@@ -73,8 +73,8 @@ import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/coach_or_cox_register_page.dart';
-import 'package:ksrvnjord_main_app/src/features/training/widgets/coach_or_cox_search_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_register_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_search_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
