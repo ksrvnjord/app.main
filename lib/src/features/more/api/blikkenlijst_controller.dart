@@ -1,80 +1,86 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BlikkenLijstController
-    extends FamilyStreamNotifier<List<QueryDocumentSnapshot<Object?>>, String> {
-  DocumentSnapshot? _lastDocument;
-  Map<String, List<QueryDocumentSnapshot<Object?>>> _cache =
-      {}; // Cache initial list for fast loading.
+class BlikkenLijstState {
 
-  Stream<List<QueryDocumentSnapshot<Object?>>> initialBlikkenLijst(
-    String blikType,
-  ) async* {
-    if (_cache.containsKey(blikType)) {
-      yield _cache[blikType]!;
+  BlikkenLijstState({
+    this.documents = const [],
+    this.lastDocument,
+    this.totalCount,
+    this.currentPage = 0,
+    this.isLoading = false,
+  });
+  final List<QueryDocumentSnapshot<Object?>> documents;
+  final DocumentSnapshot? lastDocument;
+  final int? totalCount;
+  final int currentPage;
+  final bool isLoading;
 
-      return;
-    }
-    // State = const AsyncValue.loading();.
-    final stream = FirebaseFirestore.instance
-        .collection('eeuwige_blikkenlijst')
-        .where('type', isEqualTo: blikType)
-        .orderBy('blikken', descending: true)
-        .limit(50)
-        .snapshots();
-
-    await for (final snapshot in stream) {
-      if (snapshot.docs.isNotEmpty) {
-        _lastDocument = snapshot.docs.lastOrNull;
-      }
-      final docs = snapshot.docs;
-      _cache = {..._cache, blikType: docs};
-
-      yield docs;
-    }
+  BlikkenLijstState copyWith({
+    List<QueryDocumentSnapshot<Object?>>? documents,
+    DocumentSnapshot? lastDocument,
+    int? totalCount,
+    int? currentPage,
+    bool? isLoading,
+  }) {
+    return BlikkenLijstState(
+      documents: documents ?? this.documents,
+      lastDocument: lastDocument ?? this.lastDocument,
+      totalCount: totalCount ?? this.totalCount,
+      currentPage: currentPage ?? this.currentPage,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
+}
 
-  @override
-  Stream<List<QueryDocumentSnapshot<Object?>>> build(String arg) =>
-      initialBlikkenLijst(arg);
+class BlikkenLijstController extends StateNotifier<BlikkenLijstState> {
+  BlikkenLijstController() : super(BlikkenLijstState());
 
-  void fetchMoreBlikkenLijst(String blikType) async {
-    if (_lastDocument == null) {
-      return;
-    }
+  static const int _pageSize = 30;
+
+  Future<void> fetchPage(String blikType, int pageKey) async {
+    if (state.isLoading) return;
+    state = state.copyWith(isLoading: true);
 
     try {
+      // Fetch total count only once
+      if (state.totalCount == null) {
+        final countSnapshot = await FirebaseFirestore.instance
+            .collection('eeuwige_blikkenlijst')
+            .where('type', isEqualTo: blikType)
+            .count()
+            .get();
+        state = state.copyWith(totalCount: countSnapshot.count);
+      }
+
+      // Fetch paginated data
       Query query = FirebaseFirestore.instance
           .collection('eeuwige_blikkenlijst')
           .where('type', isEqualTo: blikType)
           .orderBy('blikken', descending: true)
-          .limit(30);
+          .limit(_pageSize);
 
-      if (_lastDocument != null) {
-        // ignore: avoid-non-null-assertion
-        query = query.startAfterDocument(_lastDocument!);
+      if (state.lastDocument != null && pageKey > 0) {
+        query = query.startAfterDocument(state.lastDocument!);
       }
 
-      final stream = query.snapshots();
-      await for (final snapshot in stream) {
-        if (snapshot.docs.isNotEmpty) {
-          _lastDocument = snapshot.docs.lastOrNull;
-          if (state is AsyncData<List<QueryDocumentSnapshot<Object?>>>) {
-            // ignore: avoid-ignoring-return-values
-            state.whenData((currentDocs) {
-              state = AsyncValue.data(currentDocs + snapshot.docs);
-            });
-          }
-        }
-      }
-    } catch (error) {
-      state = AsyncValue.error(error, StackTrace.empty);
+      final snapshot = await query.get();
+      final newDocs = snapshot.docs;
+
+      state = state.copyWith(
+        lastDocument: newDocs.isNotEmpty ? newDocs.last : state.lastDocument,
+        currentPage: pageKey,
+        documents: [...state.documents, ...newDocs],
+        isLoading: false,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+      throw Exception('Failed to fetch page: $e');
     }
   }
 }
 
-// ignore: prefer-static-class
-final blikkenLijstProvider = StreamNotifierProvider.family<
-    BlikkenLijstController,
-    List<QueryDocumentSnapshot<Object?>>,
-    String>(BlikkenLijstController.new);
+
+final blikkenLijstProvider = StateNotifierProvider.family<BlikkenLijstController, BlikkenLijstState, String>(
+  (ref, blikType) => BlikkenLijstController()..fetchPage(blikType, 0),
+);
