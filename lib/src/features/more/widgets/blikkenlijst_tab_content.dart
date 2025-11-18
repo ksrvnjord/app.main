@@ -8,10 +8,12 @@ class BlikkenLijstTabContent extends ConsumerStatefulWidget {
   final String blikType;
 
   @override
-  ConsumerState<BlikkenLijstTabContent> createState() => _BlikkenLijstTabContentState();
+  ConsumerState<BlikkenLijstTabContent> createState() =>
+      _BlikkenLijstTabContentState();
 }
 
-class _BlikkenLijstTabContentState extends ConsumerState<BlikkenLijstTabContent> {
+class _BlikkenLijstTabContentState
+    extends ConsumerState<BlikkenLijstTabContent> {
   late final ScrollController _scrollController;
 
   @override
@@ -23,13 +25,13 @@ class _BlikkenLijstTabContentState extends ConsumerState<BlikkenLijstTabContent>
 
   void _onScroll() {
     if (!mounted) return; // Prevent updates after dispose
-    
+
     final state = ref.read(blikkenLijstProvider(widget.blikType));
     final controller = ref.read(blikkenLijstProvider(widget.blikType).notifier);
 
     final almostAtEndOfList = _scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 500; // Increased threshold
-    
+
     if (almostAtEndOfList &&
         !state.isLoading &&
         state.documents.length < (state.totalCount ?? double.infinity)) {
@@ -69,19 +71,23 @@ class _BlikkenLijstTabContentState extends ConsumerState<BlikkenLijstTabContent>
                   children: const [
                     SizedBox(
                       width: 150,
-                      child: Text('Naam', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text('Naam',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                       width: 100,
-                      child: Text('Blikken', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text('Blikken',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                       width: 100,
-                      child: Text('Premies', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text('Premies',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
                       width: 100,
-                      child: Text('Periode', style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text('Periode',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -92,7 +98,7 @@ class _BlikkenLijstTabContentState extends ConsumerState<BlikkenLijstTabContent>
                 (index) {
                   final doc = state.documents.elementAt(index);
                   final data = doc.data() as Map<String, dynamic>? ?? {};
-                  
+
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

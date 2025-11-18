@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BlikkenLijstState {
-
   BlikkenLijstState({
     this.documents = const [],
     this.lastDocument,
@@ -80,7 +79,7 @@ class BlikkenLijstController extends StateNotifier<BlikkenLijstState> {
   }
 }
 
-
-final blikkenLijstProvider = StateNotifierProvider.family<BlikkenLijstController, BlikkenLijstState, String>(
+final blikkenLijstProvider = StateNotifierProvider.family<
+    BlikkenLijstController, BlikkenLijstState, String>(
   (ref, blikType) => BlikkenLijstController()..fetchPage(blikType, 0),
 );
