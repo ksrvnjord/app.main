@@ -289,7 +289,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         LinkedHashMap<String, ExportOptionFunction> options =
             LinkedHashMap.from({});
 
-        String delimiter = ',';
+        String delimiter = ';';
 
         return StatefulBuilder(
           builder: (innerContext, setState) {
@@ -357,7 +357,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                         ],
                         value: delimiter,
                         onChanged: (String? value) => setState(() {
-                          delimiter = value ?? ',';
+                          delimiter = value ?? ';';
                         }),
                       ),
                     ),
