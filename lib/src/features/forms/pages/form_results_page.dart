@@ -128,7 +128,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       );
 
       final rows = <List<String>>[
-        ['sep=${exportOptions.delimiter}'],
         headerRow,
         ...dataRows,
       ];
@@ -235,7 +234,6 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       );
 
       final rows = <List<String>>[
-        ['sep=${exportOptions.delimiter}'],
         headerRow,
         ...dataRows,
       ];
@@ -291,7 +289,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
         LinkedHashMap<String, ExportOptionFunction> options =
             LinkedHashMap.from({});
 
-        String delimiter = ',';
+        String delimiter = ';';
 
         return StatefulBuilder(
           builder: (innerContext, setState) {
@@ -359,7 +357,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                         ],
                         value: delimiter,
                         onChanged: (String? value) => setState(() {
-                          delimiter = value ?? ',';
+                          delimiter = value ?? ';';
                         }),
                       ),
                     ),
@@ -384,7 +382,9 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   }
 
   void _handleDownloadForMobile(String csvData, String fileName) async {
-    final csvBytes = Uint8List.fromList(utf8.encode(csvData));
+    // Add UTF-8 BOM
+    final bom = [0xEF, 0xBB, 0xBF];
+    final csvBytes = Uint8List.fromList(bom + utf8.encode(csvData));
 
     // ignore: avoid-ignoring-return-values
     await Share.shareXFiles(
@@ -401,7 +401,9 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
   }
 
   void _handleDownloadForWeb(String csvData, String fileName) {
-    final blob = html.Blob([Uint8List.fromList(utf8.encode(csvData))]);
+    // Add UTF-8 BOM
+    final bom = [0xEF, 0xBB, 0xBF];
+    final blob = html.Blob([Uint8List.fromList(bom + utf8.encode(csvData))]);
     final url = html.Url.createObjectUrlFromBlob(blob);
 
     html.AnchorElement(href: url)
