@@ -55,7 +55,6 @@ class FormsPage extends ConsumerWidget {
             visibleClosedForms.sort(
                 (a, b) => b.data().openUntil.compareTo(a.data().openUntil));
 
-
             return ListView(
               padding: const EdgeInsets.all(8),
               children: [
