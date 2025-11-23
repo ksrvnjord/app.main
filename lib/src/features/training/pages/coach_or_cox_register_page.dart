@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/coach_or_cox_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/coach_or_cox_multiselect.dart';
@@ -128,6 +130,48 @@ class _CoachOrCoxRegisterPageState
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
+                      ),
+                    ),
+                  ),
+                if (widget.role == 'stuur')
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 14),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(12),
+                        border:
+                            Border.all(color: Colors.blue.withOpacity(0.35)),
+                      ),
+                      child: Text.rich(
+                        TextSpan(
+                          text:
+                              'Kun je de Gladde 4 of 8 niet selecteren? Haal dan eerst de bijbehorende stuurpermissie. Neem hiervoor contact op met ',
+                          style: TextStyle(
+                            color: Colors.blue[700],
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Naucrates',
+                              style: TextStyle(
+                                color: Colors.blue[800],
+                                decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context
+                                      .push('/almanak/substructuren/Naucrates');
+                                },
+                            ),
+                            const TextSpan(text: '.'),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
