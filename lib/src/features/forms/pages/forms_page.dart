@@ -53,7 +53,7 @@ class FormsPage extends ConsumerWidget {
                       currentUser.isAdmin);
             }).toList();
             visibleClosedForms.sort(
-                (a, b) => a.data().openUntil.compareTo(b.data().openUntil));
+                (a, b) => b.data().openUntil.compareTo(a.data().openUntil));
 
             return ListView(
               padding: const EdgeInsets.all(8),

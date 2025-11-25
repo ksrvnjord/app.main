@@ -4,8 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 // A provider that fetches the substructure info for a given substructure name from firebase
 Future<String?> fetchDescription(String name) async {
-  final filePath =
-      '/almanak/verticals/$name/${name}Omschrijving.txt';
+  final filePath = '/almanak/verticals/$name/${name}Omschrijving.txt';
   final storageRef = FirebaseStorage.instance.ref(filePath);
   try {
     final data = await storageRef.getData();
@@ -20,7 +19,7 @@ Future<String?> fetchDescription(String name) async {
 }
 
 // ignore: prefer-static-class
-final verticalDescriptionProvider = FutureProvider.autoDispose
-    .family<String?, String>((ref, vertical) async {
+final verticalDescriptionProvider =
+    FutureProvider.autoDispose.family<String?, String>((ref, vertical) async {
   return await fetchDescription(vertical);
 });
