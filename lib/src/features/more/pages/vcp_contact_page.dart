@@ -119,19 +119,19 @@ class VCPPage extends ConsumerWidget {
                 ),
               );
             },
-          )
+          ),
         ],
       ),
       children: [
         Column(
           children: [
-            if (info.lidnummer != null) ...[
+            if (info.lidnummers != null) ...info.lidnummers!.map((contactLidnummer) => 
               AlmanakUserTile(
                 firstName: "",
                 lastName: "",
-                lidnummer: info.lidnummer!,
+                lidnummer: contactLidnummer,
               ),
-            ],
+            ),
             _buildInfo('Wie', info.wie),
             _buildInfo('Wanneer', info.wanneer),
             _buildInfo('Waarvoor', info.waarvoor),
@@ -194,34 +194,38 @@ class VCPPage extends ConsumerWidget {
               ],
             ),
           ),
-          contactpersonenInfo.when(
-            data: (data) {
-              if (contactChoice) {
-                final contactInfo = data as List<MeldpersooncontactInfo>;
-                return Column(
-                  children: contactInfo.map((info) => _buildTile(context, info)).toList(),
-                );
-              }
-              else {
-                final grouped = data as Map<String, List<MeldpersooncontactInfo>>;
-                return Column(
-                  children:
-                    grouped.entries.map((entry) {
-                      return ExpansionTile(
-                        title: Text(entry.key),
-                        children: entry.value.map((info) => _buildTile(context, info)).toList()
-                      );
-                    }).toList(),
-                );
-              }
-            },
-            error: (error, stackTrace) => ErrorCardWidget(
-              errorMessage: error.toString(),
-              stackTrace: stackTrace,
-            ),
-            loading: () =>
-              LoadingWidget(),
-            ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: contactpersonenInfo.when(
+                data: (data) {
+                  if (contactChoice) {
+                    final contactInfo = data as List<MeldpersooncontactInfo>;
+                    return Column(
+                      children: contactInfo.map((info) => _buildTile(context, info)).toList(),
+                    );
+                  }
+                  else {
+                    final grouped = data as Map<String, List<MeldpersooncontactInfo>>;
+                    return Column(
+                      children:
+                        grouped.entries.map((entry) {
+                          return ExpansionTile(
+                            title: Text(entry.key),
+                            children: entry.value.map((info) => _buildTile(context, info)).toList()
+                          );
+                        }).toList(),
+                    );
+                  }
+                },
+                error: (error, stackTrace) => ErrorCardWidget(
+                  errorMessage: error.toString(),
+                  stackTrace: stackTrace,
+                ),
+                loading: () =>
+                  LoadingWidget(),
+              ),
+            )
+          ),
         ],
       ),
     );

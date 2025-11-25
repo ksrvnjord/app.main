@@ -32,7 +32,7 @@ class MeldpersooncontactInfo extends GroupInfo {
   final String? wanneer;
   final String? waarvoor;
   final String? wat;
-  final String? lidnummer;
+  final List<String>? lidnummers;
   final String? contact;
 
   const MeldpersooncontactInfo({
@@ -41,9 +41,22 @@ class MeldpersooncontactInfo extends GroupInfo {
     this.wanneer,
     this.waarvoor,
     this.wat,
-    this.lidnummer,
+    this.lidnummers,
     this.contact,
   });
+
+  static List<String>? _parseLidnummers(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
+    }
+    if (value is String) {
+      return [value.toString()];
+    }
+    return null;
+  }
 
   factory MeldpersooncontactInfo.fromMap(Map<String, dynamic> map) {
     return MeldpersooncontactInfo(
@@ -52,7 +65,7 @@ class MeldpersooncontactInfo extends GroupInfo {
       wanneer: map['Wanneer'] != null ? map['Wanneer'] as String : null,
       waarvoor: map['Waarvoor'] != null ? map['Waarvoor'] as String : null,
       wat: map['Wat'] != null ? map['Wat'] as String : null,
-      lidnummer: map['Lidnummer'] != null ? map['Lidnummer'] as String : null,
+      lidnummers: _parseLidnummers(map["Lidnummers"]),
       contact: map['Contact'] != null ? map['Contact'] as String : null,
     );
   }
@@ -64,7 +77,7 @@ class MeldpersooncontactInfo extends GroupInfo {
       'wanneer' : wanneer,
       'waarvoor' : waarvoor,
       'wat' : wat,
-      'lidnummer' : lidnummer,
+      'lidnummers' : lidnummers,
       'contact' : contact,
     };
   }

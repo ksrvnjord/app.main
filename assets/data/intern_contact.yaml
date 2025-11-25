@@ -18,7 +18,7 @@ BuCo:
   Wat: 
     "Biedt een luisterend oor en kan in overleg met het bestuur actie ondernemen (bijvoorbeeld iemand wegsturen).  
     Kan ook in vertrouwen worden benaderd zonder dat er iets mee gedaan wordt."
-  Lidnummer: "22170"
+  Lidnummers: "22170"
 CC:
   Wie: 
     "Leden van de CC, bij voorkeur Ella van Muiswinkel"
@@ -29,7 +29,7 @@ CC:
   Wat: 
     "Luisterend oor en kan samen met het bestuur een oplossing zoeken. 
     Ook mogelijk om in vertrouwen te spreken zonder dat er actie wordt ondernomen."
-  Lidnummer: "23186"
+  Lidnummers: "23186"
 TopCommissie:
   Wie: 
     "Leden van de TopCommissie"
@@ -54,8 +54,7 @@ Vertrouwenscontactpersonen:
     De externe VCP staat buiten de vereniging, maar weet wel hoe Njord in elkaar zit en heeft veel ervaring als psycholoog. 
     Zij geven geen advies, maar kunnen doorverwijzen naar passende vervolgstappen. 
     Meldingen blijven vertrouwelijk en worden alleen met toestemming gedeeld, tenzij het gaat om een strafbaar feit."
-  Contact:
-    "app@njord.nl"
+  contact: "app@njord.nl"
 
 Bestuur:
   Wie: 
@@ -66,6 +65,8 @@ Bestuur:
     "Alle vormen van ongewenst gedrag of klachten over leden en externen op Njord"
   Wat: 
     "Biedt een luisterend oor, kan handelen of doorverwijzen naar passende ondersteuning."
+  Lidnummers: 
+    ["21109", "22013"]
 
 Counselor:
   Wie: 
