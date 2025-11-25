@@ -55,7 +55,7 @@ class VerticaalChoicePage extends ConsumerWidget {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) => [
-                VerticalenChoiceListTile(
+                /*VerticalenChoiceListTile(
                   name: genderedChoices[index], 
                   imageProvider: 
                       ref.watch(verticalsPictureProvider(genderedChoices[index])), 

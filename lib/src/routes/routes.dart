@@ -761,7 +761,9 @@ abstract final // ignore: prefer-single-declaration-per-file
         _route(
           path: "vcpcontact",
           name: "VCPContact",
-          child: const VCPPage(),
+          child: const VCPPage(
+            contactChoice: state.uri.queryParameters[]
+          ),
         ),
         _route(
           path: "admin",

@@ -8,7 +8,12 @@ import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_ti
 import 'package:url_launcher/url_launcher.dart';
 
 class VCPPage extends ConsumerWidget {
-  const VCPPage({super.key});
+  const VCPPage({
+    super.key,
+    required this.contactChoice,
+  });
+
+  final bool contactChoice;
 
   Widget _buildInfo(String title, String? content) {
     if (content == null) {
@@ -107,6 +112,8 @@ class VCPPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final contactpersonenInfo = ref.watch(meldpersonencontactInfoProvider);
+
+    final contactChoice = 
 
     return Scaffold(
       appBar: AppBar(
