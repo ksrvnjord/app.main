@@ -761,8 +761,11 @@ abstract final // ignore: prefer-single-declaration-per-file
         _route(
           path: "vcpcontact",
           name: "VCPContact",
-          child: const VCPPage(
-            contactChoice: state.uri.queryParameters[]
+          pageBuilder: (context, state) => _getPage(
+            child: VCPPage(
+              contactChoice: state.uri.queryParameters['contactChoice'] != 'false',
+            ),
+            name: "VCP Contact",
           ),
         ),
         _route(

@@ -33,7 +33,7 @@ class MeldpersooncontactInfo extends GroupInfo {
   final String? waarvoor;
   final String? wat;
   final String? lidnummer;
-  final String? email;
+  final String? contact;
 
   const MeldpersooncontactInfo({
     required super.name,
@@ -42,7 +42,7 @@ class MeldpersooncontactInfo extends GroupInfo {
     this.waarvoor,
     this.wat,
     this.lidnummer,
-    this.email,
+    this.contact,
   });
 
   factory MeldpersooncontactInfo.fromMap(Map<String, dynamic> map) {
@@ -53,7 +53,7 @@ class MeldpersooncontactInfo extends GroupInfo {
       waarvoor: map['Waarvoor'] != null ? map['Waarvoor'] as String : null,
       wat: map['Wat'] != null ? map['Wat'] as String : null,
       lidnummer: map['Lidnummer'] != null ? map['Lidnummer'] as String : null,
-      email: map['Email'] != null ? map['Email'] as String : null,
+      contact: map['Contact'] != null ? map['Contact'] as String : null,
     );
   }
 
@@ -65,7 +65,7 @@ class MeldpersooncontactInfo extends GroupInfo {
       'waarvoor' : waarvoor,
       'wat' : wat,
       'lidnummer' : lidnummer,
-      'email' : email,
+      'contact' : contact,
     };
   }
 }
