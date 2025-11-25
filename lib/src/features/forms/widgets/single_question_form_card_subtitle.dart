@@ -24,7 +24,7 @@ class SingleQuestionFormCardSubtitle extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (form.isSoldOut == true)
+        if (form.isSoldOut)
           Text("Uitverkocht/Volgeboekt",
               style: textTheme.bodyMedium?.copyWith(color: colorScheme.error))
         else
