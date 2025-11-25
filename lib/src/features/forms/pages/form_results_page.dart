@@ -391,7 +391,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
       [
         XFile.fromData(
           csvBytes,
-          mimeType: "text/csv",
+          mimeType: "text/csv; charset=utf-8",
           name: fileName,
           length: csvBytes.lengthInBytes,
         ),
