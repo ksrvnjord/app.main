@@ -79,19 +79,35 @@ class MorePage extends ConsumerWidget {
         ],
       ),
       // Floatingaction button to navigate to admin page.
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
           final canAccessAdminPanel = currentUser.isAdmin;
-
-          return canAccessAdminPanel
-              ? FloatingActionButton.extended(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'meldingButton',
                   foregroundColor: colorScheme.onTertiaryContainer,
                   backgroundColor: colorScheme.tertiaryContainer,
-                  onPressed: () => context.goNamed('Admin'),
+                  onPressed: () => context.goNamed('VCPContact'),
                   icon: const Icon(Icons.admin_panel_settings),
-                  label: const Text('Ga naar Admin Panel'),
-                )
-              : null;
+                  label: const Text('Melding maken'),
+                ),
+                if (canAccessAdminPanel)
+                  FloatingActionButton.extended(
+                    heroTag: 'adminButton',
+                    foregroundColor: colorScheme.onTertiaryContainer,
+                    backgroundColor: colorScheme.tertiaryContainer,
+                    onPressed: () => context.goNamed('Admin'),
+                    icon: const Icon(Icons.admin_panel_settings),
+                    label: const Text('Ga naar Admin Panel'),
+                  ),
+              ],
+            ),
+          );
         },
         error: (e, s) {
           FirebaseCrashlytics.instance.recordError(e, s);

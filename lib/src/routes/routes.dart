@@ -33,6 +33,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_pag
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
@@ -756,6 +757,17 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: "blikkenlijst",
           name: "Blikkenlijst",
           child: const BlikkenLijstPage(),
+        ),
+        _route(
+          path: "vcpcontact",
+          name: "VCPContact",
+          pageBuilder: (context, state) => _getPage(
+            child: VCPPage(
+              contactChoice:
+                  state.uri.queryParameters['contactChoice'] != 'false',
+            ),
+            name: "VCP Contact",
+          ),
         ),
         _route(
           path: "admin",

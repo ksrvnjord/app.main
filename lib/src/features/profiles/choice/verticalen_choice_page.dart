@@ -56,14 +56,14 @@ class VerticaalChoicePage extends ConsumerWidget {
             child: ListView.builder(
               itemBuilder: (context, index) => [
                 /*VerticalenChoiceListTile(
-                  name: genderedChoices[index],
-                  /*imageProvider: ref
-                      .watch(verticalsPictureProvider(genderedChoices[index])),*/
-                  onTap: () => context.goNamed(
-                    "Verticaal",
-                    pathParameters: {"name": genderedChoices[index]},
-                  ),
-                ),*/
+                    name: genderedChoices[index], 
+                    imageProvider: 
+                        ref.watch(verticalsPictureProvider(genderedChoices[index])), 
+                    onTap: () => context.goNamed(
+                      "Verticaal",
+                      pathParameters: {"name": genderedChoices[index]},
+                    ),
+                  ),*/
                 const Divider(height: 0, thickness: 0.5),
               ].toColumn(),
               itemCount: genderedChoices.length,
