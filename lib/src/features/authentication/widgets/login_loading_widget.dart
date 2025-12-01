@@ -19,7 +19,7 @@ class LoginLoadingWidget extends StatelessWidget {
       'Veldfles legen...',
       'vd Kwaak onderweg naar fietsshift...',
       'Koffie aan het zetten...',
-      'Harco zoeken...',
+      'Boeketje bij Harco leggen...',
       'Joris\' bak schoonmaken...',
       'Uitzweten...',
     ];

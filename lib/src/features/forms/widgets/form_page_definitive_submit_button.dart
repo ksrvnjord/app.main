@@ -81,36 +81,39 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
 
     return showSaveButtonAsync.when(
       data: (show) {
-        if (!show || answerDocRef == null) return const SizedBox.shrink();
+        if (answerDocRef == null) return const SizedBox.shrink();
 
         return ElevatedButton(
-          onPressed: () async {
-            final isValid = formKey.currentState?.validate() ?? false;
-            if (!isValid) return;
+          onPressed: show
+              ? () async {
+                  final isValid = formKey.currentState?.validate() ?? false;
+                  if (!isValid) return;
 
-            formKey.currentState?.save();
+                  formKey.currentState?.save();
 
-            final confirmed =
-                await showConfirmSaveDialog(context, answerDocRef!);
+                  final confirmed =
+                      await showConfirmSaveDialog(context, answerDocRef!);
 
-            if (!confirmed || !context.mounted) return;
+                  if (!confirmed || !context.mounted) return;
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Formulier opgeslagen')),
-            );
-          },
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Formulier opgeslagen')),
+                  );
+                }
+              : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: colorScheme.primary,
             foregroundColor: colorScheme.onPrimary,
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.save),
               SizedBox(width: 8),
               Flexible(
-                  child:
-                      Text("Definitief Opslaan", textAlign: TextAlign.center)),
+                  child: Text(
+                      "Definitief Opslaan${show ? "" : " (vul eerst alle verplichte vragen in)"}",
+                      textAlign: TextAlign.center)),
             ],
           ),
         );
