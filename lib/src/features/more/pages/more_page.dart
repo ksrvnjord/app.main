@@ -84,9 +84,9 @@ class MorePage extends ConsumerWidget {
         data: (currentUser) {
           final canAccessAdminPanel = currentUser.isAdmin;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton.extended(
                   heroTag: 'meldingButton',
