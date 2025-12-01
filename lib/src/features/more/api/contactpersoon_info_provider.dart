@@ -54,10 +54,13 @@ final vertrouwenscontactpersonenInfoProvider =
   return infos.whereType<VertrouwenscontactpersoonInfo>().toList();
 });
 
-final contactmeldpersoonInfoProvider = FutureProvider.autoDispose.family<MeldpersooncontactInfo?, (bool, String)>((ref, params) async {
+final contactmeldpersoonInfoProvider = FutureProvider.autoDispose
+    .family<MeldpersooncontactInfo?, (bool, String)>((ref, params) async {
   final isIntern = params.$1;
   final name = params.$2;
-  final meldpersonencontact = await ref.watch(yamlMapProvider(isIntern ? AssetData.meldpersooncontact : AssetData.externContact).future);
+  final meldpersonencontact = await ref.watch(yamlMapProvider(
+          isIntern ? AssetData.meldpersooncontact : AssetData.externContact)
+      .future);
   if (!meldpersonencontact.containsKey(name)) {
     return null;
   }
@@ -65,8 +68,8 @@ final contactmeldpersoonInfoProvider = FutureProvider.autoDispose.family<Meldper
   if (meldpersooncontact == null) {
     return null;
   }
-  final map = <String, dynamic> {
-    'name' : name,
+  final map = <String, dynamic>{
+    'name': name,
   };
   meldpersooncontact.forEach((key, value) {
     map[key.toString()] = value;
@@ -74,19 +77,20 @@ final contactmeldpersoonInfoProvider = FutureProvider.autoDispose.family<Meldper
   return MeldpersooncontactInfo.fromMap(map);
 });
 
-final meldpersooncontactNamesProvider =
-    FutureProvider.autoDispose.family<List<String>, bool>((ref, isIntern) async {
-  final meldpersooncontactMap = await ref
-      .watch(yamlMapProvider(isIntern ? AssetData.meldpersooncontact : AssetData.externContact).future);
+final meldpersooncontactNamesProvider = FutureProvider.autoDispose
+    .family<List<String>, bool>((ref, isIntern) async {
+  final meldpersooncontactMap = await ref.watch(yamlMapProvider(
+          isIntern ? AssetData.meldpersooncontact : AssetData.externContact)
+      .future);
 
-    return meldpersooncontactMap.keys.map((e) => e.toString()).toList();
+  return meldpersooncontactMap.keys.map((e) => e.toString()).toList();
 });
 
 final meldpersonencontactInfoProvider =
-    FutureProvider.autoDispose.family<dynamic, bool>(
-        (ref, isIntern) async {
+    FutureProvider.autoDispose.family<dynamic, bool>((ref, isIntern) async {
   if (isIntern) {
-    final names = await ref.watch(meldpersooncontactNamesProvider(isIntern).future);
+    final names =
+        await ref.watch(meldpersooncontactNamesProvider(isIntern).future);
 
     // Wait for all futures to complete.
     final infos = await Future.wait(
@@ -95,14 +99,15 @@ final meldpersonencontactInfoProvider =
     );
     return infos.whereType<MeldpersooncontactInfo>().toList();
   } else {
-    final extern = await ref.watch(yamlMapProvider(AssetData.externContact).future);
+    final extern =
+        await ref.watch(yamlMapProvider(AssetData.externContact).future);
     final Map<String, List<MeldpersooncontactInfo>> grouped = {};
     extern.forEach((category, subs) {
       final List<MeldpersooncontactInfo> subList = [];
       if (subs is Map) {
         subs.forEach((subName, subData) {
           if (subData is Map) {
-            final map = <String, dynamic>{'name' : subName.toString()};
+            final map = <String, dynamic>{'name': subName.toString()};
             subData.forEach((key, value) {
               map[key.toString()] = value;
             });

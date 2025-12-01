@@ -70,15 +70,15 @@ class MeldpersooncontactInfo extends GroupInfo {
     );
   }
 
-  Map <String, dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name' : name,
-      'wie' : wie,
-      'wanneer' : wanneer,
-      'waarvoor' : waarvoor,
-      'wat' : wat,
-      'lidnummers' : lidnummers,
-      'contact' : contact,
+      'name': name,
+      'wie': wie,
+      'wanneer': wanneer,
+      'waarvoor': waarvoor,
+      'wat': wat,
+      'lidnummers': lidnummers,
+      'contact': contact,
     };
   }
 }

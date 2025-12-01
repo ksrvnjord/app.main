@@ -31,31 +31,31 @@ class VerticaalChoicePage extends ConsumerWidget {
         appBar: AppBar(
           title: Text("Kies een verticaal"),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
-              child: Row(
-                children: [
-                  for (final genderOption in ["Mannen", "Vrouwen"])
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: wrapSpacing / 2),
-                      child: ChoiceChip(
-                        label: Text(genderOption),
-                        onSelected: (selected) =>
-                            context.goNamed("Verticals", queryParameters: {
-                          'gender': genderOption,
-                        }),
-                        selected: genderOption == gender,
-                      ),
+        body: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Row(
+              children: [
+                for (final genderOption in ["Mannen", "Vrouwen"])
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: wrapSpacing / 2),
+                    child: ChoiceChip(
+                      label: Text(genderOption),
+                      onSelected: (selected) =>
+                          context.goNamed("Verticals", queryParameters: {
+                        'gender': genderOption,
+                      }),
+                      selected: genderOption == gender,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) => [
-                  /*VerticalenChoiceListTile(
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) => [
+                /*VerticalenChoiceListTile(
                     name: genderedChoices[index], 
                     imageProvider: 
                         ref.watch(verticalsPictureProvider(genderedChoices[index])), 
@@ -64,13 +64,11 @@ class VerticaalChoicePage extends ConsumerWidget {
                       pathParameters: {"name": genderedChoices[index]},
                     ),
                   ),*/
-                  const Divider(height: 0, thickness: 0.5),
-                ].toColumn(),
-                itemCount: genderedChoices.length,
-              ),
-            )
-        ]
-      )
-    );
+                const Divider(height: 0, thickness: 0.5),
+              ].toColumn(),
+              itemCount: genderedChoices.length,
+            ),
+          )
+        ]));
   }
 }

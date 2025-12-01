@@ -58,34 +58,31 @@ class VCPPage extends ConsumerWidget {
             Expanded(
               child: Text(info.name),
             ),
-          if (info.contact != null && info.contact!.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.email_outlined),
-              tooltip: "Email",
-              onPressed: () async {
-                await showDialog<void>(
-                  context: context,
-                  builder: (context) => Consumer(
-                    builder: (context, ref, _) {
-                      final vertrouwensPersoonInfo = ref.watch(vertrouwenscontactpersonenInfoProvider);
+            if (info.contact != null && info.contact!.isNotEmpty)
+              IconButton(
+                icon: const Icon(Icons.email_outlined),
+                tooltip: "Email",
+                onPressed: () async {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) => Consumer(builder: (context, ref, _) {
+                      final vertrouwensPersoonInfo =
+                          ref.watch(vertrouwenscontactpersonenInfoProvider);
                       return AlertDialog(
-                        contentPadding: EdgeInsets.symmetric(horizontal: dialogPadding / 2),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: dialogPadding / 2),
                         content: vertrouwensPersoonInfo.when(
                           data: (vcp) => DataTable(
                             columns: const [
                               DataColumn(
-                                label: Text(
-                                  "Vertrouwenscontactpersoon", 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                )
-                              ),
+                                  label: Text(
+                                "Vertrouwenscontactpersoon",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
                               DataColumn(
                                 label: Text(
-                                  "Email", 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  "Email",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -93,12 +90,14 @@ class VCPPage extends ConsumerWidget {
                               ...vcp.map(
                                 (vertrouwenscontactpersoon) => DataRow(
                                   cells: [
-                                    DataCell(Text(vertrouwenscontactpersoon.name)),
+                                    DataCell(
+                                        Text(vertrouwenscontactpersoon.name)),
                                     DataCell(
                                       IconButton(
                                         icon: const Icon(Icons.email_outlined),
                                         onPressed: () async => launchUrl(
-                                          Uri.parse('mailto:${vertrouwenscontactpersoon.email}'),
+                                          Uri.parse(
+                                              'mailto:${vertrouwenscontactpersoon.email}'),
                                         ),
                                       ),
                                     ),
@@ -111,33 +110,32 @@ class VCPPage extends ConsumerWidget {
                             errorMessage: error.toString(),
                             stackTrace: stackTrace,
                           ),
-                          loading: () =>
-                            LoadingWidget(),
+                          loading: () => LoadingWidget(),
                         ),
                         actions: [
                           TextButton(
-                            onPressed: () => Navigator.of(context).pop(), 
+                            onPressed: () => Navigator.of(context).pop(),
                             child: const Text("Ok"),
                           )
                         ],
                       );
-                    }
-                  ),
-                );
-              },
-            ),
+                    }),
+                  );
+                },
+              ),
           ],
         ),
         children: [
           Column(
             children: [
-              if (info.lidnummers != null) ...info.lidnummers!.map((contactLidnummer) => 
-                AlmanakUserTile(
-                  firstName: "",
-                  lastName: "",
-                  lidnummer: contactLidnummer,
+              if (info.lidnummers != null)
+                ...info.lidnummers!.map(
+                  (contactLidnummer) => AlmanakUserTile(
+                    firstName: "",
+                    lastName: "",
+                    lidnummer: contactLidnummer,
+                  ),
                 ),
-              ),
               _buildInfo('Wie', info.wie),
               _buildInfo('Wanneer', info.wanneer),
               _buildInfo('Waarvoor', info.waarvoor),
@@ -151,7 +149,8 @@ class VCPPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final contactpersonenInfo = ref.watch(meldpersonencontactInfoProvider(contactChoice));
+    final contactpersonenInfo =
+        ref.watch(meldpersonencontactInfoProvider(contactChoice));
     const double wrapSpacing = 8.0;
     const double fontSize = 24.0;
 
@@ -182,18 +181,25 @@ class VCPPage extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: wrapSpacing * 2, bottom: wrapSpacing * 2, right: wrapSpacing),
+            padding: const EdgeInsets.only(
+                top: wrapSpacing * 2,
+                bottom: wrapSpacing * 2,
+                right: wrapSpacing),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 for (final contactOption in ["Intern", "Extern"])
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: wrapSpacing / 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: wrapSpacing / 2),
                     child: ChoiceChip(
                       label: Text(contactOption),
                       onSelected: (selected) => context.goNamed(
                         "VCPContact",
-                        queryParameters: {'contactChoice': contactOption == "Intern" ? 'true' : 'false'},
+                        queryParameters: {
+                          'contactChoice':
+                              contactOption == "Intern" ? 'true' : 'false'
+                        },
                       ),
                       selected: contactChoice == (contactOption == "Intern"),
                     ),
@@ -202,44 +208,47 @@ class VCPPage extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: contactpersonenInfo.when(
-                data: (data) {
-                  if (contactChoice) {
-                    final contactInfo = data as List<MeldpersooncontactInfo>;
-                    return Column(
-                      children: contactInfo.map((info) => _buildTile(context, info)).toList(),
-                    );
-                  }
-                  else {
-                    final grouped = data as Map<String, List<MeldpersooncontactInfo>>;
-                    return Column(
-                      children: 
-                        grouped.entries.map((entry) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-                              ),
-                            ),
-                            child: ExpansionTile(
-                              title: Text(entry.key),
-                              children: entry.value.map((info) => _buildTile(context, info)).toList()
-                            ),
-                          );
-                        }).toList(),
-                    );
-                  }
-                },
-                error: (error, stackTrace) => ErrorCardWidget(
-                  errorMessage: error.toString(),
-                  stackTrace: stackTrace,
-                ),
-                loading: () =>
-                  LoadingWidget(),
+              child: SingleChildScrollView(
+            child: contactpersonenInfo.when(
+              data: (data) {
+                if (contactChoice) {
+                  final contactInfo = data as List<MeldpersooncontactInfo>;
+                  return Column(
+                    children: contactInfo
+                        .map((info) => _buildTile(context, info))
+                        .toList(),
+                  );
+                } else {
+                  final grouped =
+                      data as Map<String, List<MeldpersooncontactInfo>>;
+                  return Column(
+                    children: grouped.entries.map((entry) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withOpacity(0.5),
+                          ),
+                        ),
+                        child: ExpansionTile(
+                            title: Text(entry.key),
+                            children: entry.value
+                                .map((info) => _buildTile(context, info))
+                                .toList()),
+                      );
+                    }).toList(),
+                  );
+                }
+              },
+              error: (error, stackTrace) => ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stackTrace,
               ),
-            )
-          ),
+              loading: () => LoadingWidget(),
+            ),
+          )),
         ],
       ),
     );
