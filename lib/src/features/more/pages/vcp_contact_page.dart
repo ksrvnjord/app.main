@@ -58,7 +58,7 @@ class VCPPage extends ConsumerWidget {
             Expanded(
               child: Text(info.name),
             ),
-            if (info.contact != null && info.contact!.isNotEmpty)
+            if (info.contact != null)
               IconButton(
                 icon: const Icon(Icons.email_outlined),
                 tooltip: "Email",
