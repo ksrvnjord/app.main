@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:archive/archive.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 import 'package:universal_html/html.dart' as html;
@@ -17,11 +18,11 @@ class FormAnswerImageParams {
   FormAnswerImageParams({
     required this.docId,
     required this.userId,
-    required this.questionName,
+    required this.questionId,
   });
   final String docId;
   final String userId;
-  final String questionName;
+  final String questionId;
 
   @override
   bool operator ==(Object other) {
@@ -30,32 +31,31 @@ class FormAnswerImageParams {
     return other is FormAnswerImageParams &&
         other.docId == docId &&
         other.userId == userId &&
-        other.questionName == questionName;
+        other.questionId == questionId;
   }
 
   @override
-  int get hashCode => docId.hashCode ^ userId.hashCode ^ questionName.hashCode;
+  int get hashCode => docId.hashCode ^ userId.hashCode ^ questionId.hashCode;
 }
 
 // Fetch image function
 Future<String> fetchImage(
-    String docRef, String userId, String questionName) async {
+    String docRef, String userId, String questionId) async {
   return await storage
-      .ref('forms/$docRef/$userId/$questionName.png')
+      .ref('$firestoreFormCollectionName/$docRef/$userId/$questionId.png')
       .getDownloadURL();
 }
 
 Future<bool> addImage(
-    Uint8List image, String docRef, String questionName, WidgetRef ref) async {
+    Uint8List image, String docRef, String questionId, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
+        .ref(
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
         .putData(image);
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef,
-        userId: user.identifierString,
-        questionName: questionName)));
+        docId: docRef, userId: user.identifierString, questionId: questionId)));
     return true;
   } catch (e) {
     return false;
@@ -63,21 +63,20 @@ Future<bool> addImage(
 }
 
 Future<bool> changeImage(
-    Uint8List image, String docRef, String questionName, WidgetRef ref) async {
-  return await addImage(image, docRef, questionName, ref);
+    Uint8List image, String docRef, String questionId, WidgetRef ref) async {
+  return await addImage(image, docRef, questionId, ref);
 }
 
 Future<bool> deleteImage(
-    String docRef, String questionName, WidgetRef ref) async {
+    String docRef, String questionId, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
     await storage
-        .ref('forms/$docRef/${user.identifierString}/$questionName.png')
+        .ref(
+            '$firestoreFormCollectionName/$docRef/${user.identifierString}/$questionId.png')
         .delete();
     ref.refresh(formAnswerImageProvider(FormAnswerImageParams(
-        docId: docRef,
-        userId: user.identifierString,
-        questionName: questionName)));
+        docId: docRef, userId: user.identifierString, questionId: questionId)));
     return true;
   } catch (e) {
     return false;
@@ -87,8 +86,9 @@ Future<bool> deleteImage(
 Future<bool> deleteAllImages(String docRef, WidgetRef ref) async {
   try {
     final user = await ref.watch(currentUserProvider.future);
-    final listResult =
-        await storage.ref('forms/$docRef/${user.identifierString}').listAll();
+    final listResult = await storage
+        .ref('$firestoreFormCollectionName/$docRef/${user.identifierString}')
+        .listAll();
 
     for (var item in listResult.items) {
       await item.delete();
@@ -105,7 +105,8 @@ Future<void> downloadAllFormImageAnswers(String docRef) async {
   final storage = FirebaseStorage.instance;
 
   // Get the root directory for 'forms/$docRef'
-  final listResult = await storage.ref('forms/$docRef').listAll();
+  final listResult =
+      await storage.ref('$firestoreFormCollectionName/$docRef').listAll();
 
   // Initialize an in-memory zip archive
   final archive = Archive();
@@ -150,5 +151,5 @@ Future<void> downloadAllFormImageAnswers(String docRef) async {
 // Provider for form anser of other user
 final formAnswerImageProvider =
     FutureProvider.family<String, FormAnswerImageParams>((ref, params) async {
-  return fetchImage(params.docId, params.userId, params.questionName);
+  return fetchImage(params.docId, params.userId, params.questionId);
 });

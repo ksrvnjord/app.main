@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/weather_metric_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
 //weather icons source: https://erikflowers.github.io/weather-icons/
@@ -345,7 +347,7 @@ class WeatherWidget extends ConsumerWidget {
           ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8);
       },
-      error: (err, stk) => Text(err.toString()),
+      error: (err, stk) => ErrorTextWidget(errorMessage: err.toString()),
       loading: () => const CircularProgressIndicator.adaptive(),
     );
   }

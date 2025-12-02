@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/get_image.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/model/announcement.dart';
 
@@ -36,7 +38,9 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
             }
           },
           loading: () => const SizedBox(width: 48),
-          error: (error, stackTrace) => const SizedBox(width: 48),
+          error: (error, stackTrace) => ErrorTextWidget(
+            errorMessage: error.toString(),
+          ),
         ),
         SmoothPageIndicator(
           controller: pageController,
@@ -91,7 +95,9 @@ class AnnouncementAdditionalHeaderWidget extends ConsumerWidget {
             }
           },
           loading: () => const SizedBox(width: 48),
-          error: (error, stackTrace) => const SizedBox(width: 48),
+          error: (error, stackTrace) => ErrorCardWidget(
+            errorMessage: error.toString(),
+          ),
         ),
       ],
     );

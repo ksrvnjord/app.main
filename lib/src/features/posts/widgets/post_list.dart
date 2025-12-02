@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/posts_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/api/selected_topic_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_card.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostList extends ConsumerWidget {
   const PostList({super.key});
@@ -30,9 +32,13 @@ class PostList extends ConsumerWidget {
                             color: Theme.of(context).colorScheme.outline,
                           ),
                     ),
-                    Image.asset(
-                      'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
-                      height: sponsorImageHeight,
+                    GestureDetector(
+                      onTap: () =>
+                          launchUrl(Uri.parse("https://bohemianbirds.com/")),
+                      child: Image.asset(
+                        'assets/images/sponsors/bohemian_birds_no_bg_${Theme.of(context).brightness.name == "dark" ? "white" : "black"}.png',
+                        height: sponsorImageHeight,
+                      ),
                     ),
                   ].toColumn(),
                   const Divider(),
@@ -40,7 +46,8 @@ class PostList extends ConsumerWidget {
                 ],
               );
       },
-      error: (error, _) => Center(child: Text('Error: $error')),
+      error: (error, _) =>
+          Center(child: ErrorTextWidget(errorMessage: error.toString())),
       loading: () => const Center(child: CircularProgressIndicator.adaptive()),
     );
   }

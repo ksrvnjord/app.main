@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
@@ -11,6 +12,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
 /// Sources: [FirestoreUser] and [DjangoUser].
 @immutable
 class User {
+  const User({FirestoreUser? firestore, required DjangoUser django})
+      : _django = django,
+        _firestore = firestore;
   final FirestoreUser? _firestore;
   final DjangoUser _django;
 
@@ -32,11 +36,18 @@ class User {
   String? get otherAssociation => _firestore?.otherAssociation;
   bool? get canBookTrainingFarInAdvance =>
       _firestore?.canBookTrainingFarInAdvance;
+  bool get isRegisteredCoach => _firestore?.isRegisteredCoach ?? false;
+  bool get isRegisteredCox => _firestore?.isRegisteredCox ?? false;
+  List<String> get coachPreferences => _firestore?.coachPreferences ?? [];
+  List<String> get coxPreferences => _firestore?.coxPreferences ?? [];
+  List<String> get firestorePermissions => _firestore?.permissions ?? [];
+  FirestoreUser? get firestore => _firestore;
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
   bool get isAdmin => _django.isStaff;
-  String get birthDate => _django.birthDate;
+  String? get birthDate => _django.birthDate; // TODO: better to be non-nullable
+  bool get isBirthday => _django.isBirthday;
   String get initials => _django.initials;
   String get iban => _django.iban;
 
@@ -46,6 +57,8 @@ class User {
   KNRB? get knrb => _django.knrb;
 
   List<GroupDjangoEntry> get groups => _django.groups;
+  List<int> get groupIds =>
+      _django.groups.map((entry) => entry.group.id!).toList();
   // TODO: fix below.
   //List<PermissionEntry> get permissions => _django.permissions;
 
@@ -65,13 +78,13 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
+  Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
+
+  bool get canCreateForms => django.isStaff || canCreateFormsFor.isNotEmpty;
+
   // EXPOSE DJANGO USER.
   // ignore: avoid-unnecessary-getter
   DjangoUser get django => _django;
-  // ignore: sort_constructors_first
-  const User({FirestoreUser? firestore, required DjangoUser django})
-      : _django = django,
-        _firestore = firestore;
 }
 
 String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
@@ -80,4 +93,29 @@ String? getBestuursFunctie(List<GroupDjangoEntry> entries, int currentYear) {
           entry.group.type == "Bestuur" && entry.group.year == currentYear)
       .map((entry) => entry.role)
       .firstWhere((role) => role != null, orElse: () => null);
+}
+
+Map<String, String> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
+  final currentYear = DateTime.now().subtract(Duration(days: 243)).year;
+  return entries
+      .where((entry) =>
+          entry.permissions.contains(
+              'forms:*') && // TODO: needs to match on forms:* or forms:create
+          (entry.group.year == currentYear ||
+              entry.group.year == currentYear + 1))
+      .fold({}, (acc, entry) {
+    acc[entry.group.id!.toString()] = entry.group.name;
+    return acc;
+  });
+}
+
+extension UserFirestoreExt on User {
+  DocumentReference<Map<String, dynamic>> get firestoreRef {
+    if (_firestore == null) {
+      throw Exception('No Firestore data available');
+    }
+    return FirebaseFirestore.instance
+        .collection('people')
+        .doc(_firestore.identifier);
+  }
 }

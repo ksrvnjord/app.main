@@ -187,7 +187,7 @@ class _EditAlmanakProfilePageState
               ),
               ListTile(
                 // ignore: avoid-non-ascii-symbols
-                title: const Text('Geef mijn allergiëen & dieetwensen door'),
+                title: const Text('Geef mijn allergieën/aversies door'),
                 subtitle: const Text(
                   "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
                 ),

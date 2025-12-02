@@ -1,21 +1,29 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_count_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FormCard extends ConsumerWidget {
-  const FormCard({super.key, required this.formDoc});
+  const FormCard({
+    super.key,
+    required this.formDoc,
+    required this.currentUser,
+    this.pushContext = false,
+  });
 
   final DocumentSnapshot<FirestoreForm> formDoc;
+  final User currentUser;
+  final bool pushContext;
 
   final borderWidth = 2.0;
 
@@ -29,18 +37,17 @@ class FormCard extends ConsumerWidget {
       );
     }
 
-    final openUntil = form.openUntil.toDate();
-
-    final formIsOpen = DateTime.now().isBefore(openUntil);
-
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
+
+    final countAnswerProvider =
+        ref.watch(formAnswerCountProvider(formDoc.reference));
 
     final colorScheme = Theme.of(context).colorScheme;
 
     final textTheme = Theme.of(context).textTheme;
 
     var roundedRectangleBorder = RoundedRectangleBorder(
-      side: !formIsOpen
+      side: !form.isOpen
           ? BorderSide(
               color: Colors.grey,
             )
@@ -66,37 +73,68 @@ class FormCard extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            formIsOpen
+            form.formClosingTimeIsInFuture
                 ? "Sluit ${timeago.format(
-                    openUntil,
+                    form.openUntil,
                     locale: 'nl',
                     allowFromNow: true,
                   )}"
-                : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}",
+                : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
             style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
           ),
+          if (form.maximumNumberIsVisible == true)
+            countAnswerProvider.when(
+              data: (answerCount) => Text(
+                "Aantal antwoorden: $answerCount / ${form.maximumNumberOfAnswers < 2000 ? form.maximumNumberOfAnswers : '∞'}",
+                style:
+                    textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+              ),
+              error: (err, stack) =>
+                  ErrorTextWidget(errorMessage: err.toString()),
+              loading: () => const SizedBox.shrink(),
+            ),
           userAnswerProvider.when(
-            data: (snapshot) => snapshot.docs.isEmpty
-                ? const SizedBox.shrink()
-                : AnswerStatusCard(
-                    answerExists: snapshot.docs.isNotEmpty,
-                    isCompleted: snapshot.docs.isNotEmpty &&
-                        // ignore: avoid-unsafe-collection-methods
-                        snapshot.docs.first.data().isCompleted,
-                    showIcon: true,
-                    textStyle: textTheme.labelLarge,
-                  ),
-            error: (err, stack) => Text('Error: $err'),
+            data: (snapshot) {
+              if (snapshot.docs.isEmpty) {
+                return const SizedBox.shrink();
+              } else {
+                final answerExists = snapshot.docs.isNotEmpty;
+                final isCompleted = snapshot.docs.first.data().isCompleted;
+                final isDefinitive =
+                    snapshot.docs.first.data().definitiveAnswerHasBeenGiven;
+                return AnswerStatusCard(
+                  answerExists: answerExists,
+                  isCompleted: snapshot.docs.isNotEmpty &&
+                      // ignore: avoid-unsafe-collection-methods
+                      snapshot.docs.first.data().isCompleted,
+                  showIcon: true,
+                  isCompleteUnretractableAndUnSent: isCompleted &&
+                      form.formAnswersAreUnretractable &&
+                      !isDefinitive,
+                  textStyle: textTheme.labelLarge,
+                );
+              }
+            },
+            error: (err, stack) =>
+                ErrorCardWidget(errorMessage: err.toString()),
             loading: () => const SizedBox.shrink(),
           ),
         ],
       ),
       trailing: Icon(Icons.arrow_forward_ios, color: colorScheme.primary),
-      onTap: () => unawaited(context.pushNamed(
-        "Form",
-        pathParameters: {"formId": formDoc.reference.id},
-        queryParameters: {"v": "2"},
-      )),
+      onTap: () {
+        if (pushContext) {
+          context.pushNamed(
+            "Form",
+            pathParameters: {"formId": formDoc.reference.id},
+          );
+        } else {
+          context.goNamed(
+            "Form",
+            pathParameters: {"formId": formDoc.reference.id},
+          );
+        }
+      },
     ).card(
       // Transparant color.
       color: Colors.transparent,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/loading_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -42,7 +43,7 @@ class GalleryFilePage extends ConsumerWidget {
               ).ignore(),
               icon: const Icon(Icons.share),
             ),
-            error: (err, _) => const SizedBox.shrink(),
+            error: (err, _) => ErrorTextWidget(errorMessage: err.toString()),
             loading: () => const SizedBox.shrink(),
           ),
         ],

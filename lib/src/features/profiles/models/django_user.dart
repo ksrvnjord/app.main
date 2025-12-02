@@ -41,7 +41,7 @@ class DjangoUser {
   final int identifier;
 
   @JsonKey(name: "birth_date")
-  final String birthDate;
+  final String? birthDate;
 
   String iban;
 
@@ -86,6 +86,14 @@ class DjangoUser {
 
   Map<String, dynamic> toJson() => _$DjangoUserToJson(this);
 
+  bool get isBirthday {
+    final currentDate = DateTime.now();
+    if (birthDate == null) return false;
+    final birthDateTime = DateTime.parse(birthDate!);
+    return currentDate.month == birthDateTime.month &&
+        currentDate.day == birthDateTime.day;
+  }
+
   static Future<DjangoUser> getByIdentifier(
     Ref ref,
     String lidnummer,
@@ -128,6 +136,7 @@ class DjangoUser {
       'groups',
       'birth_date',
       'info.blikken',
+      'info.stuurblikken',
       'info.taarten',
       'info.honorary',
     ];

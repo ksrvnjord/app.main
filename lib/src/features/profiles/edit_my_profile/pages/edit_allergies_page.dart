@@ -14,18 +14,21 @@ class EditAllergiesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserStream = ref.watch(currentFirestoreUserStreamProvider);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         // ignore: avoid-non-ascii-symbols
-        title: const Text('Mijn allergiëen & dieetwensen'),
+        title: const Text('Mijn allergieën/aversies'),
       ),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 80),
         children: [
           Card(
-            //color: colorScheme.errorContainer,
-            shape: const ContinuousRectangleBorder(),
+            color: colorScheme.errorContainer,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
             margin: const EdgeInsets.all(0.0),
             child: const Padding(
               padding: EdgeInsets.all(8.0),
@@ -60,7 +63,7 @@ class EditAllergiesPage extends ConsumerWidget {
     final myAllergies = currentUser.allergies;
 
     final List<String> allergies = [
-      'Vegetarisch',
+      'Vlees',
       'Gluten',
       'Lactose',
       'Noten',
@@ -69,9 +72,10 @@ class EditAllergiesPage extends ConsumerWidget {
       'Selderij',
       'Sesam',
       'Soja',
-      'Sulfiet',
       'Vis',
       'Weekdieren',
+      'Koemelk',
+      'Peulvruchten',
     ]..sort();
 
     final String customAllergy =
@@ -96,7 +100,7 @@ class EditAllergiesPage extends ConsumerWidget {
       [
         // Add textfield for adding custom allergies.
         // ignore: avoid-non-ascii-symbols
-        const Text('Andere allergieën & dieetwensen:')
+        const Text('Andere allergieën/aversies:')
             .fontSize(otherAllergiesFontSize),
         TextField(
           controller: TextEditingController()..text = customAllergy,
