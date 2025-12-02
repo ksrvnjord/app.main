@@ -391,7 +391,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                     const SizedBox(
                         height: 16), // Add some spacing between the buttons
                     FloatingActionButton.extended(
-                      tooltip: 'Download Bijbehorende Foto\'s',
+                      tooltip: 'Download bijbehorende foto\'s',
                       heroTag: 'downloadImages',
                       onPressed: () {
                         if (kIsWeb) {
@@ -407,7 +407,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
                         }
                       },
                       icon: const Icon(Icons.image),
-                      label: const Text('Download Bijbehorende Foto\'s'),
+                      label: const Text('Download bijbehorende foto\'s'),
                     ),
                   ],
                 ]),
