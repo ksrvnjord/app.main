@@ -24,16 +24,17 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
     final String placeHolder = isBestuurPage
         ? Images.placeholderBestuur
         : Images.placeholderProfilePicture;
+    final String loadingPicture = Images.loadingPicture;
 
     return ZoomableImage(
       imageProvider: imageProvider.when(
         data: (data) => data,
         error: (err, stk) => Image.asset(placeHolder).image,
-        loading: () => Image.asset(placeHolder).image,
+        loading: () => Image.asset(loadingPicture).image,
       ),
       image: imageProvider.when(
         data: (data) => FadeInImage(
-          placeholder: Image.asset(placeHolder).image,
+          placeholder: Image.asset(loadingPicture).image,
           image: data,
           width: width,
           height: height,
@@ -42,7 +43,7 @@ class AlmanakSubstructureCoverPicture extends ConsumerWidget {
         error: (err, stk) => Image.asset(placeHolder),
         // Loading show shimmer widget here.
         loading: () => Image.asset(
-          placeHolder,
+          loadingPicture,
           width: width,
           height: height,
           fit: BoxFit.cover,

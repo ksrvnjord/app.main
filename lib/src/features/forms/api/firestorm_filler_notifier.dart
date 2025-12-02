@@ -28,12 +28,17 @@ class FirestoreFormFillerNotifier extends ChangeNotifier {
   }
 
   bool get hasImage => _filler.hasImage;
+  bool get imageChanged => _filler.imageChanged;
   XFile? get image => _filler.image;
 
   void updateImage(XFile? file) {
     _filler.image = file;
     _filler.hasImage = file != null;
     notifyListeners();
+  }
+
+  void setImageChangedTrue() {
+    _filler.imageChanged = true;
   }
 
   /// Serialization passthrough

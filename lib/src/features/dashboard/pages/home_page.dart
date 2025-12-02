@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
@@ -9,6 +12,9 @@ import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/swan_divider.d
 import 'package:ksrvnjord_main_app/src/features/dashboard/widgets/vaarverbod_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/events/widgets/coming_week_events_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/widgets/notification_home_widget.dart';
+//import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+//import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart';
+//import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/my_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -21,6 +27,131 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  /*Future<void> _checkPhoneNumber() async {
+    final user = await ref.watch(currentUserProvider.future);
+    
+    debugPrint('=== USER DEBUG INFO ===');
+    debugPrint('User full name: ${user.fullName}');
+    debugPrint('User identifier: ${user.identifier}');
+    debugPrint('User isAdmin: ${user.isAdmin}');
+    debugPrint('User phonePrimary: ${user.phonePrimary}');
+    debugPrint('Django phonePrimary: ${user.django.contact.phonePrimary}');
+    debugPrint('======================');
+
+    final phone = user.phonePrimary;
+
+    if (phone == null || phone.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showPhonePromptDialog(user);
+      });
+    }
+  }
+
+  void _showPhonePromptDialog(User user) {
+    final formKey = GlobalKey<FormState>();
+    final controller = TextEditingController();
+    bool isButtonEnabled = false;
+    Timer? debounce;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // user must fill it in
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            void onTextChanged(String value) {
+              // Cancel previous timer
+              debounce?.cancel();
+              if (formKey.currentState?.validate() ?? false) {
+                setState(() => isButtonEnabled = true);
+              }
+
+              // Wait 800 ms after user stops typing
+              debounce = Timer(const Duration(milliseconds: 1000), () {
+                final valid = formKey.currentState?.validate() ?? false;
+                setState(() => isButtonEnabled = valid);
+              });
+            }
+
+            return AlertDialog(
+              title: const Text('Je nummer is niet bij ons bekend'),
+              content: Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: controller,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                    labelText: 'Mobiel nummer',
+                    hintText: '06-12345678',
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9+\- ]')),
+                  ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vul mobiel nummer in';
+                    }
+                    if (value.length < 10 || value.length > 14) {
+                      return 'Vul geldig nummer in';
+                    }
+                    if (!RegExp(r'^[+0-9\- ]+$').hasMatch(value)) {
+                      return 'ongeldig nummer';
+                    }
+                    return null;
+                  },
+                  onChanged: onTextChanged,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: isButtonEnabled
+                      ? () async {
+                          final formData = {
+                            'phonePrimary': controller.text,
+                          };
+
+                          // Update the user with the new data.
+                          user.django.updateWithPartialData(formData);
+
+                          // Update the user in the database.
+                          final success = await DjangoUser.updateByIdentifier(
+                              ref, user.django);
+
+                          if (success) {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Veranderingen opgeslagen!'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Er is iets misgegaan. Probeer het later opnieuw.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        }
+                      : null,
+                  child: const Text('Save'),
+                )
+              ],
+            );
+          },
+        );
+      },
+    ).then((_) {
+      debounce?.cancel();
+    });
+  }*/
+
   /// We only need to refresh providers that we don't listen to through a stream.
   Future<void> _refresh() async {
     final futureProviders = [
@@ -46,6 +177,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //_checkPhoneNumber();
     const double elementVPadding = 16;
     const double elementHPadding = 8;
 

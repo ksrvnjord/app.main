@@ -20,6 +20,9 @@ class FirestoreFormFiller {
   @JsonKey(includeFromJson: false, includeToJson: false)
   XFile? image;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool imageChanged = false;
+
   // Create fromJson method.
   // ignore: sort_constructors_first
   factory FirestoreFormFiller.fromJson(Map<String, dynamic> json) =>

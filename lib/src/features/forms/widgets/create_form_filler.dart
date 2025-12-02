@@ -75,6 +75,7 @@ class _CreateFormFillerState extends State<CreateFormFiller> {
 
   void updateFillerImageProperties(XFile? image) {
     fillerNotifier.updateImage(image);
+    fillerNotifier.setImageChangedTrue();
   }
 
   @override

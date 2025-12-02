@@ -96,14 +96,13 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                       subject: "Foto",
                     );
                   } catch (error) {
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Delen mislukt: $error'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Delen mislukt: $error'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 } else {
                   // Load image from provider if not cached
@@ -124,14 +123,13 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                           subject: "Foto",
                         );
                       } catch (error) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Delen mislukt: $error'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Delen mislukt: $error'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     error: (err, _) {

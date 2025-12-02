@@ -48,8 +48,8 @@ class AlmanakCommissieEditPageState
                 // ignore: prefer-extracting-callbacks
                 onTap: () {
                   // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                  _getImage(ImageSource.gallery, context)
-                      .then((value) => Navigator.of(context).pop());
+                  _getImage(ImageSource.gallery, context);
+                  if (mounted) Navigator.of(context).pop();
                 },
               ),
               ListTile(
@@ -58,8 +58,8 @@ class AlmanakCommissieEditPageState
                 // ignore: prefer-extracting-callbacks
                 onTap: () {
                   // ignore: avoid-async-call-in-sync-function, prefer-async-await
-                  _getImage(ImageSource.camera, context)
-                      .then((value) => Navigator.of(context).pop());
+                  _getImage(ImageSource.camera, context);
+                  if (mounted) Navigator.of(context).pop();
                 },
               ),
             ],
@@ -185,6 +185,8 @@ class AlmanakCommissieEditPageState
           groupId: widget.groupId,
         );
       }
+
+      if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
