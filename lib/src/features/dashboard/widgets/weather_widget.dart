@@ -165,7 +165,7 @@ class WeatherWidget extends ConsumerWidget {
           ),
         );
 
-        Widget buildSunMarker(DateTime sunTime, bool isSunrise) {
+        Widget buildSunMarker(DateTime sunTime, bool isSunset) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -175,14 +175,12 @@ class WeatherWidget extends ConsumerWidget {
                   DateFormat('HH:mm').format(sunTime),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                const SizedBox(height: 8),
-                const SizedBox(height: 22),
-                const SizedBox(height: 8),
+                const SizedBox(height: 36),
                 Icon(
-                  isSunrise ? WeatherIcons.sunrise : WeatherIcons.sunset,
+                  isSunset ? WeatherIcons.sunrise : WeatherIcons.sunset,
                   size: 24,
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 24),
               ],
             ),
           );
@@ -238,7 +236,7 @@ class WeatherWidget extends ConsumerWidget {
         // Collect all sunrise/sunset events that fall within the next48Hours span.
         final List<String> dailySunriseList =
             List<String>.from(data['daily']['sunrise']);
-        final List<String> dailySunsetList =
+        final List<String> dailySunsetList = 
             List<String>.from(data['daily']['sunset']);
 
         final DateTime hoursStart = next48Hours.isNotEmpty
@@ -252,13 +250,13 @@ class WeatherWidget extends ConsumerWidget {
         for (final s in dailySunriseList) {
           final dt = DateTime.parse(s);
           if (!dt.isBefore(hoursStart) && dt.isBefore(hoursEnd)) {
-            sunEvents.add({'time': dt, 'isSunrise': true});
+            sunEvents.add({'time': dt, 'isSunset': true});
           }
         }
         for (final s in dailySunsetList) {
           final dt = DateTime.parse(s);
           if (!dt.isBefore(hoursStart) && dt.isBefore(hoursEnd)) {
-            sunEvents.add({'time': dt, 'isSunrise': false});
+            sunEvents.add({'time': dt, 'isSunset': false});
           }
         }
         sunEvents.sort(
@@ -286,10 +284,10 @@ class WeatherWidget extends ConsumerWidget {
 
           if (ev != null) {
             final DateTime evTime = ev['time'] as DateTime;
-            final bool isSunrise = ev['isSunrise'] as bool;
+            final bool isSunset = ev['isSunset'] as bool;
 
             // Special case: sunset exactly at 17:26 -> skip VoTijd display.
-            if (!isSunrise &&
+            if (!isSunset &&
                 is1726 &&
                 evTime.hour == 17 &&
                 evTime.minute == 26) {
@@ -300,21 +298,21 @@ class WeatherWidget extends ConsumerWidget {
               continue;
             }
 
-            if (!isSunrise && is1726) {
+            if (!isSunset && is1726) {
               // Sunset in the 17:00 hour: place before/after 17:26 depending on minute
               if (evTime.minute < 26) {
-                hourItems.add(buildSunMarker(evTime, isSunrise));
+                hourItems.add(buildSunMarker(evTime, isSunset));
                 hourItems.add(buildHourTile(hourData));
               } else {
                 hourItems.add(buildHourTile(hourData));
-                hourItems.add(buildSunMarker(evTime, isSunrise));
+                hourItems.add(buildSunMarker(evTime, isSunset));
               }
               continue;
             }
 
             // Normal placement for all other events (including sunrises)
-            hourItems.add(buildSunMarker(evTime, isSunrise));
             hourItems.add(buildHourTile(hourData));
+            hourItems.add(buildSunMarker(evTime, isSunset));
             continue;
           }
 
@@ -331,7 +329,7 @@ class WeatherWidget extends ConsumerWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: SizedBox(
-                height: 150,
+                height: 120,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: hourItems,
@@ -345,13 +343,7 @@ class WeatherWidget extends ConsumerWidget {
             ).format(fetchTime)}",
             style: Theme.of(context).textTheme.labelMedium,
           ).alignment(Alignment.centerRight),
-        ].toColumn().padding(all: 8).card(
-              color: Theme.of(context)
-                  .colorScheme
-                  .secondaryContainer
-                  .withOpacity(0.6),
-              elevation: 1,
-            );
+        ].toColumn().padding(all: 8);
       },
       error: (err, stk) => Text(err.toString()),
       loading: () => const CircularProgressIndicator.adaptive(),
