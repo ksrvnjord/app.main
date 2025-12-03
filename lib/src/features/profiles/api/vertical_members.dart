@@ -6,8 +6,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/gro
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 // ignore: prefer-static-class
-final verticalLeedenProvider = StreamProvider.autoDispose
-    .family<List<GroupDjangoRelation>, String>(
+final verticalLeedenProvider =
+    StreamProvider.autoDispose.family<List<GroupDjangoRelation>, String>(
   (ref, name) async* {
     final dio = ref.watch(dioProvider);
 

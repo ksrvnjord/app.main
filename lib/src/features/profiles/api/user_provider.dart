@@ -11,11 +11,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 final currentUserProvider = StreamProvider.autoDispose<User>(
   (ref) async* {
     final user = ref.watch(firebaseAuthUserProvider).value;
-
     if (user == null) {
       return;
     }
-
     final profile = await ref.watch(userProvider(user.uid).future);
 
     yield profile;
@@ -53,7 +51,6 @@ final currentUserNotifierProvider = StateNotifierProvider<UserNotifier, User?>(
 final userProvider = StreamProvider.family<User, String>(
   (ref, lidnummer) async* {
     final user = ref.watch(firebaseAuthUserProvider).value;
-
     if (user == null) {
       // If in DEMO mode, the lidnummer is the heimdall id.
       final profile = await DjangoUser.getById(lidnummer, ref);

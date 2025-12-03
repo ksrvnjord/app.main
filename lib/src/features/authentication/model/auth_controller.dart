@@ -16,7 +16,7 @@ import 'package:ksrvnjord_main_app/src/features/messaging/save_messaging_token.d
 import 'package:ksrvnjord_main_app/src/features/shared/model/auth_constants.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 part 'auth_controller.g.dart';
 part 'auth_controller.freezed.dart';
 

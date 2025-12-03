@@ -46,6 +46,7 @@ class FirestoreUser {
         '23292',
         '23207',
         '23226',
+        '25141'
       ].contains(identifier); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
