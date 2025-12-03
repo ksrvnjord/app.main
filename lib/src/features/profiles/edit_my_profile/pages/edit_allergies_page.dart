@@ -42,7 +42,7 @@ class EditAllergiesPage extends ConsumerWidget {
                 ),
               ]),
             ),
-          ).padding(all: 8.0),
+          ),
           currentUserStream.when(
             data: (snapshot) => buildAllergiesForm(snapshot, context),
             error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
