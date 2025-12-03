@@ -25,3 +25,60 @@ class VertrouwenscontactpersoonInfo extends GroupInfo {
     };
   }
 }
+
+@immutable
+class MeldpersooncontactInfo extends GroupInfo {
+  final String? wie;
+  final String? wanneer;
+  final String? waarvoor;
+  final String? wat;
+  final List<String>? lidnummers;
+  final String? contact;
+
+  const MeldpersooncontactInfo({
+    required super.name,
+    this.wie,
+    this.wanneer,
+    this.waarvoor,
+    this.wat,
+    this.lidnummers,
+    this.contact,
+  });
+
+  static List<String>? _parseLidnummers(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
+    }
+    if (value is String) {
+      return [value.toString()];
+    }
+    return null;
+  }
+
+  factory MeldpersooncontactInfo.fromMap(Map<String, dynamic> map) {
+    return MeldpersooncontactInfo(
+      name: map['name'] as String,
+      wie: map['Wie'] != null ? map['Wie'] as String : null,
+      wanneer: map['Wanneer'] != null ? map['Wanneer'] as String : null,
+      waarvoor: map['Waarvoor'] != null ? map['Waarvoor'] as String : null,
+      wat: map['Wat'] != null ? map['Wat'] as String : null,
+      lidnummers: _parseLidnummers(map["Lidnummers"]),
+      contact: map['Contact'] != null ? map['Contact'] as String : null,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'wie': wie,
+      'wanneer': wanneer,
+      'waarvoor': waarvoor,
+      'wat': wat,
+      'lidnummers': lidnummers,
+      'contact': contact,
+    };
+  }
+}

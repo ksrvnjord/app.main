@@ -33,6 +33,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_pag
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
@@ -67,11 +68,14 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_needed_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_register_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_search_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
@@ -486,6 +490,35 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+            path: 'coach-of-stuur',
+            name: 'Coach Of Stuur Nodig',
+            pageBuilder: (context, state) => _getPage(
+                child: CoachOrCoxNeededPage(), name: 'Coach Of Stuur Nodig'),
+            routes: [
+              _route(
+                path: 'coach-of-stuur/zoeken/:role',
+                name: 'SearchRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxSearchPage(role: role),
+                    name: 'SearchRole',
+                  );
+                },
+              ),
+              _route(
+                path: 'coach-of-stuur/register/:role',
+                name: 'RegisterRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxRegisterPage(role: role),
+                    name: 'RegisterRole',
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ];
@@ -756,6 +789,17 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: "blikkenlijst",
           name: "Blikkenlijst",
           child: const BlikkenLijstPage(),
+        ),
+        _route(
+          path: "vcpcontact",
+          name: "VCPContact",
+          pageBuilder: (context, state) => _getPage(
+            child: VCPPage(
+              contactChoice:
+                  state.uri.queryParameters['contactChoice'] != 'false',
+            ),
+            name: "VCP Contact",
+          ),
         ),
         _route(
           path: "admin",

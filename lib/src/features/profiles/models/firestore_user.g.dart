@@ -32,6 +32,20 @@ FirestoreUser _$FirestoreUserFromJson(Map<String, dynamic> json) =>
           const <String>[],
       canBookTrainingFarInAdvance: json['canBookTrainingFarInAdvance'] as bool?,
       isAdmin: json['isAdmin'] as bool?,
+      isRegisteredCoach: json['isRegisteredCoach'] as bool? ?? false,
+      isRegisteredCox: json['isRegisteredCox'] as bool? ?? false,
+      coachPreferences: (json['coachPreferences'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
+      coxPreferences: (json['coxPreferences'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
+      permissions: (json['permissions'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
     );
 
 Map<String, dynamic> _$FirestoreUserToJson(FirestoreUser instance) =>
@@ -53,4 +67,9 @@ Map<String, dynamic> _$FirestoreUserToJson(FirestoreUser instance) =>
       'phonePrimary': instance.phonePrimary,
       'canBookTrainingFarInAdvance': instance.canBookTrainingFarInAdvance,
       'isAdmin': instance.isAdmin,
+      'isRegisteredCoach': instance.isRegisteredCoach,
+      'isRegisteredCox': instance.isRegisteredCox,
+      'coachPreferences': instance.coachPreferences,
+      'coxPreferences': instance.coxPreferences,
+      'permissions': instance.permissions,
     };

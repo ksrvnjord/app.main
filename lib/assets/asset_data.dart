@@ -7,4 +7,6 @@ class AssetData {
   static const String vertrouwenscontactpersonen =
       'assets/data/vertrouwenscontactpersonen.yaml';
   static const String privacyPolicy = 'assets/data/privacy-policy.md';
+  static const String meldpersooncontact = 'assets/data/intern_contact.yaml';
+  static const String externContact = 'assets/data/extern_contact.yaml';
 }
