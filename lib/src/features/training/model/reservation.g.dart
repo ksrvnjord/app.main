@@ -16,6 +16,7 @@ Reservation _$ReservationFromJson(Map<String, dynamic> json) => Reservation(
       creatorId: json['creatorId'] as String,
       objectName: json['objectName'] as String,
       creatorName: json['creatorName'] as String,
+      creatorIsAdmin: json['creatorIsAdmin'] as bool?,
     );
 
 Map<String, dynamic> _$ReservationToJson(Reservation instance) =>
@@ -25,6 +26,7 @@ Map<String, dynamic> _$ReservationToJson(Reservation instance) =>
       'creatorId': instance.creatorId,
       'objectName': instance.objectName,
       'creatorName': instance.creatorName,
+      'creatorIsAdmin': instance.creatorIsAdmin,
       'startTime':
           const TimestampDateTimeConverter().toJson(instance.startTimestamp),
       'endTime':

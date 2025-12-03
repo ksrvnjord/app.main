@@ -226,6 +226,9 @@ class ManageGroupsPage extends ConsumerWidget {
                             },
                           ),
                         ),
+                      SizedBox(
+                        height: 96.0,
+                      ),
                     ].toColumn();
             },
             error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),

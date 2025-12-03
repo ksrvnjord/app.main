@@ -9,6 +9,8 @@ import 'package:ksrvnjord_main_app/src/features/announcements/api/all_announceme
 import 'package:ksrvnjord_main_app/src/features/announcements/api/announcement_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/api/gallery_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// A Page that displays a single image from the gallery.
@@ -162,7 +164,9 @@ class AnnouncementPageState extends ConsumerState<AnnouncementPage> {
               }
             },
             loading: () => const SizedBox.shrink(),
-            error: (error, stackTrace) => const SizedBox.shrink(),
+            error: (error, stackTrace) => ErrorCardWidget(
+              errorMessage: error.toString(),
+            ),
           ),
         ],
       ),
@@ -225,7 +229,11 @@ class AnnouncementPageState extends ConsumerState<AnnouncementPage> {
 
                   return Image.memory(loadedImage.bytes);
                 },
-                error: (err, _) => Center(child: Text('Error: $err')),
+                error: (err, _) => Center(
+                  child: ErrorTextWidget(
+                    errorMessage: err.toString(),
+                  ),
+                ),
                 loading: () =>
                     const Center(child: CircularProgressIndicator.adaptive()),
               );

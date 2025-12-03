@@ -11,6 +11,7 @@ class GroupDjangoUser {
   final int identifier;
   // ignore: prefer-correct-identifier-length
   final int id;
+  final List<String> permissions;
 
   // ignore: sort_constructors_first
   factory GroupDjangoUser.fromJson(Map<String, dynamic> json) =>
@@ -22,5 +23,6 @@ class GroupDjangoUser {
     required this.lastName,
     required this.identifier,
     required this.id,
+    this.permissions = const [],
   });
 }

@@ -3,70 +3,102 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormsPage extends ConsumerWidget {
   const FormsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allForms = ref.watch(allFormsProvider);
+    final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
+    final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
+        firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('forms')),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          allForms.when(
-            // ignore: prefer-extracting-function-callbacks
-            data: (querySnapshot) {
-              final forms = querySnapshot.docs;
+      appBar: AppBar(title: Text(formsLocation)),
+      body: currentUserVal.when(
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
+        error: (e, s) {
+          FirebaseCrashlytics.instance.recordError(e, s);
+          return ErrorCardWidget(
+              errorMessage: 'Fout bij het laden van gebruiker.');
+        },
+        data: (currentUser) => allForms.when(
+          loading: () =>
+              const Center(child: CircularProgressIndicator.adaptive()),
+          error: (error, stack) =>
+              ErrorCardWidget(errorMessage: error.toString()),
+          data: (querySnapshot) {
+            final forms = querySnapshot.docs;
 
-              return forms
-                  // ignore: prefer-extracting-function-callbacks
-                  .map((item) {
-                    return FormCard(formDoc: item);
-                  })
-                  .toList()
-                  .toColumn(separator: const SizedBox(height: 4));
-            },
-            error: (error, stack) => ErrorCardWidget(
-              errorMessage: error.toString(),
-            ),
-            loading: () => const CircularProgressIndicator.adaptive(),
-          ),
-        ],
+            final visibleOpenForms = (forms).where((form) {
+              final formData = form.data();
+              return formData.isOpen &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
+            }).toList();
+            visibleOpenForms.sort(
+                (a, b) => a.data().openUntil.compareTo(b.data().openUntil));
+
+            final visibleClosedForms = (forms).where((form) {
+              final formData = form.data();
+              return !formData.isOpen &&
+                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                      currentUser.isAdmin);
+            }).toList();
+            visibleClosedForms.sort(
+                (a, b) => b.data().openUntil.compareTo(a.data().openUntil));
+
+            return ListView(
+              padding: const EdgeInsets.all(8),
+              children: [
+                ...visibleOpenForms.map((form) => FormCard(
+                      formDoc: form,
+                      currentUser: currentUser,
+                    )),
+                if (visibleClosedForms.isNotEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Divider(),
+                  ),
+                  const Center(
+                    child: Text(
+                      'Gesloten Forms',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ...visibleClosedForms.map((form) => FormCard(
+                        formDoc: form,
+                        currentUser: currentUser,
+                      )),
+                ]
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: currentUserVal.when(
-        // ignore: prefer-extracting-function-callbacks
-        data: (currentUser) {
-          final canAccesAdminPanel = currentUser.isAdmin;
-
-          return canAccesAdminPanel
-              ? FloatingActionButton.extended(
-                  tooltip: 'Maak een nieuwe form aan',
-                  foregroundColor: colorScheme.onTertiaryContainer,
-                  backgroundColor: colorScheme.tertiaryContainer,
-                  heroTag: "Create Form",
-                  onPressed: () => context.goNamed('Forms -> Create Form'),
-                  icon: const Icon(Icons.add),
-                  label: const Text('Maak een nieuwe form'),
-                )
-              : null;
-        },
-        // ignore: prefer-extracting-function-callbacks
-        error: (e, s) {
-          // ignore: avoid-async-call-in-sync-function
-          FirebaseCrashlytics.instance.recordError(e, s);
-
-          return const SizedBox.shrink();
-        },
+        data: (currentUser) => currentUser.canCreateForms
+            ? FloatingActionButton.extended(
+                tooltip: 'Beheer forms',
+                foregroundColor: colorScheme.onTertiaryContainer,
+                backgroundColor: colorScheme.tertiaryContainer,
+                heroTag: "Manage Forms",
+                onPressed: () => context.goNamed('Forms -> Manage Forms'),
+                icon: const Icon(Icons.find_in_page),
+                label: const Text('Beheer forms'),
+              )
+            : null,
         loading: () => const SizedBox.shrink(),
+        error: (e, s) => const SizedBox.shrink(),
       ),
     );
   }

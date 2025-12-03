@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: avoid-importing-entrypoint-exports
 import 'package:ksrvnjord_main_app/assets/asset_data.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/asset_string_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicyPage extends ConsumerWidget {
@@ -41,7 +42,8 @@ class PrivacyPolicyPage extends ConsumerWidget {
               shrinkWrap: false,
               fitContent: false,
             ),
-            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            error: (error, stackTrace) =>
+                Center(child: ErrorTextWidget(errorMessage: error.toString())),
             loading: () =>
                 const Center(child: CircularProgressIndicator.adaptive()),
           ),

@@ -7,6 +7,7 @@ part 'info.g.dart';
 @JsonSerializable()
 class Info {
   final int blikken;
+  final int stuurblikken;
   final int taarten;
   bool dubbellid;
   String? studie;
@@ -20,6 +21,7 @@ class Info {
   final bool honorary;
   Info({
     required this.blikken,
+    required this.stuurblikken,
     required this.taarten,
     required this.dubbellid,
     this.studie,

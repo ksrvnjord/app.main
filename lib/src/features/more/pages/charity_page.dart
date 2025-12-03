@@ -95,6 +95,17 @@ class CharityPage extends ConsumerWidget {
                   },
                 ),
               ),
+              const Divider(),
+              const SizedBox(height: sizedBoxHeight),
+              const Text(
+                '"Iedere stap die we samen zetten, maakt een wereld van verschil!" - Dirk Kuyt',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
               Image.asset(
                 'assets/images/dirk_kuyt_foundation.png',
                 width: imageWidth,

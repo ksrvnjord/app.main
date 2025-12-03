@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/my_permissions_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/training/widgets/calendar/widgets/chip_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -40,7 +41,8 @@ class MyPermissionsPage extends ConsumerWidget {
             data: (permissions) => permissions.isEmpty
                 ? const Text('Je hebt geen afschrijfpermissies').center()
                 : ChipWidget(values: permissions),
-            error: (error, stack) => Text(error.toString()),
+            error: (error, stack) =>
+                ErrorTextWidget(errorMessage: error.toString()),
             loading: () => const CircularProgressIndicator.adaptive().center(),
           ),
         ],

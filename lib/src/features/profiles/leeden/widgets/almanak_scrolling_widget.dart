@@ -38,20 +38,14 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
     int pageKey,
   ) async {
     const amountOfResults = 100;
-    final birthdayResult =
+    final birthdayUsers =
         await almanakBirthdayUsersProvider(pageKey, widget.search, ref);
-    final result = await almanakUsersProvider(pageKey, widget.search, ref);
+    final allUsers = await almanakUsersProvider(pageKey, widget.search, ref);
 
-    final birthdayUsers = birthdayResult['items'] as List;
-    final nonBirthdayUsers = result['items'] as List;
-    final users = birthdayUsers +
-        nonBirthdayUsers; //list the users with the birthday people first
+    final page = birthdayUsers +
+        allUsers; //list the users with the birthday people first
 
-    List<DjangoUser>? page = users
-        .map((user) => DjangoUser.fromJson(user as Map<String, dynamic>))
-        .toList();
-
-    if (result['count'] / amountOfResults > pageKey) {
+    if (page.length / amountOfResults > pageKey) {
       _pagingController.appendPage(page, pageKey + 1);
 
       return;

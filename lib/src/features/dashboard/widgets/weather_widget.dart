@@ -345,7 +345,7 @@ class WeatherWidget extends ConsumerWidget {
           ).alignment(Alignment.centerRight),
         ].toColumn().padding(all: 8);
       },
-      error: (err, stk) => Text(err.toString()),
+      error: (err, stk) => ErrorTextWidget(errorMessage: err.toString()),
       loading: () => const CircularProgressIndicator.adaptive(),
     );
   }

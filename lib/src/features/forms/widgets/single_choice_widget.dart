@@ -21,7 +21,7 @@ class SingleChoiceWidget extends StatelessWidget {
     this.initialValue,
     required this.formQuestion,
     required this.onChanged,
-    required this.formIsOpen,
+    required this.userCanEditForm,
     super.key,
   });
 
@@ -29,7 +29,7 @@ class SingleChoiceWidget extends StatelessWidget {
   final FirestoreFormQuestion formQuestion;
   // ignore: prefer-explicit-parameter-names
   final void Function(String?) onChanged;
-  final bool formIsOpen;
+  final bool userCanEditForm;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class SingleChoiceWidget extends StatelessWidget {
                 .map((choice) => RadioListTile<String>(
                       value: choice,
                       groupValue: initialValue,
-                      onChanged: formIsOpen ? onChanged : null,
+                      onChanged: userCanEditForm ? onChanged : null,
                       toggleable: true,
                       title: Text(choice),
                     ))

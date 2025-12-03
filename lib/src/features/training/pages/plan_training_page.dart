@@ -257,6 +257,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
               : () => createReservation(
                     currentUser.identifier.toString(),
                     currentUser.fullName,
+                    currentUser.isAdmin,
                   ),
           child: <Widget>[
             Icon(inProgress ? LucideIcons.loader : LucideIcons.check)
@@ -276,6 +277,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   void createReservation(
     String uid,
     String creatorName,
+    bool? creatorIsAdmin,
   ) async {
     setState(() {
       inProgress = true;
@@ -288,6 +290,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       creatorId: uid,
       objectName: widget.objectName,
       creatorName: creatorName,
+      creatorIsAdmin: creatorIsAdmin,
     ));
 
     if (res['success'] == true) {
@@ -339,6 +342,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         'object': r.reservationObject.path,
         'objectName': r.objectName,
         'creatorName': r.creatorName,
+        'creatorIsAdmin': r.creatorIsAdmin,
       });
 
       return result.data;

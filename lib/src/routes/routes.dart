@@ -1,12 +1,13 @@
 // ignore_for_file: prefer-match-file-name, avoid-long-files
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
-import 'package:ksrvnjord_main_app/src/features/admin/push_notifications/create_push_notification_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/pages/forgot_password_page.dart';
@@ -22,7 +23,7 @@ import 'package:ksrvnjord_main_app/src/features/more/pages/about_this_app_page.d
 import 'package:ksrvnjord_main_app/src/features/more/pages/blikken_lijst_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/charity_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/edit_charity_page.dart';
-import 'package:ksrvnjord_main_app/src/features/polls/pages/poll_page.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/pages/list_notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/comments_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/create_post_page.dart';
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_edit_page.dart';
@@ -32,6 +33,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_pag
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
@@ -40,6 +42,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/download_profile_pictures_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/upload_aspi_profile_pictures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_visibility_page.dart';
@@ -57,16 +61,21 @@ import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_detail
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_needed_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_register_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_search_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
@@ -177,15 +186,32 @@ abstract final // ignore: prefer-single-declaration-per-file
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.
 
-        final bool currentRouteRequiresAdmin = currentPath.contains('/admin');
+        final bool currentRouteRequiresFormAdmin =
+            currentPath.contains('/forms/editor');
+        final bool currentRouteRequiresAdmin =
+            currentPath.contains('/admin') && !currentRouteRequiresFormAdmin;
 
-        final bool canAccesAdminRoutes = ref.read(
+        final bool canAccessAdminRoutes = ref.read(
               currentUserNotifierProvider.select((value) => value?.isAdmin),
             ) ??
             false; // Watch for changes in the user's admin status.
 
-        if (currentRouteRequiresAdmin && !canAccesAdminRoutes) {
-          return '/401';
+        final bool canAccessFormAdminRoutes = ref.read(
+              currentUserNotifierProvider.select(
+                (value) => value?.canCreateForms,
+              ),
+            ) ??
+            false; // Watch for changes in the user's form admin status.
+
+        // ignore unauthorised check in debugmode
+        if (kReleaseMode) {
+          if (currentRouteRequiresFormAdmin && !canAccessFormAdminRoutes) {
+            return '/401';
+          }
+
+          if (currentRouteRequiresAdmin && !canAccessAdminRoutes) {
+            return '/401';
+          }
         }
 
         // ignore: prefer-returning-conditional-expressions
@@ -211,8 +237,13 @@ abstract final // ignore: prefer-single-declaration-per-file
         upgrader: Upgrader(
           countryCode: 'nl',
           languageCode: 'nl',
+          minAppVersion:
+              RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
+          durationUntilAlertAgain: Duration(minutes: 4),
         ),
+        showIgnore: false,
+        showLater: false,
         child: const HomePage(),
       ),
       routes: [
@@ -222,31 +253,60 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: RouteName.forms,
           child: const FormsPage(),
           routes: [
-            // path: /forms/nieuw
             _route(
-              path: 'admin/nieuw',
-              name: "Forms -> Create Form",
-              child: const CreateFormPage(),
+              path: 'editor/manage',
+              name: "Forms -> Manage Forms",
+              child: const ManageFormsPage(),
+              routes: [
+                // path: /forms/editor/manage/nieuw
+                _route(
+                  path: 'nieuw',
+                  name: "Forms -> Create Form",
+                  pageBuilder: (context, state) {
+                    final formId = state.uri.queryParameters['formId'];
+                    return _getPage(
+                      child: CreateFormPage(existingFormId: formId),
+                      name: "Forms -> Create Form",
+                    );
+                  },
+                ),
+                _route(
+                  path: ':formId',
+                  name: "Forms -> View Form",
+                  routes: [
+                    _route(
+                      path: 'resultaten',
+                      name: "Forms -> Form Results",
+                      pageBuilder: (context, state) => _getPage(
+                        child: FormResultsPage(
+                          formId: state.pathParameters['formId']!,
+                        ),
+                        name: "Forms -> Form Results",
+                      ),
+                    ),
+                  ],
+                  pageBuilder: (context, state) => _getPage(
+                    child: ManageFormPage(
+                      formId: state.pathParameters['formId']!,
+                      isAdmin: state.uri.queryParameters['isAdmin']! == 'true',
+                      isInAdminPanel: false,
+                    ),
+                    name: "Forms -> View Form",
+                  ),
+                ),
+              ],
             ),
+
             // Dynamic route for viewing one form.
             // At the moment only accessible through deeplink, not in App-UI.
             _route(
-              path: ':formId',
-              // Forms/fgdgdf789dfg7df9dg789.
-              name: "Form",
-              pageBuilder: (context, state) => state.uri.queryParameters['v'] !=
-                          null &&
-                      state.uri.queryParameters['v'] ==
-                          '2' // TODO: Remove this after migration.
-                  ? _getPage(
+                path: ':formId',
+                // Forms/fgdgdf789dfg7df9dg789.
+                name: "Form",
+                pageBuilder: (context, state) => _getPage(
                       child: FormPage(formId: state.pathParameters['formId']!),
                       name: "Form",
-                    )
-                  : _getPage(
-                      child: PollPage(pollId: state.pathParameters['formId']!),
-                      name: "Poll",
-                    ),
-            ),
+                    )),
           ],
         ),
         // Route for viewing all events.
@@ -260,6 +320,10 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "All Announcements",
           child: const GalleryMainPage(goToAnnouncementPage: true),
         ),
+        _route(
+            path: 'notifications',
+            name: "Notifications",
+            child: const ListNotificationsPage()),
         _route(
           path: 'mijn-profiel',
           name: "Edit Profile",
@@ -426,6 +490,35 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+            path: 'coach-of-stuur',
+            name: 'Coach Of Stuur Nodig',
+            pageBuilder: (context, state) => _getPage(
+                child: CoachOrCoxNeededPage(), name: 'Coach Of Stuur Nodig'),
+            routes: [
+              _route(
+                path: 'coach-of-stuur/zoeken/:role',
+                name: 'SearchRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxSearchPage(role: role),
+                    name: 'SearchRole',
+                  );
+                },
+              ),
+              _route(
+                path: 'coach-of-stuur/register/:role',
+                name: 'RegisterRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxRegisterPage(role: role),
+                    name: 'RegisterRole',
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ];
@@ -502,6 +595,39 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 name: "Commissie",
               ),
+              routes: [
+                _route(
+                    path: "edit",
+                    name: "Commissie -> Edit",
+                    pageBuilder: (context, state) => _getPage(
+                          child: AlmanakCommissieEditPage(
+                            name: state.pathParameters['name']!,
+                            year: state.uri.queryParameters['year'] != null
+                                ? int.parse(state.uri.queryParameters['year']!)
+                                : getNjordYear(),
+                            groupId:
+                                state.uri.queryParameters['groupId'] != null
+                                    ? int.parse(
+                                        state.uri.queryParameters['groupId']!)
+                                    : 0,
+                          ),
+                          name: "Commissie -> Edit",
+                        ),
+                    routes: [
+                      _route(
+                          path: "download_profile_pictures",
+                          name: "download profile pictures",
+                          pageBuilder: (context, state) => _getPage(
+                              child: DownloadProfilePicturesPage(),
+                              name: "download profile pictures")),
+                      _route(
+                          path: "upload_aspi_profile_pictures",
+                          name: "upload aspi profile pictures",
+                          pageBuilder: (context, state) => _getPage(
+                              child: UploadAspiProfilePictures(),
+                              name: "upload aspi profile pictures"))
+                    ]),
+              ],
             ),
           ],
         ),
@@ -665,6 +791,17 @@ abstract final // ignore: prefer-single-declaration-per-file
           child: const BlikkenLijstPage(),
         ),
         _route(
+          path: "vcpcontact",
+          name: "VCPContact",
+          pageBuilder: (context, state) => _getPage(
+            child: VCPPage(
+              contactChoice:
+                  state.uri.queryParameters['contactChoice'] != 'false',
+            ),
+            name: "VCP Contact",
+          ),
+        ),
+        _route(
           path: "admin",
           name: "Admin",
           child: const AdminPage(),
@@ -687,28 +824,36 @@ abstract final // ignore: prefer-single-declaration-per-file
                 _route(
                   path: 'nieuw',
                   name: "Admin -> Create Form",
-                  child: const CreateFormPage(),
+                  pageBuilder: (context, state) {
+                    final formId = state.uri.queryParameters['formId'];
+                    return _getPage(
+                      child: CreateFormPage(existingFormId: formId),
+                      name: "Admin -> Create Form",
+                    );
+                  },
                 ),
                 _route(
                   path: ':formId',
-                  name: "View Form",
+                  name: "Admin -> View Form",
                   routes: [
                     _route(
                       path: 'resultaten',
-                      name: "Form Results",
+                      name: "Admin -> Form Results",
                       pageBuilder: (context, state) => _getPage(
                         child: FormResultsPage(
                           formId: state.pathParameters['formId']!,
                         ),
-                        name: "Form Results",
+                        name: "Admin -> Form Results",
                       ),
                     ),
                   ],
                   pageBuilder: (context, state) => _getPage(
                     child: ManageFormPage(
                       formId: state.pathParameters['formId']!,
+                      isAdmin: true,
+                      isInAdminPanel: true,
                     ),
-                    name: "View Form",
+                    name: "Admin -> View Form",
                   ),
                 ),
               ],

@@ -102,6 +102,44 @@ class EditGroupPage extends ConsumerWidget {
     };
   }
 
+  void giveUserPermission(int userId, String permission, bool add,
+      WidgetRef ref, BuildContext ctx) async {
+    final dio = ref.read(dioProvider);
+    try {
+      final response = await dio.get("/api/v2/groups/$groupId/$userId/");
+      final permissions =
+          (response.data["permissions"] as List<dynamic>).toSet();
+
+      if (add) {
+        permissions.add(permission);
+      } else {
+        permissions.remove(permission);
+      }
+
+      // ignore: avoid-ignoring-return-values
+      await dio.patch("/api/v2/groups/$groupId/$userId/", data: {
+        "permissions": permissions.toList(),
+      });
+      if (!ctx.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(
+              "Gebruiker heeft nu ${add ? '' : 'geen '} $permission permissie."),
+        ),
+      );
+    } catch (error) {
+      if (!ctx.mounted) return;
+      // ignore: avoid-ignoring-return-values
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Het is niet gelukt om de gebruiker's toestemming te veranderen."),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupVal = ref.watch(groupByIdProvider(groupId));
@@ -175,65 +213,115 @@ class EditGroupPage extends ConsumerWidget {
                 floating: true,
                 pinned: true,
               ),
+              // Header for the SliverList
+              SliverToBoxAdapter(
+                child: ListTile(
+                  title: const Text("Lid"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      SizedBox(width: 32.0, child: Icon(Icons.edit_document)),
+                      SizedBox(width: 32.0, child: Icon(Icons.book)),
+                    ],
+                  ),
+                ),
+              ),
               users.isEmpty
                   ? const SliverFillRemaining(
                       child: Center(
                         child: Text('Er zijn geen leden in deze groep.'),
                       ),
                     )
-                  : SliverList.builder(
-                      itemBuilder: (context, index) {
-                        final Map<String, dynamic> user = users[index]['user'];
-                        final String? role = users[index]['role'];
+                  : SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 96.0),
+                      sliver: SliverList.builder(
+                        itemBuilder: (context, index) {
+                          final Map<String, dynamic> user =
+                              users[index]['user'];
+                          final String? role = users[index]['role'];
+                          bool hasFormsPermission = (users[index]['permissions']
+                                  as List<dynamic>)
+                              .map((e) => e as String)
+                              .contains(
+                                  "forms:*"); // TODO: should be forms:* or forms:create
+                          bool hasAlmanakPermission = (users[index]
+                                  ['permissions'] as List<dynamic>)
+                              .map((e) => e as String)
+                              .contains(
+                                  "almanak:*"); // TODO: should be alamank:* or almanak:create
 
-                        return ListTile(
-                          title: Text(
-                            user['first_name'] + ' ' + user['last_name'],
-                          ),
-                          subtitle: role == null ? null : Text(role),
-                          trailing: IconButton(
-                            onPressed: () async {
-                              final confirm = await showDialog<bool>(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Lid verwijderen?'),
-                                    content: Text(
-                                        'Weet je zeker dat je ${user['first_name'] + ' ' + user['last_name']} wil verwijderen?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(false),
-                                        child: const Text('Nee'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(true),
-                                        child: const Text('Ja'),
-                                      ),
-                                    ],
-                                  );
-                                },
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              final userLastName = user['infix'].isEmpty
+                                  ? user['last_name']
+                                  : '${user['infix'].toString().toLowerCase()} ${user['last_name']}';
+                              final userFullName =
+                                  "${user['first_name']} $userLastName";
+
+                              return ListTile(
+                                title: Text(
+                                  userFullName,
+                                ),
+                                subtitle: role == null ? null : Text(role),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () async {
+                                        final confirm = await showDialog<bool>(
+                                            context: context,
+                                            builder: (context) =>
+                                                DeleteUserAlertDialogue(
+                                                    user: user));
+
+                                        if (confirm == true) {
+                                          if (!context.mounted) return;
+                                          removeUserFromGroup(
+                                            user['iid'],
+                                            ref,
+                                            context,
+                                          );
+                                        }
+                                      },
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                    Checkbox.adaptive(
+                                      value: hasFormsPermission,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          hasFormsPermission = value ?? false;
+                                        });
+                                        giveUserPermission(
+                                            user['iid'],
+                                            "forms:*",
+                                            value ?? false,
+                                            ref,
+                                            context);
+                                      },
+                                    ),
+                                    Checkbox.adaptive(
+                                      value: hasAlmanakPermission,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          hasAlmanakPermission = value ?? false;
+                                        });
+                                        giveUserPermission(
+                                            user['iid'],
+                                            "almanak:*",
+                                            value ?? false,
+                                            ref,
+                                            context);
+                                      },
+                                    ),
+                                  ],
+                                ),
                               );
-
-                              if (confirm == true) {
-                                if (!context.mounted) return;
-                                removeUserFromGroup(
-                                  user['identifier'],
-                                  ref,
-                                  context,
-                                );
-                              }
                             },
-                            icon: const Icon(Icons.delete),
-                          ),
-                        );
-                      },
-                      itemCount: users.length,
+                          );
+                        },
+                        itemCount: users.length,
+                      ),
                     ),
-              SliverPadding(
-                padding: const EdgeInsets.only(bottom: 72.0),
-              ),
             ],
           );
         },
@@ -258,5 +346,36 @@ class EditGroupPage extends ConsumerWidget {
         label: const Text('Voeg lid toe'),
       ),
     );
+  }
+}
+
+class DeleteUserAlertDialogue extends StatelessWidget {
+  const DeleteUserAlertDialogue({
+    super.key,
+    required this.user,
+  });
+
+  final Map<String, dynamic> user;
+
+  @override
+  Widget build(BuildContext context) {
+    final userLastName = user['infix'].isEmpty
+        ? user['last_name']
+        : '${user['infix'].toString().toLowerCase()} ${user['last_name']}';
+    final userFullName = "${user['first_name']} $userLastName";
+
+    return AlertDialog(
+        title: const Text("Lid verwijderen?"),
+        content: Text("Weet je zeker dat je $userFullName wil verwijderen?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Nee'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Ja'),
+          ),
+        ]);
   }
 }

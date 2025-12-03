@@ -1,20 +1,16 @@
 // ignore_for_file: prefer-extracting-function-callbacks
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/forms_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_content.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_definitive_submit_button.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_page_delete_button.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/routing_constants.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class FormPage extends ConsumerStatefulWidget {
   // Constructor which takes a String formId.
@@ -31,49 +27,6 @@ class _FormPageState extends ConsumerState<FormPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // ignore: avoid-dynamic
-  Future<dynamic> _deleteMyFormAnswer(
-    WidgetRef ref,
-    BuildContext context,
-  ) async {
-    final answer = await ref.watch(
-      formAnswerProvider(formsCollection.doc(widget.formId)).future,
-    );
-    if (answer.docs.isNotEmpty) {
-      // ignore: avoid-unsafe-collection-methods
-      final answerPath = answer.docs.first.reference.path;
-
-      if (!context.mounted) return;
-
-      return showDialog(
-        context: context,
-        builder: (innerContext) => AlertDialog(
-          title: const Text('Verwijderen'),
-          content: const Text(
-            'Weet je zeker dat je jouw form-reactie wilt verwijderen?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(innerContext).pop(),
-              child: const Text('Annuleren'),
-            ),
-            TextButton(
-              // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-              onPressed: () async {
-                await FormRepository.deleteMyFormAnswer(answerPath);
-                await deleteAllImages(widget.formId, ref);
-                // ignore: use_build_context_synchronously
-                if (innerContext.mounted) Navigator.of(innerContext).pop(true);
-              },
-              child: const Text('Verwijderen').textColor(Colors.red),
-            ),
-          ],
-        ),
-      );
-    }
-    throw Exception("Geen antwoord gevonden om te verwijderen");
-  }
-
   /// This method is used to unfocus the current form field when the user taps outside of it.
   /// This is useful in cases where the keyboard should be dismissed.
   void _handleTapOutsidePrimaryFocus() {
@@ -88,12 +41,10 @@ class _FormPageState extends ConsumerState<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final doc = formsCollection.doc(widget.formId);
-    final colorScheme = Theme.of(context).colorScheme;
+    final doc = FirestoreForm.firestoreConvert.doc(widget.formId);
 
     final formVal = ref.watch(formProvider(doc));
 
-    // ignore: arguments-ordering
     return GestureDetector(
       onTap: _handleTapOutsidePrimaryFocus,
       child: Scaffold(
@@ -101,7 +52,6 @@ class _FormPageState extends ConsumerState<FormPage> {
           title: const Text('Form'),
           actions: [
             IconButton(
-              // ignore: prefer-extracting-callbacks
               onPressed: () {
                 const snackbar = SnackBar(
                   content: Text(
@@ -113,24 +63,32 @@ class _FormPageState extends ConsumerState<FormPage> {
 
                 final state = routeInformation.state as Map<Object?, Object?>?;
                 if (state == null) {
-                  // ignore: avoid-ignoring-return-values
                   ScaffoldMessenger.of(context).showSnackBar(snackbar);
-
                   return;
                 }
-                final imperativeMatches = state['imperativeMatches'] as List?;
-                if (imperativeMatches == null || imperativeMatches.isEmpty) {
-                  // ignore: avoid-ignoring-return-values
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
+                try {
+                  String currentPath = "";
+
+                  final imperativeMatches = state['imperativeMatches'] as List?;
+                  if (imperativeMatches == null || imperativeMatches.isEmpty) {
+                    currentPath = state['location'] as String;
+                  } else {
+                    currentPath =
+                        imperativeMatches.firstOrNull['location'] as String;
+                  }
+                  const prefixPath = RoutingConstants.appBaseUrl;
+
+                  final url = "$prefixPath$currentPath";
+
+                  Share.share(url).ignore();
+                } on Exception catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                    e.toString(),
+                  )));
                   return;
                 }
-                final currentPath =
-                    imperativeMatches.firstOrNull['location'] as String;
-
-                const prefixPath = RoutingConstants.appBaseUrl;
-                final url = "$prefixPath$currentPath";
-                Share.share(url).ignore();
               },
               icon: const Icon(Icons.share),
             ),
@@ -141,149 +99,74 @@ class _FormPageState extends ConsumerState<FormPage> {
               const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
           children: [
             formVal.when(
-              // ignore: avoid-long-functions
               data: (formDoc) {
                 if (!formDoc.exists) {
                   return const ErrorCardWidget(
                     errorMessage: 'Deze form bestaat niet (meer)',
                   );
                 }
-                // Since the form exists, we can safely assume that the data is not null.
-                // ignore: avoid-non-null-assertion
-                final form = formDoc.data()!;
-                final openUntil = form.openUntil.toDate();
-                final formIsOpen = DateTime.now().isBefore(openUntil);
-                const descriptionVPadding = 16.0;
-                final description = form.description;
-                final questions = form.questions;
-                final textTheme = Theme.of(context).textTheme;
-                const sizedBoxHeight = 32.0;
+
                 final answerVal =
                     ref.watch(formAnswerProvider(formDoc.reference));
 
-                return [
-                  [
-                    Flexible(
-                      child: Text(form.title, style: textTheme.titleLarge),
-                    ),
-                  ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                  Text(
-                    '${formIsOpen ? "Sluit" : "Gesloten"} op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(openUntil)}',
-                    style: textTheme.bodySmall?.copyWith(
-                      color: formIsOpen
-                          ? colorScheme.secondary
-                          : colorScheme.outline,
-                    ),
-                  ),
-                  if (description != null)
-                    Text(description, style: textTheme.bodyMedium)
-                        .padding(vertical: descriptionVPadding),
-                  answerVal.when(
-                    data: (answer) {
-                      final answerExists = answer.docs.isNotEmpty;
-                      final answerIsCompleted = answerExists &&
-                          // ignore: avoid-unsafe-collection-methods
-                          answer.docs.first.data().isCompleted;
-
-                      const leftCardPadding = 8.0;
-
-                      return Column(
-                        // Move all child widgets to the left.
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Je hebt deze form ",
-                                style: textTheme.titleMedium,
-                              ),
-                              AnswerStatusCard(
-                                answerExists: answerExists,
-                                isCompleted: answerIsCompleted,
-                                showIcon: false,
-                                textStyle: textTheme.titleMedium,
-                              ).padding(left: leftCardPadding),
-                            ],
-                          ),
-                          if (answerExists && !answerIsCompleted)
-                            Text(
-                              "Vul alle verplichte vragen in om je antwoord te versturen.",
-                              style: TextStyle(color: colorScheme.error),
-                            ),
-                        ],
-                      );
-                    },
-                    error: (error, stack) =>
-                        ErrorCardWidget(errorMessage: error.toString()),
-                    loading: () => const SizedBox.shrink(),
-                  ),
-                  const SizedBox(height: sizedBoxHeight),
-                  Form(
-                    key: _formKey,
-                    child: [
-                      for (final question in questions) ...[
-                        FormQuestion(
-                          formQuestion: question,
-                          form: form,
-                          docRef: formDoc.reference,
-                          formIsOpen: formIsOpen,
+                return answerVal.when(
+                  data: (answerSnapshot) {
+                    final answerDocRef = answerSnapshot.docs.isNotEmpty
+                        ? answerSnapshot.docs.first.reference
+                        : null;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FormPageContent(
+                          formKey: _formKey,
+                          formDoc: formDoc,
+                          answerSnapshot:
+                              answerSnapshot, // ⬅️ Optionally pass down
                         ),
-                        const SizedBox(height: 32),
+                        formDoc.data()?.formAnswersAreUnretractable == true
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: FormPageDefinitiveSubmitButton(
+                                      formKey: _formKey,
+                                      answerDocRef: answerDocRef,
+                                      formDocRef: formDoc.reference,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: FormPageDeleteButton(
+                                      doc: doc,
+                                      formId: widget.formId,
+                                      formKey: _formKey,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(
+                                width: double.infinity,
+                                child: FormPageDeleteButton(
+                                  doc: doc,
+                                  formId: widget.formId,
+                                  formKey: _formKey,
+                                ),
+                              ),
                       ],
-                    ].toColumn(),
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator.adaptive()),
+                  error: (error, _) => ErrorCardWidget(
+                    errorMessage: 'Fout bij het laden van je antwoord: $error',
                   ),
-                ].toColumn(crossAxisAlignment: CrossAxisAlignment.start);
+                );
               },
-              error: (error, stack) =>
-                  ErrorCardWidget(errorMessage: error.toString()),
               loading: () =>
                   const Center(child: CircularProgressIndicator.adaptive()),
+              error: (err, stack) => ErrorCardWidget(
+                errorMessage: 'Fout bij het laden van het formulier',
+              ),
             ),
-            ref.watch(canRemoveFormAnswerProvider(doc)).when(
-                  data: (canRemove) => canRemove
-                      ? ElevatedButton(
-                          // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-                          onPressed: () async {
-                            final res = await _deleteMyFormAnswer(ref, context);
-                            if (res == true) {
-                              // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text('Jouw formreactie is verwijderd'),
-                                ),
-                              );
-                            } else {
-                              // ignore: use_build_context_synchronously, avoid-ignoring-return-values
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Het is niet gelukt jouw formreactie te verwijderen',
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(
-                              colorScheme.errorContainer,
-                            ),
-                            foregroundColor: WidgetStateProperty.all(
-                              colorScheme.onErrorContainer,
-                            ),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.delete),
-                              Text("Verwijder mijn formreactie"),
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  error: (err, stk) => const SizedBox.shrink(),
-                  loading: () => const SizedBox.shrink(),
-                ),
           ],
         ),
       ),

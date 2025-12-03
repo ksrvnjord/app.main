@@ -23,6 +23,7 @@ class Reservation {
 
   final String objectName;
   final String creatorName;
+  final bool? creatorIsAdmin;
 
   // Firestore doesn't support DateTime, so we use Timestamp instead.
   @JsonKey(name: "startTime")
@@ -47,6 +48,7 @@ class Reservation {
     required this.creatorId,
     required this.objectName,
     required this.creatorName,
+    this.creatorIsAdmin,
   });
 
   // ignore: sort_constructors_first

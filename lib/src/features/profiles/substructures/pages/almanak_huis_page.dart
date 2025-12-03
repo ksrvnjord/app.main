@@ -51,7 +51,10 @@ class AlmanakHuisPage extends ConsumerWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: AlmanakSubstructureCoverPicture(
                     imageProvider: ref.watch(huisPictureProvider(
-                      Tuple2<String, int>(houseName, getNjordYear()),
+                      Tuple2<String, int>(
+                        houseName,
+                        getNjordYear(),
+                      ),
                     )),
                   ),
                 ).padding(horizontal: pageHPadding),

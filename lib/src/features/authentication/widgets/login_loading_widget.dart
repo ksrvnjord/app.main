@@ -17,10 +17,11 @@ class LoginLoadingWidget extends StatelessWidget {
       'Zwanen aan het voeren...',
       'Watts aan het farmen...',
       'Veldfles legen...',
-      'Boot schoon spuiten...',
+      'vd Kwaak onderweg naar fietsshift...',
       'Koffie aan het zetten...',
-      'Harco zoeken...',
+      'Boeketje bij Harco leggen...',
       'Joris\' bak schoonmaken...',
+      'Uitzweten...',
     ];
 
     return <Widget>[

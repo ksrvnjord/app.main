@@ -11,6 +11,7 @@ class DjangoGroup {
   @JsonKey(includeFromJson: true, includeToJson: false)
   // ignore: prefer-correct-identifier-length
   final int? id;
+  //TODO: should be non-nullable
 
   @JsonKey(includeFromJson: true, includeToJson: false)
   final List<GroupDjangoRelation>? users;

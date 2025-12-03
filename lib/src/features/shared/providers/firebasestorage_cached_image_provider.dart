@@ -10,6 +10,6 @@ final firebaseStorageCachedImageProvider =
     FutureProvider.family<ImageProvider<Object>, String>(
   (ref, path) => CachedImage.get(
     firebaseStoragePath: path,
-    placeholderImagePath: Images.placeholderProfilePicture,
+    placeholderImagePath: Images.loadingPicture,
   ),
 );

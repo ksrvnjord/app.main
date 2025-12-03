@@ -22,9 +22,7 @@ class AlmanakUserButtonWidget extends ConsumerWidget {
       ),
       trailing: Icon(
         // ignore: no-magic-number
-        (user.birthDate.characters.getRange(5).toString() != dateToday)
-            ? Icons.arrow_forward_ios
-            : Icons.cake,
+        (user.isBirthday) ? Icons.cake : Icons.arrow_forward_ios,
         color: Theme.of(context).colorScheme.primary,
       ),
       visualDensity: VisualDensity.standard,

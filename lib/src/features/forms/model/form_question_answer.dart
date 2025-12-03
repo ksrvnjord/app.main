@@ -8,11 +8,20 @@ part 'form_question_answer.g.dart';
 
 @JsonSerializable()
 class FormQuestionAnswer {
-  final String questionTitle;
+  final String?
+      questionTitle; // TODO questionUpdate: dit is depcrecated, gebruik enkel nog questionId
+  final int?
+      questionId; //TODO questionUpdate: make this required and remove nullable
   String? answer;
+  List<String>? answerList;
 
   // ignore: sort_constructors_first
-  FormQuestionAnswer({required this.questionTitle, required this.answer});
+  FormQuestionAnswer({
+    this.questionTitle,
+    this.questionId,
+    this.answer,
+    this.answerList,
+  });
 
   // Create fromJson method.
   // ignore: sort_constructors_first

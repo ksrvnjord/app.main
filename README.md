@@ -93,6 +93,20 @@ You can run the formatter locally with:
 $ dart format .
 ```
 
+### Delete local branches that are not on the remote
+After merging a branch. The branch still stays on your computer.
+To delete them, first allow the script to delete the files:
+Open a Git Bash terminal (in app.main folder), then:
+```bash
+$ chmod +x clean_local_branches.sh
+```
+After that, run the script
+```bash
+$ bash clean_locol_branches.sh
+```
+
+
+
 ## Setting up build in CodeMagic
 
 ### In Teams go to your team page

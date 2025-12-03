@@ -31,7 +31,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -57,7 +57,7 @@ android {
     defaultConfig {
         applicationId "com.ksrvnjord.app"
         minSdkVersion 30
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 35 //flutter.targetSdkVersion TODO temporary fix
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

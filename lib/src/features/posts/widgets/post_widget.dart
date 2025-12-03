@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_bottom_action
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_header_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_statistics_bar.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/firebasestorage_cached_image_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -78,7 +79,8 @@ class PostWidget extends ConsumerWidget {
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
               ),
-              error: (error, stackTrace) => const Icon(Icons.error),
+              error: (error, stackTrace) =>
+                  ErrorCardWidget(errorMessage: error.toString()),
               loading: () =>
                   const Center(child: CircularProgressIndicator.adaptive()),
             ),

@@ -20,7 +20,7 @@ class BlikkenLijstPage extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           // ignore: sort_child_properties_last
           children: [
             BlikkenLijstTabContent(blikType: 'regulier'),

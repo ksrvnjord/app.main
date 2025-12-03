@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ErrorCardWidget extends StatelessWidget {
   const ErrorCardWidget({
@@ -23,6 +24,7 @@ class ErrorCardWidget extends StatelessWidget {
     log(errorMessage, level: 2000, stackTrace: stackTrace);
 
     return GestureDetector(
+      onTap: () => launchUrl(Uri.parse(_handleErrorLink(errorMessage))),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: errorColor, width: cardBorderWidth),
@@ -65,4 +67,20 @@ class ErrorCardWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+String _handleErrorLink(String errorMessage) {
+  final RegExp urlRegExp = RegExp(
+    r'http[s]?://[^\s]+',
+    caseSensitive: false,
+  );
+  final match = urlRegExp.firstMatch(errorMessage);
+  debugPrint(match.toString());
+  if (match != null) {
+    final url = match.group(0);
+    if (url != null) {
+      return url;
+    }
+  }
+  return 'https://youtube.com/shorts/snGnJKKcMOk?si=vQFTVKE6sfJJMslZ';
 }

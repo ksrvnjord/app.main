@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ksrvnjord_main_app/src/features/more/api/contactpersoon_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/more/widgets/instagram_row_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/bestuur.dart';
@@ -23,6 +24,7 @@ class ContactPage extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final commissieInfoVal = ref.watch(commissiesInfoProvider);
+    final vcpInfoVal = ref.watch(vertrouwenscontactpersonenInfoProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +39,7 @@ class ContactPage extends ConsumerWidget {
             DataTable(
               columns: const [
                 DataColumn(label: Text("Functie")),
-                DataColumn(label: Text("Email")),
+                DataColumn(label: Text("E-mail")),
               ],
               rows: [
                 ...bestuurEmailMap.entries.map((entry) => DataRow(cells: [
@@ -62,7 +64,7 @@ class ContactPage extends ConsumerWidget {
               data: (commissies) => DataTable(
                 columns: const [
                   DataColumn(label: Text("Commissie")),
-                  DataColumn(label: Text("Email")),
+                  DataColumn(label: Text("E-mail")),
                 ],
                 rows: [
                   ...commissies.map(
@@ -85,7 +87,55 @@ class ContactPage extends ConsumerWidget {
               loading: () => DataTable(
                 columns: const [
                   DataColumn(label: Text("Commissie")),
-                  DataColumn(label: Text("Email")),
+                  DataColumn(label: Text("E-mail")),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(CircularProgressIndicator.adaptive()),
+                    DataCell(CircularProgressIndicator.adaptive()),
+                  ]),
+                ],
+              ),
+              error: (error, stackTrace) => ErrorCardWidget(
+                errorMessage: error.toString(),
+                stackTrace: stackTrace,
+              ),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title:
+              Text("Vertrouwenscontactpersonen", style: textTheme.titleLarge),
+          children: [
+            vcpInfoVal.when(
+              data: (vertrouwenscontactpersonen) => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Vertrouwenscontactpersoon")),
+                  DataColumn(label: Text("E-mail")),
+                ],
+                rows: [
+                  ...vertrouwenscontactpersonen.map(
+                    (vertrouwenscontactpersoon) => DataRow(cells: [
+                      DataCell(Text(vertrouwenscontactpersoon.name)),
+                      DataCell(
+                        InkWell(
+                          child: const FaIcon(
+                            FontAwesomeIcons.envelope,
+                          ).padding(all: emailIconPadding),
+                          onTap: () => launchUrl(
+                            Uri.parse(
+                                'mailto:${vertrouwenscontactpersoon.email}'),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ],
+              ),
+              loading: () => DataTable(
+                columns: const [
+                  DataColumn(label: Text("Vertrouwenscontactpersoon")),
+                  DataColumn(label: Text("E-mail")),
                 ],
                 rows: const [
                   DataRow(cells: [

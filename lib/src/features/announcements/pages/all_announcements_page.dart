@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/api/all_announcement_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/announcements/widgets/announcement_folder_list.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/utils/gallery_view_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 
 class AllAnnouncementsPage extends ConsumerWidget {
   const AllAnnouncementsPage({
@@ -38,7 +39,9 @@ class AllAnnouncementsPage extends ConsumerWidget {
         ),
         body: allAnnouncementImages.when(
             data: (items) => AnnouncementFolderList(items: items),
-            error: (err, trace) => Text(err.toString()),
+            error: (err, trace) => ErrorTextWidget(
+                  errorMessage: err.toString(),
+                ),
             loading: () => const CircularProgressIndicator.adaptive()));
   }
 }
