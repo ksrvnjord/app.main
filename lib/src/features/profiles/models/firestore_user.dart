@@ -37,6 +37,12 @@ class FirestoreUser {
       canBookTrainingFarInAdvance; // Used for letting certain users book reservations further in advance.
   final bool? isAdmin; // Used for admin capabilties in-app.
 
+  final bool isRegisteredCoach;
+  final bool isRegisteredCox;
+  final List<String> coachPreferences;
+  final List<String> coxPreferences;
+  final List<String> permissions;
+
   bool get isAppCo => [
         '21203',
         '18031',
@@ -69,6 +75,11 @@ class FirestoreUser {
     this.allergies = const <String>[],
     this.canBookTrainingFarInAdvance,
     this.isAdmin,
+    this.isRegisteredCoach = false,
+    this.isRegisteredCox = false,
+    this.coachPreferences = const <String>[],
+    this.coxPreferences = const <String>[],
+    this.permissions = const <String>[],
   });
 
   factory FirestoreUser.fromJson(Map<String, dynamic> json) =>

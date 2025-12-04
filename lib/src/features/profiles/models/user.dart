@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/almanak_profile/model/group_django_entry.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/address.dart';
@@ -35,6 +36,12 @@ class User {
   String? get otherAssociation => _firestore?.otherAssociation;
   bool? get canBookTrainingFarInAdvance =>
       _firestore?.canBookTrainingFarInAdvance;
+  bool get isRegisteredCoach => _firestore?.isRegisteredCoach ?? false;
+  bool get isRegisteredCox => _firestore?.isRegisteredCox ?? false;
+  List<String> get coachPreferences => _firestore?.coachPreferences ?? [];
+  List<String> get coxPreferences => _firestore?.coxPreferences ?? [];
+  List<String> get firestorePermissions => _firestore?.permissions ?? [];
+  FirestoreUser? get firestore => _firestore;
 
   // DJANGO SPECIFIC FIELDS.
   String get infix => _django.infix;
@@ -108,4 +115,15 @@ Map<String, String> getCanMakeFormsFor(List<GroupDjangoEntry> entries) {
     acc[entry.group.id!.toString()] = entry.group.name;
     return acc;
   });
+}
+
+extension UserFirestoreExt on User {
+  DocumentReference<Map<String, dynamic>> get firestoreRef {
+    if (_firestore == null) {
+      throw Exception('No Firestore data available');
+    }
+    return FirebaseFirestore.instance
+        .collection('people')
+        .doc(_firestore.identifier);
+  }
 }
