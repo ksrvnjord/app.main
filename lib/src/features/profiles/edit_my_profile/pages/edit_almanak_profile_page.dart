@@ -116,7 +116,7 @@ class _EditAlmanakProfilePageState
                           child: Text(board),
                         ))
                     .toList(),
-                initialValue: user.board,
+                value: user.board,
                 hint: const Text('Welk boord?'),
                 onChanged: (_) => {},
                 decoration: const InputDecoration(
@@ -138,7 +138,7 @@ class _EditAlmanakProfilePageState
                               child: Text(house),
                             ))
                         .toList(),
-                    initialValue: user.huis,
+                    value: user.huis,
                     hint: const Text('Geen'),
                     onChanged: (_) => {},
                     decoration: const InputDecoration(labelText: 'Njord-huis'),
@@ -179,7 +179,7 @@ class _EditAlmanakProfilePageState
                   ),
                   DropdownMenuItem(value: false, child: Text('Nee')),
                 ],
-                initialValue: user.dubbellid,
+                value: user.dubbellid,
                 hint: const Text('Ben je dubbellid?'),
                 onChanged: (_) => {},
                 decoration: const InputDecoration(labelText: 'Dubbellid'),
