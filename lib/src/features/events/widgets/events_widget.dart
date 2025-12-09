@@ -43,11 +43,10 @@ class EventsWidget extends StatelessWidget {
       maxDate: DateTime.now().add(const Duration(days: 365)),
       // Add onTap callback to handle event taps
       onTap: (CalendarTapDetails details) {
-        if (details.targetElement == CalendarElement.appointment && 
-            details.appointments != null && 
+        if (details.targetElement == CalendarElement.appointment &&
+            details.appointments != null &&
             details.appointments!.isNotEmpty &&
-            (details.appointments!.first as Event).description.isNotEmpty
-          ) { 
+            (details.appointments!.first as Event).description.isNotEmpty) {
           final Event tappedEvent = details.appointments!.first as Event;
           _showEventDescription(context, tappedEvent);
         }

@@ -45,7 +45,7 @@ class EventsPage extends ConsumerWidget {
 
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
-            final canCreateEvent = currentUser.isAdmin;
+          final canCreateEvent = currentUser.isAdmin;
 
           return canCreateEvent
               ? FloatingActionButton.extended(

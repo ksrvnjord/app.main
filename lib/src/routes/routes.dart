@@ -317,7 +317,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "Events",
           child: const EventsPage(),
           routes: [
-           _route(
+            _route(
               path: 'create',
               name: 'Create Event',
               pageBuilder: (context, state) => _getPage(

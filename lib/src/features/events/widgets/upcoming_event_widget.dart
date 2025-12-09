@@ -63,7 +63,7 @@ class UpcomingEventWidget extends StatelessWidget {
         style: textTheme.labelLarge,
         textAlign: TextAlign.center,
       ).padding(top: topPadding),
-      
+
       // Text(
       //   monthFormat.format(start),
       //   style: textTheme.labelLarge,
