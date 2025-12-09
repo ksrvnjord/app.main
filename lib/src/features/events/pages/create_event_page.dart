@@ -250,7 +250,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
                       controller: _endHourController,
                       decoration: const InputDecoration(
                         labelText: 'Uren',
-                        hintText: '00-23',
+                        hintText: '17',
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
@@ -263,7 +263,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
                       controller: _endMinuteController,
                       decoration: const InputDecoration(
                         labelText: 'Minuten',
-                        hintText: '00-59',
+                        hintText: '26',
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
