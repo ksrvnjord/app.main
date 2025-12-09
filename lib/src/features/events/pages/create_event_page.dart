@@ -135,8 +135,9 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
                 ),
                 maxLength: 100,
                 onSaved: (value) => title = value ?? '',
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Titel is verplicht' : null,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Titel is verplicht'
+                    : null,
               ),
               const SizedBox(height: 16),
 

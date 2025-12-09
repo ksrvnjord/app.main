@@ -37,7 +37,7 @@
 //     required Color color,
 //   }) async {
 //     final eventRef = eventsCollection.doc(); // Make a new document reference.
-  
+
 //     await eventRef.set(
 //       Event(
 //         title: title,
@@ -47,7 +47,7 @@
 //         color: color,
 //       ),
 //     );
-    
+
 //   }
 // }
 
@@ -58,8 +58,8 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 
 class EventService {
-  static final eventsCollection = FirebaseFirestore.instance
-      .collection('events');
+  static final eventsCollection =
+      FirebaseFirestore.instance.collection('events');
 
   static Future<void> deleteEvent(DocumentSnapshot<Event> snapshot) async {
     await snapshot.reference.delete();
