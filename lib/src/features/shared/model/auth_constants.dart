@@ -14,6 +14,7 @@ class AuthConstants {
         return prodBaseURL;
       case Environment.demo:
         return demoBaseURL;
+      // ignore: unreachable_switch_default
       default:
         throw Exception('Environment not set.');
     }
