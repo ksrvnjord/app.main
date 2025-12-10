@@ -7,15 +7,28 @@ De Flut-ter versie.
 
 ## How do I?
 
-- Follow [`https://docs.flutter.dev/get-started/install`](https://docs.flutter.dev/get-started/install)
-- Clone the repository
-- Start working in your own branch (`git checkout -b`)
-- Download the dependencies: `flutter pub get`
+### ⚠️ This project uses FVM (Flutter Version Manager)
+
+**First time setup:**
+
+1. Install FVM: `dart pub global activate fvm`
+2. Install the project's Flutter version: `fvm install`
+3. **IMPORTANT** - Configure Git hooks: `git config core.hooksPath .githooks`
+
+**Daily usage - Always use `fvm` prefix:**
+```bash
+fvm flutter run
+fvm flutter pub get
+```
+
+> 📖 See [FVM_SETUP.md](FVM_SETUP.md) for detailed instructions
+
+### Running the app
+
 - Start an emulator or connect your phone
-- Run the app: `flutter run`
+- Run: `fvm flutter run`
 
-> For running the app on web, use `flutter run -d chrome --web-browser-flag "--disable-web-security"`
-
+> For web: `fvm flutter run -d chrome --web-browser-flag "--disable-web-security"`
 
 ## Code Generation
 Code generation for JSON serialization and deserialization provides an automated approach to converting objects to and from JSON. It not only saves valuable development time by avoiding manual code creation but also ensures consistent and error-free data processing. This technique is particularly useful when data models evolve, as changes in serialization and deserialization code can be automatically implemented, ensuring consistency between the schema and code. Furthermore, code generation can apply optimizations that outperform manual implementations, while also ensuring type safety in strongly typed programming languages. When dealing with multiple platforms or languages, it also guarantees uniform serialization/deserialization logic. In short, code generation for JSON interactions enhances efficiency, reduces errors, and facilitates maintenance and debugging.
@@ -102,7 +115,7 @@ $ chmod +x clean_local_branches.sh
 ```
 After that, run the script
 ```bash
-$ bash clean_locol_branches.sh
+$ bash clean_local_branches.sh
 ```
 
 
