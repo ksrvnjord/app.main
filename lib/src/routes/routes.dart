@@ -32,6 +32,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/events/pages/create_event_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
@@ -110,6 +111,7 @@ abstract final // ignore: prefer-single-declaration-per-file
     ref
       ..onDispose(authNotifier.dispose)
       ..listen(
+        // ignore: riverpod_syntax_error
         authControllerProvider
             .select((data) => data.whenData((value) => value)),
         // When user is authenticated, update the notifier.
@@ -314,6 +316,16 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'evenementen',
           name: "Events",
           child: const EventsPage(),
+          routes: [
+            _route(
+              path: 'create',
+              name: 'Create Event',
+              pageBuilder: (context, state) => _getPage(
+                child: const CreateEventPage(),
+                name: 'Create Event',
+              ),
+            ),
+          ],
         ),
         _route(
           path: 'aankondigingen',
