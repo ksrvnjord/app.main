@@ -86,7 +86,7 @@ class MorePage extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FloatingActionButton.extended(
                   heroTag: 'meldingButton',
@@ -97,13 +97,16 @@ class MorePage extends ConsumerWidget {
                   label: const Text('Melding maken'),
                 ),
                 if (canAccessAdminPanel)
-                  FloatingActionButton.extended(
-                    heroTag: 'adminButton',
-                    foregroundColor: colorScheme.onTertiaryContainer,
-                    backgroundColor: colorScheme.tertiaryContainer,
-                    onPressed: () => context.goNamed('Admin'),
-                    icon: const Icon(Icons.admin_panel_settings),
-                    label: const Text('Ga naar Admin Panel'),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 160),
+                    child: FloatingActionButton.extended(
+                      heroTag: 'adminButton',
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      onPressed: () => context.goNamed('Admin'),
+                      icon: const Icon(Icons.admin_panel_settings),
+                      label: const Text('Admin Panel'),
+                    ),
                   ),
               ],
             ),
