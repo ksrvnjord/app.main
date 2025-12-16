@@ -14,6 +14,7 @@ class Event {
       );
 
   final String title;
+  final String description;
   final Timestamp startTime;
   final Timestamp endTime;
   final Color? color;
@@ -22,6 +23,7 @@ class Event {
     required this.title,
     required this.startTime,
     required this.endTime,
+    this.description = "",
     this.color,
   });
 
@@ -44,6 +46,7 @@ class Event {
       startTime: map['start_time'] as Timestamp,
       endTime: map['end_time'] as Timestamp,
       color: color,
+      description: map['description'] as String? ?? "",
     );
   }
 
@@ -51,12 +54,14 @@ class Event {
     String? title,
     Timestamp? startTime,
     Timestamp? endTime,
+    String? description,
     required Color color,
   }) {
     return Event(
       title: title ?? this.title,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
+      description: description ?? this.description,
       color: color,
     );
   }
@@ -66,6 +71,7 @@ class Event {
       'title': title,
       'start_time': startTime,
       'end_time': endTime,
+      'description': description,
       'color': color?.value,
     };
   }
