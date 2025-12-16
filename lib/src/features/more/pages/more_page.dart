@@ -96,17 +96,17 @@ class MorePage extends ConsumerWidget {
                   icon: const Icon(Icons.admin_panel_settings),
                   label: const Text('Melding maken'),
                 ),
-                if (canAccessAdminPanel) 
+                if (canAccessAdminPanel)
                   ConstrainedBox(
                     constraints: BoxConstraints(minWidth: 160),
                     child: FloatingActionButton.extended(
-                        heroTag: 'adminButton',
-                        foregroundColor: colorScheme.onTertiaryContainer,
-                        backgroundColor: colorScheme.tertiaryContainer,
-                        onPressed: () => context.goNamed('Admin'),
-                        icon: const Icon(Icons.admin_panel_settings),
-                        label: const Text('Admin Panel'),
-                      ),
+                      heroTag: 'adminButton',
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      onPressed: () => context.goNamed('Admin'),
+                      icon: const Icon(Icons.admin_panel_settings),
+                      label: const Text('Admin Panel'),
+                    ),
                   ),
               ],
             ),

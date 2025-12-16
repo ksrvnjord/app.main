@@ -59,7 +59,6 @@ class VCPPage extends ConsumerWidget {
               child: Text(info.name),
             ),
             if (info.contact != null) ...[
-
               // FIXME: String matching
               if (info.name == "Vertrouwenscontactpersonen") ...[
                 IconButton(
@@ -68,12 +67,13 @@ class VCPPage extends ConsumerWidget {
                   onPressed: () async {
                     await showDialog<void>(
                       context: context,
-                      builder: (context) => Consumer(builder: (context, ref, _) {
+                      builder: (context) =>
+                          Consumer(builder: (context, ref, _) {
                         final vertrouwensPersoonInfo =
                             ref.watch(vertrouwenscontactpersonenInfoProvider);
                         return AlertDialog.adaptive(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: dialogPadding / 2),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: dialogPadding / 2),
                           content: vertrouwensPersoonInfo.when(
                             data: (vcp) => DataTable(
                               columns: const [
@@ -85,7 +85,8 @@ class VCPPage extends ConsumerWidget {
                                 DataColumn(
                                   label: Text(
                                     "Email",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
@@ -97,7 +98,8 @@ class VCPPage extends ConsumerWidget {
                                           Text(vertrouwenscontactpersoon.name)),
                                       DataCell(
                                         IconButton(
-                                          icon: const Icon(Icons.email_outlined),
+                                          icon:
+                                              const Icon(Icons.email_outlined),
                                           onPressed: () async => launchUrl(
                                             Uri.parse(
                                                 'mailto:${vertrouwenscontactpersoon.email}'),
@@ -126,12 +128,11 @@ class VCPPage extends ConsumerWidget {
                     );
                   },
                 ),
-              ]
-              else ...[
+              ] else ...[
                 IconButton(
                   icon: Icon(Icons.email_outlined),
                   onPressed: () =>
-                    launchUrl(Uri.parse('mailto:${info.contact}')),
+                      launchUrl(Uri.parse('mailto:${info.contact}')),
                 ),
               ],
             ],
