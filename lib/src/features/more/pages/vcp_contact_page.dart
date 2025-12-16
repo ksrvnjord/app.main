@@ -45,7 +45,7 @@ class VCPPage extends ConsumerWidget {
   }
 
   Widget _buildTile(BuildContext context, MeldpersooncontactInfo info) {
-    final double dialogPadding = 8.0;
+    final double dialogPadding = 4.0;
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -58,71 +58,83 @@ class VCPPage extends ConsumerWidget {
             Expanded(
               child: Text(info.name),
             ),
-            if (info.contact != null)
-              IconButton(
-                icon: const Icon(Icons.email_outlined),
-                tooltip: "Email",
-                onPressed: () async {
-                  await showDialog<void>(
-                    context: context,
-                    builder: (context) => Consumer(builder: (context, ref, _) {
-                      final vertrouwensPersoonInfo =
-                          ref.watch(vertrouwenscontactpersonenInfoProvider);
-                      return AlertDialog(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: dialogPadding / 2),
-                        content: vertrouwensPersoonInfo.when(
-                          data: (vcp) => DataTable(
-                            columns: const [
-                              DataColumn(
-                                  label: Text(
-                                "Vertrouwenscontactpersoon",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )),
-                              DataColumn(
-                                label: Text(
-                                  "Email",
+            if (info.contact != null) ...[
+
+              // FIXME: String matching
+              if (info.name == "Vertrouwenscontactpersonen") ...[
+                IconButton(
+                  icon: const Icon(Icons.email_outlined),
+                  tooltip: "Email",
+                  onPressed: () async {
+                    await showDialog<void>(
+                      context: context,
+                      builder: (context) => Consumer(builder: (context, ref, _) {
+                        final vertrouwensPersoonInfo =
+                            ref.watch(vertrouwenscontactpersonenInfoProvider);
+                        return AlertDialog.adaptive(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: dialogPadding / 2),
+                          content: vertrouwensPersoonInfo.when(
+                            data: (vcp) => DataTable(
+                              columns: const [
+                                DataColumn(
+                                    label: Text(
+                                  "Vertrouwenscontactpersoon",
                                   style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                                DataColumn(
+                                  label: Text(
+                                    "Email",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
-                            ],
-                            rows: [
-                              ...vcp.map(
-                                (vertrouwenscontactpersoon) => DataRow(
-                                  cells: [
-                                    DataCell(
-                                        Text(vertrouwenscontactpersoon.name)),
-                                    DataCell(
-                                      IconButton(
-                                        icon: const Icon(Icons.email_outlined),
-                                        onPressed: () async => launchUrl(
-                                          Uri.parse(
-                                              'mailto:${vertrouwenscontactpersoon.email}'),
+                              ],
+                              rows: [
+                                ...vcp.map(
+                                  (vertrouwenscontactpersoon) => DataRow(
+                                    cells: [
+                                      DataCell(
+                                          Text(vertrouwenscontactpersoon.name)),
+                                      DataCell(
+                                        IconButton(
+                                          icon: const Icon(Icons.email_outlined),
+                                          onPressed: () async => launchUrl(
+                                            Uri.parse(
+                                                'mailto:${vertrouwenscontactpersoon.email}'),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            error: (error, stackTrace) => ErrorCardWidget(
+                              errorMessage: error.toString(),
+                              stackTrace: stackTrace,
+                            ),
+                            loading: () => LoadingWidget(),
                           ),
-                          error: (error, stackTrace) => ErrorCardWidget(
-                            errorMessage: error.toString(),
-                            stackTrace: stackTrace,
-                          ),
-                          loading: () => LoadingWidget(),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Ok"),
-                          )
-                        ],
-                      );
-                    }),
-                  );
-                },
-              ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text("Ok"),
+                            )
+                          ],
+                        );
+                      }),
+                    );
+                  },
+                ),
+              ]
+              else ...[
+                IconButton(
+                  icon: Icon(Icons.email_outlined),
+                  onPressed: () =>
+                    launchUrl(Uri.parse('mailto:${info.contact}')),
+                ),
+              ],
+            ],
           ],
         ),
         children: [
