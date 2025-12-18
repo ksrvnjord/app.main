@@ -119,6 +119,12 @@ class AdminPage extends StatelessWidget {
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () => context.goNamed('Manage Groups'),
               ),
+              ListTile(
+                leading: const Icon(Icons.groups_2),
+                title: const Text("Beheer Substructuren"),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () => context.goNamed('Manage Substructuren'),
+              )
             ],
           ).paddingDirectional(vertical: sectionPadding),
           FormSection(

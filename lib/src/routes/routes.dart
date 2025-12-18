@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -903,6 +905,27 @@ abstract final // ignore: prefer-single-declaration-per-file
                 name: "Manage Groups",
               ),
             ),
+            _route(
+                path: 'manage-subs',
+                name: 'Manage Substructuren',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageSubPage(
+                        type: state.uri.queryParameters['type'],
+                      ),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                      path: ':substructureName',
+                      name: "Edit Substructure",
+                      pageBuilder: (context, state) => _getPage(
+                          child: EditSubstructurePage(
+                            substructureName:
+                                state.pathParameters['substructureName']!,
+                            type: state.uri.queryParameters['type'],
+                          ),
+                          name: "Edit Substructure"))
+                ]),
           ],
         ),
       ],
