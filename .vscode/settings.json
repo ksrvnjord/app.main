@@ -1,9 +1,9 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit",
-        "source.dcm.fixAll": "explicit"
-    },
-
-    "cmake.ignoreCMakeListsMissing": true,
-    "cmake.configureOnOpen": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.dcm.fixAll": "explicit"
+  },
+  "cmake.ignoreCMakeListsMissing": true,
+  "cmake.configureOnOpen": true,
+  "dart.flutterSdkPath": ".fvm/versions/3.24.5"
 }
