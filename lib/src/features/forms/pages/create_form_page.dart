@@ -50,6 +50,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
   int? maximumNumberOfAnswers;
   bool maximumNumberOfAnswersIsVisible = false;
   bool formAnswersAreUntretractable = false;
+  bool allowMultipleAnswers = false;
+  int maximumNumberOfMultipleAnswers = 0;
 
   bool get _formHasUnfilledSingleChoiceQuestions {
     for (FirestoreFormQuestion question in questions.values) {
@@ -81,6 +83,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     maximumNumberOfAnswers = form.maximumNumberOfAnswers;
     maximumNumberOfAnswersIsVisible = form.maximumNumberIsVisible;
     formAnswersAreUntretractable = form.formAnswersAreUnretractable;
+    allowMultipleAnswers = form.allowMultipleAnswers;
+    maximumNumberOfMultipleAnswers = form.maxNumberOfMultipleAnswers;
 
     // Questions
     questions.addEntries(form.questionsMap.entries);
@@ -214,6 +218,20 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
     });
   }
 
+  void updateAllowMultipleAnswers(bool? value) {
+    setState(() {
+      bool val = value ?? false;
+      allowMultipleAnswers = val;
+      if (!val) {
+        maximumNumberOfMultipleAnswers = 1;
+      }
+    });
+  }
+
+  void updateMaxNumberOfMultipleAnswers(int? value) {
+    setState(() => maximumNumberOfMultipleAnswers = value ?? 0);
+  }
+
   // ignore: avoid-long-functions
   Future<void> handleSubmitForm(BuildContext context, WidgetRef ref) async {
     final currentState = _formKey.currentState;
@@ -283,6 +301,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           maximumNumberOfAnswers: maximumNumberOfAnswers ??
               100000, //Default value mimicing infinity
           maximumNumberIsVisible: maximumNumberOfAnswersIsVisible,
+          allowMultipleAnswers: allowMultipleAnswers,
+          maxNumberOfMultipleAnswers: maximumNumberOfMultipleAnswers,
           isDraft: isDraft,
           visibleForGroupNames: visibleForGroupNames,
           visibleForGroups: await convertToIds(visibleForGroupNames),
@@ -443,15 +463,19 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
         padding:
             const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
         children: [
-          Row(children: [
-            Text(
-              'Let op: Forms kunnen niet worden aangepast nadat deze definitief zijn gepubliceerd.',
-              style: TextStyle(color: colorScheme.outline),
-            ),
-            const Spacer(),
-            if (widget.existingFormId != null)
-              DeleteFormButton(formId: widget.existingFormId!),
-          ]),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Let op: Forms kunnen niet worden aangepast nadat deze definitief zijn gepubliceerd.',
+                  style: TextStyle(color: colorScheme.outline),
+                  softWrap: true,
+                ),
+              ),
+              if (widget.existingFormId != null)
+                DeleteFormButton(formId: widget.existingFormId!),
+            ],
+          ),
           const SizedBox(height: 16),
           CreateFormMetaFieldsWidget(),
           CreateFormQuestionsWidget(),

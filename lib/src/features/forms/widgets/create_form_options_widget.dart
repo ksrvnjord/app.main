@@ -26,12 +26,14 @@ class CreateFormOptionsWidget extends ConsumerWidget {
               state.updateHasMaximumNumberOfAnswers(value);
             },
           ),
-          const Text('Maximum aantal antwoorden toestaan'),
+          const Text(
+              'Ik wil dat het formulier een maximum aantal anwoorden heeft.'),
         ],
       ),
       if (state.hasMaximumNumberOfAnswers)
-        TextFormField(
-          initialValue: state.maximumNumberOfAnswers.toString(),
+        CreateFormMetaOptionInset(
+            child: TextFormField(
+          initialValue: state.maximumNumberOfAnswers?.toString() ?? '',
           decoration: const InputDecoration(
             labelText: 'Maximum aantal antwoorden',
           ),
@@ -47,18 +49,20 @@ class CreateFormOptionsWidget extends ConsumerWidget {
             }
             return null;
           },
-        ),
-      Row(
-        children: [
-          Checkbox.adaptive(
-            value: state.maximumNumberOfAnswersIsVisible,
-            onChanged: (bool? value) {
-              state.updateMaximumNumberOfAnswersIsVisible(value);
-            },
-          ),
-          const Text('Maximum aantal antwoorden tonen in de app'),
-        ],
-      ),
+        )),
+      if (state.hasMaximumNumberOfAnswers)
+        CreateFormMetaOptionInset(
+            child: Row(
+          children: [
+            Checkbox.adaptive(
+              value: state.maximumNumberOfAnswersIsVisible,
+              onChanged: (bool? value) {
+                state.updateMaximumNumberOfAnswersIsVisible(value);
+              },
+            ),
+            const Text('Maximum aantal antwoorden tonen in de app'),
+          ],
+        )),
       SelectGroupWidget(),
       Row(
         children: [
@@ -68,9 +72,44 @@ class CreateFormOptionsWidget extends ConsumerWidget {
               state.updateFormAnswersAreUntretractable(value);
             },
           ),
-          const Text('Formulierantwoorden direct definitief maken'),
+          const Text('Ik wil dat een formulierantwoord direct definitief is.'),
         ],
       ),
+      Row(
+        children: [
+          Checkbox.adaptive(
+            value: state.allowMultipleAnswers,
+            onChanged: (bool? value) {
+              state.updateAllowMultipleAnswers(value);
+            },
+          ),
+          const Text(
+              'Ik wil dat een gebruiker het formulier vaker kan invullen.'),
+        ],
+      ),
+      if (state.allowMultipleAnswers)
+        CreateFormMetaOptionInset(
+            child: TextFormField(
+          initialValue: state.maximumNumberOfMultipleAnswers.toString(),
+          decoration: const InputDecoration(
+            labelText: 'Maximum aantal antwoorden per persoon',
+          ),
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          onChanged: (value) {
+            state.updateMaxNumberOfMultipleAnswers(int.tryParse(value));
+          },
+          validator: (value) {
+            if (state.hasMaximumNumberOfAnswers &&
+                (value == null ||
+                    value.isEmpty ||
+                    value == '1' ||
+                    value == '0')) {
+              return 'Vul een getal groter dan 1 in.';
+            }
+            return null;
+          },
+        )),
       currentUserAsync.when(
         data: (user) {
           return Row(
@@ -95,5 +134,18 @@ class CreateFormOptionsWidget extends ConsumerWidget {
             ErrorCardWidget(errorMessage: error.toString()),
       ),
     ]);
+  }
+}
+
+class CreateFormMetaOptionInset extends StatelessWidget {
+  const CreateFormMetaOptionInset({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 40, top: 8),
+      child: child,
+    );
   }
 }

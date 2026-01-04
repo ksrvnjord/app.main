@@ -8,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart'
 part 'firestore_form.g.dart';
 
 // If you're testing set this to 'testforms', for production use 'forms'
-const String firestoreFormCollectionName = 'forms';
+const String firestoreFormCollectionName = 'testforms';
 
 @immutable
 @JsonSerializable()
@@ -34,6 +34,8 @@ class FirestoreForm {
     this.currentNumberOfAnswers = 0,
     this.maximumNumberIsVisible = false,
     this.formAnswersAreUnretractable = false,
+    this.allowMultipleAnswers = false,
+    this.maxNumberOfMultipleAnswers = 1,
     this.isV2 = false,
   });
   factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
@@ -91,6 +93,8 @@ class FirestoreForm {
   final int currentNumberOfAnswers;
   final bool maximumNumberIsVisible;
   final bool formAnswersAreUnretractable;
+  final bool allowMultipleAnswers;
+  final int maxNumberOfMultipleAnswers;
   final bool isV2;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSoldOut =>

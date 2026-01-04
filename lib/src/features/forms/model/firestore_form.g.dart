@@ -54,6 +54,9 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       maximumNumberIsVisible: json['maximumNumberIsVisible'] as bool? ?? false,
       formAnswersAreUnretractable:
           json['formAnswersAreUnretractable'] as bool? ?? false,
+      allowMultipleAnswers: json['allowMultipleAnswers'] as bool? ?? false,
+      maxNumberOfMultipleAnswers:
+          (json['maxNumberOfMultipleAnswers'] as num?)?.toInt() ?? 1,
       isV2: json['isV2'] as bool? ?? false,
     );
 
@@ -81,5 +84,7 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'currentNumberOfAnswers': instance.currentNumberOfAnswers,
       'maximumNumberIsVisible': instance.maximumNumberIsVisible,
       'formAnswersAreUnretractable': instance.formAnswersAreUnretractable,
+      'allowMultipleAnswers': instance.allowMultipleAnswers,
+      'maxNumberOfMultipleAnswers': instance.maxNumberOfMultipleAnswers,
       'isV2': instance.isV2,
     };

@@ -37,7 +37,8 @@ class SelectGroupWidget extends StatelessWidget {
               state.updateIsGroupSpecific(value ?? false);
             },
           ),
-          const Text('Formulier specifiek maken voor bepaalde groep'),
+          const Text(
+              'Ik wil mijn formulier specifiek voor een bepaalde groep maken.'),
         ],
       ),
       if (state.isGroupSpecific)
