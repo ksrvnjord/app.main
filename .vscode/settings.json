@@ -5,5 +5,5 @@
   },
   "cmake.ignoreCMakeListsMissing": true,
   "cmake.configureOnOpen": true,
-  "dart.flutterSdkPath": ".fvm/flutter_sdk"
+  "dart.flutterSdkPath": ".fvm/versions/3.27.4"
 }
