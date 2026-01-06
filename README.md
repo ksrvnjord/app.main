@@ -13,7 +13,6 @@ De Flut-ter versie.
 
 1. Install FVM: `dart pub global activate fvm`
 2. Install the project's Flutter version: `fvm install`
-3. **IMPORTANT** - Configure Git hooks: `git config core.hooksPath .githooks`
 
 **Daily usage - Always use `fvm` prefix:**
 ```bash
