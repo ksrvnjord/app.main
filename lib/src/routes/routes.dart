@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -32,6 +34,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/events/pages/create_event_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
@@ -110,6 +113,7 @@ abstract final // ignore: prefer-single-declaration-per-file
     ref
       ..onDispose(authNotifier.dispose)
       ..listen(
+        // ignore: riverpod_syntax_error
         authControllerProvider
             .select((data) => data.whenData((value) => value)),
         // When user is authenticated, update the notifier.
@@ -314,6 +318,16 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'evenementen',
           name: "Events",
           child: const EventsPage(),
+          routes: [
+            _route(
+              path: 'create',
+              name: 'Create Event',
+              pageBuilder: (context, state) => _getPage(
+                child: const CreateEventPage(),
+                name: 'Create Event',
+              ),
+            ),
+          ],
         ),
         _route(
           path: 'aankondigingen',
@@ -891,6 +905,27 @@ abstract final // ignore: prefer-single-declaration-per-file
                 name: "Manage Groups",
               ),
             ),
+            _route(
+                path: 'manage-subs',
+                name: 'Manage Substructuren',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageSubPage(
+                        type: state.uri.queryParameters['type'],
+                      ),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                      path: ':substructureName',
+                      name: "Edit Substructure",
+                      pageBuilder: (context, state) => _getPage(
+                          child: EditSubstructurePage(
+                            substructureName:
+                                state.pathParameters['substructureName']!,
+                            type: state.uri.queryParameters['type'],
+                          ),
+                          name: "Edit Substructure"))
+                ]),
           ],
         ),
       ],

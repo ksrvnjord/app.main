@@ -356,6 +356,7 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
               ),
             ));
 
+          // ignore: unreachable_switch_default
           default:
             return const ErrorCardWidget(
               errorMessage: 'Onbekend type vraag',
