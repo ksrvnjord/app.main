@@ -12,6 +12,7 @@ De Flut-ter versie.
 **First time setup:**
 
 1. Install FVM: `dart pub global activate fvm`
+3. Add `%LOCALAPPDATA%\Pub\Cache\bin` to your System Variable PATH
 2. Install the project's Flutter version: `fvm install`
 
 **Daily usage - Always use `fvm` prefix:**
