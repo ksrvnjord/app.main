@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 //weather icons source: https://erikflowers.github.io/weather-icons/
 
 enum KledingRecommendation {
