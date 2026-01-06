@@ -14,12 +14,6 @@ dart pub global activate fvm
 fvm install
 ```
 
-### 3. Configure Git hooks (important!)
-```bash
-git config core.hooksPath .githooks
-```
-
-This ensures you can't accidentally commit using the wrong Flutter version.
 
 ## Daily Usage
 
