@@ -30,13 +30,17 @@ class UpcomingEventWidget extends StatelessWidget {
     const double elementPadding = 4;
 
     const double timeTopPadding = 0;
-    const double minWidthDay = 28;
+    const double minWidthDay = 30;
+    const double minWidthWeekDay = 20;
+    const double minWidthTime = 45;
 
     return [
       Text(
         dayFormat.format(start),
         style: textTheme.labelLarge,
         textAlign: TextAlign.center,
+      ).constrained(
+        minWidth: minWidthWeekDay,
       ).padding(top: topPadding),
       Text(
         start.day.toString(),
@@ -89,7 +93,11 @@ class UpcomingEventWidget extends StatelessWidget {
         Text(
           timeFormat.format(start),
           style: textTheme.titleMedium,
-        ).padding(top: topPadding + timeTopPadding),
+        )
+        .constrained(
+          minWidth: minWidthTime,
+        )
+        .padding(top: topPadding + timeTopPadding),
       Expanded(
         child: Text(
           event.title,
