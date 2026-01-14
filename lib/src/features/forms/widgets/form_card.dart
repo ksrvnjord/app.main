@@ -82,7 +82,7 @@ class FormCard extends ConsumerWidget {
                 : "Gesloten op ${DateFormat('EEEE d MMMM y HH:mm', 'nl_NL').format(form.openUntil)}",
             style: textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
           ),
-          if (form.maximumNumberIsVisible == true)
+          if (form.maximumNumberIsVisible == true && currentUser.isAdmin)
             countAnswerProvider.when(
               data: (answerCount) => Text(
                 "Aantal antwoorden: $answerCount / ${form.maximumNumberOfAnswers < 2000 ? form.maximumNumberOfAnswers : '∞'}",
