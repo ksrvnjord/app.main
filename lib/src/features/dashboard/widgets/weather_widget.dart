@@ -238,7 +238,7 @@ class WeatherWidget extends ConsumerWidget {
         // Collect all sunrise/sunset events that fall within the next48Hours span.
         final List<String> dailySunriseList =
             List<String>.from(data['daily']['sunrise']);
-        final List<String> dailySunsetList = 
+        final List<String> dailySunsetList =
             List<String>.from(data['daily']['sunset']);
 
         final DateTime hoursStart = next48Hours.isNotEmpty
