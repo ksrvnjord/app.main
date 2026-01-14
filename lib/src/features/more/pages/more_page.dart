@@ -88,13 +88,16 @@ class MorePage extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FloatingActionButton.extended(
-                  heroTag: 'meldingButton',
-                  foregroundColor: colorScheme.onTertiaryContainer,
-                  backgroundColor: colorScheme.tertiaryContainer,
-                  onPressed: () => context.goNamed('VCPContact'),
-                  icon: const Icon(Icons.admin_panel_settings),
-                  label: const Text('Melding maken'),
+                ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 160),
+                  child: FloatingActionButton.extended(
+                    heroTag: 'meldingButton',
+                    foregroundColor: colorScheme.onTertiaryContainer,
+                    backgroundColor: colorScheme.tertiaryContainer,
+                    onPressed: () => context.goNamed('VCPContact'),
+                    icon: const Icon(Icons.admin_panel_settings),
+                    label: const Text('Melding maken'),
+                  ),
                 ),
                 if (canAccessAdminPanel)
                   ConstrainedBox(
