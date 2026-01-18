@@ -11,25 +11,24 @@ const Map<String, String> contactAssetMap = {
 
 // Provides names and email for VCP's and bestuur
 final contactpersonenInfoProvider = FutureProvider.autoDispose
-    .family<List<VertrouwenscontactpersoonInfo>, String>((ref, assetPath) async {
-  final yamlMap = await ref
-      .watch(yamlMapProvider(contactAssetMap[assetPath]!).future);
+    .family<List<VertrouwenscontactpersoonInfo>, String>(
+        (ref, assetPath) async {
+  final yamlMap =
+      await ref.watch(yamlMapProvider(contactAssetMap[assetPath]!).future);
   final names = yamlMap.keys.map((e) => e.toString()).toList();
-  final infos = await Future.wait(
-    names.map((name) async {
-      final YamlMap? contactPersoonMap = yamlMap[name];
-      if (contactPersoonMap == null) {
-        return null;
-      }
-      final map = <String, dynamic>{
-        'name': name,
-      };
-      contactPersoonMap.forEach((key, value) {
-        map[key.toString()] = value;
-      });
-      return VertrouwenscontactpersoonInfo.fromMap(map);
-    })
-  );
+  final infos = await Future.wait(names.map((name) async {
+    final YamlMap? contactPersoonMap = yamlMap[name];
+    if (contactPersoonMap == null) {
+      return null;
+    }
+    final map = <String, dynamic>{
+      'name': name,
+    };
+    contactPersoonMap.forEach((key, value) {
+      map[key.toString()] = value;
+    });
+    return VertrouwenscontactpersoonInfo.fromMap(map);
+  }));
   return infos.whereType<VertrouwenscontactpersoonInfo>().toList();
 });
 
