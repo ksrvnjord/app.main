@@ -20,6 +20,14 @@ class VCPPage extends ConsumerWidget {
     if (content == null) {
       return const SizedBox.shrink();
     }
+    if (title == "Link") {
+      return SizedBox(
+        child: ElevatedButton(
+          onPressed: () async => launchUrl(Uri.parse(content)),
+          child: Text("Meer weten?"),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
@@ -59,7 +67,7 @@ class VCPPage extends ConsumerWidget {
             Expanded(
               child: Text(info.name),
             ),
-            if (info.contact != null) ...[
+            if (info.email != null) ...[
               // FIXME: String matching
               if (hasContact.contains(info.name)) ...[
                 IconButton(
@@ -134,7 +142,7 @@ class VCPPage extends ConsumerWidget {
                 IconButton(
                   icon: Icon(Icons.email_outlined),
                   onPressed: () =>
-                      launchUrl(Uri.parse('mailto:${info.contact}')),
+                      launchUrl(Uri.parse('mailto:${info.email}')),
                 ),
               ],
             ],
@@ -155,6 +163,7 @@ class VCPPage extends ConsumerWidget {
               _buildInfo('Wanneer', info.wanneer),
               _buildInfo('Waarvoor', info.waarvoor),
               _buildInfo('Wat', info.wat),
+              _buildInfo('Link', info.link),
             ],
           ),
         ],
@@ -223,47 +232,87 @@ class VCPPage extends ConsumerWidget {
             ),
           ),
           Expanded(
-              child: SingleChildScrollView(
-            child: contactpersonenInfo.when(
-              data: (data) {
-                if (contactChoice) {
-                  final contactInfo = data as List<MeldpersooncontactInfo>;
-                  return Column(
-                    children: contactInfo
-                        .map((info) => _buildTile(context, info))
-                        .toList(),
-                  );
-                } else {
-                  final grouped =
-                      data as Map<String, List<MeldpersooncontactInfo>>;
-                  return Column(
-                    children: grouped.entries.map((entry) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .outline
-                                .withOpacity(0.5),
-                          ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: wrapSpacing),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: wrapSpacing),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
                         ),
-                        child: ExpansionTile(
-                            title: Text(entry.key),
-                            children: entry.value
-                                .map((info) => _buildTile(context, info))
-                                .toList()),
-                      );
-                    }).toList(),
-                  );
-                }
-              },
-              error: (error, stackTrace) => ErrorCardWidget(
-                errorMessage: error.toString(),
-                stackTrace: stackTrace,
+                      ),
+                      child: ExpansionTile(
+                        leading: Icon(
+                          Icons.info_outline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: const Text(
+                          "Belangrijk",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        shape: const Border(),
+                        dense: true,
+                        tilePadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+                        childrenPadding: const EdgeInsets.all(8.0),
+                        children: const [ 
+                          Text(
+                            "Je hoeft het niet perfect te doen! Alleen al luisteren en er zijn, maakt verschil.\n\n"
+                            "Sta erbij stil wat de steunende rol met jou doet en hoe je hiermee omgaat. Zo kan het zijn dat je meevoelt met de ander waardoor je zelf ook negatieve gevoelens gaat ervaren, of dat je je overmatig verantwoordelijk gaat voelen voor het welzijn van de ander.\n\n"
+                            "Het advies van We Zien Mekaar: let goed op jezelf, wees lief voor jezelf, en schakel hulp in als dat nodig is. Dat kan bij andere naasten/vrienden, of door een afspraak te maken bij de huisarts. Omdat jij die steunende en/of helpende rol niet in je eentje hoeft te dragen.",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  contactpersonenInfo.when(
+                    data: (data) {
+                  if (contactChoice) {
+                    final contactInfo = data as List<MeldpersooncontactInfo>;
+                    return Column(
+                      children: contactInfo
+                          .map((info) => _buildTile(context, info))
+                          .toList(),
+                    );
+                  } else {
+                    final grouped =
+                        data as Map<String, List<MeldpersooncontactInfo>>;
+                    return Column(
+                      children: grouped.entries.map((entry) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .outline
+                                  .withOpacity(0.5),
+                            ),
+                          ),
+                          child: ExpansionTile(
+                              title: Text(entry.key),
+                              children: entry.value
+                                  .map((info) => _buildTile(context, info))
+                                  .toList()),
+                        );
+                      }).toList(),
+                    );
+                  }
+                },
+                    error: (error, stackTrace) => ErrorCardWidget(
+                      errorMessage: error.toString(),
+                      stackTrace: stackTrace,
+                    ),
+                    loading: () => const LoadingWidget(),
+                  ),
+                ],
               ),
-              loading: () => LoadingWidget(),
-            ),
-          )),
+            )),
         ],
       ),
     );

@@ -33,7 +33,8 @@ class MeldpersooncontactInfo extends GroupInfo {
   final String? waarvoor;
   final String? wat;
   final List<String>? lidnummers;
-  final String? contact;
+  final String? email;
+  final String? link;
 
   const MeldpersooncontactInfo({
     required super.name,
@@ -42,7 +43,8 @@ class MeldpersooncontactInfo extends GroupInfo {
     this.waarvoor,
     this.wat,
     this.lidnummers,
-    this.contact,
+    this.email,
+    this.link,
   });
 
   static List<String>? _parseLidnummers(dynamic value) {
@@ -66,7 +68,8 @@ class MeldpersooncontactInfo extends GroupInfo {
       waarvoor: map['Waarvoor'] != null ? map['Waarvoor'] as String : null,
       wat: map['Wat'] != null ? map['Wat'] as String : null,
       lidnummers: _parseLidnummers(map["Lidnummers"]),
-      contact: map['Contact'] != null ? map['Contact'] as String : null,
+      email: map['Email'] != null ? map['Email'] as String : null,
+      link: map['Link'] != null ? map['Link'] as String : null,
     );
   }
 
@@ -78,7 +81,7 @@ class MeldpersooncontactInfo extends GroupInfo {
       'waarvoor': waarvoor,
       'wat': wat,
       'lidnummers': lidnummers,
-      'contact': contact,
+      'email': email,
     };
   }
 }

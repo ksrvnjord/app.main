@@ -50,7 +50,7 @@ Vertrouwenscontactpersonen:
     De externe VCP staat buiten de vereniging, maar weet wel hoe Njord in elkaar zit en heeft veel ervaring als psycholoog. 
     Zij geven geen advies maar kunnen doorverwijzen naar passende vervolgstappen. 
     Meldingen blijven vertrouwelijk en worden alleen met toestemming gedeeld, tenzij het gaat om een strafbaar feit."
-  Contact: "app@njord.nl"
+  Email: "app@njord.nl"
 
 Bestuur:
   Wie: 
@@ -63,7 +63,7 @@ Bestuur:
     "Het bestuur kan handelen of doorverwijzen naar passende ondersteuning."
   Lidnummers: 
     ["21109", "22013"]
-  Contact: "app@njord.nl"
+  Email: "app@njord.nl"
 
 Counselor:
   Wie: 
@@ -74,6 +74,8 @@ Counselor:
     "Ze biedt een vangnet en helpt met het vinden van passende vervolgstappen."
   Wat: 
     "Bij haar kan je op afspraak gratis terecht. Geen behandeltraject, maar meerdere afspraken en doorverwijzing naar hulpinstanties zijn mogelijk."
+  Link:
+    "https://widget.onlineafspraken.nl/consumer/booking/book/key/ggag15nhbg27-fzzg05/at/0/ln/3/l/11111/t/809fcc/f/110d0111/s/550_1500/o/theme:default,dp:modern,interval:week/exclude/mobiledetect/output/html"
 
 Tuchtrechtspraak:
   Wie: 
@@ -84,4 +86,4 @@ Tuchtrechtspraak:
     In dat geval wordt er een melding gemaakt bij de Raad en besluit de Raad wel of niet een onderzoek te starten. "
   Waarvoor: 
     "Het gaat hier om formele klachten zoals: (seksueel) overschrijdend gedrag of wangedrag van leden."
-  Contact: "raad@njord.nl"
+  Email: "raad@njord.nl"
