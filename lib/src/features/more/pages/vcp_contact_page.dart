@@ -46,6 +46,7 @@ class VCPPage extends ConsumerWidget {
 
   Widget _buildTile(BuildContext context, MeldpersooncontactInfo info) {
     final double dialogPadding = 4.0;
+    final List<String> hasContact = ["Vertrouwenscontactpersonen", "Bestuur"];
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -60,7 +61,7 @@ class VCPPage extends ConsumerWidget {
             ),
             if (info.contact != null) ...[
               // FIXME: String matching
-              if (info.name == "Vertrouwenscontactpersonen") ...[
+              if (hasContact.contains(info.name)) ...[
                 IconButton(
                   icon: const Icon(Icons.email_outlined),
                   tooltip: "Email",
@@ -69,17 +70,18 @@ class VCPPage extends ConsumerWidget {
                       context: context,
                       builder: (context) =>
                           Consumer(builder: (context, ref, _) {
-                        final vertrouwensPersoonInfo =
-                            ref.watch(vertrouwenscontactpersonenInfoProvider);
+                        final assetPath = info.name;
+                        final contactPersoonInfo =
+                            ref.watch(contactpersonenInfoProvider(assetPath));
                         return AlertDialog.adaptive(
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: dialogPadding / 2),
-                          content: vertrouwensPersoonInfo.when(
-                            data: (vcp) => DataTable(
+                          content: contactPersoonInfo.when(
+                            data: (cp) => DataTable(
                               columns: const [
                                 DataColumn(
                                     label: Text(
-                                  "Vertrouwenscontactpersoon",
+                                  "Contactpersoon",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                                 DataColumn(
@@ -91,18 +93,18 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ],
                               rows: [
-                                ...vcp.map(
-                                  (vertrouwenscontactpersoon) => DataRow(
+                                ...cp.map(
+                                  (contactpersoon) => DataRow(
                                     cells: [
                                       DataCell(
-                                          Text(vertrouwenscontactpersoon.name)),
+                                          Text(contactpersoon.name)),
                                       DataCell(
                                         IconButton(
                                           icon:
                                               const Icon(Icons.email_outlined),
                                           onPressed: () async => launchUrl(
                                             Uri.parse(
-                                                'mailto:${vertrouwenscontactpersoon.email}'),
+                                                'mailto:${contactpersoon.email}'),
                                           ),
                                         ),
                                       ),
@@ -179,7 +181,7 @@ class VCPPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Er is iets gebeurd op Njord wat je niet fijn vindt, wat nu?",
+                  "Is er iets vervelends gebeurd op Njord, of zit je niet lekker in je vel? Hier kan je terecht!",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: fontSize,
@@ -187,7 +189,7 @@ class VCPPage extends ConsumerWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "Hieronder vind je de verschillende manieren om dit te bespreken of te melden, van laagdrempelig tot formele meldingen.",
+                  "Hier vind je de verschillende manieren om dit te bespreken of te melden. Njord biedt interne hulp en de externe hulp staat voor waar je buiten Njord terecht kan.",
                   textAlign: TextAlign.center,
                 ),
               ],
