@@ -157,9 +157,6 @@ class VCPPage extends ConsumerWidget {
                     lidnummer: contactLidnummer,
                   ),
                 ),
-              _buildInfo('Wie', info.wie),
-              _buildInfo('Wanneer', info.wanneer),
-              _buildInfo('Waarvoor', info.waarvoor),
               _buildInfo('Wat', info.wat),
               _buildInfo('Link', info.link),
             ],
@@ -210,7 +207,7 @@ class VCPPage extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                for (final contactOption in ["Intern", "Extern"])
+                for (final contactOption in ["Interne hulp", "Externe hulp"])
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: wrapSpacing / 2),
@@ -220,10 +217,10 @@ class VCPPage extends ConsumerWidget {
                         "VCPContact",
                         queryParameters: {
                           'contactChoice':
-                              contactOption == "Intern" ? 'true' : 'false'
+                              contactOption == "Interne hulp" ? 'true' : 'false'
                         },
                       ),
-                      selected: contactChoice == (contactOption == "Intern"),
+                      selected: contactChoice == (contactOption == "Interne hulp"),
                     ),
                   ),
               ],
