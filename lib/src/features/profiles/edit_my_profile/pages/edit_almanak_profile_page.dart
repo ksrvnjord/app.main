@@ -127,38 +127,40 @@ class _EditAlmanakProfilePageState
                     .read(profileEditFormNotifierProvider.notifier)
                     .setBoard(value),
               ),
-              DropdownButtonFormField<String?>(
-                items: ['Geen', ...kHouseNames]
-                    .map((house) => DropdownMenuItem<String>(
-                          value: house,
-                          child: Text(house),
-                        ))
-                    .toList(),
-                value: user.huis,
-                hint: const Text('Geen'),
-                onChanged: (_) => {},
-                decoration: const InputDecoration(labelText: 'Njord-huis'),
-                onSaved: (huis) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setHuis(huis),
-              ),
-              MultiSelectDialogField<String>(
-                items: substructures.map((structure) =>
-                    // ignore: no-equal-arguments
-                    MultiSelectItem<String>(structure, structure)).toList(),
-                onConfirm: (_) => {},
-                title: const Text('Substructuren'),
-                // ignore: no-equal-arguments
-                buttonText: const Text('Substructuren'),
-                selectedColor: colorScheme.primaryContainer,
-                backgroundColor: colorScheme.surface,
-                checkColor: colorScheme.onPrimaryContainer,
-                itemsTextStyle: TextStyle(color: colorScheme.onSurface),
-                onSaved: (substructures) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setSubstructuren(substructures),
-                initialValue: user.substructures ?? [],
-              ),
+              if (user.isAdmin!) ...[
+                DropdownButtonFormField<String?>(
+                  items: ['Geen', ...kHouseNames]
+                      .map((house) => DropdownMenuItem<String>(
+                            value: house,
+                            child: Text(house),
+                          ))
+                      .toList(),
+                  value: user.huis,
+                  hint: const Text('Geen'),
+                  onChanged: (_) => {},
+                  decoration: const InputDecoration(labelText: 'Njord-huis'),
+                  onSaved: (huis) => ref
+                      .read(profileEditFormNotifierProvider.notifier)
+                      .setHuis(huis),
+                ),
+                MultiSelectDialogField<String>(
+                  items: substructures
+                      .map((structure) =>
+                          MultiSelectItem<String>(structure, structure))
+                      .toList(),
+                  onConfirm: (_) {},
+                  title: const Text('Substructuren'),
+                  buttonText: const Text('Substructuren'),
+                  selectedColor: colorScheme.primaryContainer,
+                  backgroundColor: colorScheme.surface,
+                  checkColor: colorScheme.onPrimaryContainer,
+                  itemsTextStyle: TextStyle(color: colorScheme.onSurface),
+                  onSaved: (substructures) => ref
+                      .read(profileEditFormNotifierProvider.notifier)
+                      .setSubstructuren(substructures),
+                  initialValue: user.substructures ?? [],
+                ),
+              ],
               DropdownButtonFormField<bool?>(
                 items: const [
                   DropdownMenuItem(

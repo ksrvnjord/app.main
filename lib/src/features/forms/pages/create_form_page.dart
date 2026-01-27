@@ -444,11 +444,14 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
             const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 64),
         children: [
           Row(children: [
-            Text(
-              'Let op: Forms kunnen niet worden aangepast nadat deze definitief zijn gepubliceerd.',
-              style: TextStyle(color: colorScheme.outline),
+            Expanded(
+              child: Text(
+                'Let op: Forms kunnen niet worden aangepast nadat deze definitief zijn gepubliceerd.',
+                style: TextStyle(color: colorScheme.outline),
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
             ),
-            const Spacer(),
             if (widget.existingFormId != null)
               DeleteFormButton(formId: widget.existingFormId!),
           ]),
