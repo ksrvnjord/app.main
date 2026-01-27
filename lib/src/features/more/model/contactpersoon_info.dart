@@ -25,3 +25,51 @@ class VertrouwenscontactpersoonInfo extends GroupInfo {
     };
   }
 }
+
+@immutable
+class MeldpersooncontactInfo extends GroupInfo {
+  final String? wat;
+  final List<String>? lidnummers;
+  final String? email;
+  final String? link;
+
+  const MeldpersooncontactInfo({
+    required super.name,
+    this.wat,
+    this.lidnummers,
+    this.email,
+    this.link,
+  });
+
+  static List<String>? _parseLidnummers(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
+    }
+    if (value is String) {
+      return [value.toString()];
+    }
+    return null;
+  }
+
+  factory MeldpersooncontactInfo.fromMap(Map<String, dynamic> map) {
+    return MeldpersooncontactInfo(
+      name: map['name'] as String,
+      wat: map['Wat'] != null ? map['Wat'] as String : null,
+      lidnummers: _parseLidnummers(map["Lidnummers"]),
+      email: map['Email'] != null ? map['Email'] as String : null,
+      link: map['Link'] != null ? map['Link'] as String : null,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'wat': wat,
+      'lidnummers': lidnummers,
+      'email': email,
+    };
+  }
+}

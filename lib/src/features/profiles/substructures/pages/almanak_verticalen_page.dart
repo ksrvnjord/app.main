@@ -32,6 +32,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
       body: ListView(
         children: [
           /*ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: AlmanakSubstructureCoverPicture(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   child: AlmanakSubstructureCoverPicture(
                       imageProvider: ref.watch(verticalsPictureProvider(name))))

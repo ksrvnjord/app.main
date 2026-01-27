@@ -24,7 +24,8 @@ class ContactPage extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final commissieInfoVal = ref.watch(commissiesInfoProvider);
-    final vcpInfoVal = ref.watch(vertrouwenscontactpersonenInfoProvider);
+    final vcpInfoVal =
+        ref.watch(contactpersonenInfoProvider("Vertrouwenscontactpersonen"));
 
     return Scaffold(
       appBar: AppBar(

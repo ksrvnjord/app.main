@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -32,7 +34,9 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_show_page.
 import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_page.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
+import 'package:ksrvnjord_main_app/src/features/events/pages/create_event_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/notifications_page.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/pages/liked_by_page.dart';
@@ -70,11 +74,14 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_needed_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/plan_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_reservation_object_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/show_training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/training_page.dart';
 import 'package:ksrvnjord_main_app/src/features/gallery/pages/gallery_main_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_register_page.dart';
+import 'package:ksrvnjord_main_app/src/features/training/pages/coach_or_cox_search_page.dart';
 import 'package:ksrvnjord_main_app/src/main_page.dart';
 import 'package:ksrvnjord_main_app/src/routes/dutch_upgrade_messages.dart';
 import 'package:ksrvnjord_main_app/src/routes/privacy_policy_page.dart';
@@ -109,6 +116,7 @@ abstract final // ignore: prefer-single-declaration-per-file
     ref
       ..onDispose(authNotifier.dispose)
       ..listen(
+        // ignore: riverpod_syntax_error
         authControllerProvider
             .select((data) => data.whenData((value) => value)),
         // When user is authenticated, update the notifier.
@@ -313,6 +321,16 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'evenementen',
           name: "Events",
           child: const EventsPage(),
+          routes: [
+            _route(
+              path: 'create',
+              name: 'Create Event',
+              pageBuilder: (context, state) => _getPage(
+                child: const CreateEventPage(),
+                name: 'Create Event',
+              ),
+            ),
+          ],
         ),
         _route(
           path: 'aankondigingen',
@@ -489,6 +507,35 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+            path: 'coach-of-stuur',
+            name: 'Coach Of Stuur Nodig',
+            pageBuilder: (context, state) => _getPage(
+                child: CoachOrCoxNeededPage(), name: 'Coach Of Stuur Nodig'),
+            routes: [
+              _route(
+                path: 'coach-of-stuur/zoeken/:role',
+                name: 'SearchRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxSearchPage(role: role),
+                    name: 'SearchRole',
+                  );
+                },
+              ),
+              _route(
+                path: 'coach-of-stuur/register/:role',
+                name: 'RegisterRole',
+                pageBuilder: (context, state) {
+                  final role = state.pathParameters['role']!;
+                  return _getPage(
+                    child: CoachOrCoxRegisterPage(role: role),
+                    name: 'RegisterRole',
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ];
@@ -771,6 +818,17 @@ abstract final // ignore: prefer-single-declaration-per-file
           child: const BlikkenLijstPage(),
         ),
         _route(
+          path: "vcpcontact",
+          name: "VCPContact",
+          pageBuilder: (context, state) => _getPage(
+            child: VCPPage(
+              contactChoice:
+                  state.uri.queryParameters['contactChoice'] != 'false',
+            ),
+            name: "VCP Contact",
+          ),
+        ),
+        _route(
           path: "admin",
           name: "Admin",
           child: const AdminPage(),
@@ -860,6 +918,27 @@ abstract final // ignore: prefer-single-declaration-per-file
                 name: "Manage Groups",
               ),
             ),
+            _route(
+                path: 'manage-subs',
+                name: 'Manage Substructuren',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageSubPage(
+                        type: state.uri.queryParameters['type'],
+                      ),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                      path: ':substructureName',
+                      name: "Edit Substructure",
+                      pageBuilder: (context, state) => _getPage(
+                          child: EditSubstructurePage(
+                            substructureName:
+                                state.pathParameters['substructureName']!,
+                            type: state.uri.queryParameters['type'],
+                          ),
+                          name: "Edit Substructure"))
+                ]),
           ],
         ),
       ],

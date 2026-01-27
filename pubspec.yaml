@@ -2,11 +2,12 @@ name: ksrvnjord_main_app
 description: K.S.R.V. Njord Ledenapplicatie
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.20+16
+version: 2.0.21+16
 
 environment:
   sdk: "^3.5.0" # Dart SDK version, TODO: update when codemagic updated: https://dart.dev/get-dart/archive
   flutter: ^3.24.0 # Flutter SDK version: https://docs.flutter.dev/release/archive
+  # IMPORTANT: if the flutter version is upgraded, use "fvm use <version>" to set the project version
 
 # Want to remove unused dependencies from your package?
 # Find the unused dependencies by running the following in the root of your package
@@ -40,6 +41,7 @@ dependencies:
   firebase_storage: any
   multi_select_flutter: ^4.1.3
   font_awesome_flutter: ^10.4.0
+  sentry_flutter: ^8.0.0
   action_sheet: ^1.0.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
