@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/events/api/event_service.dart';
+import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class CreateEventPage extends ConsumerStatefulWidget {
-  const CreateEventPage({super.key});
+  const CreateEventPage({super.key, this.eventToEdit, this.documentId});
+
+  final Event? eventToEdit;
+  final String? documentId;
 
   @override
   CreateEventPageState createState() => CreateEventPageState();
@@ -21,6 +25,8 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
   final TextEditingController _startMinuteController = TextEditingController();
   final TextEditingController _endHourController = TextEditingController();
   final TextEditingController _endMinuteController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   String title = '';
   String description = '';
@@ -39,11 +45,48 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.eventToEdit != null) {
+      _prefillForm(widget.eventToEdit!);
+    }
+  }
+
+  void _prefillForm(Event event) {
+    final startDate = event.startTime.toDate();
+    final endDate = event.endTime.toDate();
+
+    _titleController.text = event.title;
+    _descriptionController.text = event.description;
+    _startHourController.text = startDate.hour.toString().padLeft(2, '0');
+    _startMinuteController.text = startDate.minute.toString().padLeft(2, '0');
+    _endHourController.text = endDate.hour.toString().padLeft(2, '0');
+    _endMinuteController.text = endDate.minute.toString().padLeft(2, '0');
+
+    startDateTime = startDate;
+    endDateTime = endDate;
+
+    // Determine event type from color
+    if (event.color != null) {
+      for (var entry in typeColorMapping.entries) {
+        if (entry.value == event.color) {
+          eventType = entry.key;
+          break;
+        }
+      }
+    }
+
+    setState(() {});
+  }
+
+  @override
   void dispose() {
     _startHourController.dispose();
     _startMinuteController.dispose();
     _endHourController.dispose();
     _endMinuteController.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -51,6 +94,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final currentUserVal = ref.watch(currentUserNotifierProvider);
+    final isEditing = widget.eventToEdit != null;
 
     // Check if user is admin
     if (currentUserVal == null || !currentUserVal.isAdmin) {
@@ -97,7 +141,8 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
             onPressed: () => context.goNamed("Events"),
             icon: const Icon(Icons.arrow_back_ios),
           ),
-          title: const Text('Nieuw Evenement'),
+          // title: const Text('Nieuw Evenement'),
+          title: Text(isEditing ? 'Evenement Bewerken' : 'Nieuw Evenement'),
         ),
         body: Form(
           key: _formKey,
@@ -128,6 +173,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
 
               // Title Field
               TextFormField(
+                controller: _titleController,
                 decoration: const InputDecoration(
                   labelText: 'Titel',
                   hintText: 'bijv. Hollandia roeiwedstrijden',
@@ -143,6 +189,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
 
               // Description Field
               TextFormField(
+                controller: _descriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Beschrijving',
                   hintText: 'Voeg details toe over het evenement',
@@ -381,24 +428,48 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
     setState(() => isCreating = true);
 
     try {
-      await EventService.create(
-        title: title,
-        description: description,
-        startTime: Timestamp.fromDate(finalStartDateTime),
-        endTime: Timestamp.fromDate(finalEndDateTime),
-        color: typeColorMapping[eventType] ?? const Color(0xFFB8860B),
-      );
+      final isEditing = widget.eventToEdit != null;
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Evenement aangemaakt!')),
+      if (isEditing && widget.documentId != null) {
+        // Update existing event
+        await EventService.update(
+          documentId: widget.documentId!,
+          title: _titleController.text,
+          description: _descriptionController.text,
+          startTime: Timestamp.fromDate(finalStartDateTime),
+          endTime: Timestamp.fromDate(finalEndDateTime),
+          color: typeColorMapping[eventType] ?? const Color(0xFFB8860B),
         );
-        context.goNamed('Events');
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Evenement bijgewerkt!')),
+          );
+          context.goNamed('Events');
+        }
+      } else {
+        // Create new event
+        await EventService.create(
+          title: _titleController.text,
+          description: _descriptionController.text,
+          startTime: Timestamp.fromDate(finalStartDateTime),
+          endTime: Timestamp.fromDate(finalEndDateTime),
+          color: typeColorMapping[eventType] ?? const Color(0xFFB8860B),
+        );
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Evenement aangemaakt!')),
+          );
+          context.goNamed('Events');
+        }
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fout bij maken evenement: $e')),
+          SnackBar(
+              content: Text(
+                  'Fout bij ${widget.eventToEdit != null ? 'bijwerken' : 'maken'} evenement: $e')),
         );
       }
     } finally {

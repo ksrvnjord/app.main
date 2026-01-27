@@ -29,6 +29,26 @@ class EventService {
     });
   }
 
+  // Add this new method
+  static Future<void> update({
+    required String documentId,
+    required String title,
+    required String description,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required Color color,
+  }) async {
+    final eventRef = eventsCollection.doc(documentId);
+
+    await eventRef.update({
+      'title': title,
+      'description': description,
+      'start_time': startTime,
+      'end_time': endTime,
+      'type': _getTypeFromColor(color),
+    });
+  }
+
   /// Determine event type from color
   static String _getTypeFromColor(Color color) {
     if (color == const Color(0xFF008200)) return 'borrel';

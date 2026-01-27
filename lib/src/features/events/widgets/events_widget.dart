@@ -2,15 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class EventsWidget extends StatelessWidget {
+class EventsWidget extends ConsumerWidget {
   const EventsWidget({super.key, required this.snapshot});
 
   final QuerySnapshot<Event> snapshot;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+
+    final currentUserVal = ref.watch(currentUserProvider);
+
+    final isAdmin = currentUserVal.maybeWhen(
+      data: (currentUser) => currentUser.isAdmin,
+      orElse: () => false,
+    );
+
+    final canEditEvent = isAdmin;
 
     const double bodyMonthHeaderHeight = 56;
 
@@ -43,19 +55,26 @@ class EventsWidget extends StatelessWidget {
       maxDate: DateTime.now().add(const Duration(days: 365)),
       // Add onTap callback to handle event taps
       onTap: (CalendarTapDetails details) {
-        if (details.targetElement == CalendarElement.appointment &&
+        if (canEditEvent) {
+          final Event tappedEvent = details.appointments!.first as Event;
+          final int index = events.indexOf(tappedEvent);
+          final documentId = snapshot.docs[index].id;
+          debugPrint('Tapped event: $tappedEvent');
+          _showEventDescription(context, tappedEvent, documentId, canEditEvent);
+        } else if (details.targetElement == CalendarElement.appointment &&
             details.appointments != null &&
             details.appointments!.isNotEmpty &&
             (details.appointments!.first as Event).description.isNotEmpty) {
           final Event tappedEvent = details.appointments!.first as Event;
-          _showEventDescription(context, tappedEvent);
+          _showEventDescription(context, tappedEvent, null, canEditEvent);
         }
       },
     );
   }
 
   // Function to show event description in a dialog
-  void _showEventDescription(BuildContext context, Event event) {
+  void _showEventDescription(
+      BuildContext context, Event event, String? documentId, bool canEdit) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -79,6 +98,20 @@ class EventsWidget extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),
             ),
+            if (canEdit && documentId != null)
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  context.goNamed(
+                    'Create Event',
+                    extra: {
+                      'event': event,
+                      'documentId': documentId,
+                    },
+                  );
+                },
+                child: const Text('Bewerken'),
+              ),
           ],
         );
       },
