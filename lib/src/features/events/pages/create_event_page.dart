@@ -44,7 +44,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
     'overig': const Color(0xFFB8860B),
   };
 
- @override
+  @override
   void initState() {
     super.initState();
     if (widget.eventToEdit != null) {
@@ -429,7 +429,7 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
 
     try {
       final isEditing = widget.eventToEdit != null;
-      
+
       if (isEditing && widget.documentId != null) {
         // Update existing event
         await EventService.update(
@@ -467,7 +467,9 @@ class CreateEventPageState extends ConsumerState<CreateEventPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fout bij ${widget.eventToEdit != null ? 'bijwerken' : 'maken'} evenement: $e')),
+          SnackBar(
+              content: Text(
+                  'Fout bij ${widget.eventToEdit != null ? 'bijwerken' : 'maken'} evenement: $e')),
         );
       }
     } finally {

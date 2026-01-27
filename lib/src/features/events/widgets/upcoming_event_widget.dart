@@ -39,9 +39,11 @@ class UpcomingEventWidget extends StatelessWidget {
         dayFormat.format(start),
         style: textTheme.labelLarge,
         textAlign: TextAlign.center,
-      ).constrained(
-        minWidth: minWidthWeekDay,
-      ).padding(top: topPadding),
+      )
+          .constrained(
+            minWidth: minWidthWeekDay,
+          )
+          .padding(top: topPadding),
       Text(
         start.day.toString(),
         style: textTheme.headlineSmall,
@@ -94,10 +96,10 @@ class UpcomingEventWidget extends StatelessWidget {
           timeFormat.format(start),
           style: textTheme.titleMedium,
         )
-        .constrained(
-          minWidth: minWidthTime,
-        )
-        .padding(top: topPadding + timeTopPadding),
+            .constrained(
+              minWidth: minWidthTime,
+            )
+            .padding(top: topPadding + timeTopPadding),
       Expanded(
         child: Text(
           event.title,

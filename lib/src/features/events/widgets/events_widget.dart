@@ -6,7 +6,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-
 class EventsWidget extends ConsumerWidget {
   const EventsWidget({super.key, required this.snapshot});
 
@@ -62,8 +61,7 @@ class EventsWidget extends ConsumerWidget {
           final documentId = snapshot.docs[index].id;
           debugPrint('Tapped event: $tappedEvent');
           _showEventDescription(context, tappedEvent, documentId, canEditEvent);
-        }
-        else if (details.targetElement == CalendarElement.appointment &&
+        } else if (details.targetElement == CalendarElement.appointment &&
             details.appointments != null &&
             details.appointments!.isNotEmpty &&
             (details.appointments!.first as Event).description.isNotEmpty) {
@@ -75,7 +73,8 @@ class EventsWidget extends ConsumerWidget {
   }
 
   // Function to show event description in a dialog
-  void _showEventDescription(BuildContext context, Event event, String? documentId, bool canEdit) {
+  void _showEventDescription(
+      BuildContext context, Event event, String? documentId, bool canEdit) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -111,8 +110,8 @@ class EventsWidget extends ConsumerWidget {
                     },
                   );
                 },
-               child: const Text('Bewerken'),
-             ),
+                child: const Text('Bewerken'),
+              ),
           ],
         );
       },
