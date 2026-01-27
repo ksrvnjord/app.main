@@ -23,6 +23,7 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/hive_cache.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/image_cache_item.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/providers/theme_brightness_notifier.dart';
 import 'package:ksrvnjord_main_app/src/routes/routes.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'firebase_options.dart';
 
@@ -114,7 +115,21 @@ Future<void> main() async {
   timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
 
   // Note: "kReleaseMode" is true if the app is not being debugged.
-  appRunner();
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          "https://cfe4eb3567a14991ceb292de52c823f2@o4510781579591680.ingest.de.sentry.io/4510781580050512";
+      options.tracesSampleRate =
+          kReleaseMode ? 1.0 : 0.0; // Performance monitoring
+      options.enableAutoSessionTracking = true;
+      options.attachScreenshot = true;
+      options.attachViewHierarchy = true;
+      options.beforeSend = (event, hint) {
+        return kReleaseMode ? event : null;
+      };
+    },
+    appRunner: appRunner,
+  );
 }
 
 // Main is not a nice class name, but it is the main class of the app.
