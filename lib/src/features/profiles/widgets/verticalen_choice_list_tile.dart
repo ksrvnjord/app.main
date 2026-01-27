@@ -7,7 +7,7 @@ class VerticalenChoiceListTile extends ConsumerWidget {
   const VerticalenChoiceListTile({
     super.key,
     required this.name,
-    required this.imageProvider, // The imageProvider for the choice.
+    //required this.imageProvider, // The imageProvider for the choice.
     required this.onTap,
   });
 
@@ -18,7 +18,7 @@ class VerticalenChoiceListTile extends ConsumerWidget {
   final String name;
 
   final void Function() onTap;
-  final AsyncValue<ImageProvider<Object>> imageProvider;
+  //final AsyncValue<ImageProvider<Object>> imageProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,12 +30,13 @@ class VerticalenChoiceListTile extends ConsumerWidget {
       child: [
         FadeInImage(
           placeholder: Image.asset(Images.placeholderProfilePicture).image,
-          image: imageProvider.when(
+          /*image: imageProvider.when(
             data: (data) => data,
             error: (err, stk) =>
                 Image.asset(Images.placeholderProfilePicture).image,
             loading: () => Image.asset(Images.placeholderProfilePicture).image,
-          ),
+          ),*/
+          image: Image.asset(Images.placeholderProfilePicture).image,
           fadeOutDuration: const Duration(milliseconds: 600),
           fadeInDuration: const Duration(milliseconds: 800),
           width: imageWidth,

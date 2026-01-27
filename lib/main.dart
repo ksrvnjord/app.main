@@ -118,7 +118,7 @@ Future<void> main() async {
   await SentryFlutter.init(
     (options) {
       options.dsn =
-          "https://cfe4eb3567a14991ceb292de52c823f2@o4510781579591680.ingest.de.sentry.io/4510781580050512";
+          "https://8d1ed7d97e3d07fac6000520b88c6e24@o4505817559007232.ingest.us.sentry.io/4510783883509760";
       options.tracesSampleRate =
           kReleaseMode ? 1.0 : 0.0; // Performance monitoring
       options.enableAutoSessionTracking = true;
