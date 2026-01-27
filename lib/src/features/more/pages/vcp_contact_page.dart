@@ -57,9 +57,11 @@ class VCPPage extends ConsumerWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: wrapSpacing, vertical: wrapSpacing / 2),
+          padding: const EdgeInsets.symmetric(
+              horizontal: wrapSpacing, vertical: wrapSpacing / 2),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: wrapSpacing, vertical: wrapSpacing / 2),
+            margin: const EdgeInsets.symmetric(
+                horizontal: wrapSpacing, vertical: wrapSpacing / 2),
             decoration: BoxDecoration(
               color: Theme.of(context)
                   .colorScheme
@@ -67,10 +69,7 @@ class VCPPage extends ConsumerWidget {
                   .withOpacity(0.5),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .outline
-                    .withOpacity(0.3),
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
               ),
             ),
             child: ExpansionTile(
@@ -84,8 +83,8 @@ class VCPPage extends ConsumerWidget {
               ),
               shape: const Border(),
               dense: true,
-              tilePadding: const EdgeInsets.symmetric(
-                  horizontal: 8.0, vertical: 0),
+              tilePadding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
               childrenPadding: const EdgeInsets.all(8.0),
               children: const [
                 Text(
@@ -295,7 +294,7 @@ class VCPPage extends ConsumerWidget {
                       final grouped =
                           data as Map<String, List<MeldpersooncontactInfo>>;
                       return Column(
-                        children: [ 
+                        children: [
                           ...grouped.entries.map((entry) {
                             return Container(
                               decoration: BoxDecoration(
@@ -307,15 +306,15 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ),
                               child: ExpansionTile(
-                                  title: Text(entry.key),
-                                  children: [
-                                    // FIXME: String matching #2 :((
-                                    if (entry.key == "Zorgen over iemand anders")
-                                      _buildExtraInfo(context),
-                                    ...entry.value
+                                title: Text(entry.key),
+                                children: [
+                                  // FIXME: String matching #2 :((
+                                  if (entry.key == "Zorgen over iemand anders")
+                                    _buildExtraInfo(context),
+                                  ...entry.value
                                       .map((info) => _buildTile(context, info)),
-                                  ],
-                              ),   
+                                ],
+                              ),
                             );
                           }),
                         ],
