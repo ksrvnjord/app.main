@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+is correct?import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/dashboard/api/weather_provider.dart';
@@ -122,10 +122,13 @@ class WeatherWidget extends ConsumerWidget {
 
         final hourlyWeather = data['hourly'];
         final List<String> times = List<String>.from(hourlyWeather['time']);
-        final int currentIndex = times.indexWhere((time) {
+        int currentIndex = times.indexWhere((time) {
           final parsedTime = DateTime.parse(time);
           return parsedTime.isAfter(now);
         });
+
+        // Prevent currentIndex to be negative when looking in the past
+        currentIndex = currentIndex < 0 ? 0 : currentIndex;
 
         final List<Map<String, dynamic>> next48Hours =
             List.generate(48, (index) {
