@@ -40,8 +40,7 @@ dependencies:
   cloud_functions: ^4.4.1
   firebase_storage: any
   multi_select_flutter: ^4.1.3
-  font_awesome_flutter: ^10.4.0
-  sentry_flutter: ^8.0.0
+  font_awesome_flutter: ">=10.4.0 <10.8.0"
   action_sheet: ^1.0.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -50,6 +49,7 @@ dependencies:
   archive: ^3.3.0
   tuple: ^2.0.1
   path_provider: ^2.0.2
+  sentry_flutter: ^8.0.0
   flutter_riverpod: ^2.5.1
   timeago: ^3.3.0
   expandable_text: ^2.3.0
@@ -86,7 +86,7 @@ dependencies:
 
   collection: any
 dependency_overrides:
-  package_info_plus: any
+  package_info_plus: ">=4.1.0 <8.0.0"
 
 dev_dependencies:
   flutter_test:
@@ -112,10 +112,10 @@ flutter:
     - assets/images/sponsors/
 
 flutter_launcher_icons:
-    android: true
-    ios: true
-    remove_alpha_ios: true
-    image_path: "assets/icons/app_icon.png"
-    adaptive_icon_foreground: "assets/icons/app_icon_foreground.png" # Foreground for adaptive icons
-    adaptive_icon_background: "assets/icons/app_icon_background.png" # Background for adaptive icons
-    adaptive_icon_monochrome: "assets/icons/app_icon_monochrome.png" # Monochrome icon for Android 13+
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_foreground: "assets/icons/app_icon_foreground.png" # Foreground for adaptive icons
+  adaptive_icon_background: "assets/icons/app_icon_background.png" # Background for adaptive icons
+  adaptive_icon_monochrome: "assets/icons/app_icon_monochrome.png" # Monochrome icon for Android 13+

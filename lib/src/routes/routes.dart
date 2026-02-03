@@ -35,6 +35,7 @@ import 'package:ksrvnjord_main_app/src/features/damages/pages/damages_create_pag
 import 'package:ksrvnjord_main_app/src/features/dashboard/pages/home_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/events_page.dart';
 import 'package:ksrvnjord_main_app/src/features/events/pages/create_event_page.dart';
+import 'package:ksrvnjord_main_app/src/features/events/models/event.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/vcp_contact_page.dart';
 import 'package:ksrvnjord_main_app/src/features/more/pages/more_page.dart';
@@ -325,10 +326,18 @@ abstract final // ignore: prefer-single-declaration-per-file
             _route(
               path: 'create',
               name: 'Create Event',
-              pageBuilder: (context, state) => _getPage(
-                child: const CreateEventPage(),
-                name: 'Create Event',
-              ),
+              pageBuilder: (context, state) {
+                final extra = state.extra as Map<String, dynamic>?;
+                final event = extra?['event'] as Event?;
+                final documentId = extra?['documentId'] as String?;
+                return _getPage(
+                  child: CreateEventPage(
+                    eventToEdit: event,
+                    documentId: documentId,
+                  ),
+                  name: 'Create Event',
+                );
+              },
             ),
           ],
         ),

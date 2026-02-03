@@ -124,6 +124,8 @@ Future<void> main() async {
       options.enableAutoSessionTracking = true;
       options.attachScreenshot = true;
       options.attachViewHierarchy = true;
+      options.debug = true;
+      options.diagnosticLevel = SentryLevel.debug;
       options.beforeSend = (event, hint) {
         return kReleaseMode ? event : null;
       };
