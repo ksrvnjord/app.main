@@ -71,7 +71,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
