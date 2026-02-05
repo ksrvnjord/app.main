@@ -17,7 +17,7 @@ final weatherProvider = FutureProvider<Map<String, dynamic>>((ref) async {
       'timezone': 'Europe/Amsterdam',
       'current_weather': true,
       'daily': dailyParams,
-      'forecast_days': 1,
+      'forecast_days': 2,
       'hourly': hourlyParams,
     },
   );
