@@ -58,12 +58,11 @@ class AlmanakUserProfileView extends ConsumerWidget {
                   '${u.firstName} ${u.lastName}',
                   style: textTheme.headlineSmall,
                 ).center(),
-                if (u.birthDate != null && u.birthDate!.isNotEmpty)
-                  Text(
-                    DateFormat("d MMMM y", "nl")
-                        .format(DateTime.parse(u.birthDate ?? '')),
-                    style: textTheme.bodyLarge,
-                  ).alignment(Alignment.center),
+                Text(
+                  DateFormat("d MMMM y", "nl")
+                      .format(DateTime.parse(u.birthDate ?? '')),
+                  style: textTheme.bodyLarge,
+                ).alignment(Alignment.center),
                 if (u.bestuursFunctie != null)
                   // Make list tile with lightblue background and white text.
                   Center(
