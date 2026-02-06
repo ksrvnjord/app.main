@@ -12,11 +12,9 @@ import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/widgets
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/firebase_user_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/profile_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_profile_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EditAlmanakProfilePage extends ConsumerStatefulWidget {
@@ -53,7 +51,16 @@ class _EditAlmanakProfilePageState
         ),
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),
-        error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+        error: (err, stk) {
+          Sentry.captureException(err,
+              stackTrace: stk,
+              hint: Hint.withMap({
+                'page': 'EditAlmanakProfilePage',
+                'userId': userId,
+                'context': 'Failed to load the user',
+              }));
+          return ErrorCardWidget(errorMessage: err.toString());
+        },
       ),
       floatingActionButton: // Floating action button with save icon.
           [
@@ -84,177 +91,158 @@ class _EditAlmanakProfilePageState
     QuerySnapshot<FirestoreUser> snapshot,
     BuildContext context,
   ) {
-    final user = snapshot.docs.first.data();
-    final colorScheme = Theme.of(context).colorScheme;
+    try {
+      final user = snapshot.docs.first.data();
+      final colorScheme = Theme.of(context).colorScheme;
 
-    const double imageHelpTextTopPadding = 16;
-    const double groupSpacing = 16;
+      const double imageHelpTextTopPadding = 16;
+      const double groupSpacing = 16;
 
-    return ListView(
-      padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 80),
-      children: [
-        Form(
-          key: _formKey,
-          child: <Widget>[
-            [
-              const EditProfilePictureWidget(),
-              Text(
-                'Het kan even duren voordat iedereen je nieuwe foto ziet',
-                style: Theme.of(context).textTheme.labelSmall,
-              ).textAlignment(TextAlign.center),
-            ]
-                .toColumn(
-                  separator: const SizedBox(height: imageHelpTextTopPadding),
-                )
-                .center(),
-            // ignore: avoid-non-ascii-symbols
-            FormSection(title: "  Profielinstellingen", children: [
-              DropdownButtonFormField<String?>(
-                items: ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
-                    .map((board) => DropdownMenuItem<String>(
-                          value: board,
-                          child: Text(board),
-                        ))
-                    .toList(),
-                value: user.board,
-                hint: const Text('Welk boord?'),
-                onChanged: (_) => {},
-                decoration: const InputDecoration(
-                  labelText: 'Boord',
-                  hintText: 'Welk boord roei je?',
-                ),
-                onSaved: (value) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setBoard(value),
-              ),
-              if (user.isAdmin!) ...[
+      return ListView(
+        padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 80),
+        children: [
+          Form(
+            key: _formKey,
+            child: <Widget>[
+              [
+                const EditProfilePictureWidget(),
+                Text(
+                  'Het kan even duren voordat iedereen je nieuwe foto ziet',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ).textAlignment(TextAlign.center),
+              ]
+                  .toColumn(
+                    separator: const SizedBox(height: imageHelpTextTopPadding),
+                  )
+                  .center(),
+              // ignore: avoid-non-ascii-symbols
+              FormSection(title: "  Profielinstellingen", children: [
                 DropdownButtonFormField<String?>(
-                  items: ['Geen', ...kHouseNames]
-                      .map((house) => DropdownMenuItem<String>(
-                            value: house,
-                            child: Text(house),
+                  items: ['Bakboord', 'Stuurboord', 'Scull', 'Multiboord']
+                      .map((board) => DropdownMenuItem<String>(
+                            value: board,
+                            child: Text(board),
                           ))
                       .toList(),
-                  value: user.huis,
-                  hint: const Text('Geen'),
+                  value: user.board,
+                  hint: const Text('Welk boord?'),
                   onChanged: (_) => {},
-                  decoration: const InputDecoration(labelText: 'Njord-huis'),
-                  onSaved: (huis) => ref
-                      .read(profileEditFormNotifierProvider.notifier)
-                      .setHuis(huis),
-                ),
-                MultiSelectDialogField<String>(
-                  items: substructures
-                      .map((structure) =>
-                          MultiSelectItem<String>(structure, structure))
-                      .toList(),
-                  onConfirm: (_) {},
-                  title: const Text('Substructuren'),
-                  buttonText: const Text('Substructuren'),
-                  selectedColor: colorScheme.primaryContainer,
-                  backgroundColor: colorScheme.surface,
-                  checkColor: colorScheme.onPrimaryContainer,
-                  itemsTextStyle: TextStyle(color: colorScheme.onSurface),
-                  onSaved: (substructures) => ref
-                      .read(profileEditFormNotifierProvider.notifier)
-                      .setSubstructuren(substructures),
-                  initialValue: user.substructures ?? [],
-                ),
-              ],
-              DropdownButtonFormField<bool?>(
-                items: const [
-                  DropdownMenuItem(
-                    value: true,
-                    child: Text('Ja, bij L.S.V. Minerva'),
+                  decoration: const InputDecoration(
+                    labelText: 'Boord',
+                    hintText: 'Welk boord roei je?',
                   ),
-                  DropdownMenuItem(value: false, child: Text('Nee')),
-                ],
-                value: user.dubbellid,
-                hint: const Text('Ben je dubbellid?'),
-                onChanged: (_) => {},
-                decoration: const InputDecoration(labelText: 'Dubbellid'),
-                onSaved: (dubbellib) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setDubbellid(dubbellib),
-              ),
-              TextFormField(
-                initialValue: user.otherAssociation,
-                decoration: const InputDecoration(
-                  labelText: 'Zit je bij een andere vereniging?',
-                  hintText: 'L.V.V.S. Augustinus, etc.',
+                  onSaved: (value) => ref
+                      .read(profileEditFormNotifierProvider.notifier)
+                      .setBoard(value),
                 ),
-                onSaved: (value) => ref
-                    .read(profileEditFormNotifierProvider.notifier)
-                    .setOtherAssociation(value),
-              ),
-              ListTile(
-                // ignore: avoid-non-ascii-symbols
-                title: const Text('Geef mijn allergieën/aversies door'),
-                subtitle: const Text(
-                  "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
-                ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => context.goNamed(
-                  'My Allergies',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-              ListTile(
-                title: const Text('Bekijk mijn permissies'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => context.goNamed(
-                  'My Permissions',
-                ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
-              ),
-              Card(
-                color: colorScheme.tertiaryContainer,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                margin: const EdgeInsets.all(0.0),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 8.0),
-                    Expanded(
-                      child: Text(
-                        "Ploegen en commissies worden door het bestuur ingedeeld.",
-                      ),
+                DropdownButtonFormField<bool?>(
+                  items: const [
+                    DropdownMenuItem(
+                      value: true,
+                      child: Text('Ja, bij L.S.V. Minerva'),
                     ),
-                  ]),
+                    DropdownMenuItem(value: false, child: Text('Nee')),
+                  ],
+                  value: user.dubbellid,
+                  hint: const Text('Ben je dubbellid?'),
+                  onChanged: (_) => {},
+                  decoration: const InputDecoration(labelText: 'Dubbellid'),
+                  onSaved: (dubbellib) => ref
+                      .read(profileEditFormNotifierProvider.notifier)
+                      .setDubbellid(dubbellib),
                 ),
-              ),
-            ]),
-            FormSection(title: "  Persoonsgegevens", children: [
-              ListTile(
-                title: const Text('Bekijk mijn persoonsgegevens'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
+                TextFormField(
+                  initialValue: user.otherAssociation,
+                  decoration: const InputDecoration(
+                    labelText: 'Zit je bij een andere vereniging?',
+                    hintText: 'L.V.V.S. Augustinus, etc.',
+                  ),
+                  onSaved: (value) => ref
+                      .read(profileEditFormNotifierProvider.notifier)
+                      .setOtherAssociation(value),
                 ),
-                onTap: () => context.goNamed(
-                  "Sensitive Data",
+                ListTile(
+                  // ignore: avoid-non-ascii-symbols
+                  title: const Text('Geef mijn allergieën/aversies door'),
+                  subtitle: const Text(
+                    "De KoCo houdt hier rekening mee als jij je inschrijft voor het eten.",
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                  onTap: () => context.goNamed(
+                    'My Allergies',
+                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
-              ),
-              ListTile(
-                title: const Text('Wijzig mijn zichtbaarheid in de app'),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
+                ListTile(
+                  title: const Text('Bekijk mijn permissies'),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                  onTap: () => context.goNamed(
+                    'My Permissions',
+                  ), // In de toekomst willen we niet alleen dat ploegen worden weergegeven, maar ook commissies en andere groepen.
                 ),
-                onTap: () => context.goNamed('Edit My Visibility'),
-              ),
-            ]),
-            // Add a TextFormField for the team the user is in.
-          ].toColumn(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            separator: const SizedBox(height: groupSpacing),
+                Card(
+                  color: colorScheme.tertiaryContainer,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  margin: const EdgeInsets.all(0.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: Text(
+                          "Ploegen en commissies worden door het bestuur ingedeeld.",
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+              ]),
+              FormSection(title: "  Persoonsgegevens", children: [
+                ListTile(
+                  title: const Text('Bekijk mijn persoonsgegevens'),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                  onTap: () => context.goNamed(
+                    "Sensitive Data",
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Wijzig mijn zichtbaarheid in de app'),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                  onTap: () => context.goNamed('Edit My Visibility'),
+                ),
+              ]),
+              // Add a TextFormField for the team the user is in.
+            ].toColumn(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              separator: const SizedBox(height: groupSpacing),
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } catch (error, stackTrace) {
+      Sentry.captureException(error,
+          stackTrace: stackTrace,
+          hint: Hint.withMap({
+            'page': 'EditAlmanakProfilePage',
+            'method': 'buildForm',
+            'context': 'Error building the forms',
+            'snapshotDocsLength': snapshot.docs.length,
+          }));
+      return ListView(
+        padding: const EdgeInsets.all(8.0),
+        children: [ErrorCardWidget(errorMessage: error.toString())],
+      );
+    }
   }
 
   void submitForm() async {
