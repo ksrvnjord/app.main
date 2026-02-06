@@ -21,6 +21,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
 // This is used for the export options, the key is the name of the option, the value is a function that returns the value of the option, this makes it possible to asynchronously look up the user's name and allergies if necessary.
@@ -387,17 +388,26 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
     final csvBytes = Uint8List.fromList(bom + utf8.encode(csvData));
 
     // ignore: avoid-ignoring-return-values
-    await Share.shareXFiles(
-      [
-        XFile.fromData(
-          csvBytes,
-          mimeType: "text/csv",
-          name: fileName,
-          length: csvBytes.lengthInBytes,
-        ),
-      ],
-      subject: "$fileName antwoorden",
-    );
+    try {
+      await Share.shareXFiles(
+        [
+          XFile.fromData(
+            csvBytes,
+            mimeType: "text/csv",
+            name: fileName,
+            length: csvBytes.lengthInBytes,
+          ),
+        ],
+        subject: "$fileName antwoorden",
+      );
+    } catch (error, stack) {
+      Sentry.captureException(error,
+          stackTrace: stack,
+          hint: Hint.withMap({
+            'hint': "Error loading CSV",
+            'formFile': fileName,
+          }));
+    }
   }
 
   void _handleDownloadForWeb(String csvData, String fileName) {
