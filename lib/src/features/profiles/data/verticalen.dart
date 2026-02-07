@@ -24,7 +24,7 @@ const verticals = [
   'Heren 5',
   'Heren 6',
   'Heren 7',
-  'Heren 8/11',
+  'Heren 8\11',
   'Heren 9',
   'Heren 10',
   'Heren 12',

@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -747,10 +749,15 @@ abstract final // ignore: prefer-single-declaration-per-file
         _route(
           path: "verticalen",
           name: "Verticalen",
-          child: VerticalenChoicePage(
-            title: "Verticalen",
-            choices: verticals.toList(),
-            gender: 'Dames',
+          pageBuilder: (context, state) => _getPage(
+            child: VerticalenChoicePage(
+              title: "Verticalen",
+              choices: verticals,
+              gender: state.uri.queryParameters['gender'] == null
+                  ? "Dames"
+                  : state.uri.queryParameters['gender']!,
+            ),
+            name: "Verticalen",
           ),
         ),
       ],
@@ -946,6 +953,29 @@ abstract final // ignore: prefer-single-declaration-per-file
                             type: state.uri.queryParameters['type'],
                           ),
                           name: "Edit Substructure"))
+                ]),
+            _route(
+                path: "manage-verticals",
+                name: "Manage Verticals",
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageVerticals(
+                        gender: state.uri.queryParameters['gender'] == null
+                            ? "Dames"
+                            : state.uri.queryParameters['gender']!,
+                        choices: verticals,
+                      ),
+                      name: "Manage Verticals",
+                    ),
+                routes: [
+                  _route(
+                    path: ":verticalName",
+                    name: "Edit Vertical",
+                    pageBuilder: (context, state) => _getPage(
+                        child: EditVerticals(
+                          verticalName: state.pathParameters["verticalName"]!,
+                        ),
+                        name: "Edit Vertical"),
+                  ),
                 ]),
           ],
         ),

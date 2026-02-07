@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/verticalen_choice_list_tile.dart';
 
-class VerticalenChoicePage extends ConsumerStatefulWidget {
+class VerticalenChoicePage extends ConsumerWidget {
   const VerticalenChoicePage({
     super.key,
     required this.title,
@@ -16,30 +16,9 @@ class VerticalenChoicePage extends ConsumerStatefulWidget {
   final List<String> choices;
 
   @override
-  ConsumerState<VerticalenChoicePage> createState() =>
-      _VerticalenChoicePageState();
-}
-
-class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
-  late String selectedGender;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedGender = (widget.gender == 'Heren' || widget.gender == 'Dames')
-        ? widget.gender
-        : (widget.gender == 'Mannen'
-            ? 'Heren'
-            : (widget.gender == 'Vrouwen' ? 'Dames' : 'Heren'));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final effectiveGender = selectedGender;
-
-    final genderedChoices = widget.choices
-        .where((choice) => choice.startsWith(effectiveGender))
-        .toList();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final genderedChoices =
+        choices.where((choice) => choice.startsWith(gender)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -56,18 +35,11 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ChoiceChip(
                       label: Text(type),
-                      onSelected: (selected) {
-                        if (selected) {
-                          setState(() {
-                            selectedGender = type;
-                          });
-                          context.goNamed(
-                            'Verticalen',
-                            queryParameters: {'gender': type},
-                          );
-                        }
-                      },
-                      selected: type == selectedGender,
+                      onSelected: (selected) => context.goNamed(
+                        'Verticalen',
+                        queryParameters: {'gender': type},
+                      ),
+                      selected: type == gender,
                     ),
                   ),
               ],
