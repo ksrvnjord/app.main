@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
+import 'package:ksrvnjord_main_app/src/features/more/pages/declaraties_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
@@ -803,6 +804,11 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: "blikkenlijst",
           name: "Blikkenlijst",
           child: const BlikkenLijstPage(),
+        ),
+        _route(
+          path: "declaraties",
+          name: "Declaraties",
+          child: const DeclarationsPage(),
         ),
         _route(
           path: "vcpcontact",

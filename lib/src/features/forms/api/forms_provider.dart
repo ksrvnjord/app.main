@@ -23,6 +23,7 @@ final openFormsProvider =
       : formsCollection
           .where('openUntil', isGreaterThanOrEqualTo: Timestamp.now())
           .where('isDraft', isEqualTo: false)
+          .where('isSpecialForm', isEqualTo: false)
           .orderBy('openUntil', descending: false)
           .snapshots();
 });
@@ -33,6 +34,7 @@ final allNonDraftFormsProvider =
       ? const Stream.empty()
       : formsCollection
           .where('isDraft', isEqualTo: false)
+          .where('isSpecialForm', isEqualTo: false)
           .orderBy('openUntil', descending: true)
           .snapshots();
 });

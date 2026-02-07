@@ -58,6 +58,7 @@ FirestoreForm _$FirestoreFormFromJson(Map<String, dynamic> json) =>
       maxNumberOfMultipleAnswers:
           (json['maxNumberOfMultipleAnswers'] as num?)?.toInt() ?? 1,
       isV2: json['isV2'] as bool? ?? false,
+      isSpecialForm: json['isSpecialForm'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
@@ -87,4 +88,5 @@ Map<String, dynamic> _$FirestoreFormToJson(FirestoreForm instance) =>
       'allowMultipleAnswers': instance.allowMultipleAnswers,
       'maxNumberOfMultipleAnswers': instance.maxNumberOfMultipleAnswers,
       'isV2': instance.isV2,
+      'isSpecialForm': instance.isSpecialForm,
     };

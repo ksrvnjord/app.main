@@ -72,13 +72,16 @@ class FormsWidget extends ConsumerWidget {
           return currentUserVal.when(
             data: (currentUser) =>
                 _buildOpenFormsList(context, formsDocuments, currentUser),
-            error: (error, stack) =>
-                ErrorTextWidget(errorMessage: error.toString()),
+            error: (error, stack) {
+              return ErrorTextWidget(errorMessage: error.toString());
+            },
             loading: () => const CircularProgressIndicator.adaptive(),
           );
         },
-        error: (error, stack) =>
-            ErrorTextWidget(errorMessage: error.toString()),
+        error: (error, stack) {
+          print(error);
+          return ErrorTextWidget(errorMessage: error.toString());
+        },
         loading: () => const CircularProgressIndicator.adaptive(),
       ),
     ].toColumn();

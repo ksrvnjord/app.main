@@ -37,6 +37,8 @@ class FirestoreForm {
     this.allowMultipleAnswers = false,
     this.maxNumberOfMultipleAnswers = 1,
     this.isV2 = false,
+    this.isSpecialForm = false,
+    this.isLinkedToTicket = false,
   });
   factory FirestoreForm.fromJson(Map<String, dynamic> json) =>
       _$FirestoreFormFromJson(json);
@@ -96,6 +98,8 @@ class FirestoreForm {
   final bool allowMultipleAnswers;
   final int maxNumberOfMultipleAnswers;
   final bool isV2;
+  final bool isSpecialForm;
+  final bool isLinkedToTicket;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSoldOut =>
       hasMaximumNumberOfAnswers &&

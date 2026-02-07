@@ -24,6 +24,8 @@ class MorePage extends ConsumerWidget {
       if (firebaseAuthUser != null)
         'Bekijk de Eeuwige Blikkenlijst': "Blikkenlijst",
       if (firebaseAuthUser != null) 'Lees Verenigingsdocumenten': 'Documents',
+      if (firebaseAuthUser != null)
+        'Declareer kosten aan de Quaestor': 'Declaraties',
     };
 
     final colorScheme = Theme.of(context).colorScheme;
@@ -65,11 +67,6 @@ class MorePage extends ConsumerWidget {
                 "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
           ),
           const Divider(height: 0, thickness: dividerThickness),
-          const MoreLinkTile(
-            label: 'Declareer Kosten aan de Quaestor',
-            url:
-                'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
-          ),
           const Divider(height: 0, thickness: dividerThickness),
           const MoreLinkTile(
             label: 'Handige Linkjes - Linktree',

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
@@ -204,6 +205,94 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
                                 ref: ref,
                                 context: context,
                               ),
+                        enabled: widget.userCanEditForm,
+                      ),
+                    ),
+                    if (widget.showAdditionalSaveButton &&
+                        widget.userCanEditForm)
+                      TextButton(
+                        onPressed: () {
+                          _formKey.currentState?.save();
+                        },
+                        child: const Text("Opslaan"),
+                      ),
+                  ],
+                ),
+              ),
+            );
+            break;
+
+          case FormQuestionType.numeric:
+            String? initialValue;
+            if (answerValue != null) {
+              initialValue = answerValue[0];
+            }
+
+            TextEditingController answer =
+                TextEditingController(text: initialValue);
+
+            questionWidgets.add(
+              Form(
+                key: _formKey,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: answer,
+                        focusNode: _focusNode,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          // Allow digits and comma/dot
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9,\.]')),
+                        ],
+                        onSaved: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            _handleChangeOfFormAnswer(
+                              question: widget.formQuestion.title,
+                              questionId: questionId,
+                              newValue: null,
+                              f: widget.form,
+                              d: widget.docRef,
+                              ref: ref,
+                              context: context,
+                            );
+                            return;
+                          }
+
+                          // Replace comma with dot for parsing floats
+                          String normalized = value.replaceAll(',', '.');
+
+                          double? parsedValue = double.tryParse(normalized);
+                          if (parsedValue == null) {
+                            // Optional: show an error if the number is invalid
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Ongeldig nummer")),
+                            );
+                            return;
+                          }
+
+                          widget.form.isV2
+                              ? _handleChangeOfFormAnswer(
+                                  question: widget.formQuestion.title,
+                                  questionId: questionId,
+                                  newValue: [parsedValue.toString()],
+                                  f: widget.form,
+                                  d: widget.docRef,
+                                  ref: ref,
+                                  context: context,
+                                )
+                              : _handleChangeOfFormAnswerDeprecated(
+                                  question: widget.formQuestion.title,
+                                  questionId: questionId,
+                                  newValue: parsedValue.toString(),
+                                  f: widget.form,
+                                  d: widget.docRef,
+                                  ref: ref,
+                                  context: context,
+                                );
+                        },
                         enabled: widget.userCanEditForm,
                       ),
                     ),

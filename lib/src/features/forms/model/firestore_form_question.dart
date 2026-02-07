@@ -36,6 +36,7 @@ enum FormQuestionType {
   multipleChoice,
   image,
   date,
+  numeric,
   unsupported, // Add an error type for unknown values
 }
 
@@ -52,6 +53,8 @@ extension FormQuestionTypeLabel on FormQuestionType {
         return 'Afbeelding';
       case FormQuestionType.date:
         return 'Datum';
+      case FormQuestionType.numeric:
+        return 'Numeriek';
       case FormQuestionType.unsupported:
         return 'Onbekend type';
     }
@@ -71,6 +74,8 @@ extension FormQuestionTypeIcon on FormQuestionType {
         return Icons.image;
       case FormQuestionType.date:
         return Icons.calendar_month;
+      case FormQuestionType.numeric:
+        return Icons.numbers;
       case FormQuestionType.unsupported:
         return Icons.help_outline;
     }
@@ -94,6 +99,8 @@ class FormQuestionTypeConverter
         return FormQuestionType.image;
       case 'date':
         return FormQuestionType.date;
+      case 'numeric':
+        return FormQuestionType.numeric;
       default:
         // Handle undefined FormQuestionType
         return FormQuestionType.unsupported; // Default value for unknown types

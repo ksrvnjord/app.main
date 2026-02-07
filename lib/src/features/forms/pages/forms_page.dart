@@ -32,8 +32,11 @@ class FormsPage extends ConsumerWidget {
         data: (currentUser) => allForms.when(
           loading: () =>
               const Center(child: CircularProgressIndicator.adaptive()),
-          error: (error, stack) =>
-              ErrorCardWidget(errorMessage: error.toString()),
+          error: (error, stack) {
+            ErrorCardWidget(errorMessage: error.toString());
+            print(error);
+            return null;
+          },
           data: (querySnapshot) {
             final forms = querySnapshot.docs;
 

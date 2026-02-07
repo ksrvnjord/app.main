@@ -308,6 +308,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           visibleForGroups: await convertToIds(visibleForGroupNames),
           formAnswersAreUnretractable: formAnswersAreUntretractable,
           isV2: true,
+          isSpecialForm: false,
+          isLinkedToTicket: false,
         ),
       );
 
