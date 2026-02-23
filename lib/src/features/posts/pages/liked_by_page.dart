@@ -14,7 +14,7 @@ class LikedByPage extends ConsumerWidget {
     final likedByProvider = ref.watch(likedByUsersProvider(snapshotId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Jouw post is geliket door")),
+      appBar: AppBar(title: const Text("Deze post is geliket door")),
       body: likedByProvider.when(
         data: (likedByUsers) {
           return likedByUsers.isEmpty
