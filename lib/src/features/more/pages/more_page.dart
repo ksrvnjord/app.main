@@ -62,7 +62,7 @@ class MorePage extends ConsumerWidget {
           const MoreLinkTile(
             label: "Ga naar de Intekenlijst Instaposts",
             url:
-                "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
+                "https://docs.google.com/spreadsheets/d/1ZAgbQDw5lGytEecWfxpp4vI_7DI-y_15/edit?gid=939006860#gid=939006860",
           ),
           const Divider(height: 0, thickness: dividerThickness),
           const MoreLinkTile(
