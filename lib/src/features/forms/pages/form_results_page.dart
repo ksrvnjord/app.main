@@ -399,6 +399,7 @@ class FormResultsPageState extends ConsumerState<FormResultsPage> {
           ),
         ],
         subject: "$fileName antwoorden",
+        sharePositionOrigin: const Rect.fromLTWH(0, 0, 10, 10),
       );
     } catch (error, stack) {
       Sentry.captureException(error,
