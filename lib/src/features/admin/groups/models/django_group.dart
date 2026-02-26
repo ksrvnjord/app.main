@@ -24,6 +24,9 @@ class DjangoGroup {
   final String type;
   final int year;
 
+  @JsonKey(name: 'verticaal_id')
+  final int? verticaal_id;
+
   // ignore: unused-code
   final List<String> rights;
 
@@ -36,9 +39,10 @@ class DjangoGroup {
     this.id,
     this.users,
     this.rights = const [],
+    this.verticaal_id,
     required this.name,
     required this.type,
-    required this.year,
+    required this.year,    
   });
 
   Map<String, dynamic> toJson() => _$DjangoGroupToJson(this);
@@ -50,6 +54,7 @@ class DjangoGroup {
     String? type,
     int? year,
     List<String>? rights,
+    int? verticaal_id,
   }) =>
       DjangoGroup(
         id: id ?? this.id,
@@ -58,6 +63,7 @@ class DjangoGroup {
         name: name ?? this.name,
         type: type ?? this.type,
         year: year ?? this.year,
+        verticaal_id: verticaal_id ?? this.verticaal_id,
       );
 
   static String? _typeToJson(String type) => type.toLowerCase();

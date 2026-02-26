@@ -21,8 +21,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
-    final verticalLeeden = ref.watch(
-      verticalLeedenProvider(name),
+    /*final verticalLeeden = ref.watch(
+      getPloegenForVertical(dio: dio, verticaal_id: verticaal_id)
     );
     // TODO: implement build
     return Scaffold(
@@ -68,5 +68,7 @@ class AlmanakVerticalenPage extends ConsumerWidget {
             .center()
             .padding(all: notFoundPadding)
     ].toColumn();
+  }*/
+  return SizedBox();
   }
 }

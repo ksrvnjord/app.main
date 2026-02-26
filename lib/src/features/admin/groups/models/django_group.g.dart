@@ -15,6 +15,7 @@ DjangoGroup _$DjangoGroupFromJson(Map<String, dynamic> json) => DjangoGroup(
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      verticaal_id: (json['verticaal_id'] as num?)?.toInt(),
       name: json['name'] as String,
       type: DjangoGroup._typeFromJson(json['type'] as String),
       year: (json['year'] as num).toInt(),
@@ -25,5 +26,6 @@ Map<String, dynamic> _$DjangoGroupToJson(DjangoGroup instance) =>
       'name': instance.name,
       'type': DjangoGroup._typeToJson(instance.type),
       'year': instance.year,
+      'verticaal_id': instance.verticaal_id,
       'rights': instance.rights,
     };
