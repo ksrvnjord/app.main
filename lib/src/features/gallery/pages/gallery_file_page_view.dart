@@ -94,6 +94,7 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                         ),
                       ],
                       subject: "Foto",
+                      sharePositionOrigin: const Rect.fromLTWH(0, 0, 10, 10),
                     );
                   } catch (error) {
                     if (!context.mounted) return;
@@ -121,6 +122,7 @@ class GalleryFilePageViewState extends ConsumerState<GalleryFilePageView> {
                             ),
                           ],
                           subject: "Foto",
+                          sharePositionOrigin: const Rect.fromLTWH(0, 0, 10, 10),
                         );
                       } catch (error) {
                         if (!context.mounted) return;
