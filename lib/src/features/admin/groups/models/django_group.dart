@@ -42,7 +42,7 @@ class DjangoGroup {
     this.verticaal_id,
     required this.name,
     required this.type,
-    required this.year,    
+    required this.year,
   });
 
   Map<String, dynamic> toJson() => _$DjangoGroupToJson(this);

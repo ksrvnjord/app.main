@@ -4,5 +4,4 @@ const groupTypes = [
   'Competitieploeg',
   'Wedstrijdsectie',
   'Bestuur',
-  'Verticaal',
 ];

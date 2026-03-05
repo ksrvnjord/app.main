@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_vertical_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -50,7 +52,6 @@ import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/download_profile_pictures_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/upload_aspi_profile_pictures.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructures.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/data/verticalen.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_allergies_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_visibility_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/my_permissions_page.dart';
@@ -667,6 +668,9 @@ abstract final // ignore: prefer-single-declaration-per-file
               ploegType: state.uri.queryParameters['type'] == null
                   ? "Competitieploeg"
                   : state.uri.queryParameters['type']!,
+              onTap: state.extra is Function?
+                  ? state.extra as void Function(int)?
+                  : null,
             ),
             name: "Ploegen",
           ),
@@ -749,7 +753,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           name: "Verticalen",
           child: VerticalenChoicePage(
             title: "Verticalen",
-            choices: verticals.toList(),
+            choices: [],
             gender: 'Dames',
           ),
         ),
@@ -946,6 +950,28 @@ abstract final // ignore: prefer-single-declaration-per-file
                             type: state.uri.queryParameters['type'],
                           ),
                           name: "Edit Substructure"))
+                ]),
+            _route(
+                path: 'manage-verticals',
+                name: 'Manage Verticalen',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageVerticalsPage(),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                    path: ":verticaalId",
+                    name: "Edit Vertical",
+                    pageBuilder: (context, state) => _getPage(
+                      child: EditVerticalPage(
+                        verticaalId:
+                            int.parse(state.pathParameters['verticaalId']!),
+                        verticaalName:
+                            state.uri.queryParameters['verticaalName']!,
+                      ),
+                      name: "Edit Vertical",
+                    ),
+                  ),
                 ]),
           ],
         ),

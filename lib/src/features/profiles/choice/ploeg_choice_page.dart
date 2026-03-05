@@ -9,14 +9,15 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
-  const PloegChoicePage({
-    super.key,
-    required this.ploegYear,
-    required this.ploegType,
-  });
+  const PloegChoicePage(
+      {super.key,
+      required this.ploegYear,
+      required this.ploegType,
+      this.onTap});
 
   final int ploegYear;
   final String ploegType;
+  final void Function(int ploegId)? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,14 +84,16 @@ class PloegChoicePage extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   // ignore: prefer-extracting-callbacks
-                  onTap: () => context.goNamed(
-                    "Ploeg",
-                    pathParameters: {"name": ploeg.name},
-                    queryParameters: {
-                      "year": ploegYear.toString(),
-                      "type": ploegType,
-                    },
-                  ),
+                  onTap: () => onTap != null
+                      ? onTap!(int.parse(ploeg.id.toString()))
+                      : context.goNamed(
+                          "Ploeg",
+                          pathParameters: {"name": ploeg.name},
+                          queryParameters: {
+                            "year": ploegYear.toString(),
+                            "type": ploegType,
+                          },
+                        ),
                 ),
               ),
             ].toColumn(),
