@@ -48,6 +48,7 @@ class EditVerticalPage extends ConsumerWidget {
     );
     // ignore: avoid-ignoring-return-values
     ref.invalidate(groupByIdProvider(ploegId));
+
   }
 
   Future<void> Function(int) addPloegToVerticaalCallBack(
@@ -88,6 +89,7 @@ class EditVerticalPage extends ConsumerWidget {
 
       // ignore: avoid-ignoring-return-values
       ref.invalidate(groupByIdProvider(ploegId));
+      ref.invalidate(ploegenProvider(verticaalId));
       if (!ctx.mounted) return;
       ctx.pop();
     };
@@ -149,6 +151,7 @@ class EditVerticalPage extends ConsumerWidget {
                 content: Text("Verticaal is verwijderd."),
               ));
               ref.invalidate(groupsProvider);
+              ref.invalidate(ploegenProvider(verticaalId));
               context.pop();
             },
             icon: const Icon(Icons.delete),

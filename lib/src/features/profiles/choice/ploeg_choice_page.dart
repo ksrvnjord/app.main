@@ -86,7 +86,7 @@ class PloegChoicePage extends ConsumerWidget {
                   // ignore: prefer-extracting-callbacks
                   onTap: () => onTap != null
                       ? onTap!(int.parse(ploeg.id.toString()))
-                      : context.goNamed(
+                      : context.pushNamed(
                           "Ploeg",
                           pathParameters: {"name": ploeg.name},
                           queryParameters: {
