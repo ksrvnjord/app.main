@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/contact.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/permission_entry.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/membership.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 part 'django_user.g.dart';
@@ -57,6 +58,8 @@ class DjangoUser {
 
   final List<GroupDjangoEntry> groups;
 
+  final Membership membership;
+
   final List<PermissionEntry> permissions;
 
   DjangoUser({
@@ -74,6 +77,7 @@ class DjangoUser {
     required this.address,
     required this.contact,
     this.knrb,
+    required this.membership,
     required this.permissions,
     required this.info,
     // Required this.phonePrimary,.

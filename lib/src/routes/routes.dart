@@ -187,6 +187,19 @@ abstract final // ignore: prefer-single-declaration-per-file
           return state.uri.queryParameters['from'] ?? initialLocation;
         }
 
+        final restrictedPaths = ['/almanak', '/afschrijven', '/prikbord', '/meer'];
+        final isRestrictedPath = restrictedPaths.any((path) => currentPath.startsWith(path));
+        
+        if (isRestrictedPath) {
+          final currentUser = ref.read(currentUserProvider).valueOrNull;
+
+          final userMembership = currentUser?.membership;
+          if (userMembership != null && (userMembership.isLenteMember || userMembership.isAspirantMember)) {
+            return '/';
+          }
+        }
+        
+
         // final bool currentRouteRequiresAdmin =
         //     Routes._adminRoutes.any((route) => route.path == currentPath);
         // ^ This is commented out because of the change in admin routing.

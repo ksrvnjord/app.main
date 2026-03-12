@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/membership.dart';
 
 /// All the data we have on a user.
 /// Sources: [FirestoreUser] and [DjangoUser].
@@ -50,6 +51,7 @@ class User {
   bool get isBirthday => _django.isBirthday;
   String get initials => _django.initials;
   String get iban => _django.iban;
+  Membership get membership => _django.membership;
 
   Address get address => _django.address;
   Contact get contact => _django.contact;
