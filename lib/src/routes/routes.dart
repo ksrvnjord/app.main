@@ -191,7 +191,6 @@ abstract final // ignore: prefer-single-declaration-per-file
           '/almanak',
           '/afschrijven',
           '/prikbord',
-          '/meer'
         ];
         final isRestrictedPath =
             restrictedPaths.any((path) => currentPath.startsWith(path));
