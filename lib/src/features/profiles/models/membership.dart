@@ -4,18 +4,16 @@ part 'membership.g.dart';
 
 @JsonSerializable()
 class Membership {
-
-  Membership({
-    required this.id, 
-    required this.isInterestedMember,
-    required this.isLenteMember,
-    required this.isAspirantMember,
-    required this.startMembership,
-    this.endMembership
-  });
+  Membership(
+      {required this.id,
+      required this.isInterestedMember,
+      required this.isLenteMember,
+      required this.isAspirantMember,
+      required this.startMembership,
+      this.endMembership});
 
   factory Membership.fromJson(Map<String, dynamic> json) =>
-  _$MembershipFromJson(json);
+      _$MembershipFromJson(json);
 
   final int id;
 
@@ -33,7 +31,6 @@ class Membership {
 
   @JsonKey(name: 'end_membership')
   final DateTime? endMembership;
-  
-  Map<String, dynamic> toJson() => _$MembershipToJson(this);
 
+  Map<String, dynamic> toJson() => _$MembershipToJson(this);
 }

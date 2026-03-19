@@ -51,7 +51,7 @@ class User {
   bool get isBirthday => _django.isBirthday;
   String get initials => _django.initials;
   String get iban => _django.iban;
-  Membership get membership => _django.membership;
+  List<Membership> get membership => _django.memberships;
 
   Address get address => _django.address;
   Contact get contact => _django.contact;
@@ -79,6 +79,15 @@ class User {
           identifier.toString()); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
+
+  bool get isActiveLenteLid => membership
+      .where((m) =>
+          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
+      .any((m) => m.isLenteMember);
+  bool get isActiveAspirantLid => membership
+      .where((m) =>
+          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
+      .any((m) => m.isAspirantMember);
 
   Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
 

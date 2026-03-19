@@ -187,18 +187,23 @@ abstract final // ignore: prefer-single-declaration-per-file
           return state.uri.queryParameters['from'] ?? initialLocation;
         }
 
-        final restrictedPaths = ['/almanak', '/afschrijven', '/prikbord', '/meer'];
-        final isRestrictedPath = restrictedPaths.any((path) => currentPath.startsWith(path));
-        
-        if (isRestrictedPath) {
-          final currentUser = ref.read(currentUserProvider).valueOrNull;
+        final restrictedPaths = [
+          '/almanak',
+          '/afschrijven',
+          '/prikbord',
+          '/meer'
+        ];
+        final isRestrictedPath =
+            restrictedPaths.any((path) => currentPath.startsWith(path));
 
-          final userMembership = currentUser?.membership;
-          if (userMembership != null && (userMembership.isLenteMember || userMembership.isAspirantMember)) {
+        if (isRestrictedPath) {
+          final user = ref.read(currentUserNotifierProvider);
+          if (user == null) return null;
+
+          if (user.isActiveLenteLid || user.isActiveAspirantLid) {
             return '/';
           }
         }
-        
 
         // final bool currentRouteRequiresAdmin =
         //     Routes._adminRoutes.any((route) => route.path == currentPath);

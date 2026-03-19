@@ -58,7 +58,7 @@ class DjangoUser {
 
   final List<GroupDjangoEntry> groups;
 
-  final Membership membership;
+  final List<Membership> memberships;
 
   final List<PermissionEntry> permissions;
 
@@ -77,7 +77,7 @@ class DjangoUser {
     required this.address,
     required this.contact,
     this.knrb,
-    required this.membership,
+    required this.memberships,
     required this.permissions,
     required this.info,
     // Required this.phonePrimary,.
