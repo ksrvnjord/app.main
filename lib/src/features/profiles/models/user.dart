@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/django_user.dart
 import 'package:ksrvnjord_main_app/src/features/profiles/models/firestore_user.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/info.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/models/knrb.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/membership.dart';
 
 /// All the data we have on a user.
 /// Sources: [FirestoreUser] and [DjangoUser].
@@ -50,6 +51,7 @@ class User {
   bool get isBirthday => _django.isBirthday;
   String get initials => _django.initials;
   String get iban => _django.iban;
+  List<Membership> get membership => _django.memberships;
 
   Address get address => _django.address;
   Contact get contact => _django.contact;
@@ -77,6 +79,15 @@ class User {
           identifier.toString()); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
+
+  bool get isActiveLenteLid => membership
+      .where((m) =>
+          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
+      .any((m) => m.isLenteMember);
+  bool get isActiveAspirantLid => membership
+      .where((m) =>
+          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
+      .any((m) => m.isAspirantMember);
 
   Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
 
