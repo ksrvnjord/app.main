@@ -4,7 +4,10 @@ import 'package:ksrvnjord_main_app/src/features/notifications/model/push_notific
 import 'package:firebase_auth/firebase_auth.dart';
 
 final recentNotificationsProvider =
-    StreamProvider<List<PushNotification>>((ref) {
+    StreamProvider.family<List<PushNotification>, String>((ref, uid) {
+      if (uid.isEmpty) {
+        return Stream.value([]);
+      }
   return FirebaseFirestore.instance
       .collection('notifications')
       .withConverter<PushNotification>(
@@ -12,6 +15,7 @@ final recentNotificationsProvider =
             PushNotification.fromJson(snapshot.data() ?? {}),
         toFirestore: (notification, _) => notification.toJson(),
       )
+      .where('topic', whereIn: ['all', 'user_$uid'])
       .where('createdAt',
           isGreaterThanOrEqualTo:
               Timestamp.fromDate(DateTime.now().subtract(Duration(days: 30))))

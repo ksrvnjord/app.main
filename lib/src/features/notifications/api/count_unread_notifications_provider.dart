@@ -11,6 +11,7 @@ final unreadNotificationsCountProvider =
             PushNotification.fromJson(snapshot.data() ?? {}),
         toFirestore: (answer, _) => answer.toJson(),
       )
+      .where('topic', whereIn: ['all', 'user_$uid'])
       .where('createdAt',
           isGreaterThan:
               Timestamp.fromDate(DateTime.now().subtract(Duration(days: 30))))

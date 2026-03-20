@@ -45,8 +45,8 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final notificationsAsyncValue = ref.watch(recentNotificationsProvider);
     final currentUser = ref.watch(firebaseAuthUserProvider).value;
+    final notificationsAsyncValue = ref.watch(recentNotificationsProvider(currentUser?.uid ?? ''));
 
     return Scaffold(
       appBar: AppBar(
