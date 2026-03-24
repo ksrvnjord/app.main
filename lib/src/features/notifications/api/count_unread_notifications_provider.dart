@@ -19,11 +19,11 @@ final unreadNotificationsCountProvider =
       .limit(20)
       .snapshots()
       .map((snapshot) {
-    final unread = snapshot.docs.where((doc) {
-      final notif = doc.data(); // Automatically converted to Notification
+        final unread = snapshot.docs.where((doc) {
+          final notif = doc.data(); // Automatically converted to Notification
 
-      return !notif.readBy.contains(uid);
-    });
-    return unread.length;
-  });
+          return !notif.readBy.contains(uid);
+        });
+        return unread.length;
+      });
 });

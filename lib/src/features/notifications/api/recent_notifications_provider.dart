@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 final recentNotificationsProvider =
     StreamProvider.family<List<PushNotification>, String>((ref, uid) {
-      if (uid.isEmpty) {
-        return Stream.value([]);
-      }
+  if (uid.isEmpty) {
+    return Stream.value([]);
+  }
   return FirebaseFirestore.instance
       .collection('notifications')
       .withConverter<PushNotification>(
@@ -22,8 +22,8 @@ final recentNotificationsProvider =
       .orderBy('createdAt', descending: true)
       .snapshots()
       .map((snapshot) {
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  });
+        return snapshot.docs.map((doc) => doc.data()).toList();
+      });
 });
 
 Future<void> markNotificationsAsRead() async {
@@ -35,6 +35,7 @@ Future<void> markNotificationsAsRead() async {
   final uid = user.uid;
   final notificationsQuery = await FirebaseFirestore.instance
       .collection('notifications')
+      .where('topic', whereIn: ['all', 'user_$uid'])
       .where('createdAt',
           isGreaterThanOrEqualTo:
               Timestamp.fromDate(DateTime.now().subtract(Duration(days: 30))))

@@ -33,7 +33,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
               ? null
               : () async {
                   userAsyncVal.whenData((sender) => _showBirthdayMessageDialog(
-                      context, sender.identifierString, sender.fullName));
+                      context, sender.fullName));
                 },
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -60,7 +60,7 @@ class AlmanakBirthdayButton extends ConsumerWidget {
   }
 
   void _showBirthdayMessageDialog(
-      BuildContext context, String senderId, String senderFullName) async {
+      BuildContext context, String senderFullName) async {
     final TextEditingController messageController = TextEditingController();
     bool isLoading = false;
 
@@ -126,8 +126,6 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                             await _sendBirthdayMessage(
                               context,
                               message,
-                              senderId,
-                              senderFullName,
                               user,
                             );
                             if (context.mounted) {
@@ -157,15 +155,12 @@ class AlmanakBirthdayButton extends ConsumerWidget {
   }
 
   Future<void> _sendBirthdayMessage(BuildContext context, String message,
-      String senderId, String senderFullName, User senderUser) async {
+      User senderUser) async {
     try {
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessage')
           .call({
         'receiverId': receiverId,
-        'receiverFullName': receiverFullName,
-        'senderId': senderId,
-        'senderFullName': senderFullName,
         'message': message,
       });
 

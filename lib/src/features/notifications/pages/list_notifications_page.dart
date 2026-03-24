@@ -25,6 +25,7 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
     final uid = user.uid;
     final notificationsQuery = await FirebaseFirestore.instance
         .collection('notifications')
+      .where('topic', whereIn: ['all', 'user_$uid'])
         .where('createdAt',
             isGreaterThanOrEqualTo:
                 Timestamp.fromDate(DateTime.now().subtract(Duration(days: 30))))
