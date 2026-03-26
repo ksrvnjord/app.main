@@ -47,43 +47,42 @@ class MorePage extends ConsumerWidget {
         children: [
           currentUserVal.when(
             data: (currentUser) {
-              if (!currentUser.isActiveAspirantLid && !currentUser.isActiveLenteLid) {
-                return Column(
-                  children: [
-                    ...optionRouteMap.entries.map(
-                      // Make a list of options to display and navigate to.
-                      // Each option is a tile with a divider below it.
-                      (entry) => [
-                        MoreListTile(label: entry.key, routeName: entry.value),
-                        const Divider(height: 0, thickness: dividerThickness)
-                      ].toColumn(),
-                    ),
-                    const Divider(height: 0, thickness: dividerThickness),
-                    const MoreLinkTile(
-                      label: "Ga naar de Webshop",
-                      url: "https://k-s-r-v-njord.myshopify.com/",
-                    ),
-                    const Divider(height: 0, thickness: dividerThickness),
-                    const MoreLinkTile(
-                      label: "Ga naar de Intekenlijst Instaposts",
-                      url:
-                          "https://docs.google.com/spreadsheets/d/1ZAgbQDw5lGytEecWfxpp4vI_7DI-y_15/edit?gid=939006860#gid=939006860",
-                    ),
-                    const Divider(height: 0, thickness: dividerThickness),
-                    const MoreLinkTile(
-                      label: 'Declareer Kosten aan de Quaestor',
-                      url:
-                          'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
-                    ),
-                    const Divider(height: 0, thickness: dividerThickness),
-                    const MoreLinkTile(
-                      label: 'Handige Linkjes - Linktree',
-                      url: 'https://linktr.ee/ksrvnjord_intern',
-                    ),
-                    const Divider(height: 0, thickness: dividerThickness),
+              if (!currentUser.isActiveAspirantLid &&
+                  !currentUser.isActiveLenteLid) {
+                return Column(children: [
+                  ...optionRouteMap.entries.map(
+                    // Make a list of options to display and navigate to.
+                    // Each option is a tile with a divider below it.
+                    (entry) => [
+                      MoreListTile(label: entry.key, routeName: entry.value),
+                      const Divider(height: 0, thickness: dividerThickness)
+                    ].toColumn(),
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: "Ga naar de Webshop",
+                    url: "https://k-s-r-v-njord.myshopify.com/",
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: "Ga naar de Intekenlijst Instaposts",
+                    url:
+                        "https://docs.google.com/spreadsheets/d/1ZAgbQDw5lGytEecWfxpp4vI_7DI-y_15/edit?gid=939006860#gid=939006860",
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Declareer Kosten aan de Quaestor',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Handige Linkjes - Linktree',
+                    url: 'https://linktr.ee/ksrvnjord_intern',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
                 ]);
-              }
-              else {
+              } else {
                 return const SizedBox.shrink();
               }
             },
@@ -92,7 +91,7 @@ class MorePage extends ConsumerWidget {
               return const SizedBox.shrink();
             },
             loading: () => const SizedBox.shrink(),
-          ), 
+          ),
         ],
       ),
       // Floatingaction button to navigate to admin page.
