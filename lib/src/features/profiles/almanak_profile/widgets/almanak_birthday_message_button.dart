@@ -126,8 +126,6 @@ class AlmanakBirthdayButton extends ConsumerWidget {
                             await _sendBirthdayMessage(
                               context,
                               message,
-                              senderId,
-                              senderFullName,
                               user,
                             );
                             if (context.mounted) {
@@ -157,16 +155,16 @@ class AlmanakBirthdayButton extends ConsumerWidget {
   }
 
   Future<void> _sendBirthdayMessage(BuildContext context, String message,
-      String senderId, String senderFullName, User senderUser) async {
+      User senderUser) async {
     try {
+      final isSelfCongratulation = senderUser.uid == receiverId;
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
-          .httpsCallable('personalBirthdayMessage')
+          .httpsCallable('personalBirthdayMessageV2')
           .call({
         'receiverId': receiverId,
         'receiverFullName': receiverFullName,
-        'senderId': senderId,
-        'senderFullName': senderFullName,
         'message': message,
+        'allowSelfCongratulation': isSelfCongratulation,
       });
 
       if (result.data['success'] == true && context.mounted) {

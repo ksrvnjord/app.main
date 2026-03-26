@@ -11,24 +11,15 @@ final hasSendBirthdayMessageProvider =
   }
 
   final userId = user.uid;
+
   final currentYear = DateTime.now().year;
 
-  final documentPath = '/people/$receiverId/birthday/$currentYear';
+  final documentPath = '/people/$receiverId/birthday_receipts/$userId/years/$currentYear';
 
   return FirebaseFirestore.instance
       .doc(documentPath)
       .snapshots()
       .map((snapshot) {
-    if (!snapshot.exists) {
-      return false;
-    }
-
-    final data = snapshot.data();
-    if (data == null || data['hasReceivedCongratulationsFrom'] == null) {
-      return false;
-    }
-
-    final ids = List<String>.from(data['hasReceivedCongratulationsFrom']);
-    return ids.contains(userId);
+    return snapshot.exists;
   });
 });

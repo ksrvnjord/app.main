@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/providers/firebase_auth_user_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/api/received_birthday_messages_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/api/recent_notifications_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/notifications/widgets/birthday_message_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/widgets/push_notification_widget.dart';
 
 class ListNotificationsPage extends ConsumerStatefulWidget {
@@ -47,6 +49,8 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
   Widget build(BuildContext context) {
     final notificationsAsyncValue = ref.watch(recentNotificationsProvider);
     final currentUser = ref.watch(firebaseAuthUserProvider).value;
+    final birthdayMessagesAsyncValue =
+        ref.watch(receivedBirthdayMessagesProvider(currentUser?.uid ?? ''));
 
     return Scaffold(
       appBar: AppBar(
@@ -54,24 +58,81 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
       ),
       body: notificationsAsyncValue.when(
         data: (notifications) {
-          if (notifications.isEmpty) {
-            return Center(
-              child: Text(
-                'No notifications yet!',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              final notification = notifications[index];
-              return PushNotificationWidget(
-                  notification: notification, uid: currentUser?.uid);
+          return birthdayMessagesAsyncValue.when(
+            data: (birthdayMessages) {
+              if (notifications.isEmpty && birthdayMessages.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Nog geen berichten',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                );
+              }
+
+              final children = <Widget>[];
+
+              if (birthdayMessages.isNotEmpty) {
+                children.add(
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                    child: Text(
+                      'Verjaardagsfelicitaties',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                );
+
+                children.addAll(
+                  birthdayMessages
+                      .map(
+                        (birthdayMessage) => BirthdayMessageWidget(
+                          birthdayMessage: birthdayMessage,
+                        ),
+                      )
+                      .toList(),
+                );
+              }
+
+              if (notifications.isNotEmpty) {
+                children.add(
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                    child: Text(
+                      'Push notificaties',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                );
+
+                children.addAll(
+                  notifications
+                      .map(
+                        (notification) => PushNotificationWidget(
+                          notification: notification,
+                          uid: currentUser?.uid,
+                        ),
+                      )
+                      .toList(),
+                );
+              }
+
+              return ListView(children: children);
             },
+            loading: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
+            error: (error, stack) => Center(
+              child: Text(
+                'Fout bij het laden van verjaardagsberichten',
+                style: TextStyle(fontSize: 18, color: Colors.red),
+              ),
+            ),
           );
         },
-        loading: () => Center(child: CircularProgressIndicator.adaptive()),
+        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Text(
             'Failed to load notifications',
