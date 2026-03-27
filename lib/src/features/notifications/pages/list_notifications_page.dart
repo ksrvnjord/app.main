@@ -74,8 +74,8 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
               if (notifications.isNotEmpty) {
                 children.add(
                   const Padding(
-                    padding:
-                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                    padding: EdgeInsets.only(
+                        top: 16, left: 16, right: 16, bottom: 8),
                     child: Text(
                       'Push notificaties',
                       style:
@@ -99,8 +99,8 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
               if (birthdayMessages.isNotEmpty) {
                 children.add(
                   const Padding(
-                    padding:
-                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                    padding: EdgeInsets.only(
+                        top: 16, left: 16, right: 16, bottom: 8),
                     child: Text(
                       'Verjaardagsfelicitaties',
                       style:
@@ -132,7 +132,8 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
         error: (error, stack) => Center(
           child: Text(
             'Failed to load notifications',

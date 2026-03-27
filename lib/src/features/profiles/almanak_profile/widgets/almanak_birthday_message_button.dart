@@ -32,8 +32,8 @@ class AlmanakBirthdayButton extends ConsumerWidget {
           onPressed: hasCongratulated
               ? null
               : () async {
-                  userAsyncVal.whenData((sender) => _showBirthdayMessageDialog(
-                      context, sender.fullName));
+                  userAsyncVal.whenData((sender) =>
+                      _showBirthdayMessageDialog(context, sender.fullName));
                 },
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -154,8 +154,8 @@ class AlmanakBirthdayButton extends ConsumerWidget {
     );
   }
 
-  Future<void> _sendBirthdayMessage(BuildContext context, String message,
-      User senderUser) async {
+  Future<void> _sendBirthdayMessage(
+      BuildContext context, String message, User senderUser) async {
     try {
       final result = await FirebaseFunctions.instanceFor(region: 'europe-west1')
           .httpsCallable('personalBirthdayMessageV2')

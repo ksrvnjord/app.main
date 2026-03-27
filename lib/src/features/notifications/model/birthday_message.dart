@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 @immutable
 class BirthdayMessage {
-
   factory BirthdayMessage.fromMap(Map<String, dynamic> data) {
     return BirthdayMessage(
       title: (data['title'] as String?)?.trim().isNotEmpty == true

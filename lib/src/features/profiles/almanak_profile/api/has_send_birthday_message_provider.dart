@@ -14,7 +14,8 @@ final hasSendBirthdayMessageProvider =
 
   final currentYear = DateTime.now().year;
 
-  final documentPath = '/people/$receiverId/birthday_receipts/$userId/years/$currentYear';
+  final documentPath =
+      '/people/$receiverId/birthday_receipts/$userId/years/$currentYear';
 
   return FirebaseFirestore.instance
       .doc(documentPath)
