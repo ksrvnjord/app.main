@@ -71,30 +71,6 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
 
               final children = <Widget>[];
 
-              if (birthdayMessages.isNotEmpty) {
-                children.add(
-                  const Padding(
-                    padding:
-                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
-                    child: Text(
-                      'Verjaardagsfelicitaties',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  ),
-                );
-
-                children.addAll(
-                  birthdayMessages
-                      .map(
-                        (birthdayMessage) => BirthdayMessageWidget(
-                          birthdayMessage: birthdayMessage,
-                        ),
-                      )
-                      .toList(),
-                );
-              }
-
               if (notifications.isNotEmpty) {
                 children.add(
                   const Padding(
@@ -114,6 +90,30 @@ class ListNotificationsPageState extends ConsumerState<ListNotificationsPage> {
                         (notification) => PushNotificationWidget(
                           notification: notification,
                           uid: currentUser?.uid,
+                        ),
+                      )
+                      .toList(),
+                );
+              }
+
+              if (birthdayMessages.isNotEmpty) {
+                children.add(
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                    child: Text(
+                      'Verjaardagsfelicitaties',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                );
+
+                children.addAll(
+                  birthdayMessages
+                      .map(
+                        (birthdayMessage) => BirthdayMessageWidget(
+                          birthdayMessage: birthdayMessage,
                         ),
                       )
                       .toList(),
