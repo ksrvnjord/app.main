@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_delete_button.dart';
@@ -13,20 +14,19 @@ import 'package:styled_widget/styled_widget.dart';
 class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
   const SingleQuestionFormCardExpandedArea({
     super.key,
-    required this.form,
-    required this.reference,
+    required this.session,
   });
-  final FirestoreForm form;
-  final DocumentReference<FirestoreForm> reference;
+
+  final FormSession session;
 
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Widget> _buildQuestionWidgets(
-    FirestoreForm form,
-    DocumentReference<FirestoreForm> reference,
+    FormSession session,
     bool userCanEditForm,
     double hPadding,
   ) {
+    final form = session.formDoc.data()!;
     final formIsV2 = form.isV2;
 
     if (formIsV2) {
@@ -35,22 +35,20 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
       return [
         form.questionsMap.containsKey(contentIndex)
             ? FormQuestion(
+                session: session,
                 formQuestion: form.questionsMap[contentIndex]!,
                 questionId: contentIndex,
-                form: form,
-                docRef: reference,
                 userCanEditForm: userCanEditForm,
                 withoutBorder: true,
               )
-            : ErrorTextWidget(errorMessage: "Form heeft geen vragen")
-      ].toList();
+            : ErrorTextWidget(errorMessage: "Form heeft geen vragen"),
+      ];
     } else {
       return form.questions
           .expand((q) => [
                 FormQuestion(
+                  session: session,
                   formQuestion: q,
-                  form: form,
-                  docRef: reference,
                   userCanEditForm: userCanEditForm,
                   withoutBorder: true,
                   showAdditionalSaveButton: true,
@@ -70,6 +68,7 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
 
     return currentUserVal.when(
       data: (currentUser) {
+        final form = session.formDoc.data()!;
         final isAFormForUser =
             form.userIsInCorrectGroupForForm(currentUser.groupIds);
 
@@ -77,9 +76,10 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (form.description != null)
-              Text(form.description!,
-                      style: Theme.of(context).textTheme.bodyMedium)
-                  .padding(horizontal: descriptionHPadding.toDouble()),
+              Text(
+                form.description!,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ).padding(horizontal: descriptionHPadding.toDouble()),
             if (form.isKoco)
               GestureDetector(
                 onTap: () => context.pushNamed('My Allergies'),
@@ -89,10 +89,13 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
               key: _formKey,
               child: Column(
                 children: _buildQuestionWidgets(
-                    form, reference, form.isOpen && isAFormForUser, hPadding),
+                  session,
+                  form.isOpen && isAFormForUser,
+                  hPadding,
+                ),
               ),
             ),
-            SingleQuestionFormCardDeleteButton(reference: reference),
+            SingleQuestionFormCardDeleteButton(session: session),
           ],
         );
       },

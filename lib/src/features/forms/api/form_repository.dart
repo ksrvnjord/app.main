@@ -10,6 +10,7 @@ import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart'
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_question_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -334,6 +335,58 @@ class FormRepository {
       final file = File('${tempDir.path}/filler_$fillerId.jpg');
       await FirebaseStorage.instance.refFromURL(url).writeToFile(file);
       return XFile(file.path);
+    }
+  }
+
+  static Future<void> upsertFormAnswerAtDocRef({
+    required String userId,
+    required int? questionId,
+    required List<String>? newValue,
+    required FirestoreForm form,
+    required DocumentReference<FormAnswer> answerDocRef,
+  }) async {
+    final docSnapshot = await answerDocRef.get();
+
+    final formQuestionAnswer = FormQuestionAnswer(
+      questionId: questionId,
+      answerList: newValue,
+    );
+
+    if (docSnapshot.exists && docSnapshot.data() != null) {
+      // Update existing document.
+      final data = docSnapshot.data()!;
+      final answers = List<FormQuestionAnswer>.from(data.answers);
+
+      // Find the existing answer or add a new one.
+      final existing = answers.firstWhere(
+        (a) => a.questionId == questionId,
+        orElse: () {
+          answers.add(formQuestionAnswer);
+          return formQuestionAnswer;
+        },
+      );
+
+      existing.answerList = newValue;
+
+      final isCompleted =
+          checkIfFormIsCompleted(form: form, formAnswers: answers);
+
+      await answerDocRef.update({
+        'answers': answers.map((a) => a.toJson()).toList(),
+        'answeredAt': Timestamp.now(),
+        FormAnswer.isCompletedJSONKey: isCompleted,
+      });
+    } else {
+      // Create new document at this location.
+      await answerDocRef.set(FormAnswer(
+        userId: userId, // optional, can leave blank if unknown
+        answers: [formQuestionAnswer],
+        answeredAt: Timestamp.now(),
+        isCompleted: checkIfFormIsCompleted(
+          form: form,
+          formAnswers: [formQuestionAnswer],
+        ),
+      ));
     }
   }
 }

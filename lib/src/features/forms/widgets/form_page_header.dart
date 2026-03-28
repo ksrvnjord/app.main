@@ -4,19 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/allergy_warning_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/answer_status_card.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormPageHeader extends StatelessWidget {
-  const FormPageHeader(
-      {super.key,
-      required this.form,
-      required this.answerSnapshot,
-      required this.isAFormForUser});
+  const FormPageHeader({
+    super.key,
+    required this.form,
+    required this.session,
+    required this.isAFormForUser,
+  });
 
   final FirestoreForm form;
-  final QuerySnapshot<FormAnswer> answerSnapshot;
+  final FormSession session; // <-- Pass the whole session
   final bool isAFormForUser;
 
   @override
@@ -28,9 +30,12 @@ class FormPageHeader extends StatelessWidget {
     const descriptionVPadding = 16.0;
     const leftCardPadding = 8.0;
 
-    final answerExists = answerSnapshot.docs.isNotEmpty;
+    // ✅ Get answer from session
+    final answerSnapshot = session.prefillSnapshot;
+    final answerExists = answerSnapshot?.docs.isNotEmpty == true;
     final FormAnswer? answer =
-        answerExists ? answerSnapshot.docs.first.data() : null;
+        answerExists ? answerSnapshot!.docs.first.data() : null;
+
     final answerIsCompleted = answer?.isCompleted ?? false;
     final isDefinitive = answer?.definitiveAnswerHasBeenGiven ?? false;
     final answerIsUnRetractable = form.formAnswersAreUnretractable;
@@ -38,7 +43,6 @@ class FormPageHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title row
         Column(
           children: [
             Text(form.title, style: textTheme.titleLarge)
@@ -53,25 +57,21 @@ class FormPageHeader extends StatelessWidget {
             ).alignment(Alignment.centerLeft),
           ],
         ),
-
         if (form.isSoldOut)
           Text(
             "Deze form heeft het maximale aantal antwoorden bereikt",
             style: TextStyle(color: colorScheme.error),
           ).alignment(Alignment.centerLeft),
-
         if (form.isClosed && form.formClosingTimeIsInFuture)
           Text(
             "Deze form is vroegtijdig gesloten door een admin.",
             style: TextStyle(color: colorScheme.error),
           ).alignment(Alignment.centerLeft),
-
         if (!isAFormForUser)
           Text(
             "Je hebt geen rechten om deze form in te vullen.",
             style: TextStyle(color: colorScheme.error),
           ).alignment(Alignment.centerLeft),
-
         if (description != null)
           Text(
             description,
@@ -79,22 +79,17 @@ class FormPageHeader extends StatelessWidget {
           )
               .padding(vertical: descriptionVPadding)
               .alignment(Alignment.centerLeft),
-
         if (form.isKoco)
           GestureDetector(
             onTap: () => context.pushNamed('My Allergies'),
             child: AllergyWarningCard(),
           ),
-
         if (form.formAnswersAreUnretractable)
           Text(
             "LET OP! Dit formulier is niet meer te wijzigen nadat antwoorden zijn verstuurd. Versturen gebeurt met de knop onderaan het formulier.",
             style: TextStyle(color: colorScheme.error),
           ),
-
         const SizedBox(height: 16),
-
-        // Answer status
         Row(
           children: [
             Text(
@@ -111,21 +106,17 @@ class FormPageHeader extends StatelessWidget {
             ).padding(left: leftCardPadding),
           ],
         ),
-
         if (answerIsCompleted && !form.formAnswersAreUnretractable)
           Text(
             "Je kunt je antwoord nog wijzigen tot de form gesloten is.",
             style: textTheme.bodyMedium,
           ),
-
         if (answerExists && !answerIsCompleted)
           Text(
             "Vul alle verplichte vragen in om je antwoord te versturen.",
             style: TextStyle(color: colorScheme.error),
           ),
-        const SizedBox(
-          height: 16,
-        ),
+        const SizedBox(height: 16),
         const Divider(),
       ],
     );

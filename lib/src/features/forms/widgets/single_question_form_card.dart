@@ -1,15 +1,13 @@
-// ignore_for_file: prefer-extracting-function-callbacks, no-magic-string
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_expanded_area.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_subtitle.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_subtitle.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_expanded_area.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_session_provider.dart'; // <- your new provider
 
-class SingleQuestionFormCard extends ConsumerStatefulWidget {
-  // Constructor which takes a String formId.
+class SingleQuestionFormCard extends ConsumerWidget {
   const SingleQuestionFormCard({
     super.key,
     required this.formSnapshot,
@@ -18,39 +16,41 @@ class SingleQuestionFormCard extends ConsumerStatefulWidget {
   final QueryDocumentSnapshot<FirestoreForm> formSnapshot;
 
   @override
-  createState() => _SingleQuestionFormCardState();
-}
-
-class _SingleQuestionFormCardState
-    extends ConsumerState<SingleQuestionFormCard> {
-  // Constructor which takes a String formId.
-
-  @override
-  Widget build(BuildContext context) {
-    final form = widget.formSnapshot.data();
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return ExpansionTile(
-      collapsedIconColor: colorScheme.primary,
-      title: Text(form.title),
-      subtitle: SingleQuestionFormCardSubtitle(
-          form: form, reference: widget.formSnapshot.reference),
-      expandedCrossAxisAlignment: CrossAxisAlignment.center,
-      shape: const RoundedRectangleBorder(side: BorderSide.none),
-      children: [
-        SingleQuestionFormCardExpandedArea(
-          form: form,
-          reference: widget.formSnapshot.reference,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sessionAsync = ref.watch(
+      formSessionProvider(
+        FormSessionParams(
+          formId: formSnapshot.id,
+          ignoreFilledInForm: false,
         ),
-      ],
-    ).card(
-      color: Colors.transparent,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: colorScheme.primary),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 4),
+    );
+
+    return sessionAsync.when(
+      data: (session) {
+        final form = session.formDoc.data()!;
+        final colorScheme = Theme.of(context).colorScheme;
+
+        return ExpansionTile(
+          collapsedIconColor: colorScheme.primary,
+          title: Text(form.title),
+          childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+          children: [
+            SingleQuestionFormCardSubtitle(session: session),
+            SingleQuestionFormCardExpandedArea(session: session),
+          ],
+        ).card(
+          color: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: colorScheme.primary),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 4),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator.adaptive()),
+      error: (err, _) => Center(child: Text('Error: $err')),
     );
   }
 }

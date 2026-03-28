@@ -1,55 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-/// A widget for displaying a single choice question.
-///
-/// This widget takes a [FirestoreFormQuestion] and displays it as a list of radio buttons.
-/// The user can select one option from the list.
-///
-/// The [initialValue] is the initial value of the question.
-/// The [formQuestion] is the question to be displayed.
-/// The [form] is the form that contains the question.
-/// The [docRef] is the document reference of the form.
-/// The [ref] is the widget reference.
-/// The [onChanged] function is called when the user selects an option.
-///
-/// If the [formQuestion] does not have any options, an error message is displayed.
-
 class SingleChoiceWidget extends StatelessWidget {
   const SingleChoiceWidget({
-    this.initialValue,
-    required this.formQuestion,
+    super.key,
+    required this.session,
+    required this.questionId,
     required this.onChanged,
     required this.userCanEditForm,
-    super.key,
   });
 
-  final String? initialValue;
-  final FirestoreFormQuestion formQuestion;
-  // ignore: prefer-explicit-parameter-names
+  final FormSession session;
+  final int questionId;
   final void Function(String?) onChanged;
   final bool userCanEditForm;
 
+  FirestoreFormQuestion _getQuestion() {
+    final form = session.formDoc.data()!;
+    if (form.isV2) {
+      return form.questionsMap[questionId]!;
+    } else {
+      return form.questions.firstWhere((q) => q.id == questionId);
+    }
+  }
+
+  String? _getInitialValue() {
+    if (session.prefillSnapshot?.docs.isNotEmpty == true) {
+      final answers = session.prefillSnapshot!.docs.first.data().answers;
+      final question = _getQuestion();
+
+      for (final answer in answers) {
+        if (session.formDoc.data()!.isV2) {
+          if (answer.questionId == questionId) {
+            return answer.answerList?.first;
+          }
+        } else {
+          if (answer.questionTitle == question.title) {
+            return answer.answer;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final options = formQuestion.options;
+    final question = _getQuestion();
+    final options = question.options;
+    final initialValue = _getInitialValue();
 
-    return options == null
-        ? const ErrorCardWidget(
-            errorMessage: 'Er zijn geen opties voor deze vraag',
+    if (options == null) {
+      return const ErrorCardWidget(
+        errorMessage: 'Er zijn geen opties voor deze vraag',
+      );
+    }
+
+    return Column(
+      children: options
+          .map(
+            (choice) => RadioListTile<String>(
+              value: choice,
+              groupValue: initialValue,
+              onChanged: userCanEditForm ? onChanged : null,
+              toggleable: true,
+              title: Text(choice),
+            ),
           )
-        : Column(
-            // ignore: prefer-for-loop-in-children
-            children: options
-                .map((choice) => RadioListTile<String>(
-                      value: choice,
-                      groupValue: initialValue,
-                      onChanged: userCanEditForm ? onChanged : null,
-                      toggleable: true,
-                      title: Text(choice),
-                    ))
-                .toList(),
-          );
+          .toList(),
+    );
   }
 }

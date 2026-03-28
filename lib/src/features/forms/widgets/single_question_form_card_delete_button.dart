@@ -1,103 +1,98 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/can_edit_form_answer_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 
 class SingleQuestionFormCardDeleteButton extends ConsumerWidget {
-  const SingleQuestionFormCardDeleteButton(
-      {super.key, required this.reference});
-  final DocumentReference<FirestoreForm> reference;
+  const SingleQuestionFormCardDeleteButton({super.key, required this.session});
 
-  Future<dynamic> _deleteMyFormAnswer(
-    WidgetRef ref,
-    BuildContext context,
-  ) async {
-    final answer = await ref.watch(
-      formAnswerProvider(reference).future,
-    );
-    if (answer.docs.isNotEmpty) {
-      // ignore: avoid-unsafe-collection-methods
-      final answerPath = answer.docs.first.reference.path;
+  final FormSession session;
 
-      if (!context.mounted) return;
+  Future<bool?> _deleteMyFormAnswer(WidgetRef ref, BuildContext context) async {
+    final answerDocRef = session.answerDocRef;
+    if (answerDocRef == null) return false;
 
-      return showDialog(
-        context: context,
-        builder: (innerContext) => AlertDialog(
-          title: const Text('Verwijderen'),
-          content: const Text(
-            'Weet je zeker dat je jouw form-reactie wilt verwijderen?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(innerContext).pop(),
-              child: const Text('Annuleren'),
-            ),
-            TextButton(
-              // ignore: prefer-extracting-callbacks, avoid-passing-async-when-sync-expected
-              onPressed: () async {
-                await FormRepository.deleteMyFormAnswer(answerPath);
-                // ignore: use_build_context_synchronously
-                if (innerContext.mounted) Navigator.of(innerContext).pop(true);
-              },
-              child: const Text(
-                'Verwijderen',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        ),
-      );
+    final answerSnap = await answerDocRef.get();
+    if (!answerSnap.exists) {
+      return false;
     }
-    throw Exception("Geen antwoord gevonden om te verwijderen");
+
+    if (!context.mounted) return false;
+
+    return showDialog<bool>(
+      context: context,
+      builder: (innerContext) => AlertDialog(
+        title: const Text('Verwijderen'),
+        content: const Text(
+          'Weet je zeker dat je jouw form-reactie wilt verwijderen?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(innerContext).pop(false),
+            child: const Text('Annuleren'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FormRepository.deleteMyFormAnswer(answerDocRef.path);
+              if (innerContext.mounted) Navigator.of(innerContext).pop(true);
+            },
+            child: const Text(
+              'Verwijderen',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const hPadding = 8.0;
-    const widthDeleteButton = 400.0;
     final colorScheme = Theme.of(context).colorScheme;
+    final answerDocRef = session.answerDocRef;
 
-    return ref.watch(canRemoveFormAnswerProvider(reference)).when(
-          data: (canRemove) => canRemove
-              ? Padding(
-                  padding: const EdgeInsets.all(hPadding),
-                  child: SizedBox(
-                    width: widthDeleteButton,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final res = await _deleteMyFormAnswer(ref, context);
-                        final snackBar = SnackBar(
-                          content: Text(
-                            res == true
-                                ? 'Jouw formreactie is verwijderd'
-                                : 'Het is niet gelukt jouw formreactie te verwijderen',
-                          ),
-                        );
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(colorScheme.errorContainer),
-                        foregroundColor: WidgetStateProperty.all(
-                            colorScheme.onErrorContainer),
+    if (answerDocRef == null) return const SizedBox.shrink();
+
+    return ref.watch(canRemoveFormAnswerProvider(answerDocRef)).when(
+          data: (canRemove) {
+            if (!canRemove) return const SizedBox.shrink();
+
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 400,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final res = await _deleteMyFormAnswer(ref, context);
+                    if (!context.mounted) return;
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          res == true
+                              ? 'Jouw formreactie is verwijderd'
+                              : 'Het is niet gelukt jouw formreactie te verwijderen',
+                        ),
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.delete),
-                          SizedBox(width: hPadding),
-                          Text("Verwijder mijn formreactie"),
-                        ],
-                      ),
-                    ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.errorContainer,
+                    foregroundColor: colorScheme.onErrorContainer,
                   ),
-                )
-              : const SizedBox.shrink(),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.delete),
+                      SizedBox(width: 8),
+                      Text("Verwijder mijn formreactie"),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
           error: (_, __) => const SizedBox.shrink(),
           loading: () => const SizedBox.shrink(),
         );

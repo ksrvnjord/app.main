@@ -1,52 +1,44 @@
-// ignore_for_file: prefer-extracting-function-callbacks
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_session_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/shoud_show_save_button_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/date_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/multiple_choice_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_choice_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class FormQuestion extends ConsumerStatefulWidget {
   const FormQuestion({
     super.key,
+    required this.session,
     required this.formQuestion,
-    this.questionId, // TODO questionUpdate: should be required
-    required this.form,
-    required this.docRef,
+    this.questionId,
     required this.userCanEditForm,
     this.withoutBorder = false,
-    this.showAdditionalSaveButton = true, // TODO: This should be false/removed
+    this.showAdditionalSaveButton = true,
   });
 
+  final FormSession session;
   final FirestoreFormQuestion formQuestion;
-
   final int? questionId;
-
-  final FirestoreForm form;
-
-  final DocumentReference<FirestoreForm> docRef;
-
   final bool userCanEditForm;
-
   final bool withoutBorder;
-
-  final bool showAdditionalSaveButton; // New parameter
+  final bool showAdditionalSaveButton;
 
   @override
-  createState() => _FormQuestionState();
+  ConsumerState<FormQuestion> createState() => _FormQuestionState();
 }
 
 class _FormQuestionState extends ConsumerState<FormQuestion> {
-  final _focusNode = FocusNode(debugLabel: "FormQuestionState_textfield");
+  final _focusNode = FocusNode(debugLabel: "FormQuestion_textfield");
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -59,66 +51,32 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
     });
   }
 
-  Future<void> _handleChangeOfFormAnswerDeprecated({
-    //TODO questionUpdate: remove this
-    required String question,
-    int? questionId,
-    required String? newValue,
-    required FirestoreForm f,
-    required DocumentReference<FirestoreForm> d,
-    required WidgetRef ref,
-    required BuildContext context,
-  }) async {
-    final currentState = _formKey.currentState;
-    if (currentState?.validate() == false) {
-      return;
-    }
-
-    try {
-      await FormRepository.upsertFormAnswerDeprecated(
-        question: question,
-        questionId: questionId,
-        newValue: newValue,
-        form: f,
-        docRef: d,
-        ref: ref,
-      );
-    } on Exception catch (error) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
-    }
-  }
-
   Future<void> _handleChangeOfFormAnswer({
     required String question,
     int? questionId,
     required List<String>? newValue,
-    required FirestoreForm f,
-    required DocumentReference<FirestoreForm> d,
     required WidgetRef ref,
     required BuildContext context,
   }) async {
     final currentState = _formKey.currentState;
-    if (currentState?.validate() == false) {
-      return;
+    if (currentState?.validate() == false) return;
+
+    final user = ref.read(currentUserNotifierProvider);
+    if (user == null) {
+      throw Exception('User is null');
     }
 
     try {
-      await FormRepository.upsertFormAnswer(
-        question: question,
-        questionId: questionId,
-        newValue: newValue,
-        form: f,
-        docRef: d,
-        ref: ref,
-      );
-    } on Exception catch (error) {
+      await FormRepository.upsertFormAnswerAtDocRef(
+          userId: user.identifierString,
+          questionId: questionId,
+          newValue: newValue,
+          form: widget.session.formDoc.data()!,
+          answerDocRef: widget.session.answerDocRef!);
+    } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -130,335 +88,211 @@ class _FormQuestionState extends ConsumerState<FormQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-
+    final textTheme = Theme.of(context).textTheme;
     const horizontalPaddingCard = 8.0;
-
     const verticalPaddingCard = 2.0;
 
+    final form = widget.session.formDoc.data();
+    if (form == null) {
+      return const ErrorCardWidget(errorMessage: 'Formulier niet gevonden');
+    }
+
     final type = widget.formQuestion.type;
-
     final questionId = widget.questionId;
-
     final questionWidgets = <Widget>[
       Text(widget.formQuestion.title, style: textTheme.titleLarge),
       if (widget.formQuestion.isRequired) const Text('Verplicht'),
     ];
 
-    final answerStream = ref.watch(formAnswerProvider(widget.docRef));
-
-    answerStream.when(
-      data: (data) {
-        List<String>? answerValue;
-        if (data.docs.isNotEmpty) {
-          final formAnswers = data.docs.first.data().answers;
-          for (final entry in formAnswers) {
-            if (widget.form.isV2) {
-              if (entry.questionId == widget.formQuestion.id) {
-                answerValue = entry.answerList;
-              }
-            } else {
-              if (entry.questionTitle == widget.formQuestion.title) {
-                //TODO questionUpdate: remove this
-                answerValue = [entry.answer ?? ""];
-              }
-            }
+    // Safe access to the user's existing answer
+    List<String>? answerValue;
+    if (widget.session.prefillSnapshot?.docs.isNotEmpty == true) {
+      final answers = widget.session.prefillSnapshot!.docs.first.data().answers;
+      for (final entry in answers) {
+        if (form.isV2) {
+          if (entry.questionId == widget.formQuestion.id) {
+            answerValue = entry.answerList;
+          }
+        } else {
+          if (entry.questionTitle == widget.formQuestion.title) {
+            answerValue = [entry.answer ?? ""];
           }
         }
-        switch (type) {
-          case FormQuestionType.text:
-            String? initialValue;
-            if (answerValue != null) {
-              initialValue = answerValue[0];
-            }
+      }
+    }
 
-            TextEditingController answer =
-                TextEditingController(text: initialValue);
+    final answerIsDefinitive =
+        widget.session.prefillSnapshot?.docs.isNotEmpty == true
+            ? widget.session.prefillSnapshot!.docs.first
+                .data()
+                .definitiveAnswerHasBeenGiven
+            : false;
 
-            questionWidgets.add(
-              Form(
-                key: _formKey,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: answer,
-                        focusNode: _focusNode,
-                        maxLines: null,
-                        onSaved: (String? value) => widget.form.isV2
-                            ? _handleChangeOfFormAnswer(
-                                question: widget.formQuestion.title,
-                                questionId: questionId,
-                                newValue: (value != null) ? [value] : null,
-                                f: widget.form,
-                                d: widget.docRef,
-                                ref: ref,
-                                context: context,
-                              )
-                            : _handleChangeOfFormAnswerDeprecated(
-                                question: widget.formQuestion.title,
-                                questionId: questionId,
-                                newValue: value,
-                                f: widget.form,
-                                d: widget.docRef,
-                                ref: ref,
-                                context: context,
-                              ),
-                        enabled: widget.userCanEditForm,
-                      ),
-                    ),
-                    if (widget.showAdditionalSaveButton &&
-                        widget.userCanEditForm)
-                      TextButton(
-                        onPressed: () {
-                          _formKey.currentState?.save();
-                        },
-                        child: const Text("Opslaan"),
-                      ),
-                  ],
+    switch (type) {
+      case FormQuestionType.text:
+      case FormQuestionType.numeric:
+        String? initialValue = (answerValue != null && answerValue.isNotEmpty)
+            ? answerValue[0]
+            : null;
+        final answerController = TextEditingController(text: initialValue);
+
+        questionWidgets.add(
+          Form(
+            key: _formKey,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: answerController,
+                    focusNode: _focusNode,
+                    keyboardType: type == FormQuestionType.numeric
+                        ? TextInputType.numberWithOptions(decimal: true)
+                        : TextInputType.text,
+                    inputFormatters: type == FormQuestionType.numeric
+                        ? [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9,\.]'))
+                          ]
+                        : null,
+                    onSaved: (value) {
+                      if (!widget.userCanEditForm) return;
+                      if (value == null || value.isEmpty) {
+                        _handleChangeOfFormAnswer(
+                          question: widget.formQuestion.title,
+                          questionId: questionId,
+                          newValue: null,
+                          ref: ref,
+                          context: context,
+                        );
+                        return;
+                      }
+
+                      if (type == FormQuestionType.numeric) {
+                        final normalized = value.replaceAll(',', '.');
+                        final parsed = double.tryParse(normalized);
+                        if (parsed == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Ongeldig nummer")));
+                          return;
+                        }
+                        _handleChangeOfFormAnswer(
+                          question: widget.formQuestion.title,
+                          questionId: questionId,
+                          newValue: [parsed.toString()],
+                          ref: ref,
+                          context: context,
+                        );
+                      } else {
+                        _handleChangeOfFormAnswer(
+                          question: widget.formQuestion.title,
+                          questionId: questionId,
+                          newValue: [value],
+                          ref: ref,
+                          context: context,
+                        );
+                      }
+                    },
+                    enabled: widget.userCanEditForm && !answerIsDefinitive,
+                  ),
                 ),
-              ),
-            );
-            break;
+                if (widget.showAdditionalSaveButton &&
+                    widget.userCanEditForm &&
+                    !answerIsDefinitive)
+                  TextButton(
+                    onPressed: () => _formKey.currentState?.save(),
+                    child: const Text("Opslaan"),
+                  ),
+              ],
+            ),
+          ),
+        );
+        break;
 
-          case FormQuestionType.numeric:
-            String? initialValue;
-            if (answerValue != null) {
-              initialValue = answerValue[0];
-            }
+      case FormQuestionType.singleChoice:
+        questionWidgets.add(SingleChoiceWidget(
+          session: widget.session,
+          questionId: widget.questionId!,
+          onChanged: (value) => _handleChangeOfFormAnswer(
+            question: widget.formQuestion.title,
+            questionId: questionId,
+            newValue: value != null ? [value] : null,
+            ref: ref,
+            context: context,
+          ),
+          userCanEditForm: widget.userCanEditForm && !answerIsDefinitive,
+        ));
+        break;
 
-            TextEditingController answer =
-                TextEditingController(text: initialValue);
+      case FormQuestionType.multipleChoice:
+        final values = answerValue ?? <String>[];
+        questionWidgets.add(MultipleChoiceWidget(
+          session: widget.session,
+          questionId: widget.questionId!,
+          onChanged: (newValues) => _handleChangeOfFormAnswer(
+            question: widget.formQuestion.title,
+            questionId: questionId,
+            newValue: newValues,
+            ref: ref,
+            context: context,
+          ),
+          userCanEditForm: widget.userCanEditForm && !answerIsDefinitive,
+        ));
+        break;
 
-            questionWidgets.add(
-              Form(
-                key: _formKey,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: answer,
-                        focusNode: _focusNode,
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        inputFormatters: [
-                          // Allow digits and comma/dot
-                          FilteringTextInputFormatter.allow(
-                              RegExp(r'[0-9,\.]')),
-                        ],
-                        onSaved: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            _handleChangeOfFormAnswer(
-                              question: widget.formQuestion.title,
-                              questionId: questionId,
-                              newValue: null,
-                              f: widget.form,
-                              d: widget.docRef,
-                              ref: ref,
-                              context: context,
-                            );
-                            return;
-                          }
-
-                          // Replace comma with dot for parsing floats
-                          String normalized = value.replaceAll(',', '.');
-
-                          double? parsedValue = double.tryParse(normalized);
-                          if (parsedValue == null) {
-                            // Optional: show an error if the number is invalid
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Ongeldig nummer")),
-                            );
-                            return;
-                          }
-
-                          widget.form.isV2
-                              ? _handleChangeOfFormAnswer(
-                                  question: widget.formQuestion.title,
-                                  questionId: questionId,
-                                  newValue: [parsedValue.toString()],
-                                  f: widget.form,
-                                  d: widget.docRef,
-                                  ref: ref,
-                                  context: context,
-                                )
-                              : _handleChangeOfFormAnswerDeprecated(
-                                  question: widget.formQuestion.title,
-                                  questionId: questionId,
-                                  newValue: parsedValue.toString(),
-                                  f: widget.form,
-                                  d: widget.docRef,
-                                  ref: ref,
-                                  context: context,
-                                );
-                        },
-                        enabled: widget.userCanEditForm,
-                      ),
-                    ),
-                    if (widget.showAdditionalSaveButton &&
-                        widget.userCanEditForm)
-                      TextButton(
-                        onPressed: () {
-                          _formKey.currentState?.save();
-                        },
-                        child: const Text("Opslaan"),
-                      ),
-                  ],
-                ),
-              ),
-            );
-            break;
-
-          case FormQuestionType.singleChoice:
-            String? initialValue;
-            if (answerValue != null) {
-              initialValue = answerValue[0];
-            }
-
-            questionWidgets.add(SingleChoiceWidget(
-              initialValue: initialValue,
-              formQuestion: widget.formQuestion,
-              onChanged: (String? value) => widget.form.isV2
-                  ? _handleChangeOfFormAnswer(
-                      question: widget.formQuestion.title,
-                      questionId: questionId,
-                      newValue: (value == null || value == initialValue)
-                          ? null
-                          : [value],
-                      f: widget.form,
-                      d: widget.docRef,
-                      ref: ref,
-                      context: context,
-                    )
-                  : _handleChangeOfFormAnswerDeprecated(
-                      question: widget.formQuestion.title,
-                      questionId: questionId,
-                      newValue: initialValue == value ? null : value,
-                      f: widget.form,
-                      d: widget.docRef,
-                      ref: ref,
-                      context: context,
-                    ),
-              userCanEditForm: widget.userCanEditForm,
-            ));
-            break;
-
-          case FormQuestionType.multipleChoice:
-            final values = answerValue ?? <String>[];
-
-            questionWidgets.add(MultipleChoiceWidget(
-              initialValues: values,
-              formQuestion: widget.formQuestion,
-              onChanged: (List<String> newValues) => _handleChangeOfFormAnswer(
-                question: widget.formQuestion.title,
-                questionId: questionId,
-                newValue: widget.formQuestion.options!
-                    .where((option) => newValues.contains(option))
-                    .toList(),
-                f: widget.form,
-                d: widget.docRef,
-                ref: ref,
-                context: context,
-              ),
-              userCanEditForm: widget.userCanEditForm,
-            ));
-            break;
-
-          case FormQuestionType.image:
-            questionWidgets.add(FormImageWidget(
-              docId: widget.docRef.id,
-              questionId: widget.formQuestion.id!,
-              userCanEditForm: widget.userCanEditForm,
-              onChanged: (String? value) => widget.form.isV2
-                  ? _handleChangeOfFormAnswer(
-                      question: widget.formQuestion.title,
-                      questionId: questionId,
-                      newValue: (value != null) ? [value] : null,
-                      f: widget.form,
-                      d: widget.docRef,
-                      ref: ref,
-                      context: context,
-                    )
-                  : _handleChangeOfFormAnswerDeprecated(
-                      question: widget.formQuestion.title,
-                      questionId: questionId,
-                      newValue: value,
-                      f: widget.form,
-                      d: widget.docRef,
-                      ref: ref,
-                      context: context,
-                    ),
-            ));
-            break;
-
-          case FormQuestionType.date:
-            String? initialValue;
-            if (answerValue != null) {
-              initialValue = answerValue[0];
-            }
-
-            DateTime? answerValueDateTime;
-            try {
-              answerValueDateTime = DateTime.parse(initialValue!).toLocal();
-            } catch (e) {
-              answerValueDateTime = null;
-            }
-
-            questionWidgets.add(
-              DateChoiceWidget(
-                answerValueDateTime: answerValueDateTime,
-                question: widget.formQuestion,
-                userCanEditForm: widget.userCanEditForm,
-                onChanged: (String? value) => widget.form.isV2
-                    ? _handleChangeOfFormAnswer(
-                        question: widget.formQuestion.title,
-                        questionId: questionId,
-                        newValue: (value != null) ? [value] : null,
-                        f: widget.form,
-                        d: widget.docRef,
-                        ref: ref,
-                        context: context,
-                      )
-                    : _handleChangeOfFormAnswerDeprecated(
-                        question: widget.formQuestion.title,
-                        questionId: questionId,
-                        newValue: value,
-                        f: widget.form,
-                        d: widget.docRef,
-                        ref: ref,
-                        context: context,
-                      ),
-              ),
-            );
-
-          case FormQuestionType.unsupported:
-            questionWidgets.add(Card(
-              color: colorScheme.errorContainer,
-              elevation: 0,
-              margin: EdgeInsets.zero,
-              child: Text(
-                      "Jouw versie ondersteunt niet dit vraagtype. Update de app.")
-                  .padding(
-                horizontal: horizontalPaddingCard,
-                vertical: verticalPaddingCard,
-              ),
-            ));
-
-          // ignore: unreachable_switch_default
-          default:
-            return const ErrorCardWidget(
-              errorMessage: 'Onbekend type vraag',
-            );
+      case FormQuestionType.date:
+        DateTime? answerDate;
+        if (answerValue != null && answerValue.isNotEmpty) {
+          try {
+            answerDate = DateTime.parse(answerValue[0]).toLocal();
+          } catch (_) {
+            answerDate = null;
+          }
         }
-      },
-      error: (error, stackTrace) {
-        return ErrorCardWidget(errorMessage: error.toString());
-      },
-      loading: () {
-        return const CircularProgressIndicator.adaptive();
-      },
-    );
+
+        questionWidgets.add(DateChoiceWidget(
+          session: widget.session,
+          questionId: widget.questionId!,
+          userCanEditForm: widget.userCanEditForm && !answerIsDefinitive,
+          onChanged: (value) => _handleChangeOfFormAnswer(
+            question: widget.formQuestion.title,
+            questionId: questionId,
+            newValue: value != null ? [value] : null,
+            ref: ref,
+            context: context,
+          ),
+        ));
+        break;
+
+      case FormQuestionType.image:
+        questionWidgets.add(FormImageWidget(
+          session: widget.session,
+          questionId: widget.formQuestion.id!,
+          userCanEditForm: widget.userCanEditForm && !answerIsDefinitive,
+          onChanged: (value) => _handleChangeOfFormAnswer(
+            question: widget.formQuestion.title,
+            questionId: questionId,
+            newValue: value != null ? [value] : null,
+            ref: ref,
+            context: context,
+          ),
+        ));
+        break;
+
+      case FormQuestionType.unsupported:
+      default:
+        questionWidgets.add(Card(
+          color: colorScheme.errorContainer,
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          child: const Text(
+            "Jouw versie ondersteunt dit vraagtype niet. Update de app.",
+          ).padding(
+            horizontal: horizontalPaddingCard,
+            vertical: verticalPaddingCard,
+          ),
+        ));
+    }
 
     return Container(
       padding: const EdgeInsets.all(8),

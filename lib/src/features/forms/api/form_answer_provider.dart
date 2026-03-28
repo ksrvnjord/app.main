@@ -21,3 +21,16 @@ final formAnswerProvider = StreamProvider.family<QuerySnapshot<FormAnswer>,
           .where('userId', isEqualTo: user.uid)
           .snapshots();
 });
+
+final formAnswerProviderV2 = StreamProvider.autoDispose
+    .family<FormAnswer, DocumentReference<FormAnswer>>(
+  (ref, answerDocRef) {
+    return answerDocRef.snapshots().map((snap) {
+      final data = snap.data();
+      if (data == null) {
+        throw Exception('Answer document missing');
+      }
+      return data;
+    });
+  },
+);

@@ -11,8 +11,14 @@ class DeclarationsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Declaraties'),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null, // only show if we can pop
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,8 +38,10 @@ class DeclarationsPage extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) =>
-                          const FormPage(formId: '953ZWfMA56RMLgkxV07D'),
+                      builder: (_) => const FormPage(
+                        formId: '953ZWfMA56RMLgkxV07D',
+                        ignoreFilledInForm: true,
+                      ),
                     ),
                   );
                 },

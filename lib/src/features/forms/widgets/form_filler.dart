@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_filler.dart';
 
 class FormFiller extends StatelessWidget {
   const FormFiller({
     super.key,
+    required this.session,
     required this.filler,
-    required this.formId,
   });
 
+  final FormSession session;
   final FirestoreFormFiller filler;
-  final String formId;
 
   Future<String?> _getImageUrl() async {
     final storage = FirebaseStorage.instance;
+
+    // Use session.formDoc.id instead of passing formId separately
     final ref = storage.ref().child(
-          '$firestoreFormCollectionName/$formId/fillers/${filler.id}',
+          '$firestoreFormCollectionName/${session.formDoc.id}/fillers/${filler.id}',
         );
 
     try {
@@ -32,8 +35,9 @@ class FormFiller extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Title
         const Divider(),
+
+        // Title
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
@@ -60,7 +64,7 @@ class FormFiller extends StatelessWidget {
 
         const SizedBox(height: 12),
 
-        // Image (if available)
+        // Image
         if (filler.hasImage)
           FutureBuilder<String?>(
             future: _getImageUrl(),
@@ -75,11 +79,10 @@ class FormFiller extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Center(
                     child: FractionallySizedBox(
-                      widthFactor: 0.8, // 80% of screen width
+                      widthFactor: 0.8,
                       child: Image.network(
                         snapshot.data!,
-                        fit: BoxFit
-                            .contain, // or BoxFit.cover depending on what you want
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),

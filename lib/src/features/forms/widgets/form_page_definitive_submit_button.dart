@@ -1,22 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/form_answer_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/form_repository.dart';
-import 'package:ksrvnjord_main_app/src/features/forms/api/shoud_show_save_button_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/api/ticket_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/form_answer.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_session.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/model/form_ticket.dart';
 
 class FormPageDefinitiveSubmitButton extends ConsumerWidget {
   const FormPageDefinitiveSubmitButton({
     super.key,
     required this.formKey,
-    required this.answerDocRef,
-    required this.formDocRef,
+    required this.session,
   });
 
   final GlobalKey<FormState> formKey;
-  final DocumentReference<FormAnswer>? answerDocRef;
-  final DocumentReference<FirestoreForm> formDocRef;
+  final FormSession session;
 
   Future<bool> showConfirmSaveDialog(
       BuildContext context, DocumentReference<FormAnswer> answerDocRef) {
@@ -51,6 +52,29 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
                           try {
                             await FormRepository.makeFormAnswerDefinitive(
                                 docRef: answerDocRef);
+
+                            FirestoreForm formData = session.formDoc.data()!;
+
+                            if (formData.isLinkedToTicket) {
+                              TicketRepository.createTicket(
+                                answerDocRef: answerDocRef,
+                                ticket: FormTicket(
+                                    createdAt:
+                                        Timestamp.fromDate(DateTime.now()),
+                                    name: session.formDoc.data()!.title,
+                                    orginalOwner: session.user.identifierString,
+                                    owner: session.user.identifierString,
+                                    validFrom:
+                                        Timestamp.fromDate(DateTime.now()),
+                                    validUntil: Timestamp.fromDate(DateTime(
+                                        250,
+                                        1,
+                                        1)), //TODO must be set dynamically at some point
+                                    fromForm: session.formDoc.id,
+                                    fromFormAnswer: session.answerDocRef!.id,
+                                    status: 'pending'),
+                              );
+                            }
                             if (context.mounted) {
                               Navigator.of(context).pop(true);
                             }
@@ -75,16 +99,18 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showSaveButtonAsync =
-        ref.watch(shouldShowSaveButtonProvider(formDocRef));
     final colorScheme = Theme.of(context).colorScheme;
 
-    return showSaveButtonAsync.when(
-      data: (show) {
-        if (answerDocRef == null) return const SizedBox.shrink();
+    // If session has no answerDocRef yet, nothing to submit
+    final answerDocRef = session.answerDocRef;
+    if (answerDocRef == null) return const SizedBox.shrink();
 
+    final answerAsync = ref.watch(formAnswerProviderV2(answerDocRef));
+
+    return answerAsync.when(
+      data: (answer) {
         return ElevatedButton(
-          onPressed: show
+          onPressed: answer.isCompleted
               ? () async {
                   final isValid = formKey.currentState?.validate() ?? false;
                   if (!isValid) return;
@@ -92,8 +118,7 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
                   formKey.currentState?.save();
 
                   final confirmed =
-                      await showConfirmSaveDialog(context, answerDocRef!);
-
+                      await showConfirmSaveDialog(context, answerDocRef);
                   if (!confirmed || !context.mounted) return;
 
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -108,18 +133,20 @@ class FormPageDefinitiveSubmitButton extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.save),
-              SizedBox(width: 8),
+              const Icon(Icons.save),
+              const SizedBox(width: 8),
               Flexible(
-                  child: Text(
-                      "Definitief Opslaan${show ? "" : " (vul eerst alle verplichte vragen in)"}",
-                      textAlign: TextAlign.center)),
+                child: Text(
+                  "Definitief Opslaan${answer.isCompleted ? "" : " (vul eerst alle verplichte vragen in)"}",
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         );
       },
       loading: () => const SizedBox.shrink(),
-      error: (err, stk) => const SizedBox.shrink(), // or show error if desired
+      error: (err, stk) => const SizedBox.shrink(),
     );
   }
 }
