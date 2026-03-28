@@ -15,7 +15,12 @@ class DjangoGroup {
 
   @JsonKey(includeFromJson: true, includeToJson: false)
   final List<GroupDjangoRelation>? users;
+
+  /// Gebruik [name] voor UI, ander [officialName]
   final String name;
+
+  /// Gebruik [officialName] voor vergelijken van strings
+  final String officialName;
 
   @JsonKey(
     toJson: _typeToJson,
@@ -36,10 +41,11 @@ class DjangoGroup {
     this.id,
     this.users,
     this.rights = const [],
+    String? officialName,
     required this.name,
     required this.type,
     required this.year,
-  });
+  }) : officialName = officialName ?? name;
 
   Map<String, dynamic> toJson() => _$DjangoGroupToJson(this);
 
@@ -47,6 +53,7 @@ class DjangoGroup {
     int? id,
     List<GroupDjangoRelation>? users,
     String? name,
+    String? officialName,
     String? type,
     int? year,
     List<String>? rights,
@@ -56,6 +63,7 @@ class DjangoGroup {
         users: users ?? this.users,
         rights: rights ?? this.rights,
         name: name ?? this.name,
+        officialName: officialName ?? this.officialName,
         type: type ?? this.type,
         year: year ?? this.year,
       );
@@ -76,6 +84,10 @@ class DjangoGroupNotifier extends Notifier<DjangoGroup> {
 
   void setName(String name) {
     state = state.copyWith(name: name);
+  }
+
+  void setOfficialName(String officialName) {
+    state = state.copyWith(officialName: officialName);
   }
 
   void setType(String type) {
