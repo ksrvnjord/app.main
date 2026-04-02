@@ -241,7 +241,7 @@ class VCPPage extends ConsumerWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4.0),
+                const SizedBox(height: 6.0),
                 Text(
                   "Hier vind je de verschillende manieren om dit te bespreken of te melden. Njord biedt interne hulp en de externe hulp staat voor waar je buiten Njord terecht kan.",
                   textAlign: TextAlign.center,
@@ -308,6 +308,8 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ),
                               child: ExpansionTile(
+                                collapsedBackgroundColor: Colors.transparent,
+                                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                                 title: Text(entry.key),
                                 children: [
                                   // FIXME: String matching #2 :((
