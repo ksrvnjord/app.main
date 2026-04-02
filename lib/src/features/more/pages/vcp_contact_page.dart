@@ -241,6 +241,7 @@ class VCPPage extends ConsumerWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 4.0),
                 Text(
                   "Hier vind je de verschillende manieren om dit te bespreken of te melden. Njord biedt interne hulp en de externe hulp staat voor waar je buiten Njord terecht kan.",
                   textAlign: TextAlign.center,
@@ -252,7 +253,8 @@ class VCPPage extends ConsumerWidget {
             padding: const EdgeInsets.only(
                 top: wrapSpacing * 2,
                 bottom: wrapSpacing,
-                right: wrapSpacing),
+                right: wrapSpacing,
+                left: wrapSpacing),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
