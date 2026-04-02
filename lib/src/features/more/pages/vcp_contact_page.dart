@@ -224,7 +224,7 @@ class VCPPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Melding maken"),
+        title: const Text("Melding"),
       ),
       body: Column(
         children: [
@@ -251,10 +251,10 @@ class VCPPage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(
                 top: wrapSpacing * 2,
-                bottom: wrapSpacing * 2,
+                bottom: wrapSpacing,
                 right: wrapSpacing),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (final contactOption in ["Interne hulp", "Externe hulp"])
                   Padding(
