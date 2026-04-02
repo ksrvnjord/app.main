@@ -22,7 +22,7 @@ class ManageVerticalsPage extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.post(
-        "/api/users/groups/",
+        "/api/v2/groups/",
         data: group.toJson(),
       );
     } catch (e) {

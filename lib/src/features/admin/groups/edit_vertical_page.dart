@@ -52,7 +52,6 @@ class EditVerticalPage extends ConsumerWidget {
   }
 
   Future<void> Function(int) addPloegToVerticaalCallBack(
-    Map<String, dynamic> group,
     WidgetRef ref,
     BuildContext ctx,
   ) {
@@ -131,6 +130,7 @@ class EditVerticalPage extends ConsumerWidget {
               }
               try {
                 // ignore: avoid-ignoring-return-values
+                // TODO: FIXME create api/v2 delete group
                 await dio.delete("/api/users/groups/$verticaalId/");
               } on DioException catch (e) {
                 if (!context.mounted) return;
@@ -242,7 +242,7 @@ class EditVerticalPage extends ConsumerWidget {
         onPressed: () => context.pushNamed(
           "Ploegen",
           extra: ploegenVal.when(
-            data: (ploegen) => addPloegToVerticaalCallBack({}, ref, context),
+            data: (ploegen) => addPloegToVerticaalCallBack(ref, context),
             loading: () => null,
             error: (error, stack) => null,
           ),
