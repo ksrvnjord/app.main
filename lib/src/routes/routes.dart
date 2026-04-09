@@ -9,6 +9,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
+import 'package:ksrvnjord_main_app/src/features/extra/coffee_manual_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
 import 'package:ksrvnjord_main_app/src/features/authentication/model/auth_controller.dart';
@@ -359,6 +360,11 @@ abstract final // ignore: prefer-single-declaration-per-file
           path: 'aankondigingen',
           name: "All Announcements",
           child: const GalleryMainPage(goToAnnouncementPage: true),
+        ),
+        _route(
+          path: "coffee_manual",
+          name: "Coffee Manual",
+          child: const CoffeeManualPage(),
         ),
         _route(
             path: 'notifications',

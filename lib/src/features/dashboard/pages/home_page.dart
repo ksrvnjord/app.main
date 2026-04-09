@@ -184,6 +184,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     const double logoHeight = 56;
     const double myProfileSize = 26;
     const double notificationIconSize = 30;
+    const double coffeeIconSize = 30;
 
     double screenTopPadding = MediaQuery.of(context).padding.top;
 
@@ -217,6 +218,11 @@ class _HomePageState extends ConsumerState<HomePage> {
               FirebaseWidget(
                 onAuthenticated: Row(
                   children: [
+                    IconButton(
+                      iconSize: coffeeIconSize,
+                      onPressed: () => context.goNamed("Coffee Manual"),
+                      icon: const Icon(Icons.coffee)
+                    ),
                     IconButton(
                       iconSize: notificationIconSize,
                       onPressed: () => context.goNamed("Notifications"),
