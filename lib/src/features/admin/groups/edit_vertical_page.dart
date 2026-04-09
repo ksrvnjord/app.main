@@ -241,11 +241,7 @@ class EditVerticalPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.pushNamed(
           "Ploegen",
-          extra: ploegenVal.when(
-            data: (ploegen) => addPloegToVerticaalCallBack(ref, context),
-            loading: () => null,
-            error: (error, stack) => null,
-          ),
+          extra: addPloegToVerticaalCallBack(ref, context),
         ),
         icon: const Icon(Icons.add),
         label: const Text('Voeg ploeg toe'),

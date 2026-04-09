@@ -13,11 +13,11 @@ class PloegChoicePage extends ConsumerWidget {
       {super.key,
       required this.ploegYear,
       required this.ploegType,
-      this.onTap});
+      required this.onTap});
 
   final int ploegYear;
   final String ploegType;
-  final void Function(int ploegId)? onTap;
+  final Future<void> Function(int ploegId)? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,6 +46,7 @@ class PloegChoicePage extends ConsumerWidget {
                     'year': ploegYear.toString(),
                     'type': type,
                   },
+                  extra: onTap,
                 ),
                 selected: type == ploegType,
               ),
@@ -58,6 +59,7 @@ class PloegChoicePage extends ConsumerWidget {
                     'year': selectedYear.toString(),
                     'type': ploegType,
                   },
+                  extra: onTap,
                 ),
                 selectedYear: ploegYear,
               ),
@@ -84,16 +86,29 @@ class PloegChoicePage extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   // ignore: prefer-extracting-callbacks
-                  onTap: () => onTap != null
-                      ? onTap!(int.parse(ploeg.id.toString()))
-                      : context.pushNamed(
-                          "Ploeg",
-                          pathParameters: {"name": ploeg.name},
-                          queryParameters: {
-                            "year": ploegYear.toString(),
-                            "type": ploegType,
-                          },
-                        ),
+                  onTap: () {
+                    if (onTap != null) {
+                      debugPrint(
+                        '[PloegChoicePage] add callback invoked for ploegId=${ploeg.id}, name=${ploeg.name}',
+                      );
+                      onTap!(int.parse(ploeg.id.toString()));
+
+                      return;
+                    }
+
+                    debugPrint(
+                      '[PloegChoicePage] navigating to Ploeg page for ploegId=${ploeg.id}, name=${ploeg.name}',
+                    );
+                    // ignore: avoid-ignoring-return-values
+                    context.pushNamed(
+                      "Ploeg",
+                      pathParameters: {"name": ploeg.name},
+                      queryParameters: {
+                        "year": ploegYear.toString(),
+                        "type": ploegType,
+                      },
+                    );
+                  },
                 ),
               ),
             ].toColumn(),

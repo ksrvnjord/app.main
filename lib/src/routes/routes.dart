@@ -685,8 +685,8 @@ abstract final // ignore: prefer-single-declaration-per-file
               ploegType: state.uri.queryParameters['type'] == null
                   ? "Competitieploeg"
                   : state.uri.queryParameters['type']!,
-              onTap: state.extra is void Function(int)?
-                  ? state.extra as void Function(int)?
+              onTap: state.extra is Future<void> Function(int)
+                  ? state.extra as Future<void> Function(int)
                   : null,
             ),
             name: "Ploegen",
