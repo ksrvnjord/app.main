@@ -219,10 +219,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 onAuthenticated: Row(
                   children: [
                     IconButton(
-                      iconSize: coffeeIconSize,
-                      onPressed: () => context.goNamed("Coffee Manual"),
-                      icon: const Icon(Icons.coffee)
-                    ),
+                        iconSize: coffeeIconSize,
+                        onPressed: () => context.goNamed("Coffee Manual"),
+                        icon: const Icon(Icons.coffee)),
                     IconButton(
                       iconSize: notificationIconSize,
                       onPressed: () => context.goNamed("Notifications"),

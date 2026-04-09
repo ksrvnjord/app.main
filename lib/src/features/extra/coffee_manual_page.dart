@@ -6,13 +6,10 @@ enum CoffeeOption {
 }
 
 class CoffeeManualPage extends StatefulWidget {
-  const CoffeeManualPage({
-    super.key
-  });
+  const CoffeeManualPage({super.key});
 
   @override
   State<CoffeeManualPage> createState() => _CoffeeManualPageState();
-
 }
 
 class _CoffeeManualPageState extends State<CoffeeManualPage> {
@@ -54,14 +51,12 @@ class _CoffeeManualPageState extends State<CoffeeManualPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Welke koffiepot is nu beschikbaar?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize,
-                )
-              ),
+              Text('Welke koffiepot is nu beschikbaar?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: fontSize,
+                  )),
               const SizedBox(height: 20),
               Wrap(
                 alignment: WrapAlignment.center,
@@ -98,17 +93,18 @@ class _CoffeeManualPageState extends State<CoffeeManualPage> {
                         child: Text(
                           'Belangrijk: Haal nooit een kopje koffie uit de desbetreffende houder terwijl het koffieapparaat nog loopt, dit heeft invloed op de gehele pot!',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                         ),
                       );
-                    }, 
-                    separatorBuilder: (_, __) => const SizedBox(height: 10), 
+                    },
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
                     itemCount: steps.length + 1,
                   ),
-                ),          
+                ),
               ]
             ],
           ),
@@ -149,13 +145,16 @@ class _CoffeeManualPageState extends State<CoffeeManualPage> {
                 duration: const Duration(milliseconds: 170),
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
-                  color: isSelected ? colors.primary.withOpacity(0.14) : Colors.transparent,
+                  color: isSelected
+                      ? colors.primary.withOpacity(0.14)
+                      : Colors.transparent,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
                   size: isSelected ? 36 : 33,
-                  color: isSelected ? colors.onPrimaryContainer : colors.primary,
+                  color:
+                      isSelected ? colors.onPrimaryContainer : colors.primary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -163,10 +162,13 @@ class _CoffeeManualPageState extends State<CoffeeManualPage> {
                 label,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                  color: isSelected ? colors.onPrimaryContainer : colors.onSurface,
-                  letterSpacing: 0.2,
-                ),
+                      fontWeight:
+                          isSelected ? FontWeight.w700 : FontWeight.w600,
+                      color: isSelected
+                          ? colors.onPrimaryContainer
+                          : colors.onSurface,
+                      letterSpacing: 0.2,
+                    ),
               ),
             ],
           ),
