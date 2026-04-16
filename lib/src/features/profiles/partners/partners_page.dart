@@ -5,7 +5,8 @@ import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_provi
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-final selectedPartnerTypeProvider = StateProvider<String>((ref) => 'Vaste partners');
+final selectedPartnerTypeProvider =
+    StateProvider<String>((ref) => 'Vaste partners');
 
 class PartnersPage extends ConsumerWidget {
   const PartnersPage({super.key});
@@ -27,36 +28,47 @@ class PartnersPage extends ConsumerWidget {
           final docs = snapshot.docs;
           final partnerList = [for (final partners in docs) partners];
 
-          return ListView(
-            children: [Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [                      
-                      for (final type in ['Vaste partners', 'Leedendeals'])
-                        // for (final partner in docs)
-                          ChoiceChip(label:Text(type),
-                          onSelected: (selected) {if (!selected) return;
-                          ref.read(selectedPartnerTypeProvider.notifier).state = type; context.goNamed(
-                            'Partners',
-                            queryParameters: {
-                            'type': type,
-                              },
-                            );},
-                            selected: type == selectedPartnerType, //partner.data().type,
-                          ),],),
-                    for (final partner in partnerList.where((p) => p.data().type == selectedPartnerType))
-                      ListTile(
-                            title: Text(partner.data().name ?? 'Onbekende partner'),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () => context.goNamed(
-                              'Partner Details',
-                              pathParameters: {"partnerId": partner.id},
-                            ), shape: Border(bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: 0.2,
-                            )),
-                          ),]                
-          );
+          return ListView(children: [
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final type in ['Vaste partners', 'Leedendeals'])
+                  // for (final partner in docs)
+                  ChoiceChip(
+                    label: Text(type),
+                    onSelected: (selected) {
+                      if (!selected) return;
+                      ref.read(selectedPartnerTypeProvider.notifier).state =
+                          type;
+                      context.goNamed(
+                        'Partners',
+                        queryParameters: {
+                          'type': type,
+                        },
+                      );
+                    },
+                    selected:
+                        type == selectedPartnerType, //partner.data().type,
+                  ),
+              ],
+            ),
+            for (final partner in partnerList
+                .where((p) => p.data().type == selectedPartnerType))
+              ListTile(
+                title: Text(partner.data().name),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.goNamed(
+                  'Partner Details',
+                  pathParameters: {"partnerId": partner.id},
+                ),
+                shape: Border(
+                    bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: 0.2,
+                )),
+              ),
+          ]);
         },
         error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
         loading: () => const CircularProgressIndicator.adaptive().center(),
