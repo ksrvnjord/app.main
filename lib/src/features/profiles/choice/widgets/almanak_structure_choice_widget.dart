@@ -11,11 +11,13 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
     required this.pushRoute,
     required this.title,
     required this.imagePath,
+    this.fit = BoxFit.cover,
   });
 
   final String title;
   final String pushRoute;
   final String imagePath;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +51,7 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
                     : AssetImage(imagePath),
                 width: double.infinity,
                 height: imageHeight,
-                fit: BoxFit.cover,
+                fit: fit,
                 isAntiAlias: true,
               ),
             ),
