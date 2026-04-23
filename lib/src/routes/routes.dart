@@ -266,7 +266,7 @@ abstract final // ignore: prefer-single-declaration-per-file
           minAppVersion:
               RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
-          durationUntilAlertAgain: Duration(days: 1),
+          durationUntilAlertAgain: Duration(minutes: 10),
         ),
         showIgnore: false,
         showLater: true,
