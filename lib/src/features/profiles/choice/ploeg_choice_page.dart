@@ -86,12 +86,12 @@ class PloegChoicePage extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   // ignore: prefer-extracting-callbacks
-                  onTap: () {
+                  onTap: () async {
                     if (onTap != null) {
                       debugPrint(
                         '[PloegChoicePage] add callback invoked for ploegId=${ploeg.id}, name=${ploeg.name}',
                       );
-                      onTap!(int.parse(ploeg.id.toString()));
+                      await onTap!(int.parse(ploeg.id.toString()));
 
                       return;
                     }

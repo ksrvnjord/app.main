@@ -12,28 +12,3 @@ Future<List<DjangoGroup>> getPloegenForVertical(
       .map((e) => DjangoGroup.fromJson(e))
       .toList();
 }
-
-Future<DjangoGroup> addPloegToVertical(
-    {required int verticaal_id,
-    required int ploeg_id,
-    required Dio dio}) async {
-  final res = await dio.get(
-    "/api/v2/groups/$ploeg_id",
-    data: {"verticaal_id": verticaal_id},
-  );
-  return DjangoGroup.fromJson(res.data);
-}
-
-Future<DjangoGroup> removePloegFromVertical({
-  required int verticaal_id,
-  required int ploeg_id,
-  required Dio dio,
-}) async {
-  final res = await dio.get(
-    "api/v2/groups/$ploeg_id",
-    data: {
-      "verticaal_id": null,
-    },
-  );
-  return DjangoGroup.fromJson(res.data);
-}

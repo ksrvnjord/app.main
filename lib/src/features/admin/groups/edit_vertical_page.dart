@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -23,8 +24,8 @@ class EditVerticalPage extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.patch(
-        "/api/v2/groups/$ploegId/",
-        data: {"verticaal": null},
+            "/api/v2/groups/$ploegId/",
+            data: {"verticaal_id": null},
       );
     } catch (e) {
       if (ctx.mounted) {
@@ -56,13 +57,16 @@ class EditVerticalPage extends ConsumerWidget {
     BuildContext ctx,
   ) {
     return (int ploegId) async {
+      debugPrint(
+        '[EditVerticalPage] addPloegToVerticaalCallBack start: verticaalId=$verticaalId, ploegId=$ploegId',
+      );
       final dio = ref.read(dioProvider);
 
       try {
         // ignore: avoid-ignoring-return-values
         await dio.patch(
           "/api/v2/groups/$ploegId/",
-          data: {"verticaal": verticaalId},
+          data: {"verticaal_id": verticaalId},
         );
       } catch (e) {
         if (!ctx.mounted) return;
@@ -241,6 +245,9 @@ class EditVerticalPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.pushNamed(
           "Ploegen",
+          queryParameters: {
+            'year': getNjordYear().toString(),
+          },
           extra: addPloegToVerticaalCallBack(ref, context),
         ),
         icon: const Icon(Icons.add),
