@@ -263,10 +263,10 @@ abstract final // ignore: prefer-single-declaration-per-file
           minAppVersion:
               RemoteConfigImplementation().getRequiredMinimumVersion(),
           messages: DutchUpgradeMessages(),
-          durationUntilAlertAgain: Duration(minutes: 4),
+          durationUntilAlertAgain: Duration(minutes: 10),
         ),
         showIgnore: false,
-        showLater: false,
+        showLater: true,
         child: const HomePage(),
       ),
       routes: [
