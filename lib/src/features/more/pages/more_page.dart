@@ -71,6 +71,18 @@ class MorePage extends ConsumerWidget {
                   ),
                   const Divider(height: 0, thickness: dividerThickness),
                   const MoreLinkTile(
+                    label: 'Lidmaatschap opzeggen',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLSc156xC-X7msJ36QkzK45Z4JKQ0y5R0PA2eYdoDAb2CP62zqA/viewform?usp=header',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Geïnteresseerd lid worden',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLSfNoMa1cstIHQgTbgmh5J8vRkB7wz27O0jGdIWVZob9VUE8aw/viewform?usp=header',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
                     label: 'Declareer Kosten aan de Quaestor',
                     url:
                         'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
