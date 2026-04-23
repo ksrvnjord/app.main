@@ -59,24 +59,23 @@ class CharityPage extends ConsumerWidget {
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const Text(
-              '"Door stichting anne-bo kan ik genieten van het student zijn en hoef ik me geen zorgen te maken of ik het uberhaupt wel kan betalen om student te zijn." - Abir',
-              style: TextStyle(
+                '"Door stichting anne-bo kan ik genieten van het student zijn en hoef ik me geen zorgen te maken of ik het uberhaupt wel kan betalen om student te zijn." - Abir',
+                style: TextStyle(
                     fontSize: 18,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
-              textAlign: TextAlign.center,
-                    ),
-                    Image.asset(
-                         'assets/images/stichting_anne_bo_wit.jpeg',
-                          width: imageWidth,
-                          height: imageHeight,
-                    ),
+                textAlign: TextAlign.center,
+              ),
+              Image.asset(
+                'assets/images/stichting_anne_bo_wit.jpeg',
+                width: imageWidth,
+                height: imageHeight,
+              ),
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionText(
-                text:
-                    'Wil je zelf een bijdrage leveren aan stichting Anne-Bo?'
+                text: 'Wil je zelf een bijdrage leveren aan stichting Anne-Bo?'
                     ' Doneer dan via de onderstaande link!',
                 fontSize: 16,
               ),
