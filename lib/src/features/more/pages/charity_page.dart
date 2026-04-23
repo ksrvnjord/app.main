@@ -68,7 +68,7 @@ class CharityPage extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               Image.asset(
-                'assets/images/stichting_anne_bo_wit.jpeg',
+                'assets/images/anne_bo_wit.jpeg',
                 width: imageWidth,
                 height: imageHeight,
               ),
