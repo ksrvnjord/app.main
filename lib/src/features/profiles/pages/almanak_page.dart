@@ -76,8 +76,8 @@ class AlmanakPage extends ConsumerWidget {
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "Charity",
                   title: "",
-                  imagePath: 'assets/images/stichting_anne_bo_wit.jpeg',
-                  fit: BoxFit.contain,
+                  imagePath: 'assets/images/anne_bo_wit.jpeg',
+                  fit: BoxFit.fitWidth,
                 ).expanded(),
               ].toRow(
                 separator: const SizedBox(
