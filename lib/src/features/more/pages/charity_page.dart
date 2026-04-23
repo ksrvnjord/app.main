@@ -21,7 +21,7 @@ class CharityPage extends ConsumerWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('De Dirk Kuyt Foundation'),
+            const Text('Stichting Anne-Bo'),
             const SizedBox(width: 30),
           ],
         ),
@@ -34,38 +34,57 @@ class CharityPage extends ConsumerWidget {
             children: [
               const CharitySectionText(
                 text:
-                    ' Dit jaar heeft de goededoelencommissie de Dirk Kuyt Foundation gekozen om te steunen.'
-                    ' De Dirk Kuyt Foundation is in 2005 opgericht door Dirk'
-                    ' Kuyt met als doel om mensen met een verstandelijke of'
-                    ' lichamelijke beperking net zoveel plezier aan sport te'
-                    ' laten beleven als hij zelf altijd heeft ervaren.'
-                    ' Zowel fysiek als mentaal en sociaal draagt sport immers'
-                    ' bij aan het welzijn van mensen. De Dirk Kuyt Foundation'
-                    ' neemt drempels (zowel letterlijk als figuurlijk) weg voor'
-                    ' mensen met een beperking, zodat zij de kans hebben hun'
-                    ' invulling te geven aan sporten. Sporten voor prestaties,'
-                    ' meedoen met sport- of bewegingsactiviteiten of gewoon'
-                    ' sportplezier beleven. Niet alleen vanwege de fysieke'
-                    ' uitdaging, maar ook vanwege het sociale aspect. Er mag geen'
-                    ' belemmering zijn om te kunnen sporten. Dirk Kuyt: "Als ik'
-                    ' mensen met een beperking zie genieten van hun sport en het'
-                    ' enthousiasme waarmee ze dat doen, dan geniet ik ook en ben'
-                    ' ik trots dat we dit mede mogelijk hebben gemaakt!”',
+                    'Dit jaar heeft de goededoelencommissie Stichting Anne-Bo ' // Geen komma!
+                    'gekozen om te steunen. Stichting Anne-Bo is opgericht om '
+                    'ambitieuze jonge vrouwen de kans te geven om hoger onderwijs '
+                    'te volgen, ook wanneer hun achtergrond of financiële '
+                    'situatie dat niet vanzelfsprekend maakt. De stichting '
+                    'gelooft dat talent en doorzettingsvermogen zwaarder wegen '
+                    'dan afkomst of netwerk, en zet zich actief in om barrières '
+                    'te doorbreken en gelijke kansen te creëren. '
+                    '\n\n' // witruimte
+                    'Studeren is immers meer dan het behalen van een diploma. '
+                    'Het draagt bij aan zelfvertrouwen, persoonlijke groei, '
+                    'sociale verbinding en economische zelfstandigheid. Daarom '
+                    'biedt Stichting Anne-Bo niet alleen financiële ondersteuning, '
+                    'maar ook persoonlijke begeleiding. Elke student wordt '
+                    'gekoppeld aan een coach die helpt bij studiekeuzes, het '
+                    'vinden van een stage en het opbouwen van een professioneel '
+                    'netwerk. Op deze manier levert Stichting Anne-Bo een '
+                    'waardevolle bijdrage aan talentontwikkeling en '
+                    'maatschappelijke vooruitgang, iets wat tijdens het 11e '
+                    'vrouwenlustrum zeker niet onopgemerkt mag blijven!',
                 fontSize: 16,
               ),
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
+              const Text(
+              '"Door stichting anne-bo kan ik genieten van het student zijn en hoef ik me geen zorgen te maken of ik het uberhaupt wel kan betalen om student te zijn." - Abir',
+              style: TextStyle(
+                    fontSize: 18,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              textAlign: TextAlign.center,
+                    ),
+                    Image.asset(
+                         'assets/images/stichting_anne_bo_wit.jpeg',
+                          width: imageWidth,
+                          height: imageHeight,
+                    ),
+              const Divider(),
+              const SizedBox(height: sizedBoxHeight),
               const CharitySectionText(
                 text:
-                    'Wil je zelf een bijdrage leveren aan de Dirk Kuyt Foundation?'
-                    ' Doneer dan via onderstaande link!',
+                    'Wil je zelf een bijdrage leveren aan stichting Anne-Bo?'
+                    ' Doneer dan via de onderstaande link!',
                 fontSize: 16,
               ),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     final url = Uri.parse(
-                      'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=bfWgihlRS8idnGsHDr7gWw',
+                      'https://betaalverzoek.rabobank.nl/betaalverzoek/?id=dg9hGutxQB-e7zDE6ZcIow',
                     );
                     launchUrl(url);
                   },
@@ -76,13 +95,13 @@ class CharityPage extends ConsumerWidget {
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionTitle(text: 'Meer weten?', fontSize: 18),
               const CharitySectionText(
-                text: 'Check de website van de Dirk Kuyt Foundation:',
+                text: 'Check de website van stichting Anne-Bo:',
                 fontSize: 16,
               ),
               Center(
                 child: InkWell(
                   child: const Text(
-                    'https://dirkkuytfoundation.nl/',
+                    'stichtinganne-bo.nl',
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -90,26 +109,10 @@ class CharityPage extends ConsumerWidget {
                   ),
                   // ignore: prefer-extracting-callbacks
                   onTap: () {
-                    final url = Uri.parse('https://dirkkuytfoundation.nl/');
+                    final url = Uri.parse('https://stichtinganne-bo.nl/');
                     unawaited(launchUrl(url));
                   },
                 ),
-              ),
-              const Divider(),
-              const SizedBox(height: sizedBoxHeight),
-              const Text(
-                '"Iedere stap die we samen zetten, maakt een wereld van verschil!" - Dirk Kuyt',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              Image.asset(
-                'assets/images/dirk_kuyt_foundation.png',
-                width: imageWidth,
-                height: imageHeight,
               ),
             ],
           ),
