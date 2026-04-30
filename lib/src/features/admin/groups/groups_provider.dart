@@ -8,7 +8,7 @@ final groupsProvider = FutureProvider.autoDispose
     .family<List<DjangoGroup>, Tuple2<String?, int>>((ref, typeAndYear) async {
   final dio = ref.watch(dioProvider);
   final res = await dio.get(
-    "/api/users/groups/",
+    "/api/v2/groups/",
     queryParameters: {
       "type": typeAndYear.item1?.toLowerCase(),
       "year": typeAndYear.item2,
@@ -16,7 +16,7 @@ final groupsProvider = FutureProvider.autoDispose
     },
   );
 
-  return (res.data['results'] as List).map<DjangoGroup>((e) {
+  return (res.data['items'] as List).map<DjangoGroup>((e) {
     return DjangoGroup.fromJson(e);
   }).toList();
 });

@@ -8,9 +8,10 @@ class GroupDjangoUser {
   final String firstName;
   @JsonKey(name: "last_name")
   final String lastName;
-  final int identifier;
-  // ignore: prefer-correct-identifier-length
-  final int id;
+  final String infix;
+
+  /// Lidnummer
+  final int iid;
   final List<String> permissions;
 
   // ignore: sort_constructors_first
@@ -21,8 +22,8 @@ class GroupDjangoUser {
   GroupDjangoUser({
     required this.firstName,
     required this.lastName,
-    required this.identifier,
-    required this.id,
+    this.infix = "",
+    required this.iid,
     this.permissions = const [],
   });
 }

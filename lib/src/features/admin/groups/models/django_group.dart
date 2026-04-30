@@ -16,10 +16,11 @@ class DjangoGroup {
   @JsonKey(includeFromJson: true, includeToJson: false)
   final List<GroupDjangoRelation>? users;
 
-  /// Gebruik [name] voor UI, ander [officialName]
+  /// Gebruik [name] enkel voor UI, anders [officialName]
   final String name;
 
   /// Gebruik [officialName] voor vergelijken van strings
+  @JsonKey(name: "official_name")
   final String officialName;
 
   @JsonKey(

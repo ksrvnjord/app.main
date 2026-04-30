@@ -39,6 +39,7 @@ const List<String> commissieList = [
   'Meerderejaarscommissie',
   'Merchandisecommissie',
   'Njord Najaarscommissie',
+  'NSRF-commissie',
   'Pascommissie',
   'Petit Comité',
   'Promotiecommissie',
@@ -51,6 +52,7 @@ const List<String> commissieList = [
   'TOP-commissie',
   'Twaarzencommissie',
   'Voorjaarsafroeicommissie',
+  'Vrouwencomité',
   'Zwanehalscommissie',
 ];
 
@@ -289,7 +291,8 @@ class ManageGroupsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupsVal = ref.watch(groupsProvider(Tuple2(type, year)));
+    final selectedType = (type == null || type!.isEmpty) ? "Commissie" : type!;
+    final groupsVal = ref.watch(groupsProvider(Tuple2(selectedType, year)));
 
     const double dropdownMaxHeight = 240;
 
@@ -310,10 +313,10 @@ class ManageGroupsPage extends ConsumerWidget {
                   'Manage Groups',
                   queryParameters: {
                     'year': year.toString(),
-                    'type': type == this.type ? null : type,
+                    'type': type,
                   },
                 ),
-                selected: type == this.type,
+                selected: type == selectedType,
               ),
             DropdownButton<int>(
               items: yearsFrom1874
@@ -326,7 +329,7 @@ class ManageGroupsPage extends ConsumerWidget {
               onChanged: (value) =>
                   context.goNamed('Manage Groups', queryParameters: {
                 'year': value.toString(),
-                'type': type,
+                'type': selectedType,
               }),
               menuMaxHeight: dropdownMaxHeight,
             ),
@@ -373,9 +376,7 @@ class ManageGroupsPage extends ConsumerWidget {
           FloatingActionButton.extended(
         // ignore: prefer-extracting-callbacks
         onPressed: () {
-          ref
-              .read(djangoGroupNotifierProvider.notifier)
-              .setType(type ?? "Competitieploeg");
+          ref.read(djangoGroupNotifierProvider.notifier).setType(selectedType);
           ref.read(djangoGroupNotifierProvider.notifier).setYear(year);
           // ignore: avoid-ignoring-return-values
           showModalBottomSheet(

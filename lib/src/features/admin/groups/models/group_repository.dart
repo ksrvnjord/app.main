@@ -8,21 +8,30 @@ class GroupRepository {
     GroupType? type,
     int? year,
     required Dio dio,
-    String? ordering,
   }) async {
-    final typeValue = type?.value;
+    Response<dynamic> res;
+    if (type == null) {
+      res = await dio.get(
+        "/api/v2/groups/",
+        queryParameters: {
+          "search": search,
+          "year": year,
+        },
+      );
+    } else {
+      final typeValue = type.value;
 
-    final res = await dio.get(
-      "/api/users/groups/", //TODO: Dit moet een api v2 zijn ?
-      queryParameters: {
-        "ordering": ordering,
-        "search": search,
-        "type": typeValue,
-        "year": year,
-      },
-    );
+      res = await dio.get(
+        "/api/v2/groups/",
+        queryParameters: {
+          "search": search,
+          "type": typeValue,
+          "year": year,
+        },
+      );
+    }
 
-    return (res.data['results'] as List).map<DjangoGroup>((e) {
+    return (res.data['items'] as List).map<DjangoGroup>((e) {
       return DjangoGroup.fromJson(e);
     }).toList();
   }

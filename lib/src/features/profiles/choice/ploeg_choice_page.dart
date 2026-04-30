@@ -50,6 +50,7 @@ class PloegChoicePage extends ConsumerWidget {
               ),
             [
               const Text("Kies een jaar:"),
+              const SizedBox(width: wrapSpacing),
               YearSelectorDropdown(
                 onChanged: (selectedYear) => context.goNamed(
                   "Ploegen",
@@ -60,7 +61,10 @@ class PloegChoicePage extends ConsumerWidget {
                 ),
                 selectedYear: ploegYear,
               ),
-            ].toRow(),
+            ].toRow(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+            ),
           ]
               .toWrap(
                 spacing: wrapSpacing,

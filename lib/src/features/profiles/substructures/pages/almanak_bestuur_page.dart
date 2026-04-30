@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_users.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakBestuurPage extends ConsumerWidget {
   const AlmanakBestuurPage({super.key, required this.year});
@@ -17,7 +19,14 @@ class AlmanakBestuurPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bestuurVal = ref.watch(bestuurUsersProvider(year));
+    final groupsAsync = ref.watch(groupsProvider(Tuple2("bestuur", year)));
+    final bestuursLeedenVal = groupsAsync.when(
+      data: (groups) {
+        return ref.watch(groupLeedenProvider(groups.firstOrNull?.id ?? 0));
+      },
+      loading: () => const AsyncValue.loading(),
+      error: (e, st) => AsyncValue.error(e, st),
+    );
 
     const yearSelectorPadding = 8.0;
 
@@ -57,11 +66,9 @@ class AlmanakBestuurPage extends ConsumerWidget {
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
                 right: yearSelectorPadding,
               ),
-          bestuurVal.when(
-            data: (bestuur) {
-              final users = bestuur?.users;
-
-              return bestuur == null || users == null
+          bestuursLeedenVal.when(
+            data: (users) {
+              return users.isEmpty
                   ? const Text(
                       "Er zijn geen bestuursleden gevonden voor dit jaar.",
                     ).center()
@@ -95,7 +102,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
       firstName: groupRelation.user.firstName,
       lastName: groupRelation.user.lastName,
       subtitle: groupRelation.role,
-      lidnummer: groupRelation.user.identifier.toString(),
+      lidnummer: groupRelation.user.iid.toString(),
     );
   }
 

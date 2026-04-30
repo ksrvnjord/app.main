@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_members.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
@@ -24,7 +25,17 @@ class AlmanakPloegPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(ploegUsersProvider(Tuple2(ploegName, year)));
+    final groupIdAsync = ref.watch(groupIDProvider(Tuple2(ploegName, year)));
+    final users = groupIdAsync.when(
+      data: (groupId) {
+        if (groupId == null) {
+          return const AsyncValue.data(<GroupDjangoRelation>[]);
+        }
+        return ref.watch(groupLeedenProvider(groupId));
+      },
+      loading: () => const AsyncValue.loading(),
+      error: (e, st) => AsyncValue.error(e, st),
+    );
 
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
@@ -113,7 +124,7 @@ class AlmanakPloegPage extends ConsumerWidget {
       firstName: user.firstName,
       lastName: user.lastName,
       subtitle: relation.role,
-      lidnummer: user.identifier.toString(),
+      lidnummer: user.iid.toString(),
     );
   }
 

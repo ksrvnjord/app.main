@@ -185,7 +185,8 @@ class EditGroupPage extends ConsumerWidget {
                       }
                       try {
                         // ignore: avoid-ignoring-return-values
-                        await dio.delete("/api/users/groups/$groupId/");
+                        await dio.delete(
+                            "/api/users/groups/$groupId/"); // TODO: Make v2
                       } on DioException catch (e) {
                         if (!context.mounted) return;
 

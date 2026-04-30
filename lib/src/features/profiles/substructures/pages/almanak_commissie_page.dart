@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/commissie_members.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_members.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
@@ -48,10 +48,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     );
     final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
 
-    final commissieLeeden = ref.watch(
-      commissieLeedenProvider(commissieAndYear),
-    );
-
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -59,6 +55,10 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     const double descriptionHPadding = pageHPadding + 4;
     return groupIdAsync.when(
       data: (groupId) {
+        final commissieLeeden = ref.watch(
+          groupLeedenProvider(groupId ?? 0),
+        );
+
         final commissieIdAndName =
             Tuple3(widget.name, widget.year, groupId ?? 0);
         return Scaffold(
@@ -95,7 +95,8 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                     onChanged: (y) => context.goNamed(
                       "Commissie",
                       pathParameters: {
-                        "name": widget.name,
+                        "name": widget
+                            .name, //Hi Vinnie, Dit moet dus via de official_name gaan
                       },
                       queryParameters: {
                         "year": y.toString(),
@@ -121,6 +122,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           ),
           floatingActionButton: currentUserVal.when(
             data: (currentUser) {
+              // TODO: Why use this below a second time??
               final groupIdAsync = ref.watch(groupIDProvider(commissieAndYear));
               return groupIdAsync.when(
                 data: (groupId) {
@@ -194,6 +196,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                           //     icon: const Icon(Icons.upload),
                           //     label: Text("upload aspi profile pictures"),
                           //   ),
+                          //
+                          //            END COMMENT
+                          //
                         ],
                       );
                     },
@@ -216,8 +221,10 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           ),
         );
       },
-      loading: () => const SizedBox.shrink(),
-      error: (e, s) => const SizedBox.shrink(),
+      loading: () => const Center(
+        child: CircularProgressIndicator.adaptive(),
+      ),
+      error: (e, s) => ErrorCardWidget(errorMessage: e.toString()),
     );
   }
 
@@ -242,8 +249,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     return AlmanakUserTile(
       firstName: user.firstName,
       lastName: user.lastName,
+      infix: user.infix,
       subtitle: relation.role,
-      lidnummer: user.identifier.toString(),
+      lidnummer: user.iid.toString(),
     );
   }
 
