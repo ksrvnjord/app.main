@@ -73,6 +73,7 @@ class VCPPage extends ConsumerWidget {
               ),
             ),
             child: ExpansionTile(
+            textColor: Theme.of(context).colorScheme.primary,
               leading: Icon(
                 Icons.info_outline,
                 color: Theme.of(context).colorScheme.primary,
@@ -111,6 +112,7 @@ class VCPPage extends ConsumerWidget {
         ),
       ),
       child: ExpansionTile(
+        textColor: Theme.of(context).colorScheme.primary,
         title: Row(
           children: [
             Expanded(
@@ -307,6 +309,7 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ),
                               child: ExpansionTile(
+                                textColor: Theme.of(context).colorScheme.primary,
                                 title: Text(entry.key),
                                 children: [
                                   // FIXME: String matching #2 :((
