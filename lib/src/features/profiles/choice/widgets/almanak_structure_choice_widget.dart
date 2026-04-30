@@ -10,12 +10,15 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
     super.key,
     required this.pushRoute,
     required this.title,
-    required this.imagePath,
-  });
+    this.imagePath,
+    this.imageWidget,
+  }) : assert(imagePath != null || imageWidget != null,
+            'Either imagePath or imageWidget must be provided');
 
   final String title;
   final String pushRoute;
-  final String imagePath;
+  final String? imagePath;
+  final Widget? imageWidget;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,22 +39,25 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
-              child: Image(
-                image: pushRoute == "Bestuur" // Grab bestuurfoto from the cloud
-                    ? bestuurPictureVal.when(
-                        data: (data) => data,
-                        error: (err, __) {
-                          debugPrint(err.toString());
-                          return AssetImage(imagePath);
-                        },
-                        loading: () => AssetImage(imagePath),
-                      )
-                    : AssetImage(imagePath),
-                width: double.infinity,
-                height: imageHeight,
-                fit: BoxFit.cover,
-                isAntiAlias: true,
-              ),
+              child: imageWidget != null
+                  ? SizedBox(height: imageHeight, child: imageWidget)
+                  : Image(
+                      image: pushRoute ==
+                              "Bestuur" // Grab bestuurfoto from the cloud
+                          ? bestuurPictureVal.when(
+                              data: (data) => data,
+                              error: (err, __) {
+                                debugPrint(err.toString());
+                                return AssetImage(imagePath!);
+                              },
+                              loading: () => AssetImage(imagePath!),
+                            )
+                          : AssetImage(imagePath!),
+                      width: double.infinity,
+                      height: imageHeight,
+                      fit: BoxFit.cover,
+                      isAntiAlias: true,
+                    ),
             ),
             Positioned.fill(
               child: DecoratedBox(

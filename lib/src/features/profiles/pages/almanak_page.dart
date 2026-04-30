@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -36,10 +38,12 @@ class AlmanakPage extends ConsumerWidget {
           FirebaseWidget(
             onAuthenticated: [
               [
-                const AlmanakStructureChoiceWidget(
+                AlmanakStructureChoiceWidget(
                   pushRoute: "Commissies",
                   title: "Commissies",
                   imagePath: 'assets/images/commissies.jpeg',
+                  imageWidget:
+                      RandomCommissieImage(year: getNjordYear().toString()),
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "Ploegen",
