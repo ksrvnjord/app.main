@@ -14,11 +14,11 @@ class LikedByPage extends ConsumerWidget {
     final likedByProvider = ref.watch(likedByUsersProvider(snapshotId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Deze post is geliket door")),
+      appBar: AppBar(title: const Text("Deze post is gezwaand door")),
       body: likedByProvider.when(
         data: (likedByUsers) {
           return likedByUsers.isEmpty
-              ? const Center(child: Text("Nog niemand heeft deze post geliket"))
+              ? const Center(child: Text("Nog niemand heeft deze post gezwaand"))
               : ListView(
                   children: likedByUsers
                       .map((user) => AlmanakUserTile(
