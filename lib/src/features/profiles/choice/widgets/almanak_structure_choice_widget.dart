@@ -58,6 +58,22 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
                       fit: BoxFit.cover,
                       isAntiAlias: true,
                     ),
+              child: Image(
+                image: pushRoute == "Bestuur" // Grab bestuurfoto from the cloud
+                    ? bestuurPictureVal.when(
+                        data: (data) => data,
+                        error: (err, __) {
+                          debugPrint(err.toString());
+                          return AssetImage(imagePath);
+                        },
+                        loading: () => AssetImage(imagePath),
+                      )
+                    : AssetImage(imagePath),
+                width: double.infinity,
+                height: imageHeight,
+                fit: fit,
+                isAntiAlias: true,
+              ),
             ),
             Positioned.fill(
               child: DecoratedBox(
