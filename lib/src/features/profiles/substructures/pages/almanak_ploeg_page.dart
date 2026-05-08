@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/group_members.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_utils.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';

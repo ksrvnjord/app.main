@@ -19,3 +19,16 @@ final groupLeedenProvider =
     yield group.users ?? [];
   },
 );
+
+final groupNameProvider = StreamProvider.autoDispose.family<String, int>(
+  (ref, groupId) async* {
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.get("/api/v2/groups/$groupId");
+
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final group = DjangoGroup.fromJson(data);
+
+    yield group.name;
+  },
+);

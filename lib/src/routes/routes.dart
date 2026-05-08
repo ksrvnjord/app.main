@@ -629,10 +629,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  name: state.pathParameters['name']!,
+                  officialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
                       : getNjordYear(),
+                  name: state.extra as String?,
                 ),
                 name: "Commissie",
               ),
@@ -653,21 +654,19 @@ abstract final // ignore: prefer-single-declaration-per-file
                                     : 0,
                           ),
                           name: "Commissie -> Edit",
-                        ),
-                    routes: [
-                      _route(
-                          path: "download_profile_pictures",
-                          name: "download profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: DownloadProfilePicturesPage(),
-                              name: "download profile pictures")),
-                      _route(
-                          path: "upload_aspi_profile_pictures",
-                          name: "upload aspi profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: UploadAspiProfilePictures(),
-                              name: "upload aspi profile pictures"))
-                    ]),
+                        )),
+                _route(
+                    path: "download_profile_pictures",
+                    name: "download profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: DownloadProfilePicturesPage(),
+                        name: "download profile pictures")),
+                _route(
+                    path: "upload_aspi_profile_pictures",
+                    name: "upload aspi profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: UploadAspiProfilePictures(),
+                        name: "upload aspi profile pictures")),
               ],
             ),
           ],

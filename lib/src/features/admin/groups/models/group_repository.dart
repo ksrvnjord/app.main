@@ -25,7 +25,7 @@ class GroupRepository {
         "/api/v2/groups/",
         queryParameters: {
           "search": search,
-          "type": typeValue,
+          "type": typeValue.toLowerCase(),
           "year": year,
         },
       );

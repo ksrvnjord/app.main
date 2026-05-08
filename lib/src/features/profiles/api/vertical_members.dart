@@ -11,7 +11,7 @@ final verticalLeedenProvider =
   (ref, name) async* {
     final dio = ref.watch(dioProvider);
 
-    final res = await dio.get("/api/users/groups/", queryParameters: {
+    final res = await dio.get("/api/v2/groups/", queryParameters: {
       "search": name,
     });
 

@@ -35,11 +35,12 @@ const List<String> commissieList = [
   'Kalendercommissie',
   'Kookcluster',
   'Kookcommissie',
+  'Magazinecommissie',
   'Materieelgroep',
   'Meerderejaarscommissie',
   'Merchandisecommissie',
   'Njord Najaarscommissie',
-  'NSRF-commissie',
+  'NSRF Slotwedstrijden',
   'Pascommissie',
   'Petit Comité',
   'Promotiecommissie',
@@ -49,18 +50,13 @@ const List<String> commissieList = [
   'Skireiscommissie',
   'Talentwervingscommissie',
   'Tapcommissie',
+  'Tentroeicommissie',
   'TOP-commissie',
   'Twaarzencommissie',
   'Voorjaarsafroeicommissie',
   'Vrouwencomité',
   'Zwanehalscommissie',
 ];
-
-String _toSlug(String value) {
-  return value.toLowerCase().replaceAll(' ', '');
-}
-
-final List<String> commissieListSlugs = commissieList.map(_toSlug).toList();
 
 class ManageGroupsPage extends ConsumerWidget {
   const ManageGroupsPage({
@@ -81,7 +77,7 @@ class ManageGroupsPage extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.post(
-        "/api/users/groups/",
+        "/api/v2/groups/",
         data: group.toJson(),
       );
     } catch (e) {
@@ -105,7 +101,7 @@ class ManageGroupsPage extends ConsumerWidget {
       const SnackBar(content: Text("Groep is aangemaakt.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupsProvider);
+    ref.invalidate(allGroupsProvider);
   }
 
   Widget _buildCreateGroupBottomSheet(
@@ -131,7 +127,8 @@ class ManageGroupsPage extends ConsumerWidget {
         Widget nameWidget() {
           switch (type) {
             case "Commissie":
-              final groupsVal = ref.watch(groupsProvider(Tuple2(type, year)));
+              final groupsVal =
+                  ref.watch(allGroupsProvider(Tuple2(type, year)));
               final currentCommissieList = groupsVal.whenData((data) {
                     return data.map((group) => group.name).toList();
                   }).value ??
@@ -263,7 +260,7 @@ class ManageGroupsPage extends ConsumerWidget {
               createNewGroup(
                 group: DjangoGroup(
                   name: nameController.text.trim(),
-                  officialName: _toSlug(officialName),
+                  officialName: officialName,
                   type: type,
                   year: year,
                 ),
@@ -292,7 +289,7 @@ class ManageGroupsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = (type == null || type!.isEmpty) ? "Commissie" : type!;
-    final groupsVal = ref.watch(groupsProvider(Tuple2(selectedType, year)));
+    final groupsVal = ref.watch(allGroupsProvider(Tuple2(selectedType, year)));
 
     const double dropdownMaxHeight = 240;
 

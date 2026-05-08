@@ -22,9 +22,8 @@ class EditGroupPage extends ConsumerWidget {
     final dio = ref.read(dioProvider);
     try {
       // ignore: avoid-ignoring-return-values
-      await dio.post(
-        "/api/users/groups/$groupId/delete/",
-        data: {"user": userId},
+      await dio.delete(
+        "/api/v2/groups/$groupId/$userId/",
       );
     } catch (e) {
       if (ctx.mounted) {
@@ -70,8 +69,8 @@ class EditGroupPage extends ConsumerWidget {
       try {
         // ignore: avoid-ignoring-return-values
         await dio.post(
-          "/api/users/groups/$groupId/add/",
-          data: {"user": userId, "role": role},
+          "/api/v2/groups/$groupId/$userId/",
+          data: {"role": role},
         );
       } catch (e) {
         if (!ctx.mounted) return;
@@ -185,8 +184,7 @@ class EditGroupPage extends ConsumerWidget {
                       }
                       try {
                         // ignore: avoid-ignoring-return-values
-                        await dio.delete(
-                            "/api/users/groups/$groupId/"); // TODO: Make v2
+                        await dio.delete("/api/v2/groups/$groupId/");
                       } on DioException catch (e) {
                         if (!context.mounted) return;
 
@@ -205,7 +203,7 @@ class EditGroupPage extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Groep is verwijderd."),
                       ));
-                      ref.invalidate(groupsProvider);
+                      ref.invalidate(allGroupsProvider);
                       context.pop();
                     },
                     icon: const Icon(Icons.delete),
