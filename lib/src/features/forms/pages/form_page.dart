@@ -81,7 +81,10 @@ class _FormPageState extends ConsumerState<FormPage> {
 
                   final url = "$prefixPath$currentPath";
 
-                  Share.share(url).ignore();
+                  Share.share(
+                    url,
+                    sharePositionOrigin: const Rect.fromLTWH(0, 0, 10, 10),
+                  ).ignore();
                 } on Exception catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(

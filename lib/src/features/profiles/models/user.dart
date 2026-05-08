@@ -80,14 +80,19 @@ class User {
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.
 
-  bool get isActiveLenteLid => membership
-      .where((m) =>
-          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
-      .any((m) => m.isLenteMember);
-  bool get isActiveAspirantLid => membership
-      .where((m) =>
-          m.endMembership == null || m.endMembership!.isAfter(DateTime.now()))
-      .any((m) => m.isAspirantMember);
+  bool get isActiveLenteLid => membership.isNotEmpty
+      ? membership
+          .reduce(
+              (a, b) => a.startMembership.isAfter(b.startMembership) ? a : b)
+          .isLenteMember
+      : true;
+
+  bool get isActiveAspirantLid => membership.isNotEmpty
+      ? membership
+          .reduce(
+              (a, b) => a.startMembership.isAfter(b.startMembership) ? a : b)
+          .isAspirantMember
+      : true;
 
   Map<String, String> get canCreateFormsFor => getCanMakeFormsFor(groups);
 
