@@ -15,12 +15,12 @@ class AlmanakBestuurEditPage extends ConsumerStatefulWidget {
   final int year;
 
   @override
-  AlmanakCommissieEditPageState createState() {
-    return AlmanakCommissieEditPageState();
+  AlmanakBestuurEditPageState createState() {
+    return AlmanakBestuurEditPageState();
   }
 }
 
-class AlmanakCommissieEditPageState
+class AlmanakBestuurEditPageState
     extends ConsumerState<AlmanakBestuurEditPage> {
   final _picker = ImagePicker();
   File? _galleryFile;
@@ -59,7 +59,7 @@ class AlmanakCommissieEditPageState
     );
   }
 
-  Future _getImage(ImageSource img, BuildContext context) async {
+  Future<void> _getImage(ImageSource img, BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: img);
     if (!mounted) return;
     setState(() {
@@ -124,7 +124,7 @@ class AlmanakCommissieEditPageState
     );
   }
 
-  void submitEdit() async {
+  Future<void> submitEdit() async {
     try {
       // Optional: Upload image if provided
       if (_galleryFile != null) {

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/bestuur_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/group_utils.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/user_permission_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
@@ -24,21 +23,11 @@ class AlmanakBestuurPage extends ConsumerWidget {
     final currentUserVal = ref.watch(currentUserProvider);
 
     final groupsAsync = ref.watch(allGroupsProvider(Tuple2("bestuur", year)));
-    final groupId = groupsAsync.when(
-      data: (groups) {
-        return groups.firstOrNull?.id ?? 0;
-      },
-      loading: () => 0,
-      error: (e, st) => 0,
-    );
+    final groupId = groupsAsync.valueOrNull?.firstOrNull?.id;
 
-    final bestuursLeedenVal = groupsAsync.when(
-      data: (groups) {
-        return ref.watch(groupLeedenProvider(groups.firstOrNull?.id ?? 0));
-      },
-      loading: () => const AsyncValue.loading(),
-      error: (e, st) => AsyncValue.error(e, st),
-    );
+    final bestuursLeedenVal = ref
+        .watch(groupByIdStreamProvider(groupId))
+        .whenData((ploeg) => ploeg.users ?? <GroupDjangoRelation>[]);
 
     final colorScheme = Theme.of(context).colorScheme;
     const yearSelectorPadding = 8.0;
@@ -99,6 +88,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
         ),
         floatingActionButton: currentUserVal.when(
           data: (currentUser) {
+            if (groupId == null) return SizedBox.shrink();
             final userId = currentUser.identifier;
             final permissionsAsync =
                 ref.watch(permissionsProvider(Tuple2(groupId, userId)));

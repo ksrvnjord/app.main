@@ -71,7 +71,7 @@ class AlmanakUserTile extends ConsumerWidget {
         error: (error, stackTrace) => ListTile(
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
               title: Text(
-                  "$firstName ${infix != null ? "${infix!} " : ""}$lastName"),
+                  "$firstName ${infix?.isNotEmpty == true ? "${infix!} " : ""}$lastName"),
               subtitle: subtitle != null ? Text(subtitle as String) : null,
             )); // Show nothing if no heimdall user is found.
   }

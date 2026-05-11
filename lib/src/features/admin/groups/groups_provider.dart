@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
@@ -22,10 +24,27 @@ final allGroupsProvider = FutureProvider.autoDispose
 });
 
 // ignore: prefer-static-class
-final groupByIdProvider = FutureProvider.autoDispose
+final groupByIdFutureProvider = FutureProvider.autoDispose
     .family<Map<String, dynamic>, int>((ref, id) async {
   final dio = ref.watch(dioProvider);
   final res = await dio.get("/api/v2/groups/$id/");
 
   return res.data;
 });
+
+final groupByIdStreamProvider =
+    StreamProvider.autoDispose.family<DjangoGroup, int?>(
+  (ref, groupId) async* {
+    if (groupId == null) {
+      return;
+    }
+    final dio = ref.watch(dioProvider);
+
+    final res = await dio.get("/api/v2/groups/$groupId");
+
+    final data = jsonDecode(res.toString()) as Map<String, dynamic>;
+    final group = DjangoGroup.fromJson(data);
+
+    yield group;
+  },
+);

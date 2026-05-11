@@ -46,7 +46,7 @@ class EditGroupPage extends ConsumerWidget {
       const SnackBar(content: Text("Gebruiker is verwijderd van de groep.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupByIdProvider(groupId));
+    ref.invalidate(groupByIdFutureProvider(groupId));
   }
 
   Future<void> Function(int) addUserToGroupCallBack(
@@ -95,7 +95,7 @@ class EditGroupPage extends ConsumerWidget {
       ));
 
       // ignore: avoid-ignoring-return-values
-      ref.invalidate(groupByIdProvider(groupId));
+      ref.invalidate(groupByIdFutureProvider(groupId));
       if (!ctx.mounted) return;
       ctx.pop();
     };
@@ -141,7 +141,7 @@ class EditGroupPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupVal = ref.watch(groupByIdProvider(groupId));
+    final groupVal = ref.watch(groupByIdFutureProvider(groupId));
 
     return Scaffold(
       body: groupVal.when(

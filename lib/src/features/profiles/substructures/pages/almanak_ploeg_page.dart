@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/group_utils.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
@@ -25,25 +25,19 @@ class AlmanakPloegPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupIdAsync = ref.watch(groupIDProvider(Tuple2(ploegName, year)));
-    final users = groupIdAsync.when(
-      data: (groupId) {
-        if (groupId == null) {
-          return const AsyncValue.data(<GroupDjangoRelation>[]);
-        }
-        return ref.watch(groupLeedenProvider(groupId));
-      },
-      loading: () => const AsyncValue.loading(),
-      error: (e, st) => AsyncValue.error(e, st),
-    );
+    final groupId =
+        ref.watch(groupIDProvider(Tuple2(ploegName, year))).valueOrNull;
+    final usersAsync = ref
+        .watch(groupByIdStreamProvider(groupId))
+        .whenData((ploeg) => ploeg.users ?? <GroupDjangoRelation>[]);
 
     const double menuMaxHeight = 256;
     const double headerHPadding = 16;
 
     final List<Tuple2<int, int>> years = yearsFrom1874;
 
-    final ploegIsWedstrijdploeg =
-        ref.watch(wedstrijdPloegenProvider).contains(ploegName);
+    final ploegIsWedstrijdploeg = ref.watch(wedstrijdPloegenProvider).contains(
+        ploegName); //TODO: better to check ploeg.type == "wedstrijdsectie" ?
 
     return Scaffold(
       appBar: AppBar(
@@ -88,8 +82,8 @@ class AlmanakPloegPage extends ConsumerWidget {
                 ),
           ),
           SliverToBoxAdapter(
-            child: users.when(
-              data: (snapshot) => buildPloegList(snapshot),
+            child: usersAsync.when(
+              data: (users) => buildPloegList(users),
               error: (error, stk) =>
                   ErrorCardWidget(errorMessage: error.toString()),
               loading: () => const Center(

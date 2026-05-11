@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/api/group_utils.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/substructuur_volgorde.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
@@ -38,7 +38,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
     keepScrollOffset: true,
   ); // For keeping scroll position when changing year.
 
-  _nameVal({
+  Widget _nameVal({
     required AsyncValue<String> commissieNameAsync,
   }) {
     if (widget.name != null) return Text(widget.name!);
@@ -66,20 +66,25 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
 
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
+
+    //TODO: factor out groupIdAsync with groupId = groupIdAsync.valueOrNull?.id;
     return groupIdAsync.when(
       data: (groupId) {
-        final commissieLeedenAsync = ref.watch(
-          groupLeedenProvider(groupId ?? 0),
-        );
+        if (groupId == null) {
+          return Scaffold(
+              appBar: AppBar(title: Text("Geen commissie gevonden")),
+              body: const ErrorCardWidget(
+                  errorMessage: "Geen commissie gevonden."));
+        }
 
-        final commissieNameAsync = ref.watch(
-          groupNameProvider(groupId ?? 0),
-        );
+        final commissieAsync = ref.watch(groupByIdStreamProvider(groupId));
 
-        final commissieIdAndName = Tuple3(officialName, year, groupId ?? 0);
+        final commissieIdAndName = Tuple3(officialName, year, groupId);
         return Scaffold(
           appBar: AppBar(
-            title: _nameVal(commissieNameAsync: commissieNameAsync),
+            title: _nameVal(
+                commissieNameAsync:
+                    commissieAsync.whenData((group) => group.name)),
           ),
           body: ListView(
             controller:
@@ -125,8 +130,9 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                   .padding(
                     right: yearSelectorPadding,
                   ),
-              commissieLeedenAsync.when(
-                data: (snapshot) => buildCommissieList(snapshot),
+              commissieAsync.when(
+                data: (group) =>
+                    buildCommissieList(group.users ?? <GroupDjangoRelation>[]),
                 error: (error, stk) =>
                     ErrorCardWidget(errorMessage: error.toString()),
                 loading: () => const Center(
@@ -138,7 +144,6 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
           floatingActionButton: currentUserVal.when(
             data: (currentUser) {
               final userId = currentUser.identifier;
-              if (groupId == null) return const SizedBox.shrink();
               final permissionsAsync =
                   ref.watch(permissionsProvider(Tuple2(groupId, userId)));
 

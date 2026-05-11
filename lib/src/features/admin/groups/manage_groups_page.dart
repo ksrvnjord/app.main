@@ -130,7 +130,7 @@ class ManageGroupsPage extends ConsumerWidget {
               final groupsVal =
                   ref.watch(allGroupsProvider(Tuple2(type, year)));
               final currentCommissieList = groupsVal.whenData((data) {
-                    return data.map((group) => group.name).toList();
+                    return data.map((group) => group.officialName).toList();
                   }).value ??
                   [];
 
@@ -190,17 +190,20 @@ class ManageGroupsPage extends ConsumerWidget {
               );
 
             // case "Competitieploeg":
-            // case "Wedstrijdsectie":
+            // case "Wedstrijdsectie": //TODO: Add loging for cross-year compatibility
             // case "Bestuur":
           }
           return TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-                labelText: 'Naam', border: OutlineInputBorder()),
-            autocorrect: false,
-            onChanged: (value) =>
-                ref.read(djangoGroupNotifierProvider.notifier).setName(value),
-          );
+              controller: nameController,
+              decoration: const InputDecoration(
+                  labelText: 'Naam', border: OutlineInputBorder()),
+              autocorrect: false,
+              onChanged: (value) {
+                ref.read(djangoGroupNotifierProvider.notifier).setName(value);
+                ref
+                    .read(djangoGroupNotifierProvider.notifier)
+                    .setOfficialName(value);
+              });
         }
 
         return [

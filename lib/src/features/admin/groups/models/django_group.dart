@@ -42,7 +42,8 @@ class DjangoGroup {
     this.id,
     this.users,
     this.rights = const [],
-    String? officialName,
+    String?
+        officialName, //TODO: Should be required but users/{uderid} endpoint does not return this yet
     required this.name,
     required this.type,
     required this.year,
@@ -80,8 +81,11 @@ class DjangoGroup {
 
 class DjangoGroupNotifier extends Notifier<DjangoGroup> {
   @override
-  DjangoGroup build() =>
-      DjangoGroup(name: "", type: "Competitieploeg", year: getNjordYear());
+  DjangoGroup build() => DjangoGroup(
+      // officialName: "",
+      name: "",
+      type: "Competitieploeg",
+      year: getNjordYear());
 
   void setName(String name) {
     state = state.copyWith(name: name);
