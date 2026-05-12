@@ -39,9 +39,9 @@ const List<String> commissieList = [
   'Materieelgroep',
   'Meerderejaarscommissie',
   'Merchandisecommissie',
-  'Njord Najaarscommissie',
-  'NSRF Slotwedstrijden',
-  'Pascommissie',
+  // 'Njord Najaarscommissie',
+  // 'NSRF Slotwedstrijden',
+  // 'Pascommissie', //RIP
   'Petit Comité',
   'Promotiecommissie',
   'Ringvaartcommissie',
@@ -56,6 +56,20 @@ const List<String> commissieList = [
   'Voorjaarsafroeicommissie',
   'Vrouwencomité',
   'Zwanehalscommissie',
+];
+
+const List<String> wedstrijdPloegenList = [
+  // 'Eerstejaars Lichte Dames',
+  'Eerstejaars Dames',
+  // 'Eerstejaars Licht',
+  // 'Eerstejaars Zwaar',
+  'Eerstejaars Heren',
+  // 'Middengroep Lichte Dames',
+  'Middengroep Dames',
+  // 'Middengroep Licht',
+  // 'Middengroep Zwaar',
+  'Middengroep Heren',
+  'Ouderejaarsgroep',
 ];
 
 class ManageGroupsPage extends ConsumerWidget {
@@ -126,36 +140,43 @@ class ManageGroupsPage extends ConsumerWidget {
 
         Widget nameWidget() {
           switch (type) {
-            case "Commissie":
+            case "Commissie" || "Wedstrijdsectie":
+              final isCommissie = type == "Commissie";
               final groupsVal =
                   ref.watch(allGroupsProvider(Tuple2(type, year)));
-              final currentCommissieList = groupsVal.whenData((data) {
+
+              /// List of groups already in the database
+              final activeGroupsList = groupsVal.whenData((data) {
                     return data.map((group) => group.officialName).toList();
                   }).value ??
                   [];
 
-              final availableCommissieList = commissieList
-                  .where(
-                      (commissie) => !currentCommissieList.contains(commissie))
-                  .toList();
+              /// List of groups not yet chosen
+              final inactiveGroupsList = isCommissie
+                  ? commissieList
+                  : wedstrijdPloegenList
+                      .where((group) => !activeGroupsList.contains(group))
+                      .toList();
 
-              final selectedCommissieIndex =
-                  availableCommissieList.indexOf(officialName);
+              final selectedGroupIndex =
+                  inactiveGroupsList.indexOf(officialName);
+
+              final dropDownLabelText = inactiveGroupsList.isEmpty
+                  ? "Alle ${isCommissie ? "commissies" : "ploegen"} zijn ingedeeld!"
+                  : "Kies een ${isCommissie ? "commissie" : "ploeg"}";
 
               return [
                 DropdownButtonFormField<int>(
-                  items: availableCommissieList
+                  items: inactiveGroupsList
                       .map((name) => DropdownMenuItem<int>(
-                            value: availableCommissieList.indexOf(name),
+                            value: inactiveGroupsList.indexOf(name),
                             child: Text(name),
                           ))
                       .toList(),
-                  value: selectedCommissieIndex >= 0
-                      ? selectedCommissieIndex
-                      : null,
-                  onChanged: (value) {
-                    if (value == null) return;
-                    final selectedCommissie = availableCommissieList[value];
+                  value: selectedGroupIndex >= 0 ? selectedGroupIndex : null,
+                  onChanged: (indexValue) {
+                    if (indexValue == null) return;
+                    final selectedCommissie = inactiveGroupsList[indexValue];
                     nameController.text = selectedCommissie;
                     nameController.selection = TextSelection.collapsed(
                       offset: selectedCommissie.length,
@@ -167,8 +188,8 @@ class ManageGroupsPage extends ConsumerWidget {
                         .read(djangoGroupNotifierProvider.notifier)
                         .setName(selectedCommissie);
                   },
-                  decoration: const InputDecoration(
-                    labelText: "Kies een commissie",
+                  decoration: InputDecoration(
+                    labelText: dropDownLabelText,
                     border: OutlineInputBorder(),
                   ),
                   menuMaxHeight: dropdownMenuHeight,
@@ -179,9 +200,9 @@ class ManageGroupsPage extends ConsumerWidget {
                       labelText: 'Zichtbare naam',
                       border: OutlineInputBorder()),
                   autocorrect: false,
-                  onChanged: (value) => ref
+                  onChanged: (nameValue) => ref
                       .read(djangoGroupNotifierProvider.notifier)
-                      .setName(value),
+                      .setName(nameValue),
                 )
               ].toColumn(
                 mainAxisSize: MainAxisSize.min,
@@ -190,7 +211,6 @@ class ManageGroupsPage extends ConsumerWidget {
               );
 
             // case "Competitieploeg":
-            // case "Wedstrijdsectie": //TODO: Add loging for cross-year compatibility
             // case "Bestuur":
           }
           return TextField(
@@ -198,11 +218,13 @@ class ManageGroupsPage extends ConsumerWidget {
               decoration: const InputDecoration(
                   labelText: 'Naam', border: OutlineInputBorder()),
               autocorrect: false,
-              onChanged: (value) {
-                ref.read(djangoGroupNotifierProvider.notifier).setName(value);
+              onChanged: (nameValue) {
                 ref
                     .read(djangoGroupNotifierProvider.notifier)
-                    .setOfficialName(value);
+                    .setName(nameValue);
+                ref
+                    .read(djangoGroupNotifierProvider.notifier)
+                    .setOfficialName(nameValue);
               });
         }
 
@@ -219,12 +241,15 @@ class ManageGroupsPage extends ConsumerWidget {
               );
             }).toList(),
             value: type,
-            onChanged: (value) {
+            onChanged: (typeValue) {
               ref
                   .read(djangoGroupNotifierProvider.notifier)
-                  .setType(value ?? "Competitieploeg");
+                  .setType(typeValue ?? "Competitieploeg");
 
               ref.read(djangoGroupNotifierProvider.notifier).setName("");
+              ref
+                  .read(djangoGroupNotifierProvider.notifier)
+                  .setOfficialName("");
 
               nameController.text = "";
             },
@@ -242,14 +267,10 @@ class ManageGroupsPage extends ConsumerWidget {
                     ))
                 .toList(),
             value: year,
-            onChanged: (value) {
+            onChanged: (yearValue) {
               ref
                   .read(djangoGroupNotifierProvider.notifier)
-                  .setYear(value ?? getNjordYear());
-
-              ref.read(djangoGroupNotifierProvider.notifier).setName("");
-
-              nameController.text = "";
+                  .setYear(yearValue ?? getNjordYear());
             },
             decoration: const InputDecoration(
               labelText: 'Jaar',

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 class GroupEntry {
   final int year;
   final String name;
+  final String officialName;
 
   final String groupType;
   final String? role;
@@ -11,6 +12,7 @@ class GroupEntry {
   const GroupEntry({
     required this.groupType,
     required this.name,
+    required this.officialName,
     this.role,
     required this.year,
   });

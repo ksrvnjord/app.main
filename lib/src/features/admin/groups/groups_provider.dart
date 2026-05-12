@@ -36,7 +36,8 @@ final groupByIdStreamProvider =
     StreamProvider.autoDispose.family<DjangoGroup, int?>(
   (ref, groupId) async* {
     if (groupId == null) {
-      return;
+      await Future<void>.delayed(const Duration(seconds: 1));
+      throw ArgumentError.notNull('groupId');
     }
     final dio = ref.watch(dioProvider);
 

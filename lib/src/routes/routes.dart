@@ -717,10 +717,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Ploeg",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
-                  ploegName: state.pathParameters['name']!,
+                  ploegOfficialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] == null
                       ? getNjordYear()
                       : int.parse(state.uri.queryParameters['year']!),
+                  name: state.extra as String?,
                 ),
                 name: "Ploeg",
               ),
