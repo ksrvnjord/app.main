@@ -11,6 +11,67 @@ import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
+const List<String> commissieList = [
+  'Afroeicommissie',
+  'Almanakcommissie',
+  'Appcommissie',
+  'Archiefcommissie',
+  'Blasphemycommissie',
+  'Buffetcommissie',
+  'Competitiecommissie',
+  'Diskjockeycommissie',
+  'Duurzaamheidscommissie',
+  'Eerstejaarscommissie',
+  'Extern Roeiencommissie',
+  'Externe Commissie',
+  'Fotocommissie',
+  'Fuifroeicommissie',
+  'Galacommissie',
+  'Goede Doelencommissie',
+  'Grautgilde der Baufakkerei',
+  'Haringpartij Comité',
+  'Hollandiacommissie',
+  'Introductiecommissie',
+  'Kalendercommissie',
+  'Kookcluster',
+  'Kookcommissie',
+  'Magazinecommissie',
+  'Materieelgroep',
+  'Meerderejaarscommissie',
+  'Merchandisecommissie',
+  // 'Njord Najaarscommissie',
+  // 'NSRF Slotwedstrijden',
+  // 'Pascommissie', //RIP
+  'Petit Comité',
+  'Promotiecommissie',
+  'Ringvaartcommissie',
+  'Rowing Blindcommissie',
+  'Sjaarzencommissie',
+  'Skireiscommissie',
+  'Talentwervingscommissie',
+  'Tapcommissie',
+  'Tentroeicommissie',
+  'TOP-commissie',
+  'Twaarzencommissie',
+  'Voorjaarsafroeicommissie',
+  'Vrouwencomité',
+  'Zwanehalscommissie',
+];
+
+const List<String> wedstrijdPloegenList = [
+  // 'Eerstejaars Lichte Dames',
+  'Eerstejaars Dames',
+  // 'Eerstejaars Licht',
+  // 'Eerstejaars Zwaar',
+  'Eerstejaars Heren',
+  // 'Middengroep Lichte Dames',
+  'Middengroep Dames',
+  // 'Middengroep Licht',
+  // 'Middengroep Zwaar',
+  'Middengroep Heren',
+  'Ouderejaarsgroep',
+];
+
 class ManageGroupsPage extends ConsumerWidget {
   const ManageGroupsPage({
     super.key,
@@ -30,7 +91,7 @@ class ManageGroupsPage extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.post(
-        "/api/users/groups/",
+        "/api/v2/groups/",
         data: group.toJson(),
       );
     } catch (e) {
@@ -54,7 +115,7 @@ class ManageGroupsPage extends ConsumerWidget {
       const SnackBar(content: Text("Groep is aangemaakt.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupsProvider);
+    ref.invalidate(allGroupsProvider);
   }
 
   Widget _buildCreateGroupBottomSheet(
@@ -70,43 +131,107 @@ class ManageGroupsPage extends ConsumerWidget {
         final notifierProvider = ref.watch(djangoGroupNotifierProvider);
         final year = notifierProvider.year;
         final type = notifierProvider.type;
+        final officialName = notifierProvider.officialName;
         const double dropdownMenuHeight = 240;
 
         const double cardPadding = 16;
 
         const double bottomPaddingModal = 16;
 
+        Widget nameWidget() {
+          switch (type) {
+            case "Commissie" || "Wedstrijdsectie":
+              final isCommissie = type == "Commissie";
+              final groupsVal =
+                  ref.watch(allGroupsProvider(Tuple2(type, year)));
+
+              /// List of groups already in the database
+              final activeGroupsList = groupsVal.whenData((data) {
+                    return data.map((group) => group.officialName).toList();
+                  }).value ??
+                  [];
+
+              /// List of groups not yet chosen
+              final inactiveGroupsList = isCommissie
+                  ? commissieList
+                  : wedstrijdPloegenList
+                      .where((group) => !activeGroupsList.contains(group))
+                      .toList();
+
+              final selectedGroupIndex =
+                  inactiveGroupsList.indexOf(officialName);
+
+              final dropDownLabelText = inactiveGroupsList.isEmpty
+                  ? "Alle ${isCommissie ? "commissies" : "ploegen"} zijn ingedeeld!"
+                  : "Kies een ${isCommissie ? "commissie" : "ploeg"}";
+
+              return [
+                DropdownButtonFormField<int>(
+                  items: inactiveGroupsList
+                      .map((name) => DropdownMenuItem<int>(
+                            value: inactiveGroupsList.indexOf(name),
+                            child: Text(name),
+                          ))
+                      .toList(),
+                  value: selectedGroupIndex >= 0 ? selectedGroupIndex : null,
+                  onChanged: (indexValue) {
+                    if (indexValue == null) return;
+                    final selectedCommissie = inactiveGroupsList[indexValue];
+                    nameController.text = selectedCommissie;
+                    nameController.selection = TextSelection.collapsed(
+                      offset: selectedCommissie.length,
+                    );
+                    ref
+                        .read(djangoGroupNotifierProvider.notifier)
+                        .setOfficialName(selectedCommissie);
+                    ref
+                        .read(djangoGroupNotifierProvider.notifier)
+                        .setName(selectedCommissie);
+                  },
+                  decoration: InputDecoration(
+                    labelText: dropDownLabelText,
+                    border: OutlineInputBorder(),
+                  ),
+                  menuMaxHeight: dropdownMenuHeight,
+                ),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                      labelText: 'Zichtbare naam',
+                      border: OutlineInputBorder()),
+                  autocorrect: false,
+                  onChanged: (nameValue) => ref
+                      .read(djangoGroupNotifierProvider.notifier)
+                      .setName(nameValue),
+                )
+              ].toColumn(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                separator: const SizedBox(height: 16),
+              );
+
+            // case "Competitieploeg":
+            // case "Bestuur":
+          }
+          return TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                  labelText: 'Naam', border: OutlineInputBorder()),
+              autocorrect: false,
+              onChanged: (nameValue) {
+                ref
+                    .read(djangoGroupNotifierProvider.notifier)
+                    .setName(nameValue);
+                ref
+                    .read(djangoGroupNotifierProvider.notifier)
+                    .setOfficialName(nameValue);
+              });
+        }
+
         return [
           Text(
             'Maak nieuwe groep',
             style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              labelText: 'Naam',
-              border: OutlineInputBorder(),
-            ),
-            autocorrect: false,
-            onChanged: (value) =>
-                ref.read(djangoGroupNotifierProvider.notifier).setName(value),
-          ),
-          DropdownButtonFormField<int>(
-            items: yearsFrom1874
-                .map((year) => DropdownMenuItem<int>(
-                      value: year.item1,
-                      child: Text("${year.item1}-${year.item2}"),
-                    ))
-                .toList(),
-            value: year,
-            onChanged: (value) => ref
-                .read(djangoGroupNotifierProvider.notifier)
-                .setYear(value ?? getNjordYear()),
-            decoration: const InputDecoration(
-              labelText: 'Jaar',
-              border: OutlineInputBorder(),
-            ),
-            menuMaxHeight: dropdownMenuHeight,
           ),
           DropdownButtonFormField<String>(
             items: groupTypes.map((type) {
@@ -116,13 +241,42 @@ class ManageGroupsPage extends ConsumerWidget {
               );
             }).toList(),
             value: type,
-            onChanged: (value) => ref
-                .read(djangoGroupNotifierProvider.notifier)
-                .setType(value ?? "Competitieploeg"),
+            onChanged: (typeValue) {
+              ref
+                  .read(djangoGroupNotifierProvider.notifier)
+                  .setType(typeValue ?? "Competitieploeg");
+
+              ref.read(djangoGroupNotifierProvider.notifier).setName("");
+              ref
+                  .read(djangoGroupNotifierProvider.notifier)
+                  .setOfficialName("");
+
+              nameController.text = "";
+            },
             decoration: const InputDecoration(
               labelText: 'Type',
               border: OutlineInputBorder(),
             ),
+          ),
+          nameWidget(),
+          DropdownButtonFormField<int>(
+            items: yearsFrom1874
+                .map((year) => DropdownMenuItem<int>(
+                      value: year.item1,
+                      child: Text("${year.item1}-${year.item2}"),
+                    ))
+                .toList(),
+            value: year,
+            onChanged: (yearValue) {
+              ref
+                  .read(djangoGroupNotifierProvider.notifier)
+                  .setYear(yearValue ?? getNjordYear());
+            },
+            decoration: const InputDecoration(
+              labelText: 'Jaar',
+              border: OutlineInputBorder(),
+            ),
+            menuMaxHeight: dropdownMenuHeight,
           ),
           FilledButton(
             // ignore: prefer-extracting-callbacks
@@ -130,6 +284,7 @@ class ManageGroupsPage extends ConsumerWidget {
               createNewGroup(
                 group: DjangoGroup(
                   name: nameController.text.trim(),
+                  officialName: officialName,
                   type: type,
                   year: year,
                 ),
@@ -157,7 +312,8 @@ class ManageGroupsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupsVal = ref.watch(groupsProvider(Tuple2(type, year)));
+    final selectedType = (type == null || type!.isEmpty) ? "Commissie" : type!;
+    final groupsVal = ref.watch(allGroupsProvider(Tuple2(selectedType, year)));
 
     const double dropdownMaxHeight = 240;
 
@@ -178,10 +334,10 @@ class ManageGroupsPage extends ConsumerWidget {
                   'Manage Groups',
                   queryParameters: {
                     'year': year.toString(),
-                    'type': type == this.type ? null : type,
+                    'type': type,
                   },
                 ),
-                selected: type == this.type,
+                selected: type == selectedType,
               ),
             DropdownButton<int>(
               items: yearsFrom1874
@@ -194,7 +350,7 @@ class ManageGroupsPage extends ConsumerWidget {
               onChanged: (value) =>
                   context.goNamed('Manage Groups', queryParameters: {
                 'year': value.toString(),
-                'type': type,
+                'type': selectedType,
               }),
               menuMaxHeight: dropdownMaxHeight,
             ),
@@ -241,9 +397,7 @@ class ManageGroupsPage extends ConsumerWidget {
           FloatingActionButton.extended(
         // ignore: prefer-extracting-callbacks
         onPressed: () {
-          ref
-              .read(djangoGroupNotifierProvider.notifier)
-              .setType(type ?? "Competitieploeg");
+          ref.read(djangoGroupNotifierProvider.notifier).setType(selectedType);
           ref.read(djangoGroupNotifierProvider.notifier).setYear(year);
           // ignore: avoid-ignoring-return-values
           showModalBottomSheet(

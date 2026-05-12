@@ -22,9 +22,8 @@ class EditGroupPage extends ConsumerWidget {
     final dio = ref.read(dioProvider);
     try {
       // ignore: avoid-ignoring-return-values
-      await dio.post(
-        "/api/users/groups/$groupId/delete/",
-        data: {"user": userId},
+      await dio.delete(
+        "/api/v2/groups/$groupId/$userId/",
       );
     } catch (e) {
       if (ctx.mounted) {
@@ -47,7 +46,7 @@ class EditGroupPage extends ConsumerWidget {
       const SnackBar(content: Text("Gebruiker is verwijderd van de groep.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupByIdProvider(groupId));
+    ref.invalidate(groupByIdFutureProvider(groupId));
   }
 
   Future<void> Function(int) addUserToGroupCallBack(
@@ -70,8 +69,8 @@ class EditGroupPage extends ConsumerWidget {
       try {
         // ignore: avoid-ignoring-return-values
         await dio.post(
-          "/api/users/groups/$groupId/add/",
-          data: {"user": userId, "role": role},
+          "/api/v2/groups/$groupId/$userId/",
+          data: {"role": role},
         );
       } catch (e) {
         if (!ctx.mounted) return;
@@ -96,7 +95,7 @@ class EditGroupPage extends ConsumerWidget {
       ));
 
       // ignore: avoid-ignoring-return-values
-      ref.invalidate(groupByIdProvider(groupId));
+      ref.invalidate(groupByIdFutureProvider(groupId));
       if (!ctx.mounted) return;
       ctx.pop();
     };
@@ -142,7 +141,7 @@ class EditGroupPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupVal = ref.watch(groupByIdProvider(groupId));
+    final groupVal = ref.watch(groupByIdFutureProvider(groupId));
 
     return Scaffold(
       body: groupVal.when(
@@ -185,7 +184,7 @@ class EditGroupPage extends ConsumerWidget {
                       }
                       try {
                         // ignore: avoid-ignoring-return-values
-                        await dio.delete("/api/users/groups/$groupId/");
+                        await dio.delete("/api/v2/groups/$groupId/");
                       } on DioException catch (e) {
                         if (!context.mounted) return;
 
@@ -204,7 +203,7 @@ class EditGroupPage extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Groep is verwijderd."),
                       ));
-                      ref.invalidate(groupsProvider);
+                      ref.invalidate(allGroupsProvider);
                       context.pop();
                     },
                     icon: const Icon(Icons.delete),
