@@ -115,7 +115,7 @@ class ManageGroupsPage extends ConsumerWidget {
       const SnackBar(content: Text("Groep is aangemaakt.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(allGroupsProvider);
+    ref.invalidate(allGroupsByYearProvider);
   }
 
   Widget _buildCreateGroupBottomSheet(
@@ -143,7 +143,7 @@ class ManageGroupsPage extends ConsumerWidget {
             case "Commissie" || "Wedstrijdsectie":
               final isCommissie = type == "Commissie";
               final groupsVal =
-                  ref.watch(allGroupsProvider(Tuple2(type, year)));
+                  ref.watch(allGroupsByYearProvider(Tuple2(type, year)));
 
               /// List of groups already in the database
               final activeGroupsList = groupsVal.whenData((data) {
@@ -313,7 +313,8 @@ class ManageGroupsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = (type == null || type!.isEmpty) ? "Commissie" : type!;
-    final groupsVal = ref.watch(allGroupsProvider(Tuple2(selectedType, year)));
+    final groupsVal =
+        ref.watch(allGroupsByYearProvider(Tuple2(selectedType, year)));
 
     const double dropdownMaxHeight = 240;
 

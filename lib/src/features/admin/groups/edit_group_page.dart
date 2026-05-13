@@ -203,7 +203,7 @@ class EditGroupPage extends ConsumerWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Groep is verwijderd."),
                       ));
-                      ref.invalidate(allGroupsProvider);
+                      ref.invalidate(allGroupsByYearProvider);
                       context.pop();
                     },
                     icon: const Icon(Icons.delete),
