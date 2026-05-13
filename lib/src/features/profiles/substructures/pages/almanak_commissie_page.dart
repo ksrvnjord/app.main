@@ -123,6 +123,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                       },
                     ),
                     selectedYear: year,
+                    officialName: officialName,
                   ),
                 ].toRow(),
               ]

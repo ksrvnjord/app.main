@@ -11,3 +11,13 @@ final List<Tuple2<int, int>> yearsFrom1874 = List.generate(
     getNjordYear() + 1 - index + 1,
   ),
 ).toList();
+
+List<Tuple2<int, int>> customYears(List<int> years) => List.generate(
+      years.length,
+      (index) => Tuple2<int, int>(
+        // '2022-2023', '2021-2022', ...
+        years[index],
+        // Generate the following year.
+        years[index] + 1,
+      ),
+    ).toList();

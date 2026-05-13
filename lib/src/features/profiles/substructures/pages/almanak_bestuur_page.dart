@@ -22,7 +22,8 @@ class AlmanakBestuurPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserVal = ref.watch(currentUserProvider);
 
-    final groupsAsync = ref.watch(allGroupsProvider(Tuple2("bestuur", year)));
+    final groupsAsync =
+        ref.watch(allGroupsByYearProvider(Tuple2("bestuur", year)));
     final groupId = groupsAsync.valueOrNull?.firstOrNull?.id;
 
     final bestuursLeedenVal = ref
@@ -65,6 +66,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
                     },
                   ),
                   selectedYear: year,
+                  isBestuur: true,
                 ),
               ].toRow(),
             ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(

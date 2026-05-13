@@ -5,8 +5,8 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
@@ -39,10 +39,7 @@ class AlmanakPloegPage extends ConsumerWidget {
       return ploegData.users ?? <GroupDjangoRelation>[];
     });
 
-    const double menuMaxHeight = 256;
     const double headerHPadding = 16;
-
-    final List<Tuple2<int, int>> years = yearsFrom1874;
 
     return Scaffold(
       appBar: AppBar(
@@ -60,14 +57,7 @@ class AlmanakPloegPage extends ConsumerWidget {
                 const Text('Kies een jaar: ').textColor(
                   ploegIsWedstrijdploeg ? null : Colors.grey,
                 ),
-                DropdownButton<int>(
-                  items: years
-                      .map((year) => DropdownMenuItem<int>(
-                            value: year.item1,
-                            child: Text("${year.item1}-${year.item2}"),
-                          ))
-                      .toList(),
-                  value: year,
+                YearSelectorDropdown(
                   onChanged:
                       ploegIsWedstrijdploeg // Only wedstrijdploegen can have multiple years.
                           ? (value) => context.replaceNamed(
@@ -79,8 +69,8 @@ class AlmanakPloegPage extends ConsumerWidget {
                                 extra: ploegName,
                               )
                           : null,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  menuMaxHeight: menuMaxHeight,
+                  selectedYear: year,
+                  officialName: ploegOfficialName,
                 ),
               ].toRow(),
             ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(

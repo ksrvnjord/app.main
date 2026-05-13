@@ -20,7 +20,8 @@ class PloegChoicePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ploegen = ref.watch(allGroupsProvider(Tuple2(ploegType, ploegYear)));
+    final ploegen =
+        ref.watch(allGroupsByYearProvider(Tuple2(ploegType, ploegYear)));
 
     const double titleShimmerPadding = 128;
     const double titleShimmerHeight = 18;

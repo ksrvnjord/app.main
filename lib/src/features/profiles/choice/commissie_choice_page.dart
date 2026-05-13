@@ -20,7 +20,7 @@ class CommissieChoicePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commissies = ref.watch(allGroupsProvider(
+    final commissies = ref.watch(allGroupsByYearProvider(
       Tuple2(
         "commissie",
         year,

@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:tuple/tuple.dart';
 
 // ignore: prefer-static-class
-final allGroupsProvider = FutureProvider.autoDispose
+final allGroupsByYearProvider = FutureProvider.autoDispose
     .family<List<DjangoGroup>, Tuple2<String?, int>>((ref, typeAndYear) async {
   final dio = ref.watch(dioProvider);
   final res = await dio.get(
@@ -14,6 +15,39 @@ final allGroupsProvider = FutureProvider.autoDispose
     queryParameters: {
       "type": typeAndYear.item1?.toLowerCase(),
       "year": typeAndYear.item2,
+      "ordering": "name",
+    },
+  );
+
+  return (res.data['items'] as List).map<DjangoGroup>((e) {
+    return DjangoGroup.fromJson(e);
+  }).toList();
+});
+
+final allGroupsByOfficialNameProvider = FutureProvider.autoDispose
+    .family<List<DjangoGroup>, String>((ref, officialName) async {
+  final dio = ref.watch(dioProvider);
+  final res = await dio.get(
+    "/api/v2/groups/",
+    queryParameters: {
+      "search": officialName.toLowerCase(),
+      "ordering": "name",
+    },
+  );
+
+  return (res.data['items'] as List).map<DjangoGroup>((e) {
+    return DjangoGroup.fromJson(e);
+  }).toList();
+});
+
+final allGroupsByTypeProvider = FutureProvider.autoDispose
+    .family<List<DjangoGroup>, GroupType>((ref, type) async {
+  final dio = ref.watch(dioProvider);
+  final typeValue = type.value;
+  final res = await dio.get(
+    "/api/v2/groups/",
+    queryParameters: {
+      "type": typeValue.toLowerCase(),
       "ordering": "name",
     },
   );
