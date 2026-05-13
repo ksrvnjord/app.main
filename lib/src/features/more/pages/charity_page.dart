@@ -56,6 +56,7 @@ class CharityPage extends ConsumerWidget {
                     'vrouwenlustrum zeker niet onopgemerkt mag blijven!',
                 fontSize: 16,
               ),
+              const SizedBox(height: sizedBoxHeight),
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const Text(
@@ -64,14 +65,16 @@ class CharityPage extends ConsumerWidget {
                     fontSize: 18,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    ),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: sizedBoxHeight),
               Image.asset(
                 'assets/images/anne_bo_wit.jpeg',
                 width: imageWidth,
                 height: imageHeight,
               ),
+              const SizedBox(height: sizedBoxHeight),
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionText(
@@ -90,6 +93,7 @@ class CharityPage extends ConsumerWidget {
                   child: const Text('Doneer!'),
                 ),
               ),
+              const SizedBox(height: sizedBoxHeight),
               const Divider(),
               const SizedBox(height: sizedBoxHeight),
               const CharitySectionTitle(text: 'Meer weten?', fontSize: 18),
