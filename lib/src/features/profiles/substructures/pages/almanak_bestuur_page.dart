@@ -66,7 +66,7 @@ class AlmanakBestuurPage extends ConsumerWidget {
                     },
                   ),
                   selectedYear: year,
-                  officialName: "Bestuur",
+                  isBestuur: true,
                 ),
               ].toRow(),
             ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(

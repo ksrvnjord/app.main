@@ -4,7 +4,6 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dar
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
-import 'package:tuple/tuple.dart';
 
 class YearSelectorDropdown extends ConsumerWidget {
   YearSelectorDropdown({
@@ -12,11 +11,13 @@ class YearSelectorDropdown extends ConsumerWidget {
     required this.onChanged,
     required this.selectedYear,
     this.officialName,
+    this.isBestuur = false,
   });
 
   final void Function(int?)? onChanged;
   final int selectedYear;
   final String? officialName;
+  final bool isBestuur;
 
   final allYearsDropdownItemList = yearsFrom1874
       .map(
@@ -28,16 +29,15 @@ class YearSelectorDropdown extends ConsumerWidget {
       .toList();
 
   List<DropdownMenuItem<int>> _buildDropdownItemList(
-      List<Tuple2<int, int>> yearsTuple,
       AsyncValue<List<DjangoGroup>>? groupsVal) {
     if (groupsVal != null) {
-      /// List of groups already in the database
       return groupsVal.when(
         data: (data) {
+          /// List of groups already in the database
           final activeYearsList = data.map((group) => group.year).toList();
           activeYearsList.sort((a, b) => b.compareTo(a));
 
-          return custumYears(activeYearsList)
+          return customYears(activeYearsList)
               .map(
                 (njordYear) => DropdownMenuItem(
                   value: njordYear.item1,
@@ -46,7 +46,10 @@ class YearSelectorDropdown extends ConsumerWidget {
               )
               .toList();
         },
-        error: (e, st) => allYearsDropdownItemList,
+        error: (e, st) {
+          debugPrint(e.toString());
+          return allYearsDropdownItemList;
+        },
         loading: () => allYearsDropdownItemList,
       );
     }
@@ -58,19 +61,15 @@ class YearSelectorDropdown extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const double menuHeight = 240;
 
-    List<Tuple2<int, int>> dropdownYears = yearsFrom1874;
-
     AsyncValue<List<DjangoGroup>>? groupsVal;
-    if (officialName != null) {
-      if (officialName!.toLowerCase() == "bestuur") {
-        groupsVal = ref.watch(allGroupsByTypeProvider(GroupType.bestuur));
-      } else {
-        groupsVal = ref.watch(allGroupsByOfficialNameProvider(officialName!));
-      }
+    if (isBestuur) {
+      groupsVal = ref.watch(allGroupsByTypeProvider(GroupType.bestuur));
+    } else if (officialName != null) {
+      groupsVal = ref.watch(allGroupsByOfficialNameProvider(officialName!));
     }
 
     return DropdownButton<int>(
-      items: _buildDropdownItemList(dropdownYears, groupsVal),
+      items: _buildDropdownItemList(groupsVal),
       value: selectedYear,
       onChanged: onChanged,
       menuMaxHeight: menuHeight,
