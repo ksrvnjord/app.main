@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:tuple/tuple.dart';
 
@@ -61,7 +62,11 @@ class YearSelectorDropdown extends ConsumerWidget {
 
     AsyncValue<List<DjangoGroup>>? groupsVal;
     if (officialName != null) {
-      groupsVal = ref.watch(allGroupsByOfficialNameProvider(officialName!));
+      if (officialName!.toLowerCase() == "bestuur") {
+        groupsVal = ref.watch(allGroupsByTypeProvider(GroupType.bestuur));
+      } else {
+        groupsVal = ref.watch(allGroupsByOfficialNameProvider(officialName!));
+      }
     }
 
     return DropdownButton<int>(
