@@ -64,6 +64,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_cho
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_details_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
@@ -606,17 +607,29 @@ abstract final // ignore: prefer-single-declaration-per-file
           ),
         ),
         _route(
-          path: "bestuur",
-          name: "Bestuur",
-          pageBuilder: (context, state) => _getPage(
-            child: AlmanakBestuurPage(
-              year: state.uri.queryParameters['year'] == null
-                  ? getNjordYear()
-                  : int.parse(state.uri.queryParameters['year']!),
-            ),
+            path: "bestuur",
             name: "Bestuur",
-          ),
-        ),
+            pageBuilder: (context, state) => _getPage(
+                  child: AlmanakBestuurPage(
+                    year: state.uri.queryParameters['year'] == null
+                        ? getNjordYear()
+                        : int.parse(state.uri.queryParameters['year']!),
+                  ),
+                  name: "Bestuur",
+                ),
+            routes: [
+              _route(
+                  path: "edit",
+                  name: "Bestuur -> Edit",
+                  pageBuilder: (context, state) => _getPage(
+                        child: AlmanakBestuurEditPage(
+                          year: state.uri.queryParameters['year'] != null
+                              ? int.parse(state.uri.queryParameters['year']!)
+                              : getNjordYear(),
+                        ),
+                        name: "Bestuur -> Edit",
+                      )),
+            ]),
         _route(
           path: "commissies",
           name: "Commissies",
@@ -634,10 +647,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  name: state.pathParameters['name']!,
+                  officialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
                       : getNjordYear(),
+                  name: state.extra as String?,
                 ),
                 name: "Commissie",
               ),
@@ -658,21 +672,19 @@ abstract final // ignore: prefer-single-declaration-per-file
                                     : 0,
                           ),
                           name: "Commissie -> Edit",
-                        ),
-                    routes: [
-                      _route(
-                          path: "download_profile_pictures",
-                          name: "download profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: DownloadProfilePicturesPage(),
-                              name: "download profile pictures")),
-                      _route(
-                          path: "upload_aspi_profile_pictures",
-                          name: "upload aspi profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: UploadAspiProfilePictures(),
-                              name: "upload aspi profile pictures"))
-                    ]),
+                        )),
+                _route(
+                    path: "download_profile_pictures",
+                    name: "download profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: DownloadProfilePicturesPage(),
+                        name: "download profile pictures")),
+                _route(
+                    path: "upload_aspi_profile_pictures",
+                    name: "upload aspi profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: UploadAspiProfilePictures(),
+                        name: "upload aspi profile pictures")),
               ],
             ),
           ],
@@ -705,10 +717,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Ploeg",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
-                  ploegName: state.pathParameters['name']!,
+                  ploegOfficialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] == null
                       ? getNjordYear()
                       : int.parse(state.uri.queryParameters['year']!),
+                  name: state.extra as String?,
                 ),
                 name: "Ploeg",
               ),
