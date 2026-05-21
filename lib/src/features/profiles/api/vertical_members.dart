@@ -11,9 +11,26 @@ final verticalLeedenProvider =
   (ref, name) async* {
     final dio = ref.watch(dioProvider);
 
-    final res = await dio.get("/api/users/groups/", queryParameters: {
+    final res = await dio.get("/api/v2/groups/", queryParameters: {
       "search": name,
     });
+
+    /*
+    Hey Finnn gebruik v2 aub, hieronder een voorbeeldje:
+
+    
+    final groupIdAsync = ref.watch(groupIDProvider(Tuple2(ploegName, year)));
+    final users = groupIdAsync.when(
+      data: (groupId) {
+        if (groupId == null) {
+          return const AsyncValue.data(<GroupDjangoRelation>[]);
+        }
+        return ref.watch(groupLeedenProvider(groupId));
+      },
+      loading: () => const AsyncValue.loading(),
+      error: (e, st) => AsyncValue.error(e, st),
+    );
+    */
 
     final data = jsonDecode(res.toString()) as Map<String, dynamic>;
     final groups =

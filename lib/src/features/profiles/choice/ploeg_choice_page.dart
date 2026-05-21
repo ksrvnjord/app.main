@@ -20,7 +20,8 @@ class PloegChoicePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ploegen = ref.watch(groupsProvider(Tuple2(ploegType, ploegYear)));
+    final ploegen =
+        ref.watch(allGroupsByYearProvider(Tuple2(ploegType, ploegYear)));
 
     const double titleShimmerPadding = 128;
     const double titleShimmerHeight = 18;
@@ -50,6 +51,7 @@ class PloegChoicePage extends ConsumerWidget {
               ),
             [
               const Text("Kies een jaar:"),
+              const SizedBox(width: wrapSpacing),
               YearSelectorDropdown(
                 onChanged: (selectedYear) => context.goNamed(
                   "Ploegen",
@@ -60,7 +62,10 @@ class PloegChoicePage extends ConsumerWidget {
                 ),
                 selectedYear: ploegYear,
               ),
-            ].toRow(),
+            ].toRow(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+            ),
           ]
               .toWrap(
                 spacing: wrapSpacing,
@@ -85,11 +90,12 @@ class PloegChoicePage extends ConsumerWidget {
                   // ignore: prefer-extracting-callbacks
                   onTap: () => context.goNamed(
                     "Ploeg",
-                    pathParameters: {"name": ploeg.name},
+                    pathParameters: {"name": ploeg.officialName},
                     queryParameters: {
                       "year": ploegYear.toString(),
                       "type": ploegType,
                     },
+                    extra: ploeg.name,
                   ),
                 ),
               ),
