@@ -19,6 +19,7 @@ final groupsForUserProvider =
       return GroupEntry(
         groupType: e.group.type,
         name: e.group.name,
+        officialName: e.group.officialName,
         role: e.role,
         year: e.group.year,
       );

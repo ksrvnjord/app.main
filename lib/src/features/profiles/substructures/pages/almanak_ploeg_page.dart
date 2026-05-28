@@ -1,38 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/api/wedstrijd_ploegen_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/ploeg_users_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/model/group_django_relation.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/almanak_user_tile.dart';
-import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/year_selector_dropdown.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class AlmanakPloegPage extends ConsumerWidget {
   const AlmanakPloegPage({
     super.key,
-    required this.ploegName,
+    required this.ploegOfficialName,
     required this.year,
+    required this.name,
   });
 
-  final String ploegName;
+  final String ploegOfficialName;
 
   /// NOTE: year is nullable because it is optional in the route.
   final int year;
 
+  final String? name;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(ploegUsersProvider(Tuple2(ploegName, year)));
+    final groupId =
+        ref.watch(groupIDProvider(Tuple2(ploegOfficialName, year))).valueOrNull;
 
-    const double menuMaxHeight = 256;
+    bool ploegIsWedstrijdploeg = false;
+    String ploegName = (name != null) ? name! : "";
+    final usersAsync =
+        ref.watch(groupByIdStreamProvider(groupId)).whenData((ploegData) {
+      ploegIsWedstrijdploeg = ploegData.type == "Wedstrijdsectie";
+      ploegName = ploegName.isNotEmpty ? ploegName : ploegData.name;
+      return ploegData.users ?? <GroupDjangoRelation>[];
+    });
+
     const double headerHPadding = 16;
-
-    final List<Tuple2<int, int>> years = yearsFrom1874;
-
-    final ploegIsWedstrijdploeg =
-        ref.watch(wedstrijdPloegenProvider).contains(ploegName);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,26 +57,20 @@ class AlmanakPloegPage extends ConsumerWidget {
                 const Text('Kies een jaar: ').textColor(
                   ploegIsWedstrijdploeg ? null : Colors.grey,
                 ),
-                DropdownButton<int>(
-                  items: years
-                      .map((year) => DropdownMenuItem<int>(
-                            value: year.item1,
-                            child: Text("${year.item1}-${year.item2}"),
-                          ))
-                      .toList(),
-                  value: year,
+                YearSelectorDropdown(
                   onChanged:
                       ploegIsWedstrijdploeg // Only wedstrijdploegen can have multiple years.
                           ? (value) => context.replaceNamed(
                                 "Ploeg",
-                                pathParameters: {"ploeg": ploegName},
+                                pathParameters: {"name": ploegOfficialName},
                                 queryParameters: {
                                   "year": (value ?? year).toString(),
                                 },
+                                extra: ploegName,
                               )
                           : null,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  menuMaxHeight: menuMaxHeight,
+                  selectedYear: year,
+                  officialName: ploegOfficialName,
                 ),
               ].toRow(),
             ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween).padding(
@@ -77,9 +78,9 @@ class AlmanakPloegPage extends ConsumerWidget {
                 ),
           ),
           SliverToBoxAdapter(
-            child: users.when(
-              data: (snapshot) => buildPloegList(snapshot),
-              error: (error, stk) =>
+            child: usersAsync.when(
+              data: (users) => buildPloegList(users),
+              error: (error, stk) => // TODO: handle groupId = null case
                   ErrorCardWidget(errorMessage: error.toString()),
               loading: () => const Center(
                 child: CircularProgressIndicator.adaptive(),
@@ -100,7 +101,7 @@ class AlmanakPloegPage extends ConsumerWidget {
         (doc) => toListTile(doc),
       ),
       if (users.isEmpty)
-        Text("Geen Leeden gevonden voor $ploegName")
+        Text("Geen Leeden gevonden voor ${name ?? ploegOfficialName}")
             .center()
             .padding(all: notFoundPadding),
     ].toColumn();
@@ -113,7 +114,7 @@ class AlmanakPloegPage extends ConsumerWidget {
       firstName: user.firstName,
       lastName: user.lastName,
       subtitle: relation.role,
-      lidnummer: user.identifier.toString(),
+      lidnummer: user.iid.toString(),
     );
   }
 

@@ -338,7 +338,6 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
                     : GroupType.competitieploeg,
                 year: getNjordYear(),
                 dio: dio,
-                ordering: "name",
               );
 
               visibleForGroupIDs.addAll(result.map((group) => group.id!));
@@ -357,7 +356,6 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
                 search: groupString,
                 year: getNjordYear(),
                 dio: dio,
-                ordering: "name",
               );
               visibleForGroupIDs.addAll(result.map((group) => group.id!));
               break;

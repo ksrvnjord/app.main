@@ -20,7 +20,7 @@ class CommissieChoicePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commissies = ref.watch(groupsProvider(
+    final commissies = ref.watch(allGroupsByYearProvider(
       Tuple2(
         "commissie",
         year,
@@ -66,11 +66,12 @@ class CommissieChoicePage extends ConsumerWidget {
                   onTap: () => context.goNamed(
                     "Commissie",
                     pathParameters: {
-                      "name": choices[index].name,
+                      "name": choices[index].officialName,
                     },
                     queryParameters: {
                       "year": year.toString(),
                     },
+                    extra: choices[index].name,
                   ),
                 ),
                 const Divider(height: 0, thickness: 0.5),
