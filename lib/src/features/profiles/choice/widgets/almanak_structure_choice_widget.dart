@@ -12,6 +12,7 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
     required this.title,
     this.imagePath,
     this.imageWidget,
+    this.fit = BoxFit.cover,
   }) : assert(imagePath != null || imageWidget != null,
             'Either imagePath or imageWidget must be provided');
 
@@ -19,6 +20,7 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
   final String pushRoute;
   final String? imagePath;
   final Widget? imageWidget;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,25 +57,9 @@ class AlmanakStructureChoiceWidget extends ConsumerWidget {
                           : AssetImage(imagePath!),
                       width: double.infinity,
                       height: imageHeight,
-                      fit: BoxFit.cover,
+                      fit: fit,
                       isAntiAlias: true,
                     ),
-              child: Image(
-                image: pushRoute == "Bestuur" // Grab bestuurfoto from the cloud
-                    ? bestuurPictureVal.when(
-                        data: (data) => data,
-                        error: (err, __) {
-                          debugPrint(err.toString());
-                          return AssetImage(imagePath);
-                        },
-                        loading: () => AssetImage(imagePath),
-                      )
-                    : AssetImage(imagePath),
-                width: double.infinity,
-                height: imageHeight,
-                fit: fit,
-                isAntiAlias: true,
-              ),
             ),
             Positioned.fill(
               child: DecoratedBox(

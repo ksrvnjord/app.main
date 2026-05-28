@@ -81,7 +81,7 @@ class AlmanakPage extends ConsumerWidget {
                   pushRoute: "Charity",
                   title: "",
                   imagePath: 'assets/images/anne_bo_wit.jpeg',
-                  fit: BoxFit.fitWidth,
+                  // fit: BoxFit.fitWidth,
                 ).expanded(),
               ].toRow(
                 separator: const SizedBox(
