@@ -201,7 +201,7 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
           Positioned(
               left: 0,
               top: CalendarMeasurement.amountOfPixelsTillCurrentTimeFromTop(
-                  widget.currentTime) -
+                      widget.currentTime) -
                   1,
               child: Row(children: [
                 for (int i = 0;
