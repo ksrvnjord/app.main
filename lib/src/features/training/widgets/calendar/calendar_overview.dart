@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/training/api/reservation_object_favorites_notifier.dart';
@@ -25,9 +27,22 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
       initialScrollOffset: CalendarMeasurement.initialPagePosition());
   final ScrollController timesController = ScrollController(
       initialScrollOffset: CalendarMeasurement.initialPagePosition());
+  late DateTime currentTime;
+  late final Timer currentTimeTimer;
 
   @override
   void initState() {
+    currentTime = DateTime.now();
+    currentTimeTimer = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        currentTime = DateTime.now();
+      });
+    });
+
     boatsController.addListener(() {
       if (boatsController.offset != timesController.offset) {
         timesController.jumpTo(boatsController.offset);
@@ -39,6 +54,7 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
 
   @override
   void dispose() {
+    currentTimeTimer.cancel();
     boatsController.dispose();
     super.dispose();
   }
@@ -59,11 +75,11 @@ class _CalendarOverview extends ConsumerState<CalendarOverview> {
         : Stack(
             children: <Widget>[
               SingleChildScrollView(
-                key: UniqueKey(),
                 scrollDirection: Axis.horizontal,
                 child: VerticalReservationScrollViewWithHeader(
                   boatsController: boatsController,
                   date: widget.date,
+                  currentTime: currentTime,
                 ),
               ), // This builds the columns with the boats and the slots.
               TimeScrollView(
