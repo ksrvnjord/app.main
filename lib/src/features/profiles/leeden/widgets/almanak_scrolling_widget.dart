@@ -65,9 +65,15 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _pagingController.refresh();
+  void didUpdateWidget(covariant AlmanakScrollingWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.search != widget.search) {
+      _pagingController.refresh();
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final onTap = widget.onTap;
 
     return RefreshIndicator(
