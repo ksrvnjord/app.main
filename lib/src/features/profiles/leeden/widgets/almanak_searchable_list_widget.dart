@@ -21,11 +21,6 @@ class _AlmanakSearchableListWidgetState
   String _debouncedSearchText = '';
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _debounceTimer?.cancel();
     _search.dispose();

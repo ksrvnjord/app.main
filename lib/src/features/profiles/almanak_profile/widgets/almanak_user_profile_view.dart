@@ -54,7 +54,7 @@ class AlmanakUserProfileView extends ConsumerWidget {
             return Column(
               children: [
                 Text(
-                  '${u.firstName} ${u.lastName}',
+                  '${u.firstName} ${u.lastName}${u.identifier == 23192 ? " ('vo baas)" : ''}',
                   style: textTheme.headlineSmall,
                 ).center(),
                 if (u.birthDate != null && u.birthDate!.isNotEmpty)
