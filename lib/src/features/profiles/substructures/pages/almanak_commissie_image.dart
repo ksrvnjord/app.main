@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 
 class RandomCommissieImage extends ConsumerWidget {
@@ -17,22 +18,24 @@ class RandomCommissieImage extends ConsumerWidget {
     );
 
     return commissiePictureVal.when(
-      data: (data) => Image(
+      data: (data) => FadeInImage(
+        placeholder: Image.asset(Images.placeHolderCommissie).image,
         image: data,
+        fadeOutDuration: const Duration(milliseconds: 600),
+        fadeInDuration: const Duration(milliseconds: 800),
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+      ),
+      error: (err, stk) => Image.asset(
+        Images.placeHolderCommissie,
         width: double.infinity,
         height: double.infinity,
         fit: BoxFit.cover,
         isAntiAlias: true,
       ),
       loading: () => Image.asset(
-        'assets/images/commissies.jpeg',
-        width: double.infinity,
-        height: double.infinity,
-        fit: BoxFit.cover,
-        isAntiAlias: true,
-      ),
-      error: (error, stack) => Image.asset(
-        'assets/images/commissies.jpeg',
+        Images.placeHolderCommissie,
         width: double.infinity,
         height: double.infinity,
         fit: BoxFit.cover,
