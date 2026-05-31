@@ -40,7 +40,7 @@ class _AlmanakSearchableListWidgetState
           });
 
           _debounceTimer?.cancel();
-          _debounceTimer = Timer(const Duration(milliseconds: 100), () {
+          _debounceTimer = Timer(const Duration(milliseconds: 250), () {
             if (!mounted) {
               return;
             }
