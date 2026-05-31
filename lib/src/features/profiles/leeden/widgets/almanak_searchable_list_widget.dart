@@ -42,7 +42,6 @@ class _AlmanakSearchableListWidgetState
           _debounceTimer?.cancel();
           _debounceTimer = Timer(const Duration(milliseconds: 250), () {
             if (!mounted) {
-              debugPrint
               return;
             }
             setState(() {
