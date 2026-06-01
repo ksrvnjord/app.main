@@ -126,7 +126,7 @@ class ManageGroupsPage extends ConsumerWidget {
         offset: name.length,
       ); // If keyboard collapses, it triggers rebuild, which resets the selection. So we need to set it again.
 
-    int indexDropdown = -1;
+    int? indexDropdown;
 
     return Consumer(
       builder: (context, ref, _) {
@@ -159,8 +159,11 @@ class ManageGroupsPage extends ConsumerWidget {
                       .where((group) => !activeGroupsList.contains(group))
                       .toList();
 
-              final selectedGroupIndex =
-                  inactiveGroupsList.indexOf(officialName);
+              final listLength = inactiveGroupsList.length;
+
+              final selectedGroupIndex = (indexDropdown == listLength)
+                  ? listLength
+                  : inactiveGroupsList.indexOf(officialName);
 
               final dropDownLabelText = inactiveGroupsList.isEmpty
                   ? "Alle ${isCommissie ? "commissies" : "ploegen"} zijn ingedeeld!"
@@ -175,20 +178,20 @@ class ManageGroupsPage extends ConsumerWidget {
 
               // Add "other" option
               dropDownItemList.add(
-                DropdownMenuItem(value: -1, child: Text('Anders...')),
+                DropdownMenuItem(value: listLength, child: Text('Anders...')),
               );
 
               return [
                 DropdownButtonFormField<int>(
                   items: dropDownItemList,
-                  value: selectedGroupIndex >= 0 ? selectedGroupIndex : null,
+                  value: selectedGroupIndex <= 0 ? null : selectedGroupIndex,
                   onChanged: (indexValue) {
                     if (indexValue == null) return;
 
                     indexDropdown = indexValue;
 
                     String selectedCommissie = '';
-                    if (indexValue >= 0) {
+                    if (indexValue != listLength) {
                       // Positive numbers exclude "others..."
                       selectedCommissie = inactiveGroupsList[indexValue];
                     }
@@ -221,7 +224,7 @@ class ManageGroupsPage extends ConsumerWidget {
                         .read(djangoGroupNotifierProvider.notifier)
                         .setName(nameValue);
 
-                    if (indexDropdown == -1) {
+                    if (indexDropdown == listLength) {
                       ref
                           .read(djangoGroupNotifierProvider.notifier)
                           .setOfficialName(nameValue);
