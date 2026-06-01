@@ -126,6 +126,8 @@ class ManageGroupsPage extends ConsumerWidget {
         offset: name.length,
       ); // If keyboard collapses, it triggers rebuild, which resets the selection. So we need to set it again.
 
+    int indexDropdown = -1;
+
     return Consumer(
       builder: (context, ref, _) {
         final notifierProvider = ref.watch(djangoGroupNotifierProvider);
@@ -152,9 +154,8 @@ class ManageGroupsPage extends ConsumerWidget {
                   [];
 
               /// List of groups not yet chosen
-              final inactiveGroupsList = isCommissie
-                  ? commissieList
-                  : wedstrijdPloegenList
+              final inactiveGroupsList =
+                  (isCommissie ? commissieList : wedstrijdPloegenList)
                       .where((group) => !activeGroupsList.contains(group))
                       .toList();
 
@@ -165,18 +166,33 @@ class ManageGroupsPage extends ConsumerWidget {
                   ? "Alle ${isCommissie ? "commissies" : "ploegen"} zijn ingedeeld!"
                   : "Kies een ${isCommissie ? "commissie" : "ploeg"}";
 
+              final dropDownItemList = inactiveGroupsList
+                  .map((name) => DropdownMenuItem<int>(
+                        value: inactiveGroupsList.indexOf(name),
+                        child: Text(name),
+                      ))
+                  .toList();
+
+              // Add "other" option
+              dropDownItemList.add(
+                DropdownMenuItem(value: -1, child: Text('Anders...')),
+              );
+
               return [
                 DropdownButtonFormField<int>(
-                  items: inactiveGroupsList
-                      .map((name) => DropdownMenuItem<int>(
-                            value: inactiveGroupsList.indexOf(name),
-                            child: Text(name),
-                          ))
-                      .toList(),
+                  items: dropDownItemList,
                   value: selectedGroupIndex >= 0 ? selectedGroupIndex : null,
                   onChanged: (indexValue) {
                     if (indexValue == null) return;
-                    final selectedCommissie = inactiveGroupsList[indexValue];
+
+                    indexDropdown = indexValue;
+
+                    String selectedCommissie = '';
+                    if (indexValue >= 0) {
+                      // Positive numbers exclude "others..."
+                      selectedCommissie = inactiveGroupsList[indexValue];
+                    }
+
                     nameController.text = selectedCommissie;
                     nameController.selection = TextSelection.collapsed(
                       offset: selectedCommissie.length,
@@ -200,9 +216,17 @@ class ManageGroupsPage extends ConsumerWidget {
                       labelText: 'Zichtbare naam',
                       border: OutlineInputBorder()),
                   autocorrect: false,
-                  onChanged: (nameValue) => ref
-                      .read(djangoGroupNotifierProvider.notifier)
-                      .setName(nameValue),
+                  onChanged: (nameValue) {
+                    ref
+                        .read(djangoGroupNotifierProvider.notifier)
+                        .setName(nameValue);
+
+                    if (indexDropdown == -1) {
+                      ref
+                          .read(djangoGroupNotifierProvider.notifier)
+                          .setOfficialName(nameValue);
+                    }
+                  },
                 )
               ].toColumn(
                 mainAxisSize: MainAxisSize.min,
