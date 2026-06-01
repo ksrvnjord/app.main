@@ -184,7 +184,8 @@ class ManageGroupsPage extends ConsumerWidget {
               return [
                 DropdownButtonFormField<int>(
                   items: dropDownItemList,
-                  value: selectedGroupIndex.isNegative ? null : selectedGroupIndex,
+                  value:
+                      selectedGroupIndex.isNegative ? null : selectedGroupIndex,
                   onChanged: (indexValue) {
                     if (indexValue == null) return;
 
