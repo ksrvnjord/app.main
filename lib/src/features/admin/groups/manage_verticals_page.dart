@@ -45,7 +45,7 @@ class ManageVerticalsPage extends ConsumerWidget {
       const SnackBar(content: Text("Verticaal is aangemaakt.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupsProvider);
+    ref.invalidate(verticalsProvider("Verticaal"));
   }
 
   Widget _buildCreateGroupBottomSheet(

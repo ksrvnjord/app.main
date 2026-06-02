@@ -110,15 +110,13 @@ class PloegChoicePage extends ConsumerWidget {
                     }
 
                     // ignore: avoid-ignoring-return-values
-                    context.pushNamed(
-                      "Ploeg",
-                      pathParameters: {"name": ploeg.officialname},
-                      queryParameters: {
-                        "year": ploegYear.toString(),
-                        "type": ploegType,
-                      },
-                      extra: ploeg.name
-                    );
+                    context.pushNamed("Ploeg",
+                        pathParameters: {"name": ploeg.officialName},
+                        queryParameters: {
+                          "year": ploegYear.toString(),
+                          "type": ploegType,
+                        },
+                        extra: ploeg.name);
                   },
                 ),
               ),

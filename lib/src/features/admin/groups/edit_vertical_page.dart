@@ -48,7 +48,7 @@ class EditVerticalPage extends ConsumerWidget {
       const SnackBar(content: Text("Ploeg is verwijderd van de groep.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(groupByIdProvider(ploegId));
+    ref.invalidate(groupByIdFutureProvider(ploegId));
   }
 
   Future<void> Function(int) addPloegToVerticaalCallBack(
@@ -85,7 +85,7 @@ class EditVerticalPage extends ConsumerWidget {
       ));
 
       // ignore: avoid-ignoring-return-values
-      ref.invalidate(groupByIdProvider(ploegId));
+      ref.invalidate(groupByIdFutureProvider(ploegId));
       ref.invalidate(ploegenProvider(verticaalId));
     };
   }
@@ -146,7 +146,7 @@ class EditVerticalPage extends ConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Verticaal is verwijderd."),
               ));
-              ref.invalidate(groupsProvider);
+              ref.invalidate(verticalsProvider("Verticaal"));
               ref.invalidate(ploegenProvider(verticaalId));
               context.pop();
             },
@@ -159,12 +159,6 @@ class EditVerticalPage extends ConsumerWidget {
         data: (ploegen) {
           return CustomScrollView(
             slivers: [
-              // Header for the SliverList
-              const SliverToBoxAdapter(
-                child: ListTile(
-                  title: Text("Ploegen"),
-                ),
-              ),
               if (ploegen.isEmpty)
                 const SliverFillRemaining(
                   child: Center(
