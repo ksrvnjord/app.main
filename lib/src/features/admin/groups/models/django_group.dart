@@ -15,7 +15,13 @@ class DjangoGroup {
 
   @JsonKey(includeFromJson: true, includeToJson: false)
   final List<GroupDjangoRelation>? users;
+
+  /// Gebruik [name] enkel voor UI, anders [officialName]
   final String name;
+
+  /// Gebruik [officialName] voor vergelijken van strings
+  @JsonKey(name: "official_name")
+  final String officialName;
 
   @JsonKey(
     toJson: _typeToJson,
@@ -39,11 +45,13 @@ class DjangoGroup {
     this.id,
     this.users,
     this.rights = const [],
+    String?
+        officialName, //TODO: Should be required but users/{uderid} endpoint does not return this yet
     this.verticaal_id,
     required this.name,
     required this.type,
     required this.year,
-  });
+  }) : officialName = officialName ?? name;
 
   Map<String, dynamic> toJson() => _$DjangoGroupToJson(this);
 
@@ -51,6 +59,7 @@ class DjangoGroup {
     int? id,
     List<GroupDjangoRelation>? users,
     String? name,
+    String? officialName,
     String? type,
     int? year,
     List<String>? rights,
@@ -61,6 +70,7 @@ class DjangoGroup {
         users: users ?? this.users,
         rights: rights ?? this.rights,
         name: name ?? this.name,
+        officialName: officialName ?? this.officialName,
         type: type ?? this.type,
         year: year ?? this.year,
         verticaal_id: verticaal_id ?? this.verticaal_id,
@@ -77,11 +87,18 @@ class DjangoGroup {
 
 class DjangoGroupNotifier extends Notifier<DjangoGroup> {
   @override
-  DjangoGroup build() =>
-      DjangoGroup(name: "", type: "Competitieploeg", year: getNjordYear());
+  DjangoGroup build() => DjangoGroup(
+      // officialName: "",
+      name: "",
+      type: "Competitieploeg",
+      year: getNjordYear());
 
   void setName(String name) {
     state = state.copyWith(name: name);
+  }
+
+  void setOfficialName(String officialName) {
+    state = state.copyWith(officialName: officialName);
   }
 
   void setType(String type) {
