@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/verticalen_choice_list_tile.dart';
 
 class VerticalenChoicePage extends ConsumerStatefulWidget {
@@ -8,12 +9,10 @@ class VerticalenChoicePage extends ConsumerStatefulWidget {
     super.key,
     required this.title,
     required this.gender,
-    required this.choices,
   });
 
   final String title;
   final String gender;
-  final List<String> choices;
 
   @override
   ConsumerState<VerticalenChoicePage> createState() =>
@@ -26,24 +25,16 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
   @override
   void initState() {
     super.initState();
-    selectedGender = (widget.gender == 'Heren' || widget.gender == 'Dames')
-        ? widget.gender
-        : (widget.gender == 'Mannen'
-            ? 'Heren'
-            : (widget.gender == 'Vrouwen' ? 'Dames' : 'Heren'));
+    selectedGender = widget.gender;
   }
 
   @override
   Widget build(BuildContext context) {
-    final effectiveGender = selectedGender;
-
-    final genderedChoices = widget.choices
-        .where((choice) => choice.startsWith(effectiveGender))
-        .toList();
+    final verticalenVal = ref.watch(verticalenProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kies een verticaal'),
+        title: Text(widget.title),
       ),
       body: Column(
         children: [
@@ -56,37 +47,67 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ChoiceChip(
                       label: Text(type),
-                      onSelected: (selected) {
-                        if (selected) {
-                          setState(() {
-                            selectedGender = type;
-                          });
-                          context.goNamed(
-                            'Verticalen',
-                            queryParameters: {'gender': type},
-                          );
-                        }
-                      },
                       selected: type == selectedGender,
+                      onSelected: (selected) {
+                        if (!selected) {
+                          return;
+                        }
+
+                        setState(() {
+                          selectedGender = type;
+                        });
+
+                        // ignore: avoid-ignoring-return-values
+                        context.goNamed(
+                          'Verticalen',
+                          queryParameters: {'gender': type},
+                        );
+                      },
                     ),
                   ),
               ],
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: genderedChoices.length,
-              itemBuilder: (context, index) => Column(
-                children: [
-                  VerticalenChoiceListTile(
-                    name: genderedChoices[index],
-                    onTap: () => context.goNamed(
-                      "Verticaal",
-                      pathParameters: {"name": genderedChoices[index]},
+            child: verticalenVal.when(
+              data: (verticalen) {
+                final filteredVerticalen = verticalen
+                    .where(
+                      (vertical) => vertical['name'].startsWith(selectedGender),
+                    )
+                    .toList();
+
+                if (filteredVerticalen.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'Geen verticalen gevonden voor $selectedGender.',
                     ),
-                  ),
-                  const Divider(height: 0, thickness: 0.5),
-                ],
+                  );
+                }
+
+                return ListView.separated(
+                  itemCount: filteredVerticalen.length,
+                  separatorBuilder: (_, __) => const Divider(height: 0),
+                  itemBuilder: (context, index) {
+                    final vertical = filteredVerticalen[index];
+                    final verticalId = vertical['id'];
+                    final verticalName = vertical['name'];
+
+                    return VerticalenChoiceListTile(
+                      name: verticalName,
+                      onTap: () => context.goNamed(
+                        'Verticaal',
+                        pathParameters: {'id': verticalId.toString()},
+                      ),
+                    );
+                  },
+                );
+              },
+              error: (error, stackTrace) => Center(
+                child: Text(error.toString()),
+              ),
+              loading: () => const Center(
+                child: CircularProgressIndicator.adaptive(),
               ),
             ),
           ),

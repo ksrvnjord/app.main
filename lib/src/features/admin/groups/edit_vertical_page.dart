@@ -24,8 +24,8 @@ class EditVerticalPage extends ConsumerWidget {
     try {
       // ignore: avoid-ignoring-return-values
       await dio.patch(
-            "/api/v2/groups/$ploegId/",
-            data: {"verticaal_id": null},
+        "/api/v2/groups/$ploegId/",
+        data: {"verticaal_id": null},
       );
     } catch (e) {
       if (ctx.mounted) {
@@ -49,7 +49,6 @@ class EditVerticalPage extends ConsumerWidget {
     );
     // ignore: avoid-ignoring-return-values
     ref.invalidate(groupByIdProvider(ploegId));
-
   }
 
   Future<void> Function(int) addPloegToVerticaalCallBack(
@@ -57,11 +56,7 @@ class EditVerticalPage extends ConsumerWidget {
     BuildContext ctx,
   ) {
     return (int ploegId) async {
-      debugPrint(
-        '[EditVerticalPage] addPloegToVerticaalCallBack start: verticaalId=$verticaalId, ploegId=$ploegId',
-      );
       final dio = ref.read(dioProvider);
-
       try {
         // ignore: avoid-ignoring-return-values
         await dio.patch(
@@ -78,7 +73,6 @@ class EditVerticalPage extends ConsumerWidget {
             ),
           ),
         );
-
         return;
       }
 
@@ -93,8 +87,6 @@ class EditVerticalPage extends ConsumerWidget {
       // ignore: avoid-ignoring-return-values
       ref.invalidate(groupByIdProvider(ploegId));
       ref.invalidate(ploegenProvider(verticaalId));
-      if (!ctx.mounted) return;
-      ctx.pop();
     };
   }
 

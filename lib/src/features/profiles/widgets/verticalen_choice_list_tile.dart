@@ -8,7 +8,7 @@ class VerticalenChoiceListTile extends ConsumerWidget {
     super.key,
     required this.name,
     //required this.imageProvider, // The imageProvider for the choice.
-    required this.onTap,
+    this.onTap,
   });
 
   static const imageWidth = 80.0;
@@ -17,7 +17,7 @@ class VerticalenChoiceListTile extends ConsumerWidget {
   static const iconHorizontalPadding = 16.0;
   final String name;
 
-  final void Function() onTap;
+  final void Function()? onTap;
   //final AsyncValue<ImageProvider<Object>> imageProvider;
 
   @override
@@ -27,36 +27,39 @@ class VerticalenChoiceListTile extends ConsumerWidget {
     // ignore: arguments-ordering
     return InkWell(
       onTap: onTap,
-      child: [
-        FadeInImage(
-          placeholder: Image.asset(Images.placeholderProfilePicture).image,
-          /*image: imageProvider.when(
+      child: Opacity(
+        opacity: onTap == null ? 0.5 : 1,
+        child: [
+          FadeInImage(
+            placeholder: Image.asset(Images.placeholderProfilePicture).image,
+            /*image: imageProvider.when(
             data: (data) => data,
             error: (err, stk) =>
                 Image.asset(Images.placeholderProfilePicture).image,
             loading: () => Image.asset(Images.placeholderProfilePicture).image,
           ),*/
-          image: Image.asset(Images.placeholderProfilePicture).image,
-          fadeOutDuration: const Duration(milliseconds: 600),
-          fadeInDuration: const Duration(milliseconds: 800),
-          width: imageWidth,
-          height: imageHeight,
-          fit: BoxFit.cover,
-          // ignore: no-equal-arguments
-          placeholderFit: BoxFit.cover,
-        ).padding(right: imageRightPadding),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.titleMedium,
-          maxLines: maxLines,
-        ).expanded(),
-        Icon(
-          Icons.arrow_forward_ios,
-          color: Theme.of(context).colorScheme.primary,
-        ).padding(horizontal: iconHorizontalPadding),
-      ].toRow(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+            image: Image.asset(Images.placeholderProfilePicture).image,
+            fadeOutDuration: const Duration(milliseconds: 600),
+            fadeInDuration: const Duration(milliseconds: 800),
+            width: imageWidth,
+            height: imageHeight,
+            fit: BoxFit.cover,
+            // ignore: no-equal-arguments
+            placeholderFit: BoxFit.cover,
+          ).padding(right: imageRightPadding),
+          Text(
+            name,
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: maxLines,
+          ).expanded(),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: Theme.of(context).colorScheme.primary,
+          ).padding(horizontal: iconHorizontalPadding),
+        ].toRow(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
       ),
     );
   }

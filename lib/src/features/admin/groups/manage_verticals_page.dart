@@ -29,13 +29,12 @@ class ManageVerticalsPage extends ConsumerWidget {
       if (ctx.mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(ctx).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
               "Het is niet gelukt om de verticaal aan te maken.",
             ),
           ),
         );
-
         return;
       }
     }

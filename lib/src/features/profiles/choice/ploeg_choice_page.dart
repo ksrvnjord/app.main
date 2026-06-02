@@ -40,27 +40,35 @@ class PloegChoicePage extends ConsumerWidget {
             for (final type in ['Competitieploeg', 'Wedstrijdsectie'])
               ChoiceChip(
                 label: Text(type),
-                onSelected: (selected) => context.goNamed(
-                  'Ploegen',
-                  queryParameters: {
-                    'year': ploegYear.toString(),
-                    'type': type,
-                  },
-                  extra: onTap,
-                ),
+                onSelected: (selected) {
+                  final routeBuilder =
+                      onTap != null ? context.replaceNamed : context.goNamed;
+                  routeBuilder(
+                    'Ploegen',
+                    queryParameters: {
+                      'year': ploegYear.toString(),
+                      'type': type,
+                    },
+                    extra: onTap,
+                  );
+                },
                 selected: type == ploegType,
               ),
             [
               const Text("Kies een jaar:"),
               YearSelectorDropdown(
-                onChanged: (selectedYear) => context.goNamed(
-                  "Ploegen",
-                  queryParameters: {
-                    'year': selectedYear.toString(),
-                    'type': ploegType,
-                  },
-                  extra: onTap,
-                ),
+                onChanged: (selectedYear) {
+                  final routeBuilder =
+                      onTap != null ? context.replaceNamed : context.goNamed;
+                  routeBuilder(
+                    "Ploegen",
+                    queryParameters: {
+                      'year': selectedYear.toString(),
+                      'type': ploegType,
+                    },
+                    extra: onTap,
+                  );
+                },
                 selectedYear: ploegYear,
               ),
             ].toRow(),
@@ -88,17 +96,14 @@ class PloegChoicePage extends ConsumerWidget {
                   // ignore: prefer-extracting-callbacks
                   onTap: () async {
                     if (onTap != null) {
-                      debugPrint(
-                        '[PloegChoicePage] add callback invoked for ploegId=${ploeg.id}, name=${ploeg.name}',
-                      );
                       await onTap!(int.parse(ploeg.id.toString()));
-
+                      if (!context.mounted) return;
+                      if (context.canPop()) {
+                        context.pop();
+                      }
                       return;
                     }
 
-                    debugPrint(
-                      '[PloegChoicePage] navigating to Ploeg page for ploegId=${ploeg.id}, name=${ploeg.name}',
-                    );
                     // ignore: avoid-ignoring-return-values
                     context.pushNamed(
                       "Ploeg",
