@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_vertical_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/extra/coffee_manual_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
@@ -46,6 +48,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/verticalen_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/download_profile_pictures_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/upload_aspi_profile_pictures.dart';
@@ -71,6 +74,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_verticalen_page.dart';
 import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
@@ -700,6 +704,9 @@ abstract final // ignore: prefer-single-declaration-per-file
               ploegType: state.uri.queryParameters['type'] == null
                   ? "Competitieploeg"
                   : state.uri.queryParameters['type']!,
+              onTap: state.extra is Future<void> Function(int)
+                  ? state.extra as Future<void> Function(int)
+                  : null,
             ),
             name: "Ploegen",
           ),
@@ -778,8 +785,32 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+          path: "verticalen",
+          name: "Verticalen",
+          pageBuilder: (context, state) => _getPage(
+            child: VerticalenChoicePage(
+              title: "Verticalen",
+              gender: state.uri.queryParameters['gender'] ?? 'Dames',
+            ),
+            name: "Verticalen",
+          ),
+          routes: [
+            _route(
+              path: ":id",
+              name: "Verticaal",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakVerticalenPage(
+                  id: int.parse(state.pathParameters['id']!),
+                ),
+                name: "Verticaal",
+              ),
+            ),
+          ],
+        ),
       ],
     ),
+
     _route(
       path: "/lid/:id",
       name: "Lid",
@@ -970,6 +1001,28 @@ abstract final // ignore: prefer-single-declaration-per-file
                             type: state.uri.queryParameters['type'],
                           ),
                           name: "Edit Substructure"))
+                ]),
+            _route(
+                path: 'manage-verticals',
+                name: 'Manage Verticalen',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageVerticalsPage(),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                    path: ":verticaalId",
+                    name: "Edit Vertical",
+                    pageBuilder: (context, state) => _getPage(
+                      child: EditVerticalPage(
+                        verticaalId:
+                            int.parse(state.pathParameters['verticaalId']!),
+                        verticaalName:
+                            state.uri.queryParameters['verticaalName']!,
+                      ),
+                      name: "Edit Vertical",
+                    ),
+                  ),
                 ]),
           ],
         ),

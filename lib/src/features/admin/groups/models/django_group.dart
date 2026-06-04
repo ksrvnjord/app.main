@@ -30,6 +30,9 @@ class DjangoGroup {
   final String type;
   final int year;
 
+  @JsonKey(name: 'verticaal_id')
+  final int? verticaal_id;
+
   // ignore: unused-code
   final List<String> rights;
 
@@ -44,6 +47,7 @@ class DjangoGroup {
     this.rights = const [],
     String?
         officialName, //TODO: Should be required but users/{uderid} endpoint does not return this yet
+    this.verticaal_id,
     required this.name,
     required this.type,
     required this.year,
@@ -59,6 +63,7 @@ class DjangoGroup {
     String? type,
     int? year,
     List<String>? rights,
+    int? verticaal_id,
   }) =>
       DjangoGroup(
         id: id ?? this.id,
@@ -68,6 +73,7 @@ class DjangoGroup {
         officialName: officialName ?? this.officialName,
         type: type ?? this.type,
         year: year ?? this.year,
+        verticaal_id: verticaal_id ?? this.verticaal_id,
       );
 
   static String? _typeToJson(String type) => type.toLowerCase();
