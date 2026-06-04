@@ -62,16 +62,6 @@ class VCPPage extends ConsumerWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(
                 horizontal: wrapSpacing, vertical: wrapSpacing / 2),
-            decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .secondaryContainer
-                  .withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
-              ),
-            ),
             child: ExpansionTile(
               leading: Icon(
                 Icons.info_outline,
@@ -81,7 +71,9 @@ class VCPPage extends ConsumerWidget {
                 "Belangrijk",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              shape: const Border(),
+              shape: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+              ),
               dense: true,
               tilePadding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
@@ -111,6 +103,9 @@ class VCPPage extends ConsumerWidget {
         ),
       ),
       child: ExpansionTile(
+        shape: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+        ),
         title: Row(
           children: [
             Expanded(
@@ -224,7 +219,7 @@ class VCPPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Melding maken"),
+        title: const Text("Melding"),
       ),
       body: Column(
         children: [
@@ -236,11 +231,12 @@ class VCPPage extends ConsumerWidget {
                 Text(
                   "Is er iets vervelends gebeurd op Njord, of zit je niet lekker in je vel? Hier kan je terecht!",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                     fontSize: fontSize,
                   ),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 10.0),
                 Text(
                   "Hier vind je de verschillende manieren om dit te bespreken of te melden. Njord biedt interne hulp en de externe hulp staat voor waar je buiten Njord terecht kan.",
                   textAlign: TextAlign.center,
@@ -254,7 +250,7 @@ class VCPPage extends ConsumerWidget {
                 bottom: wrapSpacing * 2,
                 right: wrapSpacing),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (final contactOption in ["Interne hulp", "Externe hulp"])
                   Padding(
@@ -280,7 +276,6 @@ class VCPPage extends ConsumerWidget {
               child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 16),
                 contactpersonenInfo.when(
                   data: (data) {
                     if (contactChoice) {
@@ -306,6 +301,9 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ),
                               child: ExpansionTile(
+                                shape: Border.all(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                                 title: Text(entry.key),
                                 children: [
                                   // FIXME: String matching #2 :((
