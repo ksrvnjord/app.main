@@ -5,58 +5,12 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dar
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/django_group.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_types.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/data/years_from_1874.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
-
-const List<String> commissieList = [
-  'Afroeicommissie',
-  'Almanakcommissie',
-  'Appcommissie',
-  'Archiefcommissie',
-  'Blasphemycommissie',
-  'Buffetcommissie',
-  'Competitiecommissie',
-  'Diskjockeycommissie',
-  'Duurzaamheidscommissie',
-  'Eerstejaarscommissie',
-  'Extern Roeiencommissie',
-  'Externe Commissie',
-  'Fotocommissie',
-  'Fuifroeicommissie',
-  'Galacommissie',
-  'Goede Doelencommissie',
-  'Grautgilde der Baufakkerei',
-  'Haringpartij Comité',
-  'Hollandiacommissie',
-  'Introductiecommissie',
-  'Kalendercommissie',
-  'Kookcluster',
-  'Kookcommissie',
-  'Magazinecommissie',
-  'Materieelgroep',
-  'Meerderejaarscommissie',
-  'Merchandisecommissie',
-  // 'Njord Najaarscommissie',
-  // 'NSRF Slotwedstrijden',
-  // 'Pascommissie', //RIP
-  'Petit Comité',
-  'Promotiecommissie',
-  'Ringvaartcommissie',
-  'Rowing Blindcommissie',
-  'Sjaarzencommissie',
-  'Skireiscommissie',
-  'Talentwervingscommissie',
-  'Tapcommissie',
-  'Tentroeicommissie',
-  'TOP-commissie',
-  'Twaarzencommissie',
-  'Voorjaarsafroeicommissie',
-  'Vrouwencomité',
-  'Zwanehalscommissie',
-];
 
 const List<String> wedstrijdPloegenList = [
   // 'Eerstejaars Lichte Dames',
@@ -126,12 +80,17 @@ class ManageGroupsPage extends ConsumerWidget {
         offset: name.length,
       ); // If keyboard collapses, it triggers rebuild, which resets the selection. So we need to set it again.
 
+    int? indexDropdown;
+
     return Consumer(
       builder: (context, ref, _) {
         final notifierProvider = ref.watch(djangoGroupNotifierProvider);
         final year = notifierProvider.year;
         final type = notifierProvider.type;
         final officialName = notifierProvider.officialName;
+
+        //final commissiesVal = ref.watch(commissieNamesProvider);
+
         const double dropdownMenuHeight = 240;
 
         const double cardPadding = 16;
@@ -145,6 +104,8 @@ class ManageGroupsPage extends ConsumerWidget {
               final groupsVal =
                   ref.watch(allGroupsByYearProvider(Tuple2(type, year)));
 
+              final commissiesVal = ref.watch(commissieNamesProvider);
+
               /// List of groups already in the database
               final activeGroupsList = groupsVal.whenData((data) {
                     return data.map((group) => group.officialName).toList();
@@ -152,31 +113,53 @@ class ManageGroupsPage extends ConsumerWidget {
                   [];
 
               /// List of groups not yet chosen
-              final inactiveGroupsList = isCommissie
-                  ? commissieList
-                  : wedstrijdPloegenList
-                      .where((group) => !activeGroupsList.contains(group))
-                      .toList();
+              final inactiveGroupsList = (isCommissie
+                      ? commissiesVal.whenData((data) {
+                            return data.map((commissie) => commissie).toList();
+                          }).value ??
+                          []
+                      : wedstrijdPloegenList)
+                  .where((group) => !activeGroupsList.contains(group))
+                  .toList();
 
-              final selectedGroupIndex =
-                  inactiveGroupsList.indexOf(officialName);
+              final listLength = inactiveGroupsList.length;
+
+              final selectedGroupIndex = (indexDropdown == listLength)
+                  ? listLength
+                  : inactiveGroupsList.indexOf(officialName);
 
               final dropDownLabelText = inactiveGroupsList.isEmpty
                   ? "Alle ${isCommissie ? "commissies" : "ploegen"} zijn ingedeeld!"
                   : "Kies een ${isCommissie ? "commissie" : "ploeg"}";
 
+              final dropDownItemList = inactiveGroupsList
+                  .map((name) => DropdownMenuItem<int>(
+                        value: inactiveGroupsList.indexOf(name),
+                        child: Text(name),
+                      ))
+                  .toList();
+
+              // Add "other" option
+              dropDownItemList.add(
+                DropdownMenuItem(value: listLength, child: Text('Anders...')),
+              );
+
               return [
                 DropdownButtonFormField<int>(
-                  items: inactiveGroupsList
-                      .map((name) => DropdownMenuItem<int>(
-                            value: inactiveGroupsList.indexOf(name),
-                            child: Text(name),
-                          ))
-                      .toList(),
-                  value: selectedGroupIndex >= 0 ? selectedGroupIndex : null,
+                  items: dropDownItemList,
+                  value:
+                      selectedGroupIndex.isNegative ? null : selectedGroupIndex,
                   onChanged: (indexValue) {
                     if (indexValue == null) return;
-                    final selectedCommissie = inactiveGroupsList[indexValue];
+
+                    indexDropdown = indexValue;
+
+                    String selectedCommissie = '';
+                    if (indexValue != listLength) {
+                      // Positive numbers exclude "others..."
+                      selectedCommissie = inactiveGroupsList[indexValue];
+                    }
+
                     nameController.text = selectedCommissie;
                     nameController.selection = TextSelection.collapsed(
                       offset: selectedCommissie.length,
@@ -200,9 +183,17 @@ class ManageGroupsPage extends ConsumerWidget {
                       labelText: 'Zichtbare naam',
                       border: OutlineInputBorder()),
                   autocorrect: false,
-                  onChanged: (nameValue) => ref
-                      .read(djangoGroupNotifierProvider.notifier)
-                      .setName(nameValue),
+                  onChanged: (nameValue) {
+                    ref
+                        .read(djangoGroupNotifierProvider.notifier)
+                        .setName(nameValue);
+
+                    if (indexDropdown == listLength) {
+                      ref
+                          .read(djangoGroupNotifierProvider.notifier)
+                          .setOfficialName(nameValue);
+                    }
+                  },
                 )
               ].toColumn(
                 mainAxisSize: MainAxisSize.min,
