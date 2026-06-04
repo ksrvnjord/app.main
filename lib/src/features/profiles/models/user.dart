@@ -75,7 +75,7 @@ class User {
           .year); // 243 days = 8 months we work from september.
 
   bool get isAppCo =>
-      ['21203', '18031', '18257', '20198', '22195', '23292', '23207'].contains(
+      ['21203', '18031', '18257', '20198', '22195', '23292', '23207', '23226'].contains(
           identifier.toString()); // Used for testing purposes and AppCo rights.
   bool get isBestuur =>
       bestuursFunctie != null; // Used to give bestuur more rights in-app.

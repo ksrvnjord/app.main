@@ -66,7 +66,7 @@ packages:
     source: hosted
     version: "2.11.0"
   autologin:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: autologin
       sha256: "587de87b3c71351ecc9465c3d3a439a5d3b47a44ddefae207bfe01e66d5026d3"
