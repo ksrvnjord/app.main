@@ -87,7 +87,6 @@ dependencies:
   collection: any
 dependency_overrides:
   package_info_plus: ">=4.1.0 <8.0.0"
-  autologin_android: ^1.0.0
 
 dev_dependencies:
   flutter_test:

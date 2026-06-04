@@ -74,7 +74,7 @@ packages:
     source: hosted
     version: "1.0.1"
   autologin_android:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: autologin_android
       sha256: "56e53a1b24c4ee7bf6b03a7a65fbcc291df45788b7091376c58b56a3fb5e5c05"
