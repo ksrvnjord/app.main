@@ -105,7 +105,14 @@ class AlmanakCommissieEditPageState
               if (_galleryFile == null) ...[
                 TextButton(
                   onPressed: () => unawaited(_showPicker(prevContext: context)),
-                  child: const Text("Afbeelding toevoegen/aanpassen"),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.image),
+                      SizedBox(width: 8),
+                      Text("Afbeelding toevoegen/aanpassen"),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 16.0,

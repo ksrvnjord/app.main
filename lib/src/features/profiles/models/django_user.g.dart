@@ -23,6 +23,9 @@ DjangoUser _$DjangoUserFromJson(Map<String, dynamic> json) => DjangoUser(
       knrb: json['knrb'] == null
           ? null
           : KNRB.fromJson(json['knrb'] as Map<String, dynamic>),
+      memberships: (json['memberships'] as List<dynamic>)
+          .map((e) => Membership.fromJson(e as Map<String, dynamic>))
+          .toList(),
       permissions: (json['permissions'] as List<dynamic>)
           .map((e) => PermissionEntry.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -52,5 +55,6 @@ Map<String, dynamic> _$DjangoUserToJson(DjangoUser instance) =>
       'knrb': instance.knrb,
       'info': instance.info,
       'groups': instance.groups,
+      'memberships': instance.memberships,
       'permissions': instance.permissions,
     };

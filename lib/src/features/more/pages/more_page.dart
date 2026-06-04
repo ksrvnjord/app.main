@@ -45,37 +45,65 @@ class MorePage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: bottomPagePadding),
         children: [
-          ...optionRouteMap.entries.map(
-            // Make a list of options to display and navigate to.
-            // Each option is a tile with a divider below it.
-            (entry) => [
-              MoreListTile(label: entry.key, routeName: entry.value),
-              const Divider(height: 0, thickness: dividerThickness),
-            ].toColumn(),
+          currentUserVal.when(
+            data: (currentUser) {
+              if (!currentUser.isActiveAspirantLid &&
+                  !currentUser.isActiveLenteLid) {
+                return Column(children: [
+                  ...optionRouteMap.entries.map(
+                    // Make a list of options to display and navigate to.
+                    // Each option is a tile with a divider below it.
+                    (entry) => [
+                      MoreListTile(label: entry.key, routeName: entry.value),
+                      const Divider(height: 0, thickness: dividerThickness)
+                    ].toColumn(),
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: "Ga naar de Webshop",
+                    url: "https://k-s-r-v-njord.myshopify.com/",
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: "Ga naar de Intekenlijst Instaposts",
+                    url:
+                        "https://docs.google.com/spreadsheets/d/1ZAgbQDw5lGytEecWfxpp4vI_7DI-y_15/edit?gid=939006860#gid=939006860",
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Lidmaatschap opzeggen',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLSc156xC-X7msJ36QkzK45Z4JKQ0y5R0PA2eYdoDAb2CP62zqA/viewform?usp=header',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Geïnteresseerd lid worden',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLSfNoMa1cstIHQgTbgmh5J8vRkB7wz27O0jGdIWVZob9VUE8aw/viewform?usp=header',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Declareer Kosten aan de Quaestor',
+                    url:
+                        'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                  const MoreLinkTile(
+                    label: 'Handige Linkjes - Linktree',
+                    url: 'https://linktr.ee/ksrvnjord_intern',
+                  ),
+                  const Divider(height: 0, thickness: dividerThickness),
+                ]);
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+            error: (e, s) {
+              FirebaseCrashlytics.instance.recordError(e, s);
+              return const SizedBox.shrink();
+            },
+            loading: () => const SizedBox.shrink(),
           ),
-          const Divider(height: 0, thickness: dividerThickness),
-          const MoreLinkTile(
-            label: "Ga naar de Webshop",
-            url: "https://k-s-r-v-njord.myshopify.com/",
-          ),
-          const Divider(height: 0, thickness: dividerThickness),
-          const MoreLinkTile(
-            label: "Ga naar de Intekenlijst Instaposts",
-            url:
-                "https://docs.google.com/spreadsheets/d/11xGtoqBiAfQCzrT3Gvl5wgXYDWOu8N6bOpWk3gwjFp4/edit#gid=0",
-          ),
-          const Divider(height: 0, thickness: dividerThickness),
-          const MoreLinkTile(
-            label: 'Declareer Kosten aan de Quaestor',
-            url:
-                'https://docs.google.com/forms/d/e/1FAIpQLScATwglVyMrpnwpuxRH7ct74CtsZ6CXaHs_UOyvQNkz9Z93Qg/viewform?usp=dialog',
-          ),
-          const Divider(height: 0, thickness: dividerThickness),
-          const MoreLinkTile(
-            label: 'Handige Linkjes - Linktree',
-            url: 'https://linktr.ee/ksrvnjord_intern',
-          ),
-          const Divider(height: 0, thickness: dividerThickness),
         ],
       ),
       // Floatingaction button to navigate to admin page.

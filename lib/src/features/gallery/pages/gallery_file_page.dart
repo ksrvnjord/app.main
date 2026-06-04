@@ -40,6 +40,7 @@ class GalleryFilePage extends ConsumerWidget {
                   ),
                 ],
                 subject: "Foto",
+                sharePositionOrigin: const Rect.fromLTWH(0, 0, 10, 10),
               ).ignore(),
               icon: const Icon(Icons.share),
             ),
