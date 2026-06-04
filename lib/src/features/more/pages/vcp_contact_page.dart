@@ -62,7 +62,6 @@ class VCPPage extends ConsumerWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(
                 horizontal: wrapSpacing, vertical: wrapSpacing / 2),
-
             child: ExpansionTile(
               leading: Icon(
                 Icons.info_outline,
@@ -74,7 +73,7 @@ class VCPPage extends ConsumerWidget {
               ),
 
               shape: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               dense: true,
               tilePadding:
@@ -105,9 +104,9 @@ class VCPPage extends ConsumerWidget {
         ),
       ),
       child: ExpansionTile(
-      shape: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+        shape: Border.all(
+          color: Theme.of(context).colorScheme.primary,
+        ),
         title: Row(
           children: [
             Expanded(
@@ -303,9 +302,9 @@ class VCPPage extends ConsumerWidget {
                                 ),
                               ),
                               child: ExpansionTile(
-                              shape: Border.all(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
+                                shape: Border.all(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                                 title: Text(entry.key),
                                 children: [
                                   // FIXME: String matching #2 :((
