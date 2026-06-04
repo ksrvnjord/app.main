@@ -62,10 +62,10 @@ class CharityPage extends ConsumerWidget {
               const Text(
                 '"Door stichting anne-bo kan ik genieten van het student zijn en hoef ik me geen zorgen te maken of ik het uberhaupt wel kan betalen om student te zijn." - Abir',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                    ),
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: sizedBoxHeight),
