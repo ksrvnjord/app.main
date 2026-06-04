@@ -222,7 +222,6 @@ class VCPPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Melding"),
-        title: const Text("Melding"),
       ),
       body: Column(
         children: [
