@@ -19,9 +19,11 @@ class ObjectCalendar extends ConsumerStatefulWidget {
     super.key,
     required this.date,
     required this.boat,
+    required this.currentTime,
   });
   final DateTime date;
   final QueryDocumentSnapshot<ReservationObject> boat;
+  final DateTime currentTime;
 
   @override
   createState() => _ObjectCalendar();
@@ -198,7 +200,8 @@ class _ObjectCalendar extends ConsumerState<ObjectCalendar> {
           ),
           Positioned(
               left: 0,
-              top: CalendarMeasurement.amountOfPixelsTillCurrentTimeFromTop() -
+              top: CalendarMeasurement.amountOfPixelsTillCurrentTimeFromTop(
+                      widget.currentTime) -
                   1,
               child: Row(children: [
                 for (int i = 0;

@@ -87,6 +87,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
                     commissieAsync.whenData((group) => group.name)),
           ),
           body: ListView(
+            padding: const EdgeInsets.only(bottom: 96.0),
             controller:
                 scrollController, // For keeping scroll position when changing year.
             physics: const AlwaysScrollableScrollPhysics(),

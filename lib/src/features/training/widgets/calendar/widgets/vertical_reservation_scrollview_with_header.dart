@@ -12,10 +12,12 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
     super.key,
     required this.boatsController,
     required this.date,
+    required this.currentTime,
   });
 
   final ScrollController boatsController;
   final DateTime date;
+  final DateTime currentTime;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +43,11 @@ class VerticalReservationScrollViewWithHeader extends ConsumerWidget {
               children: [
                 data // This builds the content with the slots.
                     .map<Widget>((e) {
-                      return ObjectCalendar(date: date, boat: e).border(
+                      return ObjectCalendar(
+                        date: date,
+                        boat: e,
+                        currentTime: currentTime,
+                      ).border(
                         left: verticalLineWidth,
                         color: Theme.of(context).colorScheme.outline,
                       );
