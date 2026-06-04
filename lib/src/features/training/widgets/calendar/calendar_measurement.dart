@@ -18,10 +18,9 @@ class CalendarMeasurement {
     return amountOfSlots * slotHeight + topOffsetFirstSlot;
   }
 
-  static double amountOfPixelsTillCurrentTimeFromTop() {
-    final DateTime date = DateTime.now();
+  static double amountOfPixelsTillCurrentTimeFromTop(DateTime currentTime) {
     final int minutes =
-        ((startHour * 60) - (date.hour * 60 + date.minute)).abs();
+        ((startHour * 60) - (currentTime.hour * 60 + currentTime.minute)).abs();
     final double amountOfSlots = minutes / minutesInSlot;
 
     return amountOfSlots * slotHeight + topOffsetFirstSlot;
