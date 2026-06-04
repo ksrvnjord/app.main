@@ -35,68 +35,67 @@ class FormCard extends ConsumerWidget {
       );
     }
     final Map<String, IconData> commissieNameToIcon = {
-    'afroeicommissie': Icons.festival,
-    'almanakcommissie': Icons.class_,
-    'appcommissie': Icons.smartphone,
-    'archiefcommissie': Icons.archive,
-    'blasphemycommissie': Icons.bolt,
-    'buffetcommissie': Icons.sports_bar,
-    'competitiecommissie': Icons.rowing,
-    'diskjockeycommissie': Icons.headphones,
-    'duurzaamheidscommissie': Icons.recycling,
-    'eerstejaarscommissie': Icons.child_care,
-    'externroeiencommissie': Icons.hub,
-    'externecommissie': Icons.handshake,
-    'fotocommissie': Icons.camera_alt,
-    'fuifroeicommissie': Icons.rowing,
-    'galacommissie': Icons.nightlife,
-    'goededoelencommissie': Icons.volunteer_activism,
-    'grautgildederbaufakkerei': Icons.construction,
-    'haringpartijcomité': Icons.set_meal,
-    'hollandiacommissie': Icons.flag,
-    'introductiecommissie': Icons.waving_hand,
-    'kalendercommissie': Icons.calendar_month,
-    'kookcluster': Icons.soup_kitchen,
-    'kookcommissie': Icons.restaurant,
-    'materieelgroep': Icons.build,
-    'meerderejaarscommissie': Icons.rowing,
-    'merchandisecommissie': Icons.storefront,
-    'njordnajaarscommissie': Icons.umbrella,
-    'pascommissie': Icons.credit_card,
-    'petitcomité': Icons.stars,
-    'promotiecommissie': Icons.campaign,
-    'ringvaartcommissie': Icons.mode_of_travel,
-    'rowingblindcommissie': Icons.blind,
-    'sjaarzencommissie': Icons.child_care,
-    'skireiscommissie': Icons.downhill_skiing,
-    'talentwervingscommissie': Icons.person_search,
-    'tapcommissie': Icons.local_drink,
-    'top-commissie': Icons.military_tech,
-    'twaarzencommissie': Icons.looks_two,
-    'voorjaarsafroeicommissie': Icons.wb_sunny,
-    'zwanehalscommissie': Icons.newspaper,
-    'welzijnswerkgroep': Icons.health_and_safety,
-  };
-  Widget getIconForAuthor(String authorName) {
-      final normalizedName = authorName.toLowerCase().replaceAll(RegExp(r'\s+'), '');
+      'afroeicommissie': Icons.festival,
+      'almanakcommissie': Icons.class_,
+      'appcommissie': Icons.smartphone,
+      'archiefcommissie': Icons.archive,
+      'blasphemycommissie': Icons.bolt,
+      'buffetcommissie': Icons.sports_bar,
+      'competitiecommissie': Icons.rowing,
+      'diskjockeycommissie': Icons.headphones,
+      'duurzaamheidscommissie': Icons.recycling,
+      'eerstejaarscommissie': Icons.child_care,
+      'externroeiencommissie': Icons.hub,
+      'externecommissie': Icons.handshake,
+      'fotocommissie': Icons.camera_alt,
+      'fuifroeicommissie': Icons.rowing,
+      'galacommissie': Icons.nightlife,
+      'goededoelencommissie': Icons.volunteer_activism,
+      'grautgildederbaufakkerei': Icons.construction,
+      'haringpartijcomité': Icons.set_meal,
+      'hollandiacommissie': Icons.flag,
+      'introductiecommissie': Icons.waving_hand,
+      'kalendercommissie': Icons.calendar_month,
+      'kookcluster': Icons.soup_kitchen,
+      'kookcommissie': Icons.restaurant,
+      'materieelgroep': Icons.build,
+      'meerderejaarscommissie': Icons.rowing,
+      'merchandisecommissie': Icons.storefront,
+      'njordnajaarscommissie': Icons.umbrella,
+      'pascommissie': Icons.credit_card,
+      'petitcomité': Icons.stars,
+      'promotiecommissie': Icons.campaign,
+      'ringvaartcommissie': Icons.mode_of_travel,
+      'rowingblindcommissie': Icons.blind,
+      'sjaarzencommissie': Icons.child_care,
+      'skireiscommissie': Icons.downhill_skiing,
+      'talentwervingscommissie': Icons.person_search,
+      'tapcommissie': Icons.local_drink,
+      'top-commissie': Icons.military_tech,
+      'twaarzencommissie': Icons.looks_two,
+      'voorjaarsafroeicommissie': Icons.wb_sunny,
+      'zwanehalscommissie': Icons.newspaper,
+      'welzijnswerkgroep': Icons.health_and_safety,
+    };
+    Widget getIconForAuthor(String authorName) {
+      final normalizedName =
+          authorName.toLowerCase().replaceAll(RegExp(r'\s+'), '');
       debugPrint(normalizedName);
 
       // Check eerst of het een bekende commissie is
       if (commissieNameToIcon.containsKey(normalizedName)) {
         return Icon(commissieNameToIcon[normalizedName]!);
       }
-      
+
       // Fallback: controleer of het een persoon of organisatie lijkt
       // Personen hebben meestal een spatie (voornaam + achternaam)
       if (authorName.contains(' ')) {
         return const FaIcon(FontAwesomeIcons.userTie);
       }
-      
+
       // Anders: onbekende organisatie
       return const Icon(Icons.question_mark);
     }
-
-
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
 
