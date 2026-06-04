@@ -12,17 +12,21 @@ class AlmanakUserTile extends ConsumerWidget {
     super.key,
     required this.firstName,
     required this.lastName,
+    this.infix,
     this.subtitle,
     required this.lidnummer,
   });
   final String firstName;
   final String lastName;
+  final String? infix;
   final String? subtitle;
   final String lidnummer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider(lidnummer));
+    String formatFullName(String firstName, String lastName, [String? infix]) =>
+        "$firstName${infix?.isNotEmpty == true ? " $infix" : ""} $lastName";
 
     const double titleShimmerHeight = 18;
     const double subtitleShimmerHeight = 12;
@@ -33,7 +37,7 @@ class AlmanakUserTile extends ConsumerWidget {
         data: (u) {
           return ListTile(
             leading: ProfilePictureListTileWidget(profileId: lidnummer),
-            title: Text("${u.firstName} ${u.lastName}"),
+            title: Text(formatFullName(u.firstName, u.lastNameOnly, u.infix)),
             subtitle: subtitle != null ? Text(subtitle as String) : null,
             trailing: Icon(
               Icons.arrow_forward_ios,
@@ -68,7 +72,7 @@ class AlmanakUserTile extends ConsumerWidget {
             ),
         error: (error, stackTrace) => ListTile(
               leading: ProfilePictureListTileWidget(profileId: lidnummer),
-              title: Text("$firstName $lastName"),
+              title: Text(formatFullName(firstName, lastName, infix)),
               subtitle: subtitle != null ? Text(subtitle as String) : null,
             )); // Show nothing if no heimdall user is found.
   }

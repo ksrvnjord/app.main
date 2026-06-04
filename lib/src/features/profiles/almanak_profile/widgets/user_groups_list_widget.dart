@@ -38,7 +38,7 @@ class UserGroupsListWidget extends StatelessWidget {
         pathParameters: {
           if (groupPath != "Bestuur")
             "name": entry
-                .name, // Bestuur has no path parameter, as it is always the same.
+                .officialName, // Bestuur has no path parameter, as it is always the same.
         },
         queryParameters: {
           "year": entry.year.toString(),

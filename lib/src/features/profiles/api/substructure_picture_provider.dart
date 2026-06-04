@@ -1,10 +1,12 @@
 // ignore_for_file: prefer-static-class
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/assets/images.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:tuple/tuple.dart';
 
 final commissiePictureProvider = FutureProvider.autoDispose
@@ -95,3 +97,26 @@ final substructureThumbnailProvider =
     );
   },
 );
+
+final randomCommissiePictureProvider = FutureProvider.autoDispose
+    .family<ImageProvider<Object>, int>((ref, year) async {
+  final names = await ref.watch(commissieNamesProvider.future);
+  final random = Random();
+  final shuffledNames = names.toList()..shuffle(random);
+  for (final name in shuffledNames) {
+    final groupId = await ref.read(groupIDProvider(Tuple2(name, year)).future);
+    if (groupId != null) {
+      final image = await CachedImage.get(
+        firebaseStoragePath:
+            "almanak/commissies/$name/$year/$groupId/picture.jpg",
+        placeholderImagePath: Images.placeholderProfilePicture,
+        maxAge: const Duration(minutes: 5),
+      );
+      if (image != AssetImage(Images.placeholderProfilePicture)) {
+        return image;
+      }
+    }
+  }
+  // If none found, return placeholder
+  return AssetImage(Images.placeholderProfilePicture);
+});

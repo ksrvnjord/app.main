@@ -8,11 +8,55 @@ import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-class FormsPage extends ConsumerWidget {
+class FormsPage extends ConsumerStatefulWidget {
   const FormsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FormsPage> createState() => _FormsPageState();
+}
+
+class _FormsPageState extends ConsumerState<FormsPage> {
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  String _searchQuery = '';
+  bool _isSearching = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  Widget _buildSearchField(BuildContext context) {
+    return TextField(
+      controller: _searchController,
+      focusNode: _searchFocusNode,
+      autofocus: true,
+      decoration: const InputDecoration(
+        hintText: 'Zoek forms...',
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.white70),
+      ),
+      style: const TextStyle(color: Colors.white),
+      onChanged: (value) {
+        setState(() {
+          _searchQuery = value;
+        });
+      },
+    );
+  }
+
+  bool _matchesSearch(FirestoreForm form) {
+    final query = _searchQuery.trim().toLowerCase();
+    if (query.isEmpty) return true;
+
+    final title = form.title.toLowerCase();
+    return title.contains(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final allForms = ref.watch(allNonDraftFormsProvider);
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
@@ -20,13 +64,33 @@ class FormsPage extends ConsumerWidget {
         firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: Text(formsLocation)),
+      appBar: AppBar(
+        title: _isSearching ? _buildSearchField(context) : Text(formsLocation),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _isSearching = false;
+                  _searchQuery = '';
+                  _searchController.clear();
+                  _searchFocusNode.unfocus();
+                } else {
+                  _isSearching = true;
+                  Future.microtask(() => _searchFocusNode.requestFocus());
+                }
+              });
+            },
+          ),
+        ],
+      ),
       body: currentUserVal.when(
         loading: () =>
             const Center(child: CircularProgressIndicator.adaptive()),
         error: (e, s) {
           FirebaseCrashlytics.instance.recordError(e, s);
-          return ErrorCardWidget(
+          return const ErrorCardWidget(
               errorMessage: 'Fout bij het laden van gebruiker.');
         },
         data: (currentUser) => allForms.when(
@@ -37,48 +101,63 @@ class FormsPage extends ConsumerWidget {
           data: (querySnapshot) {
             final forms = querySnapshot.docs;
 
-            final visibleOpenForms = (forms).where((form) {
+            final visibleOpenForms = forms.where((form) {
               final formData = form.data();
               return formData.isOpen &&
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
-                      currentUser.isAdmin);
+                      currentUser.isAdmin) &&
+                  _matchesSearch(formData);
             }).toList();
             visibleOpenForms.sort(
                 (a, b) => a.data().openUntil.compareTo(b.data().openUntil));
 
-            final visibleClosedForms = (forms).where((form) {
+            final visibleClosedForms = forms.where((form) {
               final formData = form.data();
               return !formData.isOpen &&
                   (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
-                      currentUser.isAdmin);
+                      currentUser.isAdmin) &&
+                  _matchesSearch(formData);
             }).toList();
             visibleClosedForms.sort(
                 (a, b) => b.data().openUntil.compareTo(a.data().openUntil));
 
+            final hasNoResults =
+                visibleOpenForms.isEmpty && visibleClosedForms.isEmpty;
+
             return ListView(
               padding: const EdgeInsets.all(8),
               children: [
-                ...visibleOpenForms.map((form) => FormCard(
-                      formDoc: form,
-                      currentUser: currentUser,
-                    )),
-                if (visibleClosedForms.isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Divider(),
-                  ),
+                if (hasNoResults && _searchQuery.isNotEmpty) ...[
+                  const SizedBox(height: 164),
                   const Center(
                     child: Text(
-                      'Gesloten Forms',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      'Geen forms gevonden',
+                      style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  ...visibleClosedForms.map((form) => FormCard(
+                ] else ...[
+                  ...visibleOpenForms.map((form) => FormCard(
                         formDoc: form,
                         currentUser: currentUser,
                       )),
+                  if (visibleClosedForms.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Divider(),
+                    ),
+                    const Center(
+                      child: Text(
+                        'Gesloten Forms',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ...visibleClosedForms.map((form) => FormCard(
+                          formDoc: form,
+                          currentUser: currentUser,
+                        )),
+                  ]
                 ]
               ],
             );

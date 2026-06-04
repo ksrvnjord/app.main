@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_subs_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_vertical_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
 import 'package:ksrvnjord_main_app/src/features/extra/coffee_manual_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
@@ -46,6 +48,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/pages/posts_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/ploeg_choice_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/choice/verticalen_choice_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/houses.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/download_profile_pictures_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/data/pages/upload_aspi_profile_pictures.dart';
@@ -64,12 +67,14 @@ import 'package:ksrvnjord_main_app/src/features/profiles/choice/substructure_cho
 import 'package:ksrvnjord_main_app/src/features/profiles/edit_my_profile/pages/edit_almanak_profile_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partner_details_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/partners/partners_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_verticalen_page.dart';
 import 'package:ksrvnjord_main_app/src/features/remote_config/api/remote_config_repository.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation_object.dart';
 import 'package:ksrvnjord_main_app/src/features/training/pages/all_training_page.dart';
@@ -606,17 +611,29 @@ abstract final // ignore: prefer-single-declaration-per-file
           ),
         ),
         _route(
-          path: "bestuur",
-          name: "Bestuur",
-          pageBuilder: (context, state) => _getPage(
-            child: AlmanakBestuurPage(
-              year: state.uri.queryParameters['year'] == null
-                  ? getNjordYear()
-                  : int.parse(state.uri.queryParameters['year']!),
-            ),
+            path: "bestuur",
             name: "Bestuur",
-          ),
-        ),
+            pageBuilder: (context, state) => _getPage(
+                  child: AlmanakBestuurPage(
+                    year: state.uri.queryParameters['year'] == null
+                        ? getNjordYear()
+                        : int.parse(state.uri.queryParameters['year']!),
+                  ),
+                  name: "Bestuur",
+                ),
+            routes: [
+              _route(
+                  path: "edit",
+                  name: "Bestuur -> Edit",
+                  pageBuilder: (context, state) => _getPage(
+                        child: AlmanakBestuurEditPage(
+                          year: state.uri.queryParameters['year'] != null
+                              ? int.parse(state.uri.queryParameters['year']!)
+                              : getNjordYear(),
+                        ),
+                        name: "Bestuur -> Edit",
+                      )),
+            ]),
         _route(
           path: "commissies",
           name: "Commissies",
@@ -634,10 +651,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Commissie",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakCommissiePage(
-                  name: state.pathParameters['name']!,
+                  officialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] != null
                       ? int.parse(state.uri.queryParameters['year']!)
                       : getNjordYear(),
+                  name: state.extra as String?,
                 ),
                 name: "Commissie",
               ),
@@ -658,21 +676,19 @@ abstract final // ignore: prefer-single-declaration-per-file
                                     : 0,
                           ),
                           name: "Commissie -> Edit",
-                        ),
-                    routes: [
-                      _route(
-                          path: "download_profile_pictures",
-                          name: "download profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: DownloadProfilePicturesPage(),
-                              name: "download profile pictures")),
-                      _route(
-                          path: "upload_aspi_profile_pictures",
-                          name: "upload aspi profile pictures",
-                          pageBuilder: (context, state) => _getPage(
-                              child: UploadAspiProfilePictures(),
-                              name: "upload aspi profile pictures"))
-                    ]),
+                        )),
+                _route(
+                    path: "download_profile_pictures",
+                    name: "download profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: DownloadProfilePicturesPage(),
+                        name: "download profile pictures")),
+                _route(
+                    path: "upload_aspi_profile_pictures",
+                    name: "upload aspi profile pictures",
+                    pageBuilder: (context, state) => _getPage(
+                        child: UploadAspiProfilePictures(),
+                        name: "upload aspi profile pictures")),
               ],
             ),
           ],
@@ -688,6 +704,9 @@ abstract final // ignore: prefer-single-declaration-per-file
               ploegType: state.uri.queryParameters['type'] == null
                   ? "Competitieploeg"
                   : state.uri.queryParameters['type']!,
+              onTap: state.extra is Future<void> Function(int)
+                  ? state.extra as Future<void> Function(int)
+                  : null,
             ),
             name: "Ploegen",
           ),
@@ -705,10 +724,11 @@ abstract final // ignore: prefer-single-declaration-per-file
               name: "Ploeg",
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakPloegPage(
-                  ploegName: state.pathParameters['name']!,
+                  ploegOfficialName: state.pathParameters['name']!,
                   year: state.uri.queryParameters['year'] == null
                       ? getNjordYear()
                       : int.parse(state.uri.queryParameters['year']!),
+                  name: state.extra as String?,
                 ),
                 name: "Ploeg",
               ),
@@ -765,8 +785,32 @@ abstract final // ignore: prefer-single-declaration-per-file
             ),
           ],
         ),
+        _route(
+          path: "verticalen",
+          name: "Verticalen",
+          pageBuilder: (context, state) => _getPage(
+            child: VerticalenChoicePage(
+              title: "Verticalen",
+              gender: state.uri.queryParameters['gender'] ?? 'Dames',
+            ),
+            name: "Verticalen",
+          ),
+          routes: [
+            _route(
+              path: ":id",
+              name: "Verticaal",
+              pageBuilder: (context, state) => _getPage(
+                child: AlmanakVerticalenPage(
+                  id: int.parse(state.pathParameters['id']!),
+                ),
+                name: "Verticaal",
+              ),
+            ),
+          ],
+        ),
       ],
     ),
+
     _route(
       path: "/lid/:id",
       name: "Lid",
@@ -957,6 +1001,28 @@ abstract final // ignore: prefer-single-declaration-per-file
                             type: state.uri.queryParameters['type'],
                           ),
                           name: "Edit Substructure"))
+                ]),
+            _route(
+                path: 'manage-verticals',
+                name: 'Manage Verticalen',
+                pageBuilder: (context, state) => _getPage(
+                      child: ManageVerticalsPage(),
+                      name: "Manage Substructuren",
+                    ),
+                routes: [
+                  _route(
+                    path: ":verticaalId",
+                    name: "Edit Vertical",
+                    pageBuilder: (context, state) => _getPage(
+                      child: EditVerticalPage(
+                        verticaalId:
+                            int.parse(state.pathParameters['verticaalId']!),
+                        verticaalName:
+                            state.uri.queryParameters['verticaalName']!,
+                      ),
+                      name: "Edit Vertical",
+                    ),
+                  ),
                 ]),
           ],
         ),

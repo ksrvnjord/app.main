@@ -8,8 +8,6 @@ part 'group_django_relation.g.dart';
 
 @JsonSerializable()
 class GroupDjangoRelation {
-  // ignore: prefer-correct-identifier-length
-  final int id;
   final GroupDjangoUser user;
 
   @JsonKey(
@@ -20,7 +18,6 @@ class GroupDjangoRelation {
   final List<String>? permissions;
 
   GroupDjangoRelation({
-    required this.id,
     required this.user,
     this.role,
     this.permissions,
