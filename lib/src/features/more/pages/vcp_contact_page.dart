@@ -71,7 +71,6 @@ class VCPPage extends ConsumerWidget {
                 "Belangrijk",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-
               shape: Border.all(
                 color: Theme.of(context).colorScheme.primary,
               ),
