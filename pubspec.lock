@@ -65,38 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  autologin:
-    dependency: "direct overridden"
-    description:
-      name: autologin
-      sha256: "587de87b3c71351ecc9465c3d3a439a5d3b47a44ddefae207bfe01e66d5026d3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   autologin_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: autologin_android
       sha256: "56e53a1b24c4ee7bf6b03a7a65fbcc291df45788b7091376c58b56a3fb5e5c05"
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  autologin_darwin:
-    dependency: transitive
-    description:
-      name: autologin_darwin
-      sha256: "6b701ed0b663dbef52fb4fa10906f4d3097b9af94346cb240157fe6c79bd01b5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
-  autologin_linux:
-    dependency: transitive
-    description:
-      name: autologin_linux
-      sha256: e292b79d4da4b94dba7ce0f78ad25df92dcc8f5238b3003858ba5794aadfa001
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   autologin_platform_interface:
     dependency: transitive
     description:
@@ -105,22 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  autologin_web:
-    dependency: transitive
-    description:
-      name: autologin_web
-      sha256: ccb7a295dc80fe6a90ae048dcb46e4e27ac123468569d9e8cfc77819f8a462ea
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
-  autologin_windows:
-    dependency: transitive
-    description:
-      name: autologin_windows
-      sha256: "56e4545eaf7cb9c6ce2dd8114837a4eb1ec8f19aedd358ebc681e3c33dc87e11"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   boolean_selector:
     dependency: transitive
     description:
