@@ -18,7 +18,8 @@ class LikedByPage extends ConsumerWidget {
       body: likedByProvider.when(
         data: (likedByUsers) {
           return likedByUsers.isEmpty
-              ? const Center(child: Text("Nog niemand heeft deze post gezwaand"))
+              ? const Center(
+                  child: Text("Nog niemand heeft deze post gezwaand"))
               : ListView(
                   children: likedByUsers
                       .map((user) => AlmanakUserTile(
