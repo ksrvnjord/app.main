@@ -9,14 +9,15 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
 
 class PloegChoicePage extends ConsumerWidget {
-  const PloegChoicePage({
-    super.key,
-    required this.ploegYear,
-    required this.ploegType,
-  });
+  const PloegChoicePage(
+      {super.key,
+      required this.ploegYear,
+      required this.ploegType,
+      required this.onTap});
 
   final int ploegYear;
   final String ploegType;
+  final Future<void> Function(int ploegId)? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,26 +41,36 @@ class PloegChoicePage extends ConsumerWidget {
             for (final type in ['Competitieploeg', 'Wedstrijdsectie'])
               ChoiceChip(
                 label: Text(type),
-                onSelected: (selected) => context.goNamed(
-                  'Ploegen',
-                  queryParameters: {
-                    'year': ploegYear.toString(),
-                    'type': type,
-                  },
-                ),
+                onSelected: (selected) {
+                  final routeBuilder =
+                      onTap != null ? context.replaceNamed : context.goNamed;
+                  routeBuilder(
+                    'Ploegen',
+                    queryParameters: {
+                      'year': ploegYear.toString(),
+                      'type': type,
+                    },
+                    extra: onTap,
+                  );
+                },
                 selected: type == ploegType,
               ),
             [
               const Text("Kies een jaar:"),
               const SizedBox(width: wrapSpacing),
               YearSelectorDropdown(
-                onChanged: (selectedYear) => context.goNamed(
-                  "Ploegen",
-                  queryParameters: {
-                    'year': selectedYear.toString(),
-                    'type': ploegType,
-                  },
-                ),
+                onChanged: (selectedYear) {
+                  final routeBuilder =
+                      onTap != null ? context.replaceNamed : context.goNamed;
+                  routeBuilder(
+                    "Ploegen",
+                    queryParameters: {
+                      'year': selectedYear.toString(),
+                      'type': ploegType,
+                    },
+                    extra: onTap,
+                  );
+                },
                 selectedYear: ploegYear,
               ),
             ].toRow(
@@ -88,15 +99,25 @@ class PloegChoicePage extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   // ignore: prefer-extracting-callbacks
-                  onTap: () => context.goNamed(
-                    "Ploeg",
-                    pathParameters: {"name": ploeg.officialName},
-                    queryParameters: {
-                      "year": ploegYear.toString(),
-                      "type": ploegType,
-                    },
-                    extra: ploeg.name,
-                  ),
+                  onTap: () async {
+                    if (onTap != null) {
+                      await onTap!(int.parse(ploeg.id.toString()));
+                      if (!context.mounted) return;
+                      if (context.canPop()) {
+                        context.pop();
+                      }
+                      return;
+                    }
+
+                    // ignore: avoid-ignoring-return-values
+                    context.pushNamed("Ploeg",
+                        pathParameters: {"name": ploeg.officialName},
+                        queryParameters: {
+                          "year": ploegYear.toString(),
+                          "type": ploegType,
+                        },
+                        extra: ploeg.name);
+                  },
                 ),
               ),
             ].toColumn(),

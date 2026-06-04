@@ -28,26 +28,31 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+    _pagingController.addPageRequestListener((offset) {
+      _fetchPage(offset);
     });
     super.initState();
   }
 
   Future<void> _fetchPage(
-    int pageKey,
+    int offset,
   ) async {
-    const amountOfResults = 100;
+    const maxPageLength = 100;
     final birthdayUsers =
-        await almanakBirthdayUsersProvider(pageKey, widget.search, ref);
-    final allUsers = await almanakUsersProvider(pageKey, widget.search, ref);
+        await almanakBirthdayUsersProvider(offset, widget.search, ref);
+    final allUsers = await almanakUsersProvider(offset, widget.search, ref);
 
-    final page = birthdayUsers +
-        allUsers; //list the users with the birthday people first
+    final page = [
+      ...birthdayUsers,
+      ...allUsers.where(
+        (user) => !birthdayUsers.any(
+          (birthdayUser) => birthdayUser.id == user.id,
+        ),
+      ),
+    ]; // list the users with the birthday people first and dont duplicate
 
-    if (page.length / amountOfResults > pageKey) {
-      _pagingController.appendPage(page, pageKey + 1);
-
+    if (page.length >= maxPageLength) {
+      _pagingController.appendPage(page, offset + maxPageLength);
       return;
     }
     _pagingController.appendLastPage(page);
@@ -60,9 +65,15 @@ class _AlmanakScrollingState extends ConsumerState<AlmanakScrollingWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _pagingController.refresh();
+  void didUpdateWidget(covariant AlmanakScrollingWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.search != widget.search) {
+      _pagingController.refresh();
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final onTap = widget.onTap;
 
     return RefreshIndicator(

@@ -6,14 +6,14 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 
 // ignore: prefer-static-class
 Future<List<DjangoUser>> almanakUsersProvider(
-  int page,
+  int offset,
   String search,
   WidgetRef ref,
 ) async {
   final dio = ref.watch(dioProvider);
 
   final res = await dio.get("/api/v2/users/", queryParameters: {
-    "offset": page,
+    "offset": offset,
     "search": search,
   });
 
