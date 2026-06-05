@@ -105,7 +105,9 @@ class _RoleDialogState extends State<RoleDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(
+              //Return status and String Vinnie
+              ),
           child: const Text('Annuleren'),
         ),
         TextButton(
