@@ -86,6 +86,7 @@ dependencies:
 
   collection: any
 dependency_overrides:
+  autologin_android: 1.0.1
   package_info_plus: ">=4.1.0 <8.0.0"
 
 dev_dependencies:
