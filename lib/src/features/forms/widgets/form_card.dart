@@ -26,6 +26,8 @@ class FormCard extends ConsumerWidget {
   final User currentUser;
   final bool pushContext;
   final borderWidth = 2.0;
+  final double iconSize = 16;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = formDoc.data();
@@ -77,24 +79,23 @@ class FormCard extends ConsumerWidget {
       'zwanehalscommissie': Icons.newspaper,
       'welzijnswerkgroep': Icons.health_and_safety,
     };
-    Widget getIconForAuthor(String authorName) {
-      final normalizedName =
+    IconData getIconForAuthor(String authorName) {
+      final normalisedName =
           authorName.toLowerCase().replaceAll(RegExp(r'\s+'), '');
-      debugPrint(normalizedName);
 
       // Check eerst of het een bekende commissie is
-      if (commissieNameToIcon.containsKey(normalizedName)) {
-        return Icon(commissieNameToIcon[normalizedName]!);
+      if (commissieNameToIcon.containsKey(normalisedName)) {
+        return commissieNameToIcon[normalisedName]!;
       }
 
       // Fallback: controleer of het een persoon of organisatie lijkt
       // Personen hebben meestal een spatie (voornaam + achternaam)
       if (authorName.contains(' ')) {
-        return const FaIcon(FontAwesomeIcons.userTie);
+        return FontAwesomeIcons.userTie;
       }
 
       // Anders: onbekende organisatie
-      return const Icon(Icons.question_mark);
+      return Icons.question_mark;
     }
 
     final userAnswerProvider = ref.watch(formAnswerProvider(formDoc.reference));
@@ -128,7 +129,10 @@ class FormCard extends ConsumerWidget {
 
     return ListTile(
       title: <Widget>[
-        getIconForAuthor(form.authorName),
+        Icon(
+          getIconForAuthor(form.authorName),
+          size: iconSize,
+        ),
         Flexible(child: Text(form.title))
       ].toRow(separator: const SizedBox(width: 4)),
       subtitle: Column(
