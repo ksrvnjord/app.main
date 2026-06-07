@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/verticalen_choice_list_tile.dart';
 
 class VerticalenChoicePage extends ConsumerStatefulWidget {
@@ -99,6 +100,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                         'Verticaal',
                         pathParameters: {'id': verticalId.toString()},
                       ),
+                      imageProvider: ref.watch(
+                          verticaalThumbnailProvider(verticalName.toString())),
                     );
                   },
                 );
