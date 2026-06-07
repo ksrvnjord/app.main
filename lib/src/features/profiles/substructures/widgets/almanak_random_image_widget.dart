@@ -44,3 +44,43 @@ class RandomCommissieImage extends ConsumerWidget {
     );
   }
 }
+
+class RandomVerticalImage extends ConsumerWidget {
+  const RandomVerticalImage({
+    super.key,
+  });
+
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final verticalPictureVal = ref.watch(
+      randomVerticalPictureProvider,
+    );
+
+    return verticalPictureVal.when(
+      data: (data) => FadeInImage(
+        placeholder: Image.asset(Images.placeHolderVerticaal).image,
+        image: data,
+        fadeOutDuration: const Duration(milliseconds: 600),
+        fadeInDuration: const Duration(milliseconds: 800),
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+      ),
+      error: (err, stk) => Image.asset(
+        Images.placeHolderVerticaal,
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+        isAntiAlias: true,
+      ),
+      loading: () => Image.asset(
+        Images.placeHolderVerticaal,
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+        isAntiAlias: true,
+      ),
+    );
+  }
+}
