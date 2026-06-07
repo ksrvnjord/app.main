@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/choice/widgets/almanak_structure_choice_widget.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_image.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_random_image_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/firebase_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -56,10 +56,10 @@ class AlmanakPage extends ConsumerWidget {
                 ),
               ),
               [
-                const AlmanakStructureChoiceWidget(
-                  pushRoute: "Huizen",
-                  title: "Huizen",
-                  imagePath: 'assets/images/huizen.jpeg',
+                AlmanakStructureChoiceWidget(
+                  pushRoute: "Verticalen",
+                  title: "Verticalen",
+                  imageWidget: RandomVerticalImage(),
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "Substructuren",
@@ -73,9 +73,9 @@ class AlmanakPage extends ConsumerWidget {
               ),
               [
                 const AlmanakStructureChoiceWidget(
-                  pushRoute: "Verticalen",
-                  title: "Verticalen",
-                  imagePath: 'assets/images/swan_flying.jpg',
+                  pushRoute: "Huizen",
+                  title: "Huizen",
+                  imagePath: 'assets/images/huizen.jpeg',
                 ).expanded(),
                 const AlmanakStructureChoiceWidget(
                   pushRoute: "Partners",
