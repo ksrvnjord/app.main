@@ -50,7 +50,6 @@ class RandomVerticalImage extends ConsumerWidget {
     super.key,
   });
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final verticalPictureVal = ref.watch(

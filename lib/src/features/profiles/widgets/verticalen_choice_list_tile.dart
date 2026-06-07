@@ -33,11 +33,12 @@ class VerticalenChoiceListTile extends ConsumerWidget {
           FadeInImage(
             placeholder: Image.asset(Images.placeholderProfilePicture).image,
             image: imageProvider.when(
-            data: (data) => data,
-            error: (err, stk) =>
-                Image.asset(Images.placeholderProfilePicture).image,
-            loading: () => Image.asset(Images.placeholderProfilePicture).image,
-          ),
+              data: (data) => data,
+              error: (err, stk) =>
+                  Image.asset(Images.placeholderProfilePicture).image,
+              loading: () =>
+                  Image.asset(Images.placeholderProfilePicture).image,
+            ),
             fadeOutDuration: const Duration(milliseconds: 600),
             fadeInDuration: const Duration(milliseconds: 800),
             width: imageWidth,

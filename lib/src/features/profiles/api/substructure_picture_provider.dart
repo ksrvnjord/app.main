@@ -144,23 +144,22 @@ final randomCommissiePictureProvider = FutureProvider.autoDispose
   return AssetImage(Images.placeholderProfilePicture);
 });
 
-final randomVerticalPictureProvider = FutureProvider.autoDispose
-    <ImageProvider<Object>>((ref) async {
-      final verticaalNames = ["Dames 4", "Heren 811"];
-      final random = Random();
-      final shuffledNames = verticaalNames..shuffle(random);
+final randomVerticalPictureProvider =
+    FutureProvider.autoDispose<ImageProvider<Object>>((ref) async {
+  final verticaalNames = ["Dames 4", "Heren 811"];
+  final random = Random();
+  final shuffledNames = verticaalNames..shuffle(random);
 
-      for (final name in shuffledNames) {
-        final image = await CachedImage.get(
-          firebaseStoragePath:
-              "almanak/verticalen/$name/picture.jpeg",
-          placeholderImagePath: Images.placeholderProfilePicture,
-          maxAge: const Duration(minutes: 5),
-        );
-        if (image != AssetImage(Images.placeholderProfilePicture)) {
-          return image;
-        }
-      }
-    // If none found, return placeholder
-    return AssetImage(Images.placeholderProfilePicture);
-  });
+  for (final name in shuffledNames) {
+    final image = await CachedImage.get(
+      firebaseStoragePath: "almanak/verticalen/$name/picture.jpeg",
+      placeholderImagePath: Images.placeholderProfilePicture,
+      maxAge: const Duration(minutes: 5),
+    );
+    if (image != AssetImage(Images.placeholderProfilePicture)) {
+      return image;
+    }
+  }
+  // If none found, return placeholder
+  return AssetImage(Images.placeholderProfilePicture);
+});

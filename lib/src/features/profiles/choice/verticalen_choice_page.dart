@@ -100,7 +100,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                         'Verticaal',
                         pathParameters: {'id': verticalId.toString()},
                       ),
-                      imageProvider: ref.watch(verticaalThumbnailProvider(verticalName.toString())),
+                      imageProvider: ref.watch(
+                          verticaalThumbnailProvider(verticalName.toString())),
                     );
                   },
                 );
