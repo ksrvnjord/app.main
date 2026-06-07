@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form.dart';
+import 'package:ksrvnjord_main_app/src/features/forms/widgets/form_card.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_expanded_area.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/widgets/single_question_form_card_subtitle.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -25,6 +26,8 @@ class _SingleQuestionFormCardState
     extends ConsumerState<SingleQuestionFormCard> {
   // Constructor which takes a String formId.
 
+  final double iconSize = 16;
+
   @override
   Widget build(BuildContext context) {
     final form = widget.formSnapshot.data();
@@ -32,7 +35,14 @@ class _SingleQuestionFormCardState
 
     return ExpansionTile(
       collapsedIconColor: colorScheme.primary,
-      title: Text(form.title),
+      title: <Widget>[
+        Icon(
+          getIconForAuthor(form.authorName),
+          size: iconSize,
+          color: colorScheme.onSurface,
+        ),
+        Flexible(child: Text(form.title))
+      ].toRow(separator: const SizedBox(width: 4)),
       subtitle: SingleQuestionFormCardSubtitle(
           form: form, reference: widget.formSnapshot.reference),
       expandedCrossAxisAlignment: CrossAxisAlignment.center,
