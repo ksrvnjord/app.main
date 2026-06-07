@@ -21,9 +21,10 @@ class AlmanakVerticalenPage extends ConsumerWidget {
             data: (ploegen) {
               if (ploegen.isEmpty) {
                 return const Center(
-                  child: Text('Geen ploegen gevonden voor deze verticaal.'),
+                  child: Text('Geen ploegen gevonden voor dit verticaal.'),
                 );
               }
+              ploegen.sort((a, b) => b['year'].compareTo(a['year']));
 
               return ListView.separated(
                 padding: const EdgeInsets.only(bottom: 80),
