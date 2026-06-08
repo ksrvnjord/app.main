@@ -14,39 +14,34 @@ class CreateFormAuthorWidget extends ConsumerWidget {
     // Logic for admin vs regular user can go here
     return currentUserAsync.when(
       data: (user) {
-        if (user.isAdmin) {
-          state.author.text = user.fullName;
-          return TextFormField(
-            controller: state.author,
-            decoration: const InputDecoration(labelText: 'Auteur'),
-            maxLines: null,
-            validator: (value) => (value == null || value.isEmpty)
-                ? 'Auteur kan niet leeg zijn.'
-                : null,
-          );
-        } else {
-          if (state.author.text.isEmpty) {
-            state.author.text = user.canCreateFormsFor.keys.first;
-          }
-          return DropdownButtonFormField<String>(
-            value: state.author.text,
-            decoration: const InputDecoration(labelText: 'Auteur'),
-            items: user.canCreateFormsFor.entries
-                .map((entry) => DropdownMenuItem(
-                      value: entry.key,
-                      child: Text(entry.value),
-                    ))
-                .toList(),
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                state.updateAuthor(newValue);
-              }
-            },
-            validator: (value) => (value == null || value.isEmpty)
-                ? 'Auteur kan niet leeg zijn.'
-                : null,
-          );
+        if (state.author.text.isEmpty) {
+          state.author.text = user.canCreateFormsFor.keys.first;
         }
+        return DropdownButtonFormField<String>(
+          value: state.author.text,
+          decoration: const InputDecoration(labelText: 'Auteur'),
+          items: [
+            ...user.canCreateFormsFor.entries.map((entry) => 
+              DropdownMenuItem(
+                value: entry.key, 
+                child: Text(entry.value)
+              )
+            ),
+            if (user.isAdmin) 
+              DropdownMenuItem(
+                value: user.identifierString,
+                child: Text(user.fullName),
+              ),
+          ],
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              state.updateAuthor(newValue);
+            }
+          },
+          validator: (value) => (value == null || value.isEmpty)
+              ? 'Auteur kan niet leeg zijn.'
+              : null,
+        );
       },
       loading: () {
         return const CircularProgressIndicator.adaptive();
