@@ -35,7 +35,6 @@ class EditGroupPage extends ConsumerWidget {
             ),
           ),
         );
-
         return;
       }
     }
