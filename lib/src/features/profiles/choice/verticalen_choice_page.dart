@@ -76,7 +76,9 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                     .where(
                       (vertical) => vertical['name'].startsWith(selectedGender),
                     )
-                    .toList();
+                    .toList()
+                  ..sort(
+                      (a, b) => a['name'].length.compareTo(b['name'].length));
 
                 if (filteredVerticalen.isEmpty) {
                   return Center(
