@@ -21,13 +21,9 @@ class CreateFormAuthorWidget extends ConsumerWidget {
           value: state.author.text,
           decoration: const InputDecoration(labelText: 'Auteur'),
           items: [
-            ...user.canCreateFormsFor.entries.map((entry) => 
-              DropdownMenuItem(
-                value: entry.key, 
-                child: Text(entry.value)
-              )
-            ),
-            if (user.isAdmin) 
+            ...user.canCreateFormsFor.entries.map((entry) =>
+                DropdownMenuItem(value: entry.key, child: Text(entry.value))),
+            if (user.isAdmin)
               DropdownMenuItem(
                 value: user.identifierString,
                 child: Text(user.fullName),
