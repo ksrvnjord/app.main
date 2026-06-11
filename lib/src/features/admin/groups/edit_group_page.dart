@@ -8,6 +8,17 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/widgets/role_dialog
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
+class AddUserStatus {
+  const AddUserStatus({
+    required this.success,
+    required this.role,
+  });
+  final bool success;
+  final String? role;
+  @override
+  String toString() => 'AddUserStatus(success: $success, role: $role)';
+}
+
 /// Page to perform CRD operations on group-members for a specific group (which is a year and groupname).
 class EditGroupPage extends ConsumerWidget {
   const EditGroupPage({super.key, required this.groupId});
@@ -54,36 +65,49 @@ class EditGroupPage extends ConsumerWidget {
     WidgetRef ref,
     BuildContext ctx,
   ) {
+    void nietGeluktBericht() {
+      if (!ctx.mounted) return;
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Het is niet gelukt om de gebruiker toe te voegen aan de groep.",
+          ),
+        ),
+      );
+      return;
+    }
+
     return (int userId) async {
       final dio = ref.read(dioProvider);
 
       // Show a dialog to let the user select a role for the user
       // The role is either "Praeses" or "Ab-actis" or some custom entered role.
-      final role = await showDialog<String>(
+      final AddUserStatus? roleStatus = await showDialog<AddUserStatus>(
         context: ctx,
         builder: (context) => RoleDialog(
           groupType: GroupType.values.byName(group['type']),
         ),
       );
 
+      if (roleStatus == null) nietGeluktBericht;
+
+      if (!roleStatus!.success) {
+        if (!ctx.mounted) return;
+        ctx.pop();
+        return;
+      }
+
       try {
         // ignore: avoid-ignoring-return-values
         await dio.post(
           "/api/v2/groups/$groupId/$userId/",
-          data: {"role": role},
+          data: {
+            "role": roleStatus.role,
+            "permissions": ["almanak:*", "forms:*"],
+          },
         );
       } catch (e) {
-        if (!ctx.mounted) return;
-        // ignore: avoid-ignoring-return-values
-        ScaffoldMessenger.of(ctx).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Het is niet gelukt om de gebruiker toe te voegen aan de groep.",
-            ),
-          ),
-        );
-
-        return;
+        nietGeluktBericht;
       }
 
       if (!ctx.mounted) return;
