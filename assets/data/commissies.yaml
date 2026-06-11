@@ -10,10 +10,6 @@ Buffetcommissie:
   email: buco@njord.nl
 Blasphemycommissie:
   email: cc@njord.nl
-Businesscommissie:
-  email: business@njord.nl
-Carrierecommissie:
-  email: carriere@njord.nl
 Competitiecommissie:
   email: cc@njord.nl
 Duurzaamheidscommissie: null
@@ -21,7 +17,7 @@ Eerstejaarscommissie:
   email: sjacie@njord.nl
 Externe Commissie:
   email: externecommissie@njord.nl
-Extern Roeien Commissie:
+Extern Roeiencommissie:
   email: clinics@njord.nl
 Fotocommissie:
   email: foto@njord.nl
@@ -31,37 +27,38 @@ Galacommissie:
   email: gala@njord.nl
 Goede Doelencommissie:
   email: goededoelen@njord.nl
-Grautgilde:
+Grautgilde der Baufakkerei:
   email: gebouw@njord.nl
+"Haringpartij Comit\xE9": null
 Hollandiacommissie:
   email: hollandia@njord.nl
 Introductiecommissie:
   email: ic@njord.nl
 Kalendercommissie:
   email: kalender@njord.nl
-KookCluster: null
+Kookcluster: null
 Kookcommissie:
   email: koco@njord.nl
 Magazinecommissie:
   email: magazine@njord.nl
-Matgroep:
+Materieelgroep:
   email: materieel@njord.nl
 Meerderejaarscommissie:
   email: meerderejaars@njord.nl
 Merchandisecommissie:
   email: merchandise@njord.nl
-Najaarscommissie:
+Njord Najaarscommissie:
   email: najaars@njord.nl
 NSRF Slotwedstrijden:
   email: nsrf@njord.nl
-Pascommissie:
-  email: pascie@njord.nl
 "Petit Comit\xE9":
   email: petitcomite@njord.nl
 Promotiecommissie:
   email: promotie@njord.nl
+Ringvaartcommissie: null
 Rowing Blindcommissie:
   email: leiden@rowingblind.nl
+Sjaarzencommissie: null
 Skireiscommissie:
   email: ski@njord.nl
 Talentwervingscommissie: null
@@ -69,12 +66,14 @@ Tapcommissie:
   email: buco@njord.nl
 Tentroeicommissie:
   email: tentroei@njord.nl
-Topcommissie:
+Top-commissie:
   email: top@njord.nl
+Twaarzencommissie: null
 Welzijnscommissie:
   email: Welzijn@njord.nl
 Voorjaarsafroeicommissie:
   email: vac@njord.nl
+"Vrouwencomit\xE9": null
 Zwanehalscommissie:
   email: zwanehals@njord.nl
 "Zwanencomit\xE9":

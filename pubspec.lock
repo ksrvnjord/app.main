@@ -74,13 +74,13 @@ packages:
     source: hosted
     version: "1.0.1"
   autologin_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: autologin_android
-      sha256: "56e53a1b24c4ee7bf6b03a7a65fbcc291df45788b7091376c58b56a3fb5e5c05"
+      sha256: "4e112e3301e79062d967b8387ad2b219adf0cf52c5e0812137585a21c519dc95"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.0.1"
   autologin_darwin:
     dependency: transitive
     description:
