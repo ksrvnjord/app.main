@@ -11,7 +11,70 @@ import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+final Map<String, IconData> commissieNameToIcon = {
+  'afroeicommissie': Icons.festival,
+  'almanakcommissie': Icons.class_,
+  'appcommissie': Icons.smartphone,
+  'archiefcommissie': Icons.archive,
+  'blasphemycommissie': Icons.bolt,
+  'buffetcommissie': Icons.sports_bar,
+  'competitiecommissie': Icons.rowing,
+  'diskjockeycommissie': Icons.headphones,
+  'duurzaamheidscommissie': Icons.recycling,
+  'eerstejaarscommissie': Icons.child_care,
+  'externroeiencommissie': Icons.hub,
+  'externecommissie': Icons.handshake,
+  'fotocommissie': Icons.camera_alt,
+  'fuifroeicommissie': Icons.rowing,
+  'galacommissie': Icons.nightlife,
+  'goededoelencommissie': Icons.volunteer_activism,
+  'grautgildederbaufakkerei': Icons.construction,
+  'haringpartijcomité': Icons.set_meal,
+  'hollandiacommissie': Icons.flag,
+  'introductiecommissie': Icons.waving_hand,
+  'kalendercommissie': Icons.calendar_month,
+  'kookcluster': Icons.soup_kitchen,
+  'kookcommissie': Icons.restaurant,
+  'materieelgroep': Icons.build,
+  'meerderejaarscommissie': Icons.rowing,
+  'merchandisecommissie': Icons.storefront,
+  'njordnajaarscommissie': Icons.umbrella,
+  'pascommissie': Icons.credit_card,
+  'petitcomité': Icons.stars,
+  'promotiecommissie': Icons.campaign,
+  'ringvaartcommissie': Icons.mode_of_travel,
+  'rowingblindcommissie': Icons.blind,
+  'sjaarzencommissie': Icons.child_care,
+  'skireiscommissie': Icons.downhill_skiing,
+  'talentwervingscommissie': Icons.person_search,
+  'tapcommissie': Icons.local_drink,
+  'top-commissie': Icons.military_tech,
+  'twaarzencommissie': Icons.looks_two,
+  'voorjaarsafroeicommissie': Icons.wb_sunny,
+  'zwanehalscommissie': Icons.newspaper,
+  'welzijnswerkgroep': Icons.health_and_safety,
+};
+IconData getIconForAuthor(String authorName) {
+  final normalisedName =
+      authorName.toLowerCase().replaceAll(RegExp(r'\s+'), '');
+
+  // Check eerst of het een bekende commissie is
+  if (commissieNameToIcon.containsKey(normalisedName)) {
+    return commissieNameToIcon[normalisedName]!;
+  }
+
+  // Fallback: controleer of het een persoon of organisatie lijkt
+  // Personen hebben meestal een spatie (voornaam + achternaam)
+  if (authorName.contains(' ')) {
+    return FontAwesomeIcons.userTie;
+  }
+
+  // Anders: onbekende organisatie
+  return Icons.question_mark;
+}
 
 class FormCard extends ConsumerWidget {
   const FormCard({
@@ -24,13 +87,12 @@ class FormCard extends ConsumerWidget {
   final DocumentSnapshot<FirestoreForm> formDoc;
   final User currentUser;
   final bool pushContext;
-
   final borderWidth = 2.0;
+  final double iconSize = 16;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = formDoc.data();
-
     if (form == null) {
       return const ErrorCardWidget(
         errorMessage: 'Het is niet gelukt om de form te laden',
@@ -67,8 +129,14 @@ class FormCard extends ConsumerWidget {
     );
 
     return ListTile(
-      title: <Widget>[Flexible(child: Text(form.title))]
-          .toRow(separator: const SizedBox(width: 4)),
+      title: <Widget>[
+        Icon(
+          getIconForAuthor(form.authorName),
+          size: iconSize,
+          color: colorScheme.onSurface,
+        ),
+        Flexible(child: Text(form.title))
+      ].toRow(separator: const SizedBox(width: 4)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

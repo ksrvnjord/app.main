@@ -7,8 +7,10 @@ class Images {
   static const loadingPicture = "assets/images/swan_flying.jpg";
   static const placeholderBestuur = "assets/images/bestuur.jpg";
   static const placeHolderCommissie = "assets/images/commissies.jpeg";
+  static const placeHolderVerticaal = "assets/images/verticaal.jpeg";
 
   static const unknownRoute404 = "assets/images/404.png";
+  static const flyingSwan = "assets/images/swan_flying.jpg";
 
   // ignore: sort_constructors_first
   const Images._();
