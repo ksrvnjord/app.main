@@ -113,43 +113,49 @@ class ManageVerticalsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verticalsVal = ref.watch(verticalsProvider("Verticaal"));
+    final verticalsVal = ref.watch(verticalenProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Beheer Verticalen"),
       ),
-      body: ListView(
-        children: [
-          verticalsVal.when(
-            data: (data) {
-              return data.isEmpty
-                  ? const Center(
-                      child: Text('Geen verticalen gevonden.'),
-                    )
-                  : [
-                      for (var group in data)
-                        ListTile(
-                          title: Text(group.name),
-                          subtitle: Text(group.type),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () =>
-                              context.goNamed('Edit Vertical', pathParameters: {
-                            'verticaalId': group.id.toString(),
-                          }, queryParameters: {
-                            'verticaalName': group.name,
-                          }),
-                        ),
-                      SizedBox(
-                        height: 96.0,
-                      ),
-                    ].toColumn();
-            },
-            error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
-          ),
-        ],
+      body: verticalsVal.when(
+        data: (data) {
+          data = data
+              .toList()
+              ..sort((a, b) {
+                final gender = (a['name'].startsWith("Dames") ? 0 : 1).compareTo(b['name'].startsWith("Dames") ? 0 : 1);
+                if (gender != 0) {
+                  return gender;
+                }
+                return a['name'].length.compareTo(b['name'].length);
+              });
+          return data.isEmpty
+              ? const Center(
+                  child: Text('Geen verticalen gevonden.'),
+                )
+              : ListView.separated(
+                  itemCount: data.length,
+                  separatorBuilder: (_, __) => const Divider(height: 0),
+                  itemBuilder: (context, index) {
+                    final vertical = data[index];
+                    final verticalId = vertical['id'];
+                    final verticalName = vertical['name'];
+                    return ListTile(
+                      title: Text(verticalName),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () =>
+                          context.goNamed('Edit Vertical', pathParameters: {
+                        'verticaalId': verticalId.toString(),
+                      }, queryParameters: {
+                        'verticaalName': verticalName,
+                      }),
+                    );
+                });
+        },
+        error: (err, stk) => ErrorCardWidget(errorMessage: err.toString()),
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
       ),
       floatingActionButton: // Extended floating action button to Create a group.
           FloatingActionButton.extended(

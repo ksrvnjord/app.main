@@ -802,6 +802,7 @@ abstract final // ignore: prefer-single-declaration-per-file
               pageBuilder: (context, state) => _getPage(
                 child: AlmanakVerticalenPage(
                   id: int.parse(state.pathParameters['id']!),
+                  verticaalName: state.uri.queryParameters['verticaalName']!,
                 ),
                 name: "Verticaal",
               ),
