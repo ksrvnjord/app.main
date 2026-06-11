@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/vertical_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
 
@@ -18,8 +19,6 @@ class AlmanakVerticalenPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double pageHPadding = 12;
-    const double descriptionHPadding = pageHPadding + 4;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,15 +32,14 @@ class AlmanakVerticalenPage extends ConsumerWidget {
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
               imageProvider:
-                  ref.watch(verticaalPictureProvider(verticaalName!)),
+                  ref.watch(verticaalPictureProvider(verticaalName)),
             ),
           ),
-          /*.padding(horizontal: pageHPadding),*/
-          /*SubstructureDescriptionWidget(
+          SubstructureDescriptionWidget(
             descriptionAsyncVal: ref.watch(
-              verticaalDescriptionProvider(name),
+              verticalDescriptionProvider(verticaalName),
             ),
-          ).padding(all: descriptionHPadding),*/
+          ),
           ref.watch(ploegenProvider(id)).when(
                 data: (ploegen) {
                   if (ploegen.isEmpty) {
