@@ -227,10 +227,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
               ).then((value) {
                 if (value == null || !mounted) return;
 
-                final (startTimeOfDay, endTimeOfDay) = (
-                  value.startTime as TimeOfDay,
-                  value.endTime as TimeOfDay
-                );
+                final (startTimeOfDay, endTimeOfDay) =
+                    (value.startTime as TimeOfDay, value.endTime as TimeOfDay);
                 setState(() {
                   _endTime = DateTime(
                     widget.date.year,
