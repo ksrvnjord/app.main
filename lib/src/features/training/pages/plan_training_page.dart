@@ -43,7 +43,13 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   DateTime _endTime = DateTime.now(); // Selected end time of the slider.
 
   bool inProgress = false;
-  bool isBulkBookingInProgress = false;
+
+  // Wordt op true gezet zodra er (bulk of enkel) succesvol geboekt is en de
+  // pagina gaat sluiten. Voorkomt dat een binnenkomende Firestore-stream-update
+  // een rebuild triggert die jouw zojuist aangemaakte reservering als conflict
+  // toont vlak voordat de pagina wegnavigeert.
+  bool _reservationCompleted = false;
+
   @override
   void initState() {
     super.initState();
@@ -77,41 +83,41 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     );
   }
 
+  /// Pure controle: geeft de reservering terug die [desiredStartTime] overlapt,
+  /// of null als het tijdstip vrij is. Gooit geen exceptions — bedoeld om veilig
+  /// tijdens de build te draaien.
+  Reservation? _conflictingReservation(
+    QuerySnapshot<Reservation> snapshot,
+    DateTime desiredStartTime,
+  ) {
+    for (final document in snapshot.docs) {
+      final reservation = document.data();
+      final sameStart =
+          reservation.startTime.isAtSameMomentAs(desiredStartTime);
+
+      if ((reservation.startTime.isBefore(desiredStartTime) || sameStart) &&
+          reservation.endTime.isAfter(desiredStartTime)) {
+        return reservation;
+      }
+    }
+    return null;
+  }
+
+  /// Pure berekening: bepaalt het boekbare tijdvenster rond [desiredStartTime]
+  /// op basis van bestaande reserveringen. Gooit geen exceptions meer; conflicten
+  /// worden apart afgehandeld via [_conflictingReservation].
   DateTimeRange findAvailableTimerange(
     QuerySnapshot<Reservation> snapshot,
     DateTime desiredStartTime,
   ) {
-    final user = ref.watch(currentUserNotifierProvider);
-    if (user == null) {
-      throw Exception(
-        "Er is iets misgegaan met het ophalen van je gegevens, "
-        "probeer opnieuw in te loggen.",
-      );
-    }
-
-    DateTime earliestPossibleTime = widget.date.add(const Duration(
-      hours: 6,
-    )); // People can reservate starting at 06:00.
-
+    // People can reservate starting at 06:00 until 22:00.
+    DateTime earliestPossibleTime = widget.date.add(const Duration(hours: 6));
     DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
-    for (QueryDocumentSnapshot<Reservation> document in snapshot.docs) {
-      Reservation reservation = document.data();
-      final reservationsHaveSameStartTime =
-          reservation.startTime.isAtSameMomentAs(desiredStartTime);
 
-      if ((reservation.startTime.isBefore(desiredStartTime) ||
-              reservationsHaveSameStartTime) &&
-          reservation.endTime.isAfter(desiredStartTime)) {
-        if (reservation.creatorId == user.identifier.toString() &&
-            !isBulkBookingInProgress) {
-          throw Exception(
-            "Je hebt al een afschrijving op dit tijdstip, je kan niet twee keer achter elkaar afschrijven",
-          );
-        }
-        throw Exception(
-          "Dit tijdstip is al bezet door ${reservation.creatorName}",
-        );
-      }
+    for (final document in snapshot.docs) {
+      final reservation = document.data();
+      final sameStart =
+          reservation.startTime.isAtSameMomentAs(desiredStartTime);
 
       if ((reservation.endTime.isBefore(desiredStartTime) ||
               reservation.endTime.isAtSameMomentAs(desiredStartTime)) &&
@@ -119,8 +125,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         earliestPossibleTime = reservation.endTime;
       }
 
-      if ((reservation.startTime.isAfter(desiredStartTime) ||
-              reservationsHaveSameStartTime) &&
+      if ((reservation.startTime.isAfter(desiredStartTime) || sameStart) &&
           reservation.startTime.isBefore(latestPossibleTime)) {
         latestPossibleTime = reservation.startTime;
       }
@@ -138,138 +143,152 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       );
     }
 
+    // De boeking is gelukt en de pagina sluit. Niet opnieuw valideren, anders
+    // zien we onze eigen zojuist aangemaakte reservering als conflict.
+    if (_reservationCompleted) {
+      return const CircularProgressIndicator.adaptive().center();
+    }
+
+    // Conflict-controle gebeurt hier expliciet (geen throw meer in de build).
+    final conflict = _conflictingReservation(snapshot, _startTime);
+    if (conflict != null) {
+      final isOwnReservation =
+          conflict.creatorId == currentUser.identifier.toString();
+      return ErrorCardWidget(
+        errorMessage: isOwnReservation
+            ? "Je hebt al een afschrijving op dit tijdstip, je kan niet twee "
+                "keer achter elkaar afschrijven"
+            : "Dit tijdstip is al bezet door ${conflict.creatorName}",
+      );
+    }
+
     const int timeRowItems = 3;
 
-    try {
-      final range = findAvailableTimerange(snapshot, _startTime);
-      final (earliestPossibleTime, latestPossibleTime) =
-          (range.start, range.end);
+    final range = findAvailableTimerange(snapshot, _startTime);
+    final (earliestPossibleTime, latestPossibleTime) = (range.start, range.end);
 
-      if (_endTime.isAfter(latestPossibleTime)) {
-        _endTime = latestPossibleTime;
-      }
+    if (_endTime.isAfter(latestPossibleTime)) {
+      _endTime = latestPossibleTime;
+    }
 
-      const double fieldPadding = 16;
-      const double timeSelectorDialogHandlerRadius = 8;
+    const double fieldPadding = 16;
+    const double timeSelectorDialogHandlerRadius = 8;
 
-      final screenWidth = MediaQuery.of(context).size.width;
-      const intervalOfSelector = Duration(minutes: 15);
-      const minimumReservationDuration = Duration(minutes: 15);
+    final screenWidth = MediaQuery.of(context).size.width;
+    const intervalOfSelector = Duration(minutes: 15);
+    const minimumReservationDuration = Duration(minutes: 15);
 
-      // Controleer of het geselecteerde object een ergometer is
-      final isErgometer = widget.objectName.toLowerCase().contains('ergometer');
+    // Controleer of het geselecteerde object een ergometer is
+    final isErgometer = widget.objectName.toLowerCase().contains('ergometer');
 
-      return ListView(children: <Widget>[
-        DataTextListTile(name: 'Boot', value: widget.objectName),
-        DataTextListTile(
-          name: "Datum",
-          value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: screenWidth / timeRowItems,
-              child: DataTextListTile(
-                name: "Starttijd",
-                value: DateFormat.Hm().format(_startTime),
-              ),
+    return ListView(children: <Widget>[
+      DataTextListTile(name: 'Boot', value: widget.objectName),
+      DataTextListTile(
+        name: "Datum",
+        value: DateFormat.MMMMEEEEd('nl_NL').format(widget.date),
+      ),
+      Row(
+        children: [
+          SizedBox(
+            width: screenWidth / timeRowItems,
+            child: DataTextListTile(
+              name: "Starttijd",
+              value: DateFormat.Hm().format(_startTime),
             ),
-            SizedBox(
-              width: screenWidth / timeRowItems,
-              child: DataTextListTile(
-                name: "Eindtijd",
-                value: DateFormat.Hm().format(_endTime),
-              ),
+          ),
+          SizedBox(
+            width: screenWidth / timeRowItems,
+            child: DataTextListTile(
+              name: "Eindtijd",
+              value: DateFormat.Hm().format(_endTime),
             ),
-            IconButton(
-              onPressed: () => {
-                showTimeRangePicker(
-                  context: context,
-                  start: TimeOfDay(
-                    hour: _startTime.hour,
-                    minute: _startTime.minute,
-                  ),
-                  end: TimeOfDay(hour: _endTime.hour, minute: _endTime.minute),
-                  disabledTime: TimeRange(
-                    startTime: TimeOfDay.fromDateTime(latestPossibleTime),
-                    endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
-                  ),
-                  disabledColor: Colors.grey,
-                  interval: intervalOfSelector,
-                  fromText: 'Starttijd',
-                  toText: 'Eindtijd',
-                  strokeColor: Colors.lightBlue,
-                  handlerRadius: timeSelectorDialogHandlerRadius,
-                  handlerColor: Colors.lightBlue,
-                  minDuration: minimumReservationDuration,
-                ).then((value) {
-                  if (value == null || !mounted) return;
+          ),
+          IconButton(
+            onPressed: () => {
+              showTimeRangePicker(
+                context: context,
+                start: TimeOfDay(
+                  hour: _startTime.hour,
+                  minute: _startTime.minute,
+                ),
+                end: TimeOfDay(hour: _endTime.hour, minute: _endTime.minute),
+                disabledTime: TimeRange(
+                  startTime: TimeOfDay.fromDateTime(latestPossibleTime),
+                  endTime: TimeOfDay.fromDateTime(earliestPossibleTime),
+                ),
+                disabledColor: Colors.grey,
+                interval: intervalOfSelector,
+                fromText: 'Starttijd',
+                toText: 'Eindtijd',
+                strokeColor: Colors.lightBlue,
+                handlerRadius: timeSelectorDialogHandlerRadius,
+                handlerColor: Colors.lightBlue,
+                minDuration: minimumReservationDuration,
+              ).then((value) {
+                if (value == null || !mounted) return;
 
-                  final (startTimeOfDay, endTimeOfDay) = (
-                    value.startTime as TimeOfDay,
-                    value.endTime as TimeOfDay
+                final (startTimeOfDay, endTimeOfDay) = (
+                  value.startTime as TimeOfDay,
+                  value.endTime as TimeOfDay
+                );
+                setState(() {
+                  _endTime = DateTime(
+                    widget.date.year,
+                    widget.date.month,
+                    widget.date.day,
+                    endTimeOfDay.hour,
+                    endTimeOfDay.minute,
                   );
-                  setState(() {
-                    _endTime = DateTime(
-                      widget.date.year,
-                      widget.date.month,
-                      widget.date.day,
-                      endTimeOfDay.hour,
-                      endTimeOfDay.minute,
-                    );
-                    _startTime = DateTime(
-                      widget.date.year,
-                      widget.date.month,
-                      widget.date.day,
-                      startTimeOfDay.hour,
-                      startTimeOfDay.minute,
-                    );
-                  });
-                }),
-              },
-              icon: const Icon(Icons.tune, size: 40),
-            ),
-          ],
-        ),
-        ElevatedButton(
+                  _startTime = DateTime(
+                    widget.date.year,
+                    widget.date.month,
+                    widget.date.day,
+                    startTimeOfDay.hour,
+                    startTimeOfDay.minute,
+                  );
+                });
+              }),
+            },
+            icon: const Icon(Icons.tune, size: 40),
+          ),
+        ],
+      ),
+      ElevatedButton(
+        onPressed: inProgress
+            ? null
+            : () => createReservation(
+                  currentUser.identifier.toString(),
+                  currentUser.fullName,
+                  currentUser.isAdmin,
+                ),
+        child: <Widget>[
+          Icon(inProgress ? LucideIcons.loader : LucideIcons.check)
+              .padding(bottom: 1),
+          Text(
+            inProgress ? "Zwanen voeren..." : 'Afschrijven',
+            style: const TextStyle(fontSize: 18),
+          ).padding(vertical: fieldPadding),
+        ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
+      ).padding(all: fieldPadding),
+      if (isErgometer)
+        ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          ),
+          icon: const Icon(Icons.playlist_add_check, size: 24),
+          label: const Text(
+            'Meerdere ergometers afschrijven...',
+            style: TextStyle(fontSize: 18),
+          ).padding(vertical: fieldPadding),
           onPressed: inProgress
               ? null
-              : () => createReservation(
-                    currentUser.identifier.toString(),
+              : () => _openBulkErgometerSelection(
+                    context,
                     currentUser.fullName,
                     currentUser.isAdmin,
                   ),
-          child: <Widget>[
-            Icon(inProgress ? LucideIcons.loader : LucideIcons.check)
-                .padding(bottom: 1),
-            Text(
-              inProgress ? "Zwanen voeren..." : 'Afschrijven',
-              style: const TextStyle(fontSize: 18),
-            ).padding(vertical: fieldPadding),
-          ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
-        ).padding(all: fieldPadding),
-        if (isErgometer)
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-            ),
-            icon: const Icon(Icons.playlist_add_check, size: 24),
-            label: const Text(
-              'Meerdere ergometers afschrijven...',
-              style: TextStyle(fontSize: 18),
-            ).padding(vertical: fieldPadding),
-            onPressed: inProgress
-                ? null
-                : () => _openBulkErgometerSelection(
-                      context,
-                      currentUser.fullName,
-                      currentUser.isAdmin,
-                    ),
-          ).padding(horizontal: fieldPadding, bottom: fieldPadding),
-      ]);
-    } catch (e) {
-      return ErrorCardWidget(errorMessage: e.toString());
-    }
+        ).padding(horizontal: fieldPadding, bottom: fieldPadding),
+    ]);
   }
 
   void _openBulkErgometerSelection(
@@ -295,6 +314,11 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
       final List<String> userPermissions = user?.firestorePermissions ?? [];
 
+      // Genormaliseerd (lowercase + zonder spaties eromheen) zodat de
+      // vergelijking hoofdletter-ongevoelig is.
+      final Set<String> genormaliseerdePermissies =
+          userPermissions.map((p) => p.toLowerCase().trim()).toSet();
+
       final alleErgs = alleDocs.where((doc) {
         final data = doc.data();
         final name = (data['name'] ?? doc.id).toString().toLowerCase();
@@ -308,17 +332,24 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
         if (creatorIsAdmin == true) return true;
 
-        final String? benodigdePermissie =
-            data['requiredPermission'] as String?;
+        // Welke bevoegdheid vereist dit object? Het veld 'permissions' kan één
+        // string zijn (bijv. 'wedstrijd ergometers') of een lijst daarvan.
+        final dynamic permissieVeld = data['permissions'];
+        final List<String> benodigdePermissies = permissieVeld == null
+            ? <String>[]
+            : permissieVeld is Iterable
+                ? permissieVeld.map((p) => p.toString()).toList()
+                : <String>[permissieVeld.toString()];
 
-        if (benodigdePermissie != null && benodigdePermissie.isNotEmpty) {
-          final heeftPermissie = userPermissions.contains(benodigdePermissie);
-          if (!heeftPermissie) {
-            return false;
-          }
-        }
+        // Geen vereiste ingesteld -> iedereen mag deze ergometer zien.
+        if (benodigdePermissies.isEmpty) return true;
 
-        return true;
+        // Alleen tonen als de gebruiker minstens één vereiste bevoegdheid heeft.
+        // Hoofdletter-ongevoelig, zodat 'Wedstrijd Ergometers' en
+        // 'wedstrijd ergometers' als gelijk gelden.
+        return benodigdePermissies.any(
+          (p) => genormaliseerdePermissies.contains(p.toLowerCase().trim()),
+        );
       }).toList();
 
       if (alleErgs.isEmpty) {
@@ -336,11 +367,14 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
       if (!context.mounted) return;
 
-      await showDialog(
+      // De dialog geeft alleen de selectie terug (of null bij annuleren).
+      // Het daadwerkelijke boeken gebeurt HIERNA, met de context van de pagina,
+      // zodat de context niet al unmounted is door het sluiten van de dialog.
+      final geselecteerd = await showDialog<List<DocumentReference>>(
         context: context,
         builder: (BuildContext dialogContext) {
           return StatefulBuilder(
-            builder: (context, setDialogState) {
+            builder: (builderContext, setDialogState) {
               return AlertDialog(
                 title: const Text('Selecteer Ergometers'),
                 content: SizedBox(
@@ -348,7 +382,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: alleErgs.length,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (itemContext, index) {
                       final doc = alleErgs[index];
                       final name = doc.data()['name'] ?? doc.id;
                       final ref = doc.reference;
@@ -384,71 +418,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                     child: const Text('Annuleren'),
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      Navigator.pop(dialogContext);
-
-                      setState(() {
-                        inProgress = true;
-                        isBulkBookingInProgress = true;
-                      });
-
-                      int succesvolleBoekingen = 0;
-                      List<String> fouten = [];
-
-                      try {
-                        for (var ergRef in geselecteerdeErgs) {
-                          final ergDoc = alleErgs.firstWhere(
-                              (d) => d.reference.path == ergRef.path);
-                          final ergName = ergDoc.data()['name'] ?? ergDoc.id;
-
-                          try {
-                            await FirebaseFunctions.instanceFor(
-                                    region: 'europe-west1')
-                                .httpsCallable('createReservation')
-                                .call({
-                              'startTime': _startTime.toUtc().toIso8601String(),
-                              'endTime': _endTime.toUtc().toIso8601String(),
-                              'object': ergRef.path,
-                              'objectName': ergName,
-                              'creatorName': creatorName,
-                              'creatorIsAdmin': creatorIsAdmin,
-                            });
-                            succesvolleBoekingen++;
-                          } catch (e) {
-                            fouten.add('$ergName: $e');
-                          }
-                        }
-
-                        if (context.mounted) {
-                          if (fouten.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    '$succesvolleBoekingen ergometers succesvol afgeschreven!'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                            context.pop();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    '$succesvolleBoekingen gelukt. Overige ergometers gaven een tijdconflict of permissiefout.'),
-                                backgroundColor: Colors.orange,
-                              ),
-                            );
-                            context.pop();
-                          }
-                        }
-                      } finally {
-                        if (mounted) {
-                          setState(() {
-                            inProgress = false;
-                            isBulkBookingInProgress = false;
-                          });
-                        }
-                      }
-                    },
+                    onPressed: () =>
+                        Navigator.pop(dialogContext, geselecteerdeErgs),
                     child: Text('Boek ${geselecteerdeErgs.length} ergometers'),
                   ),
                 ],
@@ -457,10 +428,70 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           );
         },
       );
+
+      // Geannuleerd of niets gekozen: stoppen.
+      if (geselecteerd == null || geselecteerd.isEmpty) return;
+      if (!mounted) return;
+
+      setState(() {
+        inProgress = true;
+      });
+
+      int succesvolleBoekingen = 0;
+      final List<String> fouten = [];
+
+      for (final ergRef in geselecteerd) {
+        final ergDoc =
+            alleErgs.firstWhere((d) => d.reference.path == ergRef.path);
+        final ergName = ergDoc.data()['name'] ?? ergDoc.id;
+
+        try {
+          await FirebaseFunctions.instanceFor(region: 'europe-west1')
+              .httpsCallable('createReservation')
+              .call({
+            'startTime': _startTime.toUtc().toIso8601String(),
+            'endTime': _endTime.toUtc().toIso8601String(),
+            'object': ergRef.path,
+            'objectName': ergName,
+            'creatorName': creatorName,
+            'creatorIsAdmin': creatorIsAdmin,
+          });
+          succesvolleBoekingen++;
+        } catch (e) {
+          fouten.add('$ergName: $e');
+        }
+      }
+
+      if (!mounted) return;
+
+      // Markeer voltooid VOORDAT de pagina rebuild/sluit, zodat de stream-update
+      // je eigen nieuwe reservering niet als conflict toont.
+      setState(() {
+        _reservationCompleted = true;
+        inProgress = false;
+      });
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        fouten.isEmpty
+            ? SnackBar(
+                content: Text(
+                    '$succesvolleBoekingen ergometers succesvol afgeschreven!'),
+                backgroundColor: Colors.green,
+              )
+            : SnackBar(
+                content: Text(
+                    '$succesvolleBoekingen gelukt. Overige ergometers gaven een tijdconflict of permissiefout.'),
+                backgroundColor: Colors.orange,
+              ),
+      );
+      context.pop();
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         inProgress = false;
       });
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text('Fout bij ophalen ergometers: $e'),
@@ -488,6 +519,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       creatorIsAdmin: creatorIsAdmin,
     ));
 
+    if (!mounted) return;
+
     if (res['success'] == true) {
       FirebaseAnalytics.instance.logEvent(
         name: 'reservation_created',
@@ -495,8 +528,12 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
           'reservation_object_name': widget.objectName,
         },
       );
-      if (!context.mounted) return;
-      if (mounted) {
+      // Markeer voltooid voor de pop zodat de stream-update niet je eigen
+      // nieuwe reservering als conflict toont.
+      setState(() {
+        _reservationCompleted = true;
+      });
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Afschrijving gelukt!'),
@@ -505,9 +542,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         );
       }
     } else {
-      if (!context.mounted) return;
-
-      if (mounted) {
+      if (context.mounted) {
         final colorScheme = Theme.of(context).colorScheme;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -519,7 +554,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         );
       }
     }
-    if (mounted) {
+
+    if (context.mounted) {
       context.pop();
     }
   }
