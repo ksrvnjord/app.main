@@ -43,7 +43,7 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
   DateTime _endTime = DateTime.now(); // Selected end time of the slider.
 
   bool inProgress = false;
-
+  bool isBulkBookingInProgress = false;
   @override
   void initState() {
     super.initState();
@@ -77,26 +77,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     );
   }
 
-  /// Finds the available time range for a reservation.
-  ///
-  /// This function iterates over all existing reservations in the provided [snapshot]
-  /// and determines the earliest and latest possible times for a new reservation.
-  ///
-  /// The earliest possible time for a reservation is the end time of the last reservation
-  /// that ends before the start time of the new reservation.
-  ///
-  /// The latest possible time for a reservation is the start time of the first reservation
-  /// that starts after the start time of the new reservation.
-  ///
-  /// If a user already has a reservation at the start time of the new reservation,
-  /// an exception is thrown.
-  ///
-  /// If the start time of the new reservation is during another reservation,
-  /// an exception is thrown.
-  ///
-  /// @param snapshot The [QuerySnapshot] of existing reservations.
-  /// @return A [DateTimeRange] representing the available time range for a new reservation.
-  // ignore: prefer-named-parameters
   DateTimeRange findAvailableTimerange(
     QuerySnapshot<Reservation> snapshot,
     DateTime desiredStartTime,
@@ -115,7 +95,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
     DateTime latestPossibleTime = widget.date.add(const Duration(hours: 22));
     for (QueryDocumentSnapshot<Reservation> document in snapshot.docs) {
-      // Determine earliest/latest possible time for slider.
       Reservation reservation = document.data();
       final reservationsHaveSameStartTime =
           reservation.startTime.isAtSameMomentAs(desiredStartTime);
@@ -123,7 +102,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       if ((reservation.startTime.isBefore(desiredStartTime) ||
               reservationsHaveSameStartTime) &&
           reservation.endTime.isAfter(desiredStartTime)) {
-        if (reservation.creatorId == user.identifier.toString()) {
+        if (reservation.creatorId == user.identifier.toString() &&
+            !isBulkBookingInProgress) {
           throw Exception(
             "Je hebt al een afschrijving op dit tijdstip, je kan niet twee keer achter elkaar afschrijven",
           );
@@ -149,7 +129,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
     return DateTimeRange(start: earliestPossibleTime, end: latestPossibleTime);
   }
 
-  // TODO: Extract method.
   // ignore: avoid-long-functions
   Widget renderPage(QuerySnapshot<Reservation> snapshot, User? currentUser) {
     if (currentUser == null) {
@@ -176,6 +155,9 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       final screenWidth = MediaQuery.of(context).size.width;
       const intervalOfSelector = Duration(minutes: 15);
       const minimumReservationDuration = Duration(minutes: 15);
+
+      // Controleer of het geselecteerde object een ergometer is
+      final isErgometer = widget.objectName.toLowerCase().contains('ergometer');
 
       return ListView(children: <Widget>[
         DataTextListTile(name: 'Boot', value: widget.objectName),
@@ -218,11 +200,9 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                   toText: 'Eindtijd',
                   strokeColor: Colors.lightBlue,
                   handlerRadius: timeSelectorDialogHandlerRadius,
-                  // ignore: no-equal-arguments
                   handlerColor: Colors.lightBlue,
                   minDuration: minimumReservationDuration,
                 ).then((value) {
-                  // Value is an Object? with properties: startTime, endTime.
                   if (value == null || !mounted) return;
 
                   final (startTimeOfDay, endTimeOfDay) = (
@@ -268,9 +248,224 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
             ).padding(vertical: fieldPadding),
           ].toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween),
         ).padding(all: fieldPadding),
+        if (isErgometer)
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            ),
+            icon: const Icon(Icons.playlist_add_check, size: 24),
+            label: const Text(
+              'Meerdere ergometers afschrijven...',
+              style: TextStyle(fontSize: 18),
+            ).padding(vertical: fieldPadding),
+            onPressed: inProgress
+                ? null
+                : () => _openBulkErgometerSelection(
+                      context,
+                      currentUser.fullName,
+                      currentUser.isAdmin,
+                    ),
+          ).padding(horizontal: fieldPadding, bottom: fieldPadding),
       ]);
     } catch (e) {
       return ErrorCardWidget(errorMessage: e.toString());
+    }
+  }
+
+  void _openBulkErgometerSelection(
+    BuildContext context,
+    String creatorName,
+    bool? creatorIsAdmin,
+  ) async {
+    setState(() {
+      inProgress = true;
+    });
+
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('reservationObjects')
+          .get();
+
+      setState(() {
+        inProgress = false;
+      });
+
+      final alleDocs = snapshot.docs.toList();
+      final user = ref.read(currentUserNotifierProvider);
+
+      final List<String> userPermissions = user?.firestorePermissions ?? [];
+
+      final alleErgs = alleDocs.where((doc) {
+        final data = doc.data();
+        final name = (data['name'] ?? doc.id).toString().toLowerCase();
+        final docId = doc.id.toLowerCase();
+
+        final isErg = name.contains('ergometer') ||
+            name.contains('ergo') ||
+            docId.contains('ergometer') ||
+            docId.contains('ergo');
+        if (!isErg) return false;
+
+        if (creatorIsAdmin == true) return true;
+
+        final String? benodigdePermissie =
+            data['requiredPermission'] as String?;
+
+        if (benodigdePermissie != null && benodigdePermissie.isNotEmpty) {
+          final heeftPermissie = userPermissions.contains(benodigdePermissie);
+          if (!heeftPermissie) {
+            return false;
+          }
+        }
+
+        return true;
+      }).toList();
+
+      if (alleErgs.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Geen ergometers beschikbaar voor jouw permissieniveau.')),
+          );
+        }
+        return;
+      }
+
+      List<DocumentReference> geselecteerdeErgs = [widget.reservationObject];
+
+      if (!context.mounted) return;
+
+      await showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return StatefulBuilder(
+            builder: (context, setDialogState) {
+              return AlertDialog(
+                title: const Text('Selecteer Ergometers'),
+                content: SizedBox(
+                  width: double.maxFinite,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: alleErgs.length,
+                    itemBuilder: (context, index) {
+                      final doc = alleErgs[index];
+                      final name = doc.data()['name'] ?? doc.id;
+                      final ref = doc.reference;
+
+                      // Check of dit de ergometer is waarmee de pagina geopend is
+                      final isHuidigeErgometer =
+                          ref.path == widget.reservationObject.path;
+                      final isSelected = geselecteerdeErgs.contains(ref);
+
+                      return CheckboxListTile(
+                        title: Text(name),
+                        // Als dit de huidige ergometer is, staat hij op true
+                        value: isHuidigeErgometer ? true : isSelected,
+                        activeColor: Colors.blue,
+                        onChanged: isHuidigeErgometer
+                            ? null // Maak hem 'disabled' voor wijzigingen zodat de gebruiker hem niet per ongeluk kan uitvinken
+                            : (bool? checked) {
+                                setDialogState(() {
+                                  if (checked == true) {
+                                    geselecteerdeErgs.add(ref);
+                                  } else {
+                                    geselecteerdeErgs.remove(ref);
+                                  }
+                                });
+                              },
+                      );
+                    },
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(dialogContext),
+                    child: const Text('Annuleren'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.pop(dialogContext);
+
+                      setState(() {
+                        inProgress = true;
+                        isBulkBookingInProgress = true;
+                      });
+
+                      int succesvolleBoekingen = 0;
+                      List<String> fouten = [];
+
+                      try {
+                        for (var ergRef in geselecteerdeErgs) {
+                          final ergDoc = alleErgs.firstWhere(
+                              (d) => d.reference.path == ergRef.path);
+                          final ergName = ergDoc.data()['name'] ?? ergDoc.id;
+
+                          try {
+                            await FirebaseFunctions.instanceFor(
+                                    region: 'europe-west1')
+                                .httpsCallable('createReservation')
+                                .call({
+                              'startTime': _startTime.toUtc().toIso8601String(),
+                              'endTime': _endTime.toUtc().toIso8601String(),
+                              'object': ergRef.path,
+                              'objectName': ergName,
+                              'creatorName': creatorName,
+                              'creatorIsAdmin': creatorIsAdmin,
+                            });
+                            succesvolleBoekingen++;
+                          } catch (e) {
+                            fouten.add('$ergName: $e');
+                          }
+                        }
+
+                        if (context.mounted) {
+                          if (fouten.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    '$succesvolleBoekingen ergometers succesvol afgeschreven!'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            context.pop();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    '$succesvolleBoekingen gelukt. Overige ergometers gaven een tijdconflict of permissiefout.'),
+                                backgroundColor: Colors.orange,
+                              ),
+                            );
+                            context.pop();
+                          }
+                        }
+                      } finally {
+                        if (mounted) {
+                          setState(() {
+                            inProgress = false;
+                            isBulkBookingInProgress = false;
+                          });
+                        }
+                      }
+                    },
+                    child: Text('Boek ${geselecteerdeErgs.length} ergometers'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        inProgress = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Fout bij ophalen ergometers: $e'),
+            backgroundColor: Colors.red),
+      );
     }
   }
 
@@ -302,7 +497,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       );
       if (!context.mounted) return;
       if (mounted) {
-        // ignore: avoid-ignoring-return-values, use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Afschrijving gelukt!'),
@@ -315,7 +509,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
 
       if (mounted) {
         final colorScheme = Theme.of(context).colorScheme;
-        // ignore: avoid-ignoring-return-values, use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -327,7 +520,6 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
       }
     }
     if (mounted) {
-      // ignore: avoid-ignoring-return-values, use_build_context_synchronously
       context.pop();
     }
   }
