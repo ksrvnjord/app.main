@@ -37,4 +37,5 @@ const kHouseNames = [
   'Villa Boerheaven',
   'Villa Phoenix',
   'Ygglo',
+  'Huisje Kruisje',
 ];
