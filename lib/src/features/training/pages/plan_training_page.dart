@@ -348,7 +348,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
         return benodigdePermissies.any(
           (p) => genormaliseerdePermissies.contains(p.toLowerCase().trim()),
         );
-      }).toList()..sort((a, b) => a["name"].toString().compareTo(b["name"].toString()));
+      }).toList()
+        ..sort((a, b) => a["name"].toString().compareTo(b["name"].toString()));
 
       if (alleErgs.isEmpty) {
         if (context.mounted) {
@@ -418,7 +419,8 @@ class _PlanTrainingPageState extends ConsumerState<PlanTrainingPage> {
                   ElevatedButton(
                     onPressed: () =>
                         Navigator.pop(dialogContext, geselecteerdeErgs),
-                    child: Text("Schrijf ${geselecteerdeErgs.length} ergometers af"),
+                    child: Text(
+                        "Schrijf ${geselecteerdeErgs.length} ergometers af"),
                   ),
                 ],
               );
