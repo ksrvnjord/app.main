@@ -15,7 +15,9 @@ class CreateFormAuthorWidget extends ConsumerWidget {
     return currentUserAsync.when(
       data: (user) {
         if (state.author.text.isEmpty) {
-          state.author.text = user.canCreateFormsFor.keys.first;
+          state.author.text = user.isBestuur
+              ? user.fullName
+              : user.canCreateFormsFor.keys.firstOrNull ?? user.fullName;
         }
         return DropdownButtonFormField<String>(
           value: state.author.text,
@@ -25,7 +27,7 @@ class CreateFormAuthorWidget extends ConsumerWidget {
                 DropdownMenuItem(value: entry.key, child: Text(entry.value))),
             if (user.isAdmin)
               DropdownMenuItem(
-                value: user.identifierString,
+                value: user.fullName,
                 child: Text(user.fullName),
               ),
           ],
