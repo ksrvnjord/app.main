@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/vertical_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
 class AlmanakVerticalenPage extends ConsumerWidget {
   const AlmanakVerticalenPage({
@@ -20,6 +19,9 @@ class AlmanakVerticalenPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
+    final currentUserVal = ref.watch(currentUserProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verticalen'),
@@ -33,11 +35,6 @@ class AlmanakVerticalenPage extends ConsumerWidget {
             child: AlmanakSubstructureCoverPicture(
               imageProvider:
                   ref.watch(verticaalPictureProvider(verticaalName)),
-            ),
-          ),
-          SubstructureDescriptionWidget(
-            descriptionAsyncVal: ref.watch(
-              verticalDescriptionProvider(verticaalName),
             ),
           ),
           ref.watch(ploegenProvider(id)).when(
@@ -85,6 +82,41 @@ class AlmanakVerticalenPage extends ConsumerWidget {
                 ),
               ),
         ],
+      ),
+      floatingActionButton: currentUserVal.when(
+        data: (currentUser) {
+          final canAccessEditGroupPage = currentUser.isAdmin;
+          if (!canAccessEditGroupPage) return null;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              FloatingActionButton.extended(
+                heroTag: "Verticaal -> Edit",
+                foregroundColor: colorScheme.onTertiaryContainer,
+                backgroundColor: colorScheme.tertiaryContainer,
+                onPressed: () {
+                  context.pushNamed(
+                    "Verticaal -> Edit",
+                    pathParameters: {
+                      "id": id.toString(),
+                    },
+                    queryParameters: {
+                      "verticaalName": verticaalName,
+                    },
+                  );
+                },
+                icon: const Icon(Icons.edit_outlined),
+                label: const Text('Edit'),
+              ),
+            ],
+          );
+        },
+        error: (e, s) {
+          debugPrint("Error message when retrieving permission: $e");
+          return null;
+        },
+        loading: () => const SizedBox.shrink(),
       ),
     );
   }

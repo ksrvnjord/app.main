@@ -71,6 +71,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/alm
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_bestuur_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_commissie_edit_page.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_verticaal_edit_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_huis_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_ploeg_page.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/pages/almanak_substructuur_page.dart';
@@ -806,6 +807,18 @@ abstract final // ignore: prefer-single-declaration-per-file
                 ),
                 name: "Verticaal",
               ),
+              routes: [
+                _route(
+                    path: "edit",
+                    name: "Verticaal -> Edit",
+                    pageBuilder: (context, state) => _getPage(
+                      child: AlmanakVerticalEditPage(
+                        name: state.uri.queryParameters["verticaalName"]!,
+                        id: int.parse(state.pathParameters['id']!),
+                      ),
+                      name: "Verticaal -> Edit",
+                    )),
+              ],
             ),
           ],
         ),

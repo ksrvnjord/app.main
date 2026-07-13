@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-class CommissieEditService {
+class GroupEditService {
   static Future<void> updateCommissieDescription({
     required String name,
     required String content,
@@ -28,7 +28,21 @@ class CommissieEditService {
     required int year,
     required int groupId,
   }) async {
-    final imagePath = '/almanak/commissies/$name/$year/$groupId/picture.jpg';
+    final imagePath = '/almanak/commissie/$name/$year/$groupId/picture.jpg';
+    final imageRef = FirebaseStorage.instance.ref(imagePath);
+
+    try {
+      await imageRef.putFile(image);
+    } catch (error) {
+      throw Exception('Failed to upload image: $error');
+    }
+  }
+
+  static Future<void> uploadVerticalImage({
+    required String name,
+    required File image,
+  }) async {
+    final imagePath = '/almanak/verticalen/$name/picture.jpeg';
     final imageRef = FirebaseStorage.instance.ref(imagePath);
 
     try {
