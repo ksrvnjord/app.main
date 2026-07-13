@@ -39,7 +39,7 @@ Future<void> appRunner() async {
   // Initialize the Hive Cache (Generic K/V cache, relevant for image caching).
   await Hive.initFlutter(
     HiveCache.cachePath,
-  ); 
+  );
   // Store the cache in a separate folder.
   if (!Hive.isAdapterRegistered(0)) {
     Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.

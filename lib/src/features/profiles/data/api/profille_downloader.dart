@@ -43,8 +43,8 @@ Future<void> downloadAllProfilePictures({
 
         onStateChanged(true, downloaded++, total);
       }
-    }  catch (e) {
-        continue;
+    } catch (e) {
+      continue;
     }
   }
 
