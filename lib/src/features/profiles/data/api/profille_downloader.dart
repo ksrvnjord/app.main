@@ -20,27 +20,31 @@ Future<void> downloadAllProfilePictures({
   final archive = Archive();
 
   for (var folder in listResult.prefixes) {
-    final userId = folder.name;
+    try {
+      final userId = folder.name;
 
-    // Skip folders named 'thumbnails'
-    if (userId == 'thumbnails') continue;
+      // Skip folders named 'thumbnails'
+      if (userId == 'thumbnails') continue;
 
-    // List files in the userId folder
-    final userFolderResult = await folder.listAll();
+      // List files in the userId folder
+      final userFolderResult = await folder.listAll();
 
-    for (var fileRef in userFolderResult.items) {
-      // Skip any thumbnails folder in the second layer
-      if (fileRef.name != 'profile_picture.png') continue;
+      for (var fileRef in userFolderResult.items) {
+        // Skip any thumbnails folder in the second layer
+        if (fileRef.name != 'profile_picture.png') continue;
 
-      // Download file as bytes
-      final Uint8List? fileData = await fileRef.getData();
-      if (fileData == null) continue;
+        // Download file as bytes
+        final Uint8List? fileData = await fileRef.getData();
+        if (fileData == null) continue;
 
-      // Rename and add the file to the archive
-      final fileName = "$userId.png";
-      archive.addFile(ArchiveFile(fileName, fileData.length, fileData));
+        // Rename and add the file to the archive
+        final fileName = "$userId.png";
+        archive.addFile(ArchiveFile(fileName, fileData.length, fileData));
 
-      onStateChanged(true, downloaded++, total);
+        onStateChanged(true, downloaded++, total);
+      }
+    } catch (e) {
+      continue;
     }
   }
 
