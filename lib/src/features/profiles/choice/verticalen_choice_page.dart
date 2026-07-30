@@ -101,6 +101,7 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                       onTap: () => context.goNamed(
                         'Verticaal',
                         pathParameters: {'id': verticalId.toString()},
+                        queryParameters: {'verticaalName': verticalName},
                       ),
                       imageProvider: ref.watch(
                           verticaalThumbnailProvider(verticalName.toString())),

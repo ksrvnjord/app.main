@@ -7,15 +7,15 @@ import 'package:universal_html/html.dart' as html;
 Future<void> downloadAllProfilePictures({
   required void Function(bool isLoading, int downloaded, int total)
       onStateChanged,
-      int batchSize = 600,
+  int batchSize = 600,
 }) async {
   final storage = FirebaseStorage.instance;
 
   // Get the root directory for 'forms/$docRef'
   final listResult = await storage.ref('people/').listAll();
 
-
-  final folders = listResult.prefixes.where((f) => f.name != "thumbnails").toList();
+  final folders =
+      listResult.prefixes.where((f) => f.name != "thumbnails").toList();
   final total = folders.length;
   var downloaded = 0;
   var batchNum = 0;
@@ -58,10 +58,10 @@ Future<void> downloadAllProfilePictures({
         final Uint8List? fileData = await fileRef.getData();
         if (fileData == null) continue;
 
-        archive.addFile(ArchiveFile(fileName(userId), fileData.length, fileData));
+        archive
+            .addFile(ArchiveFile(fileName(userId), fileData.length, fileData));
       }
-    }
-    catch (e) {
+    } catch (e) {
       print('Failed for $userId $e');
       continue;
     }

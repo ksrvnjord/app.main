@@ -43,6 +43,7 @@ class ManageGroupsPage extends ConsumerWidget {
   }) async {
     final dio = ref.read(dioProvider);
     try {
+      debugPrint(group.toJson().toString());
       // ignore: avoid-ignoring-return-values
       await dio.post(
         "/api/v2/groups/",
@@ -58,7 +59,6 @@ class ManageGroupsPage extends ConsumerWidget {
             ),
           ),
         );
-
         return;
       }
     }
