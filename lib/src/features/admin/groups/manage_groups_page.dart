@@ -11,7 +11,6 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:tuple/tuple.dart';
-import 'package:dio/dio.dart';
 
 const List<String> wedstrijdPloegenList = [
   // 'Eerstejaars Lichte Dames',
@@ -51,19 +50,13 @@ class ManageGroupsPage extends ConsumerWidget {
         data: group.toJson(),
       );
     } catch (e) {
-        debugPrint('CREATE GROUP ERROR: $e');
-        if (e is DioException) {
-          debugPrint('Status: ${e.response?.statusCode}');
-          debugPrint('Body: ${e.response?.data}');
-          debugPrint('Request headers: ${e.requestOptions.headers}');
-        }
 
       if (ctx.mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(ctx).showSnackBar(
           const SnackBar(
             content: Text(
-              "Het is niet gelukt om de groep aan te maken",
+              "Het is niet gelukt om de groep aan te maken.",
             ),
           ),
         );
