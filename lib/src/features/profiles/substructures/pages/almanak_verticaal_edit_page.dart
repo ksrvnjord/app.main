@@ -81,7 +81,6 @@ class AlmanakVerticalEditPageState
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Bewerk Verticaal'),
@@ -131,9 +130,7 @@ class AlmanakVerticalEditPageState
   }
 
   void submitEdit() async {
-
     try {
-
       // Upload image if provided
       if (_galleryFile != null) {
         await GroupEditService.uploadVerticalImage(

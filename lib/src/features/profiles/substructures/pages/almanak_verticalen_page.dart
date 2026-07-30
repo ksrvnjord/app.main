@@ -18,7 +18,6 @@ class AlmanakVerticalenPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -33,8 +32,7 @@ class AlmanakVerticalenPage extends ConsumerWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
-              imageProvider:
-                  ref.watch(verticaalPictureProvider(verticaalName)),
+              imageProvider: ref.watch(verticaalPictureProvider(verticaalName)),
             ),
           ),
           ref.watch(ploegenProvider(id)).when(

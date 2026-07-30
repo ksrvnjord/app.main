@@ -50,7 +50,6 @@ class ManageGroupsPage extends ConsumerWidget {
         data: group.toJson(),
       );
     } catch (e) {
-
       if (ctx.mounted) {
         // ignore: avoid-ignoring-return-values
         ScaffoldMessenger.of(ctx).showSnackBar(

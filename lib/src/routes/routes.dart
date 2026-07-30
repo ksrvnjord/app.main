@@ -812,12 +812,12 @@ abstract final // ignore: prefer-single-declaration-per-file
                     path: "edit",
                     name: "Verticaal -> Edit",
                     pageBuilder: (context, state) => _getPage(
-                      child: AlmanakVerticalEditPage(
-                        name: state.uri.queryParameters["verticaalName"]!,
-                        id: int.parse(state.pathParameters['id']!),
-                      ),
-                      name: "Verticaal -> Edit",
-                    )),
+                          child: AlmanakVerticalEditPage(
+                            name: state.uri.queryParameters["verticaalName"]!,
+                            id: int.parse(state.pathParameters['id']!),
+                          ),
+                          name: "Verticaal -> Edit",
+                        )),
               ],
             ),
           ],
