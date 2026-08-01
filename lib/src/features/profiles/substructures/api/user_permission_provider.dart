@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
@@ -21,4 +22,32 @@ final permissionsProvider =
     debugPrintStack(stackTrace: stack);
     return [];
   }
+});
+
+final crewVerticalPermissionsProvider =
+    FutureProvider.autoDispose<List<int>>((ref) async {
+  try {
+    final token =
+        await FirebaseAuth.instance.currentUser?.getIdTokenResult(true);
+    final verticaalPermissions =
+        (token!.claims?['crew_vertical_permissions'] as List<dynamic>)
+            .map((e) => e as int)
+            .toList();
+    return verticaalPermissions;
+  } catch (e, stack) {
+    debugPrintStack(stackTrace: stack);
+    return [];
+  }
+});
+
+final canEditVerticaalProvider =
+    Provider.autoDispose.family<bool, int>((ref, verticaalId) {
+  final permissionsAsync = ref.watch(crewVerticalPermissionsProvider);
+
+  return permissionsAsync.maybeWhen(
+    data: (permissions) {
+      return permissions.contains(verticaalId);
+    },
+    orElse: () => false,
+  );
 });
