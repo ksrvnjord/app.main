@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/user_permission_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 
@@ -19,6 +20,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserVal = ref.watch(currentUserProvider);
+    final canEditVerticaal = ref.watch(canEditVerticaalProvider(id));
+
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -83,7 +86,7 @@ class AlmanakVerticalenPage extends ConsumerWidget {
       ),
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
-          final canAccessEditGroupPage = currentUser.isAdmin;
+          final canAccessEditGroupPage = currentUser.isAdmin || canEditVerticaal;
           if (!canAccessEditGroupPage) return null;
           return Column(
             mainAxisSize: MainAxisSize.min,
