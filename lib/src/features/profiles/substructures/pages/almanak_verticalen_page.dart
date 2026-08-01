@@ -86,7 +86,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
       ),
       floatingActionButton: currentUserVal.when(
         data: (currentUser) {
-          final canAccessEditGroupPage = currentUser.isAdmin || canEditVerticaal;
+          final canAccessEditGroupPage =
+              currentUser.isAdmin || canEditVerticaal;
           if (!canAccessEditGroupPage) return null;
           return Column(
             mainAxisSize: MainAxisSize.min,

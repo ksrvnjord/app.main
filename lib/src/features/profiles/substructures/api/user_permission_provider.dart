@@ -26,24 +26,28 @@ final permissionsProvider =
 
 final crewVerticalPermissionsProvider =
     FutureProvider.autoDispose<List<int>>((ref) async {
-      try {
-        final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult(true);
-        final verticaalPermissions = (token!.claims?['crew_vertical_permissions'] as List<dynamic>).map((e) => e as int).toList();
-        return verticaalPermissions;
-      } catch (e, stack) {
-        debugPrintStack(stackTrace: stack);
-        return [];
-      }
+  try {
+    final token =
+        await FirebaseAuth.instance.currentUser?.getIdTokenResult(true);
+    final verticaalPermissions =
+        (token!.claims?['crew_vertical_permissions'] as List<dynamic>)
+            .map((e) => e as int)
+            .toList();
+    return verticaalPermissions;
+  } catch (e, stack) {
+    debugPrintStack(stackTrace: stack);
+    return [];
+  }
 });
 
 final canEditVerticaalProvider =
     Provider.autoDispose.family<bool, int>((ref, verticaalId) {
-      final permissionsAsync = ref.watch(crewVerticalPermissionsProvider);
+  final permissionsAsync = ref.watch(crewVerticalPermissionsProvider);
 
-      return permissionsAsync.maybeWhen(
-        data: (permissions) {
-          return permissions.contains(verticaalId);
-        },
-        orElse: () => false,
-      );
+  return permissionsAsync.maybeWhen(
+    data: (permissions) {
+      return permissions.contains(verticaalId);
+    },
+    orElse: () => false,
+  );
 });
