@@ -6,6 +6,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_pictur
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/user_permission_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakVerticalenPage extends ConsumerWidget {
   const AlmanakVerticalenPage({
@@ -35,10 +36,11 @@ class AlmanakVerticalenPage extends ConsumerWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
-              imageProvider: ref.watch(verticaalPictureProvider(verticaalName)),
+              imageProvider: ref.watch(verticaalPictureProvider(
+                  Tuple2<String, String>(verticaalName, id.toString()))),
             ),
           ),
-          ref.watch(ploegenProvider(id)).when(
+          ref.watch(ploegenPerVerticalProvider(id)).when(
                 data: (ploegen) {
                   if (ploegen.isEmpty) {
                     return const Center(

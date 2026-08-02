@@ -136,6 +136,7 @@ class AlmanakVerticalEditPageState
         await GroupEditService.uploadVerticalImage(
           name: widget.name,
           image: _galleryFile!,
+          verticaalId: widget.id.toString(),
         );
       }
 
