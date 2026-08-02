@@ -30,7 +30,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
     const double pageHPadding = 12;
     const double descriptionHPadding = pageHPadding + 4;
 
-    final verticalNameAndId = Tuple2<String, String>(verticaalName, id.toString());
+    final verticalNameAndId =
+        Tuple2<String, String>(verticaalName, id.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(verticaalName),

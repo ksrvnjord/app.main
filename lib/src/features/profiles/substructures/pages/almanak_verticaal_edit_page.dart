@@ -84,12 +84,10 @@ class AlmanakVerticalEditPageState
 
   @override
   Widget build(BuildContext context) {
-
     const int maxContentLength = 1726;
 
     final descriptionAsyncValue = ref.watch(
-      verticalDescriptionProvider(
-          Tuple2(widget.name, widget.id.toString())),
+      verticalDescriptionProvider(Tuple2(widget.name, widget.id.toString())),
     );
 
     return Scaffold(

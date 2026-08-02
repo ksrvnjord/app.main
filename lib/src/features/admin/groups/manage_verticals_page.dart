@@ -133,7 +133,8 @@ class ManageVerticalsPage extends ConsumerWidget {
                   return isDamesA ? -1 : 1;
                 }
 
-                return int.parse(a.name.split(' ').last).compareTo(int.parse(b.name.split(' ').last));
+                return int.parse(a.name.split(' ').last)
+                    .compareTo(int.parse(b.name.split(' ').last));
               });
               return data.isEmpty
                   ? const Center(
