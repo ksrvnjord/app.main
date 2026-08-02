@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/widgets/verticalen_choice_list_tile.dart';
+import 'package:tuple/tuple.dart';
 
 class VerticalenChoicePage extends ConsumerStatefulWidget {
   const VerticalenChoicePage({
@@ -31,7 +33,7 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
 
   @override
   Widget build(BuildContext context) {
-    final verticalenVal = ref.watch(verticalenProvider);
+    final verticalenVal = ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
 
     return Scaffold(
       appBar: AppBar(
@@ -74,11 +76,12 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
               data: (verticalen) {
                 final filteredVerticalen = verticalen
                     .where(
-                      (vertical) => vertical['name'].startsWith(selectedGender),
+                      (vertical) => vertical.name.startsWith(selectedGender),
                     )
                     .toList()
                   ..sort(
-                      (a, b) => a['name'].length.compareTo(b['name'].length));
+                      // Sort by comparing the x (int) part of Dames [x] and sorting numerically
+                      (a, b) => int.parse(a.name.split(' ').last).compareTo(int.parse(b.name.split(' ').last)));
 
                 if (filteredVerticalen.isEmpty) {
                   return Center(
@@ -93,8 +96,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                   separatorBuilder: (_, __) => const Divider(height: 0),
                   itemBuilder: (context, index) {
                     final vertical = filteredVerticalen[index];
-                    final verticalId = vertical['id'];
-                    final verticalName = vertical['name'];
+                    final verticalId = vertical.id;
+                    final verticalName = vertical.name;
 
                     return VerticalenChoiceListTile(
                       name: verticalName,
@@ -104,7 +107,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                         queryParameters: {'verticaalName': verticalName},
                       ),
                       imageProvider: ref.watch(
-                          verticaalThumbnailProvider(verticalName.toString())),
+                          verticaalThumbnailProvider(Tuple2<String, String>(verticalName.toString(), verticalId.toString())),
+                      ),
                     );
                   },
                 );

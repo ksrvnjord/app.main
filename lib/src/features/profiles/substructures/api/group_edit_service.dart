@@ -41,8 +41,9 @@ class GroupEditService {
   static Future<void> uploadVerticalImage({
     required String name,
     required File image,
+    required String verticaalId,
   }) async {
-    final imagePath = '/almanak/verticalen/$name/picture.jpeg';
+    final imagePath = '/almanak/verticalen/$name/$verticaalId/picture.jpeg';
     final imageRef = FirebaseStorage.instance.ref(imagePath);
 
     try {

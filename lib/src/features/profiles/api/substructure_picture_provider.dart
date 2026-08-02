@@ -7,7 +7,10 @@ import 'package:ksrvnjord_main_app/src/features/shared/model/cached_image.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/thumbnail.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/group_id_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:tuple/tuple.dart';
+
 
 final commissiePictureProvider = FutureProvider.autoDispose
     .family<ImageProvider<Object>, Tuple3<String, int, int>>(
@@ -99,10 +102,12 @@ final substructureThumbnailProvider =
 );
 
 final verticaalPictureProvider =
-    FutureProvider.autoDispose.family<ImageProvider<Object>, String>(
+    FutureProvider.autoDispose.family<ImageProvider<Object>, Tuple2<String, String>>(
   (ref, verticaal) {
+    final name = verticaal.item1;
+    final id = verticaal.item2;
     return CachedImage.get(
-      firebaseStoragePath: "almanak/verticalen/$verticaal/picture.jpeg",
+      firebaseStoragePath: "almanak/verticalen/$name/$id/picture.jpeg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );
@@ -110,11 +115,13 @@ final verticaalPictureProvider =
 );
 
 final verticaalThumbnailProvider =
-    FutureProvider.autoDispose.family<ImageProvider<Object>, String>(
+    FutureProvider.autoDispose.family<ImageProvider<Object>, Tuple2<String, String>>(
   (ref, verticaal) {
+    final name = verticaal.item1;
+    final id = verticaal.item2;
     return CachedImage.get(
       firebaseStoragePath:
-          "almanak/verticalen/$verticaal/thumbnails/picture${Thumbnail.x200}.jpeg",
+          "almanak/verticalen/$name/$id/thumbnails/picture${Thumbnail.x200}.jpeg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );
@@ -146,13 +153,13 @@ final randomCommissiePictureProvider = FutureProvider.autoDispose
 
 final randomVerticalPictureProvider =
     FutureProvider.autoDispose<ImageProvider<Object>>((ref) async {
-  final verticaalNames = ["Dames 4", "Heren 811"];
+  final verticaalNames = await ref.watch(allGroupsByTypeProvider(GroupType.verticaal).future);
   final random = Random();
-  final shuffledNames = verticaalNames..shuffle(random);
+  final shuffledVerticals = verticaalNames..shuffle(random);
 
-  for (final name in shuffledNames) {
+  for (final vertical in shuffledVerticals) {
     final image = await CachedImage.get(
-      firebaseStoragePath: "almanak/verticalen/$name/picture.jpeg",
+      firebaseStoragePath: "almanak/verticalen/${vertical.name}/${vertical.id.toString()}/picture.jpeg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );
