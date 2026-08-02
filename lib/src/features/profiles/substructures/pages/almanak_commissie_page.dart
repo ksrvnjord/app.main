@@ -93,7 +93,7 @@ class AlmanakCommissiePageState extends ConsumerState<AlmanakCommissiePage> {
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(pageHPadding)),
                 child: AlmanakSubstructureCoverPicture(
                   imageProvider:
                       ref.watch(commissiePictureProvider(commissieIdAndName)),

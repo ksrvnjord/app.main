@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/group_edit_service.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/vertical_info_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tuple/tuple.dart';
 
 class AlmanakVerticalEditPage extends ConsumerStatefulWidget {
   const AlmanakVerticalEditPage({
@@ -24,6 +26,7 @@ class AlmanakVerticalEditPage extends ConsumerStatefulWidget {
 
 class AlmanakVerticalEditPageState
     extends ConsumerState<AlmanakVerticalEditPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final _picker = ImagePicker();
   File? _galleryFile;
   String content = '';
@@ -81,46 +84,78 @@ class AlmanakVerticalEditPageState
 
   @override
   Widget build(BuildContext context) {
+
+    const int maxContentLength = 1726;
+
+    final descriptionAsyncValue = ref.watch(
+      verticalDescriptionProvider(
+          Tuple2(widget.name, widget.id.toString())),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Bewerk Verticaal'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          if (_galleryFile == null) ...[
-            TextButton(
-              onPressed: () => unawaited(_showPicker(prevContext: context)),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.image),
-                  SizedBox(width: 8),
-                  Text("Afbeelding toevoegen/aanpassen"),
-                ],
+      body: descriptionAsyncValue.when(
+        data: (description) {
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: <Widget>[
+              if (_galleryFile == null) ...[
+                TextButton(
+                  onPressed: () => unawaited(_showPicker(prevContext: context)),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.image),
+                      SizedBox(width: 8),
+                      Text("Afbeelding toevoegen/aanpassen"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+              ] else ...[
+                Image(
+                  image: Image.file(
+                    _galleryFile!,
+                    semanticLabel: "Geselecteerde Afbeelding",
+                  ).image,
+                  semanticLabel: "Geselecteerde afbeelding",
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _galleryFile = null;
+                    });
+                  },
+                  child: const Text("Afbeelding verwijderen"),
+                ),
+              ],
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Commissie-Omschrijving',
+                  ),
+                  maxLines: null,
+                  maxLength: maxContentLength,
+                  onSaved: (value) => content = value ?? '',
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Zonder omschrijving kom je nergens.'
+                      : null,
+                  initialValue: description, // Set the initial value
+                ),
               ),
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-          ] else ...[
-            Image(
-              image: Image.file(
-                _galleryFile!,
-                semanticLabel: "Geselecteerde Afbeelding",
-              ).image,
-              semanticLabel: "Geselecteerde afbeelding",
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _galleryFile = null;
-                });
-              },
-              child: const Text("Afbeelding verwijderen"),
-            ),
-          ],
-        ],
+            ],
+          );
+        },
+        loading: () =>
+            const Center(child: CircularProgressIndicator.adaptive()),
+        error: (error, stackTrace) =>
+            const SizedBox.shrink(), // Display nothing on error
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: submitEdit,
@@ -130,7 +165,22 @@ class AlmanakVerticalEditPageState
   }
 
   void submitEdit() async {
+    final formState = _formKey.currentState;
+
+    if (formState == null || !formState.validate()) {
+      return;
+    }
+
+    formState.save(); // Save form state populates content
+
     try {
+      // Update the vertical description
+      await GroupEditService.updateVerticalDescription(
+        name: widget.name,
+        content: content,
+        verticaalId: widget.id.toString(),
+      );
+
       // Upload image if provided
       if (_galleryFile != null) {
         await GroupEditService.uploadVerticalImage(

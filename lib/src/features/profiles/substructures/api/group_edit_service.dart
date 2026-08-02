@@ -38,6 +38,23 @@ class GroupEditService {
     }
   }
 
+  static Future<void> updateVerticalDescription({
+    required String name,
+    required String content,
+    required String verticaalId,
+  }) async {
+    final filePath =
+        '/almanak/verticalen/$name/$verticaalId/${name}Omschrijving.txt';
+    final storageRef = FirebaseStorage.instance.ref(filePath);
+
+    try {
+      // Upload the updated content as UTF-8 encoded bytes
+      await storageRef.putData(utf8.encode(content));
+    } catch (error) {
+      throw Exception('Failed to update description: $error');
+    }
+  }
+
   static Future<void> uploadVerticalImage({
     required String name,
     required File image,

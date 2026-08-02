@@ -5,8 +5,11 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dar
 import 'package:ksrvnjord_main_app/src/features/profiles/api/substructure_picture_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/user_permission_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/almanak_substructure_cover_picture.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/widgets/substructure_description_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/vertical_info_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart';
 import 'package:tuple/tuple.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class AlmanakVerticalenPage extends ConsumerWidget {
   const AlmanakVerticalenPage({
@@ -24,7 +27,10 @@ class AlmanakVerticalenPage extends ConsumerWidget {
     final canEditVerticaal = ref.watch(canEditVerticaalProvider(id));
 
     final colorScheme = Theme.of(context).colorScheme;
+    const double pageHPadding = 12;
+    const double descriptionHPadding = pageHPadding + 4;
 
+    final verticalNameAndId = Tuple2<String, String>(verticaalName, id.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(verticaalName),
@@ -34,12 +40,17 @@ class AlmanakVerticalenPage extends ConsumerWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            borderRadius: const BorderRadius.all(Radius.circular(pageHPadding)),
             child: AlmanakSubstructureCoverPicture(
-              imageProvider: ref.watch(verticaalPictureProvider(
-                  Tuple2<String, String>(verticaalName, id.toString()))),
+              imageProvider:
+                  ref.watch(verticalPictureProvider(verticalNameAndId)),
             ),
-          ),
+          ).padding(horizontal: pageHPadding),
+          SubstructureDescriptionWidget(
+            descriptionAsyncVal: ref.watch(
+              verticalDescriptionProvider(verticalNameAndId),
+            ),
+          ).padding(all: descriptionHPadding),
           ref.watch(ploegenPerVerticalProvider(id)).when(
                 data: (ploegen) {
                   if (ploegen.isEmpty) {
