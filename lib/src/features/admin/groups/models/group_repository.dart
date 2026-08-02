@@ -18,8 +18,7 @@ class GroupRepository {
           "year": year,
         },
       );
-    } 
-    else {
+    } else {
       final typeValue = type.value;
 
       res = await dio.get(

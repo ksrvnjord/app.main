@@ -11,7 +11,6 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dar
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:tuple/tuple.dart';
 
-
 final commissiePictureProvider = FutureProvider.autoDispose
     .family<ImageProvider<Object>, Tuple3<String, int, int>>(
   (ref, commissieAndYear) async {
@@ -101,8 +100,8 @@ final substructureThumbnailProvider =
   },
 );
 
-final verticaalPictureProvider =
-    FutureProvider.autoDispose.family<ImageProvider<Object>, Tuple2<String, String>>(
+final verticaalPictureProvider = FutureProvider.autoDispose
+    .family<ImageProvider<Object>, Tuple2<String, String>>(
   (ref, verticaal) {
     final name = verticaal.item1;
     final id = verticaal.item2;
@@ -114,8 +113,8 @@ final verticaalPictureProvider =
   },
 );
 
-final verticaalThumbnailProvider =
-    FutureProvider.autoDispose.family<ImageProvider<Object>, Tuple2<String, String>>(
+final verticaalThumbnailProvider = FutureProvider.autoDispose
+    .family<ImageProvider<Object>, Tuple2<String, String>>(
   (ref, verticaal) {
     final name = verticaal.item1;
     final id = verticaal.item2;
@@ -153,13 +152,15 @@ final randomCommissiePictureProvider = FutureProvider.autoDispose
 
 final randomVerticalPictureProvider =
     FutureProvider.autoDispose<ImageProvider<Object>>((ref) async {
-  final verticaalNames = await ref.watch(allGroupsByTypeProvider(GroupType.verticaal).future);
+  final verticaalNames =
+      await ref.watch(allGroupsByTypeProvider(GroupType.verticaal).future);
   final random = Random();
   final shuffledVerticals = verticaalNames..shuffle(random);
 
   for (final vertical in shuffledVerticals) {
     final image = await CachedImage.get(
-      firebaseStoragePath: "almanak/verticalen/${vertical.name}/${vertical.id.toString()}/picture.jpeg",
+      firebaseStoragePath:
+          "almanak/verticalen/${vertical.name}/${vertical.id.toString()}/picture.jpeg",
       placeholderImagePath: Images.placeholderProfilePicture,
       maxAge: const Duration(minutes: 5),
     );

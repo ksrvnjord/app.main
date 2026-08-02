@@ -114,7 +114,8 @@ class ManageVerticalsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verticalsVal = ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
+    final verticalsVal =
+        ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
 
     return Scaffold(
       appBar: AppBar(

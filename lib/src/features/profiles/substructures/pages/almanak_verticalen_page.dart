@@ -36,7 +36,8 @@ class AlmanakVerticalenPage extends ConsumerWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(12)),
             child: AlmanakSubstructureCoverPicture(
-              imageProvider: ref.watch(verticaalPictureProvider(Tuple2<String, String>(verticaalName, id.toString()))),
+              imageProvider: ref.watch(verticaalPictureProvider(
+                  Tuple2<String, String>(verticaalName, id.toString()))),
             ),
           ),
           ref.watch(ploegenPerVerticalProvider(id)).when(

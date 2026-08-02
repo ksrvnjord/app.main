@@ -33,7 +33,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
 
   @override
   Widget build(BuildContext context) {
-    final verticalenVal = ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
+    final verticalenVal =
+        ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +82,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                     .toList()
                   ..sort(
                       // Sort by comparing the x (int) part of Dames [x] and sorting numerically
-                      (a, b) => int.parse(a.name.split(' ').last).compareTo(int.parse(b.name.split(' ').last)));
+                      (a, b) => int.parse(a.name.split(' ').last)
+                          .compareTo(int.parse(b.name.split(' ').last)));
 
                 if (filteredVerticalen.isEmpty) {
                   return Center(
@@ -107,7 +109,8 @@ class _VerticalenChoicePageState extends ConsumerState<VerticalenChoicePage> {
                         queryParameters: {'verticaalName': verticalName},
                       ),
                       imageProvider: ref.watch(
-                          verticaalThumbnailProvider(Tuple2<String, String>(verticalName.toString(), verticalId.toString())),
+                        verticaalThumbnailProvider(Tuple2<String, String>(
+                            verticalName.toString(), verticalId.toString())),
                       ),
                     );
                   },
