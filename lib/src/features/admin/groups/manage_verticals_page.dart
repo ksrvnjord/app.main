@@ -125,6 +125,17 @@ class ManageVerticalsPage extends ConsumerWidget {
         children: [
           verticalsVal.when(
             data: (data) {
+              data.sort((a, b) {
+                final isDamesA = a.name.startsWith("Dames");
+                final isHeren = b.name.startsWith("Heren");
+
+                if (isDamesA == isHeren) {
+                  return isDamesA ? -1 : 1;
+                }
+
+                return int.parse(a.name.split(' ').last)
+                    .compareTo(int.parse(b.name.split(' ').last));
+              });
               return data.isEmpty
                   ? const Center(
                       child: Text('Geen verticalen gevonden.'),

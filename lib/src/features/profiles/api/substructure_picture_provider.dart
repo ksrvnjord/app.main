@@ -100,7 +100,7 @@ final substructureThumbnailProvider =
   },
 );
 
-final verticaalPictureProvider = FutureProvider.autoDispose
+final verticalPictureProvider = FutureProvider.autoDispose
     .family<ImageProvider<Object>, Tuple2<String, String>>(
   (ref, verticaal) {
     final name = verticaal.item1;
