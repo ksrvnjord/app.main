@@ -36,6 +36,21 @@ Future<void> appRunner() async {
 
   usePathUrlStrategy();
 
+  // Initialize the Hive Cache (Generic K/V cache, relevant for image caching).
+  await Hive.initFlutter(
+    HiveCache.cachePath,
+  );
+  // Store the cache in a separate folder.
+  if (!Hive.isAdapterRegistered(0)) {
+    Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.
+  }
+
+  // ignore: avoid-ignoring-return-values
+  await Hive.openLazyBox<ImageCacheItem>('imageCache');
+
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
+
   // ----------------- FIREBASE / START -----------------. //
   // ignore: avoid-ignoring-return-values
   await Firebase.initializeApp(
@@ -103,16 +118,6 @@ Future<void> main() async {
 
     return stack;
   };
-  // Initialize the Hive Cache (Generic K/V cache, relevant for image caching).
-  await Hive.initFlutter(
-    HiveCache.cachePath,
-  ); // Store the cache in a separate folder.
-  Hive.registerAdapter(ImageCacheItemAdapter()); // For image caching.
-  // ignore: avoid-ignoring-return-values
-  await Hive.openLazyBox<ImageCacheItem>('imageCache');
-
-  timeago.setLocaleMessages('nl', timeago.NlMessages());
-  timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
 
   // Note: "kReleaseMode" is true if the app is not being debugged.
   await SentryFlutter.init(

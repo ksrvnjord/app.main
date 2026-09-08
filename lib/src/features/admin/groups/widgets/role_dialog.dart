@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/edit_group_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
@@ -105,15 +106,16 @@ class _RoleDialogState extends State<RoleDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context)
+              .pop(AddUserStatus(success: false, role: "")),
           child: const Text('Annuleren'),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(
-            dropdownValue == 'Anders'
-                ? customRoleController.text
-                : dropdownValue,
-          ),
+          onPressed: () => Navigator.of(context).pop(AddUserStatus(
+              success: true,
+              role: dropdownValue == 'Anders'
+                  ? customRoleController.text
+                  : dropdownValue)),
           child: const Text('OK'),
         ),
       ],

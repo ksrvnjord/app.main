@@ -7,6 +7,7 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 
 class ManageVerticalsPage extends ConsumerWidget {
   const ManageVerticalsPage({
@@ -45,7 +46,7 @@ class ManageVerticalsPage extends ConsumerWidget {
       const SnackBar(content: Text("Verticaal is aangemaakt.")),
     );
     // ignore: avoid-ignoring-return-values
-    ref.invalidate(verticalsProvider("Verticaal"));
+    ref.invalidate(allGroupsByTypeProvider(GroupType.verticaal));
   }
 
   Widget _buildCreateGroupBottomSheet(
@@ -113,7 +114,8 @@ class ManageVerticalsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verticalsVal = ref.watch(verticalsProvider("Verticaal"));
+    final verticalsVal =
+        ref.watch(allGroupsByTypeProvider(GroupType.verticaal));
 
     return Scaffold(
       appBar: AppBar(
@@ -123,6 +125,17 @@ class ManageVerticalsPage extends ConsumerWidget {
         children: [
           verticalsVal.when(
             data: (data) {
+              data.sort((a, b) {
+                final isDamesA = a.name.startsWith("Dames");
+                final isHeren = b.name.startsWith("Heren");
+
+                if (isDamesA == isHeren) {
+                  return isDamesA ? -1 : 1;
+                }
+
+                return int.parse(a.name.split(' ').last)
+                    .compareTo(int.parse(b.name.split(' ').last));
+              });
               return data.isEmpty
                   ? const Center(
                       child: Text('Geen verticalen gevonden.'),

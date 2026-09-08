@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/groups_provider.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/groups/models/group_type.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/api/njord_year.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/model/dio_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
@@ -86,13 +87,13 @@ class EditVerticalPage extends ConsumerWidget {
 
       // ignore: avoid-ignoring-return-values
       ref.invalidate(groupByIdFutureProvider(ploegId));
-      ref.invalidate(ploegenProvider(verticaalId));
+      ref.invalidate(ploegenPerVerticalProvider(verticaalId));
     };
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ploegenVal = ref.watch(ploegenProvider(verticaalId));
+    final ploegenVal = ref.watch(ploegenPerVerticalProvider(verticaalId));
 
     return Scaffold(
       appBar: AppBar(
@@ -146,8 +147,8 @@ class EditVerticalPage extends ConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Verticaal is verwijderd."),
               ));
-              ref.invalidate(verticalsProvider("Verticaal"));
-              ref.invalidate(ploegenProvider(verticaalId));
+              ref.invalidate(allGroupsByTypeProvider(GroupType.verticaal));
+              ref.invalidate(ploegenPerVerticalProvider(verticaalId));
               context.pop();
             },
             icon: const Icon(Icons.delete),

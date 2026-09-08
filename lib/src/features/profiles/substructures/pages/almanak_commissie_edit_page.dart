@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_edit_service.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/group_edit_service.dart';
 import 'package:ksrvnjord_main_app/src/features/profiles/substructures/api/commissie_info_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tuple/tuple.dart';
@@ -176,7 +176,7 @@ class AlmanakCommissieEditPageState
 
     try {
       // Update the commissie description
-      await CommissieEditService.updateCommissieDescription(
+      await GroupEditService.updateCommissieDescription(
         name: widget.name,
         content: content,
         year: widget.year,
@@ -185,7 +185,7 @@ class AlmanakCommissieEditPageState
 
       // Optional: Upload image if provided
       if (_galleryFile != null) {
-        await CommissieEditService.uploadCommissieImage(
+        await GroupEditService.uploadCommissieImage(
           name: widget.name,
           year: widget.year,
           image: _galleryFile!,

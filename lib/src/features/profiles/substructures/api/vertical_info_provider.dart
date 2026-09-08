@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tuple/tuple.dart';
 
 // A provider that fetches the substructure info for a given substructure name from firebase
-Future<String?> fetchDescription(String name) async {
-  final filePath = '/almanak/verticals/$name/${name}Omschrijving.txt';
+Future<String?> fetchDescription(String name, String verticaalId) async {
+  final filePath =
+      '/almanak/verticalen/$name/$verticaalId/${name}Omschrijving.txt';
   final storageRef = FirebaseStorage.instance.ref(filePath);
   try {
     final data = await storageRef.getData();
@@ -19,7 +21,7 @@ Future<String?> fetchDescription(String name) async {
 }
 
 // ignore: prefer-static-class
-final verticalDescriptionProvider =
-    FutureProvider.autoDispose.family<String?, String>((ref, vertical) async {
-  return await fetchDescription(vertical);
+final verticalDescriptionProvider = FutureProvider.autoDispose
+    .family<String?, Tuple2<String, String>>((ref, params) async {
+  return await fetchDescription(params.item1, params.item2);
 });

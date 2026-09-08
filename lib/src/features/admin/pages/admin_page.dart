@@ -58,6 +58,12 @@ class AdminPage extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => context.goNamed('Manage Vaarverbod'),
           ),
+          ListTile(
+            leading: const Icon(Icons.military_tech),
+            title: const Text('Beheer taarten/blikken'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.goNamed('Manage Taarten Blikken'),
+          ),
           // List tile to navigate to push notification create page.
           ListTile(
             leading: const Icon(Icons.notifications),

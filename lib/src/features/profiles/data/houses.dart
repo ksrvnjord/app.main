@@ -6,6 +6,7 @@ const kHouseNames = [
   'De Glitterkade',
   'De Leidsche Maagden',
   'De Turf',
+  'Huisje Kruisje',
   'Huize ADT',
   'Huize Boven \'t Vat',
   'Huize Cali',

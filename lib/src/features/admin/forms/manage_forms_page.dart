@@ -11,18 +11,84 @@ import 'package:ksrvnjord_main_app/src/features/profiles/api/user_provider.dart'
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_text_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ManageFormsPage extends ConsumerWidget {
+class ManageFormsPage extends ConsumerStatefulWidget {
   const ManageFormsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ManageFormsPage> createState() => _ManageFormsPageState();
+}
+
+class _ManageFormsPageState extends ConsumerState<ManageFormsPage> {
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  String _searchQuery = '';
+  bool _isSearching = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  Widget _buildSearchField(BuildContext context) {
+    return TextField(
+      controller: _searchController,
+      focusNode: _searchFocusNode,
+      autofocus: true,
+      decoration: const InputDecoration(
+        hintText: 'Zoek forms...',
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.white70),
+      ),
+      style: const TextStyle(color: Colors.white),
+      onChanged: (value) {
+        setState(() {
+          _searchQuery = value;
+        });
+      },
+    );
+  }
+
+  bool _matchesSearch(FirestoreForm form) {
+    final query = _searchQuery.trim().toLowerCase();
+    if (query.isEmpty) return true;
+
+    final title = form.title.toLowerCase();
+    return title.contains(query);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentUserVal = ref.watch(currentUserProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final formsLocation = firestoreFormCollectionName[0].toUpperCase() +
         firestoreFormCollectionName.substring(1);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Beheer $formsLocation')),
+      appBar: AppBar(
+        title: _isSearching
+            ? _buildSearchField(context)
+            : Text('Beheer $formsLocation'),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _isSearching = false;
+                  _searchQuery = '';
+                  _searchController.clear();
+                  _searchFocusNode.unfocus();
+                } else {
+                  _isSearching = true;
+                  Future.microtask(() => _searchFocusNode.requestFocus());
+                }
+              });
+            },
+          ),
+        ],
+      ),
       body: currentUserVal.when(
         data: (user) {
           final formsVal = ref.watch(
@@ -31,105 +97,113 @@ class ManageFormsPage extends ConsumerWidget {
                 : creatorNamesFormsOnCreationProvider,
           );
           return formsVal.when(
-            data: (snapshot) => snapshot.docs.isEmpty
-                ? const Center(child: Text('Geen forms gevonden'))
-                : ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    itemBuilder: (innerContext, index) {
-                      // ignore: avoid-unsafe-collection-methods
-                      final doc = snapshot.docs[index];
-                      final form = doc.data();
+            data: (snapshot) {
+              final filteredDocs = snapshot.docs
+                  .where((doc) => _matchesSearch(doc.data()))
+                  .toList();
 
-                      final formIsNotExpired = form.formClosingTimeIsInFuture;
+              return filteredDocs.isEmpty
+                  ? const Center(child: Text('Geen forms gevonden'))
+                  : ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      itemBuilder: (innerContext, index) {
+                        // ignore: avoid-unsafe-collection-methods
+                        final doc = filteredDocs[index];
+                        final form = doc.data();
 
-                      final partialReactionVal = ref.watch(
-                        formPartialReactionCountProvider(doc.id),
-                      );
+                        final formIsNotExpired = form.formClosingTimeIsInFuture;
 
-                      return ListTile(
-                          title: Text(form.title),
-                          subtitle: [
-                            Text(
-                              "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
-                              style: TextStyle(
-                                color: formIsNotExpired
-                                    ? Colors.green.shade400 // soft green
-                                    : Colors.red.shade400, // soft red
+                        final partialReactionVal = ref.watch(
+                          formPartialReactionCountProvider(doc.id),
+                        );
+
+                        return ListTile(
+                            title: Text(form.title),
+                            subtitle: [
+                              Text(
+                                "${formIsNotExpired ? "Open tot" : "Gesloten op"} ${DateFormat('dd-MM-yyyy HH:mm').format(form.openUntil)}",
+                                style: TextStyle(
+                                  color: formIsNotExpired
+                                      ? Colors.green.shade400 // soft green
+                                      : Colors.red.shade400, // soft red
+                                ),
                               ),
-                            ),
-                            if (form.isDraft)
-                              user.isAdmin
-                                  ? ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'Draftstatus opheffen'),
-                                              content: const Text(
-                                                  'Weet je zeker dat je de draftstatus wilt opheffen? Dit maakt de form zichtbaar voor iedereen.'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child:
-                                                      const Text('Annuleren'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child:
-                                                      const Text('Bevestigen'),
-                                                  onPressed: () {
-                                                    FormRepository
-                                                        .removeDraftStatus(
-                                                            doc.reference);
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: const Text(
-                                        'Hef draftstatus op',
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Vraag bestuur om goed te keuren',
-                                      style: TextStyle(color: Colors.red),
-                                    )
-                            else
-                              Text(partialReactionVal.maybeWhen(
-                                data: (count) =>
-                                    "Volledig + onvolledig ingevulde reacties: $count",
-                                orElse: () => "",
-                              )),
-                          ].toColumn(
-                              crossAxisAlignment: CrossAxisAlignment.start),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            if (form.isDraft) {
-                              innerContext.goNamed(
-                                "Forms -> Create Form",
-                                queryParameters: {
-                                  'formId': doc.id
-                                }, // or pass the FirestoreForm object
-                              );
-                            } else {
-                              innerContext.goNamed(
-                                "Forms -> View Form",
-                                pathParameters: {"formId": doc.id},
-                                queryParameters: {
-                                  'isAdmin': user.isAdmin.toString()
-                                },
-                              );
-                            }
-                          });
-                    },
-                    itemCount: snapshot.size,
-                  ),
+                              if (form.isDraft)
+                                user.isAdmin
+                                    ? ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Draftstatus opheffen'),
+                                                content: const Text(
+                                                    'Weet je zeker dat je de draftstatus wilt opheffen? Dit maakt de form zichtbaar voor iedereen.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child:
+                                                        const Text('Annuleren'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text(
+                                                        'Bevestigen'),
+                                                    onPressed: () {
+                                                      FormRepository
+                                                          .removeDraftStatus(
+                                                              doc.reference);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Hef draftstatus op',
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Vraag bestuur om goed te keuren',
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                              else
+                                Text(partialReactionVal.maybeWhen(
+                                  data: (count) =>
+                                      "Volledig + onvolledig ingevulde reacties: $count",
+                                  orElse: () => "",
+                                )),
+                            ].toColumn(
+                                crossAxisAlignment: CrossAxisAlignment.start),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              if (form.isDraft) {
+                                innerContext.goNamed(
+                                  "Forms -> Create Form",
+                                  queryParameters: {
+                                    'formId': doc.id
+                                  }, // or pass the FirestoreForm object
+                                );
+                              } else {
+                                innerContext.goNamed(
+                                  "Forms -> View Form",
+                                  pathParameters: {"formId": doc.id},
+                                  queryParameters: {
+                                    'isAdmin': user.isAdmin.toString()
+                                  },
+                                );
+                              }
+                            });
+                      },
+                      itemCount: filteredDocs.length,
+                    );
+            },
             error: (error, stack) => Center(
               child: ErrorTextWidget(
                 errorMessage: error.toString(),
