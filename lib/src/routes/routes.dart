@@ -11,6 +11,7 @@ import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_groups_page.
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_sub_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/groups/manage_verticals_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/pages/admin_page.dart';
+import 'package:ksrvnjord_main_app/src/features/admin/taarten_blikken/manage_taarten_blikken_page.dart';
 import 'package:ksrvnjord_main_app/src/features/extra/coffee_manual_page.dart';
 import 'package:ksrvnjord_main_app/src/features/notifications/pages/create_push_notification_page.dart';
 import 'package:ksrvnjord_main_app/src/features/admin/vaarverbod/manage_vaarverbod_page.dart';
@@ -903,6 +904,14 @@ abstract final // ignore: prefer-single-declaration-per-file
               pageBuilder: (context, state) => _getPage(
                 child: const ManageVaarverbodPage(),
                 name: "Manage Vaarverbod",
+              ),
+            ),
+            _route(
+              path: "taarten-blikken",
+              name: "Manage Taarten Blikken",
+              pageBuilder: (context, state) => _getPage(
+                child: const ManageTaartenBlikkenPage(),
+                name: "Manage Taarten Blikken",
               ),
             ),
 
