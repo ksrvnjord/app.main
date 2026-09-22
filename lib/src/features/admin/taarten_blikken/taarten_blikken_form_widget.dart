@@ -10,7 +10,7 @@ class TaartenBlikkenFormWidget extends StatefulWidget {
 }
 
 class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
-  static const String _documentPath = 'wins/wins';
+  static const String _documentPath = 'wins/wincounter';
 
   final _formKey = GlobalKey<FormState>();
   final _blikkenController = TextEditingController();
@@ -74,7 +74,7 @@ class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
       if (!mounted) {
         return;
       }
-
+      debugPrint('Error saving counters: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -112,7 +112,7 @@ class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pas hier de blikken- en taartencounter aan die op het dashboard worden getoond.',
+                        'Pas hier de blikken- en taartentellers aan die op het prikboard worden getoond.',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 16),
@@ -120,7 +120,7 @@ class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
                         controller: _blikkenController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          labelText: 'Blikkencounter',
+                          labelText: 'Blikkenteller',
                           prefixIcon: Icon(Icons.military_tech),
                         ),
                         validator: _validateCount,
@@ -130,7 +130,7 @@ class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
                         controller: _taartenController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          labelText: 'Taartencounter',
+                          labelText: 'Taartenteller',
                           prefixIcon: Icon(Icons.cake),
                         ),
                         validator: _validateCount,
@@ -138,7 +138,7 @@ class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: _saveCounters,
-                        child: const Text('Wijzig counters'),
+                        child: const Text('Wijzig tellers'),
                       ),
                     ],
                   ),
