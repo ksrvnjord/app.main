@@ -7,7 +7,8 @@ class TaartenBlikkenCounters extends StatelessWidget {
 
   static final _doc = FirebaseFirestore.instance.doc('wins/wincounter');
 
-  Future<void> _change(BuildContext context, String field, int increment) async {
+  Future<void> _change(
+      BuildContext context, String field, int increment) async {
     try {
       // Enforce the creation of the doc
       await _doc.set(
@@ -19,7 +20,8 @@ class TaartenBlikkenCounters extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
+          content:
+              Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
         ),
       );
     }
