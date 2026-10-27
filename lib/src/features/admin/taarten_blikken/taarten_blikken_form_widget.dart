@@ -7,12 +7,11 @@ class TaartenBlikkenCounters extends StatelessWidget {
 
   static final _doc = FirebaseFirestore.instance.doc('wins/wincounter');
 
-  Future<void> _change(
-      BuildContext context, String field, int increment) async {
+  Future<void> _change(BuildContext context, String field, int delta) async {
     try {
       // Enforce the creation of the doc
       await _doc.set(
-        {field: FieldValue.increment(increment)},
+        {field: FieldValue.increment(delta)},
         SetOptions(merge: true),
       );
     } catch (error) {
@@ -20,8 +19,7 @@ class TaartenBlikkenCounters extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content:
-              Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
+          content: Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
         ),
       );
     }
@@ -42,9 +40,9 @@ class TaartenBlikkenCounters extends StatelessWidget {
         final data = snapshot.data!.data();
         int count(String field) => (data?[field] as num?)?.toInt() ?? 0;
 
-        Widget tile(String field, IconData icon) => ListTile(
+        Widget tile(String field, String label, IconData icon) => ListTile(
               leading: Icon(icon),
-              title: Text(field),
+              title: Text(label),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -66,8 +64,8 @@ class TaartenBlikkenCounters extends StatelessWidget {
 
         return ListView(
           children: [
-            tile('Blikken', Icons.military_tech),
-            tile('Taarten', Icons.cake),
+            tile('blikken', 'Blikken', Icons.military_tech),
+            tile('taarten', 'Taarten', Icons.cake),
           ],
         );
       },

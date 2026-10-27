@@ -5,8 +5,8 @@ class WincounterWidget extends StatelessWidget {
   const WincounterWidget({
     super.key,
     this.documentPath = 'wins/wincounter',
-    this.blikkenField = 'Blikken',
-    this.taartenField = 'Taarten',
+    this.blikkenField = 'blikken',
+    this.taartenField = 'taarten',
   });
 
   final String documentPath;
