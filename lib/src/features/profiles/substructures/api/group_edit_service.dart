@@ -28,7 +28,7 @@ class GroupEditService {
     required int year,
     required int groupId,
   }) async {
-    final imagePath = '/almanak/commissie/$name/$year/$groupId/picture.jpg';
+    final imagePath = '/almanak/commissies/$name/$year/$groupId/picture.jpg';
     final imageRef = FirebaseStorage.instance.ref(imagePath);
 
     try {

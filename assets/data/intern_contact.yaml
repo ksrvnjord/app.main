@@ -8,17 +8,12 @@ BuCo:
   Wat: 
     "Iedereen van de BuCo is benaderbaar voor borrel gerelateerde problematiek, zoals dronkenschap, grensoverschrijdend gedrag, ruzies, etc.
     \n\nZe bieden een luisterend oor en kunnen in overleg met Bestuur actie ondernemen. Het is mogelijk om in vertrouwen te spreken zonder dat er actie wordt ondernomen."
-  Lidnummers: "22170"
+  Lidnummers: ["24278", "24010"]
 CC:
   Wat: 
     "Iedereen van de CC is benaderbaar voor problematiek omtrent CC-evenementen. Benader ze voor problematiek omtrent ploegvorming/dynamiek, ongewenst gedrag tijdens een evenement.
     \n\nZe bieden een luisterend oor en kunnen in overleg met Bestuur actie ondernemen. Het is mogelijk om in vertrouwen te spreken zonder dat er actie wordt ondernomen."
-  Lidnummers: "23186"
-TopCommissie:
-  Wat: 
-    "Dit is een buddysysteem voor TopC4+, Club8+ en eerstejaars wedstrijdroeiers. 
-    Het gaat hier om roeigerelateerde problematiek zoals prestatiedruk, voeding, relatie met coaches, ploegdynamiek en mentaal welzijn. 
-    Er wordt gekeken hoe iemand ondersteund kan worden binnen of buiten Njord."
+  Lidnummers: ["24213", "24057"]
 Vertrouwenscontactpersonen:
   Wat:
     "Deze mensen staan altijd klaar voor iedereen die behoefte heeft aan een vertrouwelijk gesprek. 
@@ -33,13 +28,13 @@ Bestuur:
     "Altijd benaderbaar tijdens alle activiteiten waar het bestuur aanwezig is, of via mail. 
     Het gaat hier om alle vormen van ongewenst gedrag of klachten over leden en externen op Njord. Ze kunnen handelen of doorverwijzen naar passende ondersteuning. "
   Lidnummers: 
-    ["21109", "22013"]
+    ["23076", "23149", "23226", "21127", "23210", "24002", "23264", "23027", "21184"]
   Email: "app@njord.nl"
 Counselor:
   Wat:
-    Jet van Dijck is onze counselor. Bij haar kan je op afspraak gratis terecht. 
-    Ze heeft haar spreekuren op vrijdag van 11:00 tot 15:00 bij STAD Leiden (Morsweg 55E1). 
-    Ze biedt een vangnet en helpt met het vinden van passende vervolgstappen. Geen behandeltraject, maar meerdere afspraken en doorverwijzing naar hulpinstanties zijn mogelijk.
+    Jet en Jelle zijn onze counselors. Bij hen kan je op afspraak gratis terecht. 
+    Zij hebben hun spreekuren op vrijdag van 11:00 tot 15:00 bij STAD Leiden (Morsweg 55E1). 
+    Ze bieden een vangnet en helpen met het vinden van passende vervolgstappen. Geen behandeltraject, maar meerdere afspraken en doorverwijzing naar hulpinstanties zijn mogelijk.
     Klik op "meer weten" om een afspraak te maken.
   Link:
     "https://widget.onlineafspraken.nl/consumer/booking/book/key/ggag15nhbg27-fzzg05/at/0/ln/3/l/11111/t/809fcc/f/110d0111/s/550_1500/o/theme:default,dp:modern,interval:week/exclude/mobiledetect/output/html"
