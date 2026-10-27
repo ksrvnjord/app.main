@@ -10,7 +10,7 @@ class ManageTaartenBlikkenPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Beheer taarten/blikken'),
       ),
-      body: const TaartenBlikkenFormWidget(),
+      body: const TaartenBlikkenCounters(),
     );
   }
 }

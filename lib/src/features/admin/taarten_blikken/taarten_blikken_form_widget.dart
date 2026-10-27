@@ -1,150 +1,71 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 
-class TaartenBlikkenFormWidget extends StatefulWidget {
-  const TaartenBlikkenFormWidget({super.key});
+class TaartenBlikkenCounters extends StatelessWidget {
+  const TaartenBlikkenCounters({super.key});
 
-  @override
-  State<TaartenBlikkenFormWidget> createState() =>
-      _TaartenBlikkenFormWidgetState();
-}
+  static final _doc = FirebaseFirestore.instance.doc('wins/wincounter');
 
-class _TaartenBlikkenFormWidgetState extends State<TaartenBlikkenFormWidget> {
-  static const String _documentPath = 'wins/wincounter';
-
-  final _formKey = GlobalKey<FormState>();
-  final _blikkenController = TextEditingController();
-  final _taartenController = TextEditingController();
-  bool _initialized = false;
-
-  @override
-  void dispose() {
-    _blikkenController.dispose();
-    _taartenController.dispose();
-    super.dispose();
-  }
-
-  int _readCount(Map<String, dynamic>? data, String fieldName) {
-    final value = data?[fieldName];
-    if (value is num) {
-      return value.toInt();
-    }
-
-    return 0;
-  }
-
-  void _initializeControllers(Map<String, dynamic>? data) {
-    if (_initialized) {
-      return;
-    }
-
-    _blikkenController.text = _readCount(data, 'blikken').toString();
-    _taartenController.text = _readCount(data, 'taarten').toString();
-    _initialized = true;
-  }
-
-  Future<void> _saveCounters() async {
-    final formState = _formKey.currentState;
-    if (formState == null || !formState.validate()) {
-      return;
-    }
-
-    final blikkenCount = int.parse(_blikkenController.text.trim());
-    final taartenCount = int.parse(_taartenController.text.trim());
-
+  Future<void> _change(BuildContext context, String field, int increment) async {
     try {
-      await FirebaseFirestore.instance.doc(_documentPath).set(
-        {
-          'blikken': blikkenCount,
-          'taarten': taartenCount,
-        },
+      // Enforce the creation of the doc
+      await _doc.set(
+        {field: FieldValue.increment(increment)},
         SetOptions(merge: true),
       );
-
-      if (!mounted) {
-        return;
-      }
-
+    } catch (error) {
+      debugPrint('Error updating $field: $error');
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('De taarten- en blikkenteller is gewijzigd.'),
-        ),
-      );
-    } catch (error) {
-      if (!mounted) {
-        return;
-      }
-      debugPrint('Error saving counters: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Er is een fout opgetreden bij het wijzigen van de tellers.',
-          ),
+          content: Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
         ),
       );
     }
-  }
-
-  String? _validateCount(String? value) {
-    if (int.tryParse((value ?? '').trim()) == null) {
-      return 'Voer een geldig getal in';
-    }
-
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: FirebaseFirestore.instance.doc(_documentPath).snapshots(),
+      stream: _doc.snapshots(),
       builder: (context, snapshot) {
-        _initializeControllers(snapshot.data?.data());
+        if (snapshot.hasError) {
+          return ErrorCardWidget(errorMessage: snapshot.error.toString());
+        }
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+
+        final data = snapshot.data!.data();
+        int count(String field) => (data?[field] as num?)?.toInt() ?? 0;
+
+        Widget tile(String field, IconData icon) => ListTile(
+              leading: Icon(icon),
+              title: Text(field),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: count(field) > 0
+                        ? () => _change(context, field, -1)
+                        : null,
+                  ),
+                  Text('${count(field)}',
+                      style: Theme.of(context).textTheme.titleLarge),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () => _change(context, field, 1),
+                  ),
+                ],
+              ),
+            );
 
         return ListView(
-          padding: const EdgeInsets.all(16),
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Pas hier de blikken- en taartentellers aan die op het prikboard worden getoond.',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _blikkenController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Blikkenteller',
-                          prefixIcon: Icon(Icons.military_tech),
-                        ),
-                        validator: _validateCount,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _taartenController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Taartenteller',
-                          prefixIcon: Icon(Icons.cake),
-                        ),
-                        validator: _validateCount,
-                      ),
-                      const SizedBox(height: 24),
-                      ElevatedButton(
-                        onPressed: _saveCounters,
-                        child: const Text('Wijzig tellers'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            tile('Blikken', Icons.military_tech),
+            tile('Taarten', Icons.cake),
           ],
         );
       },
