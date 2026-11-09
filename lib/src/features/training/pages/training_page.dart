@@ -22,7 +22,10 @@ class TrainingPage extends StatelessWidget {
       body: Column(
         children: const [
           ToCoachOrCoxNeededPageWidget(),
-          Expanded(child: TrainingList()),
+          Expanded(
+            child: Padding(
+                padding: EdgeInsets.only(bottom: 88), child: TrainingList()),
+          ),
         ],
       ),
       floatingActionButton: FirebaseWidget(

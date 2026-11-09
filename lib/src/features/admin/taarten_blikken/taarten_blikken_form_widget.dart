@@ -19,7 +19,8 @@ class TaartenBlikkenCounters extends StatelessWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
+          content:
+              Text('Er is een fout opgetreden bij het wijzigen van de teller.'),
         ),
       );
     }
