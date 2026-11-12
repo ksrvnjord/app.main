@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ksrvnjord_main_app/src/features/posts/model/post.dart';
@@ -9,7 +8,7 @@ import 'package:ksrvnjord_main_app/src/features/posts/widgets/post_statistics_ba
 import 'package:ksrvnjord_main_app/src/features/shared/providers/firebasestorage_cached_image_provider.dart';
 import 'package:ksrvnjord_main_app/src/features/shared/widgets/error_card_widget.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'expandable_phone_text.dart';
 
 class PostWidget extends ConsumerWidget {
   const PostWidget({
@@ -56,16 +55,11 @@ class PostWidget extends ConsumerWidget {
       ).alignment(Alignment.centerLeft),
       [
         Flexible(
-          child: ExpandableText(
-            post?.content ?? "",
-            expandText: "meer",
-            expanded: expanded,
-            linkColor: Colors.blueGrey,
-            linkEllipsis: false,
-            urlStyle: const TextStyle(color: Colors.blue),
-            onUrlTap: (url) => launchUrlString(url),
+          child: ExpandablePhoneText(
+            text: post?.content ?? "",
             style: textTheme.bodyLarge,
             maxLines: contentMaxLines,
+            expanded: expanded,
           ),
         ),
       ].toRow(),
