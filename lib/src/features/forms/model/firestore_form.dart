@@ -137,7 +137,7 @@ class FirestoreForm {
   }
 
   bool userIsInCorrectGroupForForm(List<int> userGroups) {
-    if (visibleForGroupNames.isEmpty) return true;
-    return userGroups.any(visibleForGroupNames.contains);
+    if (visibleForGroups.isEmpty) return true;
+    return userGroups.any(visibleForGroups.contains);
   }
 }
