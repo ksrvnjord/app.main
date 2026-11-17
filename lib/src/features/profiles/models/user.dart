@@ -67,6 +67,7 @@ class User {
   // Inferred fields.
   String get lastName => infix.isEmpty ? lastNameOnly : '$infix $lastNameOnly';
   String get fullName => '$firstName $lastName';
+  int get lichting => identifier ~/ 1000;
   String get identifierString => identifier.toString();
   int get lichting => identifier ~/ 1000;
   String? get bestuursFunctie => getBestuursFunctie(
