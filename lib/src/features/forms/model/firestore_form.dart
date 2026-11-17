@@ -139,7 +139,7 @@ class FirestoreForm {
         .map((key, notifier) => MapEntry(key.toString(), notifier.toJson()));
   }
 
-  bool userIsInCorrectGroupForForm(List<int> userGroups) {
+  bool userIsInCorrectGroupForForm(User user) {
     if (visibleForGroups.isEmpty && visibleForLichtingen.isEmpty) return true;
     return userGroups.any(visibleForGroups.contains) || visibleForLichtingen.contains(user.lichting);
   }
