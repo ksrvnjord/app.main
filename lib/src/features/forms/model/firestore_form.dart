@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 
 part 'firestore_form.g.dart';
 
@@ -139,7 +140,7 @@ class FirestoreForm {
   }
 
   bool userIsInCorrectGroupForForm(List<int> userGroups) {
-    if (visibleForGroups.isEmpty) return true;
-    return userGroups.any(visibleForGroups.contains);
+    if (visibleForGroups.isEmpty && visibleForLichtingen.isEmpty) return true;
+    return userGroups.any(visibleForGroups.contains) || visibleForLichtingen.contains(user.lichting);
   }
 }
