@@ -69,7 +69,6 @@ class User {
   String get fullName => '$firstName $lastName';
   int get lichting => identifier ~/ 1000;
   String get identifierString => identifier.toString();
-  int get lichting => identifier ~/ 1000;
   String? get bestuursFunctie => getBestuursFunctie(
       groups,
       DateTime.now()
