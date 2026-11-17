@@ -71,7 +71,7 @@ class SingleQuestionFormCardExpandedArea extends ConsumerWidget {
     return currentUserVal.when(
       data: (currentUser) {
         final isAFormForUser =
-            form.userIsInCorrectGroupForForm(currentUser.groupIds);
+            form.userIsInCorrectGroupForForm(currentUser);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
