@@ -62,7 +62,6 @@ Future<void> downloadAllProfilePictures({
             .addFile(ArchiveFile(fileName(userId), fileData.length, fileData));
       }
     } catch (e) {
-      print('Failed for $userId $e');
       continue;
     }
 

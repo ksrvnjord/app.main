@@ -6,7 +6,7 @@ class GroupChoices {
   static const wedstrijd = "Wedstrijdsectie";
   static const club8Plus = "Club8+";
   static const topC4Plus = "TopC4+";
-  static const sjaarzen = "Sjaarzen (werkt niet)";
+  static const sjaarzen = "Sjaarzen";
 
   static const List<String> all = [
     competitie,

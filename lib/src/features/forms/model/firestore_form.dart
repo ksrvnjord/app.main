@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/api/firestorm_filler_notifier.dart';
 import 'package:ksrvnjord_main_app/src/features/forms/model/firestore_form_question.dart';
 import 'package:ksrvnjord_main_app/src/features/training/model/reservation.dart';
+import 'package:ksrvnjord_main_app/src/features/profiles/models/user.dart';
 
 part 'firestore_form.g.dart';
 
@@ -26,6 +27,7 @@ class FirestoreForm {
     required this.authorName,
     this.visibleForGroups = const <int>[],
     this.visibleForGroupNames = const <String>[],
+    this.visibleForLichtingen = const <int>[],
     this.groupId,
     this.isDraft = false,
     this.isClosed = false,
@@ -77,6 +79,7 @@ class FirestoreForm {
 
   final List<int> visibleForGroups;
   final List<String> visibleForGroupNames;
+  final List<int> visibleForLichtingen;
 
   final String? groupId;
   final bool isDraft;
@@ -136,8 +139,9 @@ class FirestoreForm {
         .map((key, notifier) => MapEntry(key.toString(), notifier.toJson()));
   }
 
-  bool userIsInCorrectGroupForForm(List<int> userGroups) {
-    if (visibleForGroups.isEmpty) return true;
-    return userGroups.any(visibleForGroups.contains);
+  bool userIsInCorrectGroupForForm(User user) {
+    if (visibleForGroups.isEmpty && visibleForLichtingen.isEmpty) return true;
+    return user.groupIds.any(visibleForGroups.contains) ||
+        visibleForLichtingen.contains(user.lichting);
   }
 }

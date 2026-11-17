@@ -104,7 +104,7 @@ class _FormsPageState extends ConsumerState<FormsPage> {
             final visibleOpenForms = forms.where((form) {
               final formData = form.data();
               return formData.isOpen &&
-                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                  (formData.userIsInCorrectGroupForForm(currentUser) ||
                       currentUser.isAdmin) &&
                   _matchesSearch(formData);
             }).toList();
@@ -114,7 +114,7 @@ class _FormsPageState extends ConsumerState<FormsPage> {
             final visibleClosedForms = forms.where((form) {
               final formData = form.data();
               return !formData.isOpen &&
-                  (formData.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+                  (formData.userIsInCorrectGroupForForm(currentUser) ||
                       currentUser.isAdmin) &&
                   _matchesSearch(formData);
             }).toList();
