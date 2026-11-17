@@ -28,7 +28,7 @@ class FormsWidget extends ConsumerWidget {
     final openFormsList = [
       ...formReferences.where((formReference) {
         final form = formReference.data();
-        return form.userIsInCorrectGroupForForm(currentUser.groupIds) ||
+        return form.userIsInCorrectGroupForForm(currentUser) ||
             currentUser.isAdmin;
       }).map((formSnapshot) {
         final formData = formSnapshot.data();
