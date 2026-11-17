@@ -73,7 +73,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
 
     // Form metadata
     isDraft = form.isDraft;
-    isGroupSpecific = form.visibleForGroups.isNotEmpty;
+    isGroupSpecific = form.visibleForGroups.isNotEmpty && form.visibleForLichting.isEmpty;
     visibleForGroupNames = List.from(form.visibleForGroupNames);
     openUntil = form.openUntil;
 
@@ -286,6 +286,7 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
           isDraft: isDraft,
           visibleForGroupNames: visibleForGroupNames,
           visibleForGroups: await convertToIds(visibleForGroupNames),
+          visibleForLichtingen: visibleForGroupNames.contains(GroupChoces.sjaarzen) ? [getNjordYear() % 100] : const [];
           formAnswersAreUnretractable: formAnswersAreUntretractable,
           isV2: true,
         ),
@@ -345,12 +346,8 @@ class CreateFormPageState extends ConsumerState<CreateFormPage> {
             }
 
           case GroupChoices.club8Plus ||
-                GroupChoices.topC4Plus ||
-                GroupChoices.sjaarzen:
+                GroupChoices.topC4Plus
             {
-              if (groupString == GroupChoices.sjaarzen) {
-                groupString = "Lichting";
-              }
 
               final result = await GroupRepository.listGroups(
                 search: groupString,
