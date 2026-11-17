@@ -26,6 +26,7 @@ class FirestoreForm {
     required this.authorName,
     this.visibleForGroups = const <int>[],
     this.visibleForGroupNames = const <String>[],
+    this.visibleForLichtingen = const <int>[],
     this.groupId,
     this.isDraft = false,
     this.isClosed = false,
@@ -77,6 +78,7 @@ class FirestoreForm {
 
   final List<int> visibleForGroups;
   final List<String> visibleForGroupNames;
+  final List<int> visibleForLichtingen;
 
   final String? groupId;
   final bool isDraft;
